@@ -1,4 +1,4 @@
-baseURL = 'https://kubernetes.recipes'
+baseURL = 'http://kubernetes.recipes'
 languageCode = 'en-us'
 title = 'Kubernetes Recipes'
 theme = "infinity-hugo"
