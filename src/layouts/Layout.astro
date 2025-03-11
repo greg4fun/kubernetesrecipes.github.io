@@ -20,8 +20,8 @@ const resolvedImageWithDomain = new URL(
 const { title } = Astro.props;
 
 const makeTitle = title
-  ? title + " | " + "Astroship"
-  : "Astroship - Starter Template for Astro with Tailwind CSS";
+  ? title + " | " + "Kubernetes Recipe Book"
+  : "Kubernetes Recipe Book - A Curated Collection of Kubernetes Recipes";
 ---
 
 <!doctype html>
@@ -35,25 +35,26 @@ const makeTitle = title
     <!-- <link rel="preload" as="image" href={src} alt="Hero" /> -->
     <SEO
       title={makeTitle}
-      description="Astroship is a starter website template for Astro built with TailwindCSS."
+      description="Kubernetes Recipe Book is a curated collection of Kubernetes recipes to simplify container orchestration and cluster management."
       canonical={canonicalURL}
       twitter={{
-        creator: "@surjithctly",
-        site: "@web3templates",
+        creator: "@your_twitter", // Replace with your Twitter handle if desired
+        site: "@your_site", // Replace with your site's Twitter handle if desired
         card: "summary_large_image",
       }}
       openGraph={{
         basic: {
           url: canonicalURL,
           type: "website",
-          title: `Astroship - Starter Template for Astro`,
+          title: "Kubernetes Recipe Book - Your Guide to Kubernetes Recipes",
           image: resolvedImageWithDomain,
         },
         image: {
-          alt: "Astroship Homepage Screenshot",
+          alt: "Kubernetes Recipe Book Homepage Screenshot",
         },
       }}
     />
+    <meta name="google-site-verification" content="9cz9zIJrUCY3p9QQOW8TjKiM329bHY1iwwsLNyvx51w" />
   </head>
   <body>
     <Navbar />
