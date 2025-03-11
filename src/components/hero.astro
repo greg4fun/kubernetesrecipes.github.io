@@ -5,21 +5,10 @@ import Link from "@components/ui/link.astro";
 import { Icon } from "astro-icon/components";
 ---
 
-<main
-  class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
-  <div class="py-6 md:order-1 hidden md:block">
-    <Picture
-      src={heroImage}
-      alt="Astronaut in the air"
-      widths={[200, 400, 600]}
-      sizes="(max-width: 800px) 100vw, 620px"
-      loading="eager"
-      format="avif"
-    />
-  </div>
-  <div>
-    <h1
-      class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">
+<main class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
+  <!-- Text Container: Appears first on mobile, second on larger screens -->
+  <div class="order-1 md:order-2">
+    <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">
       Kubernetes Recipes
     </h1>
     <p class="text-lg mt-4 text-slate-600 max-w-xl">
@@ -46,4 +35,17 @@ import { Icon } from "astro-icon/components";
       </Link>
     </div>
   </div>
+  <!-- Image Container: Appears second on mobile, first on larger screens -->
+  <div class="py-6 order-2 md:order-1 block">
+    <Picture
+      src={heroImage}
+      alt="Kubernetes Recipes book cover"
+      widths={[200, 400, 600]}
+      sizes="(max-width: 800px) 100vw, 620px"
+      loading="eager"
+      format="avif"
+    />
+  </div>
 </main>
+
+
