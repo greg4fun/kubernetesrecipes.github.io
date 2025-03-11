@@ -1,0 +1,66 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+import { Picture } from "astro:assets";
+import luca from "assets/luca.webp";
+import grzegorz from "assets/grzegorz.jpg";
+---
+
+<Layout title="About the Authors">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">About the Authors</Fragment>
+      <Fragment slot="desc">
+        Meet the experts behind Kubernetes Recipes: a practical guide for container orchestration and deployment.
+      </Fragment>
+    </Sectionhead>
+
+    <div class="flex flex-col gap-3 mx-auto max-w-4xl mt-16 text-center">
+      <h2 class="font-bold text-3xl text-gray-800">
+        Our Authors
+      </h2>
+      <p class="text-lg leading-relaxed text-slate-500">
+        Grzegorz Stencel and Luca Berton bring decades of combined expertise in container orchestration, cybersecurity, and IT infrastructure to help you master Kubernetes.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-10 mx-auto max-w-4xl mt-12">
+      <div class="flex flex-col items-center">
+        <Picture
+          src={luca}
+          alt="Luca Berton"
+          width={400}
+          height={400}
+          class="rounded-full object-cover shadow-lg"
+        />
+        <h2 class="mt-4 text-2xl font-bold text-gray-800">Luca Berton</h2>
+        <p class="mt-2 text-slate-600 text-center">
+          Luca Berton is an IT Infrastructure Expert. He spent two years at JPMorgan Chase &amp; Co. and three years with Red Hat. Luca is the author of <em>Ansible for VMware by Examples</em> and <em>Ansible for Kubernetes by Examples</em> and the creator of the Ansible Pilot project. With over 15 years of experience in the IT industry, Luca specializes in Infrastructure Hardening and Automation. An Open-Source enthusiast, he actively supports the community by sharing his knowledge at public events.
+        </p>
+        <div class="flex gap-4 mt-4">
+          <a href="https://lucaberton.com/" target="_blank" rel="noopener" class="text-blue-600 hover:underline">Website</a>
+          <a href="https://www.linkedin.com/in/lucaberton" target="_blank" rel="noopener" class="text-blue-600 hover:underline">LinkedIn</a>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-center">
+        <Picture
+          src={grzegorz}
+          alt="Grzegorz Stencel"
+          width={400}
+          height={400}
+          class="rounded-full object-cover shadow-lg"
+        />
+        <h2 class="mt-4 text-2xl font-bold text-gray-800">Grzegorz Stencel</h2>
+        <p class="mt-2 text-slate-600 text-center">
+          Grzegorz Stencel is a versatile technologist and Staff Engineer at JPMorgan Chase. Greg designs and develops new systems, products, and features while providing technical guidance and mentorship. His experience spans prestigious organizations like Ericsson, ING, and Oxford University Press, with expertise in Networks, Cyber Security, and Programming. An electronics enthusiast, Greg creates PCB designs for home automation and alarms and explores robotics integrated with AI using Jetson Nano. With 17 years of experience as a Linux admin, Greg also holds a Certified Kubernetes Application Developer (CKAD) certificate. He has built a Kubernetes cluster from laptop motherboards, contributing to the cloud community through teaching and leadership.
+        </p>
+        <div class="flex gap-4 mt-4">
+          <a href="https://stencel.io/" target="_blank" rel="noopener" class="text-blue-600 hover:underline">Website</a>
+          <a href="https://www.linkedin.com/in/gregstencel" target="_blank" rel="noopener" class="text-blue-600 hover:underline">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Layout>

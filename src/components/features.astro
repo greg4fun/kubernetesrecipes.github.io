@@ -1,0 +1,66 @@
+---
+// @ts-ignore
+import { Icon } from "astro-icon/components";
+
+const features = [
+  {
+    title: "Practical, Hands-On Recipes",
+    description:
+      "A comprehensive collection of step-by-step guides designed to solve real-world Kubernetes deployment challenges.",
+    icon: "bx:bxs-book",
+  },
+  {
+    title: "From Basics to Beyond",
+    description:
+      "Master Kubernetes from installation and API fundamentals to advanced scaling, monitoring, and troubleshooting.",
+    icon: "bx:bxs-layer",
+  },
+  {
+    title: "Expert Insights & Guidance",
+    description:
+      "Learn best practices and strategies from industry experts Grzegorz Stencel and Luca Berton.",
+    icon: "bx:bxs-briefcase",
+  },
+  {
+    title: "Efficient Cluster Management",
+    description:
+      "Discover detailed recipes for managing workloads, services, and configurations for optimal performance.",
+    icon: "bx:bxs-server",
+  },
+  {
+    title: "Enhanced Security Practices",
+    description:
+      "Implement robust security measures and access controls to safeguard your Kubernetes clusters.",
+    icon: "bx:bxs-lock-alt",
+  },
+  {
+    title: "Integrated Ecosystem Tools",
+    description:
+      "Explore complementary tools like Helm, logging, and monitoring to extend your Kubernetes capabilities.",
+    icon: "bx:bxs-cog",
+  },
+];
+---
+
+<div class="mt-16 md:mt-0">
+  <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
+    Everything you need to master Kubernetes
+  </h2>
+  <p class="text-lg mt-4 text-slate-600">
+    Kubernetes Recipes: A Practical Guide for Container Orchestration and Deployment, packed with actionable solutions.
+  </p>
+</div>
+
+<div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16">
+  {features.map((item) => (
+    <div class="flex gap-4 items-start">
+      <div class="mt-1 bg-black rounded-full p-2 w-8 h-8 shrink-0">
+        <Icon class="text-white" name={item.icon} />
+      </div>
+      <div>
+        <h3 class="font-semibold text-lg">{item.title}</h3>
+        <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+      </div>
+    </div>
+  ))}
+</div>
