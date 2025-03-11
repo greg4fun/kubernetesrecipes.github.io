@@ -3,7 +3,6 @@
 
 # Astro output directories
 /dist/
-/public/
 /.cache/
 /.astro/
 
