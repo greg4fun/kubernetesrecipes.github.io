@@ -37,11 +37,6 @@ const makeTitle = title
       title={makeTitle}
       description="Kubernetes Recipe Book is a curated collection of Kubernetes recipes to simplify container orchestration and cluster management."
       canonical={canonicalURL}
-      twitter={{
-        creator: "@your_twitter", // Replace with your Twitter handle if desired
-        site: "@your_site", // Replace with your site's Twitter handle if desired
-        card: "summary_large_image",
-      }}
       openGraph={{
         basic: {
           url: canonicalURL,
@@ -54,6 +49,15 @@ const makeTitle = title
         },
       }}
     />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CCC31PP3QS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-CCC31PP3QS');
+    </script>
     <meta name="google-site-verification" content="9cz9zIJrUCY3p9QQOW8TjKiM329bHY1iwwsLNyvx51w" />
   </head>
   <body>
