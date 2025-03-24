@@ -1,0 +1,52 @@
+---
+import Link from "@components/ui/link.astro";
+import { Picture } from "astro:assets";
+import luca from "assets/luca.webp";
+import grzegorz from "assets/grzegorz.jpg";
+---
+
+<section class="mt-24 max-w-5xl mx-auto px-4 md:px-0">
+  <h2 class="text-4xl md:text-5xl font-bold text-center tracking-tight">
+    About the Authors
+  </h2>
+
+  <div class="grid md:grid-cols-2 gap-12 mt-12 items-start">
+    <div class="flex items-start gap-6">
+      <Picture
+        src={grzegorz}
+        alt="Grzegorz Stencel"
+        width={250}
+        height={250}
+        class="rounded-full object-cover shadow-md shrink-0"
+      />
+      <div>
+        <h3 class="text-xl font-semibold text-gray-800">Grzegorz Stencel</h3>
+        <p class="text-slate-600 mt-2 text-base leading-relaxed">
+          Staff Engineer at JPMorgan Chase with 17+ years of Linux expertise. From cybersecurity to robotics, Greg merges deep technical skills with real-world application. He's also a CKAD-certified cloud educator and maker.
+        </p>
+      </div>
+    </div>
+
+    <div class="flex items-start gap-6">
+      <Picture
+        src={luca}
+        alt="Luca Berton"
+        width={250}
+        height={250}
+        class="rounded-full object-cover shadow-md shrink-0"
+      />
+      <div>
+        <h3 class="text-xl font-semibold text-gray-800">Luca Berton</h3>
+        <p class="text-slate-600 mt-2 text-base leading-relaxed">
+          Infrastructure automation expert, author, and open-source advocate. With experience at JPMorgan and Red Hat, Luca empowers others through tools like Ansible and Kubernetes.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-10">
+    <Link href="/authors" style="outline" size="lg">
+      Learn more about the authors →
+    </Link>
+  </div>
+</section>
