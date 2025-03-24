@@ -1,0 +1,33 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+---
+
+<Layout title="Chapters">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">Chapters Overview</Fragment>
+      <Fragment slot="desc">
+        Explore the complete list of chapters from <strong>Kubernetes Recipes</strong>: your guide to mastering container orchestration and deployment.
+      </Fragment>
+    </Sectionhead>
+
+    <div class="max-w-3xl mx-auto mt-16 space-y-4 text-slate-700 text-lg leading-relaxed">
+      <div><strong>Chapter 1:</strong> Getting Started</div>
+      <div><strong>Chapter 2:</strong> Configuring Stateless Applications</div>
+      <div><strong>Chapter 3:</strong> Configuring Stateful Applications</div>
+      <div><strong>Chapter 4:</strong> Kubernetes on Cloud Providers</div>
+      <div><strong>Chapter 5:</strong> Developer Experience in Kubernetes</div>
+      <div><strong>Chapter 6:</strong> Scaling and Resiliency</div>
+      <div><strong>Chapter 7:</strong> Storage in Kubernetes</div>
+      <div><strong>Chapter 8:</strong> Networking in Kubernetes</div>
+      <div><strong>Chapter 9:</strong> Performance Observability in Kubernetes</div>
+      <div><strong>Chapter 10:</strong> Control Plane Administration and Package Management</div>
+      <div><strong>Chapter 11:</strong> Security in Kubernetes</div>
+      <div><strong>Chapter 12:</strong> Emerging and Advanced Kubernetes Concepts</div>
+      <div><strong>Chapter 13:</strong> Best Practices in Kubernetes</div>
+      <div><strong>Chapter 14:</strong> Additional Kubernetes Resources</div>
+    </div>
+  </Container>
+</Layout>
