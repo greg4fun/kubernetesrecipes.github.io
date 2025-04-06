@@ -5,6 +5,7 @@ import Sectionhead from "@components/sectionhead.astro";
 import { Picture } from "astro:assets";
 import luca from "assets/luca.webp";
 import grzegorz from "assets/grzegorz.jpg";
+import nikhil from "assets/nikhil.jpg";
 ---
 
 <Layout title="About the Authors">
@@ -60,6 +61,32 @@ import grzegorz from "assets/grzegorz.jpg";
           <a href="https://stencel.io/" target="_blank" rel="noopener" class="text-blue-600 hover:underline">Website</a>
           <a href="https://www.linkedin.com/in/gregstencel" target="_blank" rel="noopener" class="text-blue-600 hover:underline">LinkedIn</a>
         </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3 mx-auto max-w-4xl mt-20 text-center">
+      <h2 class="font-bold text-3xl text-gray-800">
+        Book Reviewer
+      </h2>
+      <p class="text-lg leading-relaxed text-slate-500">
+        Supporting the content with insightful reviews and deep technical validation.
+      </p>
+    </div>
+
+    <div class="flex flex-col items-center mt-12">
+      <Picture
+        src={nikhil}
+        alt="Nikhil Kumar"
+        width={400}
+        height={400}
+        class="rounded-full object-cover shadow-lg"
+      />
+      <h2 class="mt-4 text-2xl font-bold text-gray-800">Nikhil Kumar</h2>
+      <p class="mt-2 text-slate-600 text-center max-w-3xl">
+        Nikhil Kumar is a seasoned software engineer at HPE, specializing in Kubernetes, AI, DevOps, and MLOps. With a versatile skill set spanning development, architecture, and consultancy, Nikhil has made impactful contributions across diverse domains for numerous clients and organizations. His expertise includes designing scalable Kubernetes architectures, implementing AI-driven DevOps pipelines, and advancing MLOps practices to streamline machine learning workflows. Nikhil is a recognized authority in the field, holding prestigious certifications such as Red Hat Certified Engineer (EX294) and Red Hat Certified OpenShift Administrator (EX280). As a passionate advocate for knowledge sharing, he actively contributes to the software engineering community through technical blogs, YouTube tutorials, and by serving as a technical reviewer for books on Kubernetes, DevOps, Cloud, and MLOps.
+      </p>
+      <div class="flex gap-4 mt-4">
+        <a href="https://www.linkedin.com/in/kumar-nikhil811/" target="_blank" rel="noopener" class="text-blue-600 hover:underline">LinkedIn</a>
       </div>
     </div>
   </Container>
