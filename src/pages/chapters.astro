@@ -9,67 +9,80 @@ import Sectionhead from "@components/sectionhead.astro";
     <Sectionhead>
       <Fragment slot="title">Chapters Overview</Fragment>
       <Fragment slot="desc">
-        Dive into <strong>Kubernetes Recipes</strong>, a comprehensive and practical guide for mastering container orchestration. Each chapter addresses real-world scenarios, offering hands-on solutions and best practices.
+        Explore <strong>Kubernetes Recipes</strong> — practical, hands-on chapters that tackle real-world Kubernetes challenges. Click each chapter to expand for more info.
       </Fragment>
     </Sectionhead>
 
-    <div class="max-w-3xl mx-auto mt-16 space-y-6 text-slate-700 text-lg leading-relaxed">
-      <div>
-        <strong>Chapter 1: Getting Started</strong><br />
+    <div class="max-w-3xl mx-auto mt-16 space-y-4 text-slate-700 text-lg leading-relaxed">
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 1: Getting Started</summary>
         Learn how to set up Kubernetes environments using tools like Minikube, k3s, and kubeadm. A foundational guide to cluster setup and basic operations.
-      </div>
-      <div>
-        <strong>Chapter 2: Configuring Stateless Applications</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 2: Configuring Stateless Applications</summary>
         Covers namespaces, pods, environment variables, multi-container setups, secrets, and configuration strategies for non-persistent workloads.
-      </div>
-      <div>
-        <strong>Chapter 3: Configuring Stateful Applications</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 3: Configuring Stateful Applications</summary>
         Focuses on databases, data persistence, migrations, SDLC best practices, and handling complex workloads.
-      </div>
-      <div>
-        <strong>Chapter 4: Kubernetes on Cloud Providers</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 4: Kubernetes on Cloud Providers</summary>
         Step-by-step deployment on GKE, AKS, EKS, and other providers, plus tools like Kubespray and Sonobuoy for conformance testing.
-      </div>
-      <div>
-        <strong>Chapter 5: Developer Experience in Kubernetes</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 5: Developer Experience in Kubernetes</summary>
         Enhance your development workflow using tools like Lens, DevSpace, and VS Code integrated with Kubernetes.
-      </div>
-      <div>
-        <strong>Chapter 6: Scaling and Resiliency</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 6: Scaling and Resiliency</summary>
         Techniques for autoscaling (HPA, VPA, KEDA), resource optimization, and deployment strategies using Karpenter and vCluster.
-      </div>
-      <div>
-        <strong>Chapter 7: Storage in Kubernetes</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 7: Storage in Kubernetes</summary>
         Explore static/dynamic provisioning, NFS, persistent disks across cloud platforms, and custom StorageClasses.
-      </div>
-      <div>
-        <strong>Chapter 8: Networking in Kubernetes</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 8: Networking in Kubernetes</summary>
         In-depth discussion on service types, traffic routing, Istio, network policies, and troubleshooting.
-      </div>
-      <div>
-        <strong>Chapter 9: Performance Observability in Kubernetes</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 9: Performance Observability in Kubernetes</summary>
         Learn observability tools including Prometheus, Grafana, ELK, Fluentd, OpenTelemetry, and Cloud-specific monitors.
-      </div>
-      <div>
-        <strong>Chapter 10: Control Plane Administration and Package Management</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 10: Control Plane Administration and Package Management</summary>
         Administration of core components (kubelet, scheduler, etc.), node operations, upgrades, and using Helm for packages.
-      </div>
-      <div>
-        <strong>Chapter 11: Security in Kubernetes</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 11: Security in Kubernetes</summary>
         Covers secrets management, RBAC, PodSecurity, AppArmor, Seccomp, and securing clusters with Istio.
-      </div>
-      <div>
-        <strong>Chapter 12: Emerging and Advanced Kubernetes Concepts</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 12: Emerging and Advanced Kubernetes Concepts</summary>
         Looks at FaaS, WebAssembly, HPC, CRDs, and deploying AI/ML workloads, including MLOps and air-gapped DevOps.
-      </div>
-      <div>
-        <strong>Chapter 13: Best Practices in Kubernetes</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 13: Best Practices in Kubernetes</summary>
         Offers practical advice on resource limits, health checks, namespaces, multi-tenancy, and immutable infrastructure.
-      </div>
-      <div>
-        <strong>Chapter 14: Additional Kubernetes Resources</strong><br />
+      </details>
+
+      <details class="border rounded-lg p-4">
+        <summary class="font-semibold cursor-pointer">Chapter 14: Additional Kubernetes Resources</summary>
         Highlights CNCF resources, community involvement, sustainability, KubeCon, and tools like Kepler.
-      </div>
+      </details>
     </div>
   </Container>
 </Layout>
