@@ -1,0 +1,54 @@
+---
+import { Picture } from "astro:assets";
+import Link from "@components/ui/link.astro";
+
+// Example images (you can replace these with actual photos)
+import person1 from "assets/alessandro.jpg";
+import person2 from "assets/ricardo.jpg";
+import person3 from "assets/jan.jpg";
+
+const endorsements = [
+  {
+    name: "Alessandro Vozza",
+    title: "Cloud-Native AI Strategist, Tech Leader & Kubernetes Innovator at Microsoft and Kubespaces.io",
+    quote: "Kubernetes Recipes is the book I wish I had when I started working with clusters. Clear, practical, and straight to the point.",
+    image: person1,
+  },
+//  {
+//    name: "Ricardo van Velzen",
+//    title: "Manager Systems Engineering team NL @ Nutanix",
+//    quote: "This book bridges the gap between theory and practical implementation. A must-read for serious Kubernetes practitioners.",
+//    image: person2,
+//  },
+  {
+    name: "Jan Stomphorst",
+    title: "ICT solutions Architect | Kubernetes & Cloud Native Expert | Co-host Kubernetes Podcast",
+    quote: "An essential guide for engineers at all levels. Real-world examples that reflect the challenges we face every day.",
+    image: person3,
+  },
+];
+---
+
+<section class="mt-24 max-w-5xl mx-auto px-4 md:px-0">
+  <h2 class="text-4xl md:text-5xl font-bold text-center tracking-tight">
+    Endorsed by Kubernetes Leaders
+  </h2>
+  <div class="grid md:grid-cols-3 gap-12 mt-12">
+    {endorsements.map((endorsement) => (
+      <div class="bg-white shadow-md rounded-xl p-6 text-center flex flex-col items-center">
+        <Picture
+          src={endorsement.image}
+          alt={endorsement.name}
+          width={100}
+          height={100}
+          class="rounded-full object-cover shadow-md mb-4"
+        />
+        <p class="italic text-slate-600 mb-4">"{endorsement.quote}"</p>
+        <div>
+          <h3 class="font-semibold text-lg">{endorsement.name}</h3>
+          <p class="text-slate-500 text-sm">{endorsement.title}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
