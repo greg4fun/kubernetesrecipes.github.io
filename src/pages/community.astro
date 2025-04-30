@@ -1,0 +1,49 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+import Cta from "@components/cta.astro";
+import { Picture } from "astro:assets";
+import collage from "@assets/community.jpg";
+---
+
+<Layout title="Community & Media">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">Media & Public Outreach</Fragment>
+      <Fragment slot="desc">
+        Discover how <strong>Luca and Greg</strong> are sharing <em>Kubernetes Recipes</em> with the world — through talks, interviews, meetups, and community love.
+      </Fragment>
+    </Sectionhead>
+
+    <div class="max-w-4xl mx-auto mt-16 space-y-16 text-slate-700 text-lg leading-relaxed">
+
+      <!-- Video Embed -->
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold">🎥 Featured Talk: Kubernetes Recipes at KubeCon EU London</h2>
+        <div class="w-full flex justify-center">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/OqEvyr71WR0?si=PtAuLelnOjkHawoT" title="Kubernetes Recipes - KubeCon EU London Presentation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="rounded-xl border"></iframe>
+        </div>
+        <p class="text-base text-slate-600">In this talk, Luca and Greg unpack key themes from their book and discuss real-world Kubernetes challenges, tools, and lessons.</p>
+      </section>
+
+      <!-- Photo Collage -->
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold">📸 Community Moments</h2>
+        <Picture src={collage} alt="Kubernetes Recipes community meetup collage" width={1200} height={1200} class="rounded-xl border shadow-md" />
+        <p class="text-base text-slate-600">Snapshots from recent Kubernetes meetups and book signings in Europe — sharing stories, strategies, and smiles with fellow engineers and platform teams.</p>
+      </section>
+
+      <!-- Outreach Section -->
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold">🌍 Public Exposure & Initiatives</h2>
+        <ul class="list-disc ml-6 space-y-2">
+          <li>Spoke at <strong>KubeCon EU London Conference</strong>, <strong>Kubernetes Community Days</strong>, and <strong>CNCF meetups</strong> across Europe.</li>
+          <li>Published technical articles and tutorials based on <em>Kubernetes Recipes</em> in industry blogs and newsletters.</li>
+          <li>Engaged with developers and SREs at companies like Datadog and Nutanix.</li>
+        </ul>
+      </section>
+    </div>
+    <Cta />
+  </Container>
+</Layout>
