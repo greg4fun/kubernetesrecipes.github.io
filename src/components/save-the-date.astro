@@ -1,0 +1,24 @@
+---
+import { Picture } from "astro:assets";
+import podcastImg from "../assets/De Nederlandse Kubernetes Podcast.jpg";
+import Link from "@components/ui/link.astro";
+---
+
+<section class="relative mt-24 rounded-xl overflow-hidden shadow-lg max-w-5xl mx-auto">
+  <Picture
+    src={podcastImg}
+    alt="Podcast Live Announcement"
+    widths={[400, 800, 1200]}
+    sizes="100vw"
+    class="w-full object-cover h-80"
+  />
+  <div class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-center px-6">
+    <h2 class="text-white text-3xl md:text-5xl font-bold mb-4">
+      🎙️ June 26: Live on Episode #100!
+    </h2>
+    <p class="text-slate-200 text-lg md:text-xl max-w-2xl mb-4">
+      We’re going live on <strong>De Nederlandse Kubernetes Podcast</strong> — tune in for a book giveaway, community insights, and real talk!
+    </p>
+    <Link href="/community" style="inverted">Save the Date →</Link>
+  </div>
+</section>
