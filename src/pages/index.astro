@@ -8,12 +8,18 @@ import SaveTheDate from "@components/save-the-date.astro";
 import BookDescription from "@components/book-description.astro";
 import AboutAuthors from "@components/about-authors.astro";
 import Recommendations from "@components/recommendations.astro";
+import Carousel from "@components/carousel.astro";
 import Layout from "@layouts/Layout.astro";
 ---
 
 <Layout title="">
   <Container>
     <Hero />
+  </Container>
+  <Container class="relative overflow-hidden w-full max-w-full mx-auto">
+    <Carousel images={["/book/20250401_212834.jpg", "/book/20250713_212834.jpg", "/book/20250410_150138.jpg", "/book/20250410_164446.jpg", "/book/20250412_102801.jpg", "/book/20250423_160238.jpg", "/book/20250423_174112.jpg", "/book/20250424_155457.jpg", "/book/20250424_171501.jpg", "/book/20250424_172555.jpg", "/book/20250424_173149.jpg", "/book/20250424_183525.jpg", "/book/20250424_185705.jpg", "/book/20250424_191125.jpg", "/book/20250703_075920.jpg", "/book/20250703_081533.jpg", "/book/20250703_083235.jpg", "/book/20250703_110408.jpg", "/book/20250703_111236.jpg", "/book/20250703_112302.jpg", "/book/20250703_132846.jpg", "/book/20250703_135516.jpg", "/book/20250703_140223.jpg", "/book/20250703_143952.jpg"]} height="110px" duration={30} />
+  </Container>
+  <Container>
     <Features />
     <Logos />
     <SaveTheDate />

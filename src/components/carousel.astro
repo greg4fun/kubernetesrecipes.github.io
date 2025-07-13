@@ -1,0 +1,63 @@
+---
+/**
+ * <Carousel images={["/img1.jpg", "/img2.jpg", ...]} height="120px" duration={15} />
+ *
+ * A lightweight, CSS‑only image carousel.
+ *  – No JavaScript runtime
+ *  – Keyboard‑ and hover‑pause friendly
+ *  – Fully responsive, width: 100%; you set desired height.
+ */
+export interface Props {
+  images: string[];
+  /** Height of the carousel (any CSS unit) */
+  height?: string;
+  /** Full loop duration in seconds */
+  duration?: number;
+}
+
+const { images = [], height = "120px", duration = 15 } = Astro.props;
+---
+<style is:inline>
+  .carousel {
+    overflow: hidden;
+    width: 100%;
+    height: {height};
+  }
+  .track {
+    display: flex;
+    width: max-content;
+    animation: slide var(--duration, 15s) linear infinite;
+  }
+  /* Pause on hover or focus within for manual inspection */
+  .carousel:hover .track,
+  .carousel:focus-within .track {
+    animation-play-state: paused;
+  }
+  .track img {
+    height: 100%;
+    flex: 0 0 auto;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-right: 1rem;
+  }
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-50%));
+    }
+  }
+</style>
+
+<!-- Duplicate image set for seamless looping -->
+<div class="carousel" style={`--duration: ${duration}s`} tabindex="0">
+  <div class="track">
+    {images.map((src, i) => (
+      <img src={src} alt={``} loading="lazy" key={`a-${i}`} />
+    ))}
+    {images.map((src, i) => (
+      <img src={src} alt="" aria-hidden="true" key={`b-${i}`} />
+    ))}
+  </div>
+</div>
