@@ -1,63 +1,66 @@
 ---
 /**
- * <Carousel images={["/img1.jpg", "/img2.jpg", ...]} height="120px" duration={15} />
+ * carousel.astro – v4 (stable)
+ * Pure‑CSS endless marquee that works in both dev _and_ production.
  *
- * A lightweight, CSS‑only image carousel.
- *  – No JavaScript runtime
- *  – Keyboard‑ and hover‑pause friendly
- *  – Fully responsive, width: 100%; you set desired height.
+ * Props
+ *   images    string[]  – required
+ *   height    string    – any CSS unit, default "110px"
+ *   duration  number    – seconds per full loop, default 30
  */
 export interface Props {
   images: string[];
-  /** Height of the carousel (any CSS unit) */
   height?: string;
-  /** Full loop duration in seconds */
   duration?: number;
 }
 
-const { images = [], height = "120px", duration = 15 } = Astro.props;
+const { images = [], height = "110px", duration = 30 } = Astro.props;
 ---
 <style is:inline>
+  /*  KEEP INLINE   —  ensures CSS ships with component HTML in production  */
+
+  /* Global keyframes so scoping never breaks the name */
+  @keyframes carousel-slide {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(calc(-50%)); }
+  }
+
   .carousel {
     overflow: hidden;
     width: 100%;
-    height: {height};
+    /* height comes from the per‑instance CSS custom prop */
+    height: var(--carousel-h, 110px);
   }
+
   .track {
-    display: flex;
+    display: inline-flex;     /* keeps one logical row regardless of wrap */
+    gap: 1rem;               /* space between images */
     width: max-content;
-    animation: slide var(--duration, 15s) linear infinite;
+    animation: carousel-slide var(--carousel-dur, 30s) linear infinite;
   }
-  /* Pause on hover or focus within for manual inspection */
+
+  /* Pause for accessibility */
   .carousel:hover .track,
   .carousel:focus-within .track {
     animation-play-state: paused;
   }
+
   .track img {
-    height: 100%;
-    flex: 0 0 auto;
+    height: 100%;             /* each image exactly matches carousel height */
+    flex: 0 0 auto;           /* prevent shrinking */
     object-fit: cover;
     border-radius: 0.5rem;
-    margin-right: 1rem;
-  }
-  @keyframes slide {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(calc(-50%));
-    }
   }
 </style>
 
-<!-- Duplicate image set for seamless looping -->
-<div class="carousel" style={`--duration: ${duration}s`} tabindex="0">
+<!-- Duplicate the image set once for seamless wraparound -->
+<div
+  class="carousel"
+  style={`--carousel-dur:${duration}s; --carousel-h:${height};`}
+  tabindex="0"
+>
   <div class="track">
-    {images.map((src, i) => (
-      <img src={src} alt={``} loading="lazy" key={`a-${i}`} />
-    ))}
-    {images.map((src, i) => (
-      <img src={src} alt="" aria-hidden="true" key={`b-${i}`} />
-    ))}
+    {images.map((src) => <img src={src} alt="" loading="lazy" />)}
+    {images.map((src) => <img src={src} alt="" aria-hidden="true" />)}
   </div>
 </div>
