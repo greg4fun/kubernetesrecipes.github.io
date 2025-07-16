@@ -5,6 +5,7 @@ import Sectionhead from "@components/sectionhead.astro";
 import Cta from "@components/cta.astro";
 import { Picture } from "astro:assets";
 import collage from "@assets/community.jpg";
+import bill from "assets/bill-mulligan.jpg";
 ---
 
 <Layout title="Community & Media">
@@ -20,11 +21,21 @@ import collage from "@assets/community.jpg";
 
       <!-- Video Embed -->
       <section class="space-y-4">
-        <h2 class="text-2xl font-semibold">🎥 Featured Talk: Kubernetes Recipes at KubeCon EU London</h2>
+        <h2 class="text-2xl font-semibold">🎥 Reviews "Kubernetes Recipes" at Dutch Cloud Native Day 2025 </h2>
         <div class="w-full flex justify-center">
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/OqEvyr71WR0?si=PtAuLelnOjkHawoT" title="Kubernetes Recipes - KubeCon EU London Presentation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="rounded-xl border"></iframe>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/O-W5IU67kfQ?si=3nnh0vFXpU6zYfs7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
-        <p class="text-base text-slate-600">In this talk, Luca and Greg unpack key themes from their book and discuss real-world Kubernetes challenges, tools, and lessons.</p>
+        <p class="text-base text-slate-600">At Dutch Cloud Native Day 2025, Luca Berton caught up with <a href="https://www.linkedin.com/in/cortney-nickerson-26836413a/">Cortney Nickerson</a> - Head of Community at Nirmata, CNCF Ambassador, and Kyverno champion—for a spontaneous review of his latest book Kubernetes Recipes.
+        Cortney shares why this cookbook-style guide to Kubernetes stands out, how policy-as-code is evolving with AI, and how Kyverno helps teams simplify governance without compromising innovation.
+        Whether you're new to Kubernetes or building enterprise-grade clusters, this conversation will inspire you to think differently about cloud-native learning and scaling DevSecOps with purpose.</p>
+                <Picture
+          src={bill}
+          alt="Bill Mulligan - Community @ Isovalent at Cisco | Cilium and ebpf.io Maintainer"
+          width={1280}
+          height={720}
+          class="object-cover shadow-lg"
+        />
+        <a href="https://www.linkedin.com/in/bamulligan/">Bill Mulligan</a>, Community @ Isovalent at Cisco, flipped through Kubernetes Recipes and lit up when he spotted the section on Cilium. He said it was great to see eBPF-powered networking getting practical, hands-on coverage for real-world Kubernetes use.
       </section>
 
       <!-- Photo Collage -->
@@ -51,6 +62,15 @@ import collage from "@assets/community.jpg";
           </a>.
           <iframe width="560" height="315" src="https://www.youtube.com/embed/_jF3-GF-Pxk?si=PknNSEQmkX8rins5&amp;start=26055" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </p>
+      </section>
+
+      <!-- Video Embed -->
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold">🎥 Featured Talk: Kubernetes Recipes at KubeCon EU London</h2>
+        <div class="w-full flex justify-center">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/OqEvyr71WR0?si=PtAuLelnOjkHawoT" title="Kubernetes Recipes - KubeCon EU London Presentation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="rounded-xl border"></iframe>
+        </div>
+        <p class="text-base text-slate-600">In this talk, Luca and Greg unpack key themes from their book and discuss real-world Kubernetes challenges, tools, and lessons.</p>
       </section>
 
       <!-- Engagement Section -->
