@@ -1,0 +1,87 @@
+---
+// ============================================
+// ANNOUNCEMENT BANNER CONFIGURATION
+// Set enabled to false to hide the banner
+// ============================================
+export interface Props {
+  enabled?: boolean;
+  emoji?: string;
+  headline?: string;
+  description?: string;
+  linkText?: string;
+  linkUrl?: string;
+  gradientFrom?: string;
+  gradientVia?: string;
+  gradientTo?: string;
+}
+
+const {
+  enabled = true,
+  emoji = "🎤",
+  headline = "Speaking at KubeCon EU 2026",
+  description = "Lessons Learned Orchestrating Multi-Tenant GPUs on OpenShift AI",
+  linkText = "View Session",
+  linkUrl = "https://kccnceu2026.sched.com/event/2CVzs/lessons-learned-orchestrating-multi-tenant-gpus-on-openshift-ai-with-nvidia-kai-gh200-luca-berton-dell-technologies",
+  gradientFrom = "cyan-600",
+  gradientVia = "blue-600",
+  gradientTo = "purple-600",
+} = Astro.props;
+// ============================================
+
+// Build gradient classes dynamically
+const gradientClass = `from-${gradientFrom} via-${gradientVia} to-${gradientTo}`;
+---
+
+{enabled && (
+  <div class:list={["bg-gradient-to-r text-white", gradientClass]}>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <a
+        href={linkUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center group"
+      >
+        <span class="inline-flex items-center gap-2">
+          <span class="flex h-2 w-2 relative">
+            <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-white opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+          </span>
+          <span class="font-bold text-sm sm:text-base">{emoji} {headline}</span>
+        </span>
+        <span class="hidden sm:inline text-white/60">|</span>
+        <span class="text-sm text-white/90">{description}</span>
+        <span class="inline-flex items-center gap-1 text-sm font-medium group-hover:underline">
+          {linkText}
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            class="w-4 h-4 group-hover:translate-x-1 transition-transform" 
+            fill="currentColor" 
+            viewBox="0 0 16 16"
+          >
+            <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+          </svg>
+        </span>
+      </a>
+    </div>
+  </div>
+)}
+
+<style>
+  /* Safelist gradient classes for Tailwind - ensure these work */
+  .from-cyan-600 { --tw-gradient-from: #0891b2; }
+  .via-blue-600 { --tw-gradient-stops: var(--tw-gradient-from), #2563eb, var(--tw-gradient-to); }
+  .to-purple-600 { --tw-gradient-to: #9333ea; }
+  
+  /* Additional common gradient colors for future use */
+  .from-green-600 { --tw-gradient-from: #16a34a; }
+  .via-teal-600 { --tw-gradient-stops: var(--tw-gradient-from), #0d9488, var(--tw-gradient-to); }
+  .to-blue-600 { --tw-gradient-to: #2563eb; }
+  
+  .from-orange-600 { --tw-gradient-from: #ea580c; }
+  .via-red-600 { --tw-gradient-stops: var(--tw-gradient-from), #dc2626, var(--tw-gradient-to); }
+  .to-pink-600 { --tw-gradient-to: #db2777; }
+  
+  .from-indigo-600 { --tw-gradient-from: #4f46e5; }
+  .via-purple-600 { --tw-gradient-stops: var(--tw-gradient-from), #9333ea, var(--tw-gradient-to); }
+  .to-pink-600 { --tw-gradient-to: #db2777; }
+</style>

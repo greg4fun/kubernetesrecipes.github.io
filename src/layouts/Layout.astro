@@ -2,6 +2,7 @@
 import { SEO } from "astro-seo";
 import Footer from "@components/footer.astro";
 import Navbar from "@components/navbar/navbar.astro";
+import AnnouncementBanner from "@components/announcement-banner.astro";
 import "@fontsource-variable/inter/index.css";
 import "@fontsource-variable/bricolage-grotesque";
 import "../styles/global.css";
@@ -9,6 +10,23 @@ import "../styles/global.css";
 export interface Props {
   title: string;
 }
+
+// ============================================
+// ANNOUNCEMENT BANNER CONFIGURATION
+// Set enabled to false to hide the banner
+// ============================================
+const announcementConfig = {
+  enabled: true,
+  emoji: "🎤",
+  headline: "Speaking at KubeCon EU 2026",
+  description: "Lessons Learned Orchestrating Multi-Tenant GPUs on OpenShift AI",
+  linkText: "View Session",
+  linkUrl: "https://kccnceu2026.sched.com/event/2CVzs/lessons-learned-orchestrating-multi-tenant-gpus-on-openshift-ai-with-nvidia-kai-gh200-luca-berton-dell-technologies",
+  gradientFrom: "cyan-600",
+  gradientVia: "blue-600",
+  gradientTo: "purple-600",
+};
+// ============================================
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
@@ -61,6 +79,7 @@ const makeTitle = title
     <meta name="google-site-verification" content="9cz9zIJrUCY3p9QQOW8TjKiM329bHY1iwwsLNyvx51w" />
   </head>
   <body>
+    <AnnouncementBanner {...announcementConfig} />
     <Navbar />
     <slot />
     <Footer />
