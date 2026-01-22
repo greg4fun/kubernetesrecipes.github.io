@@ -7,11 +7,40 @@ import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://kubernetes.recipes/",
+  site: "https://kubernetes.recipes",
   base: "/",
+  trailingSlash: "never",
   integrations: [
     mdx(),
-    sitemap(),
+    sitemap({
+      changefreq: "weekly",
+      priority: 0.7,
+      lastmod: new Date(),
+      customPages: [
+        "https://kubernetes.recipes",
+        "https://kubernetes.recipes/chapters",
+        "https://kubernetes.recipes/authors",
+        "https://kubernetes.recipes/blog",
+        "https://kubernetes.recipes/pricing",
+        "https://kubernetes.recipes/community",
+        "https://kubernetes.recipes/contact",
+      ],
+      serialize(item) {
+        // Set homepage as highest priority
+        if (item.url === "https://kubernetes.recipes") {
+          return { ...item, priority: 1.0, changefreq: "daily" };
+        }
+        // Set main pages as high priority
+        if (item.url.match(/\/(chapters|pricing|authors)$/)) {
+          return { ...item, priority: 0.9, changefreq: "weekly" };
+        }
+        // Set blog posts
+        if (item.url.includes("/blog/")) {
+          return { ...item, priority: 0.8, changefreq: "monthly" };
+        }
+        return item;
+      },
+    }),
     icon(),
     partytown({ config: { forward: ["dataLayer.push"] } }), // Using the correct import
     (await import("astro-compress")).default({

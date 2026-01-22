@@ -8,7 +8,12 @@ import "@fontsource-variable/bricolage-grotesque";
 import "../styles/global.css";
 
 export interface Props {
-  title: string;
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+  publishDate?: Date;
+  author?: string;
 }
 
 // ============================================
@@ -28,45 +33,151 @@ const announcementConfig = {
 };
 // ============================================
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+// Remove trailing slash for consistent canonical URLs
+const pathname = Astro.url.pathname.endsWith('/') && Astro.url.pathname !== '/'
+  ? Astro.url.pathname.slice(0, -1)
+  : Astro.url.pathname;
+const canonicalURL = new URL(pathname, Astro.site).toString();
 
-const resolvedImageWithDomain = new URL(
-  "/opengraph.jpg",
-  Astro.site
-).toString();
+const { 
+  title, 
+  description = "Kubernetes Recipe Book is a curated collection of Kubernetes recipes to simplify container orchestration and cluster management.",
+  image = "/opengraph.jpg",
+  type = "website",
+  publishDate,
+  author = "Luca Berton"
+} = Astro.props;
 
-const { title } = Astro.props;
+const resolvedImageWithDomain = new URL(image, Astro.site).toString();
 
+const siteName = "Kubernetes Recipe Book";
 const makeTitle = title
-  ? title + " | " + "Kubernetes Recipe Book"
-  : "Kubernetes Recipe Book - A Curated Collection of Kubernetes Recipes";
+  ? `${title} | ${siteName}`
+  : "Kubernetes Recipe Book - A Practical Guide for Container Orchestration";
+
+// Structured data for the website/book
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": type === "article" ? "Article" : "WebSite",
+  "name": makeTitle,
+  "description": description,
+  "url": canonicalURL,
+  "image": resolvedImageWithDomain,
+  ...(type === "website" && {
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${Astro.site}?s={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  }),
+  ...(type === "article" && publishDate && {
+    "datePublished": publishDate.toISOString(),
+    "author": {
+      "@type": "Person",
+      "name": author
+    }
+  })
+};
+
+// Book structured data for homepage
+const bookStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "Kubernetes Recipes",
+  "author": {
+    "@type": "Person",
+    "name": "Luca Berton"
+  },
+  "isbn": "979-8-8688-1324-5",
+  "numberOfPages": 750,
+  "publisher": {
+    "@type": "Organization",
+    "name": "Apress"
+  },
+  "datePublished": "2025-04-01",
+  "inLanguage": "en",
+  "image": resolvedImageWithDomain,
+  "description": "A Practical Guide for Container Orchestration and Deployment",
+  "offers": {
+    "@type": "Offer",
+    "url": "https://amzn.to/3DzC8QA",
+    "availability": "https://schema.org/InStock"
+  }
+};
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="author" content={author} />
+    <meta name="keywords" content="Kubernetes, K8s, container orchestration, DevOps, cloud native, Docker, microservices, deployment, pods, services, Helm, kubectl" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
-    <!-- <link rel="preload" as="image" href={src} alt="Hero" /> -->
     <SEO
       title={makeTitle}
-      description="Kubernetes Recipe Book is a curated collection of Kubernetes recipes to simplify container orchestration and cluster management."
+      description={description}
       canonical={canonicalURL}
       openGraph={{
         basic: {
           url: canonicalURL,
-          type: "website",
-          title: "Kubernetes Recipe Book - Your Guide to Kubernetes Recipes",
+          type: type === "article" ? "article" : "website",
+          title: makeTitle,
           image: resolvedImageWithDomain,
         },
-        image: {
-          alt: "Kubernetes Recipe Book Homepage Screenshot",
+        optional: {
+          siteName: siteName,
+          locale: "en_US",
         },
+        image: {
+          alt: "Kubernetes Recipe Book Cover",
+          width: 1200,
+          height: 630,
+          type: "image/jpeg",
+        },
+        ...(type === "article" && publishDate && {
+          article: {
+            publishedTime: publishDate.toISOString(),
+            authors: [author],
+            tags: ["Kubernetes", "DevOps", "Cloud Native"],
+          },
+        }),
+      }}
+      twitter={{
+        card: "summary_large_image",
+        site: "@lucab85",
+        creator: "@lucab85",
+        title: makeTitle,
+        description: description,
+        image: resolvedImageWithDomain,
+        imageAlt: "Kubernetes Recipe Book Cover",
+      }}
+      extend={{
+        meta: [
+          { name: "twitter:label1", content: "Written by" },
+          { name: "twitter:data1", content: author },
+          { name: "twitter:label2", content: "Est. reading time" },
+          { name: "twitter:data2", content: "5 min read" },
+        ],
       }}
     />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    {Astro.url.pathname === "/" && (
+      <script type="application/ld+json" set:html={JSON.stringify(bookStructuredData)} />
+    )}
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CCC31PP3QS"></script>
     <script>

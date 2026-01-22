@@ -15,9 +15,20 @@ export async function getStaticPaths() {
 // Get the entry directly from the prop on render
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+
+// Prepare SEO metadata
+const seoDescription = entry.data.snippet || `Read about ${entry.data.title} - Kubernetes recipes and best practices.`;
+const seoImage = entry.data.image?.src || "/opengraph.jpg";
 ---
 
-<Layout title={entry.data.title}>
+<Layout 
+  title={entry.data.title}
+  description={seoDescription}
+  image={seoImage}
+  type="article"
+  publishDate={entry.data.publishDate}
+  author={entry.data.author}
+>
   <Container>
     <div class="mx-auto max-w-3xl mt-14">
       <span class="text-blue-400 uppercase tracking-wider text-sm font-medium">

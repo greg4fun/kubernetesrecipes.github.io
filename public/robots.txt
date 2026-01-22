@@ -1,4 +1,17 @@
+# Robots.txt for kubernetes.recipes
+# https://kubernetes.recipes/
+
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /*?*
 
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Sitemaps
 Sitemap: https://kubernetes.recipes/sitemap-index.xml
+
+# Host
+Host: https://kubernetes.recipes
