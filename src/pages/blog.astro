@@ -20,6 +20,8 @@ publishedBlogEntries.sort(function (a, b) {
   title="Blog" 
   description="Read the latest articles on Kubernetes best practices, container orchestration tips, DevOps tutorials, and cloud-native architecture insights."
 >
+  <!-- Temporarily noindex while blog is disabled -->
+  <meta slot="head" name="robots" content="noindex, nofollow" />
   <Container>
     <Sectionhead>
       <Fragment slot="title">Our Blog</Fragment>

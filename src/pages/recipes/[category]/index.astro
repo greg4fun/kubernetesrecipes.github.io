@@ -48,11 +48,11 @@ const categoryMetaData: Record<string, { name: string; description: string; icon
     icon: "🔧",
     longDescription: "Diagnose and fix common Kubernetes issues including pod failures, networking problems, resource constraints, and cluster issues."
   },
-  gitops: {
-    name: "GitOps",
-    description: "ArgoCD, Flux, and declarative deployment workflows",
-    icon: "🔄",
-    longDescription: "Implement GitOps workflows with ArgoCD, Flux, and declarative deployment patterns for continuous delivery."
+  configuration: {
+    name: "Configuration",
+    description: "ConfigMaps, Secrets, namespaces, and resource management",
+    icon: "⚙️",
+    longDescription: "Manage Kubernetes configuration with ConfigMaps, Secrets, namespaces, resource quotas, and environment-specific settings."
   },
   helm: {
     name: "Helm",
@@ -63,7 +63,7 @@ const categoryMetaData: Record<string, { name: string; description: string; icon
 };
 
 export async function getStaticPaths() {
-  const categories = ['networking', 'storage', 'deployments', 'security', 'observability', 'autoscaling', 'troubleshooting', 'gitops', 'helm'];
+  const categories = ['networking', 'storage', 'deployments', 'security', 'observability', 'autoscaling', 'troubleshooting', 'configuration', 'helm'];
   return categories.map((category) => ({
     params: { category },
     props: { category },

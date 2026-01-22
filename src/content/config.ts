@@ -46,7 +46,7 @@ const recipeCollection = defineCollection({
       'observability',
       'troubleshooting',
       'autoscaling',
-      'gitops',
+      'configuration',
       'helm'
     ]),
     // Difficulty level
