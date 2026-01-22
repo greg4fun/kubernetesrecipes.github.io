@@ -33,10 +33,10 @@ const announcementConfig = {
 };
 // ============================================
 
-// Remove trailing slash for consistent canonical URLs
-const pathname = Astro.url.pathname.endsWith('/') && Astro.url.pathname !== '/'
-  ? Astro.url.pathname.slice(0, -1)
-  : Astro.url.pathname;
+// Ensure trailing slash for consistent canonical URLs (matches served URLs)
+const pathname = Astro.url.pathname.endsWith('/') || Astro.url.pathname === '/'
+  ? Astro.url.pathname
+  : Astro.url.pathname + '/';
 const canonicalURL = new URL(pathname, Astro.site).toString();
 
 const { 

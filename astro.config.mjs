@@ -9,7 +9,7 @@ import partytown from "@astrojs/partytown";
 export default defineConfig({
   site: "https://kubernetes.recipes",
   base: "/",
-  trailingSlash: "never",
+  trailingSlash: "always",
   integrations: [
     mdx(),
     sitemap({
