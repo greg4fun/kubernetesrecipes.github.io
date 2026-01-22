@@ -18,6 +18,7 @@ export default defineConfig({
       lastmod: new Date(),
       customPages: [
         "https://kubernetes.recipes",
+        "https://kubernetes.recipes/recipes",
         "https://kubernetes.recipes/chapters",
         "https://kubernetes.recipes/authors",
         "https://kubernetes.recipes/blog",
@@ -29,6 +30,18 @@ export default defineConfig({
         // Set homepage as highest priority
         if (item.url === "https://kubernetes.recipes") {
           return { ...item, priority: 1.0, changefreq: "daily" };
+        }
+        // Recipe hub - high priority
+        if (item.url === "https://kubernetes.recipes/recipes") {
+          return { ...item, priority: 0.95, changefreq: "daily" };
+        }
+        // Recipe category pages - high priority
+        if (item.url.match(/\/recipes\/[a-z-]+$/)) {
+          return { ...item, priority: 0.9, changefreq: "weekly" };
+        }
+        // Individual recipe pages - high priority
+        if (item.url.match(/\/recipes\/[a-z-]+\/[a-z-]+$/)) {
+          return { ...item, priority: 0.85, changefreq: "monthly" };
         }
         // Set main pages as high priority
         if (item.url.match(/\/(chapters|pricing|authors)$/)) {

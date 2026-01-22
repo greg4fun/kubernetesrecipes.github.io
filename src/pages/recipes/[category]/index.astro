@@ -1,0 +1,245 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+
+// Define category metadata - must be before getStaticPaths
+const categoryMetaData: Record<string, { name: string; description: string; icon: string; longDescription: string }> = {
+  networking: {
+    name: "Networking",
+    description: "Ingress, Services, NetworkPolicies, and DNS configuration",
+    icon: "🌐",
+    longDescription: "Master Kubernetes networking with recipes covering Ingress controllers, Service types, NetworkPolicies, DNS configuration, and load balancing patterns."
+  },
+  storage: {
+    name: "Storage",
+    description: "Persistent Volumes, StorageClasses, StatefulSets, and backups",
+    icon: "💾",
+    longDescription: "Learn Kubernetes storage patterns including PersistentVolumes, StorageClasses, StatefulSets, volume snapshots, and backup/restore strategies."
+  },
+  deployments: {
+    name: "Deployments",
+    description: "Rolling updates, strategies, probes, and release patterns",
+    icon: "🚀",
+    longDescription: "Deploy applications with confidence using rolling updates, blue-green deployments, canary releases, health probes, and PodDisruptionBudgets."
+  },
+  security: {
+    name: "Security",
+    description: "RBAC, Secrets, Pod Security, and network policies",
+    icon: "🔐",
+    longDescription: "Secure your Kubernetes clusters with RBAC, Secrets management, Pod Security Standards, service accounts, and security best practices."
+  },
+  observability: {
+    name: "Observability",
+    description: "Metrics, logging, tracing, and monitoring stacks",
+    icon: "📊",
+    longDescription: "Monitor and observe your clusters with Prometheus, Grafana, logging pipelines, distributed tracing, and alerting configurations."
+  },
+  autoscaling: {
+    name: "Autoscaling",
+    description: "HPA, VPA, KEDA, and cluster autoscaling patterns",
+    icon: "📈",
+    longDescription: "Scale your workloads automatically with Horizontal Pod Autoscaler, Vertical Pod Autoscaler, KEDA, and cluster autoscaling strategies."
+  },
+  troubleshooting: {
+    name: "Troubleshooting",
+    description: "Debug pods, fix common issues, and diagnostic patterns",
+    icon: "🔧",
+    longDescription: "Diagnose and fix common Kubernetes issues including pod failures, networking problems, resource constraints, and cluster issues."
+  },
+  gitops: {
+    name: "GitOps",
+    description: "ArgoCD, Flux, and declarative deployment workflows",
+    icon: "🔄",
+    longDescription: "Implement GitOps workflows with ArgoCD, Flux, and declarative deployment patterns for continuous delivery."
+  },
+  helm: {
+    name: "Helm",
+    description: "Chart development, templating, and release management",
+    icon: "⚓",
+    longDescription: "Master Helm for Kubernetes package management including chart development, templating, hooks, and release lifecycle management."
+  },
+};
+
+export async function getStaticPaths() {
+  const categories = ['networking', 'storage', 'deployments', 'security', 'observability', 'autoscaling', 'troubleshooting', 'gitops', 'helm'];
+  return categories.map((category) => ({
+    params: { category },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const meta = categoryMetaData[category];
+
+// Get recipes for this category
+const recipes = await getCollection("recipes", ({ data }) => {
+  return !data.draft && data.category === category;
+});
+
+// Sort by date (newest first)
+recipes.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+// Group by difficulty
+const byDifficulty = {
+  beginner: recipes.filter(r => r.data.difficulty === "beginner"),
+  intermediate: recipes.filter(r => r.data.difficulty === "intermediate"),
+  advanced: recipes.filter(r => r.data.difficulty === "advanced"),
+};
+---
+
+<Layout 
+  title={`${meta.name} Recipes`}
+  description={meta.longDescription}
+>
+  <Container>
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-slate-500 mb-6">
+      <a href="/recipes" class="hover:text-blue-600">Recipes</a>
+      <span class="mx-2">→</span>
+      <span class="text-slate-800">{meta.name}</span>
+    </nav>
+
+    <Sectionhead>
+      <Fragment slot="title">
+        <span class="mr-2">{meta.icon}</span>
+        {meta.name} Recipes
+      </Fragment>
+      <Fragment slot="desc">
+        {meta.longDescription}
+      </Fragment>
+    </Sectionhead>
+
+    {recipes.length === 0 ? (
+      <!-- No recipes yet -->
+      <div class="text-center py-16">
+        <div class="text-6xl mb-4">🚧</div>
+        <h2 class="text-2xl font-bold text-slate-800 mb-2">Coming Soon</h2>
+        <p class="text-slate-600 max-w-md mx-auto">
+          We're working on adding {meta.name.toLowerCase()} recipes. 
+          In the meantime, check out our book for comprehensive coverage.
+        </p>
+        <div class="mt-6 flex justify-center gap-4">
+          <a 
+            href="/chapters" 
+            class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+          >
+            📖 View Book Chapters
+          </a>
+          <a 
+            href="/recipes" 
+            class="inline-flex items-center gap-2 bg-white text-slate-700 px-6 py-3 rounded-lg font-medium border hover:bg-slate-50 transition"
+          >
+            ← All Categories
+          </a>
+        </div>
+      </div>
+    ) : (
+      <>
+        <!-- Recipe count -->
+        <p class="text-center text-slate-600 mt-4">
+          {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"} available
+        </p>
+
+        <!-- Recipe List -->
+        <div class="mt-12 max-w-4xl mx-auto">
+          {/* Beginner recipes */}
+          {byDifficulty.beginner.length > 0 && (
+            <div class="mb-10">
+              <h3 class="text-lg font-semibold text-green-700 mb-4 flex items-center gap-2">
+                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                Beginner
+              </h3>
+              <div class="space-y-3">
+                {byDifficulty.beginner.map((recipe) => (
+                  <a 
+                    href={`/recipes/${category}/${recipe.slug}`}
+                    class="block p-4 bg-white border rounded-lg hover:border-green-300 hover:shadow transition-all group"
+                  >
+                    <h4 class="font-semibold text-slate-800 group-hover:text-green-600 transition-colors">
+                      {recipe.data.title}
+                    </h4>
+                    <p class="text-sm text-slate-600 mt-1">{recipe.data.description}</p>
+                    <div class="flex items-center gap-4 mt-2 text-xs text-slate-400">
+                      <span>⏱ {recipe.data.timeToComplete}</span>
+                      <span>K8s {recipe.data.kubernetesVersion}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Intermediate recipes */}
+          {byDifficulty.intermediate.length > 0 && (
+            <div class="mb-10">
+              <h3 class="text-lg font-semibold text-yellow-700 mb-4 flex items-center gap-2">
+                <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                Intermediate
+              </h3>
+              <div class="space-y-3">
+                {byDifficulty.intermediate.map((recipe) => (
+                  <a 
+                    href={`/recipes/${category}/${recipe.slug}`}
+                    class="block p-4 bg-white border rounded-lg hover:border-yellow-300 hover:shadow transition-all group"
+                  >
+                    <h4 class="font-semibold text-slate-800 group-hover:text-yellow-600 transition-colors">
+                      {recipe.data.title}
+                    </h4>
+                    <p class="text-sm text-slate-600 mt-1">{recipe.data.description}</p>
+                    <div class="flex items-center gap-4 mt-2 text-xs text-slate-400">
+                      <span>⏱ {recipe.data.timeToComplete}</span>
+                      <span>K8s {recipe.data.kubernetesVersion}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Advanced recipes */}
+          {byDifficulty.advanced.length > 0 && (
+            <div class="mb-10">
+              <h3 class="text-lg font-semibold text-red-700 mb-4 flex items-center gap-2">
+                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                Advanced
+              </h3>
+              <div class="space-y-3">
+                {byDifficulty.advanced.map((recipe) => (
+                  <a 
+                    href={`/recipes/${category}/${recipe.slug}`}
+                    class="block p-4 bg-white border rounded-lg hover:border-red-300 hover:shadow transition-all group"
+                  >
+                    <h4 class="font-semibold text-slate-800 group-hover:text-red-600 transition-colors">
+                      {recipe.data.title}
+                    </h4>
+                    <p class="text-sm text-slate-600 mt-1">{recipe.data.description}</p>
+                    <div class="flex items-center gap-4 mt-2 text-xs text-slate-400">
+                      <span>⏱ {recipe.data.timeToComplete}</span>
+                      <span>K8s {recipe.data.kubernetesVersion}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <!-- CTA -->
+        <div class="mt-12 text-center bg-slate-50 rounded-xl p-8 max-w-2xl mx-auto">
+          <h3 class="text-xl font-bold text-slate-800">Want more {meta.name.toLowerCase()} patterns?</h3>
+          <p class="text-slate-600 mt-2">
+            Our book includes an entire chapter dedicated to {meta.name.toLowerCase()} with dozens more examples.
+          </p>
+          <a 
+            href="/chapters" 
+            class="inline-flex items-center gap-2 mt-4 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+          >
+            📖 Explore All Chapters
+          </a>
+        </div>
+      </>
+    )}
+  </Container>
+</Layout>

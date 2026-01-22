@@ -1,0 +1,197 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+
+// Get all published recipes
+const allRecipes = await getCollection("recipes", ({ data }) => {
+  return !data.draft;
+});
+
+// Group recipes by category
+const categories = [
+  { 
+    slug: "networking", 
+    name: "Networking", 
+    description: "Ingress, Services, NetworkPolicies, and DNS configuration",
+    icon: "🌐"
+  },
+  { 
+    slug: "storage", 
+    name: "Storage", 
+    description: "Persistent Volumes, StorageClasses, StatefulSets, and backups",
+    icon: "💾"
+  },
+  { 
+    slug: "deployments", 
+    name: "Deployments", 
+    description: "Rolling updates, strategies, probes, and release patterns",
+    icon: "🚀"
+  },
+  { 
+    slug: "security", 
+    name: "Security", 
+    description: "RBAC, Secrets, Pod Security, and network policies",
+    icon: "🔐"
+  },
+  { 
+    slug: "observability", 
+    name: "Observability", 
+    description: "Metrics, logging, tracing, and monitoring stacks",
+    icon: "📊"
+  },
+  { 
+    slug: "autoscaling", 
+    name: "Autoscaling", 
+    description: "HPA, VPA, KEDA, and cluster autoscaling patterns",
+    icon: "📈"
+  },
+  { 
+    slug: "troubleshooting", 
+    name: "Troubleshooting", 
+    description: "Debug pods, fix common issues, and diagnostic patterns",
+    icon: "🔧"
+  },
+  { 
+    slug: "gitops", 
+    name: "GitOps", 
+    description: "ArgoCD, Flux, and declarative deployment workflows",
+    icon: "🔄"
+  },
+  { 
+    slug: "helm", 
+    name: "Helm", 
+    description: "Chart development, templating, and release management",
+    icon: "⚓"
+  },
+];
+
+// Count recipes per category
+const recipesByCategory = categories.map(cat => ({
+  ...cat,
+  count: allRecipes.filter(r => r.data.category === cat.slug).length,
+  recipes: allRecipes
+    .filter(r => r.data.category === cat.slug)
+    .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+    .slice(0, 5) // Show up to 5 latest recipes per category
+}));
+---
+
+<Layout 
+  title="Kubernetes Recipes" 
+  description="Practical Kubernetes recipes with copy-paste YAML examples. Learn networking, storage, deployments, security, and observability patterns for production clusters."
+>
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">Kubernetes Recipes</Fragment>
+      <Fragment slot="desc">
+        Practical, production-ready recipes with working YAML examples and troubleshooting tips.
+        Find solutions for real-world Kubernetes challenges.
+      </Fragment>
+    </Sectionhead>
+
+    <!-- Search hint -->
+    <div class="max-w-2xl mx-auto mt-8 text-center">
+      <p class="text-slate-600">
+        Looking for something specific? Browse by category below or check out our 
+        <a href="/chapters" class="text-blue-600 hover:underline">book chapters</a> for comprehensive coverage.
+      </p>
+    </div>
+
+    <!-- Category Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 max-w-6xl mx-auto">
+      {recipesByCategory.map((category) => (
+        <a 
+          href={`/recipes/${category.slug}`}
+          class="group block p-6 bg-white border border-slate-200 rounded-xl hover:border-blue-300 hover:shadow-lg transition-all duration-200"
+        >
+          <div class="flex items-start gap-4">
+            <span class="text-3xl">{category.icon}</span>
+            <div class="flex-1">
+              <h2 class="text-xl font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
+                {category.name}
+              </h2>
+              <p class="text-sm text-slate-600 mt-1">
+                {category.description}
+              </p>
+              <p class="text-xs text-slate-400 mt-3">
+                {category.count > 0 ? `${category.count} recipes` : "Coming soon"}
+              </p>
+            </div>
+          </div>
+          
+          {category.recipes.length > 0 && (
+            <ul class="mt-4 space-y-1 border-t pt-3">
+              {category.recipes.slice(0, 3).map((recipe) => (
+                <li class="text-sm text-slate-600 truncate">
+                  → {recipe.data.title}
+                </li>
+              ))}
+              {category.count > 3 && (
+                <li class="text-sm text-blue-500">
+                  + {category.count - 3} more
+                </li>
+              )}
+            </ul>
+          )}
+        </a>
+      ))}
+    </div>
+
+    <!-- CTA Section -->
+    <div class="mt-16 text-center bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 max-w-4xl mx-auto">
+      <h3 class="text-2xl font-bold text-slate-800">Want the Complete Guide?</h3>
+      <p class="text-slate-600 mt-2 max-w-2xl mx-auto">
+        These recipes are excerpts from <strong>Kubernetes Recipes</strong>, our 750-page practical guide
+        covering 18 chapters of production-ready patterns.
+      </p>
+      <div class="mt-6 flex flex-wrap justify-center gap-4">
+        <a 
+          href="https://amzn.to/3DzC8QA" 
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+        >
+          📚 Buy on Amazon
+        </a>
+        <a 
+          href="/chapters" 
+          class="inline-flex items-center gap-2 bg-white text-slate-700 px-6 py-3 rounded-lg font-medium border hover:bg-slate-50 transition"
+        >
+          📖 View All Chapters
+        </a>
+      </div>
+    </div>
+
+    <!-- Latest Recipes -->
+    {allRecipes.length > 0 && (
+      <div class="mt-16 max-w-4xl mx-auto">
+        <h3 class="text-2xl font-bold text-slate-800 mb-6">Latest Recipes</h3>
+        <div class="space-y-4">
+          {allRecipes
+            .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+            .slice(0, 5)
+            .map((recipe) => (
+              <a 
+                href={`/recipes/${recipe.data.category}/${recipe.slug}`}
+                class="block p-4 bg-white border rounded-lg hover:border-blue-300 hover:shadow transition-all"
+              >
+                <div class="flex items-center gap-3">
+                  <span class="text-xs uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                    {recipe.data.category}
+                  </span>
+                  <span class="text-xs text-slate-400">
+                    {recipe.data.difficulty}
+                  </span>
+                </div>
+                <h4 class="font-semibold text-slate-800 mt-2">{recipe.data.title}</h4>
+                <p class="text-sm text-slate-600 mt-1 line-clamp-2">{recipe.data.description}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    )}
+  </Container>
+</Layout>

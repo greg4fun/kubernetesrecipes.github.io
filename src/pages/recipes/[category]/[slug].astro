@@ -1,0 +1,441 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+
+// Category display names
+const categoryNames: Record<string, string> = {
+  networking: "Networking",
+  storage: "Storage",
+  deployments: "Deployments",
+  security: "Security",
+  observability: "Observability",
+  autoscaling: "Autoscaling",
+  troubleshooting: "Troubleshooting",
+  gitops: "GitOps",
+  helm: "Helm",
+};
+
+export async function getStaticPaths() {
+  const recipes = await getCollection("recipes");
+  return recipes.map((recipe) => ({
+    params: { 
+      category: recipe.data.category, 
+      slug: recipe.slug 
+    },
+    props: { recipe },
+  }));
+}
+
+const { recipe } = Astro.props;
+const { Content } = await recipe.render();
+
+// Get related recipes
+const allRecipes = await getCollection("recipes", ({ data }) => !data.draft);
+const relatedRecipes = recipe.data.relatedRecipes
+  .map(slug => allRecipes.find(r => r.slug === slug))
+  .filter(Boolean)
+  .slice(0, 3);
+
+// Get more recipes from same category
+const sameCategoryRecipes = allRecipes
+  .filter(r => r.data.category === recipe.data.category && r.slug !== recipe.slug)
+  .slice(0, 3);
+
+const categoryName = categoryNames[recipe.data.category] || recipe.data.category;
+
+// Difficulty colors
+const difficultyColors = {
+  beginner: "bg-green-100 text-green-800",
+  intermediate: "bg-yellow-100 text-yellow-800", 
+  advanced: "bg-red-100 text-red-800",
+};
+---
+
+<Layout 
+  title={recipe.data.title}
+  description={recipe.data.description}
+  type="article"
+  publishDate={recipe.data.publishDate}
+  author={recipe.data.author}
+>
+  <Container>
+    <article class="max-w-4xl mx-auto">
+      <!-- Breadcrumb -->
+      <nav class="text-sm text-slate-500 mb-6">
+        <a href="/recipes" class="hover:text-blue-600">Recipes</a>
+        <span class="mx-2">→</span>
+        <a href={`/recipes/${recipe.data.category}`} class="hover:text-blue-600">{categoryName}</a>
+        <span class="mx-2">→</span>
+        <span class="text-slate-800 truncate">{recipe.data.title}</span>
+      </nav>
+
+      <!-- Header -->
+      <header class="mb-8">
+        <div class="flex flex-wrap items-center gap-2 mb-3">
+          <span class="text-xs uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-1 rounded">
+            {categoryName}
+          </span>
+          <span class={`text-xs px-2 py-1 rounded ${difficultyColors[recipe.data.difficulty]}`}>
+            {recipe.data.difficulty}
+          </span>
+          <span class="text-xs text-slate-500">
+            ⏱ {recipe.data.timeToComplete}
+          </span>
+          <span class="text-xs text-slate-500">
+            K8s {recipe.data.kubernetesVersion}
+          </span>
+        </div>
+        
+        <h1 class="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
+          {recipe.data.title}
+        </h1>
+        
+        <p class="text-lg text-slate-600 mt-4">
+          {recipe.data.description}
+        </p>
+
+        <div class="flex items-center gap-4 mt-4 text-sm text-slate-500">
+          <span>By {recipe.data.author}</span>
+          <span>•</span>
+          <time datetime={recipe.data.publishDate.toISOString()}>
+            {recipe.data.publishDate.toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </time>
+          {recipe.data.updatedDate && (
+            <>
+              <span>•</span>
+              <span>
+                Updated {recipe.data.updatedDate.toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
+              </span>
+            </>
+          )}
+        </div>
+      </header>
+
+      <!-- Prerequisites -->
+      {recipe.data.prerequisites.length > 0 && (
+        <aside class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8">
+          <h2 class="font-semibold text-amber-900 mb-2">📋 Prerequisites</h2>
+          <ul class="list-disc list-inside text-sm text-amber-800 space-y-1">
+            {recipe.data.prerequisites.map((prereq) => (
+              <li>{prereq}</li>
+            ))}
+          </ul>
+        </aside>
+      )}
+
+      <!-- Main Content -->
+      <div class="recipe-content prose prose-slate prose-lg max-w-none
+        prose-headings:scroll-mt-20
+        prose-h2:text-2xl prose-h2:font-bold prose-h2:mt-10 prose-h2:mb-4
+        prose-h3:text-xl prose-h3:font-semibold prose-h3:mt-8 prose-h3:mb-3
+        prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+        prose-li:my-1
+      ">
+        <Content />
+      </div>
+
+      <!-- Tags -->
+      {recipe.data.tags.length > 0 && (
+        <div class="mt-8 pt-6 border-t">
+          <div class="flex flex-wrap gap-2">
+            {recipe.data.tags.map((tag) => (
+              <span class="text-sm text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Related Recipes -->
+      {(relatedRecipes.length > 0 || sameCategoryRecipes.length > 0) && (
+        <aside class="mt-12 pt-8 border-t">
+          <h2 class="text-xl font-bold text-slate-800 mb-4">Related Recipes</h2>
+          <div class="grid md:grid-cols-3 gap-4">
+            {(relatedRecipes.length > 0 ? relatedRecipes : sameCategoryRecipes).map((related) => (
+              <a 
+                href={`/recipes/${related.data.category}/${related.slug}`}
+                class="block p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition"
+              >
+                <span class="text-xs uppercase text-slate-500">{categoryNames[related.data.category]}</span>
+                <h3 class="font-semibold text-slate-800 mt-1 line-clamp-2">{related.data.title}</h3>
+              </a>
+            ))}
+          </div>
+        </aside>
+      )}
+
+      <!-- CTA -->
+      <div class="mt-12 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8 text-center">
+        <h3 class="text-xl font-bold text-slate-800">Want More Kubernetes Recipes?</h3>
+        <p class="text-slate-600 mt-2 max-w-xl mx-auto">
+          This recipe is from <strong>Kubernetes Recipes</strong>, our 750-page practical guide with hundreds of production-ready patterns.
+        </p>
+        <div class="mt-6 flex flex-wrap justify-center gap-4">
+          <a 
+            href="https://amzn.to/3DzC8QA" 
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+          >
+            📚 Get the Book
+          </a>
+          <a 
+            href={`/recipes/${recipe.data.category}`}
+            class="inline-flex items-center gap-2 bg-white text-slate-700 px-6 py-3 rounded-lg font-medium border hover:bg-slate-50 transition"
+          >
+            ← More {categoryName} Recipes
+          </a>
+        </div>
+      </div>
+
+      <!-- Back link -->
+      <div class="mt-8 text-center">
+        <a 
+          href="/recipes" 
+          class="text-slate-600 hover:text-blue-600 transition"
+        >
+          ← Back to All Recipes
+        </a>
+      </div>
+    </article>
+  </Container>
+</Layout>
+
+<style>
+  /* Enhanced code block styling */
+  .recipe-content :global(pre) {
+    position: relative;
+    padding: 1rem 1rem 1rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+    background: #1e293b !important;
+  }
+
+  /* Code inside pre - preserve syntax highlighting but set base color */
+  .recipe-content :global(pre code) {
+    background: transparent !important;
+    color: #e2e8f0;
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
+
+  /* Code block header with language badge and copy button */
+  .recipe-content :global(.code-block-wrapper) {
+    position: relative;
+    margin: 1.5rem 0;
+  }
+
+  .recipe-content :global(.code-block-wrapper pre) {
+    margin: 0;
+  }
+
+  .recipe-content :global(.code-block-header) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0f172a;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem 0.75rem 0 0;
+    border-bottom: 1px solid #334155;
+  }
+
+  .recipe-content :global(.code-block-header + pre) {
+    margin-top: 0;
+    border-radius: 0 0 0.75rem 0.75rem;
+  }
+
+  .recipe-content :global(.code-language) {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 0.05em;
+  }
+
+  .recipe-content :global(.copy-button) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #94a3b8;
+    background: #334155;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .recipe-content :global(.copy-button:hover) {
+    background: #475569;
+    color: #e2e8f0;
+  }
+
+  .recipe-content :global(.copy-button.copied) {
+    background: #059669;
+    color: #ffffff;
+  }
+
+  .recipe-content :global(.copy-button svg) {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Inline code styling */
+  .recipe-content :global(code:not(pre code)) {
+    background: #f1f5f9;
+    color: #0f172a;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    font-weight: 500;
+    border: 1px solid #e2e8f0;
+  }
+
+  /* Scrollbar styling for code blocks */
+  .recipe-content :global(pre::-webkit-scrollbar) {
+    height: 8px;
+  }
+
+  .recipe-content :global(pre::-webkit-scrollbar-track) {
+    background: #1e293b;
+    border-radius: 4px;
+  }
+
+  .recipe-content :global(pre::-webkit-scrollbar-thumb) {
+    background: #475569;
+    border-radius: 4px;
+  }
+
+  .recipe-content :global(pre::-webkit-scrollbar-thumb:hover) {
+    background: #64748b;
+  }
+</style>
+
+<script>
+  // Add copy buttons to all code blocks
+  document.addEventListener('DOMContentLoaded', () => {
+    const codeBlocks = document.querySelectorAll('.recipe-content pre');
+    
+    codeBlocks.forEach((pre) => {
+      // Skip if already wrapped
+      if (pre.parentElement?.classList.contains('code-block-wrapper')) return;
+      
+      // Get the code element and detect language
+      const code = pre.querySelector('code');
+      let language = 'code';
+      
+      if (code) {
+        // Try to detect language from class
+        const classes = code.className.split(' ');
+        for (const cls of classes) {
+          if (cls.startsWith('language-')) {
+            language = cls.replace('language-', '');
+            break;
+          }
+        }
+      }
+
+      // Language display names
+      const languageNames: Record<string, string> = {
+        'bash': 'Bash',
+        'shell': 'Shell',
+        'sh': 'Shell',
+        'yaml': 'YAML',
+        'yml': 'YAML',
+        'javascript': 'JavaScript',
+        'js': 'JavaScript',
+        'typescript': 'TypeScript',
+        'ts': 'TypeScript',
+        'json': 'JSON',
+        'python': 'Python',
+        'py': 'Python',
+        'go': 'Go',
+        'dockerfile': 'Dockerfile',
+        'docker': 'Docker',
+        'sql': 'SQL',
+        'plaintext': 'Text',
+        'text': 'Text',
+        'code': 'Code',
+      };
+
+      const displayLanguage = languageNames[language.toLowerCase()] || language.toUpperCase();
+
+      // Create wrapper
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      
+      // Create header with language badge and copy button
+      const header = document.createElement('div');
+      header.className = 'code-block-header';
+      header.innerHTML = `
+        <span class="code-language">${displayLanguage}</span>
+        <button class="copy-button" type="button" aria-label="Copy code to clipboard">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+          </svg>
+          <span>Copy</span>
+        </button>
+      `;
+
+      // Insert wrapper
+      pre.parentNode?.insertBefore(wrapper, pre);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+
+      // Add copy functionality
+      const copyButton = header.querySelector('.copy-button');
+      copyButton?.addEventListener('click', async () => {
+        const textToCopy = code?.textContent || pre.textContent || '';
+        
+        try {
+          await navigator.clipboard.writeText(textToCopy);
+          
+          // Show success state
+          copyButton.classList.add('copied');
+          const buttonText = copyButton.querySelector('span');
+          const originalText = buttonText?.textContent;
+          if (buttonText) buttonText.textContent = 'Copied!';
+          
+          // Update icon to checkmark
+          const svg = copyButton.querySelector('svg');
+          if (svg) {
+            svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />';
+          }
+          
+          // Reset after 2 seconds
+          setTimeout(() => {
+            copyButton.classList.remove('copied');
+            if (buttonText) buttonText.textContent = originalText || 'Copy';
+            if (svg) {
+              svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />';
+            }
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy:', err);
+          // Fallback for older browsers
+          const textarea = document.createElement('textarea');
+          textarea.value = textToCopy;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+      });
+    });
+  });
+</script>
