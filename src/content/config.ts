@@ -47,7 +47,8 @@ const recipeCollection = defineCollection({
       'troubleshooting',
       'autoscaling',
       'configuration',
-      'helm'
+      'helm',
+      'ai'
     ]),
     // Difficulty level
     difficulty: z.enum(['beginner', 'intermediate', 'advanced']).default('intermediate'),

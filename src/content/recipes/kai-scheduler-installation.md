@@ -1,7 +1,7 @@
 ---
 title: "Installing NVIDIA KAI Scheduler for AI Workloads"
 description: "Deploy KAI Scheduler for optimized GPU resource allocation in Kubernetes AI/ML clusters with hierarchical queues and batch scheduling"
-category: "configuration"
+category: "ai"
 difficulty: "intermediate"
 timeToComplete: "30 minutes"
 kubernetesVersion: "1.28+"

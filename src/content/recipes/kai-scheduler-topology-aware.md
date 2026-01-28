@@ -1,7 +1,7 @@
 ---
 title: "Topology-Aware Scheduling with KAI Scheduler"
 description: "Optimize GPU workload placement using KAI Scheduler's Topology-Aware Scheduling (TAS) for NVLink, NVSwitch, and disaggregated serving architectures"
-category: "configuration"
+category: "ai"
 difficulty: "advanced"
 timeToComplete: "45 minutes"
 kubernetesVersion: "1.28+"

@@ -1,7 +1,7 @@
 ---
 title: "Batch Scheduling with PodGroups in KAI Scheduler"
 description: "Implement gang scheduling for distributed training jobs using KAI Scheduler PodGroups to ensure all-or-nothing pod scheduling"
-category: "configuration"
+category: "ai"
 difficulty: "advanced"
 timeToComplete: "40 minutes"
 kubernetesVersion: "1.28+"

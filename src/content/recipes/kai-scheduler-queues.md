@@ -1,7 +1,7 @@
 ---
 title: "Hierarchical Queues and Resource Fairness with KAI Scheduler"
 description: "Configure hierarchical queues in KAI Scheduler for multi-tenant GPU clusters with quotas, limits, and Dominant Resource Fairness (DRF)"
-category: "configuration"
+category: "ai"
 difficulty: "intermediate"
 timeToComplete: "35 minutes"
 kubernetesVersion: "1.28+"
