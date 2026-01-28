@@ -242,7 +242,7 @@ const breadcrumbStructuredData = pathSegments.length > 0 ? {
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
       mermaid.initialize({ 
-        startOnLoad: true,
+        startOnLoad: false,
         theme: 'neutral',
         securityLevel: 'loose',
         flowchart: {
@@ -250,6 +250,34 @@ const breadcrumbStructuredData = pathSegments.length > 0 ? {
           htmlLabels: true,
           curve: 'basis'
         }
+      });
+      
+      // Find all mermaid code blocks and render them
+      document.addEventListener('DOMContentLoaded', async () => {
+        // Astro/Shiki renders as: <pre class="astro-code" data-language="mermaid">
+        const codeBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
+        
+        for (let i = 0; i < codeBlocks.length; i++) {
+          const pre = codeBlocks[i];
+          // Get text content from the code element inside
+          const code = pre.querySelector('code');
+          const content = code ? code.textContent : pre.textContent;
+          
+          // Create a container for the rendered diagram
+          const container = document.createElement('div');
+          container.className = 'mermaid-diagram my-6 flex justify-center';
+          
+          try {
+            const { svg } = await mermaid.render(`mermaid-${i}`, content.trim());
+            container.innerHTML = svg;
+            pre.replaceWith(container);
+          } catch (e) {
+            console.error('Mermaid rendering error:', e);
+          }
+        }
+        
+        // Also handle any pre-existing .mermaid elements
+        await mermaid.run();
       });
     </script>
     <!-- Google tag (gtag.js) -->
