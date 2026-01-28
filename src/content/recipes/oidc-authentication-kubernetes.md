@@ -20,7 +20,7 @@ tags:
   - sso
   - security
   - keycloak
-publishDate: 2026-01-28
+publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 

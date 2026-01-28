@@ -19,7 +19,7 @@ tags:
   - cloud-resources
   - gitops
   - platform-engineering
-publishDate: 2026-01-28
+publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 

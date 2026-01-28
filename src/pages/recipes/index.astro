@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
+import RecipeSearch from "@components/recipe-search.astro";
 
 // Get all published recipes
 const allRecipes = await getCollection("recipes", ({ data }) => {
@@ -91,13 +92,8 @@ const recipesByCategory = categories.map(cat => ({
       </Fragment>
     </Sectionhead>
 
-    <!-- Search hint -->
-    <div class="max-w-2xl mx-auto mt-8 text-center">
-      <p class="text-slate-600">
-        Looking for something specific? Browse by category below or check out our 
-        <a href="/chapters" class="text-blue-600 hover:underline">book chapters</a> for comprehensive coverage.
-      </p>
-    </div>
+    <!-- Recipe Search -->
+    <RecipeSearch />
 
     <!-- Category Grid -->
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 max-w-6xl mx-auto">

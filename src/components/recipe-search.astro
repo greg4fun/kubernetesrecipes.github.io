@@ -1,0 +1,279 @@
+---
+import { getCollection } from "astro:content";
+
+// Get all published recipes for the search index
+const allRecipes = await getCollection("recipes", ({ data }) => {
+  return !data.draft;
+});
+
+// Build search index data
+const searchIndex = allRecipes.map(recipe => ({
+  slug: recipe.slug,
+  title: recipe.data.title,
+  description: recipe.data.description,
+  category: recipe.data.category,
+  difficulty: recipe.data.difficulty,
+  tags: recipe.data.tags || [],
+}));
+---
+
+<div class="recipe-search max-w-2xl mx-auto mt-8">
+  <div class="relative">
+    <div class="flex items-center gap-2">
+      <div class="relative flex-1">
+        <input
+          type="text"
+          id="recipe-search-input"
+          placeholder="Search recipes... (e.g., ingress, HPA, secrets, troubleshooting)"
+          class="w-full px-4 py-3 pl-12 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700 placeholder-slate-400"
+        />
+        <svg
+          class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+      </div>
+      <button
+        id="clear-search-btn"
+        class="hidden px-4 py-3 text-slate-500 hover:text-slate-700 border border-slate-300 rounded-xl hover:bg-slate-50 transition"
+        title="Clear search"
+      >
+        ✕
+      </button>
+    </div>
+    
+    <!-- Search Results Dropdown -->
+    <div
+      id="search-results"
+      class="hidden absolute z-50 w-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl max-h-96 overflow-y-auto"
+    >
+      <!-- Results will be populated by JavaScript -->
+    </div>
+  </div>
+  
+  <!-- Search Stats -->
+  <div id="search-stats" class="hidden mt-3 text-sm text-slate-500 text-center">
+    <!-- Stats will be populated by JavaScript -->
+  </div>
+</div>
+
+<!-- Pass search index to client-side JavaScript -->
+<script define:vars={{ searchIndex }}>
+  window.recipeSearchIndex = searchIndex;
+</script>
+
+<script>
+  // Recipe Search Implementation
+  const searchInput = document.getElementById('recipe-search-input');
+  const searchResults = document.getElementById('search-results');
+  const clearBtn = document.getElementById('clear-search-btn');
+  const searchStats = document.getElementById('search-stats');
+  const searchIndex = window.recipeSearchIndex || [];
+
+  // Category icons map
+  const categoryIcons = {
+    networking: '🌐',
+    storage: '💾',
+    deployments: '🚀',
+    security: '🔐',
+    observability: '📊',
+    autoscaling: '📈',
+    troubleshooting: '🔧',
+    configuration: '⚙️',
+    helm: '⚓',
+  };
+
+  // Difficulty colors
+  const difficultyColors = {
+    beginner: 'bg-green-100 text-green-700',
+    intermediate: 'bg-yellow-100 text-yellow-700',
+    advanced: 'bg-red-100 text-red-700',
+  };
+
+  // Search function with pattern matching
+  function searchRecipes(query) {
+    if (!query || query.length < 2) return [];
+    
+    const lowerQuery = query.toLowerCase();
+    const terms = lowerQuery.split(/\s+/).filter(t => t.length > 0);
+    
+    const results = searchIndex
+      .map(recipe => {
+        let score = 0;
+        const searchText = `${recipe.title} ${recipe.description} ${recipe.category} ${recipe.tags.join(' ')}`.toLowerCase();
+        
+        // Check each search term
+        for (const term of terms) {
+          // Title match (highest weight)
+          if (recipe.title.toLowerCase().includes(term)) {
+            score += 10;
+          }
+          // Category match
+          if (recipe.category.toLowerCase().includes(term)) {
+            score += 5;
+          }
+          // Tag match
+          if (recipe.tags.some(tag => tag.toLowerCase().includes(term))) {
+            score += 4;
+          }
+          // Description match
+          if (recipe.description.toLowerCase().includes(term)) {
+            score += 2;
+          }
+        }
+        
+        return { ...recipe, score };
+      })
+      .filter(r => r.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 15); // Limit to 15 results
+    
+    return results;
+  }
+
+  // Highlight matching text
+  function highlightMatch(text, query) {
+    if (!query) return text;
+    const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+    let result = text;
+    
+    for (const term of terms) {
+      const regex = new RegExp(`(${term})`, 'gi');
+      result = result.replace(regex, '<mark class="bg-yellow-200 rounded px-0.5">$1</mark>');
+    }
+    
+    return result;
+  }
+
+  // Render search results
+  function renderResults(results, query) {
+    if (results.length === 0) {
+      searchResults.innerHTML = `
+        <div class="p-6 text-center text-slate-500">
+          <div class="text-4xl mb-2">🔍</div>
+          <p>No recipes found for "<strong>${query}</strong>"</p>
+          <p class="text-sm mt-1">Try different keywords like: ingress, hpa, secrets, pods</p>
+        </div>
+      `;
+      searchResults.classList.remove('hidden');
+      searchStats.classList.add('hidden');
+      return;
+    }
+
+    const html = results.map(recipe => {
+      const icon = categoryIcons[recipe.category] || '📄';
+      const difficultyClass = difficultyColors[recipe.difficulty] || 'bg-slate-100 text-slate-700';
+      const url = `/recipes/${recipe.category}/${recipe.slug}`;
+      
+      return `
+        <a href="${url}" class="block p-4 hover:bg-slate-50 border-b last:border-b-0 transition-colors">
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">${icon}</span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h4 class="font-semibold text-slate-800">${highlightMatch(recipe.title, query)}</h4>
+                <span class="text-xs px-2 py-0.5 rounded ${difficultyClass}">${recipe.difficulty}</span>
+              </div>
+              <p class="text-sm text-slate-600 mt-1 line-clamp-2">${highlightMatch(recipe.description, query)}</p>
+              ${recipe.tags.length > 0 ? `
+                <div class="flex gap-1 mt-2 flex-wrap">
+                  ${recipe.tags.slice(0, 4).map(tag => `
+                    <span class="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded">${tag}</span>
+                  `).join('')}
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </a>
+      `;
+    }).join('');
+
+    searchResults.innerHTML = html;
+    searchResults.classList.remove('hidden');
+    
+    // Update stats
+    searchStats.innerHTML = `Found <strong>${results.length}</strong> recipe${results.length !== 1 ? 's' : ''} matching "<strong>${query}</strong>"`;
+    searchStats.classList.remove('hidden');
+  }
+
+  // Debounce function
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  // Handle search input
+  const handleSearch = debounce((e) => {
+    const query = e.target.value.trim();
+    
+    if (query.length < 2) {
+      searchResults.classList.add('hidden');
+      searchStats.classList.add('hidden');
+      clearBtn.classList.add('hidden');
+      return;
+    }
+    
+    clearBtn.classList.remove('hidden');
+    const results = searchRecipes(query);
+    renderResults(results, query);
+  }, 200);
+
+  // Event listeners
+  searchInput.addEventListener('input', handleSearch);
+  
+  // Clear button
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    searchResults.classList.add('hidden');
+    searchStats.classList.add('hidden');
+    clearBtn.classList.add('hidden');
+    searchInput.focus();
+  });
+
+  // Close results on click outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.recipe-search')) {
+      searchResults.classList.add('hidden');
+    }
+  });
+
+  // Show results on focus if there's a query
+  searchInput.addEventListener('focus', () => {
+    if (searchInput.value.trim().length >= 2) {
+      const results = searchRecipes(searchInput.value.trim());
+      renderResults(results, searchInput.value.trim());
+    }
+  });
+
+  // Keyboard navigation
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      searchResults.classList.add('hidden');
+      searchInput.blur();
+    }
+  });
+</script>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

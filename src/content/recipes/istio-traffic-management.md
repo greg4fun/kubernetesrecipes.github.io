@@ -20,7 +20,7 @@ tags:
   - circuit-breaker
   - fault-injection
   - traffic-splitting
-publishDate: 2026-01-28
+publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
