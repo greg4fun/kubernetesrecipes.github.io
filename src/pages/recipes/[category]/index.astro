@@ -60,10 +60,16 @@ const categoryMetaData: Record<string, { name: string; description: string; icon
     icon: "⚓",
     longDescription: "Master Helm for Kubernetes package management including chart development, templating, hooks, and release lifecycle management."
   },
+  ai: {
+    name: "AI & ML",
+    description: "GPU scheduling, NVIDIA KAI, model serving, and ML pipelines",
+    icon: "🤖",
+    longDescription: "Run AI and ML workloads on Kubernetes with GPU scheduling, NVIDIA KAI Scheduler, model serving frameworks, and distributed training patterns."
+  },
 };
 
 export async function getStaticPaths() {
-  const categories = ['networking', 'storage', 'deployments', 'security', 'observability', 'autoscaling', 'troubleshooting', 'configuration', 'helm'];
+  const categories = ['networking', 'storage', 'deployments', 'security', 'observability', 'autoscaling', 'troubleshooting', 'configuration', 'helm', 'ai'];
   return categories.map((category) => ({
     params: { category },
     props: { category },
