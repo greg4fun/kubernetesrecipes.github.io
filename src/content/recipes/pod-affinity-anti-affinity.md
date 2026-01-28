@@ -361,7 +361,7 @@ Pod affinity co-locates related pods for low-latency communication. Anti-affinit
 
 ## 📘 Go Further with Kubernetes Recipes
 
-**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](https://amzn.to/3DzC8QA)**.
 
 Inside the book, you'll master:
 - ✅ Production-ready deployment strategies
@@ -371,4 +371,4 @@ Inside the book, you'll master:
 
 > *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
 
-**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!
+**👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
