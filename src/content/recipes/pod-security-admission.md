@@ -410,3 +410,19 @@ kubectl get namespaces -L \
 ## Summary
 
 Pod Security Admission enforces security standards at the namespace level using labels. Use `restricted` for production workloads, `baseline` for development, and `privileged` only for system namespaces. Start with `warn` and `audit` modes to identify violations before enabling `enforce`. Update workloads to be compliant by setting proper security contexts, dropping capabilities, and running as non-root.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

@@ -353,3 +353,19 @@ kubectl get secret -n monitoring prometheus-prometheus-kube-prometheus-prometheu
 ## Summary
 
 Prometheus with kube-prometheus-stack provides comprehensive Kubernetes monitoring. Create ServiceMonitors to scrape application metrics and PodMonitors for direct pod scraping. Define alerts with PrometheusRule resources and configure Alertmanager for notifications via Slack, PagerDuty, or email. Use PromQL for querying metrics and create Grafana dashboards for visualization. Instrument applications with Prometheus client libraries to expose custom metrics. Use recording rules to pre-compute expensive queries for dashboard performance.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

@@ -393,3 +393,19 @@ spec:
 ## Summary
 
 Sidecar containers handle cross-cutting concerns without modifying application code. Use them for logging, metrics export, proxy, secrets management, and configuration reload. Share data via volumes, communicate via localhost, and use native sidecars (Kubernetes 1.28+) for better lifecycle management. Keep sidecars lightweight and well-resourced.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

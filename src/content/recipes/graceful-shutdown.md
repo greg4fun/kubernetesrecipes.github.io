@@ -383,3 +383,19 @@ terminationGracePeriodSeconds: 120
 ## Summary
 
 Graceful shutdown ensures zero-downtime deployments by properly handling termination. Configure `terminationGracePeriodSeconds` to allow enough time for cleanup. Use preStop hooks to sleep (allowing LB deregistration) and initiate application drain. Applications must handle SIGTERM signals to stop accepting new requests and complete in-flight work. Readiness probes should fail during shutdown to remove pods from Service endpoints before termination. Test shutdown behavior by watching pod logs during rolling updates.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

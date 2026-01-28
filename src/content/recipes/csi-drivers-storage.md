@@ -334,3 +334,19 @@ kubectl get events --field-selector reason=ProvisioningFailed
 ## Summary
 
 CSI drivers provide standardized storage integration for Kubernetes. Install the appropriate driver for your storage backend, create StorageClasses with desired parameters, and use dynamic provisioning with PVCs. Enable volume expansion and snapshots for data management. Use WaitForFirstConsumer binding for topology-aware scheduling.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

@@ -255,3 +255,19 @@ kubectl get namespaces --field-selector status.phase=Terminating
 ## Summary
 
 Finalizers ensure proper cleanup before resource deletion by blocking removal until controllers complete their work. When resources get stuck in Terminating state, diagnose by checking remaining finalizers, dependent resources, and API service health. Remove finalizers only after understanding the implications - this bypasses cleanup and may leave orphaned resources. For stuck namespaces, use the finalize API endpoint. Always try to fix the root cause (delete dependents, restart controllers) before force-removing finalizers.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

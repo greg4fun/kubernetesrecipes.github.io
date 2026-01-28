@@ -362,3 +362,19 @@ profiles:
 ## Summary
 
 Topology spread constraints ensure pods are distributed across failure domains like zones, nodes, or custom topologies. Set `maxSkew` to control the maximum difference in pod counts between domains. Use `DoNotSchedule` for hard requirements or `ScheduleAnyway` for best-effort spreading. Combine multiple constraints to spread across both zones and nodes. Verify distribution with `kubectl get pods -o wide` and check node labels for topology information. This pattern is essential for high availability in multi-zone clusters.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

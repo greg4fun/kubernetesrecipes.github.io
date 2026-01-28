@@ -384,3 +384,19 @@ tolerations:
 ## Summary
 
 Taints and tolerations control pod scheduling by repelling pods from nodes unless they have matching tolerations. Use `NoSchedule` for hard restrictions, `PreferNoSchedule` for soft preferences, and `NoExecute` for eviction control. Combine with node selectors or affinity for complete scheduling control. Always consider built-in taints for node conditions and set appropriate `tolerationSeconds` for graceful handling.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

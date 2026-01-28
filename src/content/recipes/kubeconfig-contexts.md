@@ -318,3 +318,19 @@ alias kubectl-prod='echo "PRODUCTION CLUSTER!" && read -p "Continue? " && kubect
 ## Summary
 
 Kubeconfig manages cluster access through clusters, users, and contexts. Use `kubectl config` commands to view and modify configuration. Install kubectx/kubens for quick switching between contexts and namespaces. Merge multiple kubeconfig files with KUBECONFIG environment variable. Use cloud CLI tools (aws, gcloud, az) for secure authentication to managed clusters. Add context to shell prompt to always know your current cluster. Practice safe switching by verifying context before destructive operations.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

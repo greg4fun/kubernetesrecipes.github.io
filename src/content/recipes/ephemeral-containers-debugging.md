@@ -236,3 +236,19 @@ kubectl debug --help | grep ephemeral
 ## Summary
 
 Ephemeral containers enable non-disruptive debugging of running pods. Use `kubectl debug` to attach containers with debugging tools, share process namespaces with distroless containers, and debug nodes directly. Essential for troubleshooting production issues without downtime.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

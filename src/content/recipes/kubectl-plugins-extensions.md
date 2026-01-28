@@ -346,3 +346,19 @@ alias kdebug='kubectl debug -it --image=nicolaka/netshoot'
 ## Summary
 
 Krew is the package manager for kubectl plugins. Install with the official script and add to PATH. Use `kubectl krew search` to discover plugins and `kubectl krew install` to add them. Essential plugins include ctx/ns (context switching), stern (log tailing), tree (resource hierarchy), and resource-capacity (utilization). Create custom plugins as executables named `kubectl-<name>`. Security plugins like who-can and access-matrix help audit RBAC. Combine plugins with shell aliases for maximum productivity.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

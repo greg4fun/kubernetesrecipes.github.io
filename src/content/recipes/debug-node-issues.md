@@ -300,3 +300,19 @@ kubectl get events --field-selector source=node-problem-detector
 ## Summary
 
 Node troubleshooting starts with checking node status and conditions via `kubectl describe node`. Investigate specific issues: disk pressure (clean images/logs), memory pressure (find hungry pods, check OOM), network issues (verify CNI and connectivity). Use `kubectl debug node/<node>` for node-level access. Check kubelet and container runtime logs with `journalctl`. Use `kubectl drain` to safely evacuate nodes for maintenance. Monitor node health proactively with metrics and alerting on conditions.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

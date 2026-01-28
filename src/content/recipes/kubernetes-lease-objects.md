@@ -424,3 +424,19 @@ kubectl auth can-i update leases --as=system:serviceaccount:default:my-controlle
 ## Summary
 
 Kubernetes Lease objects enable distributed coordination and leader election. They prevent split-brain scenarios in highly available deployments. Use appropriate lease durations based on your failover requirements—shorter durations mean faster failover but more API server load. Always ensure proper RBAC permissions and implement graceful shutdown to release leases promptly.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

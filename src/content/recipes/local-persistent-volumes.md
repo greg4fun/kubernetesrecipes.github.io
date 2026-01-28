@@ -324,3 +324,19 @@ ssh node1 'sudo rm -rf /mnt/disks/ssd1/*'
 ## Summary
 
 Local persistent volumes provide high-performance storage using node-attached disks. Use `WaitForFirstConsumer` binding mode, configure node affinity, and understand that data doesn't migrate between nodes. Ideal for databases and caching layers requiring low latency. Plan for node failures with replication at the application level.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

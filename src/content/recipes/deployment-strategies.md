@@ -407,3 +407,19 @@ kubectl rollout undo deployment/myapp --to-revision=2
 ## Summary
 
 Blue-green deployments maintain two identical environments and switch traffic instantly via service selector changes. Canary deployments gradually shift traffic using replica ratios or ingress weight annotations. Use header-based routing for testing specific users. For advanced scenarios, Argo Rollouts and Flagger provide automated progressive delivery with metric-based promotion. Always have a rollback plan ready - switch service selectors for blue-green, scale down canary for canary deployments.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

@@ -344,3 +344,19 @@ kubectl get scaledobject my-scaler -o yaml | grep -A20 status
 ## Summary
 
 KEDA extends Kubernetes autoscaling with 50+ event sources. Create ScaledObjects for Deployments that can scale to zero. Use TriggerAuthentication for secure credential management. Configure triggers for queues (RabbitMQ, SQS, Kafka), databases (PostgreSQL, Redis), metrics (Prometheus), and more. ScaledJobs spawn Jobs based on events. Use multiple triggers to scale on any condition. Monitor with `kubectl get scaledobject` and check operator logs for debugging.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

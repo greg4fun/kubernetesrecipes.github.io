@@ -291,3 +291,19 @@ sudo cat /etc/containerd/config.toml | grep -A5 runtimes
 ## Summary
 
 RuntimeClass enables selecting different container runtimes per pod. Use gVisor for syscall-level isolation or Kata Containers for VM-level isolation. Define RuntimeClass with handler matching containerd/CRI-O configuration. Add scheduling constraints to ensure pods land on nodes with the runtime installed. Account for runtime overhead in resource calculations. Use policy engines like Kyverno to enforce RuntimeClass requirements for security-sensitive namespaces. Test application compatibility before deploying with sandboxed runtimes.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

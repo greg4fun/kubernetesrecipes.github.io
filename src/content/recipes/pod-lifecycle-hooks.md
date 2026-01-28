@@ -370,3 +370,19 @@ lifecycle:
 ## Summary
 
 Lifecycle hooks enable custom actions during container startup (postStart) and shutdown (preStop). Use preStop for graceful shutdown: draining connections, deregistering from service discovery, and allowing load balancer updates. Hooks can execute commands or make HTTP requests. Always set appropriate terminationGracePeriodSeconds and keep hooks fast and reliable to ensure consistent pod behavior.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

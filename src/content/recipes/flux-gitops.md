@@ -399,3 +399,19 @@ kubectl events -n flux-system --for Kustomization/myapp
 ## Summary
 
 Flux CD implements GitOps by continuously syncing Kubernetes with Git. Bootstrap Flux to create the GitOps repository structure. Use GitRepository sources for manifests and HelmRepository for charts. Kustomization resources deploy plain manifests/Kustomize, while HelmRelease deploys Helm charts. Enable image automation to auto-update container images. Set up notifications for deployment alerts. Flux ensures your cluster state always matches what's defined in Git.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

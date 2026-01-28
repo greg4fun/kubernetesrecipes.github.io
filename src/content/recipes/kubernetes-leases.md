@@ -370,3 +370,19 @@ spec:
 ## Summary
 
 Kubernetes Leases enable distributed coordination and leader election. Configure lease duration, renew deadline, and retry period for your availability requirements. Use client-go's leaderelection package for Go applications. Ensure RBAC allows get, create, and update on leases. Multiple replicas with leader election provide high availability - only the leader performs critical operations. Handle graceful shutdown to release leadership quickly. Monitor leases with kubectl to track leader changes and transitions.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

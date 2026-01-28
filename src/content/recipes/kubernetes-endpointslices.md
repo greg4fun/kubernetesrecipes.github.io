@@ -306,3 +306,19 @@ kubectl get endpointslice -l kubernetes.io/service-name=my-service
 ## Summary
 
 EndpointSlices replace Endpoints for scalable service discovery. They automatically split large services into 100-endpoint chunks. Each slice includes endpoint conditions (ready, serving, terminating) and optional topology hints for zone-aware routing. Use EndpointSlices for debugging service connectivity - check that endpoints exist and are ready. Create manual EndpointSlices for services without selectors (external services). Monitor with `kubectl get endpointslice -l kubernetes.io/service-name=<name>`. The controller maintains both EndpointSlices and legacy Endpoints for compatibility.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

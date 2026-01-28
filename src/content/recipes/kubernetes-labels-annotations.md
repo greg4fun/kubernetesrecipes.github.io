@@ -325,3 +325,19 @@ spec:
 ## Summary
 
 Labels identify and select resources - use them consistently for Services, NetworkPolicies, and kubectl queries. Recommended labels include `app.kubernetes.io/name`, `version`, `component`, and `environment`. Annotations store metadata for tools and documentation like build info, prometheus scraping, and ingress configuration. Use `kubectl label` and `kubectl annotate` to manage them. Establish a labeling strategy early and enforce it with admission controllers for consistent resource organization at scale.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

@@ -366,3 +366,19 @@ kubectl get rolebindings,clusterrolebindings -A \
 ## Summary
 
 Kubernetes API access control uses authentication (who you are) and authorization (what you can do). Configure RBAC with Roles/ClusterRoles (define permissions) and RoleBindings/ClusterRoleBindings (grant to subjects). Use least-privilege principles - grant minimum necessary permissions. Test access with `kubectl auth can-i`. Enable audit logging to track API access. Common patterns include read-only cluster access, namespace-scoped developer access, and CI/CD deployment permissions.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

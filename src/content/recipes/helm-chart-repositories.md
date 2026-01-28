@@ -294,3 +294,19 @@ generated: "2024-01-15T10:30:00Z"
 ## Summary
 
 Helm repositories enable chart distribution across teams. Use GitHub Pages for open source, S3/GCS for cloud-native teams, OCI registries for enterprise environments, and ChartMuseum for self-hosted solutions. Always sign charts for production use.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

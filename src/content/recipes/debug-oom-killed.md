@@ -339,3 +339,19 @@ kubectl rollout restart deployment myapp
 ## Summary
 
 OOMKilled errors indicate memory limit violations. Debug by checking container and node memory usage, analyze application memory patterns, set appropriate limits with headroom, and use VPA for recommendations. For production, implement memory alerting to catch issues before they cause OOMKilled events.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

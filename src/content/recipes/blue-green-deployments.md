@@ -377,3 +377,19 @@ kubectl logs -l version=green --tail=100
 ## Summary
 
 Blue-green deployments enable instant traffic switching between versions. Deploy to the inactive environment, validate thoroughly, then switch the service selector or update routing. Keep the old version running for quick rollback. Use Argo Rollouts or Istio for automated blue-green with analysis.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

@@ -441,3 +441,19 @@ kubectl get networkpolicies -o yaml > network-policies-backup.yaml
 ## Summary
 
 Network Policies provide essential security controls for Kubernetes networking. Start with a default-deny policy, then explicitly allow required traffic. Use namespace selectors for cross-namespace communication and CIDR blocks for external traffic. Remember that policies are additive—if any policy allows traffic, it's permitted. Always include DNS egress rules when restricting outbound traffic.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

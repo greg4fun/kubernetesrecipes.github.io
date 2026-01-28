@@ -278,3 +278,19 @@ kubectl create secret docker-registry dockerhub \
 ## Summary
 
 ImagePullBackOff usually means authentication failure, network issues, or image not found. Check `kubectl describe pod` for the specific error message. Create docker-registry secrets for private registries and reference them in imagePullSecrets. For cloud registries (ECR, GCR, ACR), use IAM integration when possible. Verify network connectivity and DNS resolution from nodes. Handle Docker Hub rate limits by authenticating or using alternative registries. Test image pulls manually with crictl on nodes for detailed errors.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

@@ -304,3 +304,19 @@ kubectl get nodes -o custom-columns='NAME:.metadata.name,TAINTS:.spec.taints[*].
 ## Summary
 
 Taints and tolerations control pod placement by allowing nodes to repel pods that don't tolerate their taints. Use `NoSchedule` to prevent new pods, `PreferNoSchedule` for soft preference, and `NoExecute` to evict existing pods. Common patterns include dedicating nodes for GPU workloads, isolating production environments, and handling spot instances. Kubernetes automatically adds taints for node conditions like `not-ready` and `memory-pressure`. Combine taints with node selectors for precise scheduling control. DaemonSets often need broad tolerations to run on all nodes.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

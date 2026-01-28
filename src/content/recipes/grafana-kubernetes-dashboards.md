@@ -369,3 +369,19 @@ groups:
 ## Summary
 
 Grafana dashboards transform Prometheus metrics into actionable insights. Use cluster overview dashboards for high-level health, node dashboards for infrastructure monitoring, and pod dashboards for application troubleshooting. Leverage variables for dynamic filtering.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

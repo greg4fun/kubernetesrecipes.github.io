@@ -346,3 +346,19 @@ spec:
 ## Summary
 
 Container security scanning identifies vulnerabilities before they reach production. Use Trivy for local and CI/CD scanning, integrating into GitHub Actions or GitLab CI. Deploy Trivy Operator for in-cluster scanning with vulnerability reports as Kubernetes resources. Implement admission controllers with Kyverno to block vulnerable images. Generate SBOMs for compliance and schedule regular scans to catch new CVEs. Combine build-time, deploy-time, and runtime scanning for defense in depth.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

@@ -385,3 +385,19 @@ spec:
 ## Summary
 
 StatefulSets provide stable identities (pod-0, pod-1), persistent storage via volumeClaimTemplates, and ordered deployment/scaling for stateful applications. Always create a headless Service for DNS-based discovery. Use init containers to configure pods based on their ordinal. Update strategies support rolling updates with partitions for canary deployments. PVCs persist by default when scaling down or deleting - configure retention policies as needed. Essential for running databases, distributed systems, and any workload requiring stable network identity.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

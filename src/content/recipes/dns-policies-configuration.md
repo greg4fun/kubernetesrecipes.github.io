@@ -321,3 +321,19 @@ kubectl get pods -n kube-system -l k8s-app=node-local-dns
 ## Summary
 
 Kubernetes DNS policies control name resolution: ClusterFirst (default) uses cluster DNS with upstream fallback; ClusterFirstWithHostNet for hostNetwork pods; Default uses node DNS; None requires manual dnsConfig. Customize with dnsConfig to add nameservers, search domains, and options. Optimize with lower ndots values for external-heavy workloads. StatefulSets get predictable DNS names via headless services. Use ExternalName services for external endpoints. Debug with dnsutils pod and nslookup/dig commands. Add static entries via hostAliases. Enable NodeLocal DNSCache for improved performance.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

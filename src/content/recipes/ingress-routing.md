@@ -434,3 +434,19 @@ kubectl exec -n ingress-nginx <nginx-pod> -- cat /etc/nginx/nginx.conf
 ## Summary
 
 Kubernetes Ingress provides HTTP routing through path-based and host-based rules. Use pathType Prefix for most routing needs and Exact for specific endpoints. Enable TLS termination with secrets containing certificates. NGINX ingress annotations configure rewrites, timeouts, rate limiting, and CORS. Implement canary deployments with weight-based or header-based routing. Add session affinity for stateful applications. Debug with `kubectl describe ingress` and ingress controller logs.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

@@ -341,3 +341,19 @@ kubectl describe certificate myapp-cert
 ## Summary
 
 cert-manager automates TLS certificate management in Kubernetes. Configure ClusterIssuers for Let's Encrypt, annotate Ingress resources for automatic certificate provisioning, and use DNS-01 challenges for wildcard certificates. Monitor certificate expiry with Prometheus alerts.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

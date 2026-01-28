@@ -292,3 +292,19 @@ metadata:
 ## Summary
 
 Kubernetes deprecates APIs following a predictable timeline. Use kubent or pluto to detect deprecated resources in your cluster and manifests. Common migrations include Ingress to networking.k8s.io/v1, HPA to autoscaling/v2, and CronJob to batch/v1. PodSecurityPolicy is replaced by Pod Security Admission. Run deprecation checks in CI/CD pipelines before cluster upgrades. Review Kubernetes deprecation guide before upgrading. Test migrations in staging before production. Use `kubectl api-versions` and `kubectl api-resources` to verify available APIs.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

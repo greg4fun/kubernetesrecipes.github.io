@@ -519,3 +519,19 @@ kubectl annotate ingress myapp-canary \
 ## Summary
 
 A/B testing in Kubernetes routes traffic between versions based on headers, cookies, weights, or user attributes. Use NGINX Ingress annotations for simple setups, Istio for advanced traffic management, or Argo Rollouts for automated progressive delivery. Always monitor both versions with clear success metrics and maintain quick rollback capability. Consistent user routing ensures accurate test results.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

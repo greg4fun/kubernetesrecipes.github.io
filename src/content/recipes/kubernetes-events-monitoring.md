@@ -361,3 +361,19 @@ data:
 ## Summary
 
 Kubernetes events provide real-time visibility into cluster operations. Use `kubectl get events` to view and filter events by type, reason, or resource. Events expire after 1 hour by default, so deploy Event Router or Event Exporter for long-term storage. Export events to Prometheus for metrics and alerting on critical conditions like OOMKilling, Evicted, or FailedScheduling. Integrate with Slack or other channels for immediate notification of issues. Events are essential for troubleshooting pod scheduling, container crashes, and resource problems.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

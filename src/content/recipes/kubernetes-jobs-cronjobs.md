@@ -362,3 +362,19 @@ kubectl delete jobs --all -n batch-jobs
 ## Summary
 
 Jobs run tasks to completion with configurable parallelism and retry policies. Use `completions` for total tasks and `parallelism` for concurrent pods. Set `activeDeadlineSeconds` for timeouts and `ttlSecondsAfterFinished` for auto-cleanup. CronJobs schedule recurring jobs using cron syntax. Control concurrency with `concurrencyPolicy` (Allow/Forbid/Replace). Use `startingDeadlineSeconds` for time-sensitive jobs. Manually trigger CronJobs with `kubectl create job --from=cronjob/name`.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

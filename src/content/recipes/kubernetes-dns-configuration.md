@@ -442,3 +442,19 @@ kubectl exec my-pod -- cat /etc/resolv.conf
 ## Summary
 
 Kubernetes DNS via CoreDNS enables service discovery within the cluster. Use DNS policies to control how pods resolve names, dnsConfig for custom settings, and CoreDNS ConfigMap for cluster-wide customization. For performance, consider reducing ndots, enabling NodeLocal DNS Cache, and scaling CoreDNS replicas. Use stub domains to integrate with existing corporate DNS infrastructure.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

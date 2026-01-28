@@ -359,3 +359,19 @@ kubectl delete jobs --field-selector status.successful=1 -A
 ## Summary
 
 Kubernetes cost optimization starts with right-sizing: use VPA recommendations and actual metrics to set appropriate requests and limits. Implement HPA for horizontal scaling and cluster autoscaler for node efficiency. Leverage spot instances for fault-tolerant workloads. Set resource quotas and limit ranges to prevent over-provisioning. Use tools like Kubecost for visibility and cleanup unused resources regularly. Continuous monitoring and adjustment are key to maintaining cost efficiency.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

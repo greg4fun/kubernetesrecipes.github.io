@@ -428,3 +428,19 @@ kube_resourcequota{type="used"} / kube_resourcequota{type="hard"} * 100
 ## Summary
 
 ResourceQuotas limit aggregate resource consumption per namespace, essential for multi-tenant clusters. Combine with LimitRange to ensure pods have default requests/limits. Use scopes to apply different quotas based on pod characteristics like QoS class or priority. Monitor quota usage to adjust limits as needed and prevent teams from being blocked. Always provide appropriate headroom for workload variability.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

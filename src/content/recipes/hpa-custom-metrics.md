@@ -341,3 +341,19 @@ spec:
 ## Summary
 
 Custom metrics HPA enables scaling based on business-relevant metrics. Deploy Prometheus Adapter to bridge Prometheus metrics to the Kubernetes metrics API. Configure rules to expose application metrics like request rate, latency, and queue depth for intelligent autoscaling.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!

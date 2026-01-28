@@ -406,3 +406,19 @@ kubectl neat get networkpolicy -n production -o yaml
 ## Summary
 
 Advanced NetworkPolicies enable zero-trust networking in Kubernetes. Start with default deny, then explicitly allow required traffic. Combine pod selectors, namespace selectors, and CIDR blocks for comprehensive security. Always test policies before applying to production.
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](/book)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](/book)** — Start building production-grade Kubernetes skills today!
