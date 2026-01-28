@@ -1,17 +1,85 @@
 # Robots.txt for kubernetes.recipes
 # https://kubernetes.recipes/
+# Last updated: 2026-01-28
 
+# ============================================
+# MAIN CRAWLERS - Full access
+# ============================================
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /*?*
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
+Disallow: /_astro/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /*?*
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Disallow: /api/
+Disallow: /_astro/
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /api/
+Disallow: /_astro/
+Crawl-delay: 1
+
+User-agent: Applebot
+Allow: /
+Disallow: /api/
+Disallow: /_astro/
+
+# ============================================
+# AI CRAWLERS - Full access for training
+# ============================================
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Cohere-AI
+Allow: /
+
+# ============================================
+# DEFAULT - All other crawlers
+# ============================================
 User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /_astro/
 Disallow: /*?*
+Crawl-delay: 2
 
-# Crawl-delay for polite crawling
-Crawl-delay: 1
-
+# ============================================
 # Sitemaps
+# ============================================
 Sitemap: https://kubernetes.recipes/sitemap-index.xml
 
-# Host
+# ============================================
+# Canonical Host
+# ============================================
 Host: https://kubernetes.recipes

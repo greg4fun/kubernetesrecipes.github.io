@@ -50,6 +50,10 @@ const difficultyColors = {
   intermediate: "bg-yellow-100 text-yellow-800", 
   advanced: "bg-red-100 text-red-800",
 };
+
+// Calculate reading time (rough estimate: 200 words per minute)
+const wordCount = recipe.body?.split(/\s+/).length || 1000;
+const readingTime = Math.max(5, Math.ceil(wordCount / 200));
 ---
 
 <Layout 
@@ -58,6 +62,8 @@ const difficultyColors = {
   type="article"
   publishDate={recipe.data.publishDate}
   author={recipe.data.author}
+  readingTime={readingTime}
+  tags={recipe.data.tags || ["Kubernetes", categoryName]}
 >
   <Container>
     <article class="max-w-4xl mx-auto">
