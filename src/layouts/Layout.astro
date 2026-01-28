@@ -238,6 +238,20 @@ const breadcrumbStructuredData = pathSegments.length > 0 ? {
     {breadcrumbStructuredData && (
       <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
     )}
+    <!-- Mermaid Diagrams -->
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ 
+        startOnLoad: true,
+        theme: 'neutral',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        }
+      });
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CCC31PP3QS"></script>
     <script>

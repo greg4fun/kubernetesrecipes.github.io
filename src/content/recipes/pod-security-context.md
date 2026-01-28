@@ -34,33 +34,26 @@ Configure Security Context at both Pod and Container levels to define privilege 
 
 ## Security Context Hierarchy
 
-```
-Security Context Levels:
-
-┌─────────────────────────────────────────────────────────┐
-│  POD-LEVEL SECURITY CONTEXT                             │
-│  (Applies to all containers in the pod)                │
-│                                                         │
-│  • runAsUser / runAsGroup                               │
-│  • fsGroup / fsGroupChangePolicy                        │
-│  • supplementalGroups                                   │
-│  • seccompProfile                                       │
-│  • sysctls                                              │
-│                                                         │
-│  ┌─────────────────────────────────────────────────┐   │
-│  │  CONTAINER-LEVEL SECURITY CONTEXT               │   │
-│  │  (Overrides pod-level for specific container)  │   │
-│  │                                                  │   │
-│  │  • runAsUser / runAsGroup                        │   │
-│  │  • runAsNonRoot                                  │   │
-│  │  • privileged                                    │   │
-│  │  • capabilities (add/drop)                       │   │
-│  │  • allowPrivilegeEscalation                      │   │
-│  │  • readOnlyRootFilesystem                        │   │
-│  │  • seccompProfile                                │   │
-│  │  • seLinuxOptions                                │   │
-│  └─────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph POD["POD-LEVEL SECURITY CONTEXT<br/>Applies to all containers in the pod"]
+        P1["runAsUser / runAsGroup"]
+        P2["fsGroup / fsGroupChangePolicy"]
+        P3["supplementalGroups"]
+        P4["seccompProfile"]
+        P5["sysctls"]
+        
+        subgraph CONTAINER["CONTAINER-LEVEL SECURITY CONTEXT<br/>Overrides pod-level for specific container"]
+            C1["runAsUser / runAsGroup"]
+            C2["runAsNonRoot"]
+            C3["privileged"]
+            C4["capabilities add/drop"]
+            C5["allowPrivilegeEscalation"]
+            C6["readOnlyRootFilesystem"]
+            C7["seccompProfile"]
+            C8["seLinuxOptions"]
+        end
+    end
 ```
 
 ## Basic Security Context Configuration

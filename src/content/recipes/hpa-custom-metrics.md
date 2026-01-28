@@ -13,14 +13,11 @@ Scale your workloads based on application-specific metrics like queue depth, req
 
 ## Architecture Overview
 
-```
-┌─────────────┐     ┌──────────────────┐     ┌────────────┐
-│     HPA     │ ──→ │ Prometheus       │ ──→ │ Prometheus │
-│             │     │ Adapter          │     │            │
-└─────────────┘     └──────────────────┘     └────────────┘
-                           │
-                    custom.metrics.k8s.io
-                    external.metrics.k8s.io
+```mermaid
+flowchart LR
+    HPA[HPA] --> PA[Prometheus Adapter]
+    PA --> P[Prometheus]
+    PA --> API["custom.metrics.k8s.io<br/>external.metrics.k8s.io"]
 ```
 
 ## Install Prometheus Adapter

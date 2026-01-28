@@ -35,39 +35,25 @@ Integrate HashiCorp Vault with Kubernetes to provide secure secret storage, dyna
 
 ## Vault Integration Methods
 
-```
-Vault-Kubernetes Integration Options:
-
-┌─────────────────────────────────────────────────────────────────┐
-│  METHOD 1: VAULT AGENT INJECTOR (Sidecar)                       │
-│                                                                  │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │  Pod                                                      │   │
-│  │  ┌─────────────┐    ┌─────────────────────────────────┐  │   │
-│  │  │ Application │◄───│ Vault Agent (sidecar)           │  │   │
-│  │  │             │    │ - Authenticates with Vault      │  │   │
-│  │  │ /vault/     │    │ - Renders secrets to files     │  │   │
-│  │  │ secrets/    │    │ - Auto-renews tokens           │  │   │
-│  │  └─────────────┘    └─────────────────────────────────┘  │   │
-│  └──────────────────────────────────────────────────────────┘   │
-├─────────────────────────────────────────────────────────────────┤
-│  METHOD 2: VAULT CSI PROVIDER                                    │
-│                                                                  │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │  Pod                                                      │   │
-│  │  ┌─────────────┐                                         │   │
-│  │  │ Application │                                         │   │
-│  │  │             │◄─── CSI Volume (secrets as files)      │   │
-│  │  │ /mnt/secrets│                                         │   │
-│  │  └─────────────┘                                         │   │
-│  │         ▲                                                 │   │
-│  │         │ CSI Driver                                      │   │
-│  │  ┌──────┴───────┐                                        │   │
-│  │  │ Vault CSI    │◄──── Vault Server                      │   │
-│  │  │ Provider     │                                        │   │
-│  │  └──────────────┘                                        │   │
-│  └──────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph M1["METHOD 1: VAULT AGENT INJECTOR - Sidecar"]
+        subgraph POD1["Pod"]
+            APP1["Application<br/>/vault/secrets/"]
+            VA["Vault Agent sidecar<br/>- Authenticates with Vault<br/>- Renders secrets to files<br/>- Auto-renews tokens"]
+            VA -->|secrets| APP1
+        end
+    end
+    
+    subgraph M2["METHOD 2: VAULT CSI PROVIDER"]
+        subgraph POD2["Pod"]
+            APP2["Application<br/>/mnt/secrets"]
+            CSI["Vault CSI<br/>Provider"]
+            APP2 -->|CSI Volume| CSI
+        end
+        VS["Vault Server"]
+        CSI -->|CSI Driver| VS
+    end
 ```
 
 ## Step 1: Deploy Vault in Kubernetes

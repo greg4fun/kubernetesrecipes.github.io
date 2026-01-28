@@ -34,32 +34,25 @@ Use Kyverno, a Kubernetes-native policy engine that runs as a dynamic admission 
 
 ### Architecture
 
-```
-┌─────────────────────────────────────────────────────┐
-│              kubectl create/apply                    │
-└─────────────────────┬───────────────────────────────┘
-                      │
-                      ▼
-┌─────────────────────────────────────────────────────┐
-│           Kubernetes API Server                      │
-└─────────────────────┬───────────────────────────────┘
-                      │
-                      ▼
-┌─────────────────────────────────────────────────────┐
-│        Kyverno Admission Controller                  │
-│  ┌────────────────────────────────────────────┐    │
-│  │  1. Validate: Enforce rules                │    │
-│  │  2. Mutate: Modify resources               │    │
-│  │  3. Generate: Create new resources         │    │
-│  │  4. Verify Images: Check signatures        │    │
-│  └────────────────────────────────────────────┘    │
-└─────────────────────┬───────────────────────────────┘
-                      │
-        ┌─────────────┼─────────────┐
-        │             │             │
-        ▼             ▼             ▼
-    Allowed       Rejected      Mutated
-   (compliant)  (non-compliant) (auto-fixed)
+```mermaid
+flowchart TB
+    KUBECTL["💻 kubectl create/apply"]
+    KUBECTL --> APISERVER
+
+    APISERVER["☸️ Kubernetes API Server"]
+    APISERVER --> KYVERNO
+
+    subgraph KYVERNO["🛡️ Kyverno Admission Controller"]
+        ACTIONS["1️⃣ Validate: Enforce rules<br/>2️⃣ Mutate: Modify resources<br/>3️⃣ Generate: Create new resources<br/>4️⃣ Verify Images: Check signatures"]
+    end
+
+    KYVERNO --> ALLOWED["✅ Allowed<br/>(compliant)"]
+    KYVERNO --> REJECTED["❌ Rejected<br/>(non-compliant)"]
+    KYVERNO --> MUTATED["🔧 Mutated<br/>(auto-fixed)"]
+
+    style ALLOWED fill:#ccffcc,stroke:#00aa00
+    style REJECTED fill:#ffcccc,stroke:#aa0000
+    style MUTATED fill:#ccccff,stroke:#0000aa
 ```
 
 ### Step 1: Install Kyverno

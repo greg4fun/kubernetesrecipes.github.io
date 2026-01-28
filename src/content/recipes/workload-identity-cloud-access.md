@@ -34,49 +34,20 @@ Use Workload Identity to allow pods to authenticate to cloud providers using the
 
 ## How Workload Identity Works
 
-```
-Workload Identity Flow:
-
-┌─────────────────────────────────────────────────────────────────┐
-│                      KUBERNETES CLUSTER                          │
-│                                                                  │
-│  ┌────────────────────────────────────────────────────────────┐ │
-│  │                         Pod                                 │ │
-│  │  ┌──────────────┐                                          │ │
-│  │  │  Application │                                          │ │
-│  │  │              │  1. Request cloud access                 │ │
-│  │  │  ServiceAccount: myapp-sa                               │ │
-│  │  └──────────────┘                                          │ │
-│  │         │                                                   │ │
-│  │         │ 2. Get projected service account token           │ │
-│  │         ▼                                                   │ │
-│  │  ┌──────────────┐                                          │ │
-│  │  │ SA Token     │  (JWT signed by cluster OIDC issuer)    │ │
-│  │  │ (projected)  │                                          │ │
-│  │  └──────────────┘                                          │ │
-│  └─────────┬──────────────────────────────────────────────────┘ │
-│            │                                                     │
-└────────────┼─────────────────────────────────────────────────────┘
-             │ 3. Exchange token for cloud credentials
-             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                      CLOUD PROVIDER                              │
-│                                                                  │
-│  ┌────────────────────────────────────────────────────────────┐ │
-│  │  IAM / Workload Identity Federation                        │ │
-│  │                                                             │ │
-│  │  4. Validate JWT against cluster OIDC endpoint            │ │
-│  │  5. Check service account matches IAM binding             │ │
-│  │  6. Issue temporary cloud credentials                      │ │
-│  └────────────────────────────────────────────────────────────┘ │
-│                              │                                   │
-│                              ▼                                   │
-│  ┌────────────────────────────────────────────────────────────┐ │
-│  │  Cloud Services (S3, Storage, GCS, etc.)                   │ │
-│  │                                                             │ │
-│  │  7. Pod accesses resources with temporary credentials      │ │
-│  └────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+sequenceDiagram
+    participant App as Application Pod<br/>ServiceAccount: myapp-sa
+    participant Token as SA Token<br/>projected
+    participant IAM as IAM / Workload<br/>Identity Federation
+    participant Cloud as Cloud Services<br/>S3, Storage, GCS, etc.
+    
+    App->>Token: 1. Request cloud access
+    Token-->>App: 2. Get projected SA token<br/>JWT signed by cluster OIDC issuer
+    App->>IAM: 3. Exchange token for cloud credentials
+    IAM->>IAM: 4. Validate JWT against cluster OIDC endpoint
+    IAM->>IAM: 5. Check service account matches IAM binding
+    IAM-->>App: 6. Issue temporary cloud credentials
+    App->>Cloud: 7. Access resources with temporary credentials
 ```
 
 ## AWS: IAM Roles for Service Accounts (IRSA)

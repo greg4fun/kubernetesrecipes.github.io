@@ -33,38 +33,29 @@ Use Velero (formerly Heptio Ark) to create backups of cluster resources and pers
 
 ### Architecture
 
-```
-┌─────────────────────────────────────────────────────┐
-│         Kubernetes Cluster (Source)                  │
-│  ┌─────────────┐  ┌─────────────┐                  │
-│  │  Workloads  │  │  Persistent │                  │
-│  │  Resources  │  │   Volumes   │                  │
-│  └──────┬──────┘  └──────┬──────┘                  │
-│         │                │                          │
-│         └────────┬───────┘                          │
-│                  ▼                                   │
-│         ┌─────────────────┐                         │
-│         │  Velero Server  │                         │
-│         └────────┬────────┘                         │
-└──────────────────┼──────────────────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────────────────┐
-│          Object Storage (S3/MinIO/GCS)              │
-│  ┌──────────────────────────────────────────┐      │
-│  │  Backups (YAML manifests, metadata)      │      │
-│  │  Volume Snapshots (references)           │      │
-│  └──────────────────────────────────────────┘      │
-└─────────────────────┬───────────────────────────────┘
-                      │ Restore
-                      ▼
-┌─────────────────────────────────────────────────────┐
-│         Kubernetes Cluster (Target)                  │
-│  ┌─────────────┐  ┌─────────────┐                  │
-│  │  Restored   │  │  Restored   │                  │
-│  │  Workloads  │  │   Volumes   │                  │
-│  └─────────────┘  └─────────────┘                  │
-└─────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Source["Kubernetes Cluster (Source)"]
+        WR[Workloads Resources]
+        PV1[Persistent Volumes]
+        VS[Velero Server]
+        
+        WR --> VS
+        PV1 --> VS
+    end
+    
+    subgraph Storage["Object Storage (S3/MinIO/GCS)"]
+        BK["Backups<br/>(YAML manifests, metadata)"]
+        SN["Volume Snapshots<br/>(references)"]
+    end
+    
+    subgraph Target["Kubernetes Cluster (Target)"]
+        RW[Restored Workloads]
+        RV[Restored Volumes]
+    end
+    
+    VS --> Storage
+    Storage -->|Restore| Target
 ```
 
 ### Step 1: Install Velero CLI

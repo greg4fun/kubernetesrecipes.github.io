@@ -13,21 +13,26 @@ A/B testing routes traffic between different application versions based on speci
 
 ## A/B Testing Concepts
 
-```
-A/B Testing in Kubernetes:
-                    ┌─────────────────┐
-                    │     Ingress/    │
-   Request ──────►  │   Service Mesh  │
-   (with header)    └────────┬────────┘
-                             │
-              ┌──────────────┼──────────────┐
-              │              │              │
-              ▼              ▼              ▼
-        ┌─────────┐    ┌─────────┐    ┌─────────┐
-        │ Version │    │ Version │    │ Version │
-        │    A    │    │    B    │    │    C    │
-        │  (80%)  │    │  (15%)  │    │   (5%)  │
-        └─────────┘    └─────────┘    └─────────┘
+```mermaid
+flowchart TB
+    subgraph Request
+        R["Request<br/>(with header)"]
+    end
+    
+    subgraph Router["Ingress / Service Mesh"]
+        IG[Traffic Router]
+    end
+    
+    subgraph Versions["Application Versions"]
+        VA["Version A<br/>(80%)"]
+        VB["Version B<br/>(15%)"]
+        VC["Version C<br/>(5%)"]
+    end
+    
+    R --> IG
+    IG --> VA
+    IG --> VB
+    IG --> VC
 ```
 
 ## Deploy Multiple Versions

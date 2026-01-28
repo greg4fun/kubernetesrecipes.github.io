@@ -34,34 +34,18 @@ Configure Kubernetes API server to use OpenID Connect (OIDC) for authentication,
 
 ### Architecture
 
-```
-┌─────────────────────────────────────────────────────┐
-│                    User / kubectl                    │
-└─────────────────────┬───────────────────────────────┘
-                      │ 1. Request token
-                      ▼
-┌─────────────────────────────────────────────────────┐
-│           Identity Provider (OIDC)                   │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐   │
-│  │  Keycloak  │  │   Okta     │  │  Azure AD  │   │
-│  └────────────┘  └────────────┘  └────────────┘   │
-└─────────────────────┬───────────────────────────────┘
-                      │ 2. ID Token (JWT)
-                      ▼
-┌─────────────────────────────────────────────────────┐
-│                    kubectl                           │
-│           (stores token in kubeconfig)              │
-└─────────────────────┬───────────────────────────────┘
-                      │ 3. API request + token
-                      ▼
-┌─────────────────────────────────────────────────────┐
-│           Kubernetes API Server                      │
-│  ┌────────────────────────────────────────────┐    │
-│  │  4. Validate token signature & claims      │    │
-│  │  5. Extract user identity & groups         │    │
-│  │  6. RBAC authorization                     │    │
-│  └────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────┘
+```mermaid
+sequenceDiagram
+    participant U as User / kubectl
+    participant IDP as Identity Provider (OIDC)<br/>Keycloak / Okta / Azure AD
+    participant K as kubectl
+    participant API as Kubernetes API Server
+    
+    U->>IDP: 1. Request token
+    IDP->>K: 2. ID Token (JWT)
+    Note over K: Stores token in kubeconfig
+    K->>API: 3. API request + token
+    Note over API: 4. Validate token signature & claims<br/>5. Extract user identity & groups<br/>6. RBAC authorization
 ```
 
 ### Step 1: Configure Identity Provider (Keycloak Example)

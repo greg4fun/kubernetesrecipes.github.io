@@ -34,25 +34,33 @@ Use multi-container pod patterns (Sidecar, Ambassador, Adapter) to add capabilit
 
 ## Pattern Overview
 
-```
-Multi-Container Pod Patterns:
-
-┌─────────────────────────────────────────────────────────────┐
-│  SIDECAR: Extends/enhances main container                   │
-│  ┌─────────┐    ┌─────────┐                                │
-│  │  Main   │◄──►│ Sidecar │  (logging, sync, monitoring)   │
-│  └─────────┘    └─────────┘                                │
-├─────────────────────────────────────────────────────────────┤
-│  AMBASSADOR: Proxy for external communication               │
-│  ┌─────────┐    ┌───────────┐    ┌──────────┐             │
-│  │  Main   │◄──►│ Ambassador│◄──►│ External │             │
-│  └─────────┘    └───────────┘    └──────────┘             │
-├─────────────────────────────────────────────────────────────┤
-│  ADAPTER: Standardizes output format                        │
-│  ┌─────────┐    ┌─────────┐    ┌──────────────┐           │
-│  │  Main   │───►│ Adapter │───►│ Monitoring   │           │
-│  └─────────┘    └─────────┘    └──────────────┘           │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph sidecar["🔧 SIDECAR: Extends/enhances main container"]
+        direction LR
+        S_Main["📦 Main"]
+        S_Sidecar["🔌 Sidecar<br/>(logging, sync, monitoring)"]
+        S_Main <--> S_Sidecar
+    end
+    
+    subgraph ambassador["🌐 AMBASSADOR: Proxy for external communication"]
+        direction LR
+        A_Main["📦 Main"]
+        A_Ambassador["🚪 Ambassador"]
+        A_External["☁️ External"]
+        A_Main <--> A_Ambassador <--> A_External
+    end
+    
+    subgraph adapter["🔄 ADAPTER: Standardizes output format"]
+        direction LR
+        AD_Main["📦 Main"]
+        AD_Adapter["⚙️ Adapter"]
+        AD_Monitoring["📊 Monitoring"]
+        AD_Main --> AD_Adapter --> AD_Monitoring
+    end
+    
+    sidecar ~~~ ambassador
+    ambassador ~~~ adapter
 ```
 
 ## Pattern 1: Sidecar Pattern

@@ -35,32 +35,28 @@ Build a Kubernetes Operator that encapsulates operational knowledge into code, u
 
 ## What is an Operator?
 
-```
-Operator Pattern:
-
-┌──────────────────────────────────────────────────────────────┐
-│                    KUBERNETES CLUSTER                         │
-│                                                               │
-│  ┌─────────────────┐         ┌─────────────────────────────┐ │
-│  │  Custom Resource │◄───────│      Operator Controller     │ │
-│  │   Definition     │        │                              │ │
-│  │  (CRD)          │        │  ┌─────────────────────────┐ │ │
-│  └─────────────────┘        │  │   Reconciliation Loop   │ │ │
-│           │                  │  │                         │ │ │
-│           ▼                  │  │  1. Watch Custom Resource│ │ │
-│  ┌─────────────────┐        │  │  2. Compare desired vs   │ │ │
-│  │ Custom Resource  │        │  │     actual state        │ │ │
-│  │ Instance (CR)    │        │  │  3. Take corrective     │ │ │
-│  │                  │        │  │     action              │ │ │
-│  │ spec:            │        │  └─────────────────────────┘ │ │
-│  │   replicas: 3    │        │                              │ │
-│  │   version: 1.0   │        │  Creates/Updates:           │ │
-│  └─────────────────┘        │  - Deployments              │ │
-│                              │  - Services                 │ │
-│                              │  - ConfigMaps              │ │
-│                              │  - Secrets                  │ │
-│                              └─────────────────────────────┘ │
-└──────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph cluster["☸️ KUBERNETES CLUSTER"]
+        subgraph crd_section["📋 Custom Resource Definition"]
+            CRD["📜 Custom Resource<br/>Definition (CRD)"]
+            CR["📄 Custom Resource<br/>Instance (CR)<br/><br/>spec:<br/>  replicas: 3<br/>  version: 1.0"]
+            CRD --> CR
+        end
+        
+        subgraph operator["🤖 Operator Controller"]
+            subgraph loop["🔄 Reconciliation Loop"]
+                step1["1. Watch Custom Resource"]
+                step2["2. Compare desired vs<br/>actual state"]
+                step3["3. Take corrective<br/>action"]
+                step1 --> step2 --> step3
+            end
+            
+            creates["Creates/Updates:<br/>📦 Deployments<br/>🌐 Services<br/>⚙️ ConfigMaps<br/>🔐 Secrets"]
+        end
+        
+        CR <--> operator
+    end
 ```
 
 ## Step 1: Define Your Custom Resource

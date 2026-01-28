@@ -34,30 +34,19 @@ Use the Gateway API, the next-generation Kubernetes networking standard that pro
 
 ## Gateway API vs Ingress
 
-```
-Gateway API Architecture:
-
-┌─────────────────────────────────────────────────────────────────┐
-│  ROLE-BASED RESOURCE MODEL                                       │
-│                                                                  │
-│  ┌─────────────────┐                                            │
-│  │  GatewayClass   │  ← Infrastructure Provider (cluster-admin) │
-│  │  (nginx, envoy) │                                            │
-│  └────────┬────────┘                                            │
-│           │                                                      │
-│  ┌────────▼────────┐                                            │
-│  │    Gateway      │  ← Cluster Operator (platform team)        │
-│  │  (listeners,    │                                            │
-│  │   addresses)    │                                            │
-│  └────────┬────────┘                                            │
-│           │                                                      │
-│  ┌────────▼────────┐                                            │
-│  │   HTTPRoute     │  ← Application Developer (dev team)        │
-│  │   TCPRoute      │                                            │
-│  │   TLSRoute      │                                            │
-│  │   GRPCRoute     │                                            │
-│  └─────────────────┘                                            │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph model["🎯 ROLE-BASED RESOURCE MODEL"]
+        GatewayClass["🏗️ GatewayClass<br/>(nginx, envoy)"]
+        Gateway["🚪 Gateway<br/>(listeners, addresses)"]
+        Routes["📍 HTTPRoute<br/>📍 TCPRoute<br/>📍 TLSRoute<br/>📍 GRPCRoute"]
+        
+        GatewayClass --> Gateway --> Routes
+        
+        GatewayClass -.- admin["👤 Infrastructure Provider<br/>(cluster-admin)"]
+        Gateway -.- platform["👥 Cluster Operator<br/>(platform team)"]
+        Routes -.- dev["💻 Application Developer<br/>(dev team)"]
+    end
 ```
 
 ## Step 1: Install Gateway API CRDs

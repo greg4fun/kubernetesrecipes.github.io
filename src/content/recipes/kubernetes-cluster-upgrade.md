@@ -34,68 +34,58 @@ Follow a systematic upgrade process: prepare the cluster, backup critical data, 
 
 ## Kubernetes Upgrade Overview
 
-```
-Kubernetes Upgrade Flow:
-
-┌─────────────────────────────────────────────────────────────────┐
-│                    UPGRADE SEQUENCE                              │
-│                                                                  │
-│  Phase 1: PREPARATION                                           │
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │ □ Review release notes and breaking changes               │  │
-│  │ □ Check component compatibility (CNI, CSI, Ingress)       │  │
-│  │ □ Backup etcd                                             │  │
-│  │ □ Ensure PodDisruptionBudgets are in place               │  │
-│  │ □ Test upgrade in staging environment                     │  │
-│  └───────────────────────────────────────────────────────────┘  │
-│                              ▼                                   │
-│  Phase 2: CONTROL PLANE UPGRADE                                 │
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │ Control Plane Node 1 ──► Node 2 ──► Node 3                │  │
-│  │ (one at a time for HA)                                    │  │
-│  │                                                            │  │
-│  │ Order: etcd → kube-apiserver → kube-controller-manager   │  │
-│  │        → kube-scheduler → cloud-controller-manager        │  │
-│  └───────────────────────────────────────────────────────────┘  │
-│                              ▼                                   │
-│  Phase 3: WORKER NODE UPGRADE                                   │
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │ Worker 1: Cordon → Drain → Upgrade → Uncordon            │  │
-│  │ Worker 2: Cordon → Drain → Upgrade → Uncordon            │  │
-│  │ Worker N: Cordon → Drain → Upgrade → Uncordon            │  │
-│  └───────────────────────────────────────────────────────────┘  │
-│                              ▼                                   │
-│  Phase 4: VALIDATION                                            │
-│  ┌───────────────────────────────────────────────────────────┐  │
-│  │ □ All nodes Ready                                         │  │
-│  │ □ All system pods Running                                 │  │
-│  │ □ Application health checks passing                       │  │
-│  │ □ Monitoring and logging functional                       │  │
-│  └───────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph P1["Phase 1: PREPARATION"]
+        P1A["☐ Review release notes and breaking changes"]
+        P1B["☐ Check component compatibility - CNI, CSI, Ingress"]
+        P1C["☐ Backup etcd"]
+        P1D["☐ Ensure PodDisruptionBudgets are in place"]
+        P1E["☐ Test upgrade in staging environment"]
+    end
+    
+    subgraph P2["Phase 2: CONTROL PLANE UPGRADE"]
+        P2A["Control Plane Node 1 → Node 2 → Node 3<br/>one at a time for HA"]
+        P2B["Order: etcd → kube-apiserver →<br/>kube-controller-manager → kube-scheduler →<br/>cloud-controller-manager"]
+    end
+    
+    subgraph P3["Phase 3: WORKER NODE UPGRADE"]
+        P3A["Worker 1: Cordon → Drain → Upgrade → Uncordon"]
+        P3B["Worker 2: Cordon → Drain → Upgrade → Uncordon"]
+        P3C["Worker N: Cordon → Drain → Upgrade → Uncordon"]
+    end
+    
+    subgraph P4["Phase 4: VALIDATION"]
+        P4A["☐ All nodes Ready"]
+        P4B["☐ All system pods Running"]
+        P4C["☐ Application health checks passing"]
+        P4D["☐ Monitoring and logging functional"]
+    end
+    
+    P1 --> P2
+    P2 --> P3
+    P3 --> P4
 ```
 
 ## Version Skew Policy
 
+```mermaid
+flowchart LR
+    subgraph SKEW["Kubernetes Version Skew Rules"]
+        direction TB
+        API["kube-apiserver<br/>N/A - defines the version"]
+        CM["kube-controller-mgr<br/>±1 minor from apiserver"]
+        SCHED["kube-scheduler<br/>±1 minor from apiserver"]
+        KL["kubelet<br/>-3 to 0 from apiserver"]
+        KP["kube-proxy<br/>Same as kubelet"]
+        KC["kubectl<br/>±1 minor from apiserver"]
+    end
 ```
-Kubernetes Version Skew Rules:
 
-┌────────────────────────────────────────────────────────────┐
-│  Component              │ Supported Skew                   │
-├────────────────────────────────────────────────────────────┤
-│  kube-apiserver        │ N/A (defines the version)        │
-│  kube-controller-mgr   │ ±1 minor version from apiserver  │
-│  kube-scheduler        │ ±1 minor version from apiserver  │
-│  kubelet               │ -3 to 0 from apiserver           │
-│  kube-proxy            │ Same as kubelet                  │
-│  kubectl               │ ±1 minor version from apiserver  │
-└────────────────────────────────────────────────────────────┘
-
-Example: If API server is 1.29
-  - Control plane: Must be 1.28, 1.29, or 1.30
-  - Kubelet: Can be 1.26, 1.27, 1.28, or 1.29
-  - kubectl: Can be 1.28, 1.29, or 1.30
-```
+**Example:** If API server is 1.29:
+- Control plane: Must be 1.28, 1.29, or 1.30
+- Kubelet: Can be 1.26, 1.27, 1.28, or 1.29
+- kubectl: Can be 1.28, 1.29, or 1.30
 
 ## Phase 1: Pre-Upgrade Preparation
 

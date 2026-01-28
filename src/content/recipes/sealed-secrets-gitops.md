@@ -35,45 +35,28 @@ Use Bitnami Sealed Secrets to encrypt secrets client-side using a public key. On
 
 ## How Sealed Secrets Work
 
-```
-Sealed Secrets Workflow:
-
-┌──────────────────────────────────────────────────────────────────┐
-│                        DEVELOPER WORKSTATION                      │
-│                                                                   │
-│  ┌─────────────┐    kubeseal     ┌──────────────────┐            │
-│  │   Secret    │ ───────────────►│  SealedSecret    │            │
-│  │  (plain)    │   (public key)  │   (encrypted)    │            │
-│  └─────────────┘                 └────────┬─────────┘            │
-│                                           │                       │
-└───────────────────────────────────────────┼───────────────────────┘
-                                            │ git push
-                                            ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                         GIT REPOSITORY                            │
-│                                                                   │
-│  ┌──────────────────────────────────────────────────────┐        │
-│  │  sealed-secrets/                                      │        │
-│  │    ├── database-credentials.yaml (encrypted)         │        │
-│  │    ├── api-keys.yaml (encrypted)                     │        │
-│  │    └── tls-certs.yaml (encrypted)                    │        │
-│  └──────────────────────────────────────────────────────┘        │
-│                                                                   │
-└───────────────────────────────────────────┼───────────────────────┘
-                                            │ GitOps sync
-                                            ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                      KUBERNETES CLUSTER                           │
-│                                                                   │
-│  ┌─────────────────────────────────────────────────────────────┐ │
-│  │  Sealed Secrets Controller                                   │ │
-│  │                                                              │ │
-│  │  ┌──────────────┐  decrypt   ┌─────────────┐                │ │
-│  │  │ SealedSecret │ ──────────►│   Secret    │                │ │
-│  │  │ (encrypted)  │ (priv key) │  (plain)    │                │ │
-│  │  └──────────────┘            └─────────────┘                │ │
-│  └─────────────────────────────────────────────────────────────┘ │
-└──────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph DEV["DEVELOPER WORKSTATION"]
+        SECRET["Secret<br/>plain"]
+        SEALED["SealedSecret<br/>encrypted"]
+        SECRET -->|"kubeseal<br/>public key"| SEALED
+    end
+    
+    subgraph GIT["GIT REPOSITORY"]
+        FILES["sealed-secrets/<br/>├── database-credentials.yaml encrypted<br/>├── api-keys.yaml encrypted<br/>└── tls-certs.yaml encrypted"]
+    end
+    
+    subgraph K8S["KUBERNETES CLUSTER"]
+        subgraph CTRL["Sealed Secrets Controller"]
+            SS["SealedSecret<br/>encrypted"]
+            S["Secret<br/>plain"]
+            SS -->|"decrypt<br/>private key"| S
+        end
+    end
+    
+    SEALED -->|"git push"| GIT
+    GIT -->|"GitOps sync"| K8S
 ```
 
 ## Step 1: Install Sealed Secrets Controller

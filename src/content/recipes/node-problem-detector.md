@@ -34,52 +34,32 @@ Deploy Node Problem Detector (NPD) to monitor node health, detect problems, and 
 
 ## How Node Problem Detector Works
 
-```
-Node Problem Detector Architecture:
-
-┌─────────────────────────────────────────────────────────────────┐
-│                        KUBERNETES NODE                           │
-│                                                                  │
-│  ┌────────────────────────────────────────────────────────────┐ │
-│  │                Node Problem Detector (DaemonSet)            │ │
-│  │                                                             │ │
-│  │  ┌─────────────────┐  ┌─────────────────┐                  │ │
-│  │  │  System Log     │  │   Custom Plugin  │                  │ │
-│  │  │  Monitor        │  │   Monitor        │                  │ │
-│  │  └────────┬────────┘  └────────┬────────┘                  │ │
-│  │           │                     │                           │ │
-│  │           ▼                     ▼                           │ │
-│  │  ┌────────────────────────────────────────────────────┐    │ │
-│  │  │              Problem Detection Engine               │    │ │
-│  │  │                                                     │    │ │
-│  │  │  Kernel Issues │ Docker Issues │ Hardware Issues   │    │ │
-│  │  └────────────────────────┬───────────────────────────┘    │ │
-│  │                           │                                 │ │
-│  └───────────────────────────┼─────────────────────────────────┘ │
-│                              │                                   │
-│                              ▼                                   │
-│  ┌────────────────────────────────────────────────────────────┐ │
-│  │                    Node Status                              │ │
-│  │  ┌──────────────────────────────────────────────────────┐  │ │
-│  │  │ Conditions:                                           │  │ │
-│  │  │  - KernelDeadlock: True/False                        │  │ │
-│  │  │  - ReadonlyFilesystem: True/False                    │  │ │
-│  │  │  - DockerProblem: True/False                         │  │ │
-│  │  │  - NetworkUnavailable: True/False                    │  │ │
-│  │  └──────────────────────────────────────────────────────┘  │ │
-│  └────────────────────────────────────────────────────────────┘ │
-│                              │                                   │
-└──────────────────────────────┼───────────────────────────────────┘
-                               │ Events & Conditions
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                      API SERVER / MONITORING                     │
-│                                                                  │
-│  • Node Conditions visible in kubectl describe node             │
-│  • Events for transient problems                                │
-│  • Prometheus metrics for alerting                              │
-│  • Triggers for auto-remediation                                │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph NODE["KUBERNETES NODE"]
+        subgraph NPD["Node Problem Detector DaemonSet"]
+            SLM["System Log<br/>Monitor"]
+            CPM["Custom Plugin<br/>Monitor"]
+            PDE["Problem Detection Engine<br/>Kernel Issues | Docker Issues | Hardware Issues"]
+            SLM --> PDE
+            CPM --> PDE
+        end
+        
+        subgraph NS["Node Status"]
+            COND["Conditions:<br/>- KernelDeadlock: True/False<br/>- ReadonlyFilesystem: True/False<br/>- DockerProblem: True/False<br/>- NetworkUnavailable: True/False"]
+        end
+        
+        PDE --> NS
+    end
+    
+    subgraph API["API SERVER / MONITORING"]
+        M1["Node Conditions visible in kubectl describe node"]
+        M2["Events for transient problems"]
+        M3["Prometheus metrics for alerting"]
+        M4["Triggers for auto-remediation"]
+    end
+    
+    NS -->|"Events & Conditions"| API
 ```
 
 ## Step 1: Install Node Problem Detector

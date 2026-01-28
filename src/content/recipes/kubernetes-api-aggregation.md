@@ -33,31 +33,30 @@ Use the Kubernetes API Aggregation Layer to register custom API servers that han
 
 ### Architecture
 
-```
-┌─────────────────────────────────────────────────────┐
-│                   kubectl / Client                   │
-└─────────────────────┬───────────────────────────────┘
-                      │ API Request
-                      ▼
-┌─────────────────────────────────────────────────────┐
-│           Kubernetes API Server                      │
-│  ┌────────────────────────────────────────────┐    │
-│  │        API Aggregation Layer               │    │
-│  │  1. Check if request matches APIService    │    │
-│  │  2. Proxy to extension API server          │    │
-│  │  3. Return response to client              │    │
-│  └─────────────────┬──────────────────────────┘    │
-└────────────────────┼────────────────────────────────┘
-                     │
-        ┌────────────┼────────────┐
-        ▼            ▼            ▼
-┌─────────────┐ ┌──────────┐ ┌──────────────┐
-│   Core API  │ │ Metrics  │ │  Custom API  │
-│   Server    │ │  Server  │ │   Server     │
-│ (built-in)  │ │ (HPA)    │ │ (your.api)   │
-└─────────────┘ └──────────┘ └──────────────┘
-     /api           /apis          /apis
-    /apis        metrics.k8s.io  custom.io
+```mermaid
+flowchart TB
+    CLIENT["💻 kubectl / Client"]
+    CLIENT -->|"📨 API Request"| APISERVER
+
+    subgraph APISERVER["☸️ Kubernetes API Server"]
+        AGG["🔀 API Aggregation Layer<br/>1. Check if request matches APIService<br/>2. Proxy to extension API server<br/>3. Return response to client"]
+    end
+
+    AGG --> CORE
+    AGG --> METRICS
+    AGG --> CUSTOM
+
+    subgraph CORE["🏛️ Core API Server"]
+        CORE_DESC["(built-in)<br/>/api<br/>/apis"]
+    end
+
+    subgraph METRICS["📊 Metrics Server"]
+        METRICS_DESC["(HPA)<br/>/apis<br/>metrics.k8s.io"]
+    end
+
+    subgraph CUSTOM["🔧 Custom API Server"]
+        CUSTOM_DESC["(your.api)<br/>/apis<br/>custom.io"]
+    end
 ```
 
 ### Step 1: Understand APIService Resource

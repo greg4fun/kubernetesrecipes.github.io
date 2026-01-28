@@ -139,15 +139,15 @@ spec:
 
 ## Cron Schedule Syntax
 
+```mermaid
+flowchart LR
+    subgraph Cron["Cron Schedule Format: * * * * *"]
+        M["minute<br/>(0-59)"] ~~~ H["hour<br/>(0-23)"] ~~~ DOM["day of month<br/>(1-31)"] ~~~ MO["month<br/>(1-12)"] ~~~ DOW["day of week<br/>(0-6)"]
+    end
+```
+
 ```yaml
 # Cron format: minute hour day-of-month month day-of-week
-# ┌───────────── minute (0 - 59)
-# │ ┌───────────── hour (0 - 23)
-# │ │ ┌───────────── day of month (1 - 31)
-# │ │ │ ┌───────────── month (1 - 12)
-# │ │ │ │ ┌───────────── day of week (0 - 6) (Sunday = 0)
-# │ │ │ │ │
-# * * * * *
 
 # Examples:
 schedule: "*/15 * * * *"     # Every 15 minutes

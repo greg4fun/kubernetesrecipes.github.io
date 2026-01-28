@@ -35,31 +35,48 @@ Implement a comprehensive resource optimization strategy: analyze actual usage, 
 
 ## Resource Optimization Overview
 
-```
-Resource Optimization Strategy:
-
-┌─────────────────────────────────────────────────────────────────┐
-│                    OPTIMIZATION WORKFLOW                         │
-│                                                                  │
-│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐       │
-│  │   ANALYZE   │────►│  RIGHT-SIZE │────►│  AUTOMATE   │       │
-│  │   Usage     │     │  Workloads  │     │  Scaling    │       │
-│  └─────────────┘     └─────────────┘     └─────────────┘       │
-│        │                   │                   │                 │
-│        ▼                   ▼                   ▼                 │
-│  • Metrics Server    • Set requests      • HPA (horizontal)    │
-│  • Prometheus        • Set limits        • VPA (vertical)      │
-│  • kubectl top       • Quality of Service• Cluster Autoscaler  │
-│  • Cost analysis     • Priority classes  • KEDA (event-driven) │
-│                                                                  │
-│  ┌─────────────────────────────────────────────────────────────┐│
-│  │                INFRASTRUCTURE OPTIMIZATION                   ││
-│  │  • Spot/Preemptible instances                               ││
-│  │  • Node pools by workload type                              ││
-│  │  • Bin packing optimization                                 ││
-│  │  • Namespace quotas                                         ││
-│  └─────────────────────────────────────────────────────────────┘│
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph workflow["OPTIMIZATION WORKFLOW"]
+        direction TB
+        
+        subgraph steps[" "]
+            direction LR
+            A["🔍 ANALYZE<br/>Usage"]
+            B["📏 RIGHT-SIZE<br/>Workloads"]
+            C["⚙️ AUTOMATE<br/>Scaling"]
+            A --> B --> C
+        end
+        
+        subgraph details[" "]
+            direction LR
+            subgraph analyze["Analyze"]
+                A1["• Metrics Server"]
+                A2["• Prometheus"]
+                A3["• kubectl top"]
+                A4["• Cost analysis"]
+            end
+            subgraph rightsize["Right-Size"]
+                B1["• Set requests"]
+                B2["• Set limits"]
+                B3["• Quality of Service"]
+                B4["• Priority classes"]
+            end
+            subgraph automate["Automate"]
+                C1["• HPA (horizontal)"]
+                C2["• VPA (vertical)"]
+                C3["• Cluster Autoscaler"]
+                C4["• KEDA (event-driven)"]
+            end
+        end
+        
+        subgraph infra["INFRASTRUCTURE OPTIMIZATION"]
+            I1["• Spot/Preemptible instances"]
+            I2["• Node pools by workload type"]
+            I3["• Bin packing optimization"]
+            I4["• Namespace quotas"]
+        end
+    end
 ```
 
 ## Step 1: Analyze Current Resource Usage

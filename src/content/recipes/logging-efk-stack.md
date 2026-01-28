@@ -13,27 +13,27 @@ The EFK stack (Elasticsearch, Fluentd, Kibana) provides centralized logging for 
 
 ## Architecture Overview
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Kubernetes Cluster                    │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐                 │
-│  │  Pod 1  │  │  Pod 2  │  │  Pod 3  │  ...            │
-│  └────┬────┘  └────┬────┘  └────┬────┘                 │
-│       │            │            │                       │
-│       └────────────┼────────────┘                       │
-│                    ▼                                    │
-│  ┌─────────────────────────────────────┐               │
-│  │   Fluentd DaemonSet (every node)    │               │
-│  └─────────────────┬───────────────────┘               │
-│                    ▼                                    │
-│  ┌─────────────────────────────────────┐               │
-│  │          Elasticsearch              │               │
-│  └─────────────────┬───────────────────┘               │
-│                    ▼                                    │
-│  ┌─────────────────────────────────────┐               │
-│  │            Kibana                    │               │
-│  └─────────────────────────────────────┘               │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Cluster["Kubernetes Cluster"]
+        subgraph Pods["Application Pods"]
+            P1[Pod 1]
+            P2[Pod 2]
+            P3[Pod 3]
+            P4[...]
+        end
+        
+        FD["Fluentd DaemonSet<br/>(every node)"]
+        ES[Elasticsearch]
+        KB[Kibana]
+        
+        P1 --> FD
+        P2 --> FD
+        P3 --> FD
+        P4 --> FD
+        FD --> ES
+        ES --> KB
+    end
 ```
 
 ## Create Logging Namespace

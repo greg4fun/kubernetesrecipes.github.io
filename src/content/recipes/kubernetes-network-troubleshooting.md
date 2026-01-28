@@ -34,35 +34,42 @@ Follow a systematic approach to identify and resolve networking issues by testin
 
 ## Kubernetes Networking Layers
 
-```
-Network Troubleshooting Layers:
-
-┌─────────────────────────────────────────────────────────────────┐
-│  Layer 4: EXTERNAL ACCESS                                        │
-│  • Ingress / LoadBalancer                                       │
-│  • NodePort Services                                            │
-│  • External DNS                                                  │
-├─────────────────────────────────────────────────────────────────┤
-│  Layer 3: NETWORK POLICIES                                       │
-│  • Ingress/Egress rules                                         │
-│  • Namespace isolation                                          │
-│  • Pod-to-pod restrictions                                      │
-├─────────────────────────────────────────────────────────────────┤
-│  Layer 2: SERVICE DISCOVERY                                      │
-│  • ClusterIP Services                                           │
-│  • kube-proxy / iptables                                        │
-│  • Endpoint slices                                              │
-├─────────────────────────────────────────────────────────────────┤
-│  Layer 1: DNS RESOLUTION                                         │
-│  • CoreDNS                                                       │
-│  • Service DNS names                                            │
-│  • Pod DNS settings                                             │
-├─────────────────────────────────────────────────────────────────┤
-│  Layer 0: POD NETWORKING                                         │
-│  • CNI plugin (Calico, Cilium, etc.)                           │
-│  • Pod IP allocation                                            │
-│  • Node-to-node connectivity                                    │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph L4["Layer 4: EXTERNAL ACCESS"]
+        L4A["Ingress / LoadBalancer"]
+        L4B["NodePort Services"]
+        L4C["External DNS"]
+    end
+    
+    subgraph L3["Layer 3: NETWORK POLICIES"]
+        L3A["Ingress/Egress rules"]
+        L3B["Namespace isolation"]
+        L3C["Pod-to-pod restrictions"]
+    end
+    
+    subgraph L2["Layer 2: SERVICE DISCOVERY"]
+        L2A["ClusterIP Services"]
+        L2B["kube-proxy / iptables"]
+        L2C["Endpoint slices"]
+    end
+    
+    subgraph L1["Layer 1: DNS RESOLUTION"]
+        L1A["CoreDNS"]
+        L1B["Service DNS names"]
+        L1C["Pod DNS settings"]
+    end
+    
+    subgraph L0["Layer 0: POD NETWORKING"]
+        L0A["CNI plugin - Calico, Cilium, etc."]
+        L0B["Pod IP allocation"]
+        L0C["Node-to-node connectivity"]
+    end
+    
+    L4 --> L3
+    L3 --> L2
+    L2 --> L1
+    L1 --> L0
 ```
 
 ## Deploy a Debug Pod

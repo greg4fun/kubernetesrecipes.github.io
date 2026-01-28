@@ -33,37 +33,34 @@ Use Pod Readiness Gates to define custom conditions that must be true before a p
 
 ### Architecture
 
-```
-┌─────────────────────────────────────────────────────┐
-│                   Pod Lifecycle                      │
-│                                                     │
-│  ┌─────────────────────────────────────────────┐   │
-│  │           Standard Conditions               │   │
-│  │  • ContainersReady                          │   │
-│  │  • Initialized                              │   │
-│  │  • PodScheduled                             │   │
-│  └─────────────────────────────────────────────┘   │
-│                      +                              │
-│  ┌─────────────────────────────────────────────┐   │
-│  │         Readiness Gates (Custom)            │   │
-│  │  • target-health.elbv2.k8s.aws/ingress      │   │
-│  │  • istio-proxy-ready                        │   │
-│  │  • custom.company.com/database-migrated     │   │
-│  └─────────────────────────────────────────────┘   │
-│                      ↓                              │
-│  ┌─────────────────────────────────────────────┐   │
-│  │    Pod Ready = All conditions True          │   │
-│  └─────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
-                       │
-     External Controller sets conditions
-                       │
-┌──────────────────────┴──────────────────────────────┐
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐   │
-│  │    ALB     │  │   Istio    │  │   Custom   │   │
-│  │ Controller │  │  Sidecar   │  │ Controller │   │
-│  └────────────┘  └────────────┘  └────────────┘   │
-└─────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Lifecycle["Pod Lifecycle"]
+        subgraph Standard["Standard Conditions"]
+            SC1["ContainersReady"]
+            SC2["Initialized"]
+            SC3["PodScheduled"]
+        end
+        
+        subgraph Custom["Readiness Gates (Custom)"]
+            RG1["target-health.elbv2.k8s.aws/ingress"]
+            RG2["istio-proxy-ready"]
+            RG3["custom.company.com/database-migrated"]
+        end
+        
+        Ready["Pod Ready = All conditions True"]
+        
+        Standard --> Ready
+        Custom --> Ready
+    end
+    
+    subgraph Controllers["External Controllers"]
+        ALB["ALB Controller"]
+        Istio["Istio Sidecar"]
+        CC["Custom Controller"]
+    end
+    
+    Controllers -->|"sets conditions"| Custom
 ```
 
 ### Step 1: Define Pod with Readiness Gates

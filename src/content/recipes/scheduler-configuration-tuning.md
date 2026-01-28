@@ -33,25 +33,28 @@ Configure the Kubernetes scheduler with custom scheduling profiles, plugins, and
 
 ### Architecture
 
-```
-┌─────────────────────────────────────────────────────┐
-│          Kubernetes Scheduler                        │
-│  ┌────────────────────────────────────────────┐    │
-│  │     Scheduling Framework                   │    │
-│  │  ┌──────────────────────────────────┐     │    │
-│  │  │ Queue Sort → PreFilter → Filter  │     │    │
-│  │  │ PostFilter → PreScore → Score    │     │    │
-│  │  │ Reserve → Permit → PreBind       │     │    │
-│  │  │ Bind → PostBind                  │     │    │
-│  │  └──────────────────────────────────┘     │    │
-│  └────────────────────────────────────────────┘    │
-│  ┌────────────────────────────────────────────┐    │
-│  │     Scheduling Profiles                    │    │
-│  │  - default-scheduler                       │    │
-│  │  - high-performance-scheduler              │    │
-│  │  - batch-scheduler                         │    │
-│  └────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Scheduler["Kubernetes Scheduler"]
+        subgraph Framework["Scheduling Framework"]
+            QS[Queue Sort] --> PF[PreFilter]
+            PF --> F[Filter]
+            F --> POF[PostFilter]
+            POF --> PS[PreScore]
+            PS --> S[Score]
+            S --> R[Reserve]
+            R --> PM[Permit]
+            PM --> PB[PreBind]
+            PB --> B[Bind]
+            B --> POB[PostBind]
+        end
+        
+        subgraph Profiles["Scheduling Profiles"]
+            P1[default-scheduler]
+            P2[high-performance-scheduler]
+            P3[batch-scheduler]
+        end
+    end
 ```
 
 ### Step 1: Create Custom Scheduler Configuration

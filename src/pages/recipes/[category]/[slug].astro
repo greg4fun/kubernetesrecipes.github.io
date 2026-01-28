@@ -133,7 +133,7 @@ const difficultyColors = {
       )}
 
       <!-- Main Content -->
-      <div class="recipe-content prose prose-slate prose-lg max-w-none
+      <div id="recipe-content" class="recipe-content prose prose-slate prose-lg max-w-none
         prose-headings:scroll-mt-20
         prose-h2:text-2xl prose-h2:font-bold prose-h2:mt-10 prose-h2:mb-4
         prose-h3:text-xl prose-h3:font-semibold prose-h3:mt-8 prose-h3:mb-3
@@ -142,6 +142,33 @@ const difficultyColors = {
       ">
         <Content />
       </div>
+
+      <!-- Mid-content CTA Banner (injected via JS into middle of content) -->
+      <template id="mid-cta-template">
+        <div class="mid-content-cta my-10 not-prose">
+          <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 p-8 md:p-10">
+            <div class="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,transparent,white)]"></div>
+            <div class="relative flex flex-col md:flex-row items-center justify-between gap-6">
+              <div class="text-center md:text-left">
+                <h3 class="text-2xl md:text-3xl font-bold text-white">
+                  📘 Get All 100+ Recipes in One Book
+                </h3>
+                <p class="mt-2 text-indigo-100 max-w-xl">
+                  Stop searching — get every production-ready pattern with detailed explanations, best practices, and copy-paste YAML.
+                </p>
+              </div>
+              <a 
+                href="https://amzn.to/3DzC8QA" 
+                target="_blank" 
+                rel="noopener"
+                class="shrink-0 inline-flex items-center gap-2 bg-white text-indigo-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-50 hover:scale-105 transition-all shadow-lg"
+              >
+                Get the Book →
+              </a>
+            </div>
+          </div>
+        </div>
+      </template>
 
       <!-- Tags -->
       {recipe.data.tags.length > 0 && (
@@ -437,5 +464,43 @@ const difficultyColors = {
         }
       });
     });
+  });
+
+  // Inject mid-content CTA after the 3rd h2 heading (roughly middle of article)
+  document.addEventListener('DOMContentLoaded', () => {
+    const content = document.getElementById('recipe-content');
+    const template = document.getElementById('mid-cta-template');
+    
+    if (content && template) {
+      const h2s = content.querySelectorAll('h2');
+      
+      // Insert after the 3rd h2, or after 2nd if fewer headings, or at middle of content
+      let insertPoint = null;
+      
+      if (h2s.length >= 4) {
+        // Find the section after 3rd h2 (index 2)
+        insertPoint = h2s[2];
+      } else if (h2s.length >= 2) {
+        // Insert after the middle h2
+        const midIndex = Math.floor(h2s.length / 2);
+        insertPoint = h2s[midIndex];
+      }
+      
+      if (insertPoint) {
+        // Find next h2 sibling or end of content to insert before
+        let nextH2 = insertPoint.nextElementSibling;
+        while (nextH2 && nextH2.tagName !== 'H2') {
+          nextH2 = nextH2.nextElementSibling;
+        }
+        
+        const cta = template.content.cloneNode(true);
+        if (nextH2) {
+          nextH2.parentNode.insertBefore(cta, nextH2);
+        } else {
+          // Insert before last element if no next h2
+          content.appendChild(cta);
+        }
+      }
+    }
   });
 </script>
