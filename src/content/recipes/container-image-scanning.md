@@ -1,192 +1,125 @@
 ---
 title: "How to Scan Container Images for Vulnerabilities"
-description: "Implement container image scanning in Kubernetes using Trivy. Learn to scan images in CI/CD, admission controllers, and runtime."
+description: "Implement container image vulnerability scanning with Trivy, Grype, and other tools. Integrate scanning into CI/CD pipelines and admission control."
 category: "security"
 difficulty: "intermediate"
-timeToComplete: "25 minutes"
-kubernetesVersion: "1.28+"
-prerequisites:
-  - "A running Kubernetes cluster"
-  - "kubectl configured to access your cluster"
-  - "Basic understanding of container security"
-relatedRecipes:
-  - "pod-security-standards"
-  - "rbac-service-accounts"
-tags:
-  - security
-  - trivy
-  - scanning
-  - vulnerabilities
-  - cve
-  - images
-publishDate: "2026-01-21"
+publishDate: "2026-01-22"
+tags: ["security", "vulnerability-scanning", "trivy", "containers", "devsecops"]
 author: "Luca Berton"
 ---
 
-## The Problem
+> 💡 **Quick Answer:** Use `trivy image <image>` to scan for vulnerabilities. Integrate into CI/CD to block deployments with critical CVEs. Use admission controllers (Kyverno, OPA) to enforce scanning in-cluster. Common tools: **Trivy** (Aqua), **Grype** (Anchore), **Snyk**.
+>
+> **Key command:** `trivy image --severity HIGH,CRITICAL --exit-code 1 myapp:latest` (fails CI on high/critical vulns).
+>
+> **Gotcha:** Base image vulnerabilities are inherited—use minimal base images (distroless, Alpine) and rebuild regularly to pick up patches.
 
-You need to detect security vulnerabilities in container images before and after deploying them to Kubernetes.
+# How to Scan Container Images for Vulnerabilities
 
-## The Solution
+Container image scanning detects known vulnerabilities (CVEs) in your images before deployment. Integrate scanning into build pipelines and admission control.
 
-Use Trivy, a comprehensive security scanner, to scan images in CI/CD pipelines and as an admission controller in Kubernetes.
-
-## Installing Trivy
-
-### Local Installation
+## Trivy (Quick Start)
 
 ```bash
+# Install Trivy
 # macOS
 brew install trivy
 
 # Linux
 curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
-# Verify
-trivy version
-```
-
-## Scanning Images Locally
-
-### Basic Scan
-
-```bash
+# Scan an image
 trivy image nginx:latest
-```
 
-### Scan with Severity Filter
-
-```bash
+# Scan with severity filter
 trivy image --severity HIGH,CRITICAL nginx:latest
-```
 
-### Scan with Exit Code (for CI/CD)
-
-```bash
+# Fail on vulnerabilities (for CI)
 trivy image --exit-code 1 --severity CRITICAL nginx:latest
+
+# Output as JSON
+trivy image --format json --output results.json nginx:latest
+
+# Scan with SBOM generation
+trivy image --format spdx-json nginx:latest
 ```
 
-### Output Formats
-
-```bash
-# JSON output
-trivy image -f json nginx:latest > results.json
-
-# Table output
-trivy image -f table nginx:latest
-
-# SARIF for GitHub Security
-trivy image -f sarif nginx:latest > results.sarif
-```
-
-## CI/CD Integration
-
-### GitHub Actions
+## Trivy in CI/CD (GitHub Actions)
 
 ```yaml
-name: Scan Container Image
+# .github/workflows/scan.yaml
+name: Container Security Scan
 
 on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
 
 jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Build image
-      run: docker build -t myapp:${{ github.sha }} .
-    
-    - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
-      with:
-        image-ref: 'myapp:${{ github.sha }}'
-        format: 'sarif'
-        output: 'trivy-results.sarif'
-        severity: 'CRITICAL,HIGH'
-    
-    - name: Upload Trivy scan results
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: 'trivy-results.sarif'
+      - uses: actions/checkout@v4
+      
+      - name: Build image
+        run: docker build -t myapp:${{ github.sha }} .
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'myapp:${{ github.sha }}'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+      
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
 ```
 
-### GitLab CI
-
-```yaml
-scan:
-  image:
-    name: aquasec/trivy:latest
-    entrypoint: [""]
-  script:
-    - trivy image --exit-code 1 --severity CRITICAL $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-  only:
-    - main
-```
-
-## Kubernetes Admission Controller
-
-### Install Trivy Operator
+## Grype (Anchore)
 
 ```bash
+# Install Grype
+curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+
+# Scan an image
+grype nginx:latest
+
+# Scan with severity threshold
+grype nginx:latest --fail-on high
+
+# Output as JSON
+grype nginx:latest -o json > results.json
+
+# Scan a local Dockerfile
+grype dir:. --add-cpes-if-none
+```
+
+## Scan in Kubernetes (Trivy Operator)
+
+```bash
+# Install Trivy Operator
 helm repo add aqua https://aquasecurity.github.io/helm-charts/
 helm repo update
 
 helm install trivy-operator aqua/trivy-operator \
   --namespace trivy-system \
-  --create-namespace \
-  --set trivy.ignoreUnfixed=true
-```
+  --create-namespace
 
-### VulnerabilityReports
-
-The operator automatically creates VulnerabilityReports:
-
-```bash
-# List all vulnerability reports
+# View vulnerability reports
 kubectl get vulnerabilityreports -A
 
-# View detailed report
-kubectl describe vulnerabilityreport -n default myapp-pod-myapp
+# Detailed report
+kubectl describe vulnerabilityreport -n default <report-name>
 ```
 
-### View Vulnerabilities
-
-```bash
-# Get summary
-kubectl get vulnerabilityreports -A -o jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.name}: Critical={.report.summary.criticalCount}, High={.report.summary.highCount}{"\n"}{end}'
-```
-
-## Scan Kubernetes Cluster
-
-### Scan Running Pods
-
-```bash
-# Scan all images in a namespace
-trivy k8s --namespace default
-
-# Scan entire cluster
-trivy k8s --all-namespaces
-
-# Generate report
-trivy k8s --report summary
-```
-
-### Scan with CIS Benchmarks
-
-```bash
-trivy k8s --compliance k8s-cis
-```
-
-## Block Vulnerable Images
-
-### Using Kyverno Policy
+## Admission Control with Kyverno
 
 ```yaml
+# block-vulnerable-images.yaml
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -195,171 +128,121 @@ spec:
   validationFailureAction: Enforce
   background: false
   rules:
-  - name: check-vulnerabilities
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-    verifyImages:
-    - imageReferences:
-      - "*"
-      attestations:
-      - type: https://trivy.dev/scan/v1
-        conditions:
-        - all:
-          - key: "{{ criticalCount }}"
-            operator: Equals
-            value: "0"
+    - name: check-vulnerabilities
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "Images with critical vulnerabilities are not allowed"
+        deny:
+          conditions:
+            any:
+              - key: "{{ images.containers.*.vulnerabilities.critical }}"
+                operator: GreaterThan
+                value: 0
 ```
 
-### Using OPA Gatekeeper
+## Scan Dockerfile Best Practices
 
-```yaml
-apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sAllowedRepos
-metadata:
-  name: require-scanned-images
-spec:
-  match:
-    kinds:
-    - apiGroups: [""]
-      kinds: ["Pod"]
-  parameters:
-    repos:
-    - "gcr.io/verified-images/"
-    - "docker.io/library/"
+```dockerfile
+# Bad: Full OS base image
+FROM ubuntu:22.04
+
+# Good: Minimal base image
+FROM gcr.io/distroless/static-debian11
+
+# Good: Alpine-based
+FROM python:3.11-alpine
+
+# Best practice: Pin versions
+FROM nginx:1.25.3-alpine
+
+# Multi-stage to reduce attack surface
+FROM golang:1.21 AS builder
+WORKDIR /app
+COPY . .
+RUN CGO_ENABLED=0 go build -o myapp
+
+FROM gcr.io/distroless/static
+COPY --from=builder /app/myapp /
+USER nonroot:nonroot
+ENTRYPOINT ["/myapp"]
 ```
 
-## Scan Filesystem and Config
-
-### Scan IaC Files
+## Scan Local Filesystem
 
 ```bash
+# Scan current directory
+trivy fs .
+
+# Scan specific path
+trivy fs /path/to/project
+
+# Scan with config file detection
+trivy config .
+
 # Scan Kubernetes manifests
-trivy config ./kubernetes/
-
-# Scan Terraform
-trivy config ./terraform/
-
-# Scan Dockerfile
-trivy config ./Dockerfile
+trivy config --severity HIGH,CRITICAL ./k8s/
 ```
 
-### Example Output
-
-```
-Dockerfile (dockerfile)
-=======================
-Tests: 23 (SUCCESSES: 21, FAILURES: 2)
-Failures: 2 (UNKNOWN: 0, LOW: 0, MEDIUM: 2, HIGH: 0, CRITICAL: 0)
-
-MEDIUM: Specify version tag for image
-════════════════════════════════════
-Using latest tag can cause unexpected behavior
-```
-
-## Create Scan Job
-
-Run as a Kubernetes Job:
-
-```yaml
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: image-scan
-spec:
-  template:
-    spec:
-      containers:
-      - name: trivy
-        image: aquasec/trivy:latest
-        args:
-        - image
-        - --exit-code
-        - "1"
-        - --severity
-        - CRITICAL,HIGH
-        - nginx:latest
-      restartPolicy: Never
-  backoffLimit: 0
-```
-
-## Ignore Specific CVEs
-
-Create `.trivyignore`:
-
-```
-# Ignore specific CVEs
-CVE-2023-12345
-CVE-2023-67890
-
-# With expiration
-CVE-2023-11111 exp:2024-01-01
-```
-
-Use it:
+## Registry Scanning
 
 ```bash
-trivy image --ignorefile .trivyignore nginx:latest
+# Scan image in private registry
+trivy image --username user --password pass registry.example.com/myapp:latest
+
+# Scan with registry credentials file
+trivy image --registry-token $TOKEN registry.example.com/myapp:latest
+
+# Scan entire registry (with tool like Harbor)
+# Harbor has built-in Trivy integration
+```
+
+## Ignore Vulnerabilities
+
+```yaml
+# .trivyignore.yaml
+vulnerabilities:
+  - id: CVE-2023-12345
+    paths:
+      - "usr/lib/libfoo.so"
+    reason: "False positive, not exploitable in our context"
+    expires: 2024-06-01
+  
+  - id: CVE-2023-67890
+    reason: "Accepted risk, no patch available"
+```
+
+```bash
+# Use ignore file
+trivy image --ignorefile .trivyignore.yaml nginx:latest
+```
+
+## Vulnerability Report Example
+
+```bash
+$ trivy image nginx:latest
+
+nginx:latest (debian 12.1)
+===========================
+Total: 142 (UNKNOWN: 0, LOW: 85, MEDIUM: 45, HIGH: 10, CRITICAL: 2)
+
+┌──────────────┬────────────────┬──────────┬───────────────────┬─────────────────┬──────────────────────────────────────┐
+│   Library    │ Vulnerability  │ Severity │ Installed Version │  Fixed Version  │                Title                 │
+├──────────────┼────────────────┼──────────┼───────────────────┼─────────────────┼──────────────────────────────────────┤
+│ libssl3      │ CVE-2024-0727  │ CRITICAL │ 3.0.9-1           │ 3.0.13-1~deb12u1│ OpenSSL denial of service            │
+│ libcurl4     │ CVE-2024-2379  │ HIGH     │ 7.88.1-10         │ 7.88.1-10+deb12u│ curl: HTTP/2 push headers memory leak│
+└──────────────┴────────────────┴──────────┴───────────────────┴─────────────────┴──────────────────────────────────────┘
 ```
 
 ## Best Practices
 
-### 1. Scan in CI/CD Pipeline
-
-Block deployments with critical vulnerabilities.
-
-### 2. Use Fixed Image Tags
-
-```yaml
-# Bad
-image: nginx:latest
-
-# Good  
-image: nginx:1.25.3-alpine
-```
-
-### 3. Regular Re-scanning
-
-New CVEs are discovered daily. Rescan deployed images regularly.
-
-### 4. Use Minimal Base Images
-
-```dockerfile
-# Instead of
-FROM ubuntu:22.04
-
-# Use
-FROM alpine:3.19
-# Or
-FROM gcr.io/distroless/static-debian12
-```
-
-### 5. Update Dependencies Regularly
-
-Set up automated dependency updates with Dependabot or Renovate.
-
-## Key Takeaways
-
-- Scan images before deploying to production
-- Integrate scanning in CI/CD pipelines
-- Use admission controllers to block vulnerable images
-- Run periodic scans on deployed workloads
-- Keep base images minimal and updated
-
----
-
-## 📘 Go Further with Kubernetes Recipes
-
-**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](https://amzn.to/3DzC8QA)**.
-
-Inside the book, you'll master:
-- ✅ Production-ready deployment strategies
-- ✅ Advanced networking and security patterns  
-- ✅ Observability, monitoring, and troubleshooting
-- ✅ Real-world best practices from industry experts
-
-> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
-
-**👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+1. **Scan in CI/CD** - catch vulnerabilities before deployment
+2. **Use minimal base images** - distroless, Alpine reduce attack surface
+3. **Pin image versions** - avoid `latest` tag, use digests for reproducibility
+4. **Rebuild regularly** - pick up base image patches
+5. **Set severity thresholds** - block CRITICAL, warn on HIGH
+6. **Use admission control** - enforce scanning policy in-cluster
+7. **Generate SBOMs** - Software Bill of Materials for supply chain security

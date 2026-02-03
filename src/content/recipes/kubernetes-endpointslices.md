@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["endpointslices", "services", "networking", "discovery", "scalability"]
 ---
 
+> 💡 **Quick Answer:** EndpointSlices replace legacy Endpoints for better scalability—they chunk endpoints into ~100 per slice. View with `kubectl get endpointslices -l kubernetes.io/service-name=<svc>`. They're auto-managed by the EndpointSlice controller; you rarely create them manually.
+>
+> **Key benefit:** Large services (1000+ pods) update faster with EndpointSlices vs single Endpoints object.
+>
+> **Gotcha:** Some older CNIs/service meshes may still use legacy Endpoints—verify your stack supports EndpointSlices.
+
 # How to Use Kubernetes EndpointSlices
 
 EndpointSlices are the modern, scalable replacement for Endpoints. They split service endpoints into smaller chunks for better performance in large clusters.

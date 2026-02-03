@@ -7,6 +7,8 @@ publishDate: "2026-01-22"
 tags: ["oom", "memory", "troubleshooting", "debugging", "resources"]
 ---
 
+> **💡 Quick Answer:** OOMKilled (exit code 137) means your container exceeded its memory limit. Fix it by increasing `resources.limits.memory` in your pod spec. Check current usage with `kubectl top pod <pod>`. If the app has a memory leak, profile it with tools like pprof (Go), VisualVM (Java), or heapdump (Node.js).
+
 # How to Debug OOMKilled Pods
 
 OOMKilled occurs when a container exceeds its memory limit or the node runs out of memory. Learn to diagnose, fix, and prevent OOM issues in Kubernetes.

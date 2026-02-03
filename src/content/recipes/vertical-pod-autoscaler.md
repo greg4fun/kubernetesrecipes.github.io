@@ -22,6 +22,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** VPA auto-adjusts pod CPU/memory requests based on actual usage. Install VPA, then create `VerticalPodAutoscaler` resource targeting your Deployment. Modes: `Off` (recommendations only), `Auto` (applies changes, restarts pods). Check recommendations: `kubectl describe vpa <name>`. Don't use VPA + HPA on same CPU metric. VPA restarts pods to apply changes—use PodDisruptionBudget.
+
 ## The Problem
 
 You don't know the right CPU and memory values for your pod resource requests, leading to either wasted resources (over-provisioning) or OOM kills (under-provisioning).

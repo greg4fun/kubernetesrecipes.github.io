@@ -23,6 +23,12 @@ publishDate: "2026-02-03"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Set `spec.concurrencyPolicy` in your CronJob: **Allow** (default—concurrent runs permitted), **Forbid** (skip if previous still running), or **Replace** (kill previous, start new). Use `Forbid` for idempotent jobs, `Replace` for "latest data wins" scenarios.
+>
+> **Key config:** `concurrencyPolicy: Forbid` prevents overlap; check stuck jobs with `kubectl get jobs --selector=job-name`.
+>
+> **Gotcha:** If jobs consistently overlap, either increase `schedule` interval or optimize job performance—`Forbid` just masks the problem.
+
 ## The Problem
 
 Your CronJob runs every 5 minutes, but sometimes the previous job hasn't finished when the next one starts. This leads to:

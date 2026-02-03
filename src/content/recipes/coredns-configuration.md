@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["coredns", "dns", "networking", "configuration", "resolution"]
 ---
 
+> 💡 **Quick Answer:** Edit CoreDNS ConfigMap to customize DNS: `kubectl edit configmap coredns -n kube-system`. Add `forward` blocks for external domains, `hosts` blocks for static entries, or `rewrite` rules for domain aliasing. Restart CoreDNS pods after changes.
+>
+> **Key command:** `kubectl rollout restart deployment coredns -n kube-system`
+>
+> **Gotcha:** Test changes with `kubectl run test --rm -it --image=busybox -- nslookup myservice.default.svc.cluster.local` before production.
+
 # How to Configure Kubernetes Cluster DNS
 
 CoreDNS handles DNS resolution in Kubernetes clusters. Customize it for custom domains, external forwarding, and performance optimization.

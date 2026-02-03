@@ -1,116 +1,61 @@
 ---
-title: "How to Monitor Kubernetes with Prometheus"
-description: "Deploy Prometheus for comprehensive Kubernetes monitoring. Set up metrics collection, create dashboards, and configure alerting for cluster health."
+title: "How to Set Up Prometheus Monitoring"
+description: "Deploy Prometheus for Kubernetes monitoring. Collect metrics from nodes, pods, and applications with ServiceMonitors and alerting rules."
 category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
-tags: ["prometheus", "monitoring", "metrics", "grafana", "observability"]
+tags: ["prometheus", "monitoring", "metrics", "alerting", "observability"]
+author: "Luca Berton"
 ---
 
-# How to Monitor Kubernetes with Prometheus
+> 💡 **Quick Answer:** Install Prometheus Operator via Helm (`helm install prometheus prometheus-community/kube-prometheus-stack`), then create `ServiceMonitor` CRDs to scrape your apps. Access Prometheus UI via port-forward: `kubectl port-forward svc/prometheus-operated 9090`.
+>
+> **Key resource:** `ServiceMonitor` tells Prometheus which Services to scrape and on which port/path.
+>
+> **Gotcha:** ServiceMonitor must be in a namespace that Prometheus watches, and labels must match Prometheus's `serviceMonitorSelector`.
 
-Prometheus provides powerful metrics collection and alerting for Kubernetes clusters. Deploy the kube-prometheus-stack for comprehensive monitoring with Grafana dashboards.
+# How to Set Up Prometheus Monitoring
 
-## Install kube-prometheus-stack
+Prometheus is the standard for Kubernetes monitoring. It scrapes metrics from targets, stores time-series data, and enables powerful queries with PromQL.
+
+## Install with Helm
 
 ```bash
-# Add Helm repository
+# Add Prometheus community Helm repo
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
-# Install with default configuration
+# Install kube-prometheus-stack (includes Prometheus, Grafana, Alertmanager)
 helm install prometheus prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
   --create-namespace
-
-# Verify installation
-kubectl get pods -n monitoring
-```
-
-## Custom Values Installation
-
-```yaml
-# prometheus-values.yaml
-prometheus:
-  prometheusSpec:
-    retention: 30d
-    retentionSize: 50GB
-    resources:
-      requests:
-        cpu: 500m
-        memory: 2Gi
-      limits:
-        cpu: 2000m
-        memory: 8Gi
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: gp3
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: 100Gi
-    serviceMonitorSelectorNilUsesHelmValues: false
-    podMonitorSelectorNilUsesHelmValues: false
-
-grafana:
-  adminPassword: "your-secure-password"
-  persistence:
-    enabled: true
-    size: 10Gi
-  ingress:
-    enabled: true
-    hosts:
-      - grafana.example.com
-
-alertmanager:
-  alertmanagerSpec:
-    storage:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: gp3
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: 10Gi
-```
-
-```bash
-helm install prometheus prometheus-community/kube-prometheus-stack \
-  --namespace monitoring \
-  --create-namespace \
-  -f prometheus-values.yaml
 ```
 
 ## Access Prometheus UI
 
 ```bash
-# Port forward Prometheus
-kubectl port-forward svc/prometheus-kube-prometheus-prometheus -n monitoring 9090:9090
+# Port-forward to Prometheus
+kubectl port-forward -n monitoring svc/prometheus-kube-prometheus-prometheus 9090
 
-# Port forward Grafana
-kubectl port-forward svc/prometheus-grafana -n monitoring 3000:80
-
-# Get Grafana admin password
-kubectl get secret prometheus-grafana -n monitoring \
-  -o jsonpath="{.data.admin-password}" | base64 -d
+# Port-forward to Grafana (default: admin/prom-operator)
+kubectl port-forward -n monitoring svc/prometheus-grafana 3000:80
 ```
 
-## ServiceMonitor for Applications
+## ServiceMonitor for Your App
 
 ```yaml
 # servicemonitor.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: myapp-monitor
+  name: my-app
   namespace: monitoring
   labels:
-    release: prometheus  # Must match Prometheus selector
+    release: prometheus  # Must match Prometheus's serviceMonitorSelector
 spec:
   selector:
     matchLabels:
-      app: myapp
+      app: my-app
   namespaceSelector:
     matchNames:
       - default
@@ -119,18 +64,44 @@ spec:
     - port: metrics
       interval: 30s
       path: /metrics
-      scrapeTimeout: 10s
+```
+
+## Expose Metrics from Your App
+
+```yaml
+# deployment-with-metrics.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: app
+          image: my-app:latest
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: metrics
+              containerPort: 9090
 ---
-# Application service with metrics port
 apiVersion: v1
 kind: Service
 metadata:
-  name: myapp
+  name: my-app
   labels:
-    app: myapp
+    app: my-app
 spec:
   selector:
-    app: myapp
+    app: my-app
   ports:
     - name: http
       port: 80
@@ -140,240 +111,98 @@ spec:
       targetPort: 9090
 ```
 
-## PodMonitor for Pods Without Services
+## PrometheusRule for Alerts
+
+```yaml
+# alerts.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: my-app-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: my-app
+      rules:
+        - alert: HighErrorRate
+          expr: |
+            sum(rate(http_requests_total{status=~"5.."}[5m])) 
+            / sum(rate(http_requests_total[5m])) > 0.05
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "High error rate detected"
+            description: "Error rate is {{ $value | humanizePercentage }}"
+        
+        - alert: PodNotReady
+          expr: kube_pod_status_ready{condition="false"} == 1
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Pod not ready"
+            description: "Pod {{ $labels.pod }} not ready for 5 minutes"
+```
+
+## Useful PromQL Queries
+
+```promql
+# CPU usage by pod
+sum(rate(container_cpu_usage_seconds_total[5m])) by (pod)
+
+# Memory usage by namespace
+sum(container_memory_usage_bytes) by (namespace)
+
+# HTTP request rate
+sum(rate(http_requests_total[5m])) by (service)
+
+# 95th percentile latency
+histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
+
+# Pod restart count
+sum(kube_pod_container_status_restarts_total) by (pod)
+```
+
+## PodMonitor (for pods without Service)
 
 ```yaml
 # podmonitor.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: batch-jobs-monitor
+  name: my-job
   namespace: monitoring
 spec:
   selector:
     matchLabels:
-      app: batch-job
-  namespaceSelector:
-    matchNames:
-      - batch
+      app: my-job
   podMetricsEndpoints:
     - port: metrics
-      interval: 60s
-      path: /metrics
-```
-
-## Custom Prometheus Rules
-
-```yaml
-# prometheus-rules.yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: kubernetes-alerts
-  namespace: monitoring
-  labels:
-    release: prometheus
-spec:
-  groups:
-    - name: kubernetes.rules
-      rules:
-        # Pod not ready
-        - alert: PodNotReady
-          expr: |
-            kube_pod_status_ready{condition="false"} == 1
-          for: 15m
-          labels:
-            severity: warning
-          annotations:
-            summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} not ready"
-            description: "Pod has been not ready for more than 15 minutes"
-
-        # High CPU usage
-        - alert: HighCPUUsage
-          expr: |
-            (
-              sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace, pod)
-              /
-              sum(kube_pod_container_resource_limits{resource="cpu"}) by (namespace, pod)
-            ) > 0.9
-          for: 5m
-          labels:
-            severity: warning
-          annotations:
-            summary: "High CPU usage in {{ $labels.namespace }}/{{ $labels.pod }}"
-            description: "CPU usage is above 90% for 5 minutes"
-
-        # High memory usage
-        - alert: HighMemoryUsage
-          expr: |
-            (
-              sum(container_memory_working_set_bytes{container!=""}) by (namespace, pod)
-              /
-              sum(kube_pod_container_resource_limits{resource="memory"}) by (namespace, pod)
-            ) > 0.9
-          for: 5m
-          labels:
-            severity: warning
-          annotations:
-            summary: "High memory usage in {{ $labels.namespace }}/{{ $labels.pod }}"
-
-        # Node disk pressure
-        - alert: NodeDiskPressure
-          expr: kube_node_status_condition{condition="DiskPressure",status="true"} == 1
-          for: 5m
-          labels:
-            severity: critical
-          annotations:
-            summary: "Node {{ $labels.node }} has disk pressure"
-```
-
-## Recording Rules for Performance
-
-```yaml
-# recording-rules.yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: recording-rules
-  namespace: monitoring
-spec:
-  groups:
-    - name: cpu.rules
       interval: 30s
-      rules:
-        - record: namespace:container_cpu_usage_seconds_total:sum_rate
-          expr: |
-            sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace)
-        
-        - record: namespace:container_memory_usage_bytes:sum
-          expr: |
-            sum(container_memory_working_set_bytes{container!=""}) by (namespace)
-
-    - name: request.rules
-      interval: 30s
-      rules:
-        - record: job:http_requests_total:rate5m
-          expr: sum(rate(http_requests_total[5m])) by (job)
-        
-        - record: job:http_request_duration_seconds:p99
-          expr: histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (job, le))
 ```
 
-## Useful PromQL Queries
-
-```promql
-# CPU usage by namespace
-sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace)
-
-# Memory usage by pod
-sum(container_memory_working_set_bytes{container!=""}) by (namespace, pod)
-
-# Request rate by service
-sum(rate(http_requests_total[5m])) by (service)
-
-# Error rate percentage
-sum(rate(http_requests_total{status=~"5.."}[5m])) 
-/ 
-sum(rate(http_requests_total[5m])) * 100
-
-# P99 latency
-histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))
-
-# Pod restart rate
-sum(increase(kube_pod_container_status_restarts_total[1h])) by (namespace, pod)
-
-# Node CPU utilization
-100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
-
-# Persistent volume usage
-kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes * 100
-```
-
-## Grafana Dashboard ConfigMap
-
-```yaml
-# grafana-dashboard.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: myapp-dashboard
-  namespace: monitoring
-  labels:
-    grafana_dashboard: "1"
-data:
-  myapp-dashboard.json: |
-    {
-      "dashboard": {
-        "title": "MyApp Dashboard",
-        "panels": [
-          {
-            "title": "Request Rate",
-            "type": "graph",
-            "targets": [
-              {
-                "expr": "sum(rate(http_requests_total{job=\"myapp\"}[5m]))",
-                "legendFormat": "Requests/s"
-              }
-            ]
-          }
-        ]
-      }
-    }
-```
-
-## Federation for Multi-Cluster
-
-```yaml
-# prometheus-federation.yaml
-prometheus:
-  prometheusSpec:
-    additionalScrapeConfigs:
-      - job_name: 'federate'
-        scrape_interval: 30s
-        honor_labels: true
-        metrics_path: '/federate'
-        params:
-          'match[]':
-            - '{job=~".+"}'
-        static_configs:
-          - targets:
-              - 'prometheus-cluster-a.example.com:9090'
-              - 'prometheus-cluster-b.example.com:9090'
-```
-
-## Verify Metrics Collection
+## Verify Targets
 
 ```bash
-# Check targets
-kubectl port-forward svc/prometheus-kube-prometheus-prometheus -n monitoring 9090:9090
+# Check if Prometheus discovers your targets
+kubectl port-forward -n monitoring svc/prometheus-kube-prometheus-prometheus 9090
+
 # Visit http://localhost:9090/targets
-
-# Check service monitors
-kubectl get servicemonitors -A
-
-# Check prometheus rules
-kubectl get prometheusrules -A
-
-# Query metrics via API
-curl -s 'http://localhost:9090/api/v1/query?query=up'
+# Your ServiceMonitor should appear with "UP" status
 ```
 
-## Summary
+## Troubleshooting
 
-kube-prometheus-stack provides complete Kubernetes monitoring with Prometheus, Grafana, and Alertmanager. Use ServiceMonitors to scrape application metrics, create PrometheusRules for alerts, and build Grafana dashboards for visualization. Configure retention and storage based on your needs.
+```bash
+# Check ServiceMonitor is picked up
+kubectl get servicemonitor -n monitoring
 
----
+# Check Prometheus configuration
+kubectl get secret -n monitoring prometheus-kube-prometheus-prometheus -o jsonpath='{.data.prometheus\.yaml\.gz}' | base64 -d | gunzip
 
-## 📘 Go Further with Kubernetes Recipes
-
-**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](https://amzn.to/3DzC8QA)**.
-
-Inside the book, you'll master:
-- ✅ Production-ready deployment strategies
-- ✅ Advanced networking and security patterns  
-- ✅ Observability, monitoring, and troubleshooting
-- ✅ Real-world best practices from industry experts
-
-> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
-
-**👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+# Check Prometheus logs
+kubectl logs -n monitoring prometheus-kube-prometheus-prometheus-0 -c prometheus
+```

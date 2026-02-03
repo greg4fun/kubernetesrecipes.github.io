@@ -24,6 +24,12 @@ publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
+> 💡 **Quick Answer:** Configure API server with `--oidc-issuer-url`, `--oidc-client-id`, and `--oidc-username-claim`. Users authenticate via IdP (Keycloak, Okta, Azure AD), get a JWT token, and use it in kubeconfig. Map OIDC groups to RBAC with `ClusterRoleBinding` referencing `subjects.kind: Group`.
+>
+> **Key flow:** User → IdP login → JWT token → kubeconfig `token` → API server validates with IdP.
+>
+> **Gotcha:** Kubernetes doesn't handle token refresh—use `kubelogin` or `oidc-login` kubectl plugins for automatic token refresh.
+
 ## Problem
 
 Managing individual user certificates for Kubernetes access doesn't scale and makes it difficult to implement single sign-on (SSO), enforce password policies, or integrate with corporate identity systems. You need centralized authentication with your existing identity provider.

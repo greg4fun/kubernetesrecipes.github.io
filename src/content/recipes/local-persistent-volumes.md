@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["local-storage", "persistent-volumes", "ssd", "performance", "storage"]
 ---
 
+> 💡 **Quick Answer:** Create a `StorageClass` with `provisioner: kubernetes.io/no-provisioner` and `volumeBindingMode: WaitForFirstConsumer`. Manually create `PersistentVolume` objects referencing local paths with `nodeAffinity` to pin to specific nodes. PVCs bind when pods are scheduled.
+>
+> **Key benefit:** Direct disk access for lowest latency (databases, caches); no network overhead.
+>
+> **Gotcha:** Local PVs are tied to nodes—if node fails, data is inaccessible. Use for replicated workloads (like distributed databases) not single-instance apps.
+
 # How to Configure Local Persistent Volumes
 
 Local persistent volumes provide direct access to node-local storage devices for high-performance workloads. Ideal for databases and caching systems that need low-latency disk access.

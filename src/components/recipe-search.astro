@@ -267,6 +267,23 @@ const searchIndex = allRecipes.map(recipe => ({
       searchInput.blur();
     }
   });
+
+  // Handle tag filter from URL query parameter
+  document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tagFilter = urlParams.get('tag');
+    
+    if (tagFilter) {
+      searchInput.value = tagFilter;
+      clearBtn.classList.remove('hidden');
+      const results = searchRecipes(tagFilter);
+      renderResults(results, tagFilter);
+      
+      // Scroll to search and highlight
+      searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      searchInput.focus();
+    }
+  });
 </script>
 
 <style>

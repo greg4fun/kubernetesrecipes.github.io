@@ -27,6 +27,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Use **ComputeDomains** with NVIDIA DRA Driver to orchestrate Multi-Node NVLink (MNNVL) workloads on GB200 systems. Define a `ComputeDomain` CRD specifying network isolation requirements, then reference it in your `ResourceClaim`. DRA ensures all allocated GPUs have NVLink reachability while isolating workloads.
+>
+> **Key concept:** ComputeDomains create ephemeral, isolated NVLink domains that guarantee high-bandwidth GPU interconnect between pods.
+>
+> **Gotcha:** Requires Kubernetes 1.32+ with DRA feature gate enabled and NVIDIA DRA Driver—not compatible with legacy device plugins.
+
 ## The Problem
 
 Running distributed GPU workloads across multiple nodes requires high-bandwidth, low-latency interconnects. Multi-Node NVLink (MNNVL) provides this, but orchestrating MNNVL workloads securely while ensuring network isolation between different workloads is complex.

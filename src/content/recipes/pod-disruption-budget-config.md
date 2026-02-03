@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["pdb", "availability", "disruption", "maintenance", "upgrades"]
 ---
 
+> 💡 **Quick Answer:** Create PDB with `minAvailable: N` (minimum running pods) or `maxUnavailable: N` (maximum down at once). PDBs block `kubectl drain` and cluster autoscaler from disrupting too many pods. Use selector matching your deployment's labels.
+>
+> **Key config:** `minAvailable: 2` for 3-replica deployment ensures at least 2 pods run during maintenance.
+>
+> **Gotcha:** PDBs only protect against **voluntary** disruptions (drains, upgrades)—not node failures or OOM kills. Overly strict PDBs can block cluster operations.
+
 # How to Configure Pod Disruption Budgets
 
 Pod Disruption Budgets (PDBs) limit voluntary disruptions to ensure application availability during node maintenance, cluster upgrades, and autoscaling events.

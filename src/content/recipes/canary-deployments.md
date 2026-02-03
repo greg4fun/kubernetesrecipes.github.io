@@ -7,6 +7,8 @@ publishDate: "2026-01-22"
 tags: ["canary", "deployments", "rollout", "traffic-splitting", "release"]
 ---
 
+> **💡 Quick Answer:** Canary = gradual traffic shift to new version. Simple approach: create two Deployments with same `app` label, adjust replica ratios (e.g., stable=9, canary=1 for 10% traffic). For precise control, use Ingress annotations (`nginx.ingress.kubernetes.io/canary-weight: "10"`) or service mesh (Istio VirtualService). Monitor metrics before increasing canary traffic.
+
 # How to Implement Canary Deployments
 
 Canary deployments gradually shift traffic from the stable version to the new version, allowing you to detect issues before full rollout. Learn both native Kubernetes and Ingress-based approaches.

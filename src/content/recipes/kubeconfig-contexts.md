@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["kubeconfig", "contexts", "clusters", "kubectl", "multi-cluster"]
 ---
 
+> 💡 **Quick Answer:** Switch clusters with `kubectl config use-context <context-name>`. View contexts with `kubectl config get-contexts`, current context with `kubectl config current-context`. Merge configs with `KUBECONFIG=~/.kube/config:new-config kubectl config view --flatten > merged`.
+>
+> **Key tool:** Install **kubectx** for fast context switching (`kubectx prod`) and **kubens** for namespace switching (`kubens staging`).
+>
+> **Gotcha:** Always verify current context before destructive operations; set `KUBECONFIG` env var to use separate config files per project.
+
 # How to Manage Kubernetes Contexts and Clusters
 
 Kubeconfig files define clusters, users, and contexts for kubectl. Learn to manage multiple clusters efficiently and switch between them safely.

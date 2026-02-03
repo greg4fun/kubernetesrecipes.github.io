@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["debugging", "ephemeral", "kubectl", "troubleshooting", "containers"]
 ---
 
+> 💡 **Quick Answer:** Debug running pods without restart using `kubectl debug -it <pod> --image=busybox --target=<container>`. The `--target` flag shares the process namespace so you can see and interact with processes in the target container. Use `nicolaka/netshoot` for network debugging tools.
+>
+> **Key command:** `kubectl debug -it mypod --image=nicolaka/netshoot --target=mycontainer -- bash`
+>
+> **Gotcha:** Ephemeral containers require Kubernetes 1.25+ (GA); they can't be removed once added—pod must be deleted to clean up.
+
 # How to Use Ephemeral Containers for Debugging
 
 Ephemeral containers allow you to debug running pods by attaching temporary containers with debugging tools. Troubleshoot issues without restarting pods or modifying deployments.

@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["tls", "ssl", "certificates", "ingress", "letsencrypt", "cert-manager"]
 ---
 
+> 💡 **Quick Answer:** Install **cert-manager**, create a `ClusterIssuer` for Let's Encrypt, then add annotation `cert-manager.io/cluster-issuer: letsencrypt-prod` to your Ingress. Cert-manager auto-provisions TLS certificates and stores them in the Secret referenced by `spec.tls[].secretName`.
+>
+> **Key command:** `kubectl get certificate` to check cert status; `kubectl describe certificate <name>` for troubleshooting.
+>
+> **Gotcha:** Use `letsencrypt-staging` issuer first to avoid rate limits during testing; ensure DNS points to your Ingress IP for HTTP-01 validation.
+
 # How to Secure Ingress with SSL/TLS Certificates
 
 Secure your Kubernetes services with TLS certificates. Use cert-manager to automatically issue and renew certificates from Let's Encrypt or other certificate authorities.

@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["secrets", "external-secrets", "vault", "aws", "security"]
 ---
 
+> 💡 **Quick Answer:** Install ESO via Helm (`helm install external-secrets external-secrets/external-secrets`), create a `SecretStore` (or `ClusterSecretStore`) with provider credentials, then create `ExternalSecret` resources that reference secrets in AWS Secrets Manager, Vault, or Azure Key Vault. ESO syncs them to Kubernetes Secrets.
+>
+> **Key flow:** SecretStore (auth config) → ExternalSecret (what to sync) → Kubernetes Secret (auto-created).
+>
+> **Gotcha:** Use `refreshInterval` to control sync frequency; set up `ClusterSecretStore` for cross-namespace secret access.
+
 # How to Use External Secrets Operator
 
 External Secrets Operator (ESO) syncs secrets from external providers into Kubernetes. Centralize secret management using AWS Secrets Manager, HashiCorp Vault, Azure Key Vault, or GCP Secret Manager.

@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["runtimeclass", "gvisor", "kata", "containers", "isolation"]
 ---
 
+> 💡 **Quick Answer:** Create a `RuntimeClass` with `handler` matching your containerd/CRI-O config (e.g., `runsc` for gVisor, `kata` for Kata Containers). Add `runtimeClassName: <name>` to pod spec. Use for untrusted workloads needing stronger isolation than standard runc.
+>
+> **Key command:** `kubectl get runtimeclass` lists available runtimes; add `scheduling.nodeSelector` to target nodes with the runtime installed.
+>
+> **Gotcha:** RuntimeClass requires the runtime to be installed and configured on nodes—it's not installed automatically.
+
 # How to Use Kubernetes RuntimeClass
 
 RuntimeClass lets you select different container runtimes for pods. Use sandboxed runtimes like gVisor or Kata Containers for enhanced security isolation.

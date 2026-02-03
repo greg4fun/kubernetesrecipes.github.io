@@ -25,6 +25,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Define `Queue` CRDs with `quota` (guaranteed resources) and `limit` (max borrowable). Create hierarchical queues for teams/projects and assign workloads via `queue` annotation. KAI uses **Dominant Resource Fairness (DRF)** to balance resource allocation across competing workloads.
+>
+> **Key pattern:** Parent queue with child queues—child quotas must sum to parent; excess capacity is shared via borrowing.
+>
+> **Gotcha:** Jobs without queue annotation go to default queue; set default queue limits to prevent resource monopolization.
+
 ## The Problem
 
 In multi-tenant GPU clusters, different teams compete for limited resources. Without proper resource management, some teams may monopolize GPUs while others wait. You need fair resource distribution with guaranteed quotas and the ability to burst when resources are available.

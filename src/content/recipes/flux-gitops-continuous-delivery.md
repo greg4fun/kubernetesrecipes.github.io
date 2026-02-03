@@ -23,6 +23,12 @@ publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
+> 💡 **Quick Answer:** Bootstrap Flux with `flux bootstrap github --owner=<org> --repository=<repo> --path=clusters/my-cluster`. Flux installs controllers that watch your Git repo and automatically apply changes. Add manifests, Helm releases, or Kustomizations to Git—Flux syncs them to your cluster.
+>
+> **Key command:** `flux get all` to check sync status; `flux reconcile source git flux-system` to force immediate sync.
+>
+> **Gotcha:** Use `flux create source git` and `flux create kustomization` to add new sources; all changes should go through Git, not kubectl apply.
+
 ## Problem
 
 Manual kubectl apply commands and ad-hoc deployments lead to configuration drift, lack of auditability, and make it difficult to track what's running in your cluster. You need declarative, version-controlled infrastructure management.

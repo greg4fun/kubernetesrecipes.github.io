@@ -19,6 +19,12 @@ publishDate: "2026-01-20"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Create a zero-trust baseline with `podSelector: {}` (selects all pods) and both `policyTypes: [Ingress, Egress]` with no rules—this blocks all traffic. Then add specific allow policies. Always include a DNS egress allow policy after default-deny.
+>
+> **Key config:** Empty `podSelector` + empty rules = deny all for that direction.
+>
+> **Gotcha:** After default-deny, pods can't resolve DNS—immediately add: `egress: [{to: [{namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}}], ports: [{port: 53, protocol: UDP}]}]`.
+
 ## The Problem
 
 By default, Kubernetes allows all pods to communicate with each other without restrictions. This violates the principle of least privilege and can be a security risk.

@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["lifecycle", "hooks", "preStop", "postStart", "graceful-shutdown"]
 ---
 
+> 💡 **Quick Answer:** Two hooks: **postStart** (runs after container starts, parallel to entrypoint) and **preStop** (runs before SIGTERM on shutdown). Use `exec.command` or `httpGet`. PreStop is critical for graceful shutdown—drain connections before termination.
+>
+> **Key pattern:** `preStop: {exec: {command: ["/bin/sh", "-c", "sleep 10"]}}` gives load balancers time to remove the pod.
+>
+> **Gotcha:** PreStop must complete within `terminationGracePeriodSeconds` (default 30s); hook failures don't prevent container termination.
+
 # How to Configure Pod Lifecycle Hooks
 
 Pod lifecycle hooks execute custom actions at specific points in a container's lifecycle. Use postStart for initialization and preStop for graceful shutdown.

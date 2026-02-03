@@ -1,0 +1,25 @@
+---
+/**
+ * SEO Redirect Page: kyverno-policies → kyverno-policy-management
+ * This prevents 404 errors for old URLs and passes link equity to canonical page
+ */
+const canonicalUrl = "https://kubernetes.recipes/recipes/security/kyverno-policy-management/";
+const localPath = "/recipes/security/kyverno-policy-management/";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirecting to Kyverno Policy Management...</title>
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta http-equiv="refresh" content="0; url={localPath}" />
+  <script is:inline define:vars={{ localPath }}>
+    window.location.replace(localPath);
+  </script>
+</head>
+<body>
+  <p>Redirecting to <a href={localPath}>Kyverno Policy Management</a>...</p>
+</body>
+</html>

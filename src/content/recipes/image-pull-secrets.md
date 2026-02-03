@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["image-pull-secrets", "registries", "docker", "authentication", "containers"]
 ---
 
+> 💡 **Quick Answer:** Create a secret with `kubectl create secret docker-registry <name> --docker-server=<registry> --docker-username=<user> --docker-password=<pass>`. Reference in pods via `spec.imagePullSecrets[].name` or attach to ServiceAccount with `kubectl patch sa default -p '{"imagePullSecrets": [{"name": "my-secret"}]}'`.
+>
+> **Key command:** For cloud registries, use IAM: AWS IRSA, GCP Workload Identity, or Azure Managed Identity instead of static credentials.
+>
+> **Gotcha:** Secrets are namespace-scoped—create in each namespace or use ServiceAccount attachment for default.
+
 # How to Configure Image Pull Secrets
 
 Image pull secrets authenticate Kubernetes with private container registries. They're required to pull images from Docker Hub private repos, cloud provider registries, or self-hosted registries.

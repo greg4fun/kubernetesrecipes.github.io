@@ -22,6 +22,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Cluster Autoscaler adds/removes nodes based on pending pods. It scales up when pods can't be scheduled due to insufficient resources. Scales down when nodes are underutilized (<50% for 10 min). Configure via node pool min/max in cloud provider. Works with HPA: HPA scales pods → Cluster Autoscaler scales nodes. Set `--scale-down-delay-after-add=10m` to avoid thrashing.
+
 ## The Problem
 
 Your cluster runs out of resources when demand spikes, causing pods to remain Pending. Manual node scaling is slow and inefficient.

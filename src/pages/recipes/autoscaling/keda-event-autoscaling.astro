@@ -1,0 +1,25 @@
+---
+/**
+ * SEO Redirect Page: keda-event-autoscaling → keda-event-driven-autoscaling
+ * This prevents 404 errors for old URLs and passes link equity to canonical page
+ */
+const canonicalUrl = "https://kubernetes.recipes/recipes/autoscaling/keda-event-driven-autoscaling/";
+const localPath = "/recipes/autoscaling/keda-event-driven-autoscaling/";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirecting to KEDA Event-Driven Autoscaling...</title>
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta http-equiv="refresh" content="0; url={localPath}" />
+  <script is:inline define:vars={{ localPath }}>
+    window.location.replace(localPath);
+  </script>
+</head>
+<body>
+  <p>Redirecting to <a href={localPath}>KEDA Event-Driven Autoscaling</a>...</p>
+</body>
+</html>

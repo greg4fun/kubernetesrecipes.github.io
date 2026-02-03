@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["logging", "elasticsearch", "fluentd", "kibana", "efk", "observability"]
 ---
 
+> 💡 **Quick Answer:** Deploy EFK stack: **Elasticsearch** (storage), **Fluentd** DaemonSet (collector on each node), **Kibana** (visualization). Fluentd reads `/var/log/containers/*.log`, parses and enriches with Kubernetes metadata, sends to Elasticsearch. Access Kibana to search and visualize logs.
+>
+> **Key command:** Use `helm install elasticsearch elastic/elasticsearch -n logging` + `helm install kibana elastic/kibana` for managed setup.
+>
+> **Gotcha:** EFK requires significant resources (especially Elasticsearch)—consider managed services (OpenSearch, Elastic Cloud) or lighter alternatives (Loki) for smaller clusters.
+
 # How to Set Up Centralized Logging with EFK Stack
 
 The EFK stack (Elasticsearch, Fluentd, Kibana) provides centralized logging for Kubernetes clusters. Collect logs from all containers and visualize them in a unified dashboard.

@@ -23,6 +23,12 @@ publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
+> 💡 **Quick Answer:** Install Crossplane with `helm install crossplane crossplane-stable/crossplane -n crossplane-system`, then install a **provider** (e.g., `provider-aws`). Define infrastructure as Kubernetes CRDs: `kubectl apply -f my-rds-database.yaml`. Crossplane reconciles cloud resources using Kubernetes-native GitOps.
+>
+> **Key concept:** Create **Compositions** and **XRDs** to abstract cloud complexity into simple claims that app teams request.
+>
+> **Gotcha:** Crossplane needs cloud credentials via `ProviderConfig`—use IRSA (AWS), Workload Identity (GCP), or managed identity (Azure).
+
 ## Problem
 
 Managing cloud infrastructure separately from Kubernetes workloads creates operational complexity. Different tools, workflows, and access controls for infrastructure vs applications slow down development and increase risk.

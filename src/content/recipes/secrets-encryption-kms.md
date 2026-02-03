@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["encryption", "kms", "secrets", "security", "etcd"]
 ---
 
+> 💡 **Quick Answer:** Configure API server with `--encryption-provider-config` pointing to an `EncryptionConfiguration` that specifies KMS provider (AWS KMS, GCP KMS, Azure Key Vault, HashiCorp Vault). Secrets are encrypted before being written to etcd. Re-encrypt existing secrets after enabling.
+>
+> **Key command:** After enabling, re-encrypt: `kubectl get secrets -A -o json | kubectl replace -f -`
+>
+> **Gotcha:** KMS key rotation requires re-encrypting all secrets; test encryption/decryption in staging first—misconfiguration can lock you out.
+
 # How to Encrypt Secrets at Rest with KMS
 
 By default, Kubernetes stores secrets in etcd base64-encoded but not encrypted. Configure encryption at rest using external KMS providers for production security.

@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["audit", "logging", "security", "compliance", "api-server"]
 ---
 
+> 💡 **Quick Answer:** Configure API server with `--audit-policy-file` (defines what to log) and `--audit-log-path` (where to write). Policy uses `rules` with `level` (None, Metadata, Request, RequestResponse) and `resources` filters. Send to SIEM via `--audit-webhook-config-file` for centralized analysis.
+>
+> **Key config:** Start with Metadata level for all resources, RequestResponse for secrets/RBAC changes.
+>
+> **Gotcha:** RequestResponse level on high-traffic resources generates massive logs—use selective rules and log rotation.
+
 # How to Configure Kubernetes Audit Logging
 
 Kubernetes audit logs record API server requests, providing a security-relevant chronological record of actions taken in the cluster. Essential for compliance, security monitoring, and troubleshooting.

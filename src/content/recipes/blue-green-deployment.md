@@ -22,6 +22,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Blue-green = two identical environments, instant switch. Create `app-blue` and `app-green` Deployments. Point Service selector to active version: `selector: {version: blue}`. To switch, update Service to `{version: green}`. Instant rollback by switching back. Requires 2x resources during deployment. For gradual rollout, use canary deployments instead.
+
 ## The Problem
 
 You want to deploy a new version of your application with the ability to instantly switch back to the old version if issues arise.

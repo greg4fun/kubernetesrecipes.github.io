@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["api-server", "authentication", "authorization", "rbac", "security"]
 ---
 
+> 💡 **Quick Answer:** Kubernetes API security uses three layers: **Authentication** (who you are—X.509 certs, OIDC, ServiceAccount tokens), **Authorization** (what you can do—RBAC, ABAC, webhooks), and **Admission Control** (policy enforcement). Configure RBAC with `Role`/`ClusterRole` and bind via `RoleBinding`/`ClusterRoleBinding`.
+>
+> **Key command:** `kubectl auth can-i --list --as=system:serviceaccount:default:mysa` to verify permissions.
+>
+> **Gotcha:** Enable audit logging (`--audit-log-path`) to track API access and debug permission issues.
+
 # How to Configure Kubernetes API Access Control
 
 Secure Kubernetes API access through authentication, authorization, and audit logging. Configure RBAC policies, manage API groups, and implement least-privilege access.

@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["tracing", "jaeger", "opentelemetry", "observability", "microservices"]
 ---
 
+> 💡 **Quick Answer:** Deploy Jaeger with the operator: `kubectl apply -f jaeger-operator.yaml`, then create a `Jaeger` CR. Instrument apps with **OpenTelemetry SDK** to send traces via OTLP or Jaeger protocol. Access UI at `kubectl port-forward svc/jaeger-query 16686:16686`.
+>
+> **Key setup:** Configure `OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger-collector:14268/api/traces` in your app.
+>
+> **Gotcha:** Ensure **context propagation** headers (traceparent, b3) are passed between services for end-to-end traces.
+
 # How to Implement Distributed Tracing with Jaeger
 
 Distributed tracing helps you understand request flow across microservices. Jaeger provides end-to-end tracing for identifying latency issues and debugging distributed systems.

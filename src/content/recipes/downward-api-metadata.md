@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["downward-api", "metadata", "environment", "configuration", "pods"]
 ---
 
+> 💡 **Quick Answer:** Use `env.valueFrom.fieldRef` for pod metadata (name, namespace, IP, node) or `resourceFieldRef` for container resources (CPU/memory limits). Mount as files via `downwardAPI` volume for labels and annotations. No API server calls needed.
+>
+> **Key config:** `fieldRef.fieldPath: metadata.name` for pod name; `resourceFieldRef.resource: limits.memory` for memory limit.
+>
+> **Gotcha:** Labels and annotations must use volume mounts (not env vars) and update automatically when changed.
+
 # How to Use Downward API for Pod Metadata
 
 The Downward API exposes pod and container metadata to running applications. Access pod name, namespace, labels, annotations, and resource information without calling the Kubernetes API.

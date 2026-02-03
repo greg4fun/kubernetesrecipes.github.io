@@ -21,6 +21,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** **ClusterIP** (default): internal only. **NodePort**: exposes on each node's IP at static port (30000-32767). **LoadBalancer**: provisions cloud LB (AWS/GCP/Azure)—use for production. For on-prem, install MetalLB. Quick expose: `kubectl expose deployment myapp --type=LoadBalancer --port=80 --target-port=8080`. For HTTP routing, use Ingress instead of multiple LoadBalancers.
+
 ## The Problem
 
 You need to expose your Kubernetes application to external traffic, but you're unsure which service type to use.

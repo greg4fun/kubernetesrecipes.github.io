@@ -24,6 +24,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Use cloud-native workload identity instead of static credentials. **AWS:** IRSA (IAM Roles for Service Accounts) — annotate SA with IAM role ARN. **GCP:** Workload Identity — annotate SA with GCP service account. **Azure:** Workload Identity — federated credentials + managed identity. Pods get short-lived tokens automatically.
+>
+> **Key pattern:** Create cloud IAM role/service account, establish trust with K8s ServiceAccount, annotate SA with cloud identity.
+>
+> **Gotcha:** Workload Identity requires cluster-level configuration (OIDC issuer). Test with `aws sts get-caller-identity` (or equivalent) from inside the pod.
+
 ## The Problem
 
 Pods need to access cloud services (S3, Azure Storage, GCS, databases, etc.) but storing cloud credentials as Kubernetes Secrets is insecure—secrets can leak, are hard to rotate, and provide long-lived access.

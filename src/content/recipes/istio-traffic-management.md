@@ -24,6 +24,12 @@ publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
+> 💡 **Quick Answer:** Use **VirtualService** for routing rules (traffic splitting, header matching, retries) and **DestinationRule** for load balancing and circuit breakers. Example: split traffic 90/10 between versions with `route[].weight`. Enable fault injection with `fault.delay` or `fault.abort` for chaos testing.
+>
+> **Key commands:** `istioctl analyze` to validate config; `kubectl get virtualservice,destinationrule` to list rules.
+>
+> **Gotcha:** VirtualService routes apply to mesh traffic only if Gateway is not specified; for external traffic, define a Gateway and reference it in VirtualService.
+
 ## Problem
 
 You need advanced traffic management capabilities beyond basic Kubernetes Services including intelligent request routing, traffic splitting for canary deployments, fault injection for resilience testing, and circuit breaking for failure handling.

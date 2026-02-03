@@ -26,6 +26,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Partition A100/H100 GPUs using **MIG + DRA** for efficient resource sharing. Enable MIG mode on GPUs (`nvidia-smi mig -i 0 -cgi`), install NVIDIA DRA Driver, then create `ResourceClaim` requesting specific MIG profiles (e.g., `mig-1g.5gb`, `mig-3g.20gb`). DRA dynamically allocates appropriate slices.
+>
+> **Key benefit:** Run 7 isolated workloads on a single A100 by partitioning into `1g.5gb` slices—each with dedicated memory and compute.
+>
+> **Gotcha:** MIG profiles must be pre-configured on GPUs; not all workloads benefit from MIG—memory-intensive jobs need larger slices.
+
 ## The Problem
 
 NVIDIA A100 and H100 GPUs are powerful but expensive. Running small workloads on a full GPU wastes resources. Multi-Instance GPU (MIG) technology can partition a single GPU into multiple isolated instances, but managing MIG slices in Kubernetes has been challenging.

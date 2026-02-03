@@ -21,6 +21,12 @@ publishDate: "2026-01-20"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Create `PersistentVolumeClaim` (PVC) with `storageClassName` matching your StorageClass. Dynamic provisioning auto-creates PersistentVolume (PV). Mount in pod via `volumes.persistentVolumeClaim`. For cloud: use default StorageClasses (`gp2` on AWS, `standard` on GKE, `default` on AKS).
+>
+> **Key command:** `kubectl get sc` lists available StorageClasses; `kubectl get pvc` shows claim status (Bound = ready).
+>
+> **Gotcha:** PVCs stay Pending if no matching StorageClass exists or provisioner lacks permissions—check events with `kubectl describe pvc`.
+
 ## The Problem
 
 Your application needs persistent storage that survives pod restarts and rescheduling. You need a way to request storage dynamically without pre-creating volumes.

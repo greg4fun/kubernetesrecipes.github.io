@@ -24,6 +24,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Deploy Node Problem Detector as a DaemonSet (`kubectl apply -f https://...node-problem-detector.yaml`). It monitors kernel logs, docker/containerd health, and system metrics, then reports issues as Node Conditions and Events. Integrate with alerting via Prometheus metrics.
+>
+> **Key benefit:** Detects kernel panics, OOM events, disk issues, container runtime problems before they cause pod failures.
+>
+> **Gotcha:** NPD only detects and reports—you need to act on it. Use with cluster autoscaler's node-drain features or custom remediation.
+
 ## The Problem
 
 Node-level issues (kernel panics, hardware failures, container runtime problems) are often invisible to Kubernetes until they cause pod failures. You need early detection and reporting of node problems before they impact workloads.

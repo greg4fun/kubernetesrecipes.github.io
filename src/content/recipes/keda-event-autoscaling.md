@@ -1,71 +1,128 @@
 ---
-title: "How to Implement Pod Autoscaling with KEDA"
-description: "Scale workloads based on external events with KEDA. Configure scalers for queues, databases, Prometheus metrics, and custom sources."
+title: "How to Use KEDA for Event-Driven Autoscaling"
+description: "Scale Kubernetes workloads based on external events with KEDA. Configure scalers for queues, databases, and custom metrics beyond CPU/memory."
 category: "autoscaling"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
-tags: ["keda", "autoscaling", "events", "scaling", "serverless"]
+tags: ["keda", "autoscaling", "event-driven", "queues", "serverless"]
+author: "Luca Berton"
 ---
 
-# How to Implement Pod Autoscaling with KEDA
+> 💡 **Quick Answer:** Install KEDA (`helm install keda kedacore/keda`), create `ScaledObject` pointing to your Deployment with a trigger (e.g., `type: rabbitmq`, `queueLength: 5`). KEDA scales from 0 to N based on event source metrics—not just CPU/memory.
+>
+> **Key concept:** KEDA extends HPA with 50+ scalers (Kafka, RabbitMQ, AWS SQS, Azure Queue, Prometheus, Cron, etc.).
+>
+> **Gotcha:** KEDA can scale to zero, but first pod startup adds latency. Set `minReplicaCount: 1` for latency-sensitive workloads.
 
-KEDA (Kubernetes Event-driven Autoscaling) scales workloads based on external metrics and events. Scale to zero and handle event-driven workloads efficiently.
+# How to Use KEDA for Event-Driven Autoscaling
+
+KEDA (Kubernetes Event-Driven Autoscaling) scales workloads based on external events like message queues, databases, or custom metrics. It can scale to zero when there's no work.
 
 ## Install KEDA
 
 ```bash
-# Install with Helm
+# Add Helm repo
 helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
-helm install keda kedacore/keda --namespace keda --create-namespace
 
-# Or with kubectl
-kubectl apply --server-side -f https://github.com/kedacore/keda/releases/download/v2.13.0/keda-2.13.0.yaml
+# Install KEDA
+helm install keda kedacore/keda --namespace keda --create-namespace
 
 # Verify installation
 kubectl get pods -n keda
 ```
 
-## KEDA Components
+## Basic ScaledObject
 
 ```yaml
-# ScaledObject - For Deployments/StatefulSets
-# ScaledJob - For Jobs
-# TriggerAuthentication - For secrets/credentials
-
-# KEDA manages HPA automatically
-# Can scale to/from zero (unlike standard HPA)
-```
-
-## Scale on RabbitMQ Queue
-
-```yaml
-# rabbitmq-scaler.yaml
+# scaledobject.yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: rabbitmq-scaler
-  namespace: production
+  name: my-app-scaler
+  namespace: default
 spec:
   scaleTargetRef:
-    name: queue-worker  # Deployment name
-  minReplicaCount: 0    # Scale to zero!
-  maxReplicaCount: 50
-  pollingInterval: 15   # Check every 15 seconds
-  cooldownPeriod: 300   # Wait 5 min before scale down
+    name: my-app  # Deployment name
+  pollingInterval: 15
+  cooldownPeriod: 300
+  minReplicaCount: 0
+  maxReplicaCount: 100
   triggers:
     - type: rabbitmq
       metadata:
-        host: amqp://user:pass@rabbitmq.default.svc:5672
-        queueName: orders
-        mode: QueueLength
-        value: "5"  # Scale up at 5 messages per replica
+        queueName: tasks
+        queueLength: "5"  # Scale when >5 messages per replica
+      authenticationRef:
+        name: rabbitmq-auth
 ```
 
-## Scale on AWS SQS
+## RabbitMQ Scaler
 
 ```yaml
-# sqs-scaler.yaml
+# rabbitmq-scaledobject.yaml
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: rabbitmq-consumer
+spec:
+  scaleTargetRef:
+    name: queue-processor
+  minReplicaCount: 0
+  maxReplicaCount: 30
+  triggers:
+    - type: rabbitmq
+      metadata:
+        host: amqp://guest:guest@rabbitmq.default.svc.cluster.local:5672/
+        queueName: orders
+        mode: QueueLength
+        value: "10"
+```
+
+## Kafka Scaler
+
+```yaml
+# kafka-scaledobject.yaml
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: kafka-consumer
+spec:
+  scaleTargetRef:
+    name: kafka-processor
+  minReplicaCount: 1
+  maxReplicaCount: 50
+  triggers:
+    - type: kafka
+      metadata:
+        bootstrapServers: kafka.default.svc.cluster.local:9092
+        consumerGroup: my-group
+        topic: events
+        lagThreshold: "100"
+```
+
+## AWS SQS Scaler
+
+```yaml
+# sqs-scaledobject.yaml
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: sqs-consumer
+spec:
+  scaleTargetRef:
+    name: sqs-processor
+  minReplicaCount: 0
+  maxReplicaCount: 20
+  triggers:
+    - type: aws-sqs-queue
+      metadata:
+        queueURL: https://sqs.us-east-1.amazonaws.com/123456789/my-queue
+        queueLength: "5"
+        awsRegion: us-east-1
+      authenticationRef:
+        name: aws-credentials
+---
 apiVersion: keda.sh/v1alpha1
 kind: TriggerAuthentication
 metadata:
@@ -78,285 +135,132 @@ spec:
     - parameter: awsSecretAccessKey
       name: aws-secrets
       key: AWS_SECRET_ACCESS_KEY
----
-apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
-metadata:
-  name: sqs-scaler
-spec:
-  scaleTargetRef:
-    name: sqs-worker
-  minReplicaCount: 0
-  maxReplicaCount: 100
-  triggers:
-    - type: aws-sqs-queue
-      authenticationRef:
-        name: aws-credentials
-      metadata:
-        queueURL: https://sqs.us-east-1.amazonaws.com/123456789/my-queue
-        queueLength: "10"
-        awsRegion: us-east-1
 ```
 
-## Scale on Kafka
+## Prometheus Scaler
 
 ```yaml
-# kafka-scaler.yaml
-apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
-metadata:
-  name: kafka-consumer
-spec:
-  scaleTargetRef:
-    name: kafka-consumer
-  minReplicaCount: 1
-  maxReplicaCount: 50
-  triggers:
-    - type: kafka
-      metadata:
-        bootstrapServers: kafka.default.svc:9092
-        consumerGroup: my-consumer-group
-        topic: events
-        lagThreshold: "100"  # Scale when lag > 100
-        activationLagThreshold: "10"  # Start from 0 at lag 10
-```
-
-## Scale on Prometheus Metrics
-
-```yaml
-# prometheus-scaler.yaml
+# prometheus-scaledobject.yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: prometheus-scaler
 spec:
   scaleTargetRef:
-    name: api-server
+    name: my-app
   minReplicaCount: 2
-  maxReplicaCount: 20
+  maxReplicaCount: 10
   triggers:
     - type: prometheus
       metadata:
-        serverAddress: http://prometheus.monitoring.svc:9090
+        serverAddress: http://prometheus.monitoring.svc.cluster.local:9090
         metricName: http_requests_per_second
-        query: sum(rate(http_requests_total{app="api"}[2m]))
-        threshold: "100"  # Scale at 100 RPS
+        threshold: "100"
+        query: sum(rate(http_requests_total{app="my-app"}[2m]))
 ```
 
-## Scale on Redis List
+## Cron Scaler (Scheduled Scaling)
 
 ```yaml
-# redis-scaler.yaml
+# cron-scaledobject.yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: redis-worker
-spec:
-  scaleTargetRef:
-    name: redis-processor
-  minReplicaCount: 0
-  maxReplicaCount: 30
-  triggers:
-    - type: redis
-      metadata:
-        address: redis.default.svc:6379
-        listName: job-queue
-        listLength: "10"
-        databaseIndex: "0"
-```
-
-## Scale on PostgreSQL Query
-
-```yaml
-# postgres-scaler.yaml
-apiVersion: keda.sh/v1alpha1
-kind: TriggerAuthentication
-metadata:
-  name: postgres-auth
-spec:
-  secretTargetRef:
-    - parameter: connection
-      name: postgres-secrets
-      key: connection-string
----
-apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
-metadata:
-  name: postgres-scaler
-spec:
-  scaleTargetRef:
-    name: db-processor
-  minReplicaCount: 0
-  maxReplicaCount: 20
-  triggers:
-    - type: postgresql
-      authenticationRef:
-        name: postgres-auth
-      metadata:
-        query: "SELECT COUNT(*) FROM jobs WHERE status='pending'"
-        targetQueryValue: "5"
-```
-
-## Scale on HTTP Traffic
-
-```yaml
-# http-scaler.yaml
-apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
-metadata:
-  name: http-scaler
+  name: business-hours-scaler
 spec:
   scaleTargetRef:
     name: web-app
   minReplicaCount: 1
-  maxReplicaCount: 50
+  maxReplicaCount: 20
   triggers:
-    - type: prometheus
+    - type: cron
       metadata:
-        serverAddress: http://prometheus.monitoring.svc:9090
-        query: |
-          sum(rate(nginx_ingress_controller_requests{
-            namespace="production",
-            service="web-app"
-          }[2m]))
-        threshold: "100"
+        timezone: America/New_York
+        start: 0 8 * * 1-5    # 8 AM weekdays
+        end: 0 18 * * 1-5     # 6 PM weekdays
+        desiredReplicas: "10"
+    - type: cron
+      metadata:
+        timezone: America/New_York
+        start: 0 18 * * 1-5   # After hours
+        end: 0 8 * * 1-5
+        desiredReplicas: "2"
 ```
 
 ## Multiple Triggers
 
 ```yaml
-# multi-trigger.yaml
+# multi-trigger-scaledobject.yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: multi-scaler
+  name: multi-trigger
 spec:
   scaleTargetRef:
-    name: worker
+    name: my-app
   minReplicaCount: 1
-  maxReplicaCount: 100
-  triggers:
-    # Scale on either condition
-    - type: rabbitmq
-      metadata:
-        host: amqp://rabbitmq.svc:5672
-        queueName: high-priority
-        queueLength: "1"
-    - type: rabbitmq
-      metadata:
-        host: amqp://rabbitmq.svc:5672
-        queueName: normal
-        queueLength: "10"
-```
-
-## ScaledJob (For Jobs)
-
-```yaml
-# scaled-job.yaml
-apiVersion: keda.sh/v1alpha1
-kind: ScaledJob
-metadata:
-  name: batch-processor
-spec:
-  jobTargetRef:
-    parallelism: 1
-    completions: 1
-    template:
-      spec:
-        containers:
-          - name: processor
-            image: batch-processor:v1
-            env:
-              - name: QUEUE_URL
-                value: "amqp://rabbitmq.svc:5672"
-        restartPolicy: Never
-  pollingInterval: 30
-  successfulJobsHistoryLimit: 5
-  failedJobsHistoryLimit: 5
   maxReplicaCount: 50
   triggers:
     - type: rabbitmq
       metadata:
-        host: amqp://rabbitmq.svc:5672
-        queueName: batch-jobs
-        mode: QueueLength
-        value: "1"  # One job per message
+        queueName: high-priority
+        queueLength: "1"
+    - type: cpu
+      metricType: Utilization
+      metadata:
+        value: "70"
+    - type: memory
+      metricType: Utilization
+      metadata:
+        value: "80"
 ```
 
-## Scaling Behavior
+## ScaledJob (for Job-based scaling)
 
 ```yaml
-# advanced-scaling.yaml
+# scaledjob.yaml
 apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
+kind: ScaledJob
 metadata:
-  name: advanced-scaler
+  name: queue-job
 spec:
-  scaleTargetRef:
-    name: my-app
-  minReplicaCount: 2
+  jobTargetRef:
+    template:
+      spec:
+        containers:
+          - name: processor
+            image: my-processor:latest
+        restartPolicy: Never
+  pollingInterval: 10
   maxReplicaCount: 100
-  pollingInterval: 15
-  cooldownPeriod: 300
-  advanced:
-    horizontalPodAutoscalerConfig:
-      behavior:
-        scaleDown:
-          stabilizationWindowSeconds: 300
-          policies:
-            - type: Percent
-              value: 10
-              periodSeconds: 60
-        scaleUp:
-          stabilizationWindowSeconds: 0
-          policies:
-            - type: Percent
-              value: 100
-              periodSeconds: 15
   triggers:
-    - type: prometheus
+    - type: rabbitmq
       metadata:
-        serverAddress: http://prometheus.svc:9090
-        query: sum(rate(requests_total[1m]))
-        threshold: "50"
+        queueName: batch-jobs
+        queueLength: "1"
 ```
 
 ## Monitor KEDA
 
 ```bash
 # Check ScaledObjects
-kubectl get scaledobject -A
-kubectl describe scaledobject my-scaler
+kubectl get scaledobject
 
-# Check created HPA
+# Check HPA created by KEDA
 kubectl get hpa
 
-# KEDA operator logs
+# View KEDA operator logs
 kubectl logs -n keda -l app=keda-operator
 
-# Metrics server logs
-kubectl logs -n keda -l app=keda-metrics-apiserver
-
-# Debug scaling
-kubectl get scaledobject my-scaler -o yaml | grep -A20 status
+# Describe ScaledObject for status
+kubectl describe scaledobject my-app-scaler
 ```
 
-## Summary
+## Available Scalers
 
-KEDA extends Kubernetes autoscaling with 50+ event sources. Create ScaledObjects for Deployments that can scale to zero. Use TriggerAuthentication for secure credential management. Configure triggers for queues (RabbitMQ, SQS, Kafka), databases (PostgreSQL, Redis), metrics (Prometheus), and more. ScaledJobs spawn Jobs based on events. Use multiple triggers to scale on any condition. Monitor with `kubectl get scaledobject` and check operator logs for debugging.
-
----
-
-## 📘 Go Further with Kubernetes Recipes
-
-**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](https://amzn.to/3DzC8QA)**.
-
-Inside the book, you'll master:
-- ✅ Production-ready deployment strategies
-- ✅ Advanced networking and security patterns  
-- ✅ Observability, monitoring, and troubleshooting
-- ✅ Real-world best practices from industry experts
-
-> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
-
-**👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+KEDA supports 50+ scalers including:
+- Message Queues: RabbitMQ, Kafka, AWS SQS, Azure Queue, GCP Pub/Sub
+- Databases: PostgreSQL, MySQL, MongoDB, Redis
+- Metrics: Prometheus, Datadog, New Relic
+- Cloud: AWS CloudWatch, Azure Monitor, GCP Stackdriver
+- Other: Cron, External, CPU, Memory

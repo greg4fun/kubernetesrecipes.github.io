@@ -23,6 +23,12 @@ publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
+> 💡 **Quick Answer:** Install Velero with cloud provider plugin, configure backup storage location (S3/GCS/Azure Blob). Create backups: `velero backup create my-backup --include-namespaces prod`. Restore: `velero restore create --from-backup my-backup`. Schedule regular backups with `velero schedule create`.
+>
+> **Key commands:** `velero backup create`, `velero restore create`, `velero schedule create daily-backup --schedule="0 2 * * *"`.
+>
+> **Gotcha:** Test restores regularly! Velero backs up resources + volume snapshots—ensure CSI driver supports snapshots. Cluster-scoped resources need explicit inclusion.
+
 ## Problem
 
 You need a comprehensive backup and disaster recovery solution for Kubernetes clusters to protect against data loss, cluster failures, and facilitate migration between environments.

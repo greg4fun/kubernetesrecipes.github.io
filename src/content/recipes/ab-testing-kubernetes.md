@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["a-b-testing", "traffic-routing", "feature-flags", "deployment", "experimentation"]
 ---
 
+> 💡 **Quick Answer:** Implement A/B testing in Kubernetes using **Istio VirtualService** or **NGINX Ingress annotations** to route traffic based on headers, cookies, or weights. Configure `match` rules for header-based routing (e.g., `x-user-group: beta`) or use weighted destinations for percentage-based splits.
+>
+> **Key setup:** `kubectl apply -f virtualservice.yaml` with weighted routes between versions.
+>
+> **Gotcha:** Without a service mesh, use Ingress canary annotations: `nginx.ingress.kubernetes.io/canary-by-header: x-test-version`.
+
 # How to Implement A/B Testing with Kubernetes
 
 A/B testing routes traffic between different application versions based on specific criteria like headers, cookies, or user attributes. This enables data-driven decisions about new features.

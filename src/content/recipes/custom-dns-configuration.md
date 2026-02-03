@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["dns", "coredns", "networking", "configuration", "resolution"]
 ---
 
+> 💡 **Quick Answer:** Customize pod DNS with `spec.dnsPolicy` and `spec.dnsConfig`. Use `ClusterFirst` (default), `ClusterFirstWithHostNet`, `Default` (node's DNS), or `None` (fully custom). Add nameservers and searches via `dnsConfig.nameservers` and `dnsConfig.searches`.
+>
+> **Key config:** For corporate domains, edit CoreDNS ConfigMap with `forward corp.example.com 10.0.0.53` for stub domains.
+>
+> **Gotcha:** `ndots:5` default causes 5 DNS lookups before trying external—reduce to `ndots:2` for external-heavy workloads.
+
 # How to Customize DNS Configuration in Kubernetes
 
 Kubernetes uses CoreDNS for service discovery and DNS resolution. Learn to customize DNS settings for corporate domains, external resolvers, and specialized requirements.

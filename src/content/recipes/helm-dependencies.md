@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["helm", "dependencies", "subcharts", "packaging", "charts"]
 ---
 
+> 💡 **Quick Answer:** Declare dependencies in `Chart.yaml` under `dependencies:` with name, version, and repository. Run `helm dependency update` to download charts to `charts/` folder. Override subchart values using `<dependency-name>:` prefix in parent `values.yaml`.
+>
+> **Key command:** `helm dependency build ./myapp` downloads and locks dependencies; `helm dependency list ./myapp` shows status.
+>
+> **Gotcha:** Use `condition: postgresql.enabled` to make dependencies optional; version ranges (`^12.0.0`) auto-update within semver constraints.
+
 # How to Manage Helm Chart Dependencies
 
 Helm dependencies let you compose complex applications from reusable charts. Learn to declare, configure, and manage chart dependencies effectively.

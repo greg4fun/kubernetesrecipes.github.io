@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["opentelemetry", "otel", "metrics", "observability", "collector"]
 ---
 
+> 💡 **Quick Answer:** Deploy OpenTelemetry Collector as DaemonSet or Deployment. Configure pipeline: **Receivers** (OTLP, Prometheus, etc.) → **Processors** (batch, memory_limiter, attributes) → **Exporters** (Jaeger, Prometheus, Loki, etc.). Apps send telemetry to collector endpoint.
+>
+> **Key command:** `helm install otel-collector open-telemetry/opentelemetry-collector -f values.yaml`
+>
+> **Gotcha:** Set `memory_limiter` processor to prevent OOM; use `batch` processor to reduce backend load. Deploy as DaemonSet for logs, Deployment for traces/metrics.
+
 # How to Collect Metrics with OpenTelemetry Collector
 
 OpenTelemetry Collector provides vendor-agnostic telemetry collection. Deploy it as a central pipeline for metrics, traces, and logs with flexible processing and export options.

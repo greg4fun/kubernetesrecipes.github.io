@@ -7,6 +7,8 @@ publishDate: "2026-01-22"
 tags: ["affinity", "scheduling", "placement", "high-availability", "topology"]
 ---
 
+> **💡 Quick Answer:** Anti-affinity spreads pods: use `podAntiAffinity` with `topologyKey: kubernetes.io/hostname` to ensure one pod per node. Affinity co-locates pods: use `podAffinity` to schedule near related workloads. Types: `requiredDuringScheduling` (hard rule, pod stays Pending if unsatisfied) vs `preferredDuringScheduling` (soft rule, best effort). For zone spreading, use `topologyKey: topology.kubernetes.io/zone`.
+
 # How to Configure Pod Affinity and Anti-Affinity
 
 Pod affinity and anti-affinity control how pods are scheduled relative to other pods. Co-locate related workloads for performance or spread them for high availability.

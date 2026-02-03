@@ -23,6 +23,12 @@ publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
+> 💡 **Quick Answer:** Add `readinessGates` to pod spec with custom condition types. Your controller/operator must update the pod's `status.conditions` to set the gate to `True`. Pod isn't ready until ALL containers pass readiness probes AND all readiness gates are True.
+>
+> **Key use case:** Wait for load balancer registration, service mesh sidecar, or external health check before receiving traffic.
+>
+> **Gotcha:** You MUST have a controller that sets the condition—Kubernetes doesn't manage custom readiness gates automatically.
+
 ## Problem
 
 Standard readiness probes may not be sufficient when pods need to wait for external systems like load balancers, service mesh sidecars, or custom health checkers before receiving traffic. You need additional conditions beyond container readiness.

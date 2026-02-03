@@ -25,6 +25,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Integrate Vault using **Agent Injector** (sidecar) or **CSI Provider** (volume). Install via Helm: `helm install vault hashicorp/vault`. Annotate pods with `vault.hashicorp.com/agent-inject: "true"` and `vault.hashicorp.com/role: "myapp"` to inject secrets as files in `/vault/secrets/`.
+>
+> **Key setup:** Configure Kubernetes auth in Vault: `vault auth enable kubernetes` then create policies and roles mapping ServiceAccounts to secrets.
+>
+> **Gotcha:** Vault Agent Injector adds a sidecar (resource overhead); CSI Provider uses a DaemonSet—choose based on your security and performance needs.
+
 ## The Problem
 
 Kubernetes Secrets are base64-encoded (not encrypted at rest by default) and difficult to manage at scale. You need centralized secret management with audit logging, dynamic secrets, and fine-grained access control.

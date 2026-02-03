@@ -24,6 +24,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Three patterns: **Sidecar** (extends app—logging, syncing, proxying), **Ambassador** (proxies outbound traffic—connection pooling, retry logic), **Adapter** (transforms data—format conversion, protocol translation). All containers in a pod share network (localhost) and can share volumes.
+>
+> **Key concept:** Sidecar = enhances app; Ambassador = simplifies external access; Adapter = normalizes output.
+>
+> **Gotcha:** Multi-container pods are tightly coupled and scale together—use for genuinely dependent functionality, not loosely-coupled services.
+
 ## The Problem
 
 Your application needs additional functionality like logging, proxying, or data transformation that should be decoupled from the main application container.

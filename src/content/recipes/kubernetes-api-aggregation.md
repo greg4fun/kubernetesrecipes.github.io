@@ -23,6 +23,12 @@ publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
+> 💡 **Quick Answer:** Register custom API servers via `APIService` resource pointing to your aggregated API server's Service. The main API server proxies requests for your API group to your server. Use this when CRDs are insufficient—for custom storage backends, complex validation, or non-CRUD operations.
+>
+> **Key concept:** `APIService` with `spec.service` and `spec.group/version` tells kube-apiserver to proxy requests to your server.
+>
+> **Gotcha:** Aggregated API servers need valid TLS and proper RBAC; use `caBundle` in APIService or enable auto-injection via cert-manager.
+
 ## Problem
 
 Custom Resource Definitions (CRDs) have limitations: they don't support subresources like scale or status with custom logic, can't implement custom storage backends, and lack fine-grained control over API behavior. You need more powerful API extension capabilities.

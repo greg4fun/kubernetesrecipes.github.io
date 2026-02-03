@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["security", "scanning", "vulnerabilities", "trivy", "admission-control"]
 ---
 
+> 💡 **Quick Answer:** Use **Trivy** to scan container images: `trivy image nginx:latest`. Integrate into CI/CD with exit codes (`--exit-code 1 --severity CRITICAL`) and enforce at runtime with admission controllers like **Kyverno** or **OPA Gatekeeper** that check image scan results.
+>
+> **Key command:** `trivy image --severity CRITICAL,HIGH myregistry/myapp:v1.0`
+>
+> **Gotcha:** Scan both during CI/CD (shift-left) AND at admission time—images can become vulnerable after deployment.
+
 # How to Implement Container Security Scanning
 
 Container security scanning identifies vulnerabilities in images before deployment. Integrate scanning into CI/CD pipelines and use admission controllers to block vulnerable images.

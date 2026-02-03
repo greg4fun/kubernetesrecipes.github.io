@@ -23,6 +23,12 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** **Requests** = guaranteed minimum (used for scheduling); **Limits** = maximum allowed (enforced at runtime). CPU limits throttle; memory limits OOMKill. Set requests to average usage, limits to peak usage. Use `kubectl top pods` to measure actual consumption.
+>
+> **Key formula:** Start with `requests.cpu: 100m`, `requests.memory: 128Mi`; set limits 2-3x requests.
+>
+> **Gotcha:** Memory limit OOMKills are immediate; CPU throttling degrades performance but pod survives. No limits = pod can consume entire node.
+
 ## The Problem
 
 Your pods are being OOMKilled, CPU throttled, or scheduled to nodes without enough resources, causing performance issues.

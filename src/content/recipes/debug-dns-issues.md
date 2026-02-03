@@ -21,6 +21,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** To debug DNS in Kubernetes, run `kubectl run tmp --rm -it --image=busybox -- nslookup kubernetes.default`. If it fails, check CoreDNS pods: `kubectl get pods -n kube-system -l k8s-app=kube-dns`. Common fixes: restart CoreDNS, check `dnsPolicy` in pod spec, verify `/etc/resolv.conf` in pods.
+
 ## The Problem
 
 Your pods can't resolve service names, external domains, or are experiencing intermittent DNS failures.

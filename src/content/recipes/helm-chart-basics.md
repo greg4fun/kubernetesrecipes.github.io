@@ -22,6 +22,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Helm = package manager for K8s. Install chart: `helm install myrelease repo/chart`. Create chart: `helm create mychart`. Key files: `Chart.yaml` (metadata), `values.yaml` (defaults), `templates/` (K8s manifests with `{{ .Values.x }}`). Upgrade: `helm upgrade myrelease repo/chart`. Rollback: `helm rollback myrelease 1`. List releases: `helm list`.
+
 ## The Problem
 
 You need to package, version, and deploy your Kubernetes applications consistently across multiple environments.

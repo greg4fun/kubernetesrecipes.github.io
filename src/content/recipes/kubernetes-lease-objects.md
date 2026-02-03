@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["lease", "leader-election", "coordination", "high-availability", "distributed-systems"]
 ---
 
+> 💡 **Quick Answer:** Leases enable **leader election** for HA controllers. One pod acquires the lease (becomes leader), others wait. If leader fails to renew within `leaseDurationSeconds`, another pod acquires it. Use client-go's `leaderelection` package or controller-runtime's built-in leader election.
+>
+> **Key pattern:** Specify `--leader-elect=true` in controller deployments; the framework handles lease management.
+>
+> **Gotcha:** Set `leaseDurationSeconds` carefully—too short causes unnecessary failovers; too long delays recovery when leader dies.
+
 # How to Use Kubernetes Lease Objects
 
 Lease objects provide a mechanism for distributed coordination and leader election in Kubernetes. They're used by controllers, schedulers, and custom applications to ensure only one instance is active at a time.

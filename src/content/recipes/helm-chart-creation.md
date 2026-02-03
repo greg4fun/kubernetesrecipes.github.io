@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["helm", "charts", "packaging", "templates", "deployment"]
 ---
 
+> 💡 **Quick Answer:** Create a chart scaffold with `helm create myapp`. Edit `values.yaml` for defaults, `templates/` for Kubernetes manifests with `{{ .Values.x }}` placeholders, and `Chart.yaml` for metadata. Install locally with `helm install myrelease ./myapp` or package with `helm package ./myapp`.
+>
+> **Key command:** `helm template ./myapp` to preview rendered manifests without installing; `helm lint ./myapp` to validate.
+>
+> **Gotcha:** Use `{{ include "myapp.fullname" . }}` helper for consistent naming; always quote strings in templates with `{{ .Values.x | quote }}`.
+
 # How to Create Helm Charts from Scratch
 
 Helm charts package Kubernetes applications for easy deployment and sharing. Learn to create charts with templates, values, and dependencies.

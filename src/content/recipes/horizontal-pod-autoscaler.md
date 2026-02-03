@@ -23,6 +23,8 @@ publishDate: "2026-01-20"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Create an HPA with `kubectl autoscale deployment <name> --cpu-percent=80 --min=2 --max=10`. Ensure metrics-server is installed (`kubectl top pods` should work). For custom metrics, install prometheus-adapter. Set `resources.requests` on your pods—HPA uses these to calculate utilization percentage.
+
 ## The Problem
 
 Your application traffic varies throughout the day. Running too few pods causes performance issues during peak times, while running too many wastes resources during quiet periods.

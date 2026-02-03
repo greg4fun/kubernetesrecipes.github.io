@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["snapshots", "backup", "storage", "pvc", "disaster-recovery"]
 ---
 
+> 💡 **Quick Answer:** Create `VolumeSnapshot` referencing a PVC to capture point-in-time backup. Restore by creating a new PVC with `dataSource: {kind: VolumeSnapshot, name: my-snapshot}`. Requires CSI driver with snapshot support and snapshot-controller installed.
+>
+> **Key resources:** `VolumeSnapshotClass` (defines snapshot driver), `VolumeSnapshot` (captures PVC state), PVC with `dataSource` (restores from snapshot).
+>
+> **Gotcha:** Snapshots are storage-class specific; not all CSI drivers support snapshots. Test restore process—some providers have limitations on cross-zone restores.
+
 # How to Set Up Volume Snapshots
 
 Volume snapshots capture the state of persistent volumes for backup and recovery. Create point-in-time copies and restore them to new volumes when needed.

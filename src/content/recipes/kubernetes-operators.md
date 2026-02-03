@@ -25,6 +25,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Operators = **CRD + Controller**. Use **Kubebuilder** or **Operator SDK** to scaffold: `kubebuilder init` + `kubebuilder create api`. Implement reconciliation logic in `Reconcile()` function that watches your CRD and manages underlying resources (Deployments, Services, etc.).
+>
+> **Key pattern:** Watch custom resource → compare desired vs actual state → create/update/delete resources to match.
+>
+> **Gotcha:** Use controller-runtime's built-in caching and predicates to avoid unnecessary reconciliations; implement proper error handling and requeuing.
+
 ## The Problem
 
 You need to automate the deployment, scaling, and management of complex stateful applications or custom workloads in Kubernetes beyond what Deployments and StatefulSets provide.

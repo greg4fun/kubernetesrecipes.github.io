@@ -25,6 +25,8 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Install Argo CD: `kubectl create ns argocd && kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml`. Access UI: `kubectl port-forward svc/argocd-server -n argocd 8080:443`. Get password: `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`. Create Application CR pointing to your Git repo. Argo CD auto-syncs manifests to cluster.
+
 ## The Problem
 
 Manual kubectl applies are error-prone, hard to track, and don't scale. You need automated, auditable, and reversible deployments with Git as the single source of truth.

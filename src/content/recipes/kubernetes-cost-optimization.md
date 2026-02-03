@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["cost", "optimization", "resources", "finops", "efficiency"]
 ---
 
+> 💡 **Quick Answer:** Key strategies: **right-size resources** (compare `kubectl top` vs requests), **use spot/preemptible instances** for fault-tolerant workloads, **enable cluster autoscaler**, and **delete unused resources**. Use tools like **Kubecost** or **OpenCost** to visualize spending per namespace/label.
+>
+> **Key command:** `kubectl top pods -A --sort-by=cpu` identifies resource-hungry pods; VPA recommends better resource settings.
+>
+> **Gotcha:** Over-provisioned requests waste money; under-provisioned limits cause OOMKills—monitor and iterate.
+
 # How to Optimize Kubernetes Costs
 
 Kubernetes cost optimization involves right-sizing workloads, leveraging spot instances, implementing autoscaling, and monitoring resource utilization to reduce cloud spending.

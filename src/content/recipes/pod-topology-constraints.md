@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["topology", "scheduling", "high-availability", "zones", "distribution"]
 ---
 
+> 💡 **Quick Answer:** Add `topologySpreadConstraints` to pod spec with `topologyKey` (e.g., `topology.kubernetes.io/zone`), `maxSkew` (max imbalance allowed), and `whenUnsatisfiable` (DoNotSchedule or ScheduleAnyway). Ensures pods spread across zones/nodes for high availability.
+>
+> **Key config:** `maxSkew: 1` means pods can differ by at most 1 between topology domains.
+>
+> **Gotcha:** `DoNotSchedule` can leave pods pending if spread can't be satisfied; use `ScheduleAnyway` for softer constraint. Combine with `minDomains` for minimum availability zones.
+
 # How to Use Pod Topology Spread Constraints
 
 Topology spread constraints distribute pods across failure domains like zones, nodes, or racks. This ensures high availability by preventing all replicas from landing on the same failure domain.

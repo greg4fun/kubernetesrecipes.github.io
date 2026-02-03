@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["admission-webhooks", "security", "validation", "mutation", "policy"]
 ---
 
+> 💡 **Quick Answer:** Create admission webhooks by deploying a **webhook server** (HTTPS endpoint) and registering it with `ValidatingWebhookConfiguration` or `MutatingWebhookConfiguration`. The server receives `AdmissionReview` requests and returns allow/deny decisions or patches.
+>
+> **Key command:** `kubectl apply -f webhook-config.yaml` to register your webhook endpoint.
+>
+> **Gotcha:** Webhooks require valid TLS certificates—use cert-manager or mount CA bundles. Set `failurePolicy: Ignore` during development to prevent cluster lockouts.
+
 # How to Create Admission Webhooks
 
 Admission webhooks intercept requests to the Kubernetes API before persistence, allowing you to validate or mutate resources. Validating webhooks reject non-compliant resources, while mutating webhooks modify resources automatically.

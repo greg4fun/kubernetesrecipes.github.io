@@ -21,6 +21,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Job = run-to-completion task. Create: `kubectl create job myjob --image=busybox -- echo hello`. CronJob = scheduled Job using cron syntax: `schedule: "0 * * * *"` (hourly). Set `backoffLimit` for retries, `activeDeadlineSeconds` for timeout. Check status: `kubectl get jobs`. For CronJobs, set `concurrencyPolicy: Forbid` to prevent overlap.
+
 ## The Problem
 
 You need to run batch processing tasks or scheduled jobs in Kubernetes, not long-running services.

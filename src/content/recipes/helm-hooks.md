@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["helm", "hooks", "lifecycle", "migrations", "automation"]
 ---
 
+> 💡 **Quick Answer:** Add `helm.sh/hook` annotation to Jobs or Pods to run at lifecycle points: `pre-install`, `post-install`, `pre-upgrade`, `post-upgrade`, `pre-delete`, `post-delete`. Use `helm.sh/hook-weight` for ordering and `helm.sh/hook-delete-policy` to clean up hook resources.
+>
+> **Key pattern:** Database migrations use `pre-upgrade` hooks; backups use `pre-delete` hooks.
+>
+> **Gotcha:** Hooks run to completion before Helm continues—set `activeDeadlineSeconds` and use `hook-failed` delete policy to prevent stuck releases.
+
 # How to Use Helm Hooks for Lifecycle Management
 
 Helm hooks allow you to execute operations at specific points during a release lifecycle. Use them for database migrations, backups, notifications, and cleanup tasks.

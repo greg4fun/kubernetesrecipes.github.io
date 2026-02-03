@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["csi", "storage", "ebs", "provisioning", "volumes"]
 ---
 
+> 💡 **Quick Answer:** Install CSI drivers via Helm for your cloud provider: **AWS EBS** (`aws-ebs-csi-driver`), **GCP PD** (`gcp-compute-persistent-disk-csi-driver`), or **Azure Disk** (`azuredisk-csi-driver`). Create a `StorageClass` referencing the CSI provisioner, then use `PersistentVolumeClaim` for dynamic provisioning.
+>
+> **Key command:** `kubectl get csidriver` to verify installation; `kubectl get sc` to check StorageClasses.
+>
+> **Gotcha:** CSI drivers need IAM permissions to create volumes—use IRSA/Workload Identity, not static credentials.
+
 # How to Configure CSI Drivers for Storage
 
 Container Storage Interface (CSI) drivers enable Kubernetes to use various storage systems. Install CSI drivers for dynamic volume provisioning with cloud providers and on-premises storage.

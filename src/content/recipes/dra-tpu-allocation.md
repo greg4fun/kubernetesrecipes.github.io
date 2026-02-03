@@ -27,6 +27,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Allocate TPUs on GKE using **DRA** for flexible topology-aware scheduling. Create `ResourceClaim` specifying TPU type (v4, v5e, v5p) and slice size. DRA handles multi-slice allocation for distributed training with JAX/TensorFlow, ensuring proper TPU topology and ICI connectivity.
+>
+> **Key config:** Request TPU slices via `ResourceClaim` with `spec.devices.requests[].deviceClassName: tpu-v5e` and desired topology.
+>
+> **Gotcha:** TPU pods require `hostNetwork: true` for ICI (Inter-Chip Interconnect); ensure quota and node pool availability in your GKE cluster.
+
 ## The Problem
 
 Google Cloud TPUs offer exceptional performance for machine learning workloads, but allocating and managing TPUs in Kubernetes requires understanding complex topologies, multi-slice configurations, and efficient resource sharing. Traditional approaches lack flexibility.

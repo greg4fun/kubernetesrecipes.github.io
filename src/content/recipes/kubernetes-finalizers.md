@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["finalizers", "cleanup", "deletion", "controllers", "garbage-collection"]
 ---
 
+> 💡 **Quick Answer:** Finalizers block resource deletion until cleanup completes. Controllers add finalizers, perform cleanup when deletion requested, then remove finalizer to allow deletion. To unstick a resource: `kubectl patch <resource> -p '{"metadata":{"finalizers":[]}}' --type=merge` (use cautiously—may orphan dependent resources).
+>
+> **Key pattern:** Add finalizer on create, remove after cleanup on delete—common in operators.
+>
+> **Gotcha:** Stuck resources usually mean controller isn't running or cleanup failed—check controller logs before force-removing finalizers.
+
 # How to Use Kubernetes Finalizers
 
 Finalizers are keys on resources that signal pre-delete hooks. They block resource deletion until the finalizer is removed, allowing controllers to perform cleanup operations.

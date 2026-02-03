@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["sidecar", "patterns", "containers", "logging", "proxy"]
 ---
 
+> 💡 **Quick Answer:** Add additional containers in pod spec alongside your main container. Sidecars share network (localhost communication) and can share volumes. Common uses: **logging** (ship logs), **proxy** (Envoy, linkerd-proxy), **config sync** (git-sync), **security** (Vault agent).
+>
+> **Key pattern:** Main app writes to shared volume `/logs`, sidecar reads and ships to central logging.
+>
+> **Gotcha:** Sidecars start/stop with the pod and add resource overhead. Use native sidecar containers (K8s 1.28+) with `restartPolicy: Always` for proper lifecycle handling.
+
 # How to Use Sidecar Containers Effectively
 
 Sidecar containers extend and enhance your main application containers. Use them for logging, monitoring, proxying, and configuration management without modifying your application code.

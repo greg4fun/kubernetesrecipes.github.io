@@ -1,395 +1,177 @@
 ---
 title: "How to Implement Blue-Green Deployments"
-description: "Deploy applications using blue-green deployment strategy for zero-downtime releases. Switch traffic between versions instantly with easy rollback."
+description: "Deploy applications with zero downtime using blue-green deployment strategy. Switch traffic instantly between two identical environments for safe releases."
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
-tags: ["blue-green", "deployment", "zero-downtime", "release", "strategy"]
+tags: ["blue-green", "deployment", "zero-downtime", "release", "traffic-switching"]
+author: "Luca Berton"
 ---
+
+> 💡 **Quick Answer:** Run two identical environments (blue=current, green=new). Deploy to green, test it, then switch Service selector from `version: blue` to `version: green`. Instant rollback by switching back. Requires 2x resources during deployment.
+>
+> **Key command:** `kubectl patch svc my-app -p '{"spec":{"selector":{"version":"green"}}}'`
+>
+> **Gotcha:** Both environments must be fully running before switch—no gradual traffic shift. Database migrations need careful planning (both versions must work with same schema).
 
 # How to Implement Blue-Green Deployments
 
-Blue-green deployments run two identical production environments. Deploy new versions to the idle environment and switch traffic instantly for zero-downtime releases with easy rollback.
+Blue-green deployments eliminate downtime by running two identical production environments. Only one serves live traffic while the other stands ready for the next release.
 
-## Basic Blue-Green Setup
+## How It Works
 
 ```yaml
-# blue-deployment.yaml
+# Blue deployment (current production)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp-blue
-  labels:
-    app: myapp
-    version: blue
+  name: app-blue
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: myapp
+      app: my-app
       version: blue
   template:
     metadata:
       labels:
-        app: myapp
+        app: my-app
         version: blue
     spec:
       containers:
-        - name: myapp
-          image: myapp:v1.0.0
+        - name: app
+          image: my-app:1.0.0
           ports:
             - containerPort: 8080
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 5
 ---
-# green-deployment.yaml
+# Green deployment (new version)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp-green
-  labels:
-    app: myapp
-    version: green
+  name: app-green
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: myapp
+      app: my-app
       version: green
   template:
     metadata:
       labels:
-        app: myapp
+        app: my-app
         version: green
     spec:
       containers:
-        - name: myapp
-          image: myapp:v2.0.0
+        - name: app
+          image: my-app:2.0.0
           ports:
             - containerPort: 8080
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 5
 ```
 
-## Service for Traffic Switching
+## Service Configuration
 
 ```yaml
-# service.yaml
+# Service that switches between blue and green
 apiVersion: v1
 kind: Service
 metadata:
-  name: myapp
-  labels:
-    app: myapp
+  name: my-app
 spec:
-  type: ClusterIP
+  selector:
+    app: my-app
+    version: blue  # Change to 'green' to switch
   ports:
     - port: 80
       targetPort: 8080
-  selector:
-    app: myapp
-    version: blue  # Switch to 'green' for new version
 ```
 
-## Switch Traffic
+## Switching Traffic
 
 ```bash
-# Deploy green with new version
-kubectl apply -f green-deployment.yaml
+# Switch from blue to green
+kubectl patch svc my-app -p '{"spec":{"selector":{"version":"green"}}}'
 
-# Wait for green to be ready
-kubectl rollout status deployment/myapp-green
+# Verify the switch
+kubectl get svc my-app -o jsonpath='{.spec.selector.version}'
 
-# Verify green is healthy
-kubectl get pods -l version=green
-
-# Switch traffic to green
-kubectl patch service myapp -p '{"spec":{"selector":{"version":"green"}}}'
-
-# Verify traffic switched
-kubectl describe service myapp | grep Selector
+# Rollback to blue if needed
+kubectl patch svc my-app -p '{"spec":{"selector":{"version":"blue"}}}'
 ```
 
-## Rollback
-
-```bash
-# If issues detected, switch back to blue
-kubectl patch service myapp -p '{"spec":{"selector":{"version":"blue"}}}'
-```
-
-## Blue-Green with Ingress
-
-```yaml
-# ingress-blue-green.yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: myapp
-  annotations:
-    nginx.ingress.kubernetes.io/canary: "false"
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: myapp.example.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: myapp  # Points to active service
-                port:
-                  number: 80
----
-# Preview ingress for testing green
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: myapp-preview
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: preview.myapp.example.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: myapp-green  # Direct to green for testing
-                port:
-                  number: 80
-```
-
-## Separate Services
-
-```yaml
-# blue-service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: myapp-blue
-spec:
-  selector:
-    app: myapp
-    version: blue
-  ports:
-    - port: 80
-      targetPort: 8080
----
-# green-service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: myapp-green
-spec:
-  selector:
-    app: myapp
-    version: green
-  ports:
-    - port: 80
-      targetPort: 8080
----
-# Main service pointing to active version
-apiVersion: v1
-kind: Service
-metadata:
-  name: myapp
-spec:
-  type: ExternalName
-  externalName: myapp-blue.default.svc.cluster.local
-```
-
-## Automated Blue-Green Script
+## Deployment Script
 
 ```bash
 #!/bin/bash
 # blue-green-deploy.sh
 
+APP_NAME="my-app"
 NEW_VERSION=$1
-CURRENT_VERSION=$(kubectl get svc myapp -o jsonpath='{.spec.selector.version}')
+CURRENT_COLOR=$(kubectl get svc $APP_NAME -o jsonpath='{.spec.selector.version}')
 
-if [ "$CURRENT_VERSION" == "blue" ]; then
+if [ "$CURRENT_COLOR" == "blue" ]; then
   NEW_COLOR="green"
-  OLD_COLOR="blue"
 else
   NEW_COLOR="blue"
-  OLD_COLOR="green"
 fi
 
-echo "Current: $OLD_COLOR, Deploying to: $NEW_COLOR"
+echo "Current: $CURRENT_COLOR, Deploying to: $NEW_COLOR"
 
-# Update image in new color deployment
-kubectl set image deployment/myapp-$NEW_COLOR myapp=myapp:$NEW_VERSION
+# Update the inactive deployment
+kubectl set image deployment/app-$NEW_COLOR app=my-app:$NEW_VERSION
 
 # Wait for rollout
-kubectl rollout status deployment/myapp-$NEW_COLOR --timeout=300s
-if [ $? -ne 0 ]; then
-  echo "Deployment failed"
-  exit 1
-fi
+kubectl rollout status deployment/app-$NEW_COLOR
 
-# Health check
-for i in {1..10}; do
-  READY=$(kubectl get deployment myapp-$NEW_COLOR -o jsonpath='{.status.readyReplicas}')
-  DESIRED=$(kubectl get deployment myapp-$NEW_COLOR -o jsonpath='{.spec.replicas}')
-  if [ "$READY" == "$DESIRED" ]; then
-    echo "All pods ready"
-    break
-  fi
-  sleep 5
-done
+# Run smoke tests against new deployment
+# kubectl run test --rm -it --image=curlimages/curl -- curl app-$NEW_COLOR:8080/health
 
 # Switch traffic
-kubectl patch service myapp -p "{\"spec\":{\"selector\":{\"version\":\"$NEW_COLOR\"}}}"
+kubectl patch svc $APP_NAME -p "{\"spec\":{\"selector\":{\"version\":\"$NEW_COLOR\"}}}"
 
 echo "Traffic switched to $NEW_COLOR"
-
-# Optional: Scale down old version
-# kubectl scale deployment myapp-$OLD_COLOR --replicas=0
 ```
 
-## Argo Rollouts Blue-Green
+## Testing Before Switch
 
 ```yaml
-# argo-rollout-bluegreen.yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
-metadata:
-  name: myapp
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: myapp
-  template:
-    metadata:
-      labels:
-        app: myapp
-    spec:
-      containers:
-        - name: myapp
-          image: myapp:v1.0.0
-          ports:
-            - containerPort: 8080
-  strategy:
-    blueGreen:
-      activeService: myapp-active
-      previewService: myapp-preview
-      autoPromotionEnabled: false
-      scaleDownDelaySeconds: 30
-      prePromotionAnalysis:
-        templates:
-          - templateName: success-rate
-        args:
-          - name: service-name
-            value: myapp-preview
----
+# Temporary service to test green before switching
 apiVersion: v1
 kind: Service
 metadata:
-  name: myapp-active
+  name: my-app-green-test
 spec:
   selector:
-    app: myapp
-  ports:
-    - port: 80
-      targetPort: 8080
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: myapp-preview
-spec:
-  selector:
-    app: myapp
+    app: my-app
+    version: green
   ports:
     - port: 80
       targetPort: 8080
 ```
 
-## Istio Blue-Green
+## Best Practices
 
-```yaml
-# istio-blue-green.yaml
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
-metadata:
-  name: myapp
-spec:
-  hosts:
-    - myapp
-  http:
-    - route:
-        - destination:
-            host: myapp
-            subset: blue
-          weight: 100
-        - destination:
-            host: myapp
-            subset: green
-          weight: 0
----
-apiVersion: networking.istio.io/v1beta1
-kind: DestinationRule
-metadata:
-  name: myapp
-spec:
-  host: myapp
-  subsets:
-    - name: blue
-      labels:
-        version: blue
-    - name: green
-      labels:
-        version: green
-```
+1. **Test thoroughly** before switching traffic
+2. **Keep blue running** for quick rollback
+3. **Automate the switch** to reduce human error
+4. **Monitor after switch** for any issues
+5. **Plan database migrations** carefully—both versions need to work
+
+## When to Use Blue-Green
+
+| Use Case | Recommendation |
+|----------|----------------|
+| Zero-downtime required | ✅ Blue-Green |
+| Need instant rollback | ✅ Blue-Green |
+| Limited resources | ❌ Use Rolling Update |
+| Gradual traffic shift | ❌ Use Canary |
+| Database schema changes | ⚠️ Requires careful planning |
+
+## Cleanup
 
 ```bash
-# Switch traffic with Istio
-kubectl patch virtualservice myapp --type='json' \
-  -p='[{"op": "replace", "path": "/spec/http/0/route/0/weight", "value": 0},
-       {"op": "replace", "path": "/spec/http/0/route/1/weight", "value": 100}]'
+# After successful deployment, scale down old version
+kubectl scale deployment app-blue --replicas=0
+
+# Or delete when confident
+kubectl delete deployment app-blue
 ```
-
-## Validation Before Switch
-
-```bash
-# Run smoke tests against preview
-kubectl run smoke-test --rm -it --image=curlimages/curl --restart=Never -- \
-  curl -s http://myapp-green/health
-
-# Check metrics
-kubectl top pods -l version=green
-
-# Verify logs
-kubectl logs -l version=green --tail=100
-```
-
-## Summary
-
-Blue-green deployments enable instant traffic switching between versions. Deploy to the inactive environment, validate thoroughly, then switch the service selector or update routing. Keep the old version running for quick rollback. Use Argo Rollouts or Istio for automated blue-green with analysis.
-
----
-
-## 📘 Go Further with Kubernetes Recipes
-
-**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](https://amzn.to/3DzC8QA)**.
-
-Inside the book, you'll master:
-- ✅ Production-ready deployment strategies
-- ✅ Advanced networking and security patterns  
-- ✅ Observability, monitoring, and troubleshooting
-- ✅ Real-world best practices from industry experts
-
-> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
-
-**👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!

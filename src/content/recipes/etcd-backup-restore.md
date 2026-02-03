@@ -25,6 +25,8 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Backup etcd: `ETCDCTL_API=3 etcdctl snapshot save backup.db --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key`. Restore: stop kube-apiserver, `etcdctl snapshot restore backup.db --data-dir=/var/lib/etcd-new`, update etcd config, restart. For managed K8s (EKS/GKE/AKS), use provider's backup features instead.
+
 ## The Problem
 
 Your Kubernetes cluster's entire state is stored in etcd. Without proper backups, a corrupted or lost etcd database means losing all cluster configuration, secrets, and resource definitions.

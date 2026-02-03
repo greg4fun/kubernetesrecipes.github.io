@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["pod-security", "psa", "security", "policies", "hardening"]
 ---
 
+> 💡 **Quick Answer:** Label namespaces with `pod-security.kubernetes.io/<mode>: <level>`. Modes: **enforce** (block violations), **audit** (log), **warn** (warn user). Levels: **privileged** (no restrictions), **baseline** (prevent escalations), **restricted** (hardened). Example: `pod-security.kubernetes.io/enforce: restricted`.
+>
+> **Key command:** `kubectl label ns production pod-security.kubernetes.io/enforce=baseline`
+>
+> **Gotcha:** PSA replaces deprecated PodSecurityPolicy; `restricted` blocks `runAsRoot`, requires `seccompProfile`, and drops capabilities—test workloads first.
+
 # How to Configure Pod Security Admission
 
 Pod Security Admission (PSA) enforces Pod Security Standards at the namespace level. It replaces the deprecated PodSecurityPolicy and provides three security levels: privileged, baseline, and restricted.

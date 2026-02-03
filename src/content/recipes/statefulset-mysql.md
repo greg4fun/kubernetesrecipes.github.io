@@ -22,6 +22,12 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Deploy MySQL with StatefulSet + headless Service + PVC. Use `volumeClaimTemplates` for persistent storage, headless Service (`clusterIP: None`) for stable DNS. Store credentials in Secrets. MySQL is single-writer—for HA, use Percona XtraDB Cluster or MySQL Operator.
+>
+> **Key resources:** StatefulSet (ordered pods), PVC (persistent data), ConfigMap (my.cnf), Secret (root password), headless Service (DNS records).
+>
+> **Gotcha:** MySQL requires `fsGroup` in securityContext for file permissions; always test backup/restore before production.
+
 ## The Problem
 
 You need to run MySQL on Kubernetes with persistent storage, stable network identity, and ordered deployment/scaling.

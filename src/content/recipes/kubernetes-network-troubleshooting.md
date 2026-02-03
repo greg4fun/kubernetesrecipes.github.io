@@ -24,6 +24,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Debug layers systematically: **DNS** (`nslookup kubernetes.default`), **Service** (`curl service:port`), **Pod connectivity** (`ping pod-ip`), **NetworkPolicy** (`kubectl get networkpolicy`). Use `kubectl run netshoot --rm -it --image=nicolaka/netshoot -- bash` for a debug pod with network tools.
+>
+> **Key command:** `kubectl exec -it <pod> -- nslookup <service>` tests DNS; `curl -v <service>:<port>` tests connectivity.
+>
+> **Gotcha:** Check CoreDNS logs (`kubectl logs -n kube-system -l k8s-app=kube-dns`) and CNI pod logs for infrastructure issues.
+
 ## The Problem
 
 Pods can't communicate with services, DNS resolution fails, or network policies block expected traffic. Kubernetes networking issues can be challenging to diagnose due to multiple layers involved.

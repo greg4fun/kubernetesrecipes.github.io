@@ -23,6 +23,12 @@ publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
+> 💡 **Quick Answer:** Install gVisor's `runsc` runtime, create a `RuntimeClass` named `gvisor` with `handler: runsc`, then add `runtimeClassName: gvisor` to pod specs for sandboxed execution. gVisor intercepts syscalls in userspace, isolating untrusted workloads from the host kernel.
+>
+> **Key config:** `spec.runtimeClassName: gvisor` in pod spec triggers gVisor runtime instead of standard runc.
+>
+> **Gotcha:** gVisor has ~10-30% performance overhead and doesn't support all syscalls—test workload compatibility; not all container features work (e.g., some GPU access).
+
 ## Problem
 
 Standard container runtimes (runc) share the host kernel, which means kernel vulnerabilities or container escapes can compromise the entire host. You need stronger isolation for untrusted workloads without the overhead of full VMs.

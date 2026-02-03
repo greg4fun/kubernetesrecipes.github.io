@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["hpa", "autoscaling", "custom-metrics", "prometheus", "scaling"]
 ---
 
+> 💡 **Quick Answer:** Install **Prometheus Adapter** to expose custom metrics to HPA. Configure adapter rules to convert Prometheus metrics into Kubernetes custom metrics API. Reference in HPA with `type: Pods` or `type: External` and `metric.name` matching your adapter config.
+>
+> **Key command:** `kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1` to verify adapter is working.
+>
+> **Gotcha:** Metric names in HPA must exactly match adapter `seriesQuery` output; use `kubectl get --raw` to debug available metrics.
+
 # How to Scale Based on Custom Metrics
 
 Scale your workloads based on application-specific metrics like queue depth, request latency, or business KPIs using the custom metrics API with Prometheus Adapter.

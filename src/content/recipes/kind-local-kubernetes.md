@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["kind", "local-development", "docker", "testing", "development"]
 ---
 
+> 💡 **Quick Answer:** Install kind (`brew install kind`), then create a cluster with `kind create cluster --name my-cluster`. For multi-node: use a config file with `nodes:` section specifying control-plane and workers. Kind uses Docker containers as nodes—perfect for local development and CI/CD.
+>
+> **Key command:** `kind create cluster --config kind-config.yaml`; delete with `kind delete cluster --name my-cluster`.
+>
+> **Gotcha:** kind clusters don't persist across Docker restarts by default; use `extraMounts` for persistent volumes and `extraPortMappings` for ingress.
+
 # How to Run Kubernetes in Docker (kind)
 
 kind (Kubernetes IN Docker) runs Kubernetes clusters using Docker containers as nodes. It's perfect for local development, testing, and CI/CD pipelines.

@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["topology", "scheduling", "availability", "zones", "spread"]
 ---
 
+> 💡 **Quick Answer:** Add `topologySpreadConstraints` to pod spec to distribute pods across zones/nodes. Key fields: `topologyKey` (label to spread across, e.g., `topology.kubernetes.io/zone`), `maxSkew` (max pod count difference), `whenUnsatisfiable` (`DoNotSchedule` or `ScheduleAnyway`).
+>
+> **Key example:** `maxSkew: 1, topologyKey: topology.kubernetes.io/zone` ensures pods spread evenly across availability zones.
+>
+> **Gotcha:** Constraints apply to new pods only; existing pods aren't rebalanced. Use multiple constraints for zone AND node spread.
+
 # How to Use Pod Topology Spread Constraints
 
 Topology spread constraints distribute pods evenly across failure domains like nodes, zones, or regions. Ensure high availability by preventing pod concentration.

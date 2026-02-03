@@ -24,6 +24,12 @@ publishDate: "2026-01-20"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Install NGINX Ingress (`helm install ingress-nginx ingress-nginx/ingress-nginx`) and cert-manager (`helm install cert-manager jetstack/cert-manager --set installCRDs=true`). Create a `ClusterIssuer` for Let's Encrypt, then add annotation `cert-manager.io/cluster-issuer: letsencrypt-prod` to your Ingress. TLS certs auto-provision and renew.
+>
+> **Key Ingress config:** `tls: [{hosts: [example.com], secretName: example-tls}]` + annotation triggers cert-manager.
+>
+> **Gotcha:** Ensure DNS points to Ingress external IP before requesting certs; use `letsencrypt-staging` first to avoid rate limits.
+
 ## The Problem
 
 You want to expose your Kubernetes services over HTTPS with valid TLS certificates, but managing certificates manually is error-prone and doesn't scale.

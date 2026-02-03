@@ -7,6 +7,8 @@ publishDate: "2026-01-22"
 tags: ["nodes", "debugging", "troubleshooting", "kubelet", "resources"]
 ---
 
+> **💡 Quick Answer:** Check node status with `kubectl get nodes` and `kubectl describe node <name>`. Look for conditions: `Ready=False` (kubelet issue), `MemoryPressure`, `DiskPressure`, or `PIDPressure`. SSH to node and check `systemctl status kubelet`, `journalctl -u kubelet`, and `df -h` for disk space. Drain problematic nodes: `kubectl drain <node> --ignore-daemonsets`.
+
 # How to Debug Kubernetes Node Issues
 
 Node issues can cause pod scheduling failures, evictions, and cluster instability. Learn to diagnose resource pressure, connectivity problems, and component failures.

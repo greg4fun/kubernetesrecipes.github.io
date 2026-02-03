@@ -21,6 +21,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Init containers run before app containers, one at a time, in order. Use for: waiting for dependencies (`until nc -z db 5432; do sleep 1; done`), downloading configs, setting permissions. Define in `spec.initContainers[]`. They share volumes with app containers. If init container fails, pod restarts. Check status: `kubectl describe pod <name>` → Init Containers section.
+
 ## The Problem
 
 Your application needs certain conditions to be met before starting: databases must be ready, configuration files need to be generated, or data must be downloaded.

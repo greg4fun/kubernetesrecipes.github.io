@@ -1,0 +1,25 @@
+---
+/**
+ * SEO Redirect Page: downward-api → downward-api-metadata
+ * This prevents 404 errors for old URLs and passes link equity to canonical page
+ */
+const canonicalUrl = "https://kubernetes.recipes/recipes/configuration/downward-api-metadata/";
+const localPath = "/recipes/configuration/downward-api-metadata/";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirecting to Kubernetes Downward API Metadata...</title>
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta http-equiv="refresh" content="0; url={localPath}" />
+  <script is:inline define:vars={{ localPath }}>
+    window.location.replace(localPath);
+  </script>
+</head>
+<body>
+  <p>Redirecting to <a href={localPath}>Kubernetes Downward API Metadata</a>...</p>
+</body>
+</html>

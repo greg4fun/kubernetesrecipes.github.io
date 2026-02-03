@@ -1,0 +1,25 @@
+---
+/**
+ * SEO Redirect Page: flux-gitops → flux-gitops-continuous-delivery
+ * This prevents 404 errors for old URLs and passes link equity to canonical page
+ */
+const canonicalUrl = "https://kubernetes.recipes/recipes/deployments/flux-gitops-continuous-delivery/";
+const localPath = "/recipes/deployments/flux-gitops-continuous-delivery/";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirecting to Flux GitOps Continuous Delivery...</title>
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta http-equiv="refresh" content="0; url={localPath}" />
+  <script is:inline define:vars={{ localPath }}>
+    window.location.replace(localPath);
+  </script>
+</head>
+<body>
+  <p>Redirecting to <a href={localPath}>Flux GitOps Continuous Delivery</a>...</p>
+</body>
+</html>

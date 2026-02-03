@@ -24,6 +24,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Set security at pod-level (`spec.securityContext`) or container-level (`containers[].securityContext`). Key settings: `runAsNonRoot: true`, `runAsUser: 1000`, `readOnlyRootFilesystem: true`, `allowPrivilegeEscalation: false`, `capabilities.drop: [ALL]`. Container settings override pod settings.
+>
+> **Key pattern:** Always set `runAsNonRoot: true` and `allowPrivilegeEscalation: false` for production workloads.
+>
+> **Gotcha:** Many images expect root—you may need to rebuild or use `fsGroup` for volume permissions.
+
 ## The Problem
 
 Your containers run as root by default, which poses security risks. You need to restrict container privileges and enforce security boundaries.

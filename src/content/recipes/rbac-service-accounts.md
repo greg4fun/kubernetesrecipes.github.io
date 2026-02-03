@@ -21,6 +21,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** RBAC = Role (namespace) or ClusterRole (cluster-wide) + RoleBinding/ClusterRoleBinding. Create ServiceAccount: `kubectl create sa myapp`. Create Role with `rules: [{apiGroups: [""], resources: ["pods"], verbs: ["get", "list"]}]`. Bind with RoleBinding. Test permissions: `kubectl auth can-i get pods --as=system:serviceaccount:default:myapp`.
+
 ## The Problem
 
 You need to control who (users or applications) can access what resources in your Kubernetes cluster with fine-grained permissions.

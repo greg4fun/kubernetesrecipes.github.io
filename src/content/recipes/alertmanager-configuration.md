@@ -22,6 +22,12 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Configure Alertmanager by editing the `alertmanager.yaml` ConfigMap or Secret. Define **routes** (matching labels to receivers), **receivers** (Slack/PagerDuty/email configs), and **inhibit_rules** (suppress related alerts). Apply changes with `kubectl apply -f alertmanager-config.yaml`.
+>
+> **Key concept:** Routes use `match` and `match_re` to direct alerts to specific receivers based on labels.
+>
+> **Gotcha:** Always test with `amtool check-config alertmanager.yaml` before applying—syntax errors silently break alerting.
+
 ## The Problem
 
 You have Prometheus collecting metrics, but you need to be notified when things go wrong instead of constantly watching dashboards.

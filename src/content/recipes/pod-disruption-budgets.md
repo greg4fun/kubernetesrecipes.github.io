@@ -7,6 +7,8 @@ publishDate: "2026-01-22"
 tags: ["pdb", "disruption", "availability", "maintenance", "reliability"]
 ---
 
+> **💡 Quick Answer:** PDB protects against voluntary disruptions (node drain, upgrades). Set `minAvailable: 2` or `maxUnavailable: 1` (not both). Example: `kubectl create pdb my-pdb --selector=app=web --min-available=2`. Blocks `kubectl drain` if it would violate the budget. Doesn't protect against crashes or OOMKills. Always create PDBs for production stateful apps and databases.
+
 # How to Implement Pod Disruption Budgets
 
 Pod Disruption Budgets protect applications from voluntary disruptions like node drains, cluster upgrades, and autoscaling. Ensure minimum availability during planned maintenance.

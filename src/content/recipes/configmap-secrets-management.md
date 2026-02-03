@@ -21,6 +21,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Create ConfigMap: `kubectl create configmap myconfig --from-file=config.yaml`. Create Secret: `kubectl create secret generic mysecret --from-literal=password=mypass`. Mount as env vars with `envFrom: [{configMapRef: {name: myconfig}}]` or as files with `volumes: [{configMap: {name: myconfig}}]`. Secrets are base64 encoded, not encrypted—use External Secrets Operator for production.
+
 ## The Problem
 
 You need to manage application configuration and sensitive data separately from your container images.

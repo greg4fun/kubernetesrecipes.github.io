@@ -23,6 +23,12 @@ publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
+> 💡 **Quick Answer:** Customize scheduling via `KubeSchedulerConfiguration` with **profiles** (different policies for different workloads), **plugins** (enable/disable scoring, filtering), and **extenders** (call external webhooks). Reference custom profiles with `schedulerName` in pod spec.
+>
+> **Key concepts:** Filter plugins (which nodes are viable), Score plugins (rank viable nodes), Bind plugins (finalize placement).
+>
+> **Gotcha:** Custom schedulers run alongside default—use `schedulerName` to target specific scheduler; misconfigured schedulers leave pods Pending.
+
 ## Problem
 
 The default Kubernetes scheduler may not meet your specific workload requirements. You need fine-grained control over pod placement, custom scheduling logic, or multiple scheduling policies for different workload types.

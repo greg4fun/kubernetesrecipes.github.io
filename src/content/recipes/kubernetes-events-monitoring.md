@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["events", "monitoring", "troubleshooting", "observability", "alerts"]
 ---
 
+> 💡 **Quick Answer:** View events with `kubectl get events --sort-by=.lastTimestamp` or `kubectl describe <resource>`. Events show scheduling, pulling, starting, killing, and error conditions. Export to external systems using **event-exporter** or **Kubernetes Event Router** for long-term retention and alerting.
+>
+> **Key command:** `kubectl get events -A --field-selector type=Warning` shows cluster-wide warnings.
+>
+> **Gotcha:** Events are garbage collected after 1 hour by default—export them for historical analysis and alerting.
+
 # How to Use Kubernetes Events for Monitoring
 
 Kubernetes events provide insights into cluster operations: pod scheduling, container crashes, resource issues, and more. Learn to capture and leverage events for monitoring and troubleshooting.

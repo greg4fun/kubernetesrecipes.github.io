@@ -25,6 +25,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Replace device plugins with **Dynamic Resource Allocation (DRA)** for flexible GPU allocation. Install NVIDIA DRA Driver via Helm, then create `ResourceClaim` objects requesting GPUs with specific configurations. DRA enables GPU sharing, partial allocation, and dynamic reconfiguration without pod restarts.
+>
+> **Key command:** `helm install nvidia-dra nvidia/nvidia-dra-driver -n gpu-operator`; then `kubectl apply -f resourceclaim.yaml`.
+>
+> **Gotcha:** Requires Kubernetes 1.32+ with `DynamicResourceAllocation` feature gate—DRA is still maturing, test thoroughly before production.
+
 ## The Problem
 
 Traditional Kubernetes device plugins have limitations: GPUs can only be allocated as whole units, configuration is static, and sharing GPUs between containers requires complex workarounds. You need flexible GPU allocation with dynamic configuration.

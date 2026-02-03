@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["kubectl", "debugging", "troubleshooting", "cli", "diagnostics"]
 ---
 
+> 💡 **Quick Answer:** Debug workflow: `kubectl get pods` (status), `kubectl describe pod <name>` (events/errors), `kubectl logs <pod> [-c container] [--previous]` (logs), `kubectl exec -it <pod> -- sh` (shell access). For crashed pods, use `kubectl logs --previous` to see pre-crash logs.
+>
+> **Key commands:** `kubectl get events --sort-by=.metadata.creationTimestamp` for cluster-wide issues; `kubectl top pods` for resource usage.
+>
+> **Gotcha:** Add `-o wide` for node/IP info, `-A` for all namespaces, `--watch` for live updates.
+
 # Essential kubectl Commands for Debugging
 
 Effective kubectl usage is crucial for debugging Kubernetes issues. This guide covers essential commands for diagnosing problems with pods, services, networking, and cluster resources.

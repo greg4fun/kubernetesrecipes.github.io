@@ -25,6 +25,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Install Sealed Secrets controller (`helm install sealed-secrets bitnami/sealed-secrets`), use `kubeseal` CLI to encrypt secrets into `SealedSecret` resources. Only the controller can decrypt them. Safe to commit encrypted SealedSecrets to Git for GitOps workflows.
+>
+> **Key command:** `kubectl create secret generic mysecret --dry-run=client -o yaml | kubeseal -o yaml > sealed-secret.yaml`
+>
+> **Gotcha:** SealedSecrets are cluster-specific by default; backup the controller's private key for disaster recovery (`kubectl get secret -n kube-system -l sealedsecrets.bitnami.com/sealed-secrets-key`).
+
 ## The Problem
 
 You want to store Kubernetes secrets in Git for GitOps workflows, but plain Secrets are base64-encoded (not encrypted) and expose sensitive data if the repository is compromised.

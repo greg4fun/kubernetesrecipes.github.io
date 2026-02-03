@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["configmap", "environment-variables", "configuration", "settings", "twelve-factor"]
 ---
 
+> 💡 **Quick Answer:** Create a ConfigMap with `kubectl create configmap myconfig --from-literal=KEY=value` or `--from-file=config.properties`. Reference in pods via `envFrom.configMapRef` (all keys as env vars) or `env.valueFrom.configMapKeyRef` (specific key). Mount as files with `volumes.configMap` for config files.
+>
+> **Key command:** `kubectl create configmap app-config --from-file=./config/` to create from directory; pods auto-reload volume-mounted ConfigMaps.
+>
+> **Gotcha:** Environment variables from ConfigMaps don't update without pod restart—use volume mounts for dynamic config reloading.
+
 # How to Configure Environment Variables and ConfigMaps
 
 Environment variables and ConfigMaps externalize application configuration from container images, following twelve-factor app principles. They enable the same image to run across different environments.

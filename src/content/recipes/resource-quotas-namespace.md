@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["resourcequota", "limits", "namespaces", "governance", "multitenancy"]
 ---
 
+> 💡 **Quick Answer:** Create `ResourceQuota` in a namespace to limit total `requests.cpu`, `requests.memory`, `limits.cpu`, `limits.memory`, and object counts (`pods`, `services`, `secrets`). Once quota exists, all pods must specify resource requests/limits to be created.
+>
+> **Key command:** `kubectl describe resourcequota -n <namespace>` shows current usage vs limits.
+>
+> **Gotcha:** When ResourceQuota exists, pods without resource requests fail to create—also create a `LimitRange` to set defaults.
+
 # How to Configure Resource Quotas per Namespace
 
 Resource quotas limit resource consumption per namespace, enabling fair multi-tenancy and preventing resource exhaustion. Configure quotas for CPU, memory, storage, and object counts.

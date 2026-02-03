@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["imagepull", "troubleshooting", "registry", "authentication", "containers"]
 ---
 
+> 💡 **Quick Answer:** Run `kubectl describe pod <name>` to see the exact error. Common causes: **wrong image name/tag** (check spelling, tag exists), **missing imagePullSecret** (add secret reference), **private registry auth** (verify credentials), or **rate limiting** (Docker Hub limits). Test with `docker pull <image>` locally.
+>
+> **Key command:** `kubectl describe pod <name> | grep -A5 Events` shows the pull failure reason.
+>
+> **Gotcha:** "manifest unknown" means tag doesn't exist; "unauthorized" means auth failed—check secret with `kubectl get secret <name> -o yaml`.
+
 # How to Troubleshoot ImagePullBackOff Errors
 
 ImagePullBackOff means Kubernetes can't pull your container image. Learn to diagnose authentication failures, network issues, and image availability problems.

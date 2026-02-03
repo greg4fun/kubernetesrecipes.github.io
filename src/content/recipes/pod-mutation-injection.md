@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["admission-controller", "mutation", "injection", "configuration", "automation"]
 ---
 
+> 💡 **Quick Answer:** Use **MutatingWebhookConfiguration** to intercept pod creation and modify specs automatically. Webhooks receive `AdmissionReview`, return JSON patches to add env vars, volumes, sidecars, or labels. Tools like **Kyverno** simplify this with YAML policies instead of custom code.
+>
+> **Key use cases:** Inject sidecars (Istio, Vault Agent), add default labels/annotations, set resource defaults, inject env vars.
+>
+> **Gotcha:** Webhook failures can block all pod creation—set `failurePolicy: Ignore` for non-critical mutations; always have health checks.
+
 # How to Use Pod Presets and Mutations
 
 Automatically inject configuration into pods using mutating admission webhooks. Add environment variables, volumes, and labels without modifying deployment manifests.

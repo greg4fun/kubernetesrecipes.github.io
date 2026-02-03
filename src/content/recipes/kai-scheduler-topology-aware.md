@@ -25,6 +25,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Enable **Topology-Aware Scheduling (TAS)** in KAI to place pods on GPUs with optimal interconnect. Configure `topologyRequirement` to prefer NVLink-connected GPUs within the same switch domain. TAS ensures distributed training uses fast interconnects instead of slow PCIe.
+>
+> **Key concept:** TAS reads GPU topology from node labels and places co-located pods on GPUs sharing NVLink/NVSwitch.
+>
+> **Gotcha:** Topology requirements may reduce schedulable options—balance performance needs with availability; use `preferredDuringScheduling` for flexibility.
+
 ## The Problem
 
 Modern GPU servers have complex topologies with NVLink, NVSwitch, and PCIe interconnects. Placing workloads without considering topology leads to suboptimal performance—GPUs communicating over slow PCIe instead of fast NVLink can drastically slow distributed training.

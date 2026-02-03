@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["helm", "templating", "sprig", "functions", "charts"]
 ---
 
+> 💡 **Quick Answer:** Use **Sprig functions** in Helm templates: `{{ .Values.name | lower | replace " " "-" }}` for string manipulation, `{{ if .Values.enabled }}` for conditionals, `{{ range .Values.items }}` for loops, and `{{ default "value" .Values.x }}` for defaults. Access built-in objects: `.Release`, `.Chart`, `.Values`.
+>
+> **Key functions:** `quote`, `indent`, `nindent`, `toYaml`, `required`, `lookup`, `include`.
+>
+> **Gotcha:** Use `{{- ` (with dash) to trim whitespace; `nindent` for proper YAML indentation in multi-line blocks.
+
 # How to Template Helm Values with Sprig Functions
 
 Helm uses Go templates with Sprig functions for powerful chart templating. Master these patterns to create flexible, reusable charts.

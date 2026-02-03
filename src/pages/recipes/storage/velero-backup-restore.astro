@@ -1,0 +1,25 @@
+---
+/**
+ * SEO Redirect Page: velero-backup-restore → velero-backup-disaster-recovery
+ * This prevents 404 errors for old URLs and passes link equity to canonical page
+ */
+const canonicalUrl = "https://kubernetes.recipes/recipes/storage/velero-backup-disaster-recovery/";
+const localPath = "/recipes/storage/velero-backup-disaster-recovery/";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirecting to Velero Backup and Disaster Recovery...</title>
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta http-equiv="refresh" content="0; url={localPath}" />
+  <script is:inline define:vars={{ localPath }}>
+    window.location.replace(localPath);
+  </script>
+</head>
+<body>
+  <p>Redirecting to <a href={localPath}>Velero Backup and Disaster Recovery</a>...</p>
+</body>
+</html>

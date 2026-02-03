@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["priority", "preemption", "scheduling", "resources", "workloads"]
 ---
 
+> 💡 **Quick Answer:** Create `PriorityClass` resources with `value` (integer, higher = more priority) and `preemptionPolicy` (PreemptLowerPriority or Never). Add `priorityClassName: <class-name>` to pod spec. Higher priority pods schedule first and can evict lower priority pods.
+>
+> **Key command:** `kubectl get priorityclass` shows available classes including built-in system classes.
+>
+> **Gotcha:** Preemption evicts running pods—use PodDisruptionBudgets to protect critical workloads from aggressive preemption.
+
 # How to Configure Pod Priority and Preemption
 
 Pod priority determines scheduling order and preemption behavior. Higher-priority pods can preempt (evict) lower-priority pods when cluster resources are insufficient.

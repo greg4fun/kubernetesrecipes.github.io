@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["grafana", "monitoring", "dashboards", "prometheus", "visualization"]
 ---
 
+> 💡 **Quick Answer:** Deploy Grafana via **kube-prometheus-stack** Helm chart which includes pre-built Kubernetes dashboards. Import community dashboards by ID: **315** (Kubernetes cluster), **6417** (pods), **1860** (node exporter). Connect to Prometheus datasource at `http://prometheus-server:9090`.
+>
+> **Key command:** `helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring` includes Grafana with dashboards pre-configured.
+>
+> **Gotcha:** For custom dashboards, use `container_*` and `kube_*` metrics from Prometheus; enable Grafana persistence to keep dashboards across restarts.
+
 # How to Monitor Kubernetes with Grafana Dashboards
 
 Grafana dashboards provide visual insights into your Kubernetes cluster. Learn to create dashboards for cluster overview, node health, pod performance, and application metrics.

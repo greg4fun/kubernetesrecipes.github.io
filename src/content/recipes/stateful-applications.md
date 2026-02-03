@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["statefulset", "databases", "persistence", "storage", "stateful"]
 ---
 
+> 💡 **Quick Answer:** Use `StatefulSet` (not Deployment) for databases and distributed systems. StatefulSets provide: **stable pod names** (app-0, app-1), **persistent storage per pod** via volumeClaimTemplates, **ordered startup/shutdown**. Headless Service enables DNS records for each pod (`app-0.svc.namespace.svc.cluster.local`).
+>
+> **Key pattern:** `volumeClaimTemplates` creates individual PVCs per pod that persist across restarts.
+>
+> **Gotcha:** Deleting a StatefulSet does NOT delete its PVCs—data persists. Scale down carefully (pods delete in reverse order: n-1 first).
+
 # How to Deploy Stateful Applications
 
 StatefulSets manage stateful applications that require stable network identities, persistent storage, and ordered deployment. Essential for databases, caches, and distributed systems.

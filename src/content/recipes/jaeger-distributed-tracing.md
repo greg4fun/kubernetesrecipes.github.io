@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["jaeger", "tracing", "observability", "opentelemetry", "debugging"]
 ---
 
+> 💡 **Quick Answer:** Install Jaeger Operator, create a `Jaeger` CR (use `allInOne` strategy for dev). Instrument apps with **OpenTelemetry SDK** sending to `jaeger-collector:14268`. Access the UI via `kubectl port-forward svc/jaeger-query 16686`. Ensure trace context headers propagate between services.
+>
+> **Key setup:** Set `OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger-collector:4317` for OTLP or use Jaeger-native exporters.
+>
+> **Gotcha:** Distributed tracing requires ALL services to propagate trace headers (traceparent/b3)—one missing hop breaks the trace chain.
+
 # How to Implement Distributed Tracing with Jaeger
 
 Jaeger provides distributed tracing for microservices architectures. Trace requests across services to identify latency bottlenecks and understand system behavior.

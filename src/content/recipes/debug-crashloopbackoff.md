@@ -21,6 +21,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** To fix CrashLoopBackOff, run `kubectl logs <pod> --previous` to see why the container crashed. Check the exit code: **137** means out of memory (increase `resources.limits.memory`), **1** means application error (check configs/env vars), **139** means segfault (debug the app). Use `kubectl describe pod <pod>` to see events and last state.
+
 ## The Problem
 
 Your pod is in CrashLoopBackOff state, repeatedly crashing and restarting with increasing backoff delays.

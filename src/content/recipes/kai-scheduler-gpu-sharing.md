@@ -25,6 +25,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Enable GPU sharing in KAI Scheduler by configuring **time-slicing** (workloads share GPU time) or **MIG partitioning** (hardware isolation). Set `nvidia.com/gpu-sharing` annotations and use fractional GPU requests like `nvidia.com/gpu: 0.5`. KAI's bin-packing optimizes placement to maximize utilization.
+>
+> **Key concept:** GPU sharing lets multiple pods use one GPU—time-slicing for light workloads, MIG for isolation.
+>
+> **Gotcha:** Time-slicing doesn't provide memory isolation—one workload can OOM others; use MIG for production isolation.
+
 ## The Problem
 
 GPUs are expensive resources that often sit underutilized. Small inference workloads or interactive notebooks don't need a full GPU, yet standard scheduling allocates entire GPUs. This leads to poor utilization and wasted resources.

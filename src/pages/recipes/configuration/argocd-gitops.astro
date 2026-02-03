@@ -1,0 +1,25 @@
+---
+/**
+ * SEO Redirect Page: argocd-gitops → argocd-gitops-deployment
+ * This prevents 404 errors for old URLs and passes link equity to canonical page
+ */
+const canonicalUrl = "https://kubernetes.recipes/recipes/deployments/argocd-gitops-deployment/";
+const localPath = "/recipes/deployments/argocd-gitops-deployment/";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirecting to ArgoCD GitOps Deployment...</title>
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta http-equiv="refresh" content="0; url={localPath}" />
+  <script is:inline define:vars={{ localPath }}>
+    window.location.replace(localPath);
+  </script>
+</head>
+<body>
+  <p>Redirecting to <a href={localPath}>ArgoCD GitOps Deployment</a>...</p>
+</body>
+</html>

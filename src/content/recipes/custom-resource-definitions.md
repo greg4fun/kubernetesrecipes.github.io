@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["crd", "custom-resources", "api", "extensions", "operators"]
 ---
 
+> 💡 **Quick Answer:** Create a CRD with `apiVersion: apiextensions.k8s.io/v1` defining `group`, `names` (kind, plural), `versions`, and `schema` for validation. Apply with `kubectl apply -f mycrd.yaml`, then create custom resources using your new API: `kubectl apply -f myresource.yaml`.
+>
+> **Key command:** `kubectl get crd` to list CRDs; `kubectl get <plural-name>` to list your custom resources.
+>
+> **Gotcha:** CRDs alone only store data—you need a **controller** or **operator** to act on custom resource changes.
+
 # How to Create Custom Resource Definitions (CRDs)
 
 Custom Resource Definitions (CRDs) extend the Kubernetes API with your own resource types. CRDs are the foundation for building operators and managing application-specific configurations.

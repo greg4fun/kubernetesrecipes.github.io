@@ -7,6 +7,8 @@ publishDate: "2026-01-22"
 tags: ["network-policies", "security", "networking", "zero-trust", "isolation"]
 ---
 
+> **💡 Quick Answer:** Network Policies are firewall rules for pods. Start with deny-all: `spec: {podSelector: {}, policyTypes: [Ingress, Egress]}`. Then allow specific traffic with `ingress.from` and `egress.to` rules using `podSelector`, `namespaceSelector`, or `ipBlock`. Requires a CNI that supports policies (Calico, Cilium). Test with `kubectl exec <pod> -- curl <target>`.
+
 # How to Implement Network Policies
 
 Network Policies control traffic flow between pods and external endpoints. They implement firewall rules at the pod level, enabling zero-trust networking and namespace isolation.

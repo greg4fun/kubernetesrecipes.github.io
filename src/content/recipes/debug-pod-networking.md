@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["networking", "debugging", "troubleshooting", "connectivity", "dns"]
 ---
 
+> 💡 **Quick Answer:** Use a debug pod with network tools: `kubectl run netshoot --rm -it --image=nicolaka/netshoot -- bash`. Inside, test DNS (`nslookup kubernetes`), connectivity (`curl service-name:port`), and routing (`traceroute`). Check NetworkPolicies with `kubectl get networkpolicy` if traffic is blocked.
+>
+> **Key command:** `kubectl exec -it <pod> -- nslookup <service>` and `kubectl exec -it <pod> -- wget -qO- <service>:<port>`
+>
+> **Gotcha:** DNS issues often stem from CoreDNS—check `kubectl logs -n kube-system -l k8s-app=kube-dns`.
+
 # How to Debug Pod Networking Issues
 
 Network issues in Kubernetes can be challenging to diagnose. This guide provides systematic approaches and tools for debugging connectivity problems between pods, services, and external endpoints.

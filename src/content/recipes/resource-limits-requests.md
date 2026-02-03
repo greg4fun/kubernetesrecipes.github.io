@@ -7,6 +7,8 @@ publishDate: "2026-01-22"
 tags: ["resources", "limits", "requests", "qos", "capacity-planning"]
 ---
 
+> **💡 Quick Answer:** Set `resources.requests` (guaranteed minimum, used for scheduling) and `resources.limits` (maximum allowed). CPU in millicores: `cpu: "500m"` = 0.5 CPU. Memory: `memory: "256Mi"`. Start with requests = limits for predictable behavior. QoS classes: Guaranteed (requests=limits), Burstable (requests<limits), BestEffort (none set). Check usage: `kubectl top pods`.
+
 # How to Configure Resource Limits and Requests
 
 Resource requests and limits control how much CPU and memory containers can use. Proper configuration ensures efficient cluster utilization and prevents resource contention.

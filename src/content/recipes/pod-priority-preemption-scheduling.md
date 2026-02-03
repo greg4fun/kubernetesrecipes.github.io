@@ -23,6 +23,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Create `PriorityClass` with a numeric `value` (higher = more important), then reference it in pods via `priorityClassName`. High-priority pods can **preempt** (evict) lower-priority pods when resources are scarce. Use `preemptionPolicy: Never` to prioritize without preemption.
+>
+> **Key pattern:** Create classes like `critical` (1M), `high` (100K), `normal` (10K), `low` (1K), `batch` (100).
+>
+> **Gotcha:** System-critical classes (`system-cluster-critical`, `system-node-critical`) are reserved—don't use values >= 1 billion.
+
 ## The Problem
 
 When cluster resources are constrained, you need to ensure critical workloads (databases, monitoring, payment services) get scheduled before less important ones (batch jobs, dev environments). Without priority, scheduling is first-come-first-served.

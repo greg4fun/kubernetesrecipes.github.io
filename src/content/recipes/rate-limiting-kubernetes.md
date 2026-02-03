@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["rate-limiting", "ingress", "api-gateway", "traffic-management", "security"]
 ---
 
+> 💡 **Quick Answer:** Implement at **Ingress** (NGINX annotations: `nginx.ingress.kubernetes.io/limit-rps: "10"`), **Service Mesh** (Istio EnvoyFilter, Linkerd), or **API Gateway** (Kong, Ambassador). Rate limit by IP, user, or header. Return HTTP 429 when exceeded.
+>
+> **Key NGINX annotations:** `limit-rps` (requests/second), `limit-connections` (concurrent), `limit-burst-multiplier` (burst allowance).
+>
+> **Gotcha:** Per-IP limiting may not work behind load balancers—configure `externalTrafficPolicy: Local` or use `X-Forwarded-For` header.
+
 # How to Implement Rate Limiting in Kubernetes
 
 Rate limiting protects services from abuse, ensures fair resource usage, and prevents cascading failures. Implement rate limiting at the ingress, service mesh, or application level.

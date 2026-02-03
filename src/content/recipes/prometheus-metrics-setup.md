@@ -22,6 +22,12 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Expose metrics endpoint in your app (e.g., `/metrics`), create a `Service`, then create `ServiceMonitor` (with Prometheus Operator) or `PodMonitor` to configure scraping. Prometheus discovers targets via these CRDs. Use client libraries (prometheus-client) to instrument custom metrics.
+>
+> **Key config:** ServiceMonitor `selector.matchLabels` must match your Service labels; `endpoints.port` must match service port name.
+>
+> **Gotcha:** Ensure ServiceMonitor is in a namespace Prometheus watches (check `serviceMonitorNamespaceSelector` in Prometheus CR).
+
 ## The Problem
 
 You need to collect metrics from your Kubernetes applications to monitor performance, track SLIs, and set up alerting.

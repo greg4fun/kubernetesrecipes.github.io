@@ -25,6 +25,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Install NVIDIA KAI Scheduler via Helm: `helm install kai-scheduler nvidia/kai-scheduler -n gpu-operator`. Configure pods to use KAI with `schedulerName: kai-scheduler`. KAI provides gang scheduling, hierarchical queues, GPU sharing, and topology-aware placement for AI/ML workloads.
+>
+> **Key command:** Verify with `kubectl get pods -n gpu-operator -l app=kai-scheduler`.
+>
+> **Gotcha:** KAI requires NVIDIA GPU Operator installed first; it works alongside (not replacing) the default scheduler—only pods with `schedulerName: kai-scheduler` use it.
+
 ## The Problem
 
 Standard Kubernetes schedulers aren't optimized for AI/ML workloads. They lack features like gang scheduling, GPU sharing, hierarchical resource quotas, and topology-aware placement that are essential for efficiently running training and inference workloads at scale.

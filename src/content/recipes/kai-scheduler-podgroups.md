@@ -25,6 +25,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Create a `PodGroup` CRD specifying `minMember` count, then label your training pods with `scheduling.x-k8s.io/pod-group: <group-name>`. KAI Scheduler ensures **all-or-nothing scheduling**—either all pods get resources and start together, or none are scheduled, preventing resource waste.
+>
+> **Key config:** `minMember: 8` means all 8 workers must be schedulable before any start.
+>
+> **Gotcha:** Set realistic `minMember` values; if cluster can't satisfy the full group, jobs wait indefinitely—use queue priorities and preemption.
+
 ## The Problem
 
 Distributed training jobs require all worker pods to start simultaneously. If only some pods are scheduled while others wait for resources, the running pods waste expensive GPU resources doing nothing. Standard Kubernetes scheduling doesn't guarantee all-or-nothing scheduling.

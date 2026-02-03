@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["networkpolicy", "security", "networking", "isolation", "zero-trust"]
 ---
 
+> 💡 **Quick Answer:** Start with **default-deny** policy, then explicitly allow needed traffic. Use `namespaceSelector` for cross-namespace rules, `ipBlock.cidr` for external IPs, and combine `podSelector` + `namespaceSelector` for precise targeting. Always allow DNS egress (`port: 53` to `kube-system`) after default-deny.
+>
+> **Key pattern:** `ingress.from[].namespaceSelector.matchLabels` + `podSelector` for "allow frontend namespace to backend pods".
+>
+> **Gotcha:** NetworkPolicies require CNI support (Calico, Cilium, Weave)—vanilla Kubernetes networking doesn't enforce them.
+
 # How to Implement Advanced NetworkPolicies
 
 NetworkPolicies provide fine-grained control over pod network traffic. Learn advanced patterns for securing microservices with ingress and egress rules.

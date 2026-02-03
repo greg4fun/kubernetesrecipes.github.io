@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["probes", "health-checks", "liveness", "readiness", "startup"]
 ---
 
+> 💡 **Quick Answer:** Three probe types: **Liveness** (restart if unhealthy), **Readiness** (remove from Service if not ready), **Startup** (delay other probes for slow apps). Configure with `httpGet`, `tcpSocket`, or `exec`. Set `initialDelaySeconds`, `periodSeconds`, and `failureThreshold` appropriately.
+>
+> **Key pattern:** Readiness for `/health/ready` endpoint; Liveness for `/health/live`; Startup with generous `failureThreshold` for slow apps.
+>
+> **Gotcha:** Overly aggressive liveness probes cause restart loops; readiness probes should fail during maintenance/overload, not cause restarts.
+
 # How to Configure Kubernetes Probes
 
 Probes help Kubernetes manage container lifecycle by checking health status. Liveness probes restart unhealthy containers, readiness probes control traffic routing, and startup probes handle slow-starting apps.

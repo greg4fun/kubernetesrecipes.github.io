@@ -25,6 +25,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Optimize resources: analyze usage with `kubectl top pods`, install **Vertical Pod Autoscaler (VPA)** for recommendations, right-size requests/limits based on actual usage. Use **Goldilocks** dashboard for VPA insights. Target 60-80% utilization for efficient scheduling.
+>
+> **Key command:** `kubectl top pods --containers` shows actual usage; compare with `kubectl get pods -o custom-columns` for requests.
+>
+> **Gotcha:** Don't set requests too low (scheduling issues) or limits too tight (OOMKills)—use VPA recommendations as a starting point.
+
 ## The Problem
 
 Your Kubernetes cluster is over-provisioned, wasting resources and increasing costs. Pods request more CPU/memory than they use, or worse, have no limits and consume excessive resources.

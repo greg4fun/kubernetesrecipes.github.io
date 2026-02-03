@@ -5,8 +5,9 @@ import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 import partytown from "@astrojs/partytown";
 
-// Duplicate recipes to exclude from sitemap (these will be deleted or redirected)
-const duplicateRecipes = [
+// Redirect pages to exclude from sitemap (these are client-side redirects, not real content)
+// These pages exist in src/pages/recipes/[category]/*.astro as redirect stubs
+const redirectPages = [
   "blue-green-deployments",
   "prometheus-monitoring", 
   "argocd-gitops",
@@ -41,11 +42,11 @@ export default defineConfig({
         "https://kubernetes.recipes/community",
         "https://kubernetes.recipes/contact",
       ],
-      // Filter out duplicate/redirect URLs from sitemap
+      // Filter out redirect pages from sitemap (they have noindex anyway)
       filter(page) {
-        // Exclude duplicate recipes
-        for (const dup of duplicateRecipes) {
-          if (page.includes(`/recipes/`) && page.includes(`/${dup}/`)) {
+        // Exclude redirect stub pages
+        for (const redirect of redirectPages) {
+          if (page.includes(`/recipes/`) && page.includes(`/${redirect}/`)) {
             return false;
           }
         }

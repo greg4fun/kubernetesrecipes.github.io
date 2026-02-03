@@ -265,7 +265,7 @@ const faqStructuredData = isRecipePage ? {
   ]
 } : null;
 
-// HowTo Schema for recipe pages
+// HowTo Schema for recipe pages - Enhanced for better SEO
 const howToStructuredData = isRecipePage ? {
   "@context": "https://schema.org",
   "@type": "HowTo",
@@ -273,14 +273,53 @@ const howToStructuredData = isRecipePage ? {
   "description": description,
   "image": resolvedImageWithDomain,
   "totalTime": `PT${readingTime}M`,
+  "estimatedCost": {
+    "@type": "MonetaryAmount",
+    "currency": "USD",
+    "value": "0"
+  },
+  "supply": [
+    {
+      "@type": "HowToSupply",
+      "name": "YAML configuration files"
+    },
+    {
+      "@type": "HowToSupply", 
+      "name": "Container images"
+    }
+  ],
   "tool": [
     {
       "@type": "HowToTool",
-      "name": "kubectl"
+      "name": "kubectl CLI"
     },
     {
       "@type": "HowToTool",
-      "name": "Kubernetes cluster"
+      "name": "Kubernetes cluster (v1.28+)"
+    },
+    {
+      "@type": "HowToTool",
+      "name": "Terminal/Shell access"
+    }
+  ],
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Prerequisites Check",
+      "text": "Ensure you have a running Kubernetes cluster and kubectl configured to access it."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Apply Configuration",
+      "text": "Copy the YAML configuration from this recipe and apply it using kubectl apply -f."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Verify Deployment",
+      "text": "Verify the resources are created correctly using kubectl get and kubectl describe commands."
     }
   ]
 } : null;
@@ -479,6 +518,79 @@ const howToStructuredData = isRecipePage ? {
       })(window, document, "clarity", "script", "v5mvt15y9u");
     </script>
     <meta name="google-site-verification" content="9cz9zIJrUCY3p9QQOW8TjKiM329bHY1iwwsLNyvx51w" />
+    
+    <!-- Copy to Clipboard Button for Code Blocks -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Find all code blocks (Astro/Shiki renders with .astro-code class)
+        const codeBlocks = document.querySelectorAll('pre.astro-code, pre:has(> code)');
+        
+        codeBlocks.forEach((pre, index) => {
+          // Skip mermaid blocks
+          if (pre.getAttribute('data-language') === 'mermaid') return;
+          
+          // Create wrapper for positioning
+          const wrapper = document.createElement('div');
+          wrapper.className = 'code-block-wrapper relative group';
+          pre.parentNode.insertBefore(wrapper, pre);
+          wrapper.appendChild(pre);
+          
+          // Create copy button
+          const copyBtn = document.createElement('button');
+          copyBtn.className = 'copy-code-btn absolute top-2 right-2 px-2 py-1 text-xs font-medium text-slate-400 bg-slate-800/80 hover:bg-slate-700 hover:text-white rounded transition-all opacity-0 group-hover:opacity-100 focus:opacity-100';
+          copyBtn.innerHTML = `
+            <span class="copy-text flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+              </svg>
+              Copy
+            </span>
+            <span class="copied-text hidden flex items-center gap-1 text-green-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Copied!
+            </span>
+          `;
+          copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+          
+          // Copy functionality
+          copyBtn.addEventListener('click', async () => {
+            const code = pre.querySelector('code');
+            const text = code ? code.textContent : pre.textContent;
+            
+            try {
+              await navigator.clipboard.writeText(text);
+              
+              // Visual feedback
+              copyBtn.querySelector('.copy-text').classList.add('hidden');
+              copyBtn.querySelector('.copied-text').classList.remove('hidden');
+              
+              setTimeout(() => {
+                copyBtn.querySelector('.copy-text').classList.remove('hidden');
+                copyBtn.querySelector('.copied-text').classList.add('hidden');
+              }, 2000);
+            } catch (err) {
+              console.error('Failed to copy:', err);
+            }
+          });
+          
+          wrapper.appendChild(copyBtn);
+        });
+      });
+    </script>
+    <style is:global>
+      /* Code block wrapper for copy button positioning */
+      .code-block-wrapper {
+        position: relative;
+      }
+      .code-block-wrapper pre {
+        margin: 0;
+      }
+      .copy-code-btn {
+        z-index: 10;
+      }
+    </style>
   </head>
   <body>
     <AnnouncementBanner {...announcementConfig} />

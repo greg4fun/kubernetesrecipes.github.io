@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["leases", "leader-election", "coordination", "high-availability", "distributed"]
 ---
 
+> 💡 **Quick Answer:** Leases provide distributed coordination—one holder at a time. Create a Lease resource, have instances compete to acquire it via `holderIdentity`. The holder must renew before `leaseDurationSeconds` expires or lose leadership. Kubernetes system components (scheduler, controller-manager) use leases for HA.
+>
+> **Key check:** `kubectl get lease -n kube-system` shows control plane leader election status.
+>
+> **Gotcha:** Always use established libraries (client-go leaderelection) rather than implementing lease logic manually—edge cases are tricky.
+
 # How to Use Kubernetes Leases for Leader Election
 
 Kubernetes Leases provide distributed coordination primitives. Use them for leader election, preventing split-brain, and ensuring only one active instance for critical operations.

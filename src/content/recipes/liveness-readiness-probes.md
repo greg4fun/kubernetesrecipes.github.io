@@ -22,6 +22,8 @@ publishDate: "2026-01-20"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Use **readinessProbe** to control when a pod receives traffic (fails = removed from Service). Use **livenessProbe** to restart unhealthy containers (fails = container restart). Use **startupProbe** for slow-starting apps. Always set `initialDelaySeconds` to give your app time to start, and don't make livenessProbe depend on external services.
+
 ## The Problem
 
 Kubernetes needs to know if your application is healthy and ready to receive traffic. Without proper health checks, Kubernetes might send traffic to broken pods or fail to restart crashed applications.

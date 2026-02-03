@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["api", "deprecation", "migration", "upgrades", "compatibility"]
 ---
 
+> 💡 **Quick Answer:** Use **kubectl-convert** plugin to migrate deprecated APIs: `kubectl convert -f old-manifest.yaml --output-version apps/v1`. Run **pluto** or **kubent** to scan your cluster for deprecated resources before upgrades. Check deprecations with `kubectl api-resources | grep -i <resource>`.
+>
+> **Key command:** `pluto detect-files -d ./manifests/` or `kubent` to find deprecated APIs cluster-wide.
+>
+> **Gotcha:** APIs are removed ~3 versions after deprecation—plan migrations before upgrading clusters.
+
 # How to Manage Kubernetes API Versions and Deprecations
 
 Kubernetes deprecates APIs over time. Learn to identify deprecated resources, migrate to stable APIs, and prepare for cluster upgrades.

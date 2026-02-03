@@ -24,6 +24,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Upgrade one minor version at a time (1.28→1.29, not 1.28→1.30). Process: **backup etcd**, upgrade control plane nodes first (`kubeadm upgrade apply`), then workers (`kubeadm upgrade node` + drain/uncordon). Check API deprecations with `kubectl deprecations` or pluto before upgrading.
+>
+> **Key command:** `kubeadm upgrade plan` shows available versions and required actions.
+>
+> **Gotcha:** Always test upgrades in staging first; set PodDisruptionBudgets to ensure workload availability during node drains.
+
 ## The Problem
 
 Kubernetes releases new versions every ~4 months with security patches, bug fixes, and new features. Clusters running outdated versions miss critical updates and eventually become unsupported. Upgrading incorrectly can cause outages.

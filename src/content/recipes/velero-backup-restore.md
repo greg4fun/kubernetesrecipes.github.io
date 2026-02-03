@@ -1,50 +1,31 @@
 ---
 title: "How to Backup and Restore with Velero"
-description: "Implement disaster recovery for Kubernetes using Velero. Learn to backup clusters, restore applications, and migrate workloads between clusters."
+description: "Implement Kubernetes backup and disaster recovery with Velero. Backup namespaces, restore clusters, and migrate workloads between environments."
 category: "storage"
 difficulty: "intermediate"
-timeToComplete: "35 minutes"
-kubernetesVersion: "1.28+"
-prerequisites:
-  - "A running Kubernetes cluster"
-  - "kubectl with admin privileges"
-  - "Object storage (S3, GCS, or Azure Blob)"
-relatedRecipes:
-  - "statefulset-mysql"
-  - "pvc-storageclass-examples"
-tags:
-  - velero
-  - backup
-  - disaster-recovery
-  - restore
-  - migration
-publishDate: "2026-01-21"
+publishDate: "2026-01-22"
+tags: ["velero", "backup", "restore", "disaster-recovery", "migration"]
 author: "Luca Berton"
 ---
 
-## The Problem
+> 💡 **Quick Answer:** Install Velero with cloud provider plugin, create backups with `velero backup create my-backup`. Restore with `velero restore create --from-backup my-backup`. Schedule recurring backups with `velero schedule create`. Backs up Kubernetes resources + persistent volume snapshots.
+>
+> **Key commands:** `velero backup create`, `velero restore create`, `velero schedule create daily --schedule="0 2 * * *"`.
+>
+> **Gotcha:** Test restores regularly! Velero backs up resource definitions—ensure your storage class supports snapshots for PV data.
 
-You need to backup your Kubernetes cluster resources and persistent volumes for disaster recovery or migration purposes.
+# How to Backup and Restore with Velero
 
-## The Solution
+Velero backs up Kubernetes resources and persistent volumes. Use it for disaster recovery, cluster migration, and development environment replication.
 
-Use Velero (formerly Heptio Ark) to backup and restore cluster resources and persistent volumes.
-
-## How Velero Works
-
-1. **Backup**: Captures cluster state and volume snapshots
-2. **Storage**: Stores backups in object storage (S3, GCS, Azure)
-3. **Restore**: Recreates resources from backup
-4. **Schedule**: Automated periodic backups
-
-## Step 1: Install Velero CLI
+## Install Velero CLI
 
 ```bash
 # macOS
 brew install velero
 
 # Linux
-curl -LO https://github.com/vmware-tanzu/velero/releases/download/v1.12.0/velero-v1.12.0-linux-amd64.tar.gz
+wget https://github.com/vmware-tanzu/velero/releases/download/v1.12.0/velero-v1.12.0-linux-amd64.tar.gz
 tar -xvf velero-v1.12.0-linux-amd64.tar.gz
 sudo mv velero-v1.12.0-linux-amd64/velero /usr/local/bin/
 
@@ -52,18 +33,8 @@ sudo mv velero-v1.12.0-linux-amd64/velero /usr/local/bin/
 velero version
 ```
 
-## Step 2: Set Up Storage
+## Install Velero Server (AWS)
 
-### AWS S3
-
-Create credentials file `credentials-velero`:
-```
-[default]
-aws_access_key_id=YOUR_ACCESS_KEY
-aws_secret_access_key=YOUR_SECRET_KEY
-```
-
-Install Velero:
 ```bash
 velero install \
   --provider aws \
@@ -74,354 +45,207 @@ velero install \
   --secret-file ./credentials-velero
 ```
 
-### Google Cloud Storage
+## Install Velero Server (GCP)
 
 ```bash
-# Create service account
-gcloud iam service-accounts create velero \
-  --display-name "Velero"
-
-# Grant permissions
-BUCKET=my-velero-bucket
-PROJECT_ID=$(gcloud config get-value project)
-
-gsutil mb gs://$BUCKET
-
-gcloud iam service-accounts keys create credentials-velero \
-  --iam-account velero@$PROJECT_ID.iam.gserviceaccount.com
-
-# Install Velero
 velero install \
   --provider gcp \
   --plugins velero/velero-plugin-for-gcp:v1.8.0 \
-  --bucket $BUCKET \
+  --bucket my-velero-bucket \
   --secret-file ./credentials-velero
 ```
 
-### Azure Blob Storage
+## Install Velero Server (Azure)
 
 ```bash
-AZURE_BACKUP_RESOURCE_GROUP=velero-backups
-AZURE_STORAGE_ACCOUNT_ID="velero$(uuidgen | cut -d '-' -f5 | tr '[A-Z]' '[a-z]')"
-BLOB_CONTAINER=velero
-
-az storage account create \
-  --name $AZURE_STORAGE_ACCOUNT_ID \
-  --resource-group $AZURE_BACKUP_RESOURCE_GROUP \
-  --sku Standard_GRS \
-  --encryption-services blob \
-  --https-only true
-
 velero install \
   --provider azure \
   --plugins velero/velero-plugin-for-microsoft-azure:v1.8.0 \
-  --bucket $BLOB_CONTAINER \
+  --bucket my-velero-container \
+  --backup-location-config resourceGroup=my-rg,storageAccount=myvelero \
+  --snapshot-location-config resourceGroup=my-rg \
   --secret-file ./credentials-velero
 ```
 
-## Step 3: Create Backups
-
-### Full Cluster Backup
+## Create Backup
 
 ```bash
+# Backup entire cluster
 velero backup create full-backup
+
+# Backup specific namespace
+velero backup create prod-backup --include-namespaces production
+
+# Backup multiple namespaces
+velero backup create app-backup --include-namespaces app1,app2,app3
+
+# Backup by label
+velero backup create labeled-backup --selector app=my-app
+
+# Backup excluding resources
+velero backup create slim-backup --exclude-resources secrets,configmaps
+
+# Backup with TTL
+velero backup create daily-backup --ttl 720h  # 30 days
 ```
 
-### Namespace Backup
+## Describe Backup
 
 ```bash
-velero backup create production-backup \
-  --include-namespaces production
+# List backups
+velero backup get
+
+# Describe backup
+velero backup describe full-backup
+
+# View backup logs
+velero backup logs full-backup
+
+# Check backup details
+velero backup describe full-backup --details
 ```
 
-### Multiple Namespaces
+## Restore from Backup
 
 ```bash
-velero backup create app-backup \
-  --include-namespaces production,staging
+# Full restore
+velero restore create --from-backup full-backup
+
+# Restore to different namespace
+velero restore create --from-backup prod-backup \
+  --namespace-mappings production:staging
+
+# Restore specific resources
+velero restore create --from-backup full-backup \
+  --include-resources deployments,services
+
+# Restore excluding namespaces
+velero restore create --from-backup full-backup \
+  --exclude-namespaces kube-system
+
+# Restore with name
+velero restore create my-restore --from-backup full-backup
 ```
 
-### Exclude Namespaces
-
-```bash
-velero backup create backup-without-system \
-  --exclude-namespaces kube-system,kube-public
-```
-
-### Label-Based Backup
-
-```bash
-velero backup create backend-backup \
-  --selector app=backend
-```
-
-### Backup with TTL
-
-```bash
-velero backup create daily-backup \
-  --ttl 720h  # 30 days
-```
-
-## Step 4: Scheduled Backups
-
-### Create Schedule
+## Schedule Backups
 
 ```bash
 # Daily backup at 2 AM
 velero schedule create daily-backup \
   --schedule="0 2 * * *" \
-  --ttl 168h  # Keep for 7 days
-
-# Weekly backup on Sunday
-velero schedule create weekly-backup \
-  --schedule="0 0 * * 0" \
-  --ttl 720h  # Keep for 30 days
-```
-
-### Schedule with Namespace Selection
-
-```bash
-velero schedule create production-daily \
-  --schedule="0 1 * * *" \
-  --include-namespaces production \
-  --ttl 336h  # 14 days
-```
-
-### List Schedules
-
-```bash
-velero schedule get
-```
-
-## Step 5: Restore from Backup
-
-### Full Restore
-
-```bash
-velero restore create --from-backup full-backup
-```
-
-### Restore Specific Namespace
-
-```bash
-velero restore create --from-backup full-backup \
   --include-namespaces production
+
+# Weekly backup
+velero schedule create weekly-backup \
+  --schedule="0 3 * * 0" \
+  --ttl 2160h  # 90 days
+
+# Hourly backup of critical namespace
+velero schedule create hourly-critical \
+  --schedule="0 * * * *" \
+  --include-namespaces critical \
+  --ttl 168h  # 7 days
 ```
 
-### Restore to Different Namespace
+## Manage Schedules
 
 ```bash
-velero restore create --from-backup production-backup \
-  --namespace-mappings production:production-restored
+# List schedules
+velero schedule get
+
+# Describe schedule
+velero schedule describe daily-backup
+
+# Pause schedule
+velero schedule pause daily-backup
+
+# Unpause schedule
+velero schedule unpause daily-backup
+
+# Delete schedule
+velero schedule delete daily-backup
 ```
 
-### Restore Specific Resources
-
-```bash
-velero restore create --from-backup full-backup \
-  --include-resources deployments,services
-```
-
-### Exclude Resources from Restore
-
-```bash
-velero restore create --from-backup full-backup \
-  --exclude-resources secrets
-```
-
-## Backing Up Persistent Volumes
-
-### Using Restic (File-Level Backup)
-
-Enable Restic during installation:
-
-```bash
-velero install \
-  --provider aws \
-  --plugins velero/velero-plugin-for-aws:v1.8.0 \
-  --bucket my-velero-bucket \
-  --backup-location-config region=us-east-1 \
-  --use-node-agent \
-  --default-volumes-to-fs-backup
-```
-
-Annotate pods for volume backup:
+## Backup Hooks
 
 ```yaml
-apiVersion: v1
-kind: Pod
+# deployment-with-hooks.yaml
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: myapp
+  name: mysql
   annotations:
-    backup.velero.io/backup-volumes: data-volume
-spec:
-  containers:
-  - name: myapp
-    volumeMounts:
-    - name: data-volume
-      mountPath: /data
-  volumes:
-  - name: data-volume
-    persistentVolumeClaim:
-      claimName: myapp-data
+    # Pre-backup hook (freeze writes)
+    pre.hook.backup.velero.io/command: '["/bin/sh", "-c", "mysql -u root -e \"FLUSH TABLES WITH READ LOCK\""]'
+    pre.hook.backup.velero.io/timeout: 30s
+    # Post-backup hook (unfreeze)
+    post.hook.backup.velero.io/command: '["/bin/sh", "-c", "mysql -u root -e \"UNLOCK TABLES\""]'
 ```
 
-### Using CSI Snapshots
-
-```yaml
-apiVersion: snapshot.storage.k8s.io/v1
-kind: VolumeSnapshotClass
-metadata:
-  name: velero-snapshot-class
-  labels:
-    velero.io/csi-volumesnapshot-class: "true"
-driver: ebs.csi.aws.com
-deletionPolicy: Retain
-```
-
-## Monitoring Backups
-
-### Check Backup Status
+## Monitor Velero
 
 ```bash
-velero backup describe full-backup
-velero backup logs full-backup
-```
+# Check velero pods
+kubectl get pods -n velero
 
-### List All Backups
+# View velero logs
+kubectl logs deployment/velero -n velero
 
-```bash
-velero backup get
-```
+# Check backup locations
+velero backup-location get
 
-### Check Restore Status
-
-```bash
-velero restore describe restore-name
-velero restore logs restore-name
+# Check snapshot locations
+velero snapshot-location get
 ```
 
 ## Disaster Recovery Workflow
 
-### 1. Regular Backups
-
 ```bash
-# Set up scheduled backups
-velero schedule create disaster-recovery \
-  --schedule="0 */6 * * *" \
-  --ttl 720h
+# 1. Ensure regular scheduled backups
+velero schedule get
+
+# 2. If disaster occurs, install Velero on new cluster
+velero install --provider aws ...
+
+# 3. Verify backup location accessible
+velero backup-location get
+
+# 4. List available backups
+velero backup get
+
+# 5. Restore
+velero restore create --from-backup latest-daily-backup
+
+# 6. Verify restoration
+kubectl get all -A
+velero restore describe <restore-name>
 ```
 
-### 2. Test Restores Regularly
+## Migrate Cluster
 
 ```bash
-# Create test restore
-velero restore create dr-test \
-  --from-backup disaster-recovery-20240115120000 \
-  --namespace-mappings production:dr-test
+# Source cluster: Create backup
+velero backup create migration-backup --include-namespaces app1,app2
 
-# Verify restored resources
-kubectl get all -n dr-test
+# Wait for completion
+velero backup describe migration-backup
 
-# Clean up test
-kubectl delete namespace dr-test
-```
+# Target cluster: Install Velero with same storage
+velero install --provider aws --bucket same-bucket ...
 
-### 3. Document RTO/RPO
+# Target cluster: Verify backup visible
+velero backup get
 
-- **RPO** (Recovery Point Objective): Maximum data loss = backup frequency
-- **RTO** (Recovery Time Objective): Time to restore from backup
-
-## Migration Between Clusters
-
-### Source Cluster
-
-```bash
-# Create backup
-velero backup create migration-backup \
-  --include-namespaces myapp
-```
-
-### Target Cluster
-
-```bash
-# Install Velero with same storage backend
-velero install \
-  --provider aws \
-  --plugins velero/velero-plugin-for-aws:v1.8.0 \
-  --bucket my-velero-bucket \
-  --backup-location-config region=us-east-1 \
-  --secret-file ./credentials-velero
-
-# Restore from backup
-velero restore create migration-restore \
-  --from-backup migration-backup
-```
-
-## Pre-Backup Hooks
-
-Execute commands before backup:
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: mysql
-  annotations:
-    pre.hook.backup.velero.io/container: mysql
-    pre.hook.backup.velero.io/command: '["/bin/sh", "-c", "mysqldump -u root mydb > /backup/dump.sql"]'
-    post.hook.backup.velero.io/container: mysql
-    post.hook.backup.velero.io/command: '["/bin/sh", "-c", "rm /backup/dump.sql"]'
-```
-
-## Troubleshooting
-
-### Backup Stuck
-
-```bash
-kubectl logs -n velero deployment/velero
-```
-
-### Volume Backup Failures
-
-```bash
-kubectl logs -n velero daemonset/node-agent
-```
-
-### Delete Failed Backup
-
-```bash
-velero backup delete failed-backup
+# Target cluster: Restore
+velero restore create --from-backup migration-backup
 ```
 
 ## Best Practices
 
-1. **Test restores regularly** - Don't assume backups work
-2. **Use appropriate TTLs** - Balance storage costs and recovery needs
-3. **Backup before major changes** - Create ad-hoc backups before upgrades
-4. **Monitor backup status** - Set up alerts for failed backups
-5. **Document recovery procedures** - Ensure team knows how to restore
-
-## Key Takeaways
-
-- Velero provides comprehensive Kubernetes backup/restore
-- Use schedules for automated backups
-- Test restores regularly to validate backups
-- Enable volume backups for stateful applications
-- Use hooks for application-consistent backups
-
----
-
-## 📘 Go Further with Kubernetes Recipes
-
-**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](https://amzn.to/3DzC8QA)**.
-
-Inside the book, you'll master:
-- ✅ Production-ready deployment strategies
-- ✅ Advanced networking and security patterns  
-- ✅ Observability, monitoring, and troubleshooting
-- ✅ Real-world best practices from industry experts
-
-> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
-
-**👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+1. **Test restores regularly** - backups are useless if they can't restore
+2. **Use schedules** - automate backup creation
+3. **Set TTL** - prevent storage costs from growing indefinitely
+4. **Backup before upgrades** - cluster upgrades, major deployments
+5. **Include PV snapshots** - resource backups alone don't include data
+6. **Use backup hooks** - ensure data consistency (flush caches, etc.)
+7. **Monitor backup status** - alert on failures

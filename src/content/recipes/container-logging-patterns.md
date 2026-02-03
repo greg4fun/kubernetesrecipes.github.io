@@ -7,6 +7,8 @@ publishDate: "2026-01-22"
 tags: ["logging", "observability", "sidecar", "fluentd", "stdout"]
 ---
 
+> **💡 Quick Answer:** Always log to stdout/stderr (Kubernetes captures these). View logs: `kubectl logs <pod> -f`. For multi-container pods: `kubectl logs <pod> -c <container>`. Use structured JSON logging for easier parsing. For aggregation, deploy Fluentd/Fluent Bit as DaemonSet to ship logs to Elasticsearch/Loki. Sidecar pattern for apps that only write to files.
+
 # How to Implement Container Logging Patterns
 
 Kubernetes captures container stdout/stderr logs. Learn logging patterns, sidecar collectors, and log aggregation strategies for production observability.

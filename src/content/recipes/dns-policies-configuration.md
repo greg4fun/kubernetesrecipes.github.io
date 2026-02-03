@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["dns", "networking", "coredns", "resolution", "configuration"]
 ---
 
+> 💡 **Quick Answer:** Set `spec.dnsPolicy` in your pod: **ClusterFirst** (default—cluster DNS then node), **Default** (node's resolv.conf), **None** (fully custom via `dnsConfig`). Use `dnsConfig` to add nameservers, searches, and options like `ndots`.
+>
+> **Key config:** Reduce `ndots: 2` (from default 5) to speed up external DNS lookups by reducing search domain iterations.
+>
+> **Gotcha:** `ClusterFirstWithHostNet` is required when using `hostNetwork: true` but still needing cluster DNS.
+
 # How to Configure Kubernetes DNS Policies
 
 Kubernetes offers multiple DNS policies to control how pods resolve names. Configure custom DNS settings for hybrid cloud, split-horizon DNS, and special requirements.

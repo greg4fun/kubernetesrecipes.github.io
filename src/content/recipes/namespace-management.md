@@ -21,6 +21,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Namespaces = logical cluster partitions. Create: `kubectl create ns dev`. Set default: `kubectl config set-context --current --namespace=dev`. Apply ResourceQuota to limit CPU/memory per namespace. Use NetworkPolicies for isolation. RBAC bindings are namespace-scoped. Default namespaces: `default`, `kube-system`, `kube-public`. Don't use `default` in production.
+
 ## The Problem
 
 You have multiple teams or applications sharing a Kubernetes cluster and need to organize, isolate, and control resources between them.

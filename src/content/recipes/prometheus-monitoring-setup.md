@@ -7,6 +7,8 @@ publishDate: "2026-01-22"
 tags: ["prometheus", "monitoring", "metrics", "grafana", "alerting"]
 ---
 
+> **💡 Quick Answer:** Install kube-prometheus-stack via Helm: `helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring --create-namespace`. Includes Prometheus, Grafana, and Alertmanager. Access Grafana: `kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring`. Default dashboards included. Add custom scraping via `ServiceMonitor` CRDs.
+
 # How to Monitor Kubernetes with Prometheus
 
 Prometheus is the standard for Kubernetes monitoring. Collect metrics from nodes, pods, and applications, set up alerts, and visualize with Grafana.

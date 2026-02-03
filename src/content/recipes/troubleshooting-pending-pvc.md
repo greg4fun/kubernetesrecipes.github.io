@@ -20,6 +20,8 @@ publishDate: "2026-01-20"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** PVC stuck in Pending? Run `kubectl describe pvc <name>` and check Events. Common causes: no matching StorageClass (`kubectl get sc`), no available PV for static provisioning, insufficient storage capacity, or volume node affinity conflict. For dynamic provisioning, ensure your cloud provider's CSI driver is installed and StorageClass has `provisioner` set correctly.
+
 ## The Problem
 
 Your PersistentVolumeClaim is stuck in `Pending` status and your pods can't start because they're waiting for storage.

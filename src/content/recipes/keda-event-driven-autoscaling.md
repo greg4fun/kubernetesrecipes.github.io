@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["keda", "autoscaling", "event-driven", "scaling", "queues"]
 ---
 
+> 💡 **Quick Answer:** Install KEDA with Helm (`helm install keda kedacore/keda -n keda`), then create `ScaledObject` resources defining triggers (Kafka, RabbitMQ, Prometheus, cron, etc.) and target deployment. KEDA scales to zero when idle and up based on event source metrics.
+>
+> **Key benefit:** Unlike HPA, KEDA can scale to zero replicas and supports 50+ event sources out of the box.
+>
+> **Gotcha:** Scale-to-zero has cold start latency; use `minReplicaCount: 1` for latency-sensitive workloads or configure `cooldownPeriod` appropriately.
+
 # How to Use KEDA for Event-Driven Autoscaling
 
 KEDA (Kubernetes Event-driven Autoscaling) extends Kubernetes HPA with event-driven triggers. Scale your workloads based on queue depth, metrics, cron schedules, and 50+ event sources.

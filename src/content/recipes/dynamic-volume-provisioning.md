@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["storage", "pv", "pvc", "storageclass", "provisioning"]
 ---
 
+> 💡 **Quick Answer:** Create a `StorageClass` with a provisioner (e.g., `kubernetes.io/aws-ebs`, `pd.csi.storage.gke.io`), then use `PersistentVolumeClaim` with `storageClassName` matching your class. Kubernetes automatically provisions the underlying volume. Set a default StorageClass with annotation `storageclass.kubernetes.io/is-default-class: "true"`.
+>
+> **Key command:** `kubectl get sc` to list StorageClasses; `kubectl get pvc` to check claim status (Bound = provisioned).
+>
+> **Gotcha:** Ensure your cloud IAM/service account has permissions to create volumes, and CSI driver is installed for your storage backend.
+
 # How to Configure Dynamic Volume Provisioning
 
 Dynamic provisioning automatically creates PersistentVolumes when PersistentVolumeClaims are created. Configure StorageClasses for your cloud provider or storage backend.

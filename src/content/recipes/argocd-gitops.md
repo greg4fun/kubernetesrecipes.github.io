@@ -1,111 +1,86 @@
 ---
-title: "How to Implement GitOps with ArgoCD"
-description: "Deploy ArgoCD for GitOps-based continuous delivery. Learn to sync Kubernetes manifests from Git repositories with automated reconciliation."
-category: "configuration"
+title: "How to Deploy with Argo CD GitOps"
+description: "Implement GitOps continuous deployment with Argo CD. Sync Kubernetes manifests from Git repositories automatically with declarative application management."
+category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
-tags: ["argocd", "gitops", "cicd", "deployment", "automation"]
+tags: ["argocd", "gitops", "continuous-deployment", "kubernetes", "automation"]
+author: "Luca Berton"
 ---
 
-# How to Implement GitOps with ArgoCD
+> 💡 **Quick Answer:** Install Argo CD (`kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml`), create an `Application` CRD pointing to your Git repo, and Argo CD automatically syncs manifests to your cluster. Changes in Git trigger deployments.
+>
+> **Key command:** `argocd app create my-app --repo https://github.com/org/repo --path k8s --dest-server https://kubernetes.default.svc`
+>
+> **Gotcha:** Enable auto-sync with `syncPolicy.automated` for true GitOps; manual sync is default. Use `selfHeal: true` to revert manual cluster changes.
 
-ArgoCD implements GitOps for Kubernetes, automatically syncing cluster state with Git repositories. Learn to deploy ArgoCD and configure applications for continuous delivery.
+# How to Deploy with Argo CD GitOps
 
-## Install ArgoCD
+Argo CD is a declarative GitOps continuous delivery tool. It monitors Git repositories and automatically syncs application state to your Kubernetes cluster.
+
+## Install Argo CD
 
 ```bash
 # Create namespace
 kubectl create namespace argocd
 
-# Install ArgoCD
+# Install Argo CD
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-# Wait for pods
+# Wait for pods to be ready
 kubectl wait --for=condition=Ready pods --all -n argocd --timeout=300s
 ```
 
-## Access ArgoCD UI
+## Access Argo CD UI
 
 ```bash
 # Get initial admin password
-kubectl -n argocd get secret argocd-initial-admin-secret \
-  -o jsonpath="{.data.password}" | base64 -d
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
-# Port forward to UI
+# Port-forward to UI
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 
-# Or expose via Ingress
+# Login via CLI
+argocd login localhost:8080 --username admin --password <password> --insecure
 ```
 
-```yaml
-# argocd-ingress.yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: argocd-server
-  namespace: argocd
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: argocd.example.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: argocd-server
-                port:
-                  number: 443
-```
-
-## Install ArgoCD CLI
-
-```bash
-# macOS
-brew install argocd
-
-# Linux
-curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-chmod +x argocd && sudo mv argocd /usr/local/bin/
-
-# Login
-argocd login argocd.example.com
-```
-
-## Create Application (Declarative)
+## Create Application via YAML
 
 ```yaml
 # application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: myapp
+  name: my-app
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/myorg/myapp-manifests.git
-    targetRevision: main
-    path: kubernetes/overlays/production
+    repoURL: https://github.com/myorg/my-app-manifests
+    targetRevision: HEAD
+    path: k8s/overlays/production
   destination:
     server: https://kubernetes.default.svc
     namespace: production
   syncPolicy:
     automated:
-      prune: true       # Delete resources not in Git
-      selfHeal: true    # Revert manual changes
+      prune: true      # Delete resources removed from Git
+      selfHeal: true   # Revert manual changes
     syncOptions:
       - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m
+```
+
+## Create Application via CLI
+
+```bash
+argocd app create my-app \
+  --repo https://github.com/myorg/my-app-manifests \
+  --path k8s/overlays/production \
+  --dest-server https://kubernetes.default.svc \
+  --dest-namespace production \
+  --sync-policy automated \
+  --auto-prune \
+  --self-heal
 ```
 
 ## Application with Helm
@@ -115,34 +90,25 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus
+  name: my-helm-app
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://prometheus-community.github.io/helm-charts
-    chart: prometheus
-    targetRevision: 25.8.0
+    repoURL: https://charts.example.com
+    chart: my-chart
+    targetRevision: 1.2.3
     helm:
-      releaseName: prometheus
       values: |
-        server:
-          persistentVolume:
-            size: 50Gi
-          resources:
-            limits:
-              cpu: 500m
-              memory: 512Mi
-        alertmanager:
-          enabled: true
+        replicaCount: 3
+        image:
+          tag: v2.0.0
+      parameters:
+        - name: service.type
+          value: LoadBalancer
   destination:
     server: https://kubernetes.default.svc
-    namespace: monitoring
-  syncPolicy:
-    automated:
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+    namespace: production
 ```
 
 ## Application with Kustomize
@@ -152,22 +118,20 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: myapp-staging
+  name: my-kustomize-app
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/myorg/myapp.git
+    repoURL: https://github.com/myorg/my-app
     targetRevision: main
-    path: kustomize/overlays/staging
+    path: k8s/overlays/production
     kustomize:
       images:
-        - myapp=myregistry/myapp:v1.2.3
-      commonLabels:
-        environment: staging
+        - my-app=my-registry/my-app:v2.0.0
   destination:
     server: https://kubernetes.default.svc
-    namespace: staging
+    namespace: production
 ```
 
 ## ApplicationSet for Multiple Environments
@@ -177,139 +141,60 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: myapp-envs
+  name: my-app
   namespace: argocd
 spec:
   generators:
     - list:
         elements:
-          - env: development
+          - env: dev
             namespace: dev
-            cluster: https://kubernetes.default.svc
           - env: staging
             namespace: staging
-            cluster: https://kubernetes.default.svc
           - env: production
             namespace: production
-            cluster: https://prod-cluster.example.com
   template:
     metadata:
-      name: 'myapp-{{env}}'
+      name: 'my-app-{{env}}'
     spec:
       project: default
       source:
-        repoURL: https://github.com/myorg/myapp.git
-        targetRevision: main
-        path: 'kubernetes/overlays/{{env}}'
+        repoURL: https://github.com/myorg/my-app
+        targetRevision: HEAD
+        path: 'k8s/overlays/{{env}}'
       destination:
-        server: '{{cluster}}'
+        server: https://kubernetes.default.svc
         namespace: '{{namespace}}'
       syncPolicy:
         automated:
           prune: true
-          selfHeal: true
-```
-
-## Private Git Repository
-
-```yaml
-# Create secret for private repo
-apiVersion: v1
-kind: Secret
-metadata:
-  name: private-repo
-  namespace: argocd
-  labels:
-    argocd.argoproj.io/secret-type: repository
-stringData:
-  type: git
-  url: https://github.com/myorg/private-repo.git
-  username: myuser
-  password: ghp_xxxxxxxxxxxxxxxxxxxx
-```
-
-```bash
-# Or via CLI
-argocd repo add https://github.com/myorg/private-repo.git \
-  --username myuser --password ghp_xxxx
 ```
 
 ## Sync Waves and Hooks
 
 ```yaml
-# Namespace created first (wave -1)
+# Use annotations to control sync order
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: myapp
+  name: my-app
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-wave: "-1"  # Create first
 ---
-# ConfigMap second (wave 0)
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: myapp-config
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
----
-# Deployment last (wave 1)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp
+  name: my-app
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
-```
-
-## Pre/Post Sync Hooks
-
-```yaml
-# pre-sync-job.yaml
+    argocd.argoproj.io/sync-wave: "0"  # Then deployment
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: db-migrate
   annotations:
-    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook: PreSync  # Run before sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
-spec:
-  template:
-    spec:
-      containers:
-        - name: migrate
-          image: myapp:latest
-          command: ["./migrate.sh"]
-      restartPolicy: Never
-```
-
-## ArgoCD Projects
-
-```yaml
-# project.yaml
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: team-a
-  namespace: argocd
-spec:
-  description: Team A applications
-  sourceRepos:
-    - 'https://github.com/myorg/team-a-*'
-  destinations:
-    - namespace: 'team-a-*'
-      server: https://kubernetes.default.svc
-  clusterResourceWhitelist:
-    - group: ''
-      kind: Namespace
-  namespaceResourceBlacklist:
-    - group: ''
-      kind: ResourceQuota
-  roles:
-    - name: developer
-      policies:
-        - p, proj:team-a:developer, applications, get, team-a/*, allow
-        - p, proj:team-a:developer, applications, sync, team-a/*, allow
 ```
 
 ## CLI Commands
@@ -319,37 +204,25 @@ spec:
 argocd app list
 
 # Get app status
-argocd app get myapp
+argocd app get my-app
 
 # Sync application
-argocd app sync myapp
+argocd app sync my-app
 
-# View diff
-argocd app diff myapp
+# View app diff
+argocd app diff my-app
 
 # Rollback
-argocd app rollback myapp
+argocd app rollback my-app
 
-# Delete application
-argocd app delete myapp
+# Delete app (keeps resources)
+argocd app delete my-app --cascade=false
 ```
 
-## Summary
+## Best Practices
 
-ArgoCD automates Kubernetes deployments using GitOps principles. Define applications declaratively, enable automated sync with self-healing, and use ApplicationSets for multi-environment deployments. Git becomes your single source of truth for cluster state.
-
----
-
-## 📘 Go Further with Kubernetes Recipes
-
-**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](https://amzn.to/3DzC8QA)**.
-
-Inside the book, you'll master:
-- ✅ Production-ready deployment strategies
-- ✅ Advanced networking and security patterns  
-- ✅ Observability, monitoring, and troubleshooting
-- ✅ Real-world best practices from industry experts
-
-> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
-
-**👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+1. **Use separate repos** for app code and manifests
+2. **Enable auto-sync** for true GitOps
+3. **Use sync waves** for ordered deployments
+4. **Implement RBAC** with Argo CD projects
+5. **Store secrets** with Sealed Secrets or External Secrets

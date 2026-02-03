@@ -22,6 +22,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Pod Security Standards (PSS) replace PodSecurityPolicies. Three levels: `privileged` (unrestricted), `baseline` (minimal restrictions), `restricted` (hardened). Apply via namespace labels: `kubectl label ns myns pod-security.kubernetes.io/enforce=restricted`. Modes: `enforce` (block), `audit` (log), `warn` (warn user). Start with `warn` mode to identify violations before enforcing.
+
 ## The Problem
 
 You need to enforce security policies to prevent containers from running with dangerous privileges like root access or host networking.

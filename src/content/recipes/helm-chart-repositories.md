@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["helm", "repository", "charts", "packaging", "distribution"]
 ---
 
+> 💡 **Quick Answer:** Package charts with `helm package ./mychart`, generate index with `helm repo index .`, then host files on GitHub Pages, S3, or GCS. For OCI registries: `helm push mychart-1.0.0.tgz oci://registry.example.com/charts`. Users add with `helm repo add myrepo https://charts.example.com`.
+>
+> **Key command:** `helm repo index . --url https://charts.example.com` generates `index.yaml` for HTTP repos.
+>
+> **Gotcha:** OCI-based registries (Docker Hub, ECR, GCR) don't need index.yaml—they use native container registry discovery.
+
 # How to Create Helm Chart Repositories
 
 Helm repositories host packaged charts for distribution. Learn to create, host, and manage chart repositories using various backends.

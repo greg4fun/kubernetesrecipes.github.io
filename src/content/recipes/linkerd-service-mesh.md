@@ -24,6 +24,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Install Linkerd: `linkerd install | kubectl apply -f -`, then inject proxies with `kubectl annotate ns <namespace> linkerd.io/inject=enabled`. Linkerd auto-adds mTLS between services, provides golden metrics (latency, success rate, throughput), and requires no app changes.
+>
+> **Key commands:** `linkerd check` validates installation; `linkerd viz dashboard` opens observability UI; `linkerd viz stat deploy` shows metrics.
+>
+> **Gotcha:** Linkerd is lighter than Istio but has fewer features—choose based on needs (mTLS + observability = Linkerd; advanced traffic management = Istio).
+
 ## The Problem
 
 You need to secure service-to-service communication, implement traffic management, and gain deep observability into your microservices without modifying application code.

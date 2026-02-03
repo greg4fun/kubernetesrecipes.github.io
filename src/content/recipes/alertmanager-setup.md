@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["alertmanager", "prometheus", "alerts", "notifications", "monitoring"]
 ---
 
+> 💡 **Quick Answer:** Install Alertmanager via **kube-prometheus-stack Helm chart** (`helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring`). Configure notification channels in `alertmanager.yaml` with receivers for Slack, PagerDuty, or email, and routing rules to match alerts by severity/team.
+>
+> **Key command:** `kubectl -n monitoring create secret generic alertmanager-config --from-file=alertmanager.yaml`
+>
+> **Gotcha:** Prometheus must be configured with `--alertmanager-url` pointing to your Alertmanager service endpoint.
+
 # How to Set Up Alertmanager for Prometheus
 
 Alertmanager handles alerts from Prometheus, managing deduplication, grouping, silencing, and routing to notification channels like Slack, PagerDuty, and email.

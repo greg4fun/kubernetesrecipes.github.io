@@ -7,6 +7,8 @@ publishDate: "2026-01-22"
 tags: ["kustomize", "configuration", "overlays", "environments", "gitops"]
 ---
 
+> **💡 Quick Answer:** Kustomize = template-free config customization (built into kubectl). Structure: `base/` (shared manifests) + `overlays/dev|prod/` (environment-specific patches). Apply: `kubectl apply -k overlays/production/`. Use `kustomization.yaml` to define resources, patches, and transformations. Common ops: `namePrefix`, `commonLabels`, `configMapGenerator`. Preview changes: `kubectl kustomize overlays/production/`.
+
 # How to Use Kustomize for Configuration Management
 
 Kustomize provides template-free customization of Kubernetes manifests. Create base configurations and use overlays to customize for different environments without duplicating YAML files.

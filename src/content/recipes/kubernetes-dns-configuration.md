@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["dns", "coredns", "networking", "service-discovery", "resolution"]
 ---
 
+> 💡 **Quick Answer:** Services resolve via `<service>.<namespace>.svc.cluster.local`. Configure pod DNS with `dnsPolicy` (ClusterFirst, Default, None) and `dnsConfig` for custom nameservers/searches. Edit CoreDNS ConfigMap for cluster-wide changes like stub domains or upstream forwarders.
+>
+> **Key debug:** `kubectl run test --rm -it --image=busybox -- nslookup kubernetes.default.svc.cluster.local`
+>
+> **Gotcha:** Reduce `ndots` from default 5 to 2 for external-heavy workloads—fewer DNS queries for external domains.
+
 # How to Configure DNS in Kubernetes
 
 Kubernetes uses CoreDNS for service discovery and name resolution. Understanding DNS configuration is essential for debugging connectivity issues and customizing name resolution.

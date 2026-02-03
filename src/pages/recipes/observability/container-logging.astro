@@ -1,0 +1,25 @@
+---
+/**
+ * SEO Redirect Page: container-logging → container-logging-patterns
+ * This prevents 404 errors for old URLs and passes link equity to canonical page
+ */
+const canonicalUrl = "https://kubernetes.recipes/recipes/observability/container-logging-patterns/";
+const localPath = "/recipes/observability/container-logging-patterns/";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirecting to Container Logging Patterns...</title>
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta http-equiv="refresh" content="0; url={localPath}" />
+  <script is:inline define:vars={{ localPath }}>
+    window.location.replace(localPath);
+  </script>
+</head>
+<body>
+  <p>Redirecting to <a href={localPath}>Container Logging Patterns</a>...</p>
+</body>
+</html>

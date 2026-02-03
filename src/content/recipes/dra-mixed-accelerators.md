@@ -27,6 +27,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Use **DRA with multiple drivers** (NVIDIA, Intel, Google) to orchestrate heterogeneous accelerator workloads. Define `ResourceClass` per accelerator type, create `ResourceClaim` objects for each stage of your pipeline (GPU for training, TPU for inference, FPGA for serving), and let DRA handle topology-aware scheduling.
+>
+> **Key pattern:** Chain accelerator stages in a single pod or use separate pods with shared storage for pipeline handoffs.
+>
+> **Gotcha:** Each accelerator vendor requires its own DRA driver—ensure all drivers are installed and configured before multi-accelerator workloads.
+
 ## The Problem
 
 Modern AI/ML pipelines often require different accelerator types for different stages: GPUs for training, TPUs for large-scale inference, FPGAs for low-latency serving, and custom ASICs for specific operations. Managing this heterogeneous infrastructure in Kubernetes is complex.

@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["resources", "cpu", "memory", "limits", "requests", "qos"]
 ---
 
+> 💡 **Quick Answer:** Set `resources.requests` (guaranteed minimum for scheduling) and `resources.limits` (maximum allowed). CPU limits throttle; memory limits OOMKill. Three QoS classes: **Guaranteed** (requests=limits), **Burstable** (requests<limits), **BestEffort** (no requests/limits).
+>
+> **Key pattern:** Set requests to typical usage, limits to peak usage. Start with `cpu: 100m`, `memory: 128Mi` and adjust based on `kubectl top pods`.
+>
+> **Gotcha:** Pods without requests may not be scheduled efficiently; pods without limits can consume all node resources.
+
 # How to Configure Pod Resource Management
 
 Resource requests and limits control how Kubernetes schedules and constrains containers. Proper configuration ensures stability, fair resource sharing, and cost optimization.

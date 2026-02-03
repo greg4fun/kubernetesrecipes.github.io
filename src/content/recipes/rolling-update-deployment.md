@@ -22,6 +22,8 @@ publishDate: "2026-01-21"
 author: "Luca Berton"
 ---
 
+> **💡 Quick Answer:** Rolling updates are the default strategy. Update image: `kubectl set image deployment/myapp app=myimage:v2`. Control speed with `spec.strategy.rollingUpdate.maxSurge` (extra pods during update) and `maxUnavailable`. Rollback: `kubectl rollout undo deployment/myapp`. Check status: `kubectl rollout status deployment/myapp`. Always set `readinessProbe` to prevent traffic to unready pods.
+
 ## The Problem
 
 You need to update your application to a new version without causing downtime or disrupting active users.

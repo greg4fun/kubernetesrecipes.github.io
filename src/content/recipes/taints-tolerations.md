@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["taints", "tolerations", "scheduling", "node-affinity", "workload-isolation"]
 ---
 
+> 💡 **Quick Answer:** **Taints** on nodes repel pods; **tolerations** on pods allow scheduling on tainted nodes. Format: `key=value:effect`. Effects: `NoSchedule` (won't schedule), `PreferNoSchedule` (soft), `NoExecute` (evict existing). Use for GPU nodes, dedicated workloads, or draining nodes.
+>
+> **Key commands:** `kubectl taint nodes node1 dedicated=gpu:NoSchedule` (add), `kubectl taint nodes node1 dedicated=gpu:NoSchedule-` (remove).
+>
+> **Gotcha:** Taints don't guarantee ONLY matching pods run there—combine with node affinity for dedicated nodes. Control plane nodes have `NoSchedule` taint by default.
+
 # How to Use Taints and Tolerations
 
 Taints and tolerations work together to ensure pods don't schedule on inappropriate nodes. Taints repel pods, while tolerations allow pods to schedule on tainted nodes.

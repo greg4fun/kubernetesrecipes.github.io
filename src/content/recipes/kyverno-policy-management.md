@@ -24,6 +24,12 @@ publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
+> 💡 **Quick Answer:** Install Kyverno via Helm (`helm install kyverno kyverno/kyverno -n kyverno`), then create `ClusterPolicy` resources in YAML. Policies can **validate** (block non-compliant resources), **mutate** (add defaults like labels), or **generate** (create related resources automatically).
+>
+> **Key command:** `kubectl get policyreport -A` shows policy violations; `kubectl get clusterpolicy` lists active policies.
+>
+> **Gotcha:** Start with `validationFailureAction: Audit` to see violations without blocking, then switch to `Enforce` when ready.
+
 ## Problem
 
 You need to enforce security policies, compliance requirements, and best practices across your Kubernetes cluster without writing complex admission webhooks. Manual policy enforcement is error-prone and doesn't scale.

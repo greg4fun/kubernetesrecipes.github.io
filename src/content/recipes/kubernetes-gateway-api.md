@@ -24,6 +24,12 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
+> 💡 **Quick Answer:** Gateway API replaces Ingress with more features. Install CRDs (`kubectl apply -f gateway-api-crds.yaml`), deploy a **GatewayClass** + **Gateway**, then create **HTTPRoute** resources to route traffic. Routes attach to Gateways with `parentRefs` and define path/header-based routing rules.
+>
+> **Key concept:** GatewayClass (infrastructure) → Gateway (listener config) → HTTPRoute (routing rules)—separating infrastructure and app team concerns.
+>
+> **Gotcha:** You need a Gateway implementation (NGINX Gateway Fabric, Envoy Gateway, Istio)—the CRDs alone don't route traffic.
+
 ## The Problem
 
 Kubernetes Ingress has limitations: vendor-specific annotations, no support for TCP/UDP routing, and limited traffic splitting capabilities. You need a more expressive, portable, and role-oriented API for traffic management.

@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["labels", "annotations", "organization", "selectors", "metadata"]
 ---
 
+> 💡 **Quick Answer:** **Labels** are for selection and querying (Services select pods by labels). **Annotations** store metadata for tools and humans (not queryable). Use consistent labeling: `app.kubernetes.io/name`, `app.kubernetes.io/version`, `app.kubernetes.io/component`. Query with `kubectl get pods -l app=myapp`.
+>
+> **Key command:** `kubectl label pod mypod env=production`; query with `-l env=production,tier=frontend`.
+>
+> **Gotcha:** Labels are limited to 63 chars; annotations can be larger—use annotations for JSON configs, URLs, descriptions.
+
 # How to Use Labels and Annotations Effectively
 
 Labels identify and select resources, while annotations store non-identifying metadata. A consistent labeling strategy is essential for managing Kubernetes at scale.

@@ -7,6 +7,8 @@ publishDate: "2026-01-22"
 tags: ["cert-manager", "tls", "certificates", "lets-encrypt", "security"]
 ---
 
+> **💡 Quick Answer:** Install: `helm install cert-manager jetstack/cert-manager --set installCRDs=true -n cert-manager --create-namespace`. Create ClusterIssuer for Let's Encrypt (use `letsencrypt-staging` first!). Add annotation to Ingress: `cert-manager.io/cluster-issuer: letsencrypt-prod`. cert-manager auto-creates Certificate and Secret. Renewals are automatic (30 days before expiry).
+
 # How to Manage Kubernetes Certificates with cert-manager
 
 cert-manager automates the management and issuance of TLS certificates in Kubernetes. It supports multiple certificate authorities including Let's Encrypt, HashiCorp Vault, and private CAs.

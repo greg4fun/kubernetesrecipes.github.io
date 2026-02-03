@@ -7,6 +7,12 @@ publishDate: "2026-01-22"
 tags: ["rbac", "service-accounts", "security", "authorization", "least-privilege"]
 ---
 
+> 💡 **Quick Answer:** Create `ServiceAccount`, then create `Role` (namespace-scoped) or `ClusterRole` (cluster-wide) with verb/resource permissions, then bind with `RoleBinding` or `ClusterRoleBinding`. Reference ServiceAccount in pod spec with `serviceAccountName`. Use `automountServiceAccountToken: false` when not needed.
+>
+> **Key command:** `kubectl auth can-i --as=system:serviceaccount:<ns>:<sa> --list` shows SA permissions.
+>
+> **Gotcha:** Default ServiceAccount has minimal permissions; always create dedicated SAs with least-privilege roles for workloads needing API access.
+
 # How to Configure Service Accounts and RBAC
 
 Service accounts provide identity for pods, while RBAC (Role-Based Access Control) controls what actions they can perform. Together they implement the principle of least privilege.
