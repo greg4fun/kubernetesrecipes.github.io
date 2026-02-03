@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
+import NextRecipes from "@components/next-recipes.astro";
 
 // Category display names
 const categoryNames: Record<string, string> = {
@@ -30,17 +31,8 @@ export async function getStaticPaths() {
 const { recipe } = Astro.props;
 const { Content } = await recipe.render();
 
-// Get related recipes
+// Get all recipes for NextRecipes component
 const allRecipes = await getCollection("recipes", ({ data }) => !data.draft);
-const relatedRecipes = recipe.data.relatedRecipes
-  .map(slug => allRecipes.find(r => r.slug === slug))
-  .filter(Boolean)
-  .slice(0, 3);
-
-// Get more recipes from same category
-const sameCategoryRecipes = allRecipes
-  .filter(r => r.data.category === recipe.data.category && r.slug !== recipe.slug)
-  .slice(0, 3);
 
 const categoryName = categoryNames[recipe.data.category] || recipe.data.category;
 
@@ -189,23 +181,13 @@ const readingTime = Math.max(5, Math.ceil(wordCount / 200));
         </div>
       )}
 
-      <!-- Related Recipes -->
-      {(relatedRecipes.length > 0 || sameCategoryRecipes.length > 0) && (
-        <aside class="mt-12 pt-8 border-t">
-          <h2 class="text-xl font-bold text-slate-800 mb-4">Related Recipes</h2>
-          <div class="grid md:grid-cols-3 gap-4">
-            {(relatedRecipes.length > 0 ? relatedRecipes : sameCategoryRecipes).map((related) => (
-              <a 
-                href={`/recipes/${related.data.category}/${related.slug}`}
-                class="block p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition"
-              >
-                <span class="text-xs uppercase text-slate-500">{categoryNames[related.data.category]}</span>
-                <h3 class="font-semibold text-slate-800 mt-1 line-clamp-2">{related.data.title}</h3>
-              </a>
-            ))}
-          </div>
-        </aside>
-      )}
+      <!-- Next Recipes (Continue Learning) -->
+      <NextRecipes 
+        currentSlug={recipe.slug}
+        category={recipe.data.category}
+        relatedSlugs={recipe.data.relatedRecipes}
+        allRecipes={allRecipes}
+      />
 
       <!-- CTA -->
       <div class="mt-12 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8 text-center">

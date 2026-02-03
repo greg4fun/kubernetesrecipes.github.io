@@ -1,0 +1,123 @@
+---
+/**
+ * Next Recipes Component
+ * 
+ * Displays related recipes at the end of each recipe page.
+ * Critical for internal linking and SEO.
+ */
+
+export interface Props {
+  currentSlug: string;
+  category: string;
+  relatedSlugs?: string[];
+  allRecipes: any[];
+}
+
+const { currentSlug, category, relatedSlugs = [], allRecipes } = Astro.props;
+
+// Category display names
+const categoryNames: Record<string, string> = {
+  networking: "Networking",
+  storage: "Storage",
+  deployments: "Deployments",
+  security: "Security",
+  observability: "Observability",
+  autoscaling: "Autoscaling",
+  troubleshooting: "Troubleshooting",
+  configuration: "Configuration",
+  helm: "Helm",
+  ai: "AI & ML",
+};
+
+// Get explicitly related recipes first
+const explicitlyRelated = relatedSlugs
+  .map(slug => allRecipes.find(r => r.slug === slug))
+  .filter(Boolean);
+
+// Get more from same category if needed
+const sameCategoryRecipes = allRecipes
+  .filter(r => 
+    r.data.category === category && 
+    r.slug !== currentSlug &&
+    !relatedSlugs.includes(r.slug)
+  )
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+// Combine: up to 2 explicitly related + fill remaining from same category
+const nextRecipes = [
+  ...explicitlyRelated.slice(0, 2),
+  ...sameCategoryRecipes.slice(0, Math.max(0, 3 - explicitlyRelated.length))
+].slice(0, 3);
+
+// Suggested progression (for "learning path" feel)
+const suggestedProgression: Record<string, string[]> = {
+  // Deployments cluster
+  "rolling-update-deployment": ["blue-green-deployment", "canary-deployments"],
+  "blue-green-deployment": ["canary-deployments", "argocd-gitops-deployment"],
+  "canary-deployments": ["argocd-gitops-deployment", "flux-gitops-continuous-delivery"],
+  "jobs-cronjobs": ["horizontal-pod-autoscaler", "pod-disruption-budgets"],
+  
+  // Security cluster
+  "rbac-service-accounts": ["pod-security-standards", "network-policies"],
+  "pod-security-standards": ["secrets-management-best-practices", "network-policies-advanced"],
+  
+  // Observability cluster  
+  "prometheus-monitoring-setup": ["grafana-kubernetes-dashboards", "alertmanager-setup"],
+  "grafana-kubernetes-dashboards": ["alertmanager-setup", "distributed-tracing-jaeger"],
+};
+
+const progression = suggestedProgression[currentSlug] || [];
+const progressionRecipes = progression
+  .map(slug => allRecipes.find(r => r.slug === slug))
+  .filter(Boolean);
+
+const displayRecipes = progressionRecipes.length > 0 ? progressionRecipes : nextRecipes;
+---
+
+{displayRecipes.length > 0 && (
+  <aside class="mt-16 pt-8 border-t border-slate-200">
+    <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+      <span>📚</span> Continue Learning
+    </h2>
+    
+    <div class="grid md:grid-cols-3 gap-4">
+      {displayRecipes.map((recipe, index) => (
+        <a 
+          href={`/recipes/${recipe.data.category}/${recipe.slug}/`}
+          class="group block p-4 bg-slate-50 rounded-lg hover:bg-blue-50 hover:border-blue-200 border border-transparent transition-all"
+        >
+          <div class="flex items-start gap-3">
+            <span class="text-2xl opacity-50 group-hover:opacity-100 transition-opacity">
+              {index === 0 ? "1️⃣" : index === 1 ? "2️⃣" : "3️⃣"}
+            </span>
+            <div class="flex-1 min-w-0">
+              <span class="text-xs text-slate-500 uppercase tracking-wider">
+                {categoryNames[recipe.data.category] || recipe.data.category}
+              </span>
+              <h3 class="font-semibold text-slate-800 group-hover:text-blue-600 transition-colors line-clamp-2 mt-1">
+                {recipe.data.title}
+              </h3>
+              <p class="text-sm text-slate-500 mt-1 line-clamp-2">
+                {recipe.data.description}
+              </p>
+              <div class="flex items-center gap-2 mt-2 text-xs text-slate-400">
+                <span>⏱ {recipe.data.timeToComplete}</span>
+                <span class="capitalize">{recipe.data.difficulty}</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Link to category hub -->
+    <div class="mt-6 text-center">
+      <a 
+        href={`/recipes/${category}/`}
+        class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium transition-colors"
+      >
+        View all {categoryNames[category]} recipes →
+      </a>
+    </div>
+  </aside>
+)}

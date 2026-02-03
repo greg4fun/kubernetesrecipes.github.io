@@ -1,0 +1,59 @@
+# Redirects for kubernetes.recipes
+# GitHub Pages doesn't natively support this file, but it's useful for:
+# 1. Documentation of intended redirects
+# 2. Netlify/Cloudflare Pages compatibility if you migrate
+# 3. Reference for implementing client-side redirects
+
+# =============================================================================
+# DUPLICATE CONTENT REDIRECTS (301 Permanent)
+# These recipes have been consolidated to avoid duplicate content issues
+# =============================================================================
+
+# ArgoCD GitOps - Keep the more complete version
+/recipes/configuration/argocd-gitops/    /recipes/deployments/argocd-gitops-deployment/    301
+
+# Blue-Green Deployments - Same title, consolidate
+/recipes/deployments/blue-green-deployments/    /recipes/deployments/blue-green-deployment/    301
+
+# Prometheus Monitoring - Same title, consolidate  
+/recipes/observability/prometheus-monitoring/    /recipes/observability/prometheus-monitoring-setup/    301
+
+# Jobs/CronJobs - Consolidate to primary version
+/recipes/configuration/kubernetes-jobs-cronjobs/    /recipes/deployments/jobs-cronjobs/    301
+
+# Flux GitOps - Consolidate
+/recipes/configuration/flux-gitops/    /recipes/deployments/flux-gitops-continuous-delivery/    301
+
+# KEDA Autoscaling - Consolidate
+/recipes/autoscaling/keda-event-autoscaling/    /recipes/autoscaling/keda-event-driven-autoscaling/    301
+
+# Container Logging - Keep patterns version (more complete)
+/recipes/observability/container-logging/    /recipes/observability/container-logging-patterns/    301
+
+# Downward API - Consolidate
+/recipes/configuration/downward-api/    /recipes/configuration/downward-api-metadata/    301
+
+# Kyverno Policies - Consolidate  
+/recipes/security/kyverno-policies/    /recipes/security/kyverno-policy-management/    301
+
+# Velero Backup - Consolidate
+/recipes/storage/velero-backup-restore/    /recipes/storage/velero-backup-disaster-recovery/    301
+
+# Container Security Scanning - Consolidate
+/recipes/security/container-image-scanning/    /recipes/security/container-security-scanning/    301
+
+# =============================================================================
+# OLD URL PATTERNS (if any existed before migration)
+# =============================================================================
+
+# Trailing slash normalization (Astro handles this, but document it)
+# /recipes/deployments    /recipes/deployments/    301
+
+# =============================================================================
+# CATEGORY ALIASES (optional, for usability)
+# =============================================================================
+
+# /recipes/deployment/    /recipes/deployments/    301
+# /recipes/network/       /recipes/networking/     301
+# /recipes/monitor/       /recipes/observability/  301
+# /recipes/debug/         /recipes/troubleshooting/ 301

@@ -5,6 +5,21 @@ import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 import partytown from "@astrojs/partytown";
 
+// Duplicate recipes to exclude from sitemap (these will be deleted or redirected)
+const duplicateRecipes = [
+  "blue-green-deployments",
+  "prometheus-monitoring", 
+  "argocd-gitops",
+  "flux-gitops",
+  "kubernetes-jobs-cronjobs",
+  "keda-event-autoscaling",
+  "container-logging",
+  "downward-api",
+  "kyverno-policies",
+  "velero-backup-restore",
+  "container-image-scanning",
+];
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://kubernetes.recipes",
@@ -26,6 +41,16 @@ export default defineConfig({
         "https://kubernetes.recipes/community",
         "https://kubernetes.recipes/contact",
       ],
+      // Filter out duplicate/redirect URLs from sitemap
+      filter(page) {
+        // Exclude duplicate recipes
+        for (const dup of duplicateRecipes) {
+          if (page.includes(`/recipes/`) && page.includes(`/${dup}/`)) {
+            return false;
+          }
+        }
+        return true;
+      },
       serialize(item) {
         // Set homepage as highest priority
         if (item.url === "https://kubernetes.recipes") {
