@@ -32,17 +32,17 @@ export default defineConfig({
       changefreq: "weekly",
       priority: 0.7,
       lastmod: new Date(),
+      // Use trailing slashes consistently to match trailingSlash: "always"
       customPages: [
-        "https://kubernetes.recipes",
-        "https://kubernetes.recipes/recipes",
-        "https://kubernetes.recipes/chapters",
-        "https://kubernetes.recipes/authors",
-        "https://kubernetes.recipes/blog",
-        "https://kubernetes.recipes/pricing",
-        "https://kubernetes.recipes/community",
-        "https://kubernetes.recipes/contact",
+        "https://kubernetes.recipes/",
+        "https://kubernetes.recipes/recipes/",
+        "https://kubernetes.recipes/chapters/",
+        "https://kubernetes.recipes/authors/",
+        "https://kubernetes.recipes/blog/",
+        "https://kubernetes.recipes/pricing/",
+        "https://kubernetes.recipes/community/",
+        "https://kubernetes.recipes/contact/",
       ],
-      // Filter out redirect pages from sitemap (they have noindex anyway)
       filter(page) {
         // Exclude redirect stub pages
         for (const redirect of redirectPages) {
@@ -50,27 +50,33 @@ export default defineConfig({
             return false;
           }
         }
+        // Exclude non-trailing-slash duplicates (customPages without slash already
+        // generated trailing-slash versions via Astro, so drop bare versions)
+        const url = new URL(page);
+        if (url.pathname !== "/" && !url.pathname.endsWith("/")) {
+          return false;
+        }
         return true;
       },
       serialize(item) {
         // Set homepage as highest priority
-        if (item.url === "https://kubernetes.recipes") {
+        if (item.url === "https://kubernetes.recipes/" || item.url === "https://kubernetes.recipes") {
           return { ...item, priority: 1.0, changefreq: "daily" };
         }
         // Recipe hub - high priority
-        if (item.url === "https://kubernetes.recipes/recipes") {
+        if (item.url.match(/\/recipes\/?$/)) {
           return { ...item, priority: 0.95, changefreq: "daily" };
         }
         // Recipe category pages - high priority
-        if (item.url.match(/\/recipes\/[a-z-]+$/)) {
+        if (item.url.match(/\/recipes\/[a-z-]+\/?$/)) {
           return { ...item, priority: 0.9, changefreq: "weekly" };
         }
         // Individual recipe pages - high priority
-        if (item.url.match(/\/recipes\/[a-z-]+\/[a-z-]+$/)) {
+        if (item.url.match(/\/recipes\/[a-z-]+\/[a-z-]+\/?$/)) {
           return { ...item, priority: 0.85, changefreq: "monthly" };
         }
         // Set main pages as high priority
-        if (item.url.match(/\/(chapters|pricing|authors)$/)) {
+        if (item.url.match(/\/(chapters|pricing|authors)\/?$/)) {
           return { ...item, priority: 0.9, changefreq: "weekly" };
         }
         // Set blog posts
