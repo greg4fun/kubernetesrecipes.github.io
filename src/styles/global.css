@@ -26,3 +26,11 @@
     border-color: var(--color-gray-200, currentColor);
   }
 }
+
+/* Luca Berton Network Footer */
+.lb-network{background:#0f172a;border-top:1px solid #1e293b;padding:12px 16px;text-align:center;font-family:system-ui,-apple-system,sans-serif}
+.lb-network-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:720px;margin:0 auto}
+.lb-network a{display:inline-flex;align-items:center;gap:4px;color:#64748b;text-decoration:none;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:500;transition:all .2s}
+.lb-network a:hover{color:#e2e8f0;background:#1e293b}
+.lb-network a svg{width:14px;height:14px;flex-shrink:0}
+.lb-network a.lb-active{color:#3b82f6}
