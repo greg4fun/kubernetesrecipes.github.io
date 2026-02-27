@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import NextRecipes from "@components/next-recipes.astro";
+import CourseCta from "@components/course-cta.astro";
 
 // Category display names
 const categoryNames: Record<string, string> = {
@@ -184,6 +185,13 @@ const readingTime = Math.max(5, Math.ceil(wordCount / 200));
           </div>
         </div>
       )}
+
+      <!-- Course Recommendations -->
+      <CourseCta 
+        category={recipe.data.category}
+        tags={recipe.data.tags}
+        slug={recipe.slug}
+      />
 
       <!-- Next Recipes (Continue Learning) -->
       <NextRecipes 

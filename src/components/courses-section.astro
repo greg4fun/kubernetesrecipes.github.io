@@ -1,0 +1,75 @@
+---
+/**
+ * Homepage courses section promoting CopyPasteLearn.com courses.
+ */
+const courses = [
+  {
+    url: "https://www.copypastelearn.com/courses/openclaw-agent",
+    title: "OpenClaw Agent",
+    description: "Build and deploy AI agents that connect to WhatsApp, Telegram, Discord & more.",
+    emoji: "🤖",
+    tag: "AI Agents",
+  },
+  {
+    url: "https://www.copypastelearn.com/courses/mlflow-kubernetes-mlops",
+    title: "MLflow on Kubernetes",
+    description: "Master the ML lifecycle — experiment tracking, model registry, and K8s deployment.",
+    emoji: "🧪",
+    tag: "MLOps",
+  },
+  {
+    url: "https://www.copypastelearn.com/courses/terraform-beginners",
+    title: "Terraform for Beginners",
+    description: "Provision Kubernetes clusters and cloud infrastructure with infrastructure as code.",
+    emoji: "🏗️",
+    tag: "IaC",
+  },
+  {
+    url: "https://www.copypastelearn.com/courses/ansible-quickstart",
+    title: "Ansible Quickstart",
+    description: "Automate server configuration, K8s node setup, and deployment pipelines.",
+    emoji: "⚡",
+    tag: "Automation",
+  },
+];
+---
+
+<div class="mt-20">
+  <div class="text-center mb-10">
+    <span class="text-sm uppercase tracking-wider text-blue-600 font-semibold">🎓 Hands-on Learning</span>
+    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2">
+      Level Up with Practical Courses
+    </h2>
+    <p class="text-slate-500 mt-3 max-w-2xl mx-auto">
+      Go beyond recipes — master the full stack with step-by-step courses from 
+      <a href="https://www.copypastelearn.com/" target="_blank" rel="noopener" class="text-blue-600 hover:underline font-medium">CopyPasteLearn.com</a>.
+    </p>
+  </div>
+  
+  <div class="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+    {courses.map((course) => (
+      <a 
+        href={course.url}
+        target="_blank"
+        rel="noopener"
+        class="group flex items-start gap-4 bg-white rounded-xl p-6 border border-slate-200 hover:border-blue-400 hover:shadow-lg transition-all"
+      >
+        <span class="text-3xl">{course.emoji}</span>
+        <div class="flex-1">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
+              {course.title}
+            </span>
+            <span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-medium">
+              {course.tag}
+            </span>
+          </div>
+          <p class="text-sm text-slate-500 mt-1.5">{course.description}</p>
+          <span class="text-sm text-blue-600 font-medium mt-2 inline-block group-hover:translate-x-1 transition-transform">
+            Start Learning →
+          </span>
+        </div>
+      </a>
+    ))}
+  </div>
+</div>
