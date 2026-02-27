@@ -1,0 +1,125 @@
+---
+/**
+ * Contextual course recommendations based on recipe category/tags.
+ * Links to CopyPasteLearn.com courses.
+ */
+export interface Props {
+  category?: string;
+  tags?: string[];
+  slug?: string;
+}
+
+const { category = "", tags = [], slug = "" } = Astro.props;
+
+const allTags = tags.map(t => t.toLowerCase());
+const cat = category.toLowerCase();
+const s = slug.toLowerCase();
+
+// Determine which courses are relevant
+interface Course {
+  url: string;
+  title: string;
+  description: string;
+  emoji: string;
+}
+
+const courses: Course[] = [];
+
+// OpenClaw course — for openclaw recipes
+if (s.includes("openclaw") || allTags.includes("openclaw")) {
+  courses.push({
+    url: "https://www.copypastelearn.com/courses/openclaw-agent",
+    title: "OpenClaw Agent Mastery",
+    description: "Build and deploy AI agents with OpenClaw — hands-on course with real-world projects.",
+    emoji: "🤖",
+  });
+}
+
+// MLflow/MLOps course — for AI, ML, training, inference recipes
+if (cat === "ai" || allTags.some(t => ["mlflow", "mlops", "training", "inference", "gpu", "distributed-training", "fine-tuning", "llm"].includes(t))) {
+  courses.push({
+    url: "https://www.copypastelearn.com/courses/mlflow-kubernetes-mlops",
+    title: "MLflow on Kubernetes — MLOps",
+    description: "Master ML lifecycle management with MLflow on Kubernetes — tracking, registry, and deployment.",
+    emoji: "🧪",
+  });
+}
+
+// Terraform course — for infrastructure, cluster setup, cloud recipes
+if (allTags.some(t => ["terraform", "infrastructure", "iac", "cluster-setup", "cloud", "eks", "gke", "aks"].includes(t)) || s.includes("terraform")) {
+  courses.push({
+    url: "https://www.copypastelearn.com/courses/terraform-beginners",
+    title: "Terraform for Beginners",
+    description: "Learn infrastructure as code with Terraform — provision Kubernetes clusters and cloud resources.",
+    emoji: "🏗️",
+  });
+}
+
+// Ansible course — for configuration, automation, deployment recipes
+if (allTags.some(t => ["ansible", "automation", "configuration-management"].includes(t)) || cat === "configuration" || s.includes("ansible")) {
+  courses.push({
+    url: "https://www.copypastelearn.com/courses/ansible-quickstart",
+    title: "Ansible Quickstart",
+    description: "Automate Kubernetes node configuration and cluster bootstrapping with Ansible.",
+    emoji: "⚡",
+  });
+}
+
+// If no specific match, show a general selection (max 2)
+if (courses.length === 0) {
+  // Show MLflow for AI-adjacent or Terraform for infra-adjacent
+  if (["autoscaling", "observability", "networking"].includes(cat)) {
+    courses.push({
+      url: "https://www.copypastelearn.com/courses/terraform-beginners",
+      title: "Terraform for Beginners",
+      description: "Provision the infrastructure behind your Kubernetes clusters with Terraform.",
+      emoji: "🏗️",
+    });
+  }
+  if (["security", "storage", "deployments", "helm"].includes(cat)) {
+    courses.push({
+      url: "https://www.copypastelearn.com/courses/ansible-quickstart",
+      title: "Ansible Quickstart",
+      description: "Automate cluster bootstrapping and node configuration with Ansible.",
+      emoji: "⚡",
+    });
+  }
+}
+
+// Limit to 2 courses max
+const displayCourses = courses.slice(0, 2);
+---
+
+{displayCourses.length > 0 && (
+  <div class="mt-8 mb-4 not-prose">
+    <div class="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl p-6">
+      <p class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-3">
+        🎓 Deepen Your Skills — Hands-on Courses
+      </p>
+      <div class={`grid gap-3 ${displayCourses.length > 1 ? 'md:grid-cols-2' : ''}`}>
+        {displayCourses.map((course) => (
+          <a 
+            href={course.url}
+            target="_blank"
+            rel="noopener"
+            class="flex items-start gap-3 bg-white rounded-lg p-4 border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group"
+          >
+            <span class="text-2xl">{course.emoji}</span>
+            <div>
+              <span class="font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
+                {course.title}
+              </span>
+              <p class="text-sm text-slate-500 mt-1">{course.description}</p>
+              <span class="text-xs text-blue-600 font-medium mt-2 inline-block">
+                Start Learning →
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <p class="text-xs text-slate-400 mt-3 text-center">
+        Courses by <a href="https://www.copypastelearn.com/" target="_blank" rel="noopener" class="underline hover:text-blue-500">CopyPasteLearn.com</a> — Learn IT by Doing
+      </p>
+    </div>
+  </div>
+)}
