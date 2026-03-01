@@ -1,0 +1,31 @@
+# Google Search Console Disavow File
+# Site: kubernetes.recipes
+# Generated: 2026-03-01
+# 
+# Spam backlinks identified from Ahrefs backlink audit
+# All are SEO spam / fake domain report / PBN link farms
+# Most are already nofollow but disavowing for safety
+#
+# Upload at: https://search.google.com/search-console/disavow-links
+
+# Fake "Domain Report" spam sites
+domain:bye.fyi
+domain:quero.party
+domain:screenshots.wiki
+domain:optimizeflow.top
+domain:analyticshaven.top
+domain:creativeposts.top
+domain:atomizelink.icu
+
+# Fake "URL Shared" / "Website Stats" spam
+domain:sites.bounceme.net
+domain:sites.jake.eu
+
+# SEO spam / PBN link farms
+domain:rankyour.website
+domain:backlinker.shop
+domain:seoagency.sale
+domain:rankongoogle.agency
+domain:rankpilot.shop
+domain:seodaro.com
+domain:grow-your.site

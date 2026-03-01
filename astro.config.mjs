@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
-import partytown from "@astrojs/partytown";
+
 
 // Redirect pages to exclude from sitemap (these are client-side redirects, not real content)
 // These pages exist in src/pages/recipes/[category]/*.astro as redirect stubs
@@ -19,6 +19,9 @@ const redirectPages = [
   "kyverno-policies",
   "velero-backup-restore",
   "container-image-scanning",
+  "kubernetes-jobs-cronjobs",
+  "deploy-mistral-vllm-kubernetes",
+  "gitops",
 ];
 
 // https://astro.build/config
@@ -87,7 +90,6 @@ export default defineConfig({
       },
     }),
     icon(),
-    partytown({ config: { forward: ["dataLayer.push"] } }), // Using the correct import
     (await import("astro-compress")).default({
       CSS: true,  // Astro-compress for minify
       HTML: {
