@@ -1,5 +1,5 @@
 ---
-title: "Switch from Proprietary to Open NVIDIA Kernel Modules on OpenShift"
+title: "Switch to Open NVIDIA Kernel Modules on OpenShift"
 description: "Step-by-step guide to migrate the NVIDIA GPU Operator from proprietary to open kernel modules on OpenShift, enabling DMA-BUF and GPUDirect Storage support."
 category: "configuration"
 difficulty: "advanced"

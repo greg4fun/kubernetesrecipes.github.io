@@ -1,5 +1,5 @@
 ---
-title: "SELinux and SCC Configuration for the GPU Operator on OpenShift"
+title: "SELinux and SCC Config for GPU Operator"
 description: "Understand SELinux device relabeling and Security Context Constraints (SCC) requirements for the NVIDIA GPU Operator driver pods on OpenShift."
 category: "security"
 difficulty: "intermediate"

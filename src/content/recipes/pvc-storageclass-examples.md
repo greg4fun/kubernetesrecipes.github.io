@@ -1,5 +1,5 @@
 ---
-title: "How to Create and Use PersistentVolumeClaims with StorageClasses"
+title: "PersistentVolumeClaims with StorageClasses"
 description: "Learn how to provision persistent storage for your Kubernetes workloads using PersistentVolumeClaims and StorageClasses. Includes examples for dynamic."
 category: "storage"
 difficulty: "beginner"

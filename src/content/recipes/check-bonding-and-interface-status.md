@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "Check Linux Bonding and Interface Status for SR-IOV Readiness"
+title: "Check Bonding and Interface Status for SR-IOV"
 description: "Inspect bond membership and interface state to confirm which NICs can be targeted by SR-IOV policies."
 category: "troubleshooting"
 difficulty: "intermediate"
