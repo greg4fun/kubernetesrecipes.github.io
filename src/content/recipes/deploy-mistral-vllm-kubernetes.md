@@ -286,6 +286,6 @@ If using Run:ai, configure:
 
 ## Related Recipes
 
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
-- [Test LLM Inference Endpoints](./test-llm-inference-endpoints)
-- [Configure S3 Storage Permissions for ML Models](./s3-model-storage-permissions)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
+- [Test LLM Inference Endpoints](/recipes/ai/test-llm-inference-endpoints/)
+- [Configure S3 Storage Permissions for ML Models](/recipes/storage/s3-model-storage-permissions/)

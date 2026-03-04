@@ -222,6 +222,6 @@ echo "=== Done ==="
 
 ## Related Recipes
 
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
-- [Troubleshoot NIM TensorRT-LLM Failures](./troubleshoot-nim-tensorrt-llm)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
+- [Troubleshoot NIM TensorRT-LLM Failures](/recipes/troubleshooting/troubleshoot-nim-tensorrt-llm/)

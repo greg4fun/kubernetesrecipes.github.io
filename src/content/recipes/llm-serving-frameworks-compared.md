@@ -77,7 +77,7 @@ Choosing the right inference server depends on your model size, hardware, throug
   - You're serving on CPU only
 ```
 
-**Deploy:** See [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
+**Deploy:** See [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
 
 ### NVIDIA NIM — Maximum GPU Performance
 
@@ -96,7 +96,7 @@ Choosing the right inference server depends on your model size, hardware, throug
   - Open-source licensing is required
 ```
 
-**Deploy:** See [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
+**Deploy:** See [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
 
 ### Triton Inference Server — Multi-Model Serving
 
@@ -280,8 +280,8 @@ Always check `/v1/models` first to get the exact ID.
 
 ## Related Recipes
 
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
-- [Quantize LLMs for Efficient Inference](./llm-quantization-kubernetes)
-- [Multi-GPU LLM Inference](./multi-gpu-llm-inference)
-- [Test LLM Inference Endpoints](./test-llm-inference-endpoints)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
+- [Quantize LLMs for Efficient Inference](/recipes/ai/llm-quantization-kubernetes/)
+- [Multi-GPU LLM Inference](/recipes/ai/multi-gpu-llm-inference/)
+- [Test LLM Inference Endpoints](/recipes/ai/test-llm-inference-endpoints/)

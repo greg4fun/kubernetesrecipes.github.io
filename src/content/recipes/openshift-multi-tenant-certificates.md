@@ -102,5 +102,5 @@ oc get pods -n openshift-ingress -l ingresscontroller.operator.openshift.io/depl
 
 ## Related Recipes
 
-- [Rotate OpenShift Tenant Secrets Safely](./openshift-tenant-secret-rotation)
-- [Deploy a New Certificate for Each OpenShift Tenant](./openshift-deploy-new-certificate-per-tenant)
+- [Rotate OpenShift Tenant Secrets Safely](/recipes/security/openshift-tenant-secret-rotation/)
+- [Deploy a New Certificate for Each OpenShift Tenant](/recipes/security/openshift-deploy-new-certificate-per-tenant/)

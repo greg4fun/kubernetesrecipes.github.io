@@ -396,6 +396,6 @@ mistral-vllm.ai-inference.svc.cluster.local:8000
 
 ## Related Recipes
 
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
-- [Test LLM Inference Endpoints](./test-llm-inference-endpoints)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
+- [Test LLM Inference Endpoints](/recipes/ai/test-llm-inference-endpoints/)

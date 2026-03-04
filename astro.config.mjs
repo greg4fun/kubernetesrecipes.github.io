@@ -41,17 +41,19 @@ export default defineConfig({
         "https://kubernetes.recipes/recipes/",
         "https://kubernetes.recipes/chapters/",
         "https://kubernetes.recipes/authors/",
-        "https://kubernetes.recipes/blog/",
-        "https://kubernetes.recipes/pricing/",
         "https://kubernetes.recipes/community/",
         "https://kubernetes.recipes/contact/",
       ],
       filter(page) {
-        // Exclude redirect stub pages
+                // Exclude redirect stub pages
         for (const redirect of redirectPages) {
           if (page.includes(`/recipes/`) && page.includes(`/${redirect}/`)) {
             return false;
           }
+        }
+        // Exclude demo/template pages (blog posts, pricing)
+        if (page.includes("/blog/") || page.includes("/pricing/")) {
+          return false;
         }
         // Exclude non-trailing-slash duplicates (customPages without slash already
         // generated trailing-slash versions via Astro, so drop bare versions)

@@ -101,4 +101,4 @@ podman push quay.internal.example.com/org/project/myimage:latest
 
 ## Related Recipes
 
-- [Retag and Push an Image in Local Quay](./local-quay-retag-and-push)
+- [Retag and Push an Image in Local Quay](/recipes/deployments/local-quay-retag-and-push/)

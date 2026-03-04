@@ -263,7 +263,7 @@ Key metrics:
 
 ## Related Recipes
 
-- [KAI Scheduler Installation](./kai-scheduler-installation)
-- [GPU Sharing with KAI Scheduler](./kai-scheduler-gpu-sharing)
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Dynamic Resource Allocation for GPUs](./dra-gpu-allocation)
+- [KAI Scheduler Installation](/recipes/ai/kai-scheduler-installation/)
+- [GPU Sharing with KAI Scheduler](/recipes/ai/kai-scheduler-gpu-sharing/)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Dynamic Resource Allocation for GPUs](/recipes/configuration/dra-gpu-allocation/)

@@ -17,6 +17,7 @@ export interface Props {
   author?: string;
   readingTime?: number;
   tags?: string[];
+  noindex?: boolean;
 }
 
 // ============================================
@@ -55,7 +56,8 @@ const {
   modifiedDate,
   author = "Luca Berton",
   readingTime = 5,
-  tags = ["Kubernetes", "DevOps", "Cloud Native"]
+  tags = ["Kubernetes", "DevOps", "Cloud Native"],
+  noindex = false,
 } = Astro.props;
 
 const resolvedImageWithDomain = new URL(image, siteUrl).toString();
@@ -346,7 +348,11 @@ const howToStructuredData = isRecipePage ? {
     <!-- ============================================ -->
     <!-- SEO Meta Tags - Pro Level -->
     <!-- ============================================ -->
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    )}
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="bingbot" content="index, follow" />
     

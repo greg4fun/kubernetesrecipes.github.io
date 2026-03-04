@@ -238,13 +238,13 @@ curl returns "activator request timeout"
 
 If NIM issues persist and you need inference running now:
 
-1. Deploy vLLM instead (see [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes))
+1. Deploy vLLM instead (see [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
 2. vLLM is more forgiving with driver/library versions
 3. Lower throughput but much faster time-to-working-endpoint
 4. Same OpenAI-compatible API, just different backend
 
 ## Related Recipes
 
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Test LLM Inference Endpoints](./test-llm-inference-endpoints)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Test LLM Inference Endpoints](/recipes/ai/test-llm-inference-endpoints/)

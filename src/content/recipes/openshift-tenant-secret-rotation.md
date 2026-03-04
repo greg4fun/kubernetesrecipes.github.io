@@ -88,5 +88,5 @@ Keep old secrets until your rollback window closes.
 
 ## Related Recipes
 
-- [OpenShift Multi-Tenant TLS: One Certificate per Tenant IngressController](./openshift-multi-tenant-certificates)
-- [Deploy a New Certificate for Each OpenShift Tenant](./openshift-deploy-new-certificate-per-tenant)
+- [OpenShift Multi-Tenant TLS: One Certificate per Tenant IngressController](/recipes/security/openshift-multi-tenant-certificates/)
+- [Deploy a New Certificate for Each OpenShift Tenant](/recipes/security/openshift-deploy-new-certificate-per-tenant/)

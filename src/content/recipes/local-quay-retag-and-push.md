@@ -73,4 +73,4 @@ podman push quay.internal.example.com/org-b/target-image:2.26.6-rhel9.6
 
 ## Related Recipes
 
-- [Push a Podman-Saved Image to Local Quay](./local-quay-push-podman-image)
+- [Push a Podman-Saved Image to Local Quay](/recipes/deployments/local-quay-push-podman-image/)

@@ -101,5 +101,5 @@ If validation fails, re-apply previous tenant secret material and repeat rollout
 
 ## Related Recipes
 
-- [OpenShift Multi-Tenant TLS: One Certificate per Tenant IngressController](./openshift-multi-tenant-certificates)
-- [Rotate OpenShift Tenant Secrets Safely](./openshift-tenant-secret-rotation)
+- [OpenShift Multi-Tenant TLS: One Certificate per Tenant IngressController](/recipes/security/openshift-multi-tenant-certificates/)
+- [Rotate OpenShift Tenant Secrets Safely](/recipes/security/openshift-tenant-secret-rotation/)
