@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "linkerd-service-mesh"
   - "canary-deployments"
-  - "blue-green-deployments"
+  - "blue-green-deployment"
 tags:
   - istio
   - service-mesh
