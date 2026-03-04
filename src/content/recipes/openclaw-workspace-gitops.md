@@ -10,6 +10,7 @@ prerequisites:
   - "A Git repository for workspace files"
   - "Flux or ArgoCD installed (optional)"
 relatedRecipes:
+  - "openclaw-skills-kubernetes"
   - "openclaw-kubernetes-deployment"
   - "openclaw-multi-agent-kubernetes"
   - "argocd-gitops"

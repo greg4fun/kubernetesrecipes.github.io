@@ -10,6 +10,7 @@ prerequisites:
   - "kubectl configured with cluster-admin permissions"
   - "Multiple AI provider API keys (optional)"
 relatedRecipes:
+  - "openclaw-skills-kubernetes"
   - "openclaw-kubernetes-deployment"
   - "openclaw-discord-bot-kubernetes"
   - "openclaw-workspace-gitops"

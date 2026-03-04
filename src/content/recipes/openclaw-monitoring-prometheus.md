@@ -9,6 +9,7 @@ prerequisites:
   - "OpenClaw deployed on Kubernetes"
   - "Prometheus and Grafana installed (kube-prometheus-stack)"
 relatedRecipes:
+  - "openclaw-cron-heartbeat-kubernetes"
   - "openclaw-kubernetes-deployment"
   - "openclaw-ha-kubernetes"
   - "prometheus-grafana-setup"

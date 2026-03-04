@@ -5,6 +5,9 @@ category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 tags: ["encryption", "kms", "secrets", "security", "etcd"]
+relatedRecipes:
+  - "update-ca-certificates-kubernetes"
+  - "secrets-management-best-practices"
 ---
 
 > 💡 **Quick Answer:** Configure API server with `--encryption-provider-config` pointing to an `EncryptionConfiguration` that specifies KMS provider (AWS KMS, GCP KMS, Azure Key Vault, HashiCorp Vault). Secrets are encrypted before being written to etcd. Re-encrypt existing secrets after enabling.

@@ -10,6 +10,8 @@ prerequisites:
   - "OpenClaw deployed on Kubernetes"
   - "Prometheus for monitoring (optional)"
 relatedRecipes:
+  - "openclaw-backup-restore"
+  - "openclaw-custom-docker-image"
   - "openclaw-kubernetes-deployment"
   - "openclaw-monitoring-prometheus"
   - "pod-disruption-budgets"

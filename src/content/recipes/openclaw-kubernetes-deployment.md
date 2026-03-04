@@ -11,6 +11,11 @@ prerequisites:
   - "An Anthropic or OpenAI API key"
   - "Helm 3 installed (optional)"
 relatedRecipes:
+  - "openclaw-skills-kubernetes"
+  - "openclaw-cron-heartbeat-kubernetes"
+  - "openclaw-backup-restore"
+  - "openclaw-custom-docker-image"
+  - "openclaw-networkpolicy-security"
   - "openclaw-multi-agent-kubernetes"
   - "openclaw-ha-kubernetes"
   - "openclaw-discord-bot-kubernetes"

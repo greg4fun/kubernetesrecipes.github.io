@@ -10,6 +10,7 @@ prerequisites:
   - "Metrics Server or Prometheus installed"
   - "NVIDIA DCGM Exporter for GPU metrics"
 relatedRecipes:
+  - "model-caching-shared-memory"
   - "deploy-mistral-vllm-kubernetes"
   - "deploy-mistral-nvidia-nim"
   - "nvidia-gpu-operator-install"

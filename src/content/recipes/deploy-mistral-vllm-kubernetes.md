@@ -11,6 +11,7 @@ prerequisites:
   - "Model weights available on a PVC or S3 storage"
   - "Container image with vLLM (CUDA-enabled)"
 relatedRecipes:
+  - "vector-database-kubernetes"
   - "deploy-mistral-nvidia-nim"
   - "test-llm-inference-endpoints"
   - "s3-model-storage-permissions"
