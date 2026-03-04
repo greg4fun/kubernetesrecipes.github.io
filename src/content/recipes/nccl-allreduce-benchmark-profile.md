@@ -1,6 +1,6 @@
 ---
 title: "Benchmark NCCL AllReduce Performance on Kubernetes"
-description: "Measure NCCL all-reduce bandwidth and latency to validate distributed training network performance."
+description: "Measure NCCL AllReduce bandwidth and latency on Kubernetes to validate distributed training network performance across multi-GPU clusters."
 category: "ai"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

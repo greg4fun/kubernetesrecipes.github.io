@@ -1,6 +1,6 @@
 ---
 title: "Debug NCCL Timeouts and Hangs in Kubernetes"
-description: "Systematically troubleshoot NCCL runs that stall or timeout across multi-GPU and multi-node jobs."
+description: "Systematically troubleshoot NCCL runs that stall or timeout across multi-GPU and multi-node Kubernetes jobs with step-by-step diagnostic commands."
 category: "troubleshooting"
 difficulty: "advanced"
 timeToComplete: "30 minutes"

@@ -1,6 +1,6 @@
 ---
 title: "Tune NCCL Environment Variables for RDMA and Ethernet"
-description: "Apply safe NCCL environment variable profiles for RDMA-capable and Ethernet-only GPU clusters."
+description: "Apply safe NCCL environment variable profiles for RDMA-capable and Ethernet-only GPU clusters to maximize collective communication throughput."
 category: "configuration"
 difficulty: "advanced"
 timeToComplete: "20 minutes"

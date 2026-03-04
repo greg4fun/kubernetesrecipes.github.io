@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Retag and Push an Image in Local Quay"
-description: "Pull an existing image from Local Quay, retag it for a new repository path, and push the new tag."
+description: "Pull an existing container image from Local Quay, retag it for a new repository path or version, and push the updated tag back to the registry."
 category: "deployments"
 difficulty: "beginner"
 timeToComplete: "10 minutes"

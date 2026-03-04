@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Fix 'No Supported NIC Is Selected' in SR-IOV"
-description: "Diagnose SR-IOV webhook rejections by validating node state, selectors, and PF eligibility."
+description: "Diagnose SR-IOV operator webhook rejections by validating node state, label selectors, PF eligibility, and SriovNetworkNodePolicy configuration."
 category: "troubleshooting"
 difficulty: "advanced"
 timeToComplete: "30 minutes"

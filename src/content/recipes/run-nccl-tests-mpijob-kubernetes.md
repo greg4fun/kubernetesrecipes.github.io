@@ -1,6 +1,6 @@
 ---
 title: "Run NCCL Tests with MPIJob on Kubernetes"
-description: "Launch multi-pod NCCL benchmarks using MPIJob for repeatable distributed GPU communication tests."
+description: "Launch multi-pod NCCL benchmarks using MPIJob on Kubernetes for repeatable, automated distributed GPU communication testing across nodes."
 category: "deployments"
 difficulty: "advanced"
 timeToComplete: "35 minutes"

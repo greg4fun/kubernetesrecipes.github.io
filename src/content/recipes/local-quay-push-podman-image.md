@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Push a Podman-Saved Image to Local Quay"
-description: "Load a Podman image tar archive, tag it correctly, authenticate to Local Quay, and push it safely."
+description: "Load a Podman image tar archive, tag it for your Local Quay registry, authenticate with robot accounts, and push it safely to your private repo."
 category: "deployments"
 difficulty: "beginner"
 timeToComplete: "15 minutes"
