@@ -1,6 +1,6 @@
 ---
 title: "How to Implement Advanced NetworkPolicies"
-description: "Master advanced Kubernetes NetworkPolicies for fine-grained traffic control. Learn egress rules, CIDR blocks, namespace isolation, and common security patterns."
+description: "Master advanced Kubernetes NetworkPolicies for fine-grained traffic control. Learn egress rules, CIDR blocks, namespace isolation, and common security."
 category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
@@ -13,7 +13,6 @@ tags: ["networkpolicy", "security", "networking", "isolation", "zero-trust"]
 >
 > **Gotcha:** NetworkPolicies require CNI support (Calico, Cilium, Weave)—vanilla Kubernetes networking doesn't enforce them.
 
-# How to Implement Advanced NetworkPolicies
 
 NetworkPolicies provide fine-grained control over pod network traffic. Learn advanced patterns for securing microservices with ingress and egress rules.
 

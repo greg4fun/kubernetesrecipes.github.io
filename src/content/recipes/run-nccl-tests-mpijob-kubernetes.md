@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Use an `MPIJob` with one launcher and N workers, then execute `all_reduce_perf` through `mpirun` to test real multi-pod communication paths.
 
-# Run NCCL Tests with MPIJob on Kubernetes
 
 MPIJob provides a repeatable way to run multi-process NCCL tests across pods and nodes.
 

@@ -1,6 +1,6 @@
 ---
 title: "How to Create and Use Kubernetes Operators"
-description: "Learn to build Kubernetes Operators for automating application management. Understand custom controllers, the Operator pattern, and frameworks like Kubebuilder."
+description: "Learn to build Kubernetes Operators for automating application management. Understand custom controllers, the Operator pattern, and frameworks like."
 category: "deployments"
 difficulty: "advanced"
 timeToComplete: "45 minutes"

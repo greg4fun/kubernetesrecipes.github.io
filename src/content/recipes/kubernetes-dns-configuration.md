@@ -13,7 +13,6 @@ tags: ["dns", "coredns", "networking", "service-discovery", "resolution"]
 >
 > **Gotcha:** Reduce `ndots` from default 5 to 2 for external-heavy workloads—fewer DNS queries for external domains.
 
-# How to Configure DNS in Kubernetes
 
 Kubernetes uses CoreDNS for service discovery and name resolution. Understanding DNS configuration is essential for debugging connectivity issues and customizing name resolution.
 

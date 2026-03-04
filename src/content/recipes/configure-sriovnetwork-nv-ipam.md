@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Create `SriovNetwork` in `openshift-sriov-network-operator`, set `networkNamespace` to the workload namespace, and configure `ipam` with `{"type":"nv-ipam","poolName":"<pool>"}`.
 
-# Configure SriovNetwork with NVIDIA nv-ipam
 
 `SriovNetwork` lets the SR-IOV operator generate and maintain the corresponding `NetworkAttachmentDefinition` automatically.
 

@@ -14,7 +14,6 @@ author: "Luca Berton"
 >
 > **Gotcha:** CronJobs create new Jobs each run—set `successfulJobsHistoryLimit` and `failedJobsHistoryLimit` to avoid accumulating old Jobs.
 
-# How to Use Kubernetes Jobs and CronJobs
 
 Jobs run tasks to completion. CronJobs schedule Jobs to run periodically. Essential for batch processing, backups, and maintenance tasks.
 

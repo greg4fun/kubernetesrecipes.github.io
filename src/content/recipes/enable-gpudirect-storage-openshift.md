@@ -28,7 +28,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** GDS requires the Open Kernel Module (`driver.kernelModuleType: open`). Set `gds.enabled: true` in the ClusterPolicy, and the GPU Operator deploys the `nvidia-fs-ctr` container to load the `nvidia-fs` kernel module.
 
-# Enable GPUDirect Storage on OpenShift
 
 GPUDirect Storage (GDS) enables direct DMA transfers between GPU memory and storage, bypassing CPU bounce buffers. Starting with GPU Operator v23.9.1, GDS requires the NVIDIA Open Kernel Module.
 

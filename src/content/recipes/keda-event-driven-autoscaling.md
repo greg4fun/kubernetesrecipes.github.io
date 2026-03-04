@@ -13,7 +13,6 @@ tags: ["keda", "autoscaling", "event-driven", "scaling", "queues"]
 >
 > **Gotcha:** Scale-to-zero has cold start latency; use `minReplicaCount: 1` for latency-sensitive workloads or configure `cooldownPeriod` appropriately.
 
-# How to Use KEDA for Event-Driven Autoscaling
 
 KEDA (Kubernetes Event-driven Autoscaling) extends Kubernetes HPA with event-driven triggers. Scale your workloads based on queue depth, metrics, cron schedules, and 50+ event sources.
 

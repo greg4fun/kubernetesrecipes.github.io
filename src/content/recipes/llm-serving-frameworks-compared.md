@@ -29,7 +29,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Use **vLLM** for best throughput with simple setup. Use **NVIDIA NIM** for maximum performance with TensorRT-LLM (but stricter version requirements). Use **Ollama** for quick local testing. Use **Triton** for multi-model serving. Use **llama.cpp** for CPU-only inference.
 
-# Kubernetes LLM Serving Frameworks Compared
 
 Choosing the right inference server depends on your model size, hardware, throughput needs, and operational complexity tolerance.
 

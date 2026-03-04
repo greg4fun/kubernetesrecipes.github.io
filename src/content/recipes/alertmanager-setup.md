@@ -13,7 +13,6 @@ tags: ["alertmanager", "prometheus", "alerts", "notifications", "monitoring"]
 >
 > **Gotcha:** Prometheus must be configured with `--alertmanager-url` pointing to your Alertmanager service endpoint.
 
-# How to Set Up Alertmanager for Prometheus
 
 Alertmanager handles alerts from Prometheus, managing deduplication, grouping, silencing, and routing to notification channels like Slack, PagerDuty, and email.
 

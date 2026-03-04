@@ -13,7 +13,6 @@ tags: ["taints", "tolerations", "scheduling", "dedicated-nodes", "workloads"]
 >
 > **Gotcha:** Taints/tolerations only repel—they don't attract. Combine with `nodeSelector` or `nodeAffinity` to ensure pods go to specific nodes.
 
-# How to Implement Kubernetes Taints and Tolerations
 
 Taints and tolerations control which pods can schedule on which nodes. Taints repel pods, while tolerations allow pods to schedule on tainted nodes.
 

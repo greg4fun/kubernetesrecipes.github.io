@@ -20,7 +20,6 @@ author: "Luca Berton"
 
 > **💡 Quick Answer:** Pull the source image from Local Quay, retag to the new repository path, then push the new tag. Use `--tls-verify=false` only when your internal cert trust is not configured yet.
 
-# Retag and Push an Image in Local Quay
 
 Use this workflow to duplicate or promote images between repositories in the same Local Quay instance.
 

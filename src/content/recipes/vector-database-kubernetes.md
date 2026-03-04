@@ -1,6 +1,6 @@
 ---
 title: "Deploying Vector Databases on Kubernetes"
-description: "Deploy and operate vector databases (Milvus, Weaviate, Qdrant) on Kubernetes for RAG pipelines, semantic search, and AI applications with persistent storage and horizontal scaling."
+description: "Deploy and operate vector databases (Milvus, Weaviate, Qdrant) on Kubernetes for RAG pipelines, semantic search, and AI applications with persistent."
 category: "ai"
 difficulty: "intermediate"
 timeToComplete: "30 minutes"

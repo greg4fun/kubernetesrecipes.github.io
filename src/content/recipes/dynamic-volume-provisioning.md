@@ -13,7 +13,6 @@ tags: ["storage", "pv", "pvc", "storageclass", "provisioning"]
 >
 > **Gotcha:** Ensure your cloud IAM/service account has permissions to create volumes, and CSI driver is installed for your storage backend.
 
-# How to Configure Dynamic Volume Provisioning
 
 Dynamic provisioning automatically creates PersistentVolumes when PersistentVolumeClaims are created. Configure StorageClasses for your cloud provider or storage backend.
 

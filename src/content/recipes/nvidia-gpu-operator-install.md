@@ -29,7 +29,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Install with Helm: `helm install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace`. The operator auto-deploys GPU drivers, container toolkit, device plugin, and monitoring on every GPU node. Verify with `kubectl get pods -n gpu-operator` and `kubectl get nodes -o json | jq '.items[].status.capacity["nvidia.com/gpu"]'`.
 
-# Install NVIDIA GPU Operator on Kubernetes
 
 The NVIDIA GPU Operator automates the deployment and lifecycle of GPU software components on Kubernetes. Instead of manually installing drivers and plugins on each node, the operator handles everything as DaemonSets.
 

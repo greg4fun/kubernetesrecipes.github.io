@@ -13,7 +13,6 @@ tags: ["finalizers", "cleanup", "deletion", "controllers", "garbage-collection"]
 >
 > **Gotcha:** Stuck resources usually mean controller isn't running or cleanup failed—check controller logs before force-removing finalizers.
 
-# How to Use Kubernetes Finalizers
 
 Finalizers are keys on resources that signal pre-delete hooks. They block resource deletion until the finalizer is removed, allowing controllers to perform cleanup operations.
 

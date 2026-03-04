@@ -1,6 +1,6 @@
 ---
 title: "Backup and Restore OpenClaw State on Kubernetes"
-description: "Implement backup and disaster recovery for OpenClaw on Kubernetes with VolumeSnapshots, CronJobs to S3, and restore procedures for messaging sessions and conversation history."
+description: "Implement backup and disaster recovery for OpenClaw on Kubernetes with VolumeSnapshots, CronJobs to S3, and restore procedures for messaging sessions."
 category: "storage"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

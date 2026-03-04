@@ -30,7 +30,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Use KEDA with Prometheus triggers to autoscale LLM replicas based on request queue depth or GPU utilization. Standard HPA works for CPU-based metrics. For GPU-aware scaling, scrape DCGM metrics (`DCGM_FI_DEV_GPU_UTIL`) or vLLM's built-in `/metrics` endpoint (`vllm:num_requests_waiting`). Set `minReplicas: 1` to avoid cold-start delays.
 
-# Autoscale LLM Inference on Kubernetes
 
 LLM inference workloads have variable demand. Autoscaling saves GPU costs during low traffic and prevents latency spikes during peaks.
 

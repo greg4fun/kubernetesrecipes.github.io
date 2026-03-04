@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Combine NCCL benchmark logs with GPU metrics (utilization, memory, interconnect indicators) in Grafana dashboards to detect performance drift across cluster changes.
 
-# Monitor NCCL Benchmark Runs with Prometheus and Grafana
 
 Benchmark snapshots are useful, but trend-based monitoring catches regressions sooner.
 

@@ -13,7 +13,6 @@ tags: ["lease", "leader-election", "coordination", "high-availability", "distrib
 >
 > **Gotcha:** Set `leaseDurationSeconds` carefully—too short causes unnecessary failovers; too long delays recovery when leader dies.
 
-# How to Use Kubernetes Lease Objects
 
 Lease objects provide a mechanism for distributed coordination and leader election in Kubernetes. They're used by controllers, schedulers, and custom applications to ensure only one instance is active at a time.
 

@@ -1,6 +1,6 @@
 ---
 title: "Istio Traffic Management and Routing"
-description: "Implement advanced traffic management with Istio service mesh including traffic splitting, fault injection, circuit breaking, and intelligent routing strategies"
+description: "Implement advanced traffic management with Istio service mesh including traffic splitting, fault injection, circuit breaking, and intelligent routing."
 category: "networking"
 difficulty: "advanced"
 timeToComplete: "55 minutes"

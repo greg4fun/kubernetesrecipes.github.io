@@ -13,7 +13,6 @@ tags: ["helm", "dependencies", "subcharts", "packaging", "charts"]
 >
 > **Gotcha:** Use `condition: postgresql.enabled` to make dependencies optional; version ranges (`^12.0.0`) auto-update within semver constraints.
 
-# How to Manage Helm Chart Dependencies
 
 Helm dependencies let you compose complex applications from reusable charts. Learn to declare, configure, and manage chart dependencies effectively.
 

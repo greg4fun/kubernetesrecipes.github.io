@@ -13,7 +13,6 @@ tags: ["priority", "preemption", "scheduling", "resources", "workloads"]
 >
 > **Gotcha:** Preemption evicts running pods—use PodDisruptionBudgets to protect critical workloads from aggressive preemption.
 
-# How to Configure Pod Priority and Preemption
 
 Pod priority determines scheduling order and preemption behavior. Higher-priority pods can preempt (evict) lower-priority pods when cluster resources are insufficient.
 

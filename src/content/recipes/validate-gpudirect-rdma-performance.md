@@ -28,7 +28,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Deploy two pods with `mellanox/cuda-perftest`, run `ib_write_bw --use_cuda=0 --use_cuda_dmabuf` between them, and verify throughput reaches near line-rate (80–95+ Gbps for 100G NICs).
 
-# Validate GPUDirect RDMA Performance with DMA-BUF
 
 After configuring GPUDirect RDMA, validate that GPU-to-GPU transfers over the network achieve expected throughput using the `ib_write_bw` benchmark with DMA-BUF.
 

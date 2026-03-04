@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Validate daemon pods, node states, VF counts, and allocatable resources on each worker; then schedule one SR-IOV test pod per node and confirm secondary interface attachment.
 
-# Validate SR-IOV Operator Health Across Multiple Worker Nodes
 
 Use this checklist for nodes such as `worker-a` and `worker-b`.
 

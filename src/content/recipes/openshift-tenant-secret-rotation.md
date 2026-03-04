@@ -22,7 +22,6 @@ author: "Luca Berton"
 
 > **💡 Quick Answer:** Rotate tenant secrets with a versioned pattern (`<name>-v2`), update workloads to reference the new Secret, trigger controlled rollout, validate traffic, then retire the old Secret after rollback window.
 
-# Rotate OpenShift Tenant Secrets Safely
 
 Secret rotation in multi-tenant clusters should minimize cross-tenant impact and avoid abrupt app outages. The safest approach is versioned secrets with gradual rollout.
 

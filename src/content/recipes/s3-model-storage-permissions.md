@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** In S3 Browser, select the model folder, go to **Permissions** tab, check **Full Control** for the Owner, enable **Apply for all subfolders and files**, then click Apply. For PVCs, ensure the `ReadOnlyMany` or `ReadWriteMany` access mode and verify the model directory is complete.
 
-# Configure S3 Storage Permissions for ML Models
 
 Model inference pods need reliable read access to model files stored on S3-backed volumes. Incorrect ACLs cause silent mount failures or permission-denied errors.
 

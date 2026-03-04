@@ -1,6 +1,6 @@
 ---
 title: "How to Configure CronJob Concurrency Policy"
-description: "Master Kubernetes CronJob concurrency policies to control parallel execution. Learn when to use Allow, Forbid, and Replace with real-world examples and troubleshooting tips."
+description: "Master Kubernetes CronJob concurrency policies to control parallel execution. Learn when to use Allow, Forbid, and Replace with real-world examples and."
 category: "deployments"
 difficulty: "intermediate"
 timeToComplete: "15 minutes"

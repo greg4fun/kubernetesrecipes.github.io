@@ -9,7 +9,6 @@ tags: ["graceful-shutdown", "zero-downtime", "SIGTERM", "termination", "connecti
 
 > **💡 Quick Answer:** K8s sends SIGTERM → wait `terminationGracePeriodSeconds` (default 30s) → SIGKILL. Your app MUST handle SIGTERM: stop accepting new requests, finish in-flight requests, close connections, exit. Add `preStop` hook for extra delay: `lifecycle: {preStop: {exec: {command: ["sleep", "5"]}}}`. Increase grace period for long requests. Always set `readinessProbe` to stop traffic before shutdown.
 
-# How to Implement Graceful Shutdown
 
 Graceful shutdown ensures applications handle termination properly, completing in-flight requests and cleaning up resources before exiting. Essential for zero-downtime deployments.
 

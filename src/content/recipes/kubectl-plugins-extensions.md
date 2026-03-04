@@ -13,7 +13,6 @@ tags: ["kubectl", "krew", "plugins", "cli", "productivity"]
 >
 > **Gotcha:** Plugins are executables named `kubectl-<name>` in your PATH; you can create custom plugins in any language.
 
-# How to Extend kubectl with Plugins
 
 kubectl plugins extend the CLI with custom commands. Use Krew package manager to discover and install plugins that boost productivity.
 

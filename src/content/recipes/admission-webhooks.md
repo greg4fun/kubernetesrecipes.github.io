@@ -13,7 +13,6 @@ tags: ["admission-webhooks", "security", "validation", "mutation", "policy"]
 >
 > **Gotcha:** Webhooks require valid TLS certificates—use cert-manager or mount CA bundles. Set `failurePolicy: Ignore` during development to prevent cluster lockouts.
 
-# How to Create Admission Webhooks
 
 Admission webhooks intercept requests to the Kubernetes API before persistence, allowing you to validate or mutate resources. Validating webhooks reject non-compliant resources, while mutating webhooks modify resources automatically.
 

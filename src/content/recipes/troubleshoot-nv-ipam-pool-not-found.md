@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** If pod events show `pool ... not found`, verify the `IPPool` exists in the workload namespace, ensure `SriovNetwork` points to the same pool name, and check generated NAD `ipam.poolName`.
 
-# Troubleshoot nv-ipam 'Pool Not Found' Errors in Multus
 
 Typical event:
 

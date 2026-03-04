@@ -1,6 +1,6 @@
 ---
 title: "How to Configure Service Accounts and RBAC"
-description: "Secure your Kubernetes workloads with service accounts and role-based access control. Create roles, bindings, and implement least-privilege access patterns."
+description: "Secure your Kubernetes workloads with service accounts and role-based access control. Create roles, bindings, and implement least-privilege access."
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
@@ -13,7 +13,6 @@ tags: ["rbac", "service-accounts", "security", "authorization", "least-privilege
 >
 > **Gotcha:** Default ServiceAccount has minimal permissions; always create dedicated SAs with least-privilege roles for workloads needing API access.
 
-# How to Configure Service Accounts and RBAC
 
 Service accounts provide identity for pods, while RBAC (Role-Based Access Control) controls what actions they can perform. Together they implement the principle of least privilege.
 

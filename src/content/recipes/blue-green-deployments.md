@@ -14,7 +14,6 @@ author: "Luca Berton"
 >
 > **Gotcha:** Both environments must be fully running before switch—no gradual traffic shift. Database migrations need careful planning (both versions must work with same schema).
 
-# How to Implement Blue-Green Deployments
 
 Blue-green deployments eliminate downtime by running two identical production environments. Only one serves live traffic while the other stands ready for the next release.
 

@@ -1,6 +1,6 @@
 ---
 title: "High Availability OpenClaw with Kubernetes"
-description: "Run OpenClaw in a high-availability configuration on Kubernetes with health checks, automatic restarts, backup strategies, and monitoring for zero-downtime AI assistant operation."
+description: "Run OpenClaw in a high-availability configuration on Kubernetes with health checks, automatic restarts, backup strategies, and monitoring for."
 category: "deployments"
 difficulty: "intermediate"
 timeToComplete: "25 minutes"

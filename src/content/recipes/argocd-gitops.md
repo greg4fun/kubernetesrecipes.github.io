@@ -14,7 +14,6 @@ author: "Luca Berton"
 >
 > **Gotcha:** Enable auto-sync with `syncPolicy.automated` for true GitOps; manual sync is default. Use `selfHeal: true` to revert manual cluster changes.
 
-# How to Deploy with Argo CD GitOps
 
 Argo CD is a declarative GitOps continuous delivery tool. It monitors Git repositories and automatically syncs application state to your Kubernetes cluster.
 

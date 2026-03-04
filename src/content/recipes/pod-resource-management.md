@@ -13,7 +13,6 @@ tags: ["resources", "cpu", "memory", "limits", "requests", "qos"]
 >
 > **Gotcha:** Pods without requests may not be scheduled efficiently; pods without limits can consume all node resources.
 
-# How to Configure Pod Resource Management
 
 Resource requests and limits control how Kubernetes schedules and constrains containers. Proper configuration ensures stability, fair resource sharing, and cost optimization.
 

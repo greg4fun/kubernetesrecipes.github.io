@@ -1,6 +1,6 @@
 ---
 title: "Network Policies for OpenClaw on Kubernetes"
-description: "Secure OpenClaw deployments with Kubernetes NetworkPolicies to restrict egress to messaging APIs, block unauthorized ingress, and isolate the gateway namespace."
+description: "Secure OpenClaw deployments with Kubernetes NetworkPolicies to restrict egress to messaging APIs, block unauthorized ingress, and isolate the gateway."
 category: "security"
 difficulty: "intermediate"
 timeToComplete: "15 minutes"

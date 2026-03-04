@@ -1,6 +1,6 @@
 ---
 title: "OpenClaw Cron Jobs and Heartbeats on Kubernetes"
-description: "Configure OpenClaw's built-in cron scheduling and heartbeat system on Kubernetes for proactive notifications, periodic checks, and automated background tasks."
+description: "Configure OpenClaw's built-in cron scheduling and heartbeat system on Kubernetes for proactive notifications, periodic checks, and automated background."
 category: "configuration"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

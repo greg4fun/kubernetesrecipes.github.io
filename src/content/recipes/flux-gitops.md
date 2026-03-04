@@ -14,7 +14,6 @@ author: "Luca Berton"
 >
 > **Gotcha:** Flux is pull-based—no webhooks needed but changes take up to `interval` time. Set `interval: 1m` for faster sync.
 
-# How to Deploy with Flux GitOps
 
 Flux is a set of continuous delivery solutions for Kubernetes. It automatically reconciles cluster state with Git repositories.
 

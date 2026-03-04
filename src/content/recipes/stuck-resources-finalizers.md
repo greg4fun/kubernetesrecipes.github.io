@@ -13,7 +13,6 @@ tags: ["finalizers", "deletion", "cleanup", "stuck-resources", "terminating"]
 >
 > **Gotcha:** Force-removing finalizers can leave orphaned resources. Check for dependent resources first with `kubectl get all -n <namespace>`.
 
-# How to Manage Kubernetes Finalizers and Stuck Resources
 
 Finalizers prevent resources from being deleted until cleanup tasks complete. They're used by controllers to ensure proper cleanup of dependent resources, but can cause resources to get stuck.
 

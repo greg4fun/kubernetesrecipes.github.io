@@ -29,7 +29,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** RAG = Vector DB (store embeddings) + Embedding Model (convert text → vectors) + LLM (generate answers grounded in retrieved context). Deploy ChromaDB or pgvector for storage, use an embedding model sidecar or service, and point your LLM queries through a retrieval layer. All components run as standard Kubernetes deployments.
 
-# Build a RAG Pipeline on Kubernetes
 
 Retrieval-Augmented Generation (RAG) grounds LLM answers in your own documents, reducing hallucination and enabling domain-specific knowledge without fine-tuning.
 

@@ -1,6 +1,6 @@
 ---
 title: "How to Upgrade Kubernetes Clusters Safely"
-description: "Perform Kubernetes cluster upgrades with zero downtime. Learn upgrade strategies, pre-flight checks, rollback procedures, and best practices for production clusters."
+description: "Perform Kubernetes cluster upgrades with zero downtime. Learn upgrade strategies, pre-flight checks, rollback procedures, and best practices for."
 category: "configuration"
 difficulty: "advanced"
 timeToComplete: "45 minutes"

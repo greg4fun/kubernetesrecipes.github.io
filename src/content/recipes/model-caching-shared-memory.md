@@ -1,6 +1,6 @@
 ---
 title: "Shared Model Caching Across Pods on Kubernetes"
-description: "Optimize LLM inference startup and reduce storage costs by sharing model weights across pods using emptyDir, hostPath, ReadWriteMany PVCs, and init containers."
+description: "Optimize LLM inference startup and reduce storage costs by sharing model weights across pods using emptyDir, hostPath, ReadWriteMany PVCs, and init."
 category: "ai"
 difficulty: "intermediate"
 timeToComplete: "25 minutes"

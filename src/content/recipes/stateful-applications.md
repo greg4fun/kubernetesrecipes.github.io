@@ -13,7 +13,6 @@ tags: ["statefulset", "databases", "persistence", "storage", "stateful"]
 >
 > **Gotcha:** Deleting a StatefulSet does NOT delete its PVCs—data persists. Scale down carefully (pods delete in reverse order: n-1 first).
 
-# How to Deploy Stateful Applications
 
 StatefulSets manage stateful applications that require stable network identities, persistent storage, and ordered deployment. Essential for databases, caches, and distributed systems.
 

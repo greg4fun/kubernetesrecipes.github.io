@@ -1,6 +1,6 @@
 ---
 title: "Monitor OpenClaw with Prometheus and Grafana on Kubernetes"
-description: "Set up monitoring for OpenClaw AI gateway on Kubernetes with Prometheus metrics, Grafana dashboards, and alerting for uptime, message throughput, and error rates."
+description: "Set up monitoring for OpenClaw AI gateway on Kubernetes with Prometheus metrics, Grafana dashboards, and alerting for uptime, message throughput, and."
 category: "observability"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

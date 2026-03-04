@@ -13,7 +13,6 @@ tags: ["helm", "templating", "sprig", "functions", "charts"]
 >
 > **Gotcha:** Use `{{- ` (with dash) to trim whitespace; `nindent` for proper YAML indentation in multi-line blocks.
 
-# How to Template Helm Values with Sprig Functions
 
 Helm uses Go templates with Sprig functions for powerful chart templating. Master these patterns to create flexible, reusable charts.
 

@@ -13,7 +13,6 @@ tags: ["sidecar", "patterns", "containers", "logging", "proxy"]
 >
 > **Gotcha:** Sidecars start/stop with the pod and add resource overhead. Use native sidecar containers (K8s 1.28+) with `restartPolicy: Always` for proper lifecycle handling.
 
-# How to Use Sidecar Containers Effectively
 
 Sidecar containers extend and enhance your main application containers. Use them for logging, monitoring, proxying, and configuration management without modifying your application code.
 

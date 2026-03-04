@@ -1,6 +1,6 @@
 ---
 title: "How to Set Up Node Problem Detector"
-description: "Detect and report node-level issues automatically with Node Problem Detector. Learn to identify kernel problems, hardware failures, and container runtime issues."
+description: "Detect and report node-level issues automatically with Node Problem Detector. Learn to identify kernel problems, hardware failures, and container."
 category: "observability"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

@@ -24,7 +24,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Run `nvidia-smi topo -m` and `lspci` mapping checks first; poor physical topology often explains low NCCL bandwidth without any software bug.
 
-# Validate GPU and NIC Topology Before NCCL Benchmarks
 
 Topology awareness prevents false conclusions during NCCL troubleshooting.
 

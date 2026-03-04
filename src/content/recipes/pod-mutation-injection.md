@@ -13,7 +13,6 @@ tags: ["admission-controller", "mutation", "injection", "configuration", "automa
 >
 > **Gotcha:** Webhook failures can block all pod creation—set `failurePolicy: Ignore` for non-critical mutations; always have health checks.
 
-# How to Use Pod Presets and Mutations
 
 Automatically inject configuration into pods using mutating admission webhooks. Add environment variables, volumes, and labels without modifying deployment manifests.
 

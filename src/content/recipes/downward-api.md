@@ -1,6 +1,6 @@
 ---
 title: "How to Use the Downward API"
-description: "Expose pod and container metadata to applications using the Downward API. Access labels, annotations, resource limits, and pod information from within containers."
+description: "Expose pod and container metadata to applications using the Downward API. Access labels, annotations, resource limits, and pod information from within."
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
@@ -14,7 +14,6 @@ author: "Luca Berton"
 >
 > **Gotcha:** Environment variables are set at container start and don't update. Use volume files for dynamic data like labels/annotations that might change.
 
-# How to Use the Downward API
 
 The Downward API exposes pod and container information to running containers without requiring API server calls. Access metadata via environment variables or files.
 

@@ -1,6 +1,6 @@
 ---
 title: "GitOps for OpenClaw Workspaces on Kubernetes"
-description: "Manage OpenClaw agent workspaces (SOUL.md, skills, memory) with GitOps using Flux or ArgoCD, enabling version-controlled AI persona management on Kubernetes."
+description: "Manage OpenClaw agent workspaces (SOUL.md, skills, memory) with GitOps using Flux or ArgoCD, enabling version-controlled AI persona management on."
 category: "configuration"
 difficulty: "intermediate"
 timeToComplete: "25 minutes"

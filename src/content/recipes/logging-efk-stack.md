@@ -13,7 +13,6 @@ tags: ["logging", "elasticsearch", "fluentd", "kibana", "efk", "observability"]
 >
 > **Gotcha:** EFK requires significant resources (especially Elasticsearch)—consider managed services (OpenSearch, Elastic Cloud) or lighter alternatives (Loki) for smaller clusters.
 
-# How to Set Up Centralized Logging with EFK Stack
 
 The EFK stack (Elasticsearch, Fluentd, Kibana) provides centralized logging for Kubernetes clusters. Collect logs from all containers and visualize them in a unified dashboard.
 

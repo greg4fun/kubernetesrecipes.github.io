@@ -16,7 +16,6 @@ relatedRecipes:
 >
 > **Gotcha:** KMS key rotation requires re-encrypting all secrets; test encryption/decryption in staging first—misconfiguration can lock you out.
 
-# How to Encrypt Secrets at Rest with KMS
 
 By default, Kubernetes stores secrets in etcd base64-encoded but not encrypted. Configure encryption at rest using external KMS providers for production security.
 

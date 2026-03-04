@@ -13,7 +13,6 @@ tags: ["topology", "scheduling", "high-availability", "zones", "distribution"]
 >
 > **Gotcha:** `DoNotSchedule` can leave pods pending if spread can't be satisfied; use `ScheduleAnyway` for softer constraint. Combine with `minDomains` for minimum availability zones.
 
-# How to Use Pod Topology Spread Constraints
 
 Topology spread constraints distribute pods across failure domains like zones, nodes, or racks. This ensures high availability by preventing all replicas from landing on the same failure domain.
 

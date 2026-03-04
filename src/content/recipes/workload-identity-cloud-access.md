@@ -1,6 +1,6 @@
 ---
 title: "How to Use Workload Identity for Cloud Access"
-description: "Securely access cloud services from Kubernetes pods without static credentials. Configure Workload Identity for AWS, Azure, and GCP with IRSA, Workload Identity, and Federation."
+description: "Securely access cloud services from Kubernetes pods without static credentials. Configure Workload Identity for AWS, Azure, and GCP with IRSA, Workload."
 category: "security"
 difficulty: "intermediate"
 timeToComplete: "30 minutes"

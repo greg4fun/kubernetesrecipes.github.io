@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** The driver pod logs `SELinux is enabled / Change device files security context` — these are normal informational messages, not errors. The GPU Operator driver DaemonSet runs under the `privileged` SCC to perform kernel module insertion and SELinux device relabeling.
 
-# SELinux and SCC Configuration for the GPU Operator on OpenShift
 
 When running the NVIDIA GPU Operator on OpenShift with SELinux enforcing, the driver container logs device relabeling messages that can be mistaken for errors.
 

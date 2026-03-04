@@ -13,7 +13,6 @@ tags: ["endpointslices", "services", "networking", "discovery", "scalability"]
 >
 > **Gotcha:** Some older CNIs/service meshes may still use legacy Endpoints—verify your stack supports EndpointSlices.
 
-# How to Use Kubernetes EndpointSlices
 
 EndpointSlices are the modern, scalable replacement for Endpoints. They split service endpoints into smaller chunks for better performance in large clusters.
 

@@ -9,7 +9,6 @@ tags: ["imagepull", "troubleshooting", "registry", "authentication", "debugging"
 
 > **💡 Quick Answer:** ImagePullBackOff means Kubernetes can't pull your container image. Check: 1) Image name/tag is correct, 2) Image exists in registry (`docker pull <image>`), 3) `imagePullSecrets` is configured for private registries. Create a secret with: `kubectl create secret docker-registry regcred --docker-server=<registry> --docker-username=<user> --docker-password=<pass>`
 
-# How to Debug ImagePullBackOff Errors
 
 ImagePullBackOff occurs when Kubernetes cannot pull a container image. Learn to diagnose authentication issues, missing images, and registry connectivity problems.
 

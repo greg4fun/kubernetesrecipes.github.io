@@ -1,6 +1,6 @@
 ---
 title: "How to Create Helm Charts from Scratch"
-description: "Build custom Helm charts for your applications. Learn chart structure, templates, values, dependencies, and best practices for packaging Kubernetes applications."
+description: "Build custom Helm charts for your applications. Learn chart structure, templates, values, dependencies, and best practices for packaging Kubernetes."
 category: "helm"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
@@ -13,7 +13,6 @@ tags: ["helm", "charts", "packaging", "templates", "deployment"]
 >
 > **Gotcha:** Use `{{ include "myapp.fullname" . }}` helper for consistent naming; always quote strings in templates with `{{ .Values.x | quote }}`.
 
-# How to Create Helm Charts from Scratch
 
 Helm charts package Kubernetes applications for easy deployment and sharing. Learn to create charts with templates, values, and dependencies.
 

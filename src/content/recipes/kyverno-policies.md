@@ -14,7 +14,6 @@ author: "Luca Berton"
 >
 > **Gotcha:** Set `validationFailureAction: Audit` first to test without blocking. Switch to `Enforce` in production. Background scans catch existing violations.
 
-# How to Implement Kyverno Policies
 
 Kyverno is a Kubernetes-native policy engine. Write policies in YAML to validate, mutate, and generate resources without writing code.
 

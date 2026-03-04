@@ -14,7 +14,6 @@ author: "Luca Berton"
 >
 > **Gotcha:** Logs are lost when pods are deleted—always ship to external storage. Node-level logs rotate automatically but have limited retention.
 
-# How to Set Up Container Logging
 
 Kubernetes logging requires applications to write to stdout/stderr. The kubelet captures these logs and makes them available via `kubectl logs`.
 

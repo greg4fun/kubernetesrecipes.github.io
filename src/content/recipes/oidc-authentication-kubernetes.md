@@ -1,6 +1,6 @@
 ---
 title: "OIDC Authentication for Kubernetes"
-description: "Configure OpenID Connect (OIDC) authentication to integrate Kubernetes with identity providers like Keycloak, Okta, Azure AD, and Google for secure user access"
+description: "Configure OpenID Connect (OIDC) authentication to integrate Kubernetes with identity providers like Keycloak, Okta, Azure AD, and Google for secure user."
 category: "security"
 difficulty: "advanced"
 timeToComplete: "50 minutes"

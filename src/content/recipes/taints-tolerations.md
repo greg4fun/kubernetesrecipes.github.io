@@ -1,6 +1,6 @@
 ---
 title: "How to Use Taints and Tolerations"
-description: "Control pod scheduling with taints and tolerations. Dedicate nodes for specific workloads, handle node conditions, and implement advanced scheduling patterns."
+description: "Control pod scheduling with taints and tolerations. Dedicate nodes for specific workloads, handle node conditions, and implement advanced scheduling."
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
@@ -13,7 +13,6 @@ tags: ["taints", "tolerations", "scheduling", "node-affinity", "workload-isolati
 >
 > **Gotcha:** Taints don't guarantee ONLY matching pods run there—combine with node affinity for dedicated nodes. Control plane nodes have `NoSchedule` taint by default.
 
-# How to Use Taints and Tolerations
 
 Taints and tolerations work together to ensure pods don't schedule on inappropriate nodes. Taints repel pods, while tolerations allow pods to schedule on tainted nodes.
 

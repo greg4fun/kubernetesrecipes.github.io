@@ -1,6 +1,6 @@
 ---
 title: "Deploy OpenClaw AI Gateway on Kubernetes"
-description: "Deploy the OpenClaw multi-channel AI gateway on Kubernetes with persistent storage, TLS ingress, and high availability for WhatsApp, Telegram, Discord, and iMessage integration."
+description: "Deploy the OpenClaw multi-channel AI gateway on Kubernetes with persistent storage, TLS ingress, and high availability for WhatsApp, Telegram, Discord."
 category: "deployments"
 difficulty: "intermediate"
 timeToComplete: "25 minutes"

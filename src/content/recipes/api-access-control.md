@@ -13,7 +13,6 @@ tags: ["api-server", "authentication", "authorization", "rbac", "security"]
 >
 > **Gotcha:** Enable audit logging (`--audit-log-path`) to track API access and debug permission issues.
 
-# How to Configure Kubernetes API Access Control
 
 Secure Kubernetes API access through authentication, authorization, and audit logging. Configure RBAC policies, manage API groups, and implement least-privilege access.
 

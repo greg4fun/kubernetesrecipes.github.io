@@ -13,7 +13,6 @@ tags: ["leases", "leader-election", "coordination", "high-availability", "distri
 >
 > **Gotcha:** Always use established libraries (client-go leaderelection) rather than implementing lease logic manually—edge cases are tricky.
 
-# How to Use Kubernetes Leases for Leader Election
 
 Kubernetes Leases provide distributed coordination primitives. Use them for leader election, preventing split-brain, and ensuring only one active instance for critical operations.
 

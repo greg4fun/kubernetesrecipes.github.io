@@ -1,6 +1,6 @@
 ---
 title: "Horizontal Pod Autoscaler (HPA) Configuration Guide"
-description: "Set up automatic pod scaling based on CPU, memory, or custom metrics using Kubernetes Horizontal Pod Autoscaler. Includes examples for scaling based on requests per second."
+description: "Set up automatic pod scaling based on CPU, memory, or custom metrics using Kubernetes Horizontal Pod Autoscaler. Includes examples for scaling based on."
 category: "autoscaling"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

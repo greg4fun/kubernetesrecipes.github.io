@@ -22,7 +22,6 @@ author: "Luca Berton"
 
 > **💡 Quick Answer:** For each tenant: create/update the TLS Secret in `openshift-ingress`, ensure the tenant `IngressController` points to it, restart only that tenant router deployment if needed, then verify served certificate SANs externally.
 
-# Deploy a New Certificate for Each OpenShift Tenant
 
 This workflow updates certificates safely in a multi-tenant OpenShift cluster without broad impact across tenants.
 

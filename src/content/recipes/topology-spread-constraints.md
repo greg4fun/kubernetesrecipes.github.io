@@ -13,7 +13,6 @@ tags: ["topology", "scheduling", "availability", "zones", "spread"]
 >
 > **Gotcha:** Constraints apply to new pods only; existing pods aren't rebalanced. Use multiple constraints for zone AND node spread.
 
-# How to Use Pod Topology Spread Constraints
 
 Topology spread constraints distribute pods evenly across failure domains like nodes, zones, or regions. Ensure high availability by preventing pod concentration.
 

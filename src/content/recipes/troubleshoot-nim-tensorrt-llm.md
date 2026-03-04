@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** If NIM logs show `Failed to initialize executor on rank 0: setup(): incompatible function arguments` with `max_attention_window` as a list instead of int, your TensorRT-LLM bindings are older than the NIM runtime expects. Upgrade NIM container image, or remove `NIM_NUM_KV_CACHE_SEQ_LENS` override. If `/v1/completions` returns `activator request timeout`, the backend never finished initializing.
 
-# Troubleshoot NVIDIA NIM TensorRT-LLM Initialization Failures
 
 This recipe covers the most common NIM + TensorRT-LLM startup failures and their resolutions.
 

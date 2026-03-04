@@ -21,7 +21,6 @@ author: "Luca Berton"
 
 > **💡 Quick Answer:** Run `podman load -i image.tar`, tag the loaded image to your Quay path (`quay.internal.example.com/org/project/image:tag`), authenticate with `podman login`, then push with `podman push`.
 
-# Push a Podman-Saved Image to Local Quay
 
 This guide shows how to take an image archive created with `podman save` and publish it to a Local Quay registry.
 

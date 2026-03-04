@@ -13,7 +13,6 @@ tags: ["security", "scanning", "vulnerabilities", "trivy", "admission-control"]
 >
 > **Gotcha:** Scan both during CI/CD (shift-left) AND at admission time—images can become vulnerable after deployment.
 
-# How to Implement Container Security Scanning
 
 Container security scanning identifies vulnerabilities in images before deployment. Integrate scanning into CI/CD pipelines and use admission controllers to block vulnerable images.
 

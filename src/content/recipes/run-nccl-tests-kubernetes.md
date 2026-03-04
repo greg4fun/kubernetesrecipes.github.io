@@ -27,7 +27,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Run `all_reduce_perf` from the official NVIDIA `nccl-tests` project to validate GPU communication: `all_reduce_perf -b 8 -e 512M -f 2 -g 1`. Use one pod per GPU node for multi-node tests and compare measured bandwidth against expected network/GPU limits.
 
-# Run NCCL Tests on Kubernetes for GPU Network Validation
 
 [NVIDIA nccl-tests](https://github.com/NVIDIA/nccl-tests) provides standard micro-benchmarks for collective operations like all-reduce, broadcast, and all-gather. This recipe shows how to run these tests in Kubernetes/OpenShift to validate interconnect quality before deploying distributed training workloads.
 

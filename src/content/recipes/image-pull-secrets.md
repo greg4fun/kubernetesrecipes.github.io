@@ -13,7 +13,6 @@ tags: ["image-pull-secrets", "registries", "docker", "authentication", "containe
 >
 > **Gotcha:** Secrets are namespace-scoped—create in each namespace or use ServiceAccount attachment for default.
 
-# How to Configure Image Pull Secrets
 
 Image pull secrets authenticate Kubernetes with private container registries. They're required to pull images from Docker Hub private repos, cloud provider registries, or self-hosted registries.
 

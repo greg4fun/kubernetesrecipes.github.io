@@ -1,6 +1,6 @@
 ---
 title: "Crossplane for Cloud Infrastructure Management"
-description: "Use Crossplane to provision and manage cloud infrastructure resources like databases, storage, and networking using Kubernetes-native APIs and GitOps workflows"
+description: "Use Crossplane to provision and manage cloud infrastructure resources like databases, storage, and networking using Kubernetes-native APIs and GitOps."
 category: "configuration"
 difficulty: "advanced"
 timeToComplete: "55 minutes"

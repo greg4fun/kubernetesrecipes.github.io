@@ -27,7 +27,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** First call `/v1/models` to discover the exact model ID. Then use that ID in `/v1/completions` for text generation. Base models (Mistral-7B-v0.1) only support `/v1/completions`; instruct-tuned models also support `/v1/chat/completions`. Use `-k` flag if TLS certificates are self-signed.
 
-# Test LLM Inference Endpoints with curl
 
 Both vLLM and NVIDIA NIM expose an OpenAI-compatible REST API. This recipe shows how to test every endpoint systematically.
 

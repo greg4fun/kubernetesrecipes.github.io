@@ -13,7 +13,6 @@ tags: ["crd", "custom-resources", "api", "extensions", "operators"]
 >
 > **Gotcha:** CRDs alone only store data—you need a **controller** or **operator** to act on custom resource changes.
 
-# How to Create Custom Resource Definitions (CRDs)
 
 Custom Resource Definitions (CRDs) extend the Kubernetes API with your own resource types. CRDs are the foundation for building operators and managing application-specific configurations.
 

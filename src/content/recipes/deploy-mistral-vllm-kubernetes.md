@@ -32,7 +32,6 @@ author: "Luca Berton"
 >
 > **Important:** The model ID in API calls must match the exact path shown by `/v1/models` (e.g., `/data/Mistral-7B-v0.1`).
 
-# Deploy Mistral 7B with vLLM on Kubernetes
 
 vLLM is a high-throughput inference engine for LLMs that exposes an OpenAI-compatible API. This recipe walks through deploying Mistral-7B-v0.1 on Kubernetes using vLLM with GPU fractioning.
 

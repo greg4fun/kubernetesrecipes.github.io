@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** When `SriovNetworkNodePolicy` is denied with `no supported NIC is selected`, check `SriovNetworkNodeState`, ensure your selector matches real PFs, and confirm selected interfaces are eligible (not consumed by host networking rules).
 
-# Troubleshoot 'No Supported NIC Is Selected' in SR-IOV Policies
 
 This admission error means the operator cannot map your policy selector to eligible interfaces in node state.
 

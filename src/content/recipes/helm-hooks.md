@@ -13,7 +13,6 @@ tags: ["helm", "hooks", "lifecycle", "migrations", "automation"]
 >
 > **Gotcha:** Hooks run to completion before Helm continues—set `activeDeadlineSeconds` and use `hook-failed` delete policy to prevent stuck releases.
 
-# How to Use Helm Hooks for Lifecycle Management
 
 Helm hooks allow you to execute operations at specific points during a release lifecycle. Use them for database migrations, backups, notifications, and cleanup tasks.
 

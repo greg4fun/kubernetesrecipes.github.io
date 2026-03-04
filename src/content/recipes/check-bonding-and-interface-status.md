@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Use `ip -o link show | grep master` and `cat /proc/net/bonding/<bond>` to identify which interfaces are bond slaves and avoid selecting those PFs in SR-IOV policies.
 
-# Check Linux Bonding and Interface Status for SR-IOV Readiness
 
 Before targeting PFs in SR-IOV policies, verify each interface’s relationship to host networking.
 

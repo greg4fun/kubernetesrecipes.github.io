@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Add a CI job that deploys a short NCCL benchmark, parses `algbw` thresholds, and fails pipeline promotion when performance regresses.
 
-# Automate NCCL Preflight Checks in CI/CD Pipelines
 
 NCCL preflight tests reduce risk when changing GPU drivers, networking, or scheduling policies.
 

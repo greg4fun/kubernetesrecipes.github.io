@@ -13,7 +13,6 @@ tags: ["cost", "optimization", "resources", "finops", "efficiency"]
 >
 > **Gotcha:** Over-provisioned requests waste money; under-provisioned limits cause OOMKills—monitor and iterate.
 
-# How to Optimize Kubernetes Costs
 
 Kubernetes cost optimization involves right-sizing workloads, leveraging spot instances, implementing autoscaling, and monitoring resource utilization to reduce cloud spending.
 

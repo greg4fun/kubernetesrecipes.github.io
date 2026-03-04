@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Liveness and Readiness Probes Best Practices"
-description: "Configure health checks for your Kubernetes pods using liveness and readiness probes. Learn the differences, when to use each, and avoid common pitfalls that cause cascading failures."
+description: "Configure health checks for your Kubernetes pods using liveness and readiness probes. Learn the differences, when to use each, and avoid common pitfalls."
 category: "deployments"
 difficulty: "beginner"
 timeToComplete: "15 minutes"

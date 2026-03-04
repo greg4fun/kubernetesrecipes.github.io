@@ -13,7 +13,6 @@ tags: ["runtimeclass", "gvisor", "kata", "containers", "isolation"]
 >
 > **Gotcha:** RuntimeClass requires the runtime to be installed and configured on nodes—it's not installed automatically.
 
-# How to Use Kubernetes RuntimeClass
 
 RuntimeClass lets you select different container runtimes for pods. Use sandboxed runtimes like gVisor or Kata Containers for enhanced security isolation.
 

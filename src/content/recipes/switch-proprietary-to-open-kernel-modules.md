@@ -27,7 +27,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Set `driver.kernelModuleType: open` in the ClusterPolicy, reboot GPU worker nodes to clear proprietary modules from kernel memory, then let the GPU Operator rebuild driver pods with open kernel modules.
 
-# Switch from Proprietary to Open NVIDIA Kernel Modules on OpenShift
 
 The NVIDIA Open Kernel Module is required for DMA-BUF GPUDirect RDMA and GPUDirect Storage. This recipe walks through the migration from proprietary to open modules with minimal disruption.
 

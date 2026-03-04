@@ -31,7 +31,6 @@ author: "Luca Berton"
 >
 > **Key difference from vLLM:** NIM uses TensorRT-LLM for optimized inference with CUDA graphs, chunked prefill, and automatic engine building. Higher throughput, but stricter version requirements.
 
-# Deploy Mistral 7B with NVIDIA NIM on Kubernetes
 
 NVIDIA NIM (NVIDIA Inference Microservice) wraps TensorRT-LLM to serve LLMs with high throughput and low latency. This recipe covers deploying Mistral-7B-v0.1 using NIM on Kubernetes.
 

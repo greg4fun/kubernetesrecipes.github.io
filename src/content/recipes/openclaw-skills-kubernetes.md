@@ -1,6 +1,6 @@
 ---
 title: "Manage OpenClaw Skills on Kubernetes"
-description: "Deploy and manage OpenClaw agent skills (tools, automations, integrations) on Kubernetes using ConfigMaps, PVCs, and git-sync for dynamic capability management."
+description: "Deploy and manage OpenClaw agent skills (tools, automations, integrations) on Kubernetes using ConfigMaps, PVCs, and git-sync for dynamic capability."
 category: "configuration"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

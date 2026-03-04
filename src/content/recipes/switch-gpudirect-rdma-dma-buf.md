@@ -27,7 +27,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Do **not** set `driver.rdma.enabled=true` — that activates the legacy `nvidia-peermem` path. Instead, set `driver.kernelModuleType=open` and leave RDMA disabled to use the recommended DMA-BUF GPUDirect RDMA transport.
 
-# Switch GPUDirect RDMA from nvidia-peermem to DMA-BUF
 
 NVIDIA recommends DMA-BUF over the legacy `nvidia-peermem` kernel module for GPUDirect RDMA. DMA-BUF avoids a separate kernel module and is more future-proof.
 

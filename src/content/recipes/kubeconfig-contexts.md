@@ -13,7 +13,6 @@ tags: ["kubeconfig", "contexts", "clusters", "kubectl", "multi-cluster"]
 >
 > **Gotcha:** Always verify current context before destructive operations; set `KUBECONFIG` env var to use separate config files per project.
 
-# How to Manage Kubernetes Contexts and Clusters
 
 Kubeconfig files define clusters, users, and contexts for kubectl. Learn to manage multiple clusters efficiently and switch between them safely.
 

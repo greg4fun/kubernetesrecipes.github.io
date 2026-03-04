@@ -22,7 +22,6 @@ author: "Luca Berton"
 
 > **💡 Quick Answer:** In OpenShift multi-tenant ingress, create one `kubernetes.io/tls` Secret per tenant in `openshift-ingress`, then reference that Secret in each tenant `IngressController.spec.defaultCertificate.name`. This keeps certificate ownership and blast radius isolated by tenant.
 
-# OpenShift Multi-Tenant TLS: One Certificate per Tenant IngressController
 
 In a shared OpenShift cluster, each tenant should have an isolated ingress path and its own TLS certificate lifecycle. The common pattern is one `IngressController` per tenant, each pointing to its own default certificate Secret.
 
