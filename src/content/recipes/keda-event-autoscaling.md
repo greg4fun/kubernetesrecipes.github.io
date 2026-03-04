@@ -14,7 +14,6 @@ author: "Luca Berton"
 >
 > **Gotcha:** KEDA can scale to zero, but first pod startup adds latency. Set `minReplicaCount: 1` for latency-sensitive workloads.
 
-# How to Use KEDA for Event-Driven Autoscaling
 
 KEDA (Kubernetes Event-Driven Autoscaling) scales workloads based on external events like message queues, databases, or custom metrics. It can scale to zero when there's no work.
 

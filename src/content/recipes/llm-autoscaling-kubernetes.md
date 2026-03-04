@@ -10,6 +10,7 @@ prerequisites:
   - "Metrics Server or Prometheus installed"
   - "NVIDIA DCGM Exporter for GPU metrics"
 relatedRecipes:
+  - "model-caching-shared-memory"
   - "deploy-mistral-vllm-kubernetes"
   - "deploy-mistral-nvidia-nim"
   - "nvidia-gpu-operator-install"
@@ -29,7 +30,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Use KEDA with Prometheus triggers to autoscale LLM replicas based on request queue depth or GPU utilization. Standard HPA works for CPU-based metrics. For GPU-aware scaling, scrape DCGM metrics (`DCGM_FI_DEV_GPU_UTIL`) or vLLM's built-in `/metrics` endpoint (`vllm:num_requests_waiting`). Set `minReplicas: 1` to avoid cold-start delays.
 
-# Autoscale LLM Inference on Kubernetes
 
 LLM inference workloads have variable demand. Autoscaling saves GPU costs during low traffic and prevents latency spikes during peaks.
 
@@ -261,7 +261,7 @@ kubectl get events -n ai-inference --sort-by=.lastTimestamp | grep -i "scal"
 
 ## Related Recipes
 
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
-- [Install NVIDIA GPU Operator](./nvidia-gpu-operator-install)
-- [Cluster Autoscaler](./cluster-autoscaler)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
+- [Install NVIDIA GPU Operator](/recipes/ai/nvidia-gpu-operator-install/)
+- [Cluster Autoscaler](/recipes/autoscaling/cluster-autoscaler/)

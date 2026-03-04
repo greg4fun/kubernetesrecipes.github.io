@@ -1,6 +1,6 @@
 ---
 title: "How to Debug Pod Scheduling Failures"
-description: "Troubleshoot pods stuck in Pending state due to scheduling issues. Learn to diagnose resource constraints, node affinity, taints, and topology spread problems."
+description: "Troubleshoot pods stuck in Pending state due to scheduling issues. Learn to diagnose resource constraints, node affinity, taints, and topology spread."
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
@@ -9,7 +9,6 @@ tags: ["scheduling", "pending", "troubleshooting", "resources", "affinity"]
 
 > **💡 Quick Answer:** Pods stuck in `Pending` = scheduling failure. Run `kubectl describe pod <pod>` and check Events. Common causes: insufficient CPU/memory (add nodes or reduce requests), untolerated taints (`kubectl taint nodes <node> key:NoSchedule-`), node selector mismatch, or PVC not bound. Check with `kubectl get events --sort-by=.lastTimestamp`.
 
-# How to Debug Pod Scheduling Failures
 
 Pods stuck in Pending state indicate scheduling failures. Learn to diagnose resource constraints, affinity rules, taints, tolerations, and other scheduling issues.
 

@@ -13,7 +13,6 @@ tags: ["probes", "health-checks", "liveness", "readiness", "startup"]
 >
 > **Gotcha:** Overly aggressive liveness probes cause restart loops; readiness probes should fail during maintenance/overload, not cause restarts.
 
-# How to Configure Kubernetes Probes
 
 Probes help Kubernetes manage container lifecycle by checking health status. Liveness probes restart unhealthy containers, readiness probes control traffic routing, and startup probes handle slow-starting apps.
 

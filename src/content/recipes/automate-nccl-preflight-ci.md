@@ -1,6 +1,6 @@
 ---
 title: "Automate NCCL Preflight Checks in CI/CD Pipelines"
-description: "Run NCCL smoke benchmarks automatically before promoting GPU cluster changes to production."
+description: "Run NCCL smoke benchmarks automatically in CI/CD pipelines before promoting GPU cluster changes to production, catching regressions early."
 category: "deployments"
 difficulty: "advanced"
 timeToComplete: "30 minutes"
@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Add a CI job that deploys a short NCCL benchmark, parses `algbw` thresholds, and fails pipeline promotion when performance regresses.
 
-# Automate NCCL Preflight Checks in CI/CD Pipelines
 
 NCCL preflight tests reduce risk when changing GPU drivers, networking, or scheduling policies.
 

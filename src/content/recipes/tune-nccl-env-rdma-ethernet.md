@@ -1,6 +1,6 @@
 ---
 title: "Tune NCCL Environment Variables for RDMA and Ethernet"
-description: "Apply safe NCCL environment variable profiles for RDMA-capable and Ethernet-only GPU clusters."
+description: "Apply safe NCCL environment variable profiles for RDMA-capable and Ethernet-only GPU clusters to maximize collective communication throughput."
 category: "configuration"
 difficulty: "advanced"
 timeToComplete: "20 minutes"
@@ -24,7 +24,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Start with `NCCL_DEBUG=INFO`, set `NCCL_SOCKET_IFNAME` to the correct data interface, and enable or disable InfiniBand explicitly using `NCCL_IB_DISABLE`.
 
-# Tune NCCL Environment Variables for RDMA and Ethernet
 
 Use explicit NCCL environment configuration to reduce transport ambiguity and improve repeatability.
 

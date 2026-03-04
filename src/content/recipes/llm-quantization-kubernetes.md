@@ -29,7 +29,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Use quantized models (AWQ or GPTQ) to cut GPU memory by 50–75%. Mistral-7B goes from ~14 GB (bf16) → ~4 GB (4-bit). In vLLM, set `--quantization awq` or `--quantization gptq`. Download pre-quantized models from Hugging Face (e.g., `TheBloke/Mistral-7B-v0.1-AWQ`). No code changes needed — same OpenAI-compatible API.
 
-# Quantize LLMs for Efficient GPU Inference on Kubernetes
 
 Quantization reduces model precision (e.g., 16-bit → 4-bit) to shrink GPU memory requirements and increase throughput. This lets you serve production LLMs on smaller or shared GPUs.
 
@@ -222,6 +221,6 @@ curl -k -X POST https://<endpoint>/v1/completions \
 
 ## Related Recipes
 
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
-- [Install NVIDIA GPU Operator](./nvidia-gpu-operator-install)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
+- [Install NVIDIA GPU Operator](/recipes/ai/nvidia-gpu-operator-install/)

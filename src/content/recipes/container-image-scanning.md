@@ -14,7 +14,6 @@ author: "Luca Berton"
 >
 > **Gotcha:** Base image vulnerabilities are inherited—use minimal base images (distroless, Alpine) and rebuild regularly to pick up patches.
 
-# How to Scan Container Images for Vulnerabilities
 
 Container image scanning detects known vulnerabilities (CVEs) in your images before deployment. Integrate scanning into build pipelines and admission control.
 

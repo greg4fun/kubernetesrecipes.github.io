@@ -14,7 +14,6 @@ author: "Luca Berton"
 >
 > **Gotcha:** ServiceMonitor must be in a namespace that Prometheus watches, and labels must match Prometheus's `serviceMonitorSelector`.
 
-# How to Set Up Prometheus Monitoring
 
 Prometheus is the standard for Kubernetes monitoring. It scrapes metrics from targets, stores time-series data, and enables powerful queries with PromQL.
 

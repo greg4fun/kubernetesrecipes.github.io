@@ -1,6 +1,6 @@
 ---
 title: "Pod Readiness Gates for Custom Conditions"
-description: "Implement Pod Readiness Gates to add custom conditions that must be satisfied before a pod is considered ready for traffic, enabling integration with external systems"
+description: "Implement Pod Readiness Gates to add custom conditions that must be satisfied before a pod is considered ready for traffic, enabling integration with."
 category: "deployments"
 difficulty: "intermediate"
 timeToComplete: "35 minutes"

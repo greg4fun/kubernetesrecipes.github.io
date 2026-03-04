@@ -13,7 +13,6 @@ tags: ["local-storage", "persistent-volumes", "ssd", "performance", "storage"]
 >
 > **Gotcha:** Local PVs are tied to nodes—if node fails, data is inaccessible. Use for replicated workloads (like distributed databases) not single-instance apps.
 
-# How to Configure Local Persistent Volumes
 
 Local persistent volumes provide direct access to node-local storage devices for high-performance workloads. Ideal for databases and caching systems that need low-latency disk access.
 

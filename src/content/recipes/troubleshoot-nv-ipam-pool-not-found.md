@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Troubleshoot nv-ipam 'Pool Not Found' Errors in Multus"
-description: "Fix nv-ipam lookup failures by aligning SriovNetwork, NAD, and IPPool names and namespaces."
+description: "Fix nv-ipam IPPool lookup failures in Multus by aligning SriovNetwork, NetworkAttachmentDefinition, and IPPool names and namespaces correctly."
 category: "troubleshooting"
 difficulty: "advanced"
 timeToComplete: "20 minutes"
@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** If pod events show `pool ... not found`, verify the `IPPool` exists in the workload namespace, ensure `SriovNetwork` points to the same pool name, and check generated NAD `ipam.poolName`.
 
-# Troubleshoot nv-ipam 'Pool Not Found' Errors in Multus
 
 Typical event:
 

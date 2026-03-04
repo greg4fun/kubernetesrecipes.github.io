@@ -13,7 +13,6 @@ tags: ["pdb", "availability", "disruption", "maintenance", "upgrades"]
 >
 > **Gotcha:** PDBs only protect against **voluntary** disruptions (drains, upgrades)—not node failures or OOM kills. Overly strict PDBs can block cluster operations.
 
-# How to Configure Pod Disruption Budgets
 
 Pod Disruption Budgets (PDBs) limit voluntary disruptions to ensure application availability during node maintenance, cluster upgrades, and autoscaling events.
 

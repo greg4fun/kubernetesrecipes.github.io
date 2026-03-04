@@ -13,7 +13,6 @@ tags: ["kubectl", "debugging", "troubleshooting", "cli", "diagnostics"]
 >
 > **Gotcha:** Add `-o wide` for node/IP info, `-A` for all namespaces, `--watch` for live updates.
 
-# Essential kubectl Commands for Debugging
 
 Effective kubectl usage is crucial for debugging Kubernetes issues. This guide covers essential commands for diagnosing problems with pods, services, networking, and cluster resources.
 

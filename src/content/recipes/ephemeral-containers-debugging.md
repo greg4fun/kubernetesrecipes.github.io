@@ -13,7 +13,6 @@ tags: ["debugging", "ephemeral", "kubectl", "troubleshooting", "containers"]
 >
 > **Gotcha:** Ephemeral containers require Kubernetes 1.25+ (GA); they can't be removed once added—pod must be deleted to clean up.
 
-# How to Use Ephemeral Containers for Debugging
 
 Ephemeral containers allow you to debug running pods by attaching temporary containers with debugging tools. Troubleshoot issues without restarting pods or modifying deployments.
 

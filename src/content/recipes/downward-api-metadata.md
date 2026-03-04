@@ -1,6 +1,6 @@
 ---
 title: "How to Use Downward API for Pod Metadata"
-description: "Expose pod and container metadata to applications using the Downward API. Access labels, annotations, resource limits, and node information from within pods."
+description: "Expose pod and container metadata to applications using the Downward API. Access labels, annotations, resource limits, and node information from within."
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
@@ -13,7 +13,6 @@ tags: ["downward-api", "metadata", "environment", "configuration", "pods"]
 >
 > **Gotcha:** Labels and annotations must use volume mounts (not env vars) and update automatically when changed.
 
-# How to Use Downward API for Pod Metadata
 
 The Downward API exposes pod and container metadata to running applications. Access pod name, namespace, labels, annotations, and resource information without calling the Kubernetes API.
 

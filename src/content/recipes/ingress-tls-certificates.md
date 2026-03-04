@@ -13,7 +13,6 @@ tags: ["tls", "ssl", "certificates", "ingress", "letsencrypt", "cert-manager"]
 >
 > **Gotcha:** Use `letsencrypt-staging` issuer first to avoid rate limits during testing; ensure DNS points to your Ingress IP for HTTP-01 validation.
 
-# How to Secure Ingress with SSL/TLS Certificates
 
 Secure your Kubernetes services with TLS certificates. Use cert-manager to automatically issue and renew certificates from Let's Encrypt or other certificate authorities.
 

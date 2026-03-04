@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Enable NIC Feature Discovery by adding `spec.nicFeatureDiscovery.enabled: true` in `NicClusterPolicy`, then verify the daemon runs and node labels are present with `oc get node --show-labels`.
 
-# Enable NIC Feature Discovery in NVIDIA Network Operator
 
 NIC Feature Discovery adds hardware capability labels to nodes so scheduling and network policies can target compatible hosts.
 

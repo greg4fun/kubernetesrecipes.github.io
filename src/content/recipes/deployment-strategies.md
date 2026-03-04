@@ -13,7 +13,6 @@ tags: ["blue-green", "canary", "deployment", "zero-downtime", "traffic"]
 >
 > **Gotcha:** For sophisticated traffic splitting, use Istio VirtualService or NGINX Ingress canary annotations instead of replica-based splitting.
 
-# How to Implement Blue-Green and Canary Deployments
 
 Blue-green and canary deployments minimize risk when releasing new versions. Control traffic routing to gradually shift users to new releases with easy rollback.
 

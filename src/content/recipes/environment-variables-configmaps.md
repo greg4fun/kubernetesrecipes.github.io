@@ -13,7 +13,6 @@ tags: ["configmap", "environment-variables", "configuration", "settings", "twelv
 >
 > **Gotcha:** Environment variables from ConfigMaps don't update without pod restart—use volume mounts for dynamic config reloading.
 
-# How to Configure Environment Variables and ConfigMaps
 
 Environment variables and ConfigMaps externalize application configuration from container images, following twelve-factor app principles. They enable the same image to run across different environments.
 

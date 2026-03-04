@@ -1,6 +1,6 @@
 ---
 title: "Troubleshooting Pending PersistentVolumeClaims"
-description: "Diagnose and fix PVCs stuck in Pending status. Learn common causes including StorageClass issues, capacity problems, and node affinity conflicts with step-by-step solutions."
+description: "Diagnose and fix PVCs stuck in Pending status. Learn common causes including StorageClass issues, capacity problems, and node affinity conflicts with."
 category: "troubleshooting"
 difficulty: "intermediate"
 timeToComplete: "15 minutes"

@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** The `insmod: File exists` error for `nvidia-fs.ko` occurs when the host has the module loaded from a previous or proprietary driver installation but the `.ko` file is missing on disk. Switch to `kernelModuleType: open` and reboot the node to clear stale modules.
 
-# Troubleshoot nvidia-fs Module Conflict on OpenShift
 
 When GDS is enabled in the ClusterPolicy, the `nvidia-fs-ctr` container may enter CrashLoopBackOff with the error:
 

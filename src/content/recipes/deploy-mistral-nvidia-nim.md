@@ -31,7 +31,6 @@ author: "Luca Berton"
 >
 > **Key difference from vLLM:** NIM uses TensorRT-LLM for optimized inference with CUDA graphs, chunked prefill, and automatic engine building. Higher throughput, but stricter version requirements.
 
-# Deploy Mistral 7B with NVIDIA NIM on Kubernetes
 
 NVIDIA NIM (NVIDIA Inference Microservice) wraps TensorRT-LLM to serve LLMs with high throughput and low latency. This recipe covers deploying Mistral-7B-v0.1 using NIM on Kubernetes.
 
@@ -249,11 +248,11 @@ scheduler_policy: guarantee_no_evict
 sliding_window: 4096  # per layer
 ```
 
-Override with caution. See [Troubleshoot NIM TensorRT-LLM](./troubleshoot-nim-tensorrt-llm) for known issues.
+Override with caution. See [Troubleshoot NIM TensorRT-LLM](/recipes/troubleshooting/troubleshoot-nim-tensorrt-llm/) for known issues.
 
 ## Related Recipes
 
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Troubleshoot NIM TensorRT-LLM Failures](./troubleshoot-nim-tensorrt-llm)
-- [Test LLM Inference Endpoints](./test-llm-inference-endpoints)
-- [Configure S3 Storage Permissions for ML Models](./s3-model-storage-permissions)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Troubleshoot NIM TensorRT-LLM Failures](/recipes/troubleshooting/troubleshoot-nim-tensorrt-llm/)
+- [Test LLM Inference Endpoints](/recipes/ai/test-llm-inference-endpoints/)
+- [Configure S3 Storage Permissions for ML Models](/recipes/storage/s3-model-storage-permissions/)

@@ -13,7 +13,6 @@ tags: ["dns", "networking", "coredns", "resolution", "configuration"]
 >
 > **Gotcha:** `ClusterFirstWithHostNet` is required when using `hostNetwork: true` but still needing cluster DNS.
 
-# How to Configure Kubernetes DNS Policies
 
 Kubernetes offers multiple DNS policies to control how pods resolve names. Configure custom DNS settings for hybrid cloud, split-horizon DNS, and special requirements.
 

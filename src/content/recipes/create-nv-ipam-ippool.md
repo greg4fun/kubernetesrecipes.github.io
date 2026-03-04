@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Create one `IPPool` in the same namespace as workloads and NAD, set `poolType: ippool`, and choose a subnet/block size combination that fits your node and pod scale.
 
-# Create an NVIDIA nv-ipam IPPool for SR-IOV Networks
 
 `nv-ipam` allocates addresses from `IPPool` resources. Namespace and sizing must be consistent with your workload.
 

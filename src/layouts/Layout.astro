@@ -17,6 +17,7 @@ export interface Props {
   author?: string;
   readingTime?: number;
   tags?: string[];
+  noindex?: boolean;
 }
 
 // ============================================
@@ -26,13 +27,13 @@ export interface Props {
 const announcementConfig = {
   enabled: true,
   emoji: "🎤",
-  headline: "Speaking at KubeCon EU 2026",
-  description: "Lessons Learned Orchestrating Multi-Tenant GPUs on OpenShift AI",
-  linkText: "View Session",
-  linkUrl: "https://kccnceu2026.sched.com/event/2CVzs/lessons-learned-orchestrating-multi-tenant-gpus-on-openshift-ai-with-nvidia-kai-gh200-luca-berton-dell-technologies",
-  gradientFrom: "cyan-600",
-  gradientVia: "blue-600",
-  gradientTo: "purple-600",
+  headline: "Speaking at Red Hat Summit 2026",
+  description: "GPUs take flight: Safety-first multi-tenant Platform Engineering with NVIDIA and OpenShift AI",
+  linkText: "Learn More",
+  linkUrl: "https://lucaberton.com/blog/red-hat-summit-2026/",
+  gradientFrom: "red-600",
+  gradientVia: "red-700",
+  gradientTo: "red-800",
 };
 // ============================================
 
@@ -55,14 +56,15 @@ const {
   modifiedDate,
   author = "Luca Berton",
   readingTime = 5,
-  tags = ["Kubernetes", "DevOps", "Cloud Native"]
+  tags = ["Kubernetes", "DevOps", "Cloud Native"],
+  noindex = false,
 } = Astro.props;
 
 const resolvedImageWithDomain = new URL(image, siteUrl).toString();
 
 const siteName = "Kubernetes Recipe Book";
 const makeTitle = title
-  ? `${title} | ${siteName}`
+  ? (title.length <= 46 ? `${title} | K8s Recipes` : title)
   : "Kubernetes Recipe Book - A Practical Guide for Container Orchestration";
 
 // Current date for modified if not provided
@@ -346,7 +348,11 @@ const howToStructuredData = isRecipePage ? {
     <!-- ============================================ -->
     <!-- SEO Meta Tags - Pro Level -->
     <!-- ============================================ -->
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    )}
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="bingbot" content="index, follow" />
     
@@ -373,12 +379,10 @@ const howToStructuredData = isRecipePage ? {
     <link rel="sitemap" href="/sitemap-index.xml" />
     
     <!-- Preconnect to external domains for performance -->
-    <link rel="preconnect" href="https://www.googletagmanager.com" />
-    <link rel="preconnect" href="https://www.google-analytics.com" />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
     <SEO
       title={makeTitle}
@@ -458,24 +462,19 @@ const howToStructuredData = isRecipePage ? {
     {howToStructuredData && (
       <script type="application/ld+json" set:html={JSON.stringify(howToStructuredData)} />
     )}
-    <!-- Mermaid Diagrams -->
+    <!-- Mermaid Diagrams — lazy loaded only when diagrams exist -->
     <script type="module">
-      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-      mermaid.initialize({ 
-        startOnLoad: false,
-        theme: 'neutral',
-        securityLevel: 'loose',
-        flowchart: {
-          useMaxWidth: true,
-          htmlLabels: true,
-          curve: 'basis'
-        }
-      });
-      
-      // Find all mermaid code blocks and render them
       document.addEventListener('DOMContentLoaded', async () => {
-        // Astro/Shiki renders as: <pre class="astro-code" data-language="mermaid">
         const codeBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
+        if (codeBlocks.length === 0) return; // Skip mermaid entirely if no diagrams
+        
+        const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs');
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'neutral',
+          securityLevel: 'loose',
+          flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' }
+        });
         
         for (let i = 0; i < codeBlocks.length; i++) {
           const pre = codeBlocks[i];
@@ -500,22 +499,29 @@ const howToStructuredData = isRecipePage ? {
         await mermaid.run();
       });
     </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CCC31PP3QS"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-CCC31PP3QS');
-    </script>
-    <!-- Microsoft Clarity -->
-    <script type="text/javascript">
-      (function(c,l,a,r,i,t,y){
-          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", "v5mvt15y9u");
+    <!-- Google tag (gtag.js) — deferred to not block rendering -->
+    <script is:inline>
+      // Defer analytics until after page load for better LCP/FCP
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          // Google Analytics
+          var gs = document.createElement('script');
+          gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-CCC31PP3QS';
+          gs.async = true;
+          document.head.appendChild(gs);
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', 'G-CCC31PP3QS');
+          // Microsoft Clarity
+          (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "v5mvt15y9u");
+        }, 1500);
+      });
     </script>
     <meta name="google-site-verification" content="9cz9zIJrUCY3p9QQOW8TjKiM329bHY1iwwsLNyvx51w" />
     

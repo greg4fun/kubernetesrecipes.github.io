@@ -13,7 +13,6 @@ tags: ["helm", "repository", "charts", "packaging", "distribution"]
 >
 > **Gotcha:** OCI-based registries (Docker Hub, ECR, GCR) don't need index.yaml—they use native container registry discovery.
 
-# How to Create Helm Chart Repositories
 
 Helm repositories host packaged charts for distribution. Learn to create, host, and manage chart repositories using various backends.
 

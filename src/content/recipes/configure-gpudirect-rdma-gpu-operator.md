@@ -27,7 +27,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Install the GPU Operator and Network Operator together. DMA-BUF is the default RDMA transport; add `--set driver.rdma.enabled=true` only if you need the legacy `nvidia-peermem` path.
 
-# Configure GPUDirect RDMA with the NVIDIA GPU Operator
 
 GPUDirect RDMA enables direct data transfer between GPUs and network devices over PCI Express, bypassing CPU memory copies. The GPU Operator and Network Operator work together to configure the full stack.
 

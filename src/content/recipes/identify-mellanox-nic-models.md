@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Map each interface with `readlink -f /sys/class/net/<iface>/device`, then run `lspci -nn -s <pci>` and `ethtool -i <iface>` to identify model and firmware before writing SR-IOV selectors.
 
-# Identify Mellanox Interface Models from Linux and PCI Data
 
 Correct NIC model mapping prevents wrong SR-IOV policy selectors.
 

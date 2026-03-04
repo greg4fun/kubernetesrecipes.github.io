@@ -30,7 +30,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Set `--tensor-parallel-size N` in vLLM (or `NIM_TP_SIZE=N` for NIM) where N matches the GPU count. Request `nvidia.com/gpu: N` in the pod spec. vLLM automatically shards model layers across GPUs. A 70B model at bf16 needs 4× A100-40GB or 2× A100-80GB. Ensure GPUs are on the same node with NVLink for best performance.
 
-# Multi-GPU and Tensor Parallel LLM Inference on Kubernetes
 
 Models larger than ~15B parameters typically exceed single-GPU memory. Tensor parallelism splits the model across multiple GPUs so they work together on each request.
 
@@ -206,7 +205,7 @@ spec:
                   - NVIDIA-H100-SXM5-80GB
 ```
 
-If using KAI Scheduler, it can automatically detect and prefer NVLink topologies. See [KAI Scheduler Topology-Aware Placement](./kai-scheduler-topology-aware).
+If using KAI Scheduler, it can automatically detect and prefer NVLink topologies. See [KAI Scheduler Topology-Aware Placement](/recipes/ai/kai-scheduler-topology-aware/).
 
 ## Verify Multi-GPU Setup
 
@@ -260,7 +259,7 @@ The 1.2× factor accounts for KV cache and activation memory.
 
 ## Related Recipes
 
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
-- [Install NVIDIA GPU Operator](./nvidia-gpu-operator-install)
-- [KAI Scheduler Topology-Aware Placement](./kai-scheduler-topology-aware)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
+- [Install NVIDIA GPU Operator](/recipes/ai/nvidia-gpu-operator-install/)
+- [KAI Scheduler Topology-Aware Placement](/recipes/ai/kai-scheduler-topology-aware/)

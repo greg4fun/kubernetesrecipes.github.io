@@ -13,7 +13,6 @@ tags: ["imagepull", "troubleshooting", "registry", "authentication", "containers
 >
 > **Gotcha:** "manifest unknown" means tag doesn't exist; "unauthorized" means auth failed—check secret with `kubectl get secret <name> -o yaml`.
 
-# How to Troubleshoot ImagePullBackOff Errors
 
 ImagePullBackOff means Kubernetes can't pull your container image. Learn to diagnose authentication failures, network issues, and image availability problems.
 

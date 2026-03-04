@@ -1,6 +1,6 @@
 ---
 title: "How to Implement GitOps with Argo CD"
-description: "Deploy and manage Kubernetes applications declaratively with Argo CD GitOps. Learn application deployment, sync strategies, multi-cluster management, and best practices."
+description: "Deploy and manage Kubernetes applications declaratively with Argo CD GitOps. Learn application deployment, sync strategies, multi-cluster management."
 category: "deployments"
 difficulty: "intermediate"
 timeToComplete: "35 minutes"

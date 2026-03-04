@@ -1,6 +1,6 @@
 ---
 title: "Configure ClusterPolicy kernelModuleType for GPU Operator"
-description: "Understand and configure the driver.kernelModuleType field in the NVIDIA GPU Operator ClusterPolicy to choose between auto, open, and proprietary kernel modules."
+description: "Understand and configure the driver.kernelModuleType field in the NVIDIA GPU Operator ClusterPolicy to choose between auto, open, and proprietary kernel."
 category: "configuration"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Set `driver.kernelModuleType: open` to enable DMA-BUF and GPUDirect Storage. The `auto` default selects the recommended type based on driver branch and GPU model, but `open` guarantees compatibility with modern features.
 
-# Configure ClusterPolicy kernelModuleType for GPU Operator
 
 The `driver.kernelModuleType` field in the ClusterPolicy controls which NVIDIA kernel module variant the GPU Operator builds and loads on each node.
 

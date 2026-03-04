@@ -13,7 +13,6 @@ tags: ["networking", "debugging", "troubleshooting", "connectivity", "dns"]
 >
 > **Gotcha:** DNS issues often stem from CoreDNS—check `kubectl logs -n kube-system -l k8s-app=kube-dns`.
 
-# How to Debug Pod Networking Issues
 
 Network issues in Kubernetes can be challenging to diagnose. This guide provides systematic approaches and tools for debugging connectivity problems between pods, services, and external endpoints.
 

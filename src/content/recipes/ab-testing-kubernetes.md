@@ -13,7 +13,6 @@ tags: ["a-b-testing", "traffic-routing", "feature-flags", "deployment", "experim
 >
 > **Gotcha:** Without a service mesh, use Ingress canary annotations: `nginx.ingress.kubernetes.io/canary-by-header: x-test-version`.
 
-# How to Implement A/B Testing with Kubernetes
 
 A/B testing routes traffic between different application versions based on specific criteria like headers, cookies, or user attributes. This enables data-driven decisions about new features.
 

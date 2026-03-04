@@ -13,7 +13,6 @@ tags: ["hpa", "autoscaling", "custom-metrics", "prometheus", "scaling"]
 >
 > **Gotcha:** Metric names in HPA must exactly match adapter `seriesQuery` output; use `kubectl get --raw` to debug available metrics.
 
-# How to Scale Based on Custom Metrics
 
 Scale your workloads based on application-specific metrics like queue depth, request latency, or business KPIs using the custom metrics API with Prometheus Adapter.
 

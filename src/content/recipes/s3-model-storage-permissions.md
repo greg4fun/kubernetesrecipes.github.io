@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** In S3 Browser, select the model folder, go to **Permissions** tab, check **Full Control** for the Owner, enable **Apply for all subfolders and files**, then click Apply. For PVCs, ensure the `ReadOnlyMany` or `ReadWriteMany` access mode and verify the model directory is complete.
 
-# Configure S3 Storage Permissions for ML Models
 
 Model inference pods need reliable read access to model files stored on S3-backed volumes. Incorrect ACLs cause silent mount failures or permission-denied errors.
 
@@ -160,5 +159,5 @@ kubectl exec -it <inference-pod> -- cat /data/Mistral-7B-v0.1/config.json | head
 
 ## Related Recipes
 
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)

@@ -1,6 +1,6 @@
 ---
 title: "Diagnose GPU Peer-to-Peer Latency with NCCL Tests"
-description: "Use NCCL point-to-point and collective tests to isolate latency issues between GPU pairs."
+description: "Use NCCL point-to-point and collective tests to isolate GPU peer-to-peer latency issues between GPU pairs in multi-node Kubernetes clusters."
 category: "troubleshooting"
 difficulty: "advanced"
 timeToComplete: "25 minutes"
@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Compare latency with small-message runs such as `all_reduce_perf -b 8 -e 8M -f 2 -g 1` across different GPU pairs and nodes to identify outliers.
 
-# Diagnose GPU Peer-to-Peer Latency with NCCL Tests
 
 High latency usually points to topology or transport path issues.
 

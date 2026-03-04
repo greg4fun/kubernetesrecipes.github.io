@@ -1,6 +1,6 @@
 ---
 title: "How to Implement Blue-Green Deployments"
-description: "Learn how to implement blue-green deployments in Kubernetes for instant rollbacks and zero-downtime releases. Complete guide with Service switching techniques."
+description: "Learn how to implement blue-green deployments in Kubernetes for instant rollbacks and zero-downtime releases. Complete guide with Service switching."
 category: "deployments"
 difficulty: "intermediate"
 timeToComplete: "25 minutes"

@@ -1,6 +1,6 @@
 ---
 title: "GitOps with Flux CD for Continuous Delivery"
-description: "Implement GitOps workflows using Flux CD to automate Kubernetes deployments, manage infrastructure as code, and maintain desired cluster state from Git repositories"
+description: "Implement GitOps workflows using Flux CD to automate Kubernetes deployments, manage infrastructure as code, and maintain desired cluster state from Git."
 category: "deployments"
 difficulty: "intermediate"
 timeToComplete: "45 minutes"

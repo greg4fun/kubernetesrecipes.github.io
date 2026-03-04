@@ -1,6 +1,6 @@
 ---
 title: "Diagnose NVIDIA Memory-Only Kernel Modules on OpenShift"
-description: "Understand why lsmod shows NVIDIA modules loaded but modinfo fails, and how the GPU Operator's proprietary driver container inserts modules without placing .ko files on disk."
+description: "Understand why lsmod shows NVIDIA modules loaded but modinfo fails, and how the GPU Operator's proprietary driver container inserts modules without."
 category: "troubleshooting"
 difficulty: "advanced"
 timeToComplete: "15 minutes"
@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** `lsmod` reads `/proc/modules` (in-memory state) while `modinfo` searches for `.ko` files on disk. Proprietary NVIDIA driver containers use `insmod` to load modules directly into memory without installing `.ko` files under `/lib/modules/`, causing `modinfo` to fail.
 
-# Diagnose NVIDIA Memory-Only Kernel Modules on OpenShift
 
 A confusing situation arises on OpenShift when `lsmod` shows NVIDIA modules loaded but `modinfo` cannot find them.
 

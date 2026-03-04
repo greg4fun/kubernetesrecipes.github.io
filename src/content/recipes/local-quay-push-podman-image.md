@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Push a Podman-Saved Image to Local Quay"
-description: "Load a Podman image tar archive, tag it correctly, authenticate to Local Quay, and push it safely."
+description: "Load a Podman image tar archive, tag it for your Local Quay registry, authenticate with robot accounts, and push it safely to your private repo."
 category: "deployments"
 difficulty: "beginner"
 timeToComplete: "15 minutes"
@@ -21,7 +21,6 @@ author: "Luca Berton"
 
 > **💡 Quick Answer:** Run `podman load -i image.tar`, tag the loaded image to your Quay path (`quay.internal.example.com/org/project/image:tag`), authenticate with `podman login`, then push with `podman push`.
 
-# Push a Podman-Saved Image to Local Quay
 
 This guide shows how to take an image archive created with `podman save` and publish it to a Local Quay registry.
 
@@ -101,4 +100,4 @@ podman push quay.internal.example.com/org/project/myimage:latest
 
 ## Related Recipes
 
-- [Retag and Push an Image in Local Quay](./local-quay-retag-and-push)
+- [Retag and Push an Image in Local Quay](/recipes/deployments/local-quay-retag-and-push/)

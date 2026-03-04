@@ -1,6 +1,6 @@
 ---
 title: "How to Configure Pod Security Admission"
-description: "Enforce security standards with Pod Security Admission. Configure privileged, baseline, and restricted policies at namespace level for cluster-wide security."
+description: "Enforce security standards with Pod Security Admission. Configure privileged, baseline, and restricted policies at namespace level for cluster-wide."
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
@@ -13,7 +13,6 @@ tags: ["pod-security", "psa", "security", "policies", "hardening"]
 >
 > **Gotcha:** PSA replaces deprecated PodSecurityPolicy; `restricted` blocks `runAsRoot`, requires `seccompProfile`, and drops capabilities—test workloads first.
 
-# How to Configure Pod Security Admission
 
 Pod Security Admission (PSA) enforces Pod Security Standards at the namespace level. It replaces the deprecated PodSecurityPolicy and provides three security levels: privileged, baseline, and restricted.
 

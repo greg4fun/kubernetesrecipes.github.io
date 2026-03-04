@@ -1,6 +1,6 @@
 ---
 title: "How to Implement Distributed Tracing with Jaeger"
-description: "Deploy Jaeger for distributed tracing in Kubernetes. Learn to instrument applications, trace requests across services, and identify performance bottlenecks."
+description: "Deploy Jaeger for distributed tracing in Kubernetes. Learn to instrument applications, trace requests across services, and identify performance."
 category: "observability"
 difficulty: "advanced"
 publishDate: "2026-01-22"
@@ -13,7 +13,6 @@ tags: ["tracing", "jaeger", "opentelemetry", "observability", "microservices"]
 >
 > **Gotcha:** Ensure **context propagation** headers (traceparent, b3) are passed between services for end-to-end traces.
 
-# How to Implement Distributed Tracing with Jaeger
 
 Distributed tracing helps you understand request flow across microservices. Jaeger provides end-to-end tracing for identifying latency issues and debugging distributed systems.
 

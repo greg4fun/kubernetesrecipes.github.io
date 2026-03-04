@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Retag and Push an Image in Local Quay"
-description: "Pull an existing image from Local Quay, retag it for a new repository path, and push the new tag."
+description: "Pull an existing container image from Local Quay, retag it for a new repository path or version, and push the updated tag back to the registry."
 category: "deployments"
 difficulty: "beginner"
 timeToComplete: "10 minutes"
@@ -20,7 +20,6 @@ author: "Luca Berton"
 
 > **💡 Quick Answer:** Pull the source image from Local Quay, retag to the new repository path, then push the new tag. Use `--tls-verify=false` only when your internal cert trust is not configured yet.
 
-# Retag and Push an Image in Local Quay
 
 Use this workflow to duplicate or promote images between repositories in the same Local Quay instance.
 
@@ -73,4 +72,4 @@ podman push quay.internal.example.com/org-b/target-image:2.26.6-rhel9.6
 
 ## Related Recipes
 
-- [Push a Podman-Saved Image to Local Quay](./local-quay-push-podman-image)
+- [Push a Podman-Saved Image to Local Quay](/recipes/deployments/local-quay-push-podman-image/)

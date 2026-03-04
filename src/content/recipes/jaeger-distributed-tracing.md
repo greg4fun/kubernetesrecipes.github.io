@@ -13,7 +13,6 @@ tags: ["jaeger", "tracing", "observability", "opentelemetry", "debugging"]
 >
 > **Gotcha:** Distributed tracing requires ALL services to propagate trace headers (traceparent/b3)—one missing hop breaks the trace chain.
 
-# How to Implement Distributed Tracing with Jaeger
 
 Jaeger provides distributed tracing for microservices architectures. Trace requests across services to identify latency bottlenecks and understand system behavior.
 

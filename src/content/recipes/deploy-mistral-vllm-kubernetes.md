@@ -11,6 +11,7 @@ prerequisites:
   - "Model weights available on a PVC or S3 storage"
   - "Container image with vLLM (CUDA-enabled)"
 relatedRecipes:
+  - "vector-database-kubernetes"
   - "deploy-mistral-nvidia-nim"
   - "test-llm-inference-endpoints"
   - "s3-model-storage-permissions"
@@ -31,7 +32,6 @@ author: "Luca Berton"
 >
 > **Important:** The model ID in API calls must match the exact path shown by `/v1/models` (e.g., `/data/Mistral-7B-v0.1`).
 
-# Deploy Mistral 7B with vLLM on Kubernetes
 
 vLLM is a high-throughput inference engine for LLMs that exposes an OpenAI-compatible API. This recipe walks through deploying Mistral-7B-v0.1 on Kubernetes using vLLM with GPU fractioning.
 
@@ -285,6 +285,6 @@ If using Run:ai, configure:
 
 ## Related Recipes
 
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
-- [Test LLM Inference Endpoints](./test-llm-inference-endpoints)
-- [Configure S3 Storage Permissions for ML Models](./s3-model-storage-permissions)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
+- [Test LLM Inference Endpoints](/recipes/ai/test-llm-inference-endpoints/)
+- [Configure S3 Storage Permissions for ML Models](/recipes/storage/s3-model-storage-permissions/)

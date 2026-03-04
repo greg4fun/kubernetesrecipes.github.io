@@ -1,6 +1,6 @@
 ---
 title: "Benchmark NCCL AllReduce Performance on Kubernetes"
-description: "Measure NCCL all-reduce bandwidth and latency to validate distributed training network performance."
+description: "Measure NCCL AllReduce bandwidth and latency on Kubernetes to validate distributed training network performance across multi-GPU clusters."
 category: "ai"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Run `all_reduce_perf -b 8 -e 2G -f 2 -g 1` in GPU pods and track `algbw`/`busbw` over message sizes to validate real cluster throughput.
 
-# Benchmark NCCL AllReduce Performance on Kubernetes
 
 All-reduce is the key communication primitive for data-parallel training. This test gives a fast signal on cluster readiness.
 

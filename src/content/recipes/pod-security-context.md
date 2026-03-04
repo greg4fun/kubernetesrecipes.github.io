@@ -1,6 +1,6 @@
 ---
 title: "How to Configure Pod Security Context"
-description: "Secure your Kubernetes pods with Security Context settings. Learn to set user/group IDs, file system permissions, capabilities, and privilege escalation controls."
+description: "Secure your Kubernetes pods with Security Context settings. Learn to set user/group IDs, file system permissions, capabilities, and privilege escalation."
 category: "security"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

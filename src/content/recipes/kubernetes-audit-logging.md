@@ -13,7 +13,6 @@ tags: ["audit", "logging", "security", "compliance", "api-server"]
 >
 > **Gotcha:** RequestResponse level on high-traffic resources generates massive logs—use selective rules and log rotation.
 
-# How to Configure Kubernetes Audit Logging
 
 Kubernetes audit logs record API server requests, providing a security-relevant chronological record of actions taken in the cluster. Essential for compliance, security monitoring, and troubleshooting.
 

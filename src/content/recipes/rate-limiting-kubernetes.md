@@ -13,7 +13,6 @@ tags: ["rate-limiting", "ingress", "api-gateway", "traffic-management", "securit
 >
 > **Gotcha:** Per-IP limiting may not work behind load balancers—configure `externalTrafficPolicy: Local` or use `X-Forwarded-For` header.
 
-# How to Implement Rate Limiting in Kubernetes
 
 Rate limiting protects services from abuse, ensures fair resource usage, and prevents cascading failures. Implement rate limiting at the ingress, service mesh, or application level.
 

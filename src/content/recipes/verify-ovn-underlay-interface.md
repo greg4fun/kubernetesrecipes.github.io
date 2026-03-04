@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Find OVN encapsulation IP with `ovs-vsctl get Open_vSwitch . external_ids:ovn-encap-ip`, map it to an interface using `ip addr`, then inspect `br-ex` ports to identify the real underlay device.
 
-# Verify Which Interface Carries OVN Underlay Traffic
 
 When troubleshooting SR-IOV and node networking, confirm the interface actually used for OVN underlay instead of guessing by NIC names.
 

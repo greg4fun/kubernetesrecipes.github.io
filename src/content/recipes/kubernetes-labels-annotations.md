@@ -13,7 +13,6 @@ tags: ["labels", "annotations", "organization", "selectors", "metadata"]
 >
 > **Gotcha:** Labels are limited to 63 chars; annotations can be larger—use annotations for JSON configs, URLs, descriptions.
 
-# How to Use Labels and Annotations Effectively
 
 Labels identify and select resources, while annotations store non-identifying metadata. A consistent labeling strategy is essential for managing Kubernetes at scale.
 

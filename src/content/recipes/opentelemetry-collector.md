@@ -13,7 +13,6 @@ tags: ["opentelemetry", "otel", "metrics", "observability", "collector"]
 >
 > **Gotcha:** Set `memory_limiter` processor to prevent OOM; use `batch` processor to reduce backend load. Deploy as DaemonSet for logs, Deployment for traces/metrics.
 
-# How to Collect Metrics with OpenTelemetry Collector
 
 OpenTelemetry Collector provides vendor-agnostic telemetry collection. Deploy it as a central pipeline for metrics, traces, and logs with flexible processing and export options.
 

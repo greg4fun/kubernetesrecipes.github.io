@@ -13,7 +13,6 @@ tags: ["kind", "local-development", "docker", "testing", "development"]
 >
 > **Gotcha:** kind clusters don't persist across Docker restarts by default; use `extraMounts` for persistent volumes and `extraPortMappings` for ingress.
 
-# How to Run Kubernetes in Docker (kind)
 
 kind (Kubernetes IN Docker) runs Kubernetes clusters using Docker containers as nodes. It's perfect for local development, testing, and CI/CD pipelines.
 

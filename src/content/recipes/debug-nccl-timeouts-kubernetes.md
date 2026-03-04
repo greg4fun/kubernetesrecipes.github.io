@@ -1,6 +1,6 @@
 ---
 title: "Debug NCCL Timeouts and Hangs in Kubernetes"
-description: "Systematically troubleshoot NCCL runs that stall or timeout across multi-GPU and multi-node jobs."
+description: "Systematically troubleshoot NCCL runs that stall or timeout across multi-GPU and multi-node Kubernetes jobs with step-by-step diagnostic commands."
 category: "troubleshooting"
 difficulty: "advanced"
 timeToComplete: "30 minutes"
@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Enable `NCCL_DEBUG=INFO`, inspect transport selection logs, verify interface configuration, and re-run with a reduced pod/node matrix to isolate the failing path.
 
-# Debug NCCL Timeouts and Hangs in Kubernetes
 
 NCCL hangs usually come from transport setup failures, network asymmetry, or inconsistent node state.
 

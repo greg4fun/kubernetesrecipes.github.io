@@ -29,7 +29,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Install with Helm: `helm install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace`. The operator auto-deploys GPU drivers, container toolkit, device plugin, and monitoring on every GPU node. Verify with `kubectl get pods -n gpu-operator` and `kubectl get nodes -o json | jq '.items[].status.capacity["nvidia.com/gpu"]'`.
 
-# Install NVIDIA GPU Operator on Kubernetes
 
 The NVIDIA GPU Operator automates the deployment and lifecycle of GPU software components on Kubernetes. Instead of manually installing drivers and plugins on each node, the operator handles everything as DaemonSets.
 
@@ -263,7 +262,7 @@ Key metrics:
 
 ## Related Recipes
 
-- [KAI Scheduler Installation](./kai-scheduler-installation)
-- [GPU Sharing with KAI Scheduler](./kai-scheduler-gpu-sharing)
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Dynamic Resource Allocation for GPUs](./dra-gpu-allocation)
+- [KAI Scheduler Installation](/recipes/ai/kai-scheduler-installation/)
+- [GPU Sharing with KAI Scheduler](/recipes/ai/kai-scheduler-gpu-sharing/)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Dynamic Resource Allocation for GPUs](/recipes/configuration/dra-gpu-allocation/)

@@ -13,7 +13,6 @@ tags: ["api", "deprecation", "migration", "upgrades", "compatibility"]
 >
 > **Gotcha:** APIs are removed ~3 versions after deprecation—plan migrations before upgrading clusters.
 
-# How to Manage Kubernetes API Versions and Deprecations
 
 Kubernetes deprecates APIs over time. Learn to identify deprecated resources, migrate to stable APIs, and prepare for cluster upgrades.
 

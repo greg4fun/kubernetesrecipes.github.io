@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
-import partytown from "@astrojs/partytown";
+
 
 // Redirect pages to exclude from sitemap (these are client-side redirects, not real content)
 // These pages exist in src/pages/recipes/[category]/*.astro as redirect stubs
@@ -19,6 +19,9 @@ const redirectPages = [
   "kyverno-policies",
   "velero-backup-restore",
   "container-image-scanning",
+  "kubernetes-jobs-cronjobs",
+  "deploy-mistral-vllm-kubernetes",
+  "gitops",
 ];
 
 // https://astro.build/config
@@ -38,17 +41,19 @@ export default defineConfig({
         "https://kubernetes.recipes/recipes/",
         "https://kubernetes.recipes/chapters/",
         "https://kubernetes.recipes/authors/",
-        "https://kubernetes.recipes/blog/",
-        "https://kubernetes.recipes/pricing/",
         "https://kubernetes.recipes/community/",
         "https://kubernetes.recipes/contact/",
       ],
       filter(page) {
-        // Exclude redirect stub pages
+                // Exclude redirect stub pages
         for (const redirect of redirectPages) {
           if (page.includes(`/recipes/`) && page.includes(`/${redirect}/`)) {
             return false;
           }
+        }
+        // Exclude demo/template pages (blog posts, pricing)
+        if (page.includes("/blog/") || page.includes("/pricing/")) {
+          return false;
         }
         // Exclude non-trailing-slash duplicates (customPages without slash already
         // generated trailing-slash versions via Astro, so drop bare versions)
@@ -87,7 +92,6 @@ export default defineConfig({
       },
     }),
     icon(),
-    partytown({ config: { forward: ["dataLayer.push"] } }), // Using the correct import
     (await import("astro-compress")).default({
       CSS: true,  // Astro-compress for minify
       HTML: {

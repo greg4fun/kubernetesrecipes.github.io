@@ -24,7 +24,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Run the same `all_reduce_perf` profile in single-node and dual-node scenarios, then compare bandwidth ratios to detect network bottlenecks.
 
-# Compare NCCL Intra-Node vs Inter-Node Performance
 
 This comparison shows whether your network fabric is limiting distributed workloads.
 

@@ -13,7 +13,6 @@ tags: ["coredns", "dns", "networking", "configuration", "resolution"]
 >
 > **Gotcha:** Test changes with `kubectl run test --rm -it --image=busybox -- nslookup myservice.default.svc.cluster.local` before production.
 
-# How to Configure Kubernetes Cluster DNS
 
 CoreDNS handles DNS resolution in Kubernetes clusters. Customize it for custom domains, external forwarding, and performance optimization.
 

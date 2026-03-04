@@ -9,7 +9,6 @@ tags: ["istio", "service-mesh", "traffic", "mtls", "networking"]
 
 > **💡 Quick Answer:** Install: `istioctl install --set profile=demo`. Enable sidecar injection: `kubectl label ns default istio-injection=enabled`. Istio auto-injects envoy proxy sidecars. Use `VirtualService` for traffic routing (canary, A/B), `DestinationRule` for load balancing/circuit breaking. mTLS enabled by default. Access Kiali dashboard: `istioctl dashboard kiali`. High resource overhead—evaluate if you need service mesh complexity.
 
-# How to Implement Service Mesh with Istio
 
 Istio provides traffic management, security, and observability for microservices. Learn to deploy Istio and configure advanced traffic routing, mTLS, and monitoring.
 

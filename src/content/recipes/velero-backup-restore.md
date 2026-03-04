@@ -14,7 +14,6 @@ author: "Luca Berton"
 >
 > **Gotcha:** Test restores regularly! Velero backs up resource definitions—ensure your storage class supports snapshots for PV data.
 
-# How to Backup and Restore with Velero
 
 Velero backs up Kubernetes resources and persistent volumes. Use it for disaster recovery, cluster migration, and development environment replication.
 

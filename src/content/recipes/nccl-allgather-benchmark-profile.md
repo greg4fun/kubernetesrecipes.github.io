@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Execute `all_gather_perf -b 8 -e 1G -f 2 -g 1` to validate communication efficiency for model-parallel patterns.
 
-# Run NCCL AllGather Benchmarks for Model Parallel Validation
 
 All-gather performance is important for tensor-parallel inference and training pipelines.
 

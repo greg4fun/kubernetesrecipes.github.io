@@ -13,7 +13,6 @@ tags: ["dns", "coredns", "networking", "configuration", "resolution"]
 >
 > **Gotcha:** `ndots:5` default causes 5 DNS lookups before trying external—reduce to `ndots:2` for external-heavy workloads.
 
-# How to Customize DNS Configuration in Kubernetes
 
 Kubernetes uses CoreDNS for service discovery and DNS resolution. Learn to customize DNS settings for corporate domains, external resolvers, and specialized requirements.
 

@@ -10,6 +10,7 @@ prerequisites:
   - "NVIDIA GPU Operator with MIG or time-slicing support"
   - "Understanding of GPU resource types"
 relatedRecipes:
+  - "ai-batch-processing-volcano"
   - "kai-scheduler-installation"
   - "kai-scheduler-queues"
   - "dra-mig-partitioning"

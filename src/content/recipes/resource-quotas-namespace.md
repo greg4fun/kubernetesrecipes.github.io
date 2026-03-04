@@ -13,7 +13,6 @@ tags: ["resourcequota", "limits", "namespaces", "governance", "multitenancy"]
 >
 > **Gotcha:** When ResourceQuota exists, pods without resource requests fail to create—also create a `LimitRange` to set defaults.
 
-# How to Configure Resource Quotas per Namespace
 
 Resource quotas limit resource consumption per namespace, enabling fair multi-tenancy and preventing resource exhaustion. Configure quotas for CPU, memory, storage, and object counts.
 

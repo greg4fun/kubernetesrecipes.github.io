@@ -1,6 +1,6 @@
 ---
 title: "How to Configure CSI Drivers for Storage"
-description: "Install and configure Container Storage Interface (CSI) drivers for cloud and on-premises storage. Set up dynamic provisioning with AWS EBS, GCP PD, and more."
+description: "Install and configure Container Storage Interface (CSI) drivers for cloud and on-premises storage. Set up dynamic provisioning with AWS EBS, GCP PD, and."
 category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
@@ -13,7 +13,6 @@ tags: ["csi", "storage", "ebs", "provisioning", "volumes"]
 >
 > **Gotcha:** CSI drivers need IAM permissions to create volumes—use IRSA/Workload Identity, not static credentials.
 
-# How to Configure CSI Drivers for Storage
 
 Container Storage Interface (CSI) drivers enable Kubernetes to use various storage systems. Install CSI drivers for dynamic volume provisioning with cloud providers and on-premises storage.
 

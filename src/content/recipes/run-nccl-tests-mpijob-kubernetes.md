@@ -1,6 +1,6 @@
 ---
 title: "Run NCCL Tests with MPIJob on Kubernetes"
-description: "Launch multi-pod NCCL benchmarks using MPIJob for repeatable distributed GPU communication tests."
+description: "Launch multi-pod NCCL benchmarks using MPIJob on Kubernetes for repeatable, automated distributed GPU communication testing across nodes."
 category: "deployments"
 difficulty: "advanced"
 timeToComplete: "35 minutes"
@@ -25,7 +25,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Use an `MPIJob` with one launcher and N workers, then execute `all_reduce_perf` through `mpirun` to test real multi-pod communication paths.
 
-# Run NCCL Tests with MPIJob on Kubernetes
 
 MPIJob provides a repeatable way to run multi-process NCCL tests across pods and nodes.
 

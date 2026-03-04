@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** The `nvidia-peermem` module fails to load when it was compiled against the wrong RDMA stack. Reinstall the NVIDIA driver after MLNX_OFED, or on OpenShift force a driver pod rebuild by deleting the driver DaemonSet.
 
-# Fix NVIDIA Peer Memory Driver Not Detected
 
 GPU workloads using NCCL or MPI may log `NVIDIA peer memory driver not detected` or `GPU Direct RDMA Disabled` when the `nvidia-peermem` kernel module cannot load.
 

@@ -13,7 +13,6 @@ tags: ["grafana", "monitoring", "dashboards", "prometheus", "visualization"]
 >
 > **Gotcha:** For custom dashboards, use `container_*` and `kube_*` metrics from Prometheus; enable Grafana persistence to keep dashboards across restarts.
 
-# How to Monitor Kubernetes with Grafana Dashboards
 
 Grafana dashboards provide visual insights into your Kubernetes cluster. Learn to create dashboards for cluster overview, node health, pod performance, and application metrics.
 

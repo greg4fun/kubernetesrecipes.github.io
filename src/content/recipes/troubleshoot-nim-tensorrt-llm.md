@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** If NIM logs show `Failed to initialize executor on rank 0: setup(): incompatible function arguments` with `max_attention_window` as a list instead of int, your TensorRT-LLM bindings are older than the NIM runtime expects. Upgrade NIM container image, or remove `NIM_NUM_KV_CACHE_SEQ_LENS` override. If `/v1/completions` returns `activator request timeout`, the backend never finished initializing.
 
-# Troubleshoot NVIDIA NIM TensorRT-LLM Initialization Failures
 
 This recipe covers the most common NIM + TensorRT-LLM startup failures and their resolutions.
 
@@ -238,13 +237,13 @@ curl returns "activator request timeout"
 
 If NIM issues persist and you need inference running now:
 
-1. Deploy vLLM instead (see [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes))
+1. Deploy vLLM instead (see [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
 2. vLLM is more forgiving with driver/library versions
 3. Lower throughput but much faster time-to-working-endpoint
 4. Same OpenAI-compatible API, just different backend
 
 ## Related Recipes
 
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Test LLM Inference Endpoints](./test-llm-inference-endpoints)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Test LLM Inference Endpoints](/recipes/ai/test-llm-inference-endpoints/)

@@ -26,7 +26,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** Define a `SriovNetworkNodePolicy` with the target PFs and `numVfs`, apply it in `openshift-sriov-network-operator`, and verify VF resources appear in node allocatable.
 
-# Create SR-IOV VFs on OpenShift with SriovNetworkNodePolicy
 
 OpenShift creates and reconciles VFs through `SriovNetworkNodePolicy`. Avoid manual VF creation for production clusters.
 

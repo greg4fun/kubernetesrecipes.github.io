@@ -13,7 +13,6 @@ tags: ["events", "monitoring", "troubleshooting", "observability", "alerts"]
 >
 > **Gotcha:** Events are garbage collected after 1 hour by default—export them for historical analysis and alerting.
 
-# How to Use Kubernetes Events for Monitoring
 
 Kubernetes events provide insights into cluster operations: pod scheduling, container crashes, resource issues, and more. Learn to capture and leverage events for monitoring and troubleshooting.
 

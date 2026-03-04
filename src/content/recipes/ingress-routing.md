@@ -9,7 +9,6 @@ tags: ["ingress", "routing", "traffic", "nginx", "load-balancing"]
 
 > **💡 Quick Answer:** Create an Ingress with `spec.rules[].host` for domain-based routing and `spec.rules[].http.paths[]` for path-based routing. Set `ingressClassName: nginx` (or your controller). For HTTPS, add `spec.tls[]` with your certificate Secret. Install an Ingress Controller first (nginx-ingress, traefik, etc.).
 
-# How to Implement Request Routing with Ingress
 
 Kubernetes Ingress provides HTTP/HTTPS routing to services. Configure path-based and host-based routing, TLS termination, and advanced traffic management.
 

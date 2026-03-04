@@ -1,6 +1,6 @@
 ---
 title: "Update CA Certificates in Kubernetes"
-description: "Rotate and update Certificate Authority (CA) certificates in Kubernetes clusters including kube-apiserver, etcd, kubelet, and custom CA bundles for TLS trust chain management."
+description: "Rotate and update Certificate Authority (CA) certificates in Kubernetes clusters including kube-apiserver, etcd, kubelet, and custom CA bundles for TLS."
 category: "security"
 difficulty: "advanced"
 timeToComplete: "45 minutes"

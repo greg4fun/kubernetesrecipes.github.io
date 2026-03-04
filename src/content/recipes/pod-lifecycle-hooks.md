@@ -13,7 +13,6 @@ tags: ["lifecycle", "hooks", "preStop", "postStart", "graceful-shutdown"]
 >
 > **Gotcha:** PreStop must complete within `terminationGracePeriodSeconds` (default 30s); hook failures don't prevent container termination.
 
-# How to Configure Pod Lifecycle Hooks
 
 Pod lifecycle hooks execute custom actions at specific points in a container's lifecycle. Use postStart for initialization and preStop for graceful shutdown.
 

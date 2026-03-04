@@ -13,7 +13,6 @@ tags: ["resource-quota", "limits", "multi-tenancy", "capacity", "governance"]
 >
 > **Gotcha:** Combine with `LimitRange` to set default and max per-container limits; quota alone doesn't set per-pod constraints.
 
-# How to Configure Resource Quotas
 
 ResourceQuotas limit aggregate resource consumption per namespace. They're essential for multi-tenant clusters to ensure fair sharing and prevent resource exhaustion.
 

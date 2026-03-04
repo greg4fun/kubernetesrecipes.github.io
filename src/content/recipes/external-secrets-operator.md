@@ -13,7 +13,6 @@ tags: ["secrets", "external-secrets", "vault", "aws", "security"]
 >
 > **Gotcha:** Use `refreshInterval` to control sync frequency; set up `ClusterSecretStore` for cross-namespace secret access.
 
-# How to Use External Secrets Operator
 
 External Secrets Operator (ESO) syncs secrets from external providers into Kubernetes. Centralize secret management using AWS Secrets Manager, HashiCorp Vault, Azure Key Vault, or GCP Secret Manager.
 

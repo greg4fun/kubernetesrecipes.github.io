@@ -29,7 +29,6 @@ author: "Luca Berton"
 
 > 💡 **Quick Answer:** RAG = Vector DB (store embeddings) + Embedding Model (convert text → vectors) + LLM (generate answers grounded in retrieved context). Deploy ChromaDB or pgvector for storage, use an embedding model sidecar or service, and point your LLM queries through a retrieval layer. All components run as standard Kubernetes deployments.
 
-# Build a RAG Pipeline on Kubernetes
 
 Retrieval-Augmented Generation (RAG) grounds LLM answers in your own documents, reducing hallucination and enabling domain-specific knowledge without fine-tuning.
 
@@ -396,6 +395,6 @@ mistral-vllm.ai-inference.svc.cluster.local:8000
 
 ## Related Recipes
 
-- [Deploy Mistral with vLLM](./deploy-mistral-vllm-kubernetes)
-- [Deploy Mistral with NVIDIA NIM](./deploy-mistral-nvidia-nim)
-- [Test LLM Inference Endpoints](./test-llm-inference-endpoints)
+- [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
+- [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
+- [Test LLM Inference Endpoints](/recipes/ai/test-llm-inference-endpoints/)
