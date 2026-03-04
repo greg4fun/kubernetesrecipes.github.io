@@ -60,7 +60,7 @@ const { images = [], height = "110px", duration = 30 } = Astro.props;
   tabindex="0"
 >
   <div class="track">
-    {images.map((src) => <img src={src} alt="" loading="lazy" />)}
-    {images.map((src) => <img src={src} alt="" aria-hidden="true" />)}
+    {images.map((src, i) => <img src={src} alt={`Slide ${i + 1}`} loading="lazy" />)}
+    {images.map((src, i) => <img src={src} alt={`Slide ${i + 1}`} aria-hidden="true" />)}
   </div>
 </div>
