@@ -17,6 +17,9 @@ relatedRecipes:
   - "ab-testing-kubernetes"
   - "blue-green-deployments"
   - "cronjob-concurrency-policy"
+  - "graceful-shutdown"
+  - "kubernetes-leases"
+  - "kubernetes-probes-configuration"
 tags:
   - argocd
   - gitops

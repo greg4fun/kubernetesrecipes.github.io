@@ -8,6 +8,10 @@ relatedRecipes:
   - "container-image-scanning"
   - "gvisor-container-runtime"
   - "kubernetes-audit-logging"
+  - "cert-manager-certificates"
+  - "secrets-encryption-kms"
+  - "service-accounts-rbac"
+  - "workload-identity-cloud-access"
 tags: ["api-server", "authentication", "authorization", "rbac", "security"]
 ---
 

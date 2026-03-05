@@ -17,6 +17,7 @@ relatedRecipes:
   - "s3-model-storage-permissions"
   - "kai-scheduler-gpu-sharing"
   - "llm-serving-frameworks-compared"
+  - "llm-autoscaling-kubernetes"
 tags:
   - vllm
   - mistral

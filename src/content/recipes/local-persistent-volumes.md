@@ -4,6 +4,8 @@ description: "Use local persistent volumes for high-performance storage with nod
 category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "csi-drivers-storage"
 tags: ["local-storage", "persistent-volumes", "ssd", "performance", "storage"]
 ---
 

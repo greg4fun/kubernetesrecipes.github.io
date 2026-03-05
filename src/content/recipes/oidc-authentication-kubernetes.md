@@ -14,6 +14,7 @@ relatedRecipes:
   - "api-access-control"
   - "kubeconfig-contexts"
   - "kyverno-policy-management"
+  - "pod-security-context"
 tags:
   - oidc
   - authentication

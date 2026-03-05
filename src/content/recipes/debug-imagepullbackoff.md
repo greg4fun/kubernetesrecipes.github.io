@@ -4,6 +4,9 @@ description: "Troubleshoot Kubernetes ImagePullBackOff and ErrImagePull errors. 
 category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "debug-oom-killed"
+  - "debug-scheduling-failures"
 tags: ["imagepull", "troubleshooting", "registry", "authentication", "debugging"]
 ---
 

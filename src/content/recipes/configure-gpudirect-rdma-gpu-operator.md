@@ -17,6 +17,9 @@ relatedRecipes:
   - "agent-config-device-by-path"
   - "coredns-configuration"
   - "custom-dns-configuration"
+  - "dns-policies-configuration"
+  - "istio-traffic-management"
+  - "kubernetes-dns-configuration"
 tags:
   - nvidia
   - gpu

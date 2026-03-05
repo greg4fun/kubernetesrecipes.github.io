@@ -12,6 +12,8 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-ha-kubernetes"
   - "container-image-best-practices"
+  - "openclaw-signal-kubernetes"
+  - "rolling-update-deployment"
 tags:
   - openclaw
   - docker

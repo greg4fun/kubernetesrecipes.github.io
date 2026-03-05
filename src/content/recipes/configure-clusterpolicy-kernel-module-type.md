@@ -14,6 +14,10 @@ relatedRecipes:
   - "switch-proprietary-to-open-kernel-modules"
   - "api-versions-deprecations"
   - "selinux-scc-gpu-operator-openshift"
+  - "scheduler-configuration-tuning"
+  - "environment-variables-configmaps"
+  - "kubernetes-api-aggregation"
+  - "kubernetes-cluster-upgrade"
 tags:
   - nvidia
   - gpu-operator

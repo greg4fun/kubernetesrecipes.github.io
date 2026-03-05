@@ -8,6 +8,7 @@ relatedRecipes:
   - "helm-chart-basics"
   - "helm-chart-repositories"
   - "helm-dependencies"
+  - "helm-templating-sprig"
 tags: ["helm", "charts", "packaging", "templates", "deployment"]
 ---
 

@@ -18,6 +18,7 @@ relatedRecipes:
   - "logging-efk-stack"
   - "opentelemetry-collector"
   - "prometheus-monitoring"
+  - "jaeger-distributed-tracing"
 tags:
   - alertmanager
   - monitoring

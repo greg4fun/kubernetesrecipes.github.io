@@ -14,6 +14,8 @@ relatedRecipes:
   - "pod-security-standards"
   - "opa-gatekeeper"
   - "oidc-authentication-kubernetes"
+  - "pod-security-context"
+  - "selinux-scc-gpu-operator-openshift"
 tags:
   - kyverno
   - policy-as-code

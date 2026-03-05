@@ -4,6 +4,11 @@ description: "Automate TLS certificate management with cert-manager. Configure i
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "kubernetes-audit-logging"
+  - "secrets-encryption-kms"
+  - "service-accounts-rbac"
+  - "workload-identity-cloud-access"
 tags: ["cert-manager", "tls", "certificates", "lets-encrypt", "security"]
 ---
 

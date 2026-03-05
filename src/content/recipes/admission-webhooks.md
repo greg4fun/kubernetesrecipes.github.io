@@ -13,6 +13,7 @@ relatedRecipes:
   - "secrets-encryption-kms"
   - "service-accounts-rbac"
   - "workload-identity-cloud-access"
+  - "cert-manager-certificates"
 tags: ["admission-webhooks", "security", "validation", "mutation", "policy"]
 ---
 

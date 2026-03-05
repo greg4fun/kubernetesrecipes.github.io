@@ -13,6 +13,7 @@ relatedRecipes:
   - "run-nccl-tests-kubernetes"
   - "compare-nccl-intra-inter-node"
   - "tune-nccl-env-rdma-ethernet"
+  - "nccl-allgather-benchmark-profile"
 tags:
   - nccl
   - allreduce

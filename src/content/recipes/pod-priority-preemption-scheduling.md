@@ -13,6 +13,7 @@ relatedRecipes:
   - "pod-disruption-budgets"
   - "resource-quotas"
   - "node-taints-tolerations"
+  - "cronjob-concurrency-policy"
 tags:
   - priority
   - preemption

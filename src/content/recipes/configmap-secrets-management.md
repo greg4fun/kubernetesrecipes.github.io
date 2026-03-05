@@ -14,6 +14,10 @@ relatedRecipes:
   - "api-versions-deprecations"
   - "downward-api-metadata"
   - "downward-api"
+  - "scheduler-configuration-tuning"
+  - "environment-variables-configmaps"
+  - "kubeconfig-contexts"
+  - "kubernetes-api-aggregation"
 tags:
   - configmap
   - secrets

@@ -6,6 +6,9 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
   - "alertmanager-setup"
+  - "jaeger-distributed-tracing"
+  - "logging-efk-stack"
+  - "opentelemetry-collector"
 tags: ["logging", "observability", "sidecar", "fluentd", "stdout"]
 ---
 

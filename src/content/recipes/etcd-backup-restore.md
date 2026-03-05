@@ -15,6 +15,9 @@ relatedRecipes:
   - "statefulset-management"
   - "secrets-management-best-practices"
   - "velero-backup-disaster-recovery"
+  - "csi-drivers-storage"
+  - "local-persistent-volumes"
+  - "statefulset-mysql"
 tags:
   - etcd
   - backup

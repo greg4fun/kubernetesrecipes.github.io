@@ -16,6 +16,8 @@ relatedRecipes:
   - "troubleshoot-nvidia-fs-module-conflict"
   - "csi-drivers-storage"
   - "selinux-scc-gpu-operator-openshift"
+  - "local-persistent-volumes"
+  - "statefulset-mysql"
 tags:
   - nvidia
   - gpu

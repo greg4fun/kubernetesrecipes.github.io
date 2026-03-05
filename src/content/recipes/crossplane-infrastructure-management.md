@@ -13,6 +13,7 @@ relatedRecipes:
   - "custom-resource-definitions"
   - "argocd-gitops"
   - "kubernetes-operators"
+  - "api-versions-deprecations"
 tags:
   - crossplane
   - infrastructure-as-code

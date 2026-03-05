@@ -14,6 +14,7 @@ relatedRecipes:
   - "deploy-mistral-nvidia-nim"
   - "nvidia-gpu-operator-install"
   - "s3-model-storage-permissions"
+  - "llm-autoscaling-kubernetes"
 tags:
   - quantization
   - gptq

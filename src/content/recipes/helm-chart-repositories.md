@@ -6,6 +6,7 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
   - "helm-chart-basics"
+  - "helm-templating-sprig"
 tags: ["helm", "repository", "charts", "packaging", "distribution"]
 ---
 

@@ -15,6 +15,7 @@ relatedRecipes:
   - "deploy-mistral-nvidia-nim"
   - "nvidia-gpu-operator-install"
   - "cluster-autoscaler"
+  - "llm-serving-frameworks-compared"
 tags:
   - autoscaling
   - hpa

@@ -13,6 +13,7 @@ relatedRecipes:
   - "rag-pipeline-kubernetes"
   - "stateful-applications"
   - "pvc-storageclass-examples"
+  - "nccl-allgather-benchmark-profile"
 tags:
   - vector-database
   - milvus

@@ -8,6 +8,8 @@ relatedRecipes:
   - "container-logging"
   - "grafana-kubernetes-dashboards"
   - "jaeger-distributed-tracing"
+  - "logging-efk-stack"
+  - "opentelemetry-collector"
 tags: ["alertmanager", "prometheus", "alerts", "notifications", "monitoring"]
 ---
 

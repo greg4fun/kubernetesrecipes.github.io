@@ -15,6 +15,11 @@ relatedRecipes:
   - "troubleshoot-nv-ipam-pool-not-found"
   - "openshift-sriov-vf-creation"
   - "agent-config-device-by-path"
+  - "coredns-configuration"
+  - "custom-dns-configuration"
+  - "dns-policies-configuration"
+  - "kubernetes-dns-configuration"
+  - "kubernetes-endpointslices"
 tags:
   - "sriovnetwork"
   - "nv-ipam"

@@ -14,6 +14,7 @@ relatedRecipes:
   - "dra-gpu-allocation"
   - "device-plugins"
   - "gpu-scheduling"
+  - "dra-computedomains-nvlink"
 tags:
   - dra
   - gpu

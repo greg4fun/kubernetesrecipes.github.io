@@ -14,6 +14,7 @@ relatedRecipes:
   - "enable-nic-feature-discovery"
   - "identify-mellanox-nic-models"
   - "validate-sriov-on-multiple-nodes"
+  - "verify-ovn-underlay-interface"
 tags:
   - "openshift"
   - "sriov"

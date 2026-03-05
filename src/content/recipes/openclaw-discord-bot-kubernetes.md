@@ -13,6 +13,8 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-multi-agent-kubernetes"
   - "openclaw-telegram-bot-kubernetes"
+  - "openclaw-signal-kubernetes"
+  - "rolling-update-deployment"
 tags:
   - openclaw
   - discord

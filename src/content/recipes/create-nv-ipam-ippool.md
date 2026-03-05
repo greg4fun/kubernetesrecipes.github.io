@@ -14,6 +14,7 @@ relatedRecipes:
   - "configure-sriovnetwork-nv-ipam"
   - "troubleshoot-nv-ipam-pool-not-found"
   - "validate-sriov-on-multiple-nodes"
+  - "coredns-configuration"
 tags:
   - "nv-ipam"
   - "ippool"

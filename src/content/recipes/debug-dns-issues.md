@@ -12,6 +12,12 @@ relatedRecipes:
   - "debug-crashloopbackoff"
   - "service-loadbalancer-nodeport"
   - "kubernetes-network-troubleshooting"
+  - "debug-imagepullbackoff"
+  - "debug-oom-killed"
+  - "debug-scheduling-failures"
+  - "ephemeral-containers-debugging"
+  - "imagepullbackoff-troubleshooting"
+  - "kind-local-kubernetes"
 tags:
   - dns
   - coredns

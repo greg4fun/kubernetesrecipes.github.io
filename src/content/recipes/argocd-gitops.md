@@ -6,6 +6,14 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
   - "ab-testing-kubernetes"
+  - "graceful-shutdown"
+  - "kubernetes-leases"
+  - "kubernetes-probes-configuration"
+  - "multi-container-pod-patterns"
+  - "pod-disruption-budget-config"
+  - "pod-lifecycle-hooks"
+  - "pod-readiness-gates"
+  - "pod-topology-constraints"
 tags: ["argocd", "gitops", "continuous-deployment", "kubernetes", "automation"]
 author: "Luca Berton"
 ---

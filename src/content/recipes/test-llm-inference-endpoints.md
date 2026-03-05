@@ -13,6 +13,7 @@ relatedRecipes:
   - "deploy-mistral-vllm-kubernetes"
   - "deploy-mistral-nvidia-nim"
   - "troubleshoot-nim-tensorrt-llm"
+  - "llm-serving-frameworks-compared"
 tags:
   - llm
   - inference

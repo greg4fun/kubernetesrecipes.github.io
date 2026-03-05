@@ -17,6 +17,7 @@ relatedRecipes:
   - "kyverno-policy-management"
   - "oidc-authentication-kubernetes"
   - "pod-security-context"
+  - "selinux-scc-gpu-operator-openshift"
 tags:
   - vault
   - secrets

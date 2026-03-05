@@ -15,6 +15,9 @@ relatedRecipes:
   - "device-plugins"
   - "resource-requests-limits"
   - "dra-mixed-accelerators"
+  - "dra-computedomains-nvlink"
+  - "dra-mig-partitioning"
+  - "switch-proprietary-to-open-kernel-modules"
 tags:
   - dra
   - gpu

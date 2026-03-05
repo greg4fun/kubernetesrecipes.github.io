@@ -14,6 +14,10 @@ relatedRecipes:
   - "debug-imagepullbackoff"
   - "debug-oom-killed"
   - "debug-scheduling-failures"
+  - "ephemeral-containers-debugging"
+  - "imagepullbackoff-troubleshooting"
+  - "kind-local-kubernetes"
+  - "kubectl-debugging-commands"
 tags:
   - troubleshooting
   - crashloopbackoff
