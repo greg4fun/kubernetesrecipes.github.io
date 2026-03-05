@@ -13,6 +13,7 @@ relatedRecipes:
   - "admission-webhooks"
   - "pod-security-standards"
   - "opa-gatekeeper"
+  - "oidc-authentication-kubernetes"
 tags:
   - kyverno
   - policy-as-code

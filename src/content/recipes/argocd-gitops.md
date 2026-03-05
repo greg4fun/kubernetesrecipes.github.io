@@ -4,6 +4,8 @@ description: "Implement GitOps continuous deployment with Argo CD. Sync Kubernet
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "ab-testing-kubernetes"
 tags: ["argocd", "gitops", "continuous-deployment", "kubernetes", "automation"]
 author: "Luca Berton"
 ---

@@ -11,6 +11,9 @@ prerequisites:
 relatedRecipes:
   - "troubleshooting-pending-pvc"
   - "liveness-readiness-probes"
+  - "debug-imagepullbackoff"
+  - "debug-oom-killed"
+  - "debug-scheduling-failures"
 tags:
   - troubleshooting
   - crashloopbackoff

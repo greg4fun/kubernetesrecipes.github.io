@@ -4,6 +4,24 @@ description: "Handle Kubernetes API version changes and deprecations. Migrate re
 category: "configuration"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "crossplane-infrastructure-management"
+  - "downward-api-metadata"
+  - "downward-api"
+  - "environment-variables-configmaps"
+  - "kubernetes-api-aggregation"
+  - "kubernetes-cluster-upgrade"
+  - "kubernetes-cost-optimization"
+  - "kubernetes-finalizers"
+  - "kubernetes-jobs-cronjobs"
+  - "kubernetes-labels-annotations"
+  - "kubernetes-lease-objects"
+  - "namespace-management"
+  - "pod-mutation-injection"
+  - "pod-resource-management"
+  - "resource-limits-requests"
+  - "resource-quotas-namespace"
+  - "scheduler-configuration-tuning"
 tags: ["api", "deprecation", "migration", "upgrades", "compatibility"]
 ---
 

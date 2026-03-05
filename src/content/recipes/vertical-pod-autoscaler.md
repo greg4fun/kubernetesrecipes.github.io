@@ -12,6 +12,7 @@ prerequisites:
 relatedRecipes:
   - "horizontal-pod-autoscaler"
   - "resource-requests-limits"
+  - "kubernetes-resource-optimization"
 tags:
   - autoscaling
   - vpa

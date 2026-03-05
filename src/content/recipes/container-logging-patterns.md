@@ -4,6 +4,8 @@ description: "Configure logging for Kubernetes applications. Implement sidecar l
 category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "alertmanager-setup"
 tags: ["logging", "observability", "sidecar", "fluentd", "stdout"]
 ---
 

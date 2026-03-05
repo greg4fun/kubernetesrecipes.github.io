@@ -14,6 +14,7 @@ relatedRecipes:
   - "dra-gpu-allocation"
   - "gke-workload-identity"
   - "distributed-training-kubernetes"
+  - "dra-mixed-accelerators"
 tags:
   - dra
   - tpu

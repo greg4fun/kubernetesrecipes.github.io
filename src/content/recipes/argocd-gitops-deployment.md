@@ -14,6 +14,9 @@ relatedRecipes:
   - "flux-gitops"
   - "sealed-secrets-gitops"
   - "canary-deployments"
+  - "ab-testing-kubernetes"
+  - "blue-green-deployments"
+  - "cronjob-concurrency-policy"
 tags:
   - argocd
   - gitops

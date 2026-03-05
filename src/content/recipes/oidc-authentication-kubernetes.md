@@ -13,6 +13,7 @@ relatedRecipes:
   - "rbac-service-accounts"
   - "api-access-control"
   - "kubeconfig-contexts"
+  - "kyverno-policy-management"
 tags:
   - oidc
   - authentication

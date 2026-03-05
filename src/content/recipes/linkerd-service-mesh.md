@@ -13,6 +13,8 @@ relatedRecipes:
   - "istio-service-mesh"
   - "network-policies"
   - "distributed-tracing-jaeger"
+  - "istio-traffic-management"
+  - "kubernetes-gateway-api"
 tags:
   - linkerd
   - service-mesh

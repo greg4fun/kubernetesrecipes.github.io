@@ -14,6 +14,7 @@ relatedRecipes:
   - "gpu-workloads-kubernetes"
   - "device-plugins"
   - "resource-requests-limits"
+  - "dra-mixed-accelerators"
 tags:
   - dra
   - gpu

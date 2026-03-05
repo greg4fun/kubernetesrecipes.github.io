@@ -14,6 +14,9 @@ relatedRecipes:
   - "switch-gpudirect-rdma-dma-buf"
   - "validate-gpudirect-rdma-performance"
   - "enable-gpudirect-storage-openshift"
+  - "agent-config-device-by-path"
+  - "coredns-configuration"
+  - "custom-dns-configuration"
 tags:
   - nvidia
   - gpu

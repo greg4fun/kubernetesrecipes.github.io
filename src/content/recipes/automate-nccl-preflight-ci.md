@@ -13,6 +13,8 @@ relatedRecipes:
   - "run-nccl-tests-kubernetes"
   - "monitor-nccl-performance-prometheus"
   - "run-nccl-tests-mpijob-kubernetes"
+  - "argocd-gitops-deployment"
+  - "flux-gitops-continuous-delivery"
 tags:
   - nccl
   - ci-cd

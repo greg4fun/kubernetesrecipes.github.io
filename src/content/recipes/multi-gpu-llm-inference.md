@@ -15,6 +15,7 @@ relatedRecipes:
   - "deploy-mistral-nvidia-nim"
   - "nvidia-gpu-operator-install"
   - "kai-scheduler-topology-aware"
+  - "llm-autoscaling-kubernetes"
 tags:
   - multi-gpu
   - tensor-parallelism

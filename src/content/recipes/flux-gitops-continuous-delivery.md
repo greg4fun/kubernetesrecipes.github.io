@@ -13,6 +13,7 @@ relatedRecipes:
   - "argocd-gitops"
   - "helm-chart-creation"
   - "kustomize-configuration"
+  - "argocd-gitops-deployment"
 tags:
   - gitops
   - flux

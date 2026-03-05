@@ -14,6 +14,7 @@ relatedRecipes:
   - "create-nv-ipam-ippool"
   - "troubleshoot-nv-ipam-pool-not-found"
   - "openshift-sriov-vf-creation"
+  - "agent-config-device-by-path"
 tags:
   - "sriovnetwork"
   - "nv-ipam"

@@ -13,6 +13,7 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-ha-kubernetes"
   - "prometheus-grafana-setup"
+  - "node-problem-detector"
 tags:
   - openclaw
   - prometheus

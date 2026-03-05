@@ -14,6 +14,7 @@ relatedRecipes:
   - "nvidia-gpu-operator-install"
   - "validate-sriov-on-multiple-nodes"
   - "verify-ovn-underlay-interface"
+  - "nccl-allgather-benchmark-profile"
 tags:
   - nccl
   - nccl-tests

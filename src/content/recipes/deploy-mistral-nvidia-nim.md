@@ -15,6 +15,8 @@ relatedRecipes:
   - "troubleshoot-nim-tensorrt-llm"
   - "test-llm-inference-endpoints"
   - "s3-model-storage-permissions"
+  - "llm-autoscaling-kubernetes"
+  - "llm-serving-frameworks-compared"
 tags:
   - nvidia-nim
   - tensorrt-llm

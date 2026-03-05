@@ -11,6 +11,7 @@ prerequisites:
 relatedRecipes:
   - "debug-crashloopbackoff"
   - "service-loadbalancer-nodeport"
+  - "kubernetes-network-troubleshooting"
 tags:
   - dns
   - coredns

@@ -12,6 +12,7 @@ relatedRecipes:
   - "nccl-allreduce-benchmark-profile"
   - "run-nccl-tests-kubernetes"
   - "validate-gpu-topology-nccl"
+  - "nccl-allgather-benchmark-profile"
 tags:
   - nccl
   - intra-node

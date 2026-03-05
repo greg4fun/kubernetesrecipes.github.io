@@ -11,6 +11,9 @@ prerequisites:
 relatedRecipes:
   - "external-secrets-operator"
   - "sealed-secrets-gitops"
+  - "api-versions-deprecations"
+  - "downward-api-metadata"
+  - "downward-api"
 tags:
   - configmap
   - secrets

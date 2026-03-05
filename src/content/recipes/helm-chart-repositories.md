@@ -4,6 +4,8 @@ description: "Set up and manage Helm chart repositories. Learn to host charts on
 category: "helm"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "helm-chart-basics"
 tags: ["helm", "repository", "charts", "packaging", "distribution"]
 ---
 

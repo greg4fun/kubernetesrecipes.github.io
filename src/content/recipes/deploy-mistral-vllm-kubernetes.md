@@ -16,6 +16,7 @@ relatedRecipes:
   - "test-llm-inference-endpoints"
   - "s3-model-storage-permissions"
   - "kai-scheduler-gpu-sharing"
+  - "llm-serving-frameworks-compared"
 tags:
   - vllm
   - mistral

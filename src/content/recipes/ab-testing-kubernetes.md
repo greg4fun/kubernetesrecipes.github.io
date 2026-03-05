@@ -4,6 +4,18 @@ description: "Route traffic between application versions for A/B testing. Use se
 category: "deployments"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "blue-green-deployments"
+  - "deployment-strategies"
+  - "graceful-shutdown"
+  - "kubernetes-leases"
+  - "kubernetes-probes-configuration"
+  - "multi-container-pod-patterns"
+  - "pod-disruption-budget-config"
+  - "pod-lifecycle-hooks"
+  - "pod-readiness-gates"
+  - "pod-topology-constraints"
+  - "topology-spread-constraints"
 tags: ["a-b-testing", "traffic-routing", "feature-flags", "deployment", "experimentation"]
 ---
 

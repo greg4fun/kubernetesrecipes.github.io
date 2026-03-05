@@ -4,6 +4,15 @@ description: "Build validating and mutating admission webhooks to enforce polici
 category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "container-image-scanning"
+  - "gvisor-container-runtime"
+  - "kubernetes-audit-logging"
+  - "kyverno-policies"
+  - "network-policies-advanced"
+  - "secrets-encryption-kms"
+  - "service-accounts-rbac"
+  - "workload-identity-cloud-access"
 tags: ["admission-webhooks", "security", "validation", "mutation", "policy"]
 ---
 

@@ -12,6 +12,9 @@ prerequisites:
 relatedRecipes:
   - "vpa-configuration"
   - "cluster-autoscaler"
+  - "hpa-custom-metrics"
+  - "keda-event-autoscaling"
+  - "keda-event-driven-autoscaling"
 tags:
   - hpa
   - autoscaling

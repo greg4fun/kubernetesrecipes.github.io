@@ -12,6 +12,12 @@ prerequisites:
 relatedRecipes:
   - "prometheus-metrics-setup"
   - "grafana-dashboards"
+  - "alertmanager-setup"
+  - "container-logging"
+  - "grafana-kubernetes-dashboards"
+  - "logging-efk-stack"
+  - "opentelemetry-collector"
+  - "prometheus-monitoring"
 tags:
   - alertmanager
   - monitoring

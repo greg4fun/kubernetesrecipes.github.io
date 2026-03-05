@@ -12,6 +12,8 @@ relatedRecipes:
   - "switch-gpudirect-rdma-dma-buf"
   - "enable-gpudirect-storage-openshift"
   - "switch-proprietary-to-open-kernel-modules"
+  - "api-versions-deprecations"
+  - "selinux-scc-gpu-operator-openshift"
 tags:
   - nvidia
   - gpu-operator

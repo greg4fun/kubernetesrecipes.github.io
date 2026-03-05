@@ -11,6 +11,8 @@ prerequisites:
 relatedRecipes:
   - "configmap-secrets-management"
   - "resource-requests-limits"
+  - "cronjob-concurrency-policy"
+  - "pod-priority-preemption-scheduling"
 tags:
   - jobs
   - cronjobs

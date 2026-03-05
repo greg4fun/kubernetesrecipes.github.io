@@ -4,6 +4,10 @@ description: "Configure Alertmanager to route and manage Prometheus alerts. Set 
 category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "container-logging"
+  - "grafana-kubernetes-dashboards"
+  - "jaeger-distributed-tracing"
 tags: ["alertmanager", "prometheus", "alerts", "notifications", "monitoring"]
 ---
 

@@ -13,6 +13,7 @@ relatedRecipes:
   - "ingress-routing"
   - "ingress-tls-certificates"
   - "canary-deployments"
+  - "istio-traffic-management"
 tags:
   - gateway-api
   - networking

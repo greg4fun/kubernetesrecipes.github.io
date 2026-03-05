@@ -4,6 +4,10 @@ description: "Set up secure API server access with authentication and authorizat
 category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "container-image-scanning"
+  - "gvisor-container-runtime"
+  - "kubernetes-audit-logging"
 tags: ["api-server", "authentication", "authorization", "rbac", "security"]
 ---
 

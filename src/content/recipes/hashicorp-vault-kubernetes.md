@@ -14,6 +14,9 @@ relatedRecipes:
   - "external-secrets-operator"
   - "sealed-secrets-gitops"
   - "secrets-management-best-practices"
+  - "kyverno-policy-management"
+  - "oidc-authentication-kubernetes"
+  - "pod-security-context"
 tags:
   - vault
   - secrets

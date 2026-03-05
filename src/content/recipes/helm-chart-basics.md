@@ -12,6 +12,10 @@ prerequisites:
 relatedRecipes:
   - "helm-chart-best-practices"
   - "helmfile-multi-environment"
+  - "helm-chart-repositories"
+  - "helm-dependencies"
+  - "helm-hooks"
+  - "helm-templating-sprig"
 tags:
   - helm
   - charts

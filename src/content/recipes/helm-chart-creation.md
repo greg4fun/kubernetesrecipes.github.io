@@ -4,6 +4,10 @@ description: "Build custom Helm charts for your applications. Learn chart struct
 category: "helm"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "helm-chart-basics"
+  - "helm-chart-repositories"
+  - "helm-dependencies"
 tags: ["helm", "charts", "packaging", "templates", "deployment"]
 ---
 

@@ -14,6 +14,7 @@ relatedRecipes:
   - "velero-backup-restore"
   - "statefulset-management"
   - "secrets-management-best-practices"
+  - "velero-backup-disaster-recovery"
 tags:
   - etcd
   - backup

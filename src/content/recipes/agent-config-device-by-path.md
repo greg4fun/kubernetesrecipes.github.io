@@ -15,6 +15,12 @@ relatedRecipes:
   - "identify-mellanox-nic-models"
   - "check-bonding-and-interface-status"
   - "validate-sriov-on-multiple-nodes"
+  - "coredns-configuration"
+  - "custom-dns-configuration"
+  - "dns-policies-configuration"
+  - "kubernetes-dns-configuration"
+  - "kubernetes-endpointslices"
+  - "rate-limiting-kubernetes"
 tags:
   - sr-iov
   - networking

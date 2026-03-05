@@ -14,6 +14,8 @@ relatedRecipes:
   - "configure-gpudirect-rdma-gpu-operator"
   - "configure-clusterpolicy-kernel-module-type"
   - "troubleshoot-nvidia-fs-module-conflict"
+  - "csi-drivers-storage"
+  - "selinux-scc-gpu-operator-openshift"
 tags:
   - nvidia
   - gpu

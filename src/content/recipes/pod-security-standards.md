@@ -12,6 +12,7 @@ prerequisites:
 relatedRecipes:
   - "rbac-service-accounts"
   - "networkpolicy-deny-all"
+  - "pod-security-context"
 tags:
   - security
   - pod-security
