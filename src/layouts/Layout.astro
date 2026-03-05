@@ -340,19 +340,7 @@ const howToStructuredData = isRecipePage ? {
     <meta name="theme-color" content="#3b82f6" />
     <meta name="generator" content={Astro.generator} />
     
-    <!-- ============================================ -->
-    <!-- CANONICAL URL - Critical for SEO -->
-    <!-- ============================================ -->
-    <link rel="canonical" href={canonicalURL} />
-    
-    <!-- ============================================ -->
-    <!-- SEO Meta Tags - Pro Level -->
-    <!-- ============================================ -->
-    {noindex ? (
-      <meta name="robots" content="noindex, nofollow" />
-    ) : (
-      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    )}
+    <!-- Canonical + robots handled by <SEO> component below -->
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="bingbot" content="index, follow" />
     
