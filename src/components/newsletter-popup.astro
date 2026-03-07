@@ -1,0 +1,153 @@
+---
+// Newsletter popup using Kit.com (ConvertKit) form
+// Form ID: 9153490
+// Appears once per visitor after 8 seconds or 40% scroll
+---
+
+<div id="newsletter-popup" class="newsletter-overlay" aria-hidden="true" role="dialog" aria-label="Newsletter signup">
+  <div class="newsletter-modal">
+    <button id="newsletter-close" class="newsletter-close" aria-label="Close newsletter popup">&times;</button>
+    <div class="newsletter-content">
+      <div class="newsletter-icon">☸️</div>
+      <h2>Level Up Your Kubernetes Skills</h2>
+      <p>Get weekly recipes, tips, and best practices for Kubernetes, AI/GPU workloads, and cloud-native infrastructure. Join 1,000+ DevOps engineers.</p>
+      <script async data-uid="ce74a48bfa" src="https://luca-berton.kit.com/ce74a48bfa/index.js"></script>
+      <p class="newsletter-note">No spam. Unsubscribe anytime.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .newsletter-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    animation: fadeIn 0.3s ease;
+  }
+  .newsletter-overlay.active {
+    display: flex;
+  }
+  .newsletter-modal {
+    position: relative;
+    background: #fff;
+    border-radius: 16px;
+    max-width: 480px;
+    width: 100%;
+    padding: 2.5rem 2rem 2rem;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+  }
+  .newsletter-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.75rem;
+    color: #94a3b8;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.25rem;
+    transition: color 0.2s;
+  }
+  .newsletter-close:hover {
+    color: #334155;
+  }
+  .newsletter-content {
+    text-align: center;
+  }
+  .newsletter-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .newsletter-content h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 0.5rem;
+  }
+  .newsletter-content p {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0 0 1rem;
+  }
+  .newsletter-note {
+    font-size: 0.8rem !important;
+    color: #94a3b8 !important;
+    margin-top: 0.5rem !important;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 640px) {
+    .newsletter-modal {
+      padding: 2rem 1.25rem 1.5rem;
+    }
+    .newsletter-content h2 {
+      font-size: 1.2rem;
+    }
+  }
+</style>
+
+<script is:inline>
+(function() {
+  var STORAGE_KEY = 'k8s_newsletter_dismissed';
+  var DISMISS_DAYS = 30;
+
+  // Don't show if dismissed recently
+  var dismissed = localStorage.getItem(STORAGE_KEY);
+  if (dismissed) {
+    var dismissedAt = parseInt(dismissed, 10);
+    if (Date.now() - dismissedAt < DISMISS_DAYS * 86400000) return;
+  }
+
+  var popup = document.getElementById('newsletter-popup');
+  var closeBtn = document.getElementById('newsletter-close');
+  var shown = false;
+
+  function show() {
+    if (shown) return;
+    shown = true;
+    popup.classList.add('active');
+    popup.setAttribute('aria-hidden', 'false');
+  }
+
+  function dismiss() {
+    popup.classList.remove('active');
+    popup.setAttribute('aria-hidden', 'true');
+    localStorage.setItem(STORAGE_KEY, Date.now().toString());
+  }
+
+  closeBtn.addEventListener('click', dismiss);
+  popup.addEventListener('click', function(e) {
+    if (e.target === popup) dismiss();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && shown) dismiss();
+  });
+
+  // Trigger: 8s delay OR 40% scroll, whichever first
+  var timer = setTimeout(show, 8000);
+  window.addEventListener('scroll', function onScroll() {
+    var scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    if (scrollPct > 0.4) {
+      show();
+      window.removeEventListener('scroll', onScroll);
+      clearTimeout(timer);
+    }
+  });
+})();
+</script>

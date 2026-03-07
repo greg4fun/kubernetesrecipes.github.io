@@ -1,6 +1,7 @@
 ---
 import { SEO } from "astro-seo";
 import Footer from "@components/footer.astro";
+import NewsletterPopup from "@components/newsletter-popup.astro";
 import Navbar from "@components/navbar/navbar.astro";
 import AnnouncementBanner from "@components/announcement-banner.astro";
 import "@fontsource-variable/inter/index.css";
@@ -591,6 +592,7 @@ const howToStructuredData = isRecipePage ? {
     <Navbar />
     <slot />
     <Footer />
+    <NewsletterPopup />
     <style is:global>
       /* Improve Page speed */
       /* https://css-tricks.com/almanac/properties/c/content-visibility/ */
