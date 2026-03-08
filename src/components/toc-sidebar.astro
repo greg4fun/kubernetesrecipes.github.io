@@ -1,0 +1,137 @@
+---
+// Table of Contents — auto-generated from h2/h3 headings, XDA-style sticky sidebar
+---
+
+<aside id="toc-sidebar" class="toc-sidebar" aria-label="Table of Contents">
+  <div class="toc-inner">
+    <h2 class="toc-title">Contents</h2>
+    <nav id="toc-nav">
+      <ol id="toc-list" class="toc-list"></ol>
+    </nav>
+  </div>
+</aside>
+
+<style>
+  .toc-sidebar {
+    display: none;
+  }
+
+  @media (min-width: 1280px) {
+    .toc-sidebar {
+      display: block;
+      position: fixed;
+      top: 5rem;
+      right: max(1rem, calc((100vw - 64rem) / 2 - 18rem));
+      width: 15rem;
+      max-height: calc(100vh - 7rem);
+      overflow-y: auto;
+      z-index: 40;
+    }
+  }
+
+  .toc-inner {
+    padding: 1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+  }
+
+  .toc-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #94a3b8;
+    margin: 0 0 0.75rem 0;
+    padding: 0;
+  }
+
+  .toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-list li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-list a {
+    display: block;
+    padding: 0.3rem 0 0.3rem 0;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: #64748b;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    padding-left: 0.75rem;
+    transition: all 0.15s;
+  }
+
+  .toc-list a:hover {
+    color: #3b82f6;
+  }
+
+  .toc-list a.active {
+    color: #3b82f6;
+    border-left-color: #3b82f6;
+    font-weight: 600;
+  }
+
+  .toc-list a.toc-h3 {
+    padding-left: 1.5rem;
+    font-size: 0.75rem;
+  }
+
+  .toc-sidebar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .toc-sidebar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 2px;
+  }
+</style>
+
+<script is:inline>
+(function() {
+  var content = document.getElementById('recipe-content');
+  var tocList = document.getElementById('toc-list');
+  var tocSidebar = document.getElementById('toc-sidebar');
+  if (!content || !tocList || !tocSidebar) return;
+
+  var headings = content.querySelectorAll('h2, h3');
+  if (headings.length < 3) { tocSidebar.style.display = 'none'; return; }
+
+  headings.forEach(function(h, i) {
+    if (!h.id) h.id = 'section-' + i;
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = h.textContent;
+    a.setAttribute('data-target', h.id);
+    if (h.tagName === 'H3') a.classList.add('toc-h3');
+    li.appendChild(a);
+    tocList.appendChild(li);
+  });
+
+  // Highlight active section on scroll
+  var links = tocList.querySelectorAll('a');
+  var ticking = false;
+  function updateActive() {
+    var scrollY = window.scrollY + 100;
+    var active = null;
+    headings.forEach(function(h) {
+      if (h.offsetTop <= scrollY) active = h.id;
+    });
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('data-target') === active);
+    });
+    ticking = false;
+  }
+  window.addEventListener('scroll', function() {
+    if (!ticking) { requestAnimationFrame(updateActive); ticking = true; }
+  });
+  updateActive();
+})();
+</script>

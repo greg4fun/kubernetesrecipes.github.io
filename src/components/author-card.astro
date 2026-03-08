@@ -1,0 +1,95 @@
+---
+// Author bio card — XDA-style, shown after article content
+interface Props {
+  author: string;
+}
+const { author } = Astro.props;
+---
+
+<div class="author-card">
+  <div class="author-avatar">
+    <img 
+      src="https://kubernetes.recipes/authors/luca-berton.webp"
+      alt={author}
+      width="64"
+      height="64"
+      loading="lazy"
+    />
+  </div>
+  <div class="author-info">
+    <span class="author-label">Written by</span>
+    <a href="/authors/" class="author-name">{author}</a>
+    <p class="author-bio">
+      Principal Solutions Architect specializing in Kubernetes, AI/GPU infrastructure, and cloud-native platforms. 
+      Author of <a href="https://amzn.to/3DzC8QA" target="_blank" rel="noopener">Kubernetes Recipes</a> and 
+      creator of <a href="https://www.copypastelearn.com" target="_blank" rel="noopener">CopyPasteLearn</a> courses.
+    </p>
+    <div class="author-links">
+      <a href="https://www.lucaberton.com" target="_blank" rel="noopener" title="Website">🌐</a>
+      <a href="https://www.linkedin.com/in/lucaberton/" target="_blank" rel="noopener" title="LinkedIn">💼</a>
+      <a href="https://github.com/lucab85" target="_blank" rel="noopener" title="GitHub">💻</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .author-card {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    padding: 1.5rem;
+    margin: 2.5rem 0 2rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+  }
+  .author-avatar img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e2e8f0;
+  }
+  .author-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #94a3b8;
+  }
+  .author-name {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+    text-decoration: none;
+    margin: 0.1rem 0 0.4rem;
+  }
+  .author-name:hover { color: #3b82f6; }
+  .author-bio {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin: 0 0 0.5rem;
+  }
+  .author-bio a {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+  .author-bio a:hover { text-decoration: underline; }
+  .author-links {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .author-links a {
+    font-size: 1.1rem;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .author-links a:hover { opacity: 1; }
+  @media (max-width: 480px) {
+    .author-card { flex-direction: column; align-items: center; text-align: center; }
+    .author-links { justify-content: center; }
+  }
+</style>

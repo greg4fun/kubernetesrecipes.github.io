@@ -1,0 +1,44 @@
+---
+// Reading progress bar — XDA-style sticky top indicator
+---
+
+<div id="reading-progress" class="reading-progress" aria-hidden="true">
+  <div id="reading-progress-bar" class="reading-progress-bar"></div>
+</div>
+
+<style>
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 10000;
+    background: transparent;
+  }
+  .reading-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+    transition: width 0.1s linear;
+    border-radius: 0 2px 2px 0;
+  }
+</style>
+
+<script is:inline>
+(function() {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = h > 0 ? Math.min(100, (window.scrollY / h) * 100) + '%' : '0%';
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
+</script>
