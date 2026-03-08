@@ -1,5 +1,5 @@
 ---
-title: "How to Implement Distributed Tracing with Jaeger"
+title: "Jaeger Distributed Tracing on Kubernetes"
 description: "Deploy Jaeger for distributed tracing in Kubernetes. Trace requests across microservices to identify latency issues and debug complex systems."
 category: "observability"
 difficulty: "intermediate"

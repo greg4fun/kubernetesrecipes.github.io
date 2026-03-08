@@ -1,6 +1,6 @@
 ---
 title: "Configure S3 Storage Permissions for ML Models"
-description: "Set up S3 bucket ACLs and PVC permissions so Kubernetes inference pods can read model weights correctly."
+description: "Set up S3 bucket ACLs, IAM roles, and PVC permissions so Kubernetes inference pods can securely read large ML model weights from object storage."
 category: "storage"
 difficulty: "beginner"
 timeToComplete: "15 minutes"

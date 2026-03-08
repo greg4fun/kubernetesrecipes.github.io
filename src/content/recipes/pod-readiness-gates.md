@@ -10,6 +10,7 @@ prerequisites:
   - "Knowledge of Kubernetes controllers"
   - "Familiarity with custom controllers or operators"
 relatedRecipes:
+  - "istio-traffic-management"
   - "liveness-readiness-probes"
   - "pod-disruption-budgets"
   - "rolling-update-deployment"

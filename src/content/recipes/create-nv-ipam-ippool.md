@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Create an NVIDIA nv-ipam IPPool for SR-IOV Networks"
-description: "Define a valid nv-ipam IPPool and sizing strategy so SR-IOV workloads can get secondary interface IPs."
+description: "Define a valid nv-ipam IPPool and node-aware sizing strategy so SR-IOV workloads can reliably obtain secondary interface IP addresses on Kubernetes."
 category: "networking"
 difficulty: "advanced"
 timeToComplete: "15 minutes"

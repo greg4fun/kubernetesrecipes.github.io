@@ -10,6 +10,7 @@ prerequisites:
   - "Knowledge of service mesh concepts"
   - "Familiarity with Envoy proxy basics"
 relatedRecipes:
+  - "pod-readiness-gates"
   - "linkerd-service-mesh"
   - "canary-deployments"
   - "blue-green-deployment"

@@ -10,6 +10,7 @@ prerequisites:
   - "NVIDIA DCGM exporter installed"
   - "NCCL test workload logs accessible"
 relatedRecipes:
+  - "run-nccl-tests-mpijob-kubernetes"
   - "run-nccl-tests-kubernetes"
   - "automate-nccl-preflight-ci"
   - "nccl-allreduce-benchmark-profile"

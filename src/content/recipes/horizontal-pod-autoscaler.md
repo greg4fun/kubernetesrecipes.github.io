@@ -10,10 +10,11 @@ prerequisites:
   - "kubectl configured to access your cluster"
   - "A Deployment to scale"
 relatedRecipes:
+  - "llm-autoscaling-kubernetes"
   - "vpa-configuration"
   - "cluster-autoscaler"
   - "hpa-custom-metrics"
-  - "keda-event-autoscaling"
+  - "keda-event-driven-autoscaling"
   - "keda-event-driven-autoscaling"
 tags:
   - hpa

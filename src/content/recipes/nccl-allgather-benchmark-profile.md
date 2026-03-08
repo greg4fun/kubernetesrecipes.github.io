@@ -1,6 +1,6 @@
 ---
 title: "Run NCCL AllGather Benchmarks for Model Parallel Validation"
-description: "Use all-gather NCCL tests to evaluate communication behavior for tensor/model parallel AI workloads."
+description: "Use all-gather NCCL tests to evaluate GPU communication behavior and throughput for tensor-parallel and model-parallel distributed AI workloads on Kubernetes."
 category: "ai"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

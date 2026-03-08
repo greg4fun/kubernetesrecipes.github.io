@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Configure SriovNetwork with NVIDIA nv-ipam"
-description: "Create a SriovNetwork that auto-generates a Multus NAD using nv-ipam for SR-IOV secondary interfaces."
+description: "Create a SriovNetwork resource that auto-generates a Multus NetworkAttachmentDefinition using nv-ipam for high-performance SR-IOV secondary interfaces."
 category: "networking"
 difficulty: "advanced"
 timeToComplete: "20 minutes"

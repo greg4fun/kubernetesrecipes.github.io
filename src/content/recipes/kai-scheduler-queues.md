@@ -10,6 +10,7 @@ prerequisites:
   - "GPU nodes available in cluster"
   - "Understanding of resource quotas"
 relatedRecipes:
+  - "namespace-management"
   - "kai-scheduler-installation"
   - "kai-scheduler-podgroups"
   - "resource-quotas"

@@ -1,5 +1,5 @@
 ---
-title: "How to Configure Pod Priority and Preemption"
+title: "Pod Priority and Preemption Scheduling Guide"
 description: "Control Kubernetes scheduling with Pod Priority and Preemption. Learn to prioritize critical workloads and ensure important pods get scheduled first."
 category: "deployments"
 difficulty: "intermediate"

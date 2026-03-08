@@ -10,6 +10,8 @@ prerequisites:
   - "Helm 3 installed"
   - "kubectl configured with cluster-admin permissions"
 relatedRecipes:
+  - "llm-autoscaling-kubernetes"
+  - "cronjob-concurrency-policy"
   - "multi-node-distributed-training"
   - "kai-scheduler-queues"
   - "jobs-cronjobs"

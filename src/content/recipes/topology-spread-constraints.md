@@ -1,5 +1,5 @@
 ---
-title: "How to Use Pod Topology Spread Constraints"
+title: "Topology Spread Constraints for HA Workloads"
 description: "Distribute pods across nodes, zones, and regions using topology spread constraints. Ensure high availability and fault tolerance for your workloads."
 category: "deployments"
 difficulty: "intermediate"

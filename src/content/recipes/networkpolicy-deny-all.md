@@ -9,6 +9,9 @@ prerequisites:
   - "A Kubernetes cluster with a CNI that supports NetworkPolicies (Calico, Cilium, Weave)"
   - "kubectl configured to access your cluster"
 relatedRecipes:
+  - "workload-identity-cloud-access"
+  - "pod-security-context"
+  - "oidc-authentication-kubernetes"
   - "nginx-ingress-tls-cert-manager"
 tags:
   - networkpolicy

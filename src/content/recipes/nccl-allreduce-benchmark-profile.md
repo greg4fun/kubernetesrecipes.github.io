@@ -10,6 +10,7 @@ prerequisites:
   - "NVIDIA GPU Operator installed"
   - "Container image with nccl-tests"
 relatedRecipes:
+  - "run-nccl-tests-mpijob-kubernetes"
   - "run-nccl-tests-kubernetes"
   - "compare-nccl-intra-inter-node"
   - "tune-nccl-env-rdma-ethernet"

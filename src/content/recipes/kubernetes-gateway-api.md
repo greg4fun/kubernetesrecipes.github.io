@@ -10,6 +10,7 @@ prerequisites:
   - "kubectl configured with appropriate permissions"
   - "A Gateway API implementation (NGINX, Envoy, Istio, etc.)"
 relatedRecipes:
+  - "pod-readiness-gates"
   - "ingress-routing"
   - "ingress-tls-certificates"
   - "canary-deployments"

@@ -5,7 +5,7 @@ category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 relatedRecipes:
-  - "container-image-scanning"
+  - "container-security-scanning"
   - "gvisor-container-runtime"
   - "kubernetes-audit-logging"
   - "cert-manager-certificates"

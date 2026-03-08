@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Create SR-IOV VFs on OpenShift with SriovNetworkNodePolicy"
-description: "Use the OpenShift SR-IOV Network Operator to create and manage VFs from selected PFs on worker nodes."
+description: "Use the OpenShift SR-IOV Network Operator to create and manage Virtual Functions from selected Physical Functions on GPU worker nodes."
 category: "networking"
 difficulty: "intermediate"
 timeToComplete: "25 minutes"

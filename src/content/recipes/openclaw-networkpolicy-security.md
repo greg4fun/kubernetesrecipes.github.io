@@ -9,6 +9,8 @@ prerequisites:
   - "A Kubernetes cluster with a CNI that supports NetworkPolicy (Calico, Cilium)"
   - "OpenClaw deployed on Kubernetes"
 relatedRecipes:
+  - "pod-security-context"
+  - "namespace-management"
   - "openclaw-kubernetes-deployment"
   - "openclaw-secrets-management"
   - "network-policies-kubernetes"

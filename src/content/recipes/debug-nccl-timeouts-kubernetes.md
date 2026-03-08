@@ -10,6 +10,8 @@ prerequisites:
   - "Access to pod logs and events"
   - "Basic understanding of cluster networking"
 relatedRecipes:
+  - "nccl-allgather-benchmark-profile"
+  - "cronjob-concurrency-policy"
   - "tune-nccl-env-rdma-ethernet"
   - "nccl-p2p-latency-diagnostics"
   - "run-nccl-tests-mpijob-kubernetes"

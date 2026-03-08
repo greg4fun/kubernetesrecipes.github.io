@@ -10,6 +10,8 @@ prerequisites:
   - "kubectl configured to access your cluster"
   - "Understanding of Services and Deployments"
 relatedRecipes:
+  - "openclaw-signal-kubernetes"
+  - "kubernetes-cluster-upgrade"
   - "rolling-update-deployment"
   - "canary-deployment-istio"
 tags:

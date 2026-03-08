@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "OpenShift Multi-Tenant TLS per IngressController"
-description: "Set up tenant-isolated TLS in OpenShift by assigning a dedicated certificate Secret to each IngressController."
+description: "Set up tenant-isolated TLS in OpenShift by assigning a dedicated certificate Secret to each IngressController for multi-tenant routing security."
 category: "security"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

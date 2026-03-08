@@ -10,6 +10,7 @@ prerequisites:
   - "kubectl configured with admin privileges"
   - "Understanding of Pod security concepts"
 relatedRecipes:
+  - "oidc-authentication-kubernetes"
   - "rbac-service-accounts"
   - "networkpolicy-deny-all"
   - "pod-security-context"

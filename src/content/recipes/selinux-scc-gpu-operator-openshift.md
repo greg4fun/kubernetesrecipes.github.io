@@ -10,6 +10,7 @@ prerequisites:
   - "NVIDIA GPU Operator installed"
   - "SELinux in enforcing mode (default on RHCOS)"
 relatedRecipes:
+  - "switch-proprietary-to-open-kernel-modules"
   - "fix-nvidia-peermem-not-detected"
   - "configure-clusterpolicy-kernel-module-type"
   - "troubleshoot-nvidia-fs-module-conflict"

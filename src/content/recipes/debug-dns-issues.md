@@ -9,6 +9,7 @@ prerequisites:
   - "A running Kubernetes cluster"
   - "kubectl configured to access your cluster"
 relatedRecipes:
+  - "verify-ovn-underlay-interface"
   - "debug-crashloopbackoff"
   - "service-loadbalancer-nodeport"
   - "kubernetes-network-troubleshooting"

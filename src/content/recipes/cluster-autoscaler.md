@@ -13,7 +13,7 @@ relatedRecipes:
   - "horizontal-pod-autoscaler"
   - "vertical-pod-autoscaler"
   - "hpa-custom-metrics"
-  - "keda-event-autoscaling"
+  - "keda-event-driven-autoscaling"
   - "keda-event-driven-autoscaling"
 tags:
   - autoscaling

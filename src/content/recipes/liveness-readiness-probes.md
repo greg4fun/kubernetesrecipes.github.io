@@ -9,6 +9,7 @@ prerequisites:
   - "Basic understanding of Kubernetes Deployments"
   - "kubectl configured to access your cluster"
 relatedRecipes:
+  - "kubernetes-cluster-upgrade"
   - "rolling-update-strategies"
   - "pod-disruption-budget"
 tags:

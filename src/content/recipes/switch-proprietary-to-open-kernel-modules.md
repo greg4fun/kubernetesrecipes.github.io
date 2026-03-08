@@ -11,6 +11,7 @@ prerequisites:
   - "Turing architecture or newer GPU"
   - "Maintenance window for node reboots"
 relatedRecipes:
+  - "selinux-scc-gpu-operator-openshift"
   - "configure-clusterpolicy-kernel-module-type"
   - "enable-gpudirect-storage-openshift"
   - "switch-gpudirect-rdma-dma-buf"

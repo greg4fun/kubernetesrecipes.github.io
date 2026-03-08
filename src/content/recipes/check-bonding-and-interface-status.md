@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Check Bonding and Interface Status for SR-IOV"
-description: "Inspect bond membership and interface state to confirm which NICs can be targeted by SR-IOV policies."
+description: "Inspect bond membership, interface state, and link aggregation to confirm which NICs can be correctly targeted by SR-IOV network policies on Kubernetes."
 category: "troubleshooting"
 difficulty: "intermediate"
 timeToComplete: "15 minutes"
@@ -10,6 +10,8 @@ prerequisites:
   - "Node shell access"
   - "iproute2 and /proc access"
 relatedRecipes:
+  - "kubernetes-network-troubleshooting"
+  - "kubernetes-gateway-api"
   - "identify-mellanox-nic-models"
   - "troubleshoot-no-supported-nic-selected"
   - "verify-ovn-underlay-interface"

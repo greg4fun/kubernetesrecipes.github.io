@@ -10,6 +10,7 @@ prerequisites:
   - "Working LLM inference server (vLLM or NIM)"
   - "kubectl and Helm CLI"
 relatedRecipes:
+  - "llm-serving-frameworks-compared"
   - "deploy-mistral-vllm-kubernetes"
   - "deploy-mistral-nvidia-nim"
   - "test-llm-inference-endpoints"
