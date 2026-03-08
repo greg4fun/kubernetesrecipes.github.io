@@ -11,7 +11,7 @@
       <div class="newsletter-icon">☸️</div>
       <h2>Level Up Your Kubernetes Skills</h2>
       <p>Get weekly recipes, tips, and best practices for Kubernetes, AI/GPU workloads, and cloud-native infrastructure. Join 1,000+ DevOps engineers.</p>
-      <script async data-uid="ce74a48bfa" src="https://luca-berton.kit.com/ce74a48bfa/index.js"></script>
+      <div id="kit-form-container" class="kit-form-container"></div>
       <p class="newsletter-note">No spam. Unsubscribe anytime.</p>
     </div>
   </div>
@@ -79,6 +79,10 @@
     line-height: 1.5;
     margin: 0 0 1rem;
   }
+  .kit-form-container {
+    min-height: 80px;
+    margin: 0.5rem 0;
+  }
   .newsletter-note {
     font-size: 0.8rem !important;
     color: #94a3b8 !important;
@@ -123,6 +127,15 @@
     shown = true;
     popup.classList.add('active');
     popup.setAttribute('aria-hidden', 'false');
+    // Lazy-load Kit.com form script when popup opens
+    var container = document.getElementById('kit-form-container');
+    if (container && !container.hasChildNodes()) {
+      var s = document.createElement('script');
+      s.async = true;
+      s.setAttribute('data-uid', 'ce74a48bfa');
+      s.src = 'https://luca-berton.kit.com/ce74a48bfa/index.js';
+      container.appendChild(s);
+    }
   }
 
   function dismiss() {
