@@ -11,6 +11,7 @@ prerequisites:
   - "Access to a Local Quay registry"
   - "Target repository created in Quay"
 relatedRecipes:
+  - "quay-robot-account-kubernetes"
   - "local-quay-retag-and-push"
   - "image-pull-secrets"
 tags: ["quay", "podman", "container-registry", "images", "devops"]

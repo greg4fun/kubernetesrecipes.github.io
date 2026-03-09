@@ -10,6 +10,7 @@ prerequisites:
   - "Podman installed"
   - "Read/write access to source and target repositories in Quay"
 relatedRecipes:
+  - "quay-robot-account-kubernetes"
   - "local-quay-push-podman-image"
   - "image-pull-secrets"
 tags: ["quay", "podman", "retag", "container-image", "registry"]
