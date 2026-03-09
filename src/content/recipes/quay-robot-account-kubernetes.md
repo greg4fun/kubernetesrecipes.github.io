@@ -11,6 +11,11 @@ prerequisites:
   - "Quay organization admin or owner role"
   - "kubectl configured with cluster access"
 relatedRecipes:
+  - "rotate-quay-robot-tokens"
+  - "openshift-custom-ca-registry"
+  - "decode-docker-registry-secrets"
+  - "openshift-project-request-template"
+  - "openshift-cluster-wide-pull-secret"
   - "image-pull-secrets"
   - "local-quay-push-podman-image"
   - "local-quay-retag-and-push"
