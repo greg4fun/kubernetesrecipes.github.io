@@ -212,10 +212,10 @@ Events:
 ```
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[Quay Robot Account] -->|Scoped Read Access| B[Quay Repository]
     A -->|Token| C[K8s docker-registry Secret]
-    C -->|imagePullSecrets| D[ServiceAccount / Pod]
+    C -->|imagePullSecrets| D[ServiceAccount or Pod]
     D -->|Authenticated Pull| B
     B -->|Image| E[Running Container]
 ```
