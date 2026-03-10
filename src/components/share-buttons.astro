@@ -36,7 +36,12 @@ const encodedUrl = encodeURIComponent(url);
     display: none;
     flex-direction: column;
     gap: 0.5rem;
-    z-index: 40;
+    z-index: 30;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .share-buttons.visible {
+    opacity: 1;
   }
   @media (min-width: 1100px) {
     .share-buttons { display: flex; }
@@ -77,4 +82,12 @@ document.getElementById('copy-link-btn')?.addEventListener('click', function() {
     }, 1500);
   });
 });
+(function() {
+  var sb = document.getElementById('share-buttons');
+  if (!sb) return;
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 300) { sb.classList.add('visible'); }
+    else { sb.classList.remove('visible'); }
+  });
+})();
 </script>

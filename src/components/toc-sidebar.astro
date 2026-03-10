@@ -25,7 +25,12 @@
       width: 15rem;
       max-height: calc(100vh - 7rem);
       overflow-y: auto;
-      z-index: 40;
+      z-index: 30;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .toc-sidebar.visible {
+      opacity: 1;
     }
   }
 
@@ -132,6 +137,13 @@
   window.addEventListener('scroll', function() {
     if (!ticking) { requestAnimationFrame(updateActive); ticking = true; }
   });
+  // Show/hide ToC based on scroll position
+  function updateTocVisibility() {
+    if (window.scrollY > 300) { tocSidebar.classList.add('visible'); }
+    else { tocSidebar.classList.remove('visible'); }
+  }
+  window.addEventListener('scroll', function() { updateTocVisibility(); });
+  updateTocVisibility();
   updateActive();
 })();
 </script>
