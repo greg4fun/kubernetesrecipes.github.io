@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "ArgoCD App of Apps Pattern"
-description: "Implement the ArgoCD App of Apps pattern to declaratively manage multiple applications from a single parent Application, enabling cluster bootstrapping and multi-team GitOps."
+description: "Implement the ArgoCD App of Apps pattern to manage multiple applications from a parent Application for cluster bootstrapping."
 category: "deployments"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
@@ -10,6 +10,7 @@ prerequisites:
   - "ArgoCD installed on Kubernetes"
   - "Git repository for app definitions"
 relatedRecipes:
+  - "flux-gitops"
   - "pod-topology-constraints"
   - "pod-priority-preemption"
   - "pod-lifecycle-hooks"

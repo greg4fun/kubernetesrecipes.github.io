@@ -9,6 +9,7 @@ prerequisites:
   - "OpenClaw deployed on Kubernetes"
   - "kubectl configured with cluster-admin permissions"
 relatedRecipes:
+  - "sealed-secrets-gitops"
   - "update-ca-certificates-kubernetes"
   - "openclaw-networkpolicy-security"
   - "openclaw-kubernetes-deployment"

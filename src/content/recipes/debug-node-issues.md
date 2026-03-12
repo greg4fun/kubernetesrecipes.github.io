@@ -4,6 +4,9 @@ description: "Diagnose and troubleshoot node problems in Kubernetes clusters. Id
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "imagepullbackoff-troubleshooting"
+  - "debug-imagepullbackoff"
 tags: ["nodes", "debugging", "troubleshooting", "kubelet", "resources"]
 ---
 

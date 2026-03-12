@@ -9,6 +9,8 @@ prerequisites:
   - "Multiple LLM servers deployed (vLLM, TGI, Triton, etc.)"
   - "NVIDIA GPU Operator installed"
 relatedRecipes:
+  - "nvidia-clara-medical-ai-kubernetes"
+  - "aiperf-trace-replay-kubernetes"
   - "triton-autoscaling-gpu-metrics"
   - "genai-perf-triton-benchmark"
   - "aiperf-benchmark-llm-kubernetes"

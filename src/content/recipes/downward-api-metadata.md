@@ -4,6 +4,8 @@ description: "Expose pod and container metadata to applications using the Downwa
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "environment-variables-configmaps"
 tags: ["downward-api", "metadata", "environment", "configuration", "pods"]
 ---
 

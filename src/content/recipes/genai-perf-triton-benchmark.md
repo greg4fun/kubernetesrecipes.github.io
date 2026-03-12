@@ -10,6 +10,7 @@ prerequisites:
   - "NVIDIA GPU Operator installed"
   - "DCGM Exporter running for GPU telemetry"
 relatedRecipes:
+  - "aiperf-trace-replay-kubernetes"
   - "triton-tensorrt-llm-kubernetes"
   - "triton-vllm-kubernetes"
   - "triton-autoscaling-gpu-metrics"

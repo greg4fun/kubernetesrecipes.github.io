@@ -10,6 +10,12 @@ prerequisites:
   - "ArgoCD installed on Kubernetes"
   - "kubectl configured"
 relatedRecipes:
+  - "pod-lifecycle-hooks"
+  - "pod-disruption-budget-config"
+  - "multi-container-pod-patterns"
+  - "kubernetes-probes-configuration"
+  - "kubernetes-leases"
+  - "deployment-strategies"
   - "argocd-app-of-apps-pattern"
   - "argocd-sync-waves-ordering"
   - "argocd-multi-cluster-app-of-apps"

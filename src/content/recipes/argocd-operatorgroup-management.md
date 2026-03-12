@@ -11,6 +11,7 @@ prerequisites:
   - "ArgoCD configured with cluster-admin permissions"
   - "Target namespaces created"
 relatedRecipes:
+  - "openshift-mcp-itms-rollout"
   - "openshift-catalogsource-custom-operator"
   - "argocd-declarative-application-setup"
   - "argocd-sync-waves-ordering"

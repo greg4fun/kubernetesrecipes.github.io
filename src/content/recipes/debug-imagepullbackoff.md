@@ -5,6 +5,8 @@ category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 relatedRecipes:
+  - "imagepullbackoff-troubleshooting"
+  - "ephemeral-containers-debugging"
   - "debug-oom-killed"
   - "debug-scheduling-failures"
 tags: ["imagepull", "troubleshooting", "registry", "authentication", "debugging"]

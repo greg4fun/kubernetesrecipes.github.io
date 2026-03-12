@@ -5,6 +5,7 @@ category: "configuration"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 relatedRecipes:
+  - "environment-variables-configmaps"
   - "api-versions-deprecations"
 tags: ["crd", "custom-resources", "api", "extensions", "operators"]
 ---

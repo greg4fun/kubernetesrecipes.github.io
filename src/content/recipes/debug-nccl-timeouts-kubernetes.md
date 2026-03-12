@@ -10,6 +10,7 @@ prerequisites:
   - "Access to pod logs and events"
   - "Basic understanding of cluster networking"
 relatedRecipes:
+  - "ephemeral-containers-debugging"
   - "kubectl-debugging-commands"
   - "kind-local-kubernetes"
   - "imagepullbackoff-troubleshooting"

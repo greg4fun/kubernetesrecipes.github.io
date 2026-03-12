@@ -10,6 +10,7 @@ prerequisites:
   - "Node shell access"
   - "iproute2 and /proc access"
 relatedRecipes:
+  - "troubleshoot-nv-ipam-pool-not-found"
   - "kubernetes-network-troubleshooting"
   - "kubernetes-gateway-api"
   - "identify-mellanox-nic-models"

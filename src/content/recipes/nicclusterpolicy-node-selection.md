@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "NicClusterPolicy MOFED Affinity and Node Selection"
-description: "Configure NicClusterPolicy node selectors and affinity rules to deploy MOFED drivers only on nodes with RDMA-capable NICs, avoiding unnecessary driver installation."
+description: "Configure NicClusterPolicy node selectors and affinity rules to deploy MOFED drivers only on RDMA-capable nodes."
 category: "configuration"
 difficulty: "intermediate"
 timeToComplete: "15 minutes"

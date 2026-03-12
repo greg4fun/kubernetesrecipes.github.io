@@ -10,6 +10,7 @@ prerequisites:
   - "kubernetes-nmstate operator installed"
   - "Worker nodes with available network interfaces"
 relatedRecipes:
+  - "verify-ovn-underlay-interface"
   - "nncp-bond-interfaces-workers"
   - "nncp-vlan-tagging-workers"
   - "nncp-dns-routes-workers"

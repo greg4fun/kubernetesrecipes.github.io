@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Quay Robot Accounts for Kubernetes Image Pulls"
-description: "Create Quay robot accounts with scoped permissions and configure Kubernetes imagePullSecrets for secure, automated container image pulls from private registries."
+description: "Create Quay robot accounts and configure Kubernetes imagePullSecrets for automated container image pulls from private registries."
 category: "deployments"
 difficulty: "beginner"
 timeToComplete: "20 minutes"

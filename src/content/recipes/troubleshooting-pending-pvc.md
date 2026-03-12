@@ -9,6 +9,7 @@ prerequisites:
   - "kubectl access to your cluster"
   - "Basic understanding of Kubernetes storage"
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "pvc-storageclass-examples"
 tags:
   - troubleshooting

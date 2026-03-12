@@ -9,6 +9,7 @@ prerequisites:
   - "NVIDIA GPU Operator installed"
   - "Triton Inference Server or TorchServe deployed"
 relatedRecipes:
+  - "nvidia-clara-medical-ai-kubernetes"
   - "triton-tensorrt-llm-kubernetes"
   - "triton-multi-model-serving"
   - "triton-autoscaling-gpu-metrics"

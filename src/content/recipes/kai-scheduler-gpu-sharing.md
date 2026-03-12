@@ -1,6 +1,6 @@
 ---
 title: "GPU Sharing and Bin Packing with KAI Scheduler"
-description: "Maximize GPU utilization using KAI Scheduler GPU sharing, fractional GPUs, and intelligent bin packing strategies for Kubernetes AI workloads and inference pods."
+description: "Maximize GPU utilization with KAI Scheduler GPU sharing, fractional GPUs, and bin packing strategies for Kubernetes AI workloads."
 category: "ai"
 difficulty: "advanced"
 timeToComplete: "35 minutes"

@@ -4,6 +4,9 @@ description: "Implement effective logging strategies for Kubernetes containers. 
 category: "observability"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "opentelemetry-collector"
+  - "logging-efk-stack"
 tags: ["logging", "observability", "fluentd", "elasticsearch", "troubleshooting"]
 author: "Luca Berton"
 ---

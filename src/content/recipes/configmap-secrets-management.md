@@ -9,6 +9,8 @@ prerequisites:
   - "A running Kubernetes cluster"
   - "kubectl configured to access your cluster"
 relatedRecipes:
+  - "kustomize-configuration"
+  - "crossplane-infrastructure-management"
   - "tune-nccl-env-rdma-ethernet"
   - "resource-quotas-namespace"
   - "resource-limits-requests"

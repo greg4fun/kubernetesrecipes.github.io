@@ -10,6 +10,8 @@ prerequisites:
   - "Custom CA certificate in PEM format"
   - "SSH access to nodes (for node-level approaches)"
 relatedRecipes:
+  - "service-accounts-rbac"
+  - "sealed-secrets-gitops"
   - "oidc-authentication-kubernetes"
   - "custom-ca-openshift-kubernetes"
   - "custom-ca-openshift"

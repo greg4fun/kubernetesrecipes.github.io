@@ -11,6 +11,10 @@ prerequisites:
   - "A Git repository for application manifests"
   - "Helm 3 installed (optional)"
 relatedRecipes:
+  - "pod-lifecycle-hooks"
+  - "pod-disruption-budget-config"
+  - "multi-container-pod-patterns"
+  - "deployment-strategies"
   - "automate-nccl-preflight-ci"
   - "argocd-multi-cluster-app-of-apps"
   - "flux-gitops"

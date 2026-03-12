@@ -4,6 +4,8 @@ description: "Scan container images for vulnerabilities before deployment. Integ
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "service-accounts-rbac"
 tags: ["security", "scanning", "vulnerabilities", "trivy", "admission-control"]
 ---
 

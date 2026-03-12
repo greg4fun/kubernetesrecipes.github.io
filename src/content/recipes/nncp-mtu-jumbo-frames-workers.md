@@ -10,6 +10,7 @@ prerequisites:
   - "Network infrastructure supporting jumbo frames end-to-end"
   - "Switch ports configured for MTU 9000+"
 relatedRecipes:
+  - "nfsordma-troubleshooting-performance"
   - "nncp-bond-interfaces-workers"
   - "nncp-vlan-tagging-workers"
   - "nncp-sriov-macvlan-workers"

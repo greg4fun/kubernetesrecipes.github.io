@@ -4,6 +4,8 @@ description: "Troubleshoot Kubernetes pods killed due to Out of Memory (OOM). Le
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "debug-imagepullbackoff"
 tags: ["oom", "memory", "troubleshooting", "debugging", "resources"]
 ---
 

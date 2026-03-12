@@ -5,6 +5,8 @@ category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
+  - "ingress-tls-certificates"
+  - "dns-policies-configuration"
   - "custom-dns-configuration"
 tags: ["coredns", "dns", "networking", "configuration", "resolution"]
 ---

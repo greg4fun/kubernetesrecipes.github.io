@@ -11,6 +11,7 @@ prerequisites:
   - "Two GPU nodes with Mellanox ConnectX NICs"
   - "Secondary RDMA network configured"
 relatedRecipes:
+  - "nfsordma-troubleshooting-performance"
   - "configure-gpudirect-rdma-gpu-operator"
   - "switch-gpudirect-rdma-dma-buf"
   - "compare-nccl-intra-inter-node"

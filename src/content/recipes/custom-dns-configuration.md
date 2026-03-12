@@ -4,6 +4,8 @@ description: "Configure custom DNS settings in Kubernetes. Learn CoreDNS customi
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "dns-policies-configuration"
 tags: ["dns", "coredns", "networking", "configuration", "resolution"]
 ---
 

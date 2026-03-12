@@ -11,6 +11,8 @@ prerequisites:
   - "Multiple target clusters registered with ArgoCD"
   - "Git repository for multi-cluster config"
 relatedRecipes:
+  - "kubernetes-probes-configuration"
+  - "kubernetes-leases"
   - "argocd-app-of-apps-pattern"
   - "argocd-app-of-apps-sync-waves"
   - "argocd-declarative-application-setup"
