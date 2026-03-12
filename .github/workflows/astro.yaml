@@ -38,3 +38,67 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get changed content files
+        id: changed
+        run: |
+          # Get list of changed/added .md recipe files
+          CHANGED=$(git diff --name-only --diff-filter=ACMR HEAD~1 HEAD -- 'src/content/recipes/*.md' | \
+            sed 's|src/content/recipes/||;s|\.md$||' | head -100)
+          
+          if [ -z "$CHANGED" ]; then
+            echo "No recipe changes detected"
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Changed recipes:"
+            echo "$CHANGED"
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            
+            # Build URL list
+            URLS=""
+            while IFS= read -r slug; do
+              # Determine category from frontmatter
+              FILE="src/content/recipes/${slug}.md"
+              if [ -f "$FILE" ]; then
+                CAT=$(grep '^category:' "$FILE" | head -1 | sed 's/category: *"*//;s/"*$//')
+                if [ -n "$CAT" ]; then
+                  URLS="${URLS}\"https://kubernetes.recipes/recipes/${CAT}/${slug}/\","
+                fi
+              fi
+            done <<< "$CHANGED"
+            
+            # Also submit changed non-recipe pages
+            OTHER=$(git diff --name-only --diff-filter=ACMR HEAD~1 HEAD -- 'src/pages/*.astro' | \
+              sed 's|src/pages/||;s|\.astro$||;s|index||' | head -20)
+            while IFS= read -r page; do
+              [ -n "$page" ] && URLS="${URLS}\"https://kubernetes.recipes/${page}\","
+            done <<< "$OTHER"
+            
+            # Always include sitemap
+            URLS="${URLS}\"https://kubernetes.recipes/sitemap-index.xml\""
+            
+            echo "url_list=[${URLS}]" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Submit to IndexNow
+        if: steps.changed.outputs.has_changes == 'true'
+        run: |
+          echo "Submitting URLs to IndexNow..."
+          curl -s -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "host": "kubernetes.recipes",
+              "key": "ace3fe0ef1224e0d911493565fe9df63",
+              "keyLocation": "https://kubernetes.recipes/ace3fe0ef1224e0d911493565fe9df63.txt",
+              "urlList": ${{ steps.changed.outputs.url_list }}
+            }' -w "\nHTTP Status: %{http_code}\n"
+          echo "IndexNow submission complete"
