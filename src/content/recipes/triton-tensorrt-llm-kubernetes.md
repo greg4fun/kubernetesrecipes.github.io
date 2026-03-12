@@ -11,6 +11,7 @@ prerequisites:
   - "Access to NVIDIA NGC container registry"
   - "Sufficient GPU memory for target model"
 relatedRecipes:
+  - "genai-perf-triton-benchmark"
   - "triton-vllm-kubernetes"
   - "triton-multi-model-serving"
   - "triton-autoscaling-gpu-metrics"

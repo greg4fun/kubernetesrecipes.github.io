@@ -11,6 +11,7 @@ prerequisites:
   - "NVIDIA nv-ipam components deployed"
   - "SR-IOV resource available on worker nodes"
 relatedRecipes:
+  - "rate-limiting-kubernetes"
   - "create-nv-ipam-ippool"
   - "troubleshoot-nv-ipam-pool-not-found"
   - "openshift-sriov-vf-creation"

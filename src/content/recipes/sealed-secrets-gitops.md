@@ -11,6 +11,7 @@ prerequisites:
   - "Helm 3 installed"
   - "A Git repository for GitOps"
 relatedRecipes:
+  - "openclaw-secrets-management"
   - "secrets-management-best-practices"
   - "external-secrets-operator"
   - "argocd-gitops"

@@ -10,6 +10,9 @@ prerequisites:
   - "Worker nodes with available network interfaces"
   - "KubeVirt installed (for VM use cases)"
 relatedRecipes:
+  - "nncp-sriov-macvlan-workers"
+  - "nncp-mtu-jumbo-frames-workers"
+  - "nncp-dns-routes-workers"
   - "nncp-bond-interfaces-workers"
   - "nncp-vlan-tagging-workers"
   - "nncp-ovs-bridge-workers"

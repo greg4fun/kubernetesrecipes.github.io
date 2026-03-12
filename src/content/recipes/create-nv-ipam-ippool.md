@@ -11,6 +11,9 @@ prerequisites:
   - "Target workload namespace created"
   - "SriovNetwork using nv-ipam"
 relatedRecipes:
+  - "kubernetes-endpointslices"
+  - "kubernetes-dns-configuration"
+  - "dns-policies-configuration"
   - "configure-sriovnetwork-nv-ipam"
   - "troubleshoot-nv-ipam-pool-not-found"
   - "validate-sriov-on-multiple-nodes"

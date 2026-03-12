@@ -11,6 +11,7 @@ prerequisites:
   - "Helm 3 installed"
   - "HashiCorp Vault (can be deployed in cluster)"
 relatedRecipes:
+  - "openclaw-secrets-management"
   - "external-secrets-operator"
   - "sealed-secrets-gitops"
   - "secrets-management-best-practices"

@@ -9,6 +9,7 @@ prerequisites:
   - "NVIDIA GPU Operator installed"
   - "2x A100 80GB or 4x A100 40GB GPUs"
 relatedRecipes:
+  - "deploy-kimi-k25-kubernetes"
   - "deploy-qwen3-235b-moe-kubernetes"
   - "deploy-qwen35-35b-moe-kubernetes"
   - "deploy-llama31-8b-kubernetes"

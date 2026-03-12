@@ -10,6 +10,8 @@ prerequisites:
   - "ArgoCD installed"
   - "Helm chart repository"
 relatedRecipes:
+  - "helm-hooks"
+  - "helm-dependencies"
   - "argocd-app-of-apps-pattern"
   - "argocd-declarative-application-setup"
   - "argocd-multi-cluster-app-of-apps"

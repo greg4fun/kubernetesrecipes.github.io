@@ -10,6 +10,8 @@ prerequisites:
   - "kubernetes-nmstate operator installed"
   - "Switch ports in access mode with link aggregation"
 relatedRecipes:
+  - "nncp-rollback-troubleshooting"
+  - "nncp-multi-nic-workers"
   - "nfsordma-dedicated-nic"
   - "nfsordma-worker-node-setup"
   - "nfsordma-multi-vlan-switch-access"

@@ -10,6 +10,7 @@ prerequisites:
   - "Open vSwitch installed on worker nodes"
   - "openvswitch service running"
 relatedRecipes:
+  - "nncp-mtu-jumbo-frames-workers"
   - "nncp-linux-bridge-workers"
   - "nncp-bond-interfaces-workers"
   - "nncp-sriov-macvlan-workers"

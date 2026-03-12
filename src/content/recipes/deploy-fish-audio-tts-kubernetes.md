@@ -9,6 +9,7 @@ prerequisites:
   - "NVIDIA GPU Operator installed"
   - "A100 or L40S GPU"
 relatedRecipes:
+  - "deploy-qwen3-tts-kubernetes"
   - "deploy-whisper-kubernetes"
   - "deploy-stable-diffusion-xl-kubernetes"
   - "deploy-sarvam-105b-kubernetes"

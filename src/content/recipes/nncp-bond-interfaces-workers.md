@@ -10,6 +10,9 @@ prerequisites:
   - "Worker nodes with at least 2 available NICs"
   - "Switch configured for LACP (for 802.3ad mode)"
 relatedRecipes:
+  - "nncp-sriov-macvlan-workers"
+  - "nncp-dns-routes-workers"
+  - "nfsordma-troubleshooting-performance"
   - "nncp-static-ip-workers"
   - "nncp-vlan-tagging-workers"
   - "nncp-linux-bridge-workers"

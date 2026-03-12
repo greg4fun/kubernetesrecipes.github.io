@@ -11,6 +11,7 @@ prerequisites:
   - "kubectl or oc CLI access"
   - "A NicClusterPolicy resource"
 relatedRecipes:
+  - "coredns-configuration"
   - "check-bonding-and-interface-status"
   - "openshift-sriov-vf-creation"
   - "troubleshoot-no-supported-nic-selected"

@@ -11,6 +11,12 @@ prerequisites:
   - "Mellanox ConnectX or BlueField NIC present"
   - "Multiple GPU nodes for RDMA testing"
 relatedRecipes:
+  - "service-loadbalancer-nodeport"
+  - "rate-limiting-kubernetes"
+  - "kubernetes-endpointslices"
+  - "ingress-tls-certificates"
+  - "nfsordma-troubleshooting-performance"
+  - "nfsordma-multi-vlan-switch-access"
   - "nicclusterpolicy-node-selection"
   - "gds-nvme-nfs-rdma"
   - "sriov-vf-troubleshooting"

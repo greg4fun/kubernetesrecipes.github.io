@@ -10,6 +10,8 @@ prerequisites:
   - "4x A100 80GB or 8x A100 40GB GPUs"
   - "HuggingFace access token"
 relatedRecipes:
+  - "deploy-qwen3-tts-kubernetes"
+  - "deploy-qwen3-coder-kubernetes"
   - "deploy-llama2-70b-kubernetes"
   - "deploy-llama31-8b-kubernetes"
   - "deploy-phi4-kubernetes"

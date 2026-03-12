@@ -9,6 +9,7 @@ prerequisites:
   - "NVIDIA GPU Operator installed"
   - "A100 or L40S GPU with 24GB+ VRAM"
 relatedRecipes:
+  - "deploy-ltx-video-kubernetes"
   - "deploy-retinanet-kubernetes"
   - "triton-tensorrt-llm-kubernetes"
   - "inference-autoscaling-gpu-metrics"

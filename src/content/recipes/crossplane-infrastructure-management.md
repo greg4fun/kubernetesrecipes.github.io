@@ -10,6 +10,9 @@ prerequisites:
   - "Knowledge of cloud provider services (AWS/GCP/Azure)"
   - "Familiarity with Infrastructure as Code concepts"
 relatedRecipes:
+  - "scheduler-configuration-tuning"
+  - "kubernetes-api-aggregation"
+  - "environment-variables-configmaps"
   - "custom-resource-definitions"
   - "argocd-gitops"
   - "kubernetes-operators"

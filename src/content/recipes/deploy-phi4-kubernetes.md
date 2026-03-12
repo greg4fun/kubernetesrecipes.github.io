@@ -9,6 +9,7 @@ prerequisites:
   - "NVIDIA GPU Operator installed"
   - "A100 40GB, L40S, or H100 GPU"
 relatedRecipes:
+  - "deploy-phi4-reasoning-vision-kubernetes"
   - "deploy-llama2-70b-kubernetes"
   - "triton-vllm-kubernetes"
   - "inference-autoscaling-gpu-metrics"

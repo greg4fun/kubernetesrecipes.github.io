@@ -5,6 +5,7 @@ category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
+  - "service-accounts-rbac"
   - "kubernetes-audit-logging"
 tags: ["security", "vulnerability-scanning", "trivy", "containers", "devsecops"]
 author: "Luca Berton"

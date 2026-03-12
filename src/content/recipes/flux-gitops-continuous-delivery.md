@@ -10,6 +10,7 @@ prerequisites:
   - "Knowledge of Kubernetes manifests"
   - "Familiarity with CI/CD concepts"
 relatedRecipes:
+  - "automate-nccl-preflight-ci"
   - "argocd-gitops"
   - "helm-chart-creation"
   - "kustomize-configuration"

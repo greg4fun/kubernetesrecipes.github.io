@@ -9,6 +9,7 @@ prerequisites:
   - "A running Kubernetes cluster"
   - "kubectl configured to access your cluster"
 relatedRecipes:
+  - "kubectl-plugins-extensions"
   - "troubleshooting-pending-pvc"
   - "liveness-readiness-probes"
   - "debug-imagepullbackoff"

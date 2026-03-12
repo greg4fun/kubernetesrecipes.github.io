@@ -10,6 +10,9 @@ prerequisites:
   - "Nodes with Mellanox or Intel SR-IOV capable NICs"
   - "PCI device path information from target nodes"
 relatedRecipes:
+  - "validate-gpudirect-rdma-performance"
+  - "service-loadbalancer-nodeport"
+  - "ingress-tls-certificates"
   - "verify-ovn-underlay-interface"
   - "topology-spread-constraints"
   - "switch-proprietary-to-open-kernel-modules"

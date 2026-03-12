@@ -9,6 +9,8 @@ prerequisites:
   - "NVIDIA GPU Operator installed"
   - "A100 40GB, L40S, or A10G GPU"
 relatedRecipes:
+  - "deploy-phi4-reasoning-vision-kubernetes"
+  - "deploy-kimi-k25-kubernetes"
   - "deploy-qwen35-9b-kubernetes"
   - "deploy-qwen3-235b-moe-kubernetes"
   - "deploy-nemotron-120b-kubernetes"

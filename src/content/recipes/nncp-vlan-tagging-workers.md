@@ -10,6 +10,7 @@ prerequisites:
   - "Switch ports configured as trunks with allowed VLANs"
   - "Worker nodes with available network interfaces"
 relatedRecipes:
+  - "nfsordma-multi-vlan-switch-access"
   - "nncp-static-ip-workers"
   - "nncp-bond-interfaces-workers"
   - "nncp-linux-bridge-workers"

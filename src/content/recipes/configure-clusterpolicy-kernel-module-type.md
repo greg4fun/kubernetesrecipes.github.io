@@ -9,6 +9,7 @@ prerequisites:
   - "NVIDIA GPU Operator v25.3.0+ installed"
   - "Turing architecture or newer GPU"
 relatedRecipes:
+  - "tune-nccl-env-rdma-ethernet"
   - "switch-gpudirect-rdma-dma-buf"
   - "enable-gpudirect-storage-openshift"
   - "switch-proprietary-to-open-kernel-modules"

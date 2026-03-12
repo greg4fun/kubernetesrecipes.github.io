@@ -5,6 +5,7 @@ category: "helm"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
+  - "helm-hooks"
   - "helm-chart-basics"
   - "helm-chart-repositories"
   - "helm-dependencies"

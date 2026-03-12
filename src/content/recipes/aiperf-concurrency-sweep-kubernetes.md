@@ -9,6 +9,7 @@ prerequisites:
   - "LLM inference server deployed"
   - "AIPerf installed or available as container image"
 relatedRecipes:
+  - "deploy-granite-speech-kubernetes"
   - "aiperf-benchmark-llm-kubernetes"
   - "aiperf-goodput-slo-benchmark"
   - "aiperf-trace-replay-kubernetes"

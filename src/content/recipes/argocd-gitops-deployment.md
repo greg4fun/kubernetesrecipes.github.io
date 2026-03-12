@@ -11,6 +11,8 @@ prerequisites:
   - "A Git repository for application manifests"
   - "Helm 3 installed (optional)"
 relatedRecipes:
+  - "automate-nccl-preflight-ci"
+  - "argocd-multi-cluster-app-of-apps"
   - "flux-gitops"
   - "sealed-secrets-gitops"
   - "canary-deployments"

@@ -9,6 +9,9 @@ prerequisites:
   - "LLM inference server deployed (Triton, vLLM, or TGI)"
   - "NVIDIA GPU Operator installed"
 relatedRecipes:
+  - "validate-gpudirect-rdma-performance"
+  - "deploy-ltx-video-kubernetes"
+  - "deploy-granite-speech-kubernetes"
   - "aiperf-concurrency-sweep-kubernetes"
   - "aiperf-trace-replay-kubernetes"
   - "aiperf-multi-model-benchmark"

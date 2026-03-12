@@ -11,6 +11,8 @@ prerequisites:
   - "Switch ports in access mode for the NFS VLAN"
   - "NFS server with RDMA support enabled"
 relatedRecipes:
+  - "nncp-rollback-troubleshooting"
+  - "nncp-multi-nic-workers"
   - "nfsordma-bond-access-mode"
   - "nfsordma-worker-node-setup"
   - "nfsordma-multi-vlan-switch-access"

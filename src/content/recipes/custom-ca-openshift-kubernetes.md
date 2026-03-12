@@ -10,6 +10,7 @@ prerequisites:
   - "Custom CA certificate file (PEM format)"
   - "Access to cluster nodes for vanilla Kubernetes"
 relatedRecipes:
+  - "oidc-authentication-kubernetes"
   - "update-ca-certificates-kubernetes"
   - "openshift-custom-ca-registry"
   - "tls-certificates-ingress"

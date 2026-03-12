@@ -9,6 +9,8 @@ prerequisites:
   - "Multiple LLM servers deployed (vLLM, TGI, Triton, etc.)"
   - "NVIDIA GPU Operator installed"
 relatedRecipes:
+  - "triton-autoscaling-gpu-metrics"
+  - "genai-perf-triton-benchmark"
   - "aiperf-benchmark-llm-kubernetes"
   - "aiperf-concurrency-sweep-kubernetes"
   - "aiperf-goodput-slo-benchmark"

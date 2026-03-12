@@ -10,6 +10,7 @@ prerequisites:
   - "Custom CA certificate in PEM format"
   - "SSH access to nodes (for node-level approaches)"
 relatedRecipes:
+  - "oidc-authentication-kubernetes"
   - "custom-ca-openshift-kubernetes"
   - "custom-ca-openshift"
   - "update-ca-certificates-kubernetes"

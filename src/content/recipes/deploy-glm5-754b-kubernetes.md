@@ -10,6 +10,9 @@ prerequisites:
   - "8x H100 80GB or 16x A100 80GB GPUs"
   - "NVLink/NVSwitch or InfiniBand interconnect"
 relatedRecipes:
+  - "deploy-minimax-m25-kubernetes"
+  - "triton-tensorrt-vllm-comparison"
+  - "deploy-qwen3-coder-kubernetes"
   - "deploy-qwen35-397b-moe-kubernetes"
   - "deploy-qwen3-235b-moe-kubernetes"
   - "deploy-nemotron-120b-kubernetes"
