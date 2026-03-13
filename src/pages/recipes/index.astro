@@ -2,87 +2,64 @@
 import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
-import Sectionhead from "@components/sectionhead.astro";
-import RecipeSearch from "@components/recipe-search.astro";
 
 // Get all published recipes
 const allRecipes = await getCollection("recipes", ({ data }) => {
   return !data.draft;
 });
 
-// Group recipes by category
-const categories = [
-  { 
-    slug: "networking", 
-    name: "Networking", 
-    description: "Ingress, Services, NetworkPolicies, and DNS configuration",
-    icon: "🌐"
+// Category definitions with HF-style colors
+const categoryGroups = [
+  {
+    title: "Infrastructure & Networking",
+    categories: [
+      { slug: "networking", name: "Networking", description: "Ingress, Services, NetworkPolicies, DNS, NNCP, SR-IOV, and RDMA", color: "blue", count: 0 },
+      { slug: "storage", name: "Storage", description: "Persistent Volumes, StorageClasses, CSI drivers, and backup strategies", color: "red", count: 0 },
+      { slug: "configuration", name: "Configuration", description: "ConfigMaps, namespaces, DOCA drivers, and resource management", color: "teal", count: 0 },
+    ]
   },
-  { 
-    slug: "storage", 
-    name: "Storage", 
-    description: "Persistent Volumes, StorageClasses, StatefulSets, and backups",
-    icon: "💾"
+  {
+    title: "Workloads & Deployments",
+    categories: [
+      { slug: "deployments", name: "Deployments", description: "Rolling updates, blue-green, canary, ArgoCD, and GitOps patterns", color: "indigo", count: 0 },
+      { slug: "helm", name: "Helm", description: "Chart development, templating, and Helm release management", color: "cyan", count: 0 },
+      { slug: "autoscaling", name: "Autoscaling", description: "HPA, VPA, KEDA event-driven, and cluster autoscaling", color: "green", count: 0 },
+    ]
   },
-  { 
-    slug: "deployments", 
-    name: "Deployments", 
-    description: "Rolling updates, strategies, probes, and release patterns",
-    icon: "🚀"
+  {
+    title: "Security & Operations",
+    categories: [
+      { slug: "security", name: "Security", description: "RBAC, Pod Security Standards, secrets, scanning, and compliance", color: "orange", count: 0 },
+      { slug: "observability", name: "Observability", description: "Prometheus, Grafana, EFK logging, tracing, and alerting", color: "purple", count: 0 },
+      { slug: "troubleshooting", name: "Troubleshooting", description: "Debug pods, diagnose failures, fix common issues", color: "amber", count: 0 },
+    ]
   },
-  { 
-    slug: "security", 
-    name: "Security", 
-    description: "RBAC, Secrets, Pod Security, and network policies",
-    icon: "🔐"
-  },
-  { 
-    slug: "observability", 
-    name: "Observability", 
-    description: "Metrics, logging, tracing, and monitoring stacks",
-    icon: "📊"
-  },
-  { 
-    slug: "autoscaling", 
-    name: "Autoscaling", 
-    description: "HPA, VPA, KEDA, and cluster autoscaling patterns",
-    icon: "📈"
-  },
-  { 
-    slug: "troubleshooting", 
-    name: "Troubleshooting", 
-    description: "Debug pods, fix common issues, and diagnostic patterns",
-    icon: "🔧"
-  },
-  { 
-    slug: "configuration", 
-    name: "Configuration", 
-    description: "ConfigMaps, Secrets, namespaces, and resource management",
-    icon: "⚙️"
-  },
-  { 
-    slug: "helm", 
-    name: "Helm", 
-    description: "Chart development, templating, and release management",
-    icon: "⚓"
-  },
-  { 
-    slug: "ai", 
-    name: "AI & ML", 
-    description: "GPU scheduling, NVIDIA KAI, model serving, and ML pipelines",
-    icon: "🤖"
-  },
+  {
+    title: "AI & Machine Learning",
+    categories: [
+      { slug: "ai", name: "AI & GPU Workloads", description: "NVIDIA GPU Operator, Triton, model serving, distributed training, and LLM deployment", color: "fuchsia", count: 0 },
+    ]
+  }
 ];
 
 // Count recipes per category
-const recipesByCategory = categories.map(cat => ({
-  ...cat,
-  count: allRecipes.filter(r => r.data.category === cat.slug).length,
-  recipes: allRecipes
-    .filter(r => r.data.category === cat.slug)
-    .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-    .slice(0, 5) // Show up to 5 latest recipes per category
+categoryGroups.forEach(group => {
+  group.categories.forEach(cat => {
+    cat.count = allRecipes.filter(r => r.data.category === cat.slug).length;
+  });
+});
+
+// Build search index
+const searchIndex = allRecipes.map(recipe => ({
+  slug: recipe.slug,
+  title: recipe.data.title,
+  description: recipe.data.description,
+  category: recipe.data.category,
+  difficulty: recipe.data.difficulty,
+  tags: recipe.data.tags || [],
 }));
+
+const totalRecipes = allRecipes.length;
 ---
 
 <Layout 
@@ -90,73 +67,94 @@ const recipesByCategory = categories.map(cat => ({
   description="Practical Kubernetes recipes with copy-paste YAML examples. Learn networking, storage, deployments, security, and observability for production clusters."
 >
   <Container>
-    <Sectionhead>
-      <Fragment slot="title">Kubernetes Recipes</Fragment>
-      <Fragment slot="desc">
-        Practical, production-ready recipes with working YAML examples and troubleshooting tips.
-        Find solutions for real-world Kubernetes challenges.
-      </Fragment>
-    </Sectionhead>
+    <!-- Header -->
+    <div class="max-w-5xl mx-auto pt-10 pb-2">
+      <h1 class="text-3xl font-bold text-slate-800 flex items-center gap-3">
+        <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+        </svg>
+        Recipes
+        <span class="text-base font-normal text-slate-400 ml-1">({totalRecipes})</span>
+      </h1>
+    </div>
 
-    <!-- Recipe Search -->
-    <RecipeSearch />
-
-    <!-- Category Grid -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 max-w-6xl mx-auto">
-      {recipesByCategory.slice(0, 5).map((category) => (
-        <a 
-          href={`/recipes/${category.slug}/`}
-          class="group block p-6 bg-white border border-slate-200 rounded-xl hover:border-blue-300 hover:shadow-lg transition-all duration-200"
+    <!-- Search Bar (HF-style) -->
+    <div class="max-w-5xl mx-auto mb-10">
+      <div class="relative">
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          type="text"
+          id="hf-search-input"
+          placeholder="Search recipes by name, category, or tag..."
+          class="w-full px-4 py-3.5 pl-12 bg-white border border-slate-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent text-slate-700 placeholder-slate-400 shadow-sm hover:shadow transition-shadow"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button
+          id="hf-clear-btn"
+          class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition"
+          title="Clear search"
         >
-          <div class="flex items-start gap-4">
-            <span class="text-3xl">{category.icon}</span>
-            <div class="flex-1">
-              <h2 class="text-xl font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
-                {category.name}
-              </h2>
-              <p class="text-sm text-slate-600 mt-1">
-                {category.description}
-              </p>
-              <p class="text-xs text-slate-400 mt-3">
-                {category.count > 0 ? `${category.count} recipes` : "Coming soon"}
-              </p>
-            </div>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Search Results -->
+      <div id="hf-search-results" class="hidden mt-2 bg-white border border-slate-200 rounded-2xl shadow-xl max-h-[32rem] overflow-y-auto">
+      </div>
+    </div>
+
+    <!-- Category Groups (HF docs-style) -->
+    <div class="max-w-5xl mx-auto space-y-10">
+      {categoryGroups.map((group) => (
+        <div class="group/section">
+          <div class="mb-5 flex items-center gap-3">
+            <h2 class="text-xl font-semibold text-slate-800">{group.title}</h2>
+            <div class="h-px flex-1 bg-gradient-to-r from-slate-200/60 from-60% to-transparent"></div>
           </div>
           
-          {category.recipes.length > 0 && (
-            <ul class="mt-4 space-y-1 border-t pt-3">
-              {category.recipes.slice(0, 3).map((recipe) => (
-                <li class="text-sm text-slate-600 truncate">
-                  → {recipe.data.title}
-                </li>
-              ))}
-              {category.count > 3 && (
-                <li class="text-sm text-blue-500">
-                  + {category.count - 3} more
-                </li>
-              )}
-            </ul>
-          )}
-        </a>
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {group.categories.map((cat) => (
+              <a 
+                href={`/recipes/${cat.slug}/`}
+                class={`
+                  block rounded-xl border border-slate-100 bg-gradient-to-r from-slate-50/70 to-transparent
+                  px-5 py-4 transition-all duration-150
+                  hover:from-${cat.color}-500/10 hover:to-${cat.color}-500/5 hover:border-${cat.color}-200
+                  hover:shadow-md
+                `}
+              >
+                <div class="flex items-center gap-2.5">
+                  <span class={`h-2 w-2 rounded-full bg-${cat.color}-500`}></span>
+                  <p class="text-base font-semibold text-slate-800">{cat.name}</p>
+                  <span class="ml-auto text-xs text-slate-400 font-medium">{cat.count}</span>
+                </div>
+                <p class="text-sm text-slate-500 mt-1.5 leading-relaxed">{cat.description}</p>
+              </a>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
 
-    <!-- Mid-page CTA Banner -->
-    <div class="mt-10 max-w-6xl mx-auto">
-      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 p-8 md:p-10">
-        <div class="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,transparent,white)]"></div>
+    <!-- Book CTA (clean, minimal) -->
+    <div class="max-w-5xl mx-auto mt-14">
+      <div class="rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 p-8 md:p-10 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
         <div class="relative flex flex-col md:flex-row items-center justify-between gap-6">
           <div class="text-center md:text-left">
-            <h3 class="text-2xl md:text-3xl font-bold text-white">
-              📘 Get All 100+ Recipes in One Book
-            </h3>
-            <p class="mt-2 text-indigo-100 max-w-xl">
+            <h3 class="text-2xl md:text-3xl font-bold text-white">📘 Get All Recipes in One Book</h3>
+            <p class="mt-2 text-blue-100 max-w-xl">
               Stop searching — get every production-ready pattern with detailed explanations, best practices, and copy-paste YAML.
             </p>
           </div>
           <a 
             href="https://amzn.to/3DzC8QA" target="_blank" rel="noopener" 
-            class="shrink-0 inline-flex items-center gap-2 bg-white text-indigo-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-50 hover:scale-105 transition-all shadow-lg"
+            class="shrink-0 inline-flex items-center gap-2 bg-white text-blue-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 hover:scale-105 transition-all shadow-lg"
           >
             Get the Book →
           </a>
@@ -164,99 +162,236 @@ const recipesByCategory = categories.map(cat => ({
       </div>
     </div>
 
-    <!-- More Categories -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 max-w-6xl mx-auto">
-      {recipesByCategory.slice(5).map((category) => (
-        <a 
-          href={`/recipes/${category.slug}/`}
-          class="group block p-6 bg-white border border-slate-200 rounded-xl hover:border-blue-300 hover:shadow-lg transition-all duration-200"
-        >
-          <div class="flex items-start gap-4">
-            <span class="text-3xl">{category.icon}</span>
-            <div class="flex-1">
-              <h2 class="text-xl font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
-                {category.name}
-              </h2>
-              <p class="text-sm text-slate-600 mt-1">
-                {category.description}
-              </p>
-              <p class="text-xs text-slate-400 mt-3">
-                {category.count > 0 ? `${category.count} recipes` : "Coming soon"}
-              </p>
-            </div>
-          </div>
-          
-          {category.recipes.length > 0 && (
-            <ul class="mt-4 space-y-1 border-t pt-3">
-              {category.recipes.slice(0, 3).map((recipe) => (
-                <li class="text-sm text-slate-600 truncate">
-                  → {recipe.data.title}
-                </li>
-              ))}
-              {category.count > 3 && (
-                <li class="text-sm text-blue-500">
-                  + {category.count - 3} more
-                </li>
-              )}
-            </ul>
-          )}
-        </a>
-      ))}
-    </div>
-
-    <!-- CTA Section -->
-    <div class="mt-16 text-center bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 max-w-4xl mx-auto">
-      <h3 class="text-2xl font-bold text-slate-800">Want the Complete Guide?</h3>
-      <p class="text-slate-600 mt-2 max-w-2xl mx-auto">
-        These recipes are excerpts from <strong>Kubernetes Recipes</strong>, our 750-page practical guide
-        covering 18 chapters of production-ready patterns.
-      </p>
-      <div class="mt-6 flex flex-wrap justify-center gap-4">
-        <a 
-          href="https://amzn.to/3DzC8QA" 
-          target="_blank"
-          rel="noopener"
-          class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
-        >
-          📚 Buy on Amazon
-        </a>
-        <a 
-          href="/chapters/" 
-          class="inline-flex items-center gap-2 bg-white text-slate-700 px-6 py-3 rounded-lg font-medium border hover:bg-slate-50 transition"
-        >
-          📖 View All Chapters
-        </a>
-      </div>
-    </div>
-
     <!-- Latest Recipes -->
-    {allRecipes.length > 0 && (
-      <div class="mt-16 max-w-4xl mx-auto">
-        <h3 class="text-2xl font-bold text-slate-800 mb-6">Latest Recipes</h3>
-        <div class="space-y-4">
-          {allRecipes
-            .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-            .slice(0, 5)
-            .map((recipe) => (
-              <a 
-                href={`/recipes/${recipe.data.category}/${recipe.slug}/`}
-                class="block p-4 bg-white border rounded-lg hover:border-blue-300 hover:shadow transition-all"
-              >
-                <div class="flex items-center gap-3">
-                  <span class="text-xs uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                    {recipe.data.category}
-                  </span>
-                  <span class="text-xs text-slate-400">
-                    {recipe.data.difficulty}
-                  </span>
-                </div>
-                <h4 class="font-semibold text-slate-800 mt-2">{recipe.data.title}</h4>
-                <p class="text-sm text-slate-600 mt-1 line-clamp-2">{recipe.data.description}</p>
-              </a>
-            ))
-          }
-        </div>
+    <div class="max-w-5xl mx-auto mt-14 mb-16">
+      <div class="mb-5 flex items-center gap-3">
+        <h2 class="text-xl font-semibold text-slate-800">Latest Recipes</h2>
+        <div class="h-px flex-1 bg-gradient-to-r from-slate-200/60 from-60% to-transparent"></div>
       </div>
-    )}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {allRecipes
+          .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+          .slice(0, 8)
+          .map((recipe) => (
+            <a 
+              href={`/recipes/${recipe.data.category}/${recipe.slug}/`}
+              class="block rounded-xl border border-slate-100 bg-gradient-to-r from-slate-50/70 to-transparent px-5 py-4 hover:from-slate-100 hover:border-slate-200 hover:shadow-md transition-all duration-150"
+            >
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="text-xs uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-medium">
+                  {recipe.data.category}
+                </span>
+                <span class="text-xs text-slate-400">{recipe.data.difficulty}</span>
+              </div>
+              <p class="font-semibold text-slate-800 text-sm leading-snug">{recipe.data.title}</p>
+              <p class="text-xs text-slate-500 mt-1 line-clamp-2">{recipe.data.description}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
   </Container>
 </Layout>
+
+<!-- Search Index -->
+<script define:vars={{ searchIndex }}>
+  window.recipeSearchIndex = searchIndex;
+</script>
+
+<script>
+  const searchInput = document.getElementById('hf-search-input');
+  const searchResults = document.getElementById('hf-search-results');
+  const clearBtn = document.getElementById('hf-clear-btn');
+  const searchIndex = window.recipeSearchIndex || [];
+
+  const catColors = {
+    networking: 'blue', storage: 'red', configuration: 'teal',
+    deployments: 'indigo', helm: 'cyan', autoscaling: 'green',
+    security: 'orange', observability: 'purple', troubleshooting: 'amber', ai: 'fuchsia'
+  };
+
+  const diffColors = {
+    beginner: 'bg-green-100 text-green-700',
+    intermediate: 'bg-yellow-100 text-yellow-700',
+    advanced: 'bg-red-100 text-red-700',
+  };
+
+  function search(query) {
+    if (!query || query.length < 2) return [];
+    const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+    
+    return searchIndex
+      .map(r => {
+        let score = 0;
+        for (const term of terms) {
+          if (r.title.toLowerCase().includes(term)) score += 10;
+          if (r.category.toLowerCase().includes(term)) score += 5;
+          if (r.tags.some(t => t.toLowerCase().includes(term))) score += 4;
+          if (r.description.toLowerCase().includes(term)) score += 2;
+        }
+        return { ...r, score };
+      })
+      .filter(r => r.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 20);
+  }
+
+  function highlight(text, query) {
+    if (!query) return text;
+    const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+    let result = text;
+    for (const term of terms) {
+      result = result.replace(new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'), 
+        '<mark class="bg-yellow-200/60 rounded px-0.5">$1</mark>');
+    }
+    return result;
+  }
+
+  function render(results, query) {
+    if (results.length === 0) {
+      searchResults.innerHTML = `
+        <div class="p-8 text-center text-slate-500">
+          <div class="text-3xl mb-2">🔍</div>
+          <p>No recipes found for "<strong>${query}</strong>"</p>
+          <p class="text-sm mt-1 text-slate-400">Try: ingress, gpu, argocd, triton, secrets, hpa</p>
+        </div>`;
+      searchResults.classList.remove('hidden');
+      return;
+    }
+
+    const html = results.map(r => {
+      const dc = diffColors[r.difficulty] || 'bg-slate-100 text-slate-700';
+      return `
+        <a href="/recipes/${r.category}/${r.slug}/" class="flex items-start gap-4 px-5 py-3.5 hover:bg-slate-50 border-b border-slate-100 last:border-b-0 transition-colors">
+          <span class="mt-0.5 h-2 w-2 rounded-full bg-${catColors[r.category] || 'slate'}-500 shrink-0"></span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="font-semibold text-slate-800 text-sm">${highlight(r.title, query)}</span>
+              <span class="text-[0.65rem] px-1.5 py-0.5 rounded ${dc}">${r.difficulty}</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5 line-clamp-1">${highlight(r.description, query)}</p>
+          </div>
+          <span class="text-[0.65rem] text-slate-400 shrink-0 mt-1 uppercase tracking-wider">${r.category}</span>
+        </a>`;
+    }).join('');
+
+    searchResults.innerHTML = `
+      <div class="px-5 py-2.5 border-b border-slate-100 text-xs text-slate-400">
+        ${results.length} result${results.length !== 1 ? 's' : ''}
+      </div>${html}`;
+    searchResults.classList.remove('hidden');
+  }
+
+  let debounceTimer;
+  searchInput.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      const q = e.target.value.trim();
+      if (q.length < 2) {
+        searchResults.classList.add('hidden');
+        clearBtn.classList.add('hidden');
+        return;
+      }
+      clearBtn.classList.remove('hidden');
+      render(search(q), q);
+    }, 150);
+  });
+
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    searchResults.classList.add('hidden');
+    clearBtn.classList.add('hidden');
+    searchInput.focus();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#hf-search-input') && !e.target.closest('#hf-search-results')) {
+      searchResults.classList.add('hidden');
+    }
+  });
+
+  searchInput.addEventListener('focus', () => {
+    const q = searchInput.value.trim();
+    if (q.length >= 2) render(search(q), q);
+  });
+
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { searchResults.classList.add('hidden'); searchInput.blur(); }
+  });
+
+  // Handle ?tag= query param
+  const tagFilter = new URLSearchParams(window.location.search).get('tag');
+  if (tagFilter) {
+    searchInput.value = tagFilter;
+    clearBtn.classList.remove('hidden');
+    render(search(tagFilter), tagFilter);
+    searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    searchInput.focus();
+  }
+
+  // Keyboard shortcut: / to focus search
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== searchInput && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+</script>
+
+<style>
+  .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  
+  /* Tailwind dynamic colors safelist */
+  .bg-blue-500 { background-color: rgb(59 130 246); }
+  .bg-red-500 { background-color: rgb(239 68 68); }
+  .bg-teal-500 { background-color: rgb(20 184 166); }
+  .bg-indigo-500 { background-color: rgb(99 102 241); }
+  .bg-cyan-500 { background-color: rgb(6 182 212); }
+  .bg-green-500 { background-color: rgb(34 197 94); }
+  .bg-orange-500 { background-color: rgb(249 115 22); }
+  .bg-purple-500 { background-color: rgb(168 85 247); }
+  .bg-amber-500 { background-color: rgb(245 158 11); }
+  .bg-fuchsia-500 { background-color: rgb(217 70 239); }
+  .bg-slate-500 { background-color: rgb(100 116 139); }
+  
+  .hover\:from-blue-500\/10:hover { --tw-gradient-from: rgb(59 130 246 / 0.1); }
+  .hover\:to-blue-500\/5:hover { --tw-gradient-to: rgb(59 130 246 / 0.05); }
+  .hover\:border-blue-200:hover { border-color: rgb(191 219 254); }
+  
+  .hover\:from-red-500\/10:hover { --tw-gradient-from: rgb(239 68 68 / 0.1); }
+  .hover\:to-red-500\/5:hover { --tw-gradient-to: rgb(239 68 68 / 0.05); }
+  .hover\:border-red-200:hover { border-color: rgb(254 202 202); }
+  
+  .hover\:from-teal-500\/10:hover { --tw-gradient-from: rgb(20 184 166 / 0.1); }
+  .hover\:to-teal-500\/5:hover { --tw-gradient-to: rgb(20 184 166 / 0.05); }
+  .hover\:border-teal-200:hover { border-color: rgb(153 246 228); }
+  
+  .hover\:from-indigo-500\/10:hover { --tw-gradient-from: rgb(99 102 241 / 0.1); }
+  .hover\:to-indigo-500\/5:hover { --tw-gradient-to: rgb(99 102 241 / 0.05); }
+  .hover\:border-indigo-200:hover { border-color: rgb(199 210 254); }
+  
+  .hover\:from-cyan-500\/10:hover { --tw-gradient-from: rgb(6 182 212 / 0.1); }
+  .hover\:to-cyan-500\/5:hover { --tw-gradient-to: rgb(6 182 212 / 0.05); }
+  .hover\:border-cyan-200:hover { border-color: rgb(165 243 252); }
+  
+  .hover\:from-green-500\/10:hover { --tw-gradient-from: rgb(34 197 94 / 0.1); }
+  .hover\:to-green-500\/5:hover { --tw-gradient-to: rgb(34 197 94 / 0.05); }
+  .hover\:border-green-200:hover { border-color: rgb(187 247 208); }
+  
+  .hover\:from-orange-500\/10:hover { --tw-gradient-from: rgb(249 115 22 / 0.1); }
+  .hover\:to-orange-500\/5:hover { --tw-gradient-to: rgb(249 115 22 / 0.05); }
+  .hover\:border-orange-200:hover { border-color: rgb(254 215 170); }
+  
+  .hover\:from-purple-500\/10:hover { --tw-gradient-from: rgb(168 85 247 / 0.1); }
+  .hover\:to-purple-500\/5:hover { --tw-gradient-to: rgb(168 85 247 / 0.05); }
+  .hover\:border-purple-200:hover { border-color: rgb(233 213 255); }
+  
+  .hover\:from-amber-500\/10:hover { --tw-gradient-from: rgb(245 158 11 / 0.1); }
+  .hover\:to-amber-500\/5:hover { --tw-gradient-to: rgb(245 158 11 / 0.05); }
+  .hover\:border-amber-200:hover { border-color: rgb(253 230 138); }
+  
+  .hover\:from-fuchsia-500\/10:hover { --tw-gradient-from: rgb(217 70 239 / 0.1); }
+  .hover\:to-fuchsia-500\/5:hover { --tw-gradient-to: rgb(217 70 239 / 0.05); }
+  .hover\:border-fuchsia-200:hover { border-color: rgb(245 208 254); }
+</style>
