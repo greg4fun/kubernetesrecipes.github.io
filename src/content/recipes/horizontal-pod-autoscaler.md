@@ -1,6 +1,6 @@
 ---
-title: "Horizontal Pod Autoscaler (HPA) Configuration Guide"
-description: "Set up automatic pod scaling based on CPU, memory, or custom metrics using Kubernetes Horizontal Pod Autoscaler. Includes examples for scaling based on."
+title: "HPA in Kubernetes: Horizontal Pod Autoscaler Guide"
+description: "Configure HPA in Kubernetes for automatic horizontal pod autoscaling based on CPU, memory, and custom metrics. Step-by-step HPA examples and best practices."
 category: "autoscaling"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
@@ -14,7 +14,6 @@ relatedRecipes:
   - "vpa-configuration"
   - "cluster-autoscaler"
   - "hpa-custom-metrics"
-  - "keda-event-driven-autoscaling"
   - "keda-event-driven-autoscaling"
 tags:
   - hpa
@@ -399,3 +398,14 @@ Inside the book, you'll master:
 > *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
 
 **👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+
+## Frequently Asked Questions
+
+### What is HPA in Kubernetes?
+HPA (Horizontal Pod Autoscaler) automatically scales the number of pod replicas based on observed CPU utilization, memory usage, or custom metrics. When demand increases, HPA adds more pods; when demand decreases, it scales down to save resources.
+
+### How does HPA work with VPA?
+HPA scales horizontally (more replicas) while VPA scales vertically (more CPU/memory per pod). Use HPA for stateless workloads that scale out, and VPA for stateful workloads or when adding replicas isn't practical. Don't use both on the same CPU/memory metric simultaneously.
+
+### What metrics can HPA use?
+HPA supports three metric types: **Resource metrics** (CPU, memory via metrics-server), **Custom metrics** (application-specific like requests-per-second via Prometheus Adapter), and **External metrics** (cloud provider metrics like SQS queue depth).

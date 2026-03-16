@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Liveness and Readiness Probes Best Practices"
-description: "Configure health checks for your Kubernetes pods using liveness and readiness probes. Learn the differences, when to use each, and avoid common pitfalls."
+title: "Kubernetes Readiness Probe & Liveness Probe Guide"
+description: "Configure Kubernetes readiness probes and liveness probes for pod health checks. Learn probe types (HTTP, TCP, exec), best practices, and common pitfalls."
 category: "deployments"
 difficulty: "beginner"
 timeToComplete: "15 minutes"
@@ -18,6 +18,9 @@ tags:
   - liveness
   - readiness
   - startup
+  - kubernetes-probes
+  - http-probe
+  - tcp-probe
   - high-availability
 publishDate: "2026-01-20"
 author: "Luca Berton"
@@ -316,3 +319,23 @@ Inside the book, you'll master:
 > *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
 
 **👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+
+## Frequently Asked Questions
+
+### What is a readiness probe in Kubernetes?
+A readiness probe tells Kubernetes when a pod is ready to accept traffic. If the readiness probe fails, the pod is removed from Service endpoints (no traffic routed to it) but NOT restarted. Use readiness probes for applications that need warm-up time, dependency checks, or graceful degradation.
+
+### What's the difference between liveness and readiness probes?
+**Liveness probes** detect if a container is deadlocked or hung — a failing liveness probe causes Kubernetes to restart the container. **Readiness probes** detect if a container can handle requests — a failing readiness probe removes the pod from load balancing but doesn't restart it. Use both together for robust health checking.
+
+### How do I configure a readiness probe?
+```yaml
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  failureThreshold: 3
+```
+This checks `/healthz` every 10 seconds. After 3 consecutive failures, the pod is marked unready and removed from Service endpoints.

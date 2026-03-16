@@ -1,6 +1,6 @@
 ---
-title: "How to Use Vertical Pod Autoscaler (VPA)"
-description: "Automatically right-size your Kubernetes pods with Vertical Pod Autoscaler. Learn to configure VPA for optimal resource requests and limits."
+title: "VPA Example: Vertical Pod Autoscaler Setup"
+description: "Kubernetes VPA example with step-by-step setup. Configure Vertical Pod Autoscaler to automatically right-size pod CPU and memory requests and limits."
 category: "autoscaling"
 difficulty: "intermediate"
 timeToComplete: "25 minutes"
@@ -347,3 +347,19 @@ Inside the book, you'll master:
 > *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
 
 **👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+
+## Frequently Asked Questions
+
+### What is VPA in Kubernetes?
+VPA (Vertical Pod Autoscaler) automatically adjusts CPU and memory requests/limits for pods based on actual usage. Unlike HPA which adds more pods, VPA right-sizes existing pods to avoid over-provisioning (wasting resources) or under-provisioning (causing OOMKilled).
+
+### How do I install VPA?
+```bash
+git clone https://github.com/kubernetes/autoscaler.git
+cd autoscaler/vertical-pod-autoscaler
+./hack/vpa-up.sh
+```
+This deploys three components: Recommender (analyzes usage), Updater (evicts pods needing updates), and Admission Controller (sets resources on new pods).
+
+### Can I use VPA and HPA together?
+Yes, but don't target the same metrics. Use HPA for CPU-based horizontal scaling and VPA for memory right-sizing only. Set VPA's `controlledResources: ["memory"]` to avoid conflicts with HPA's CPU scaling.

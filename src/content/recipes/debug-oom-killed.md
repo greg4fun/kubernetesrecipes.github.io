@@ -1,12 +1,12 @@
 ---
-title: "How to Debug OOMKilled Pods"
-description: "Troubleshoot Kubernetes pods killed due to Out of Memory (OOM). Learn to identify memory leaks, set proper limits, and prevent OOMKilled errors."
+title: "OOMKilled in Kubernetes: How to Debug and Fix"
+description: "Fix OOMKilled errors in Kubernetes pods. Learn why containers get OOMKilled (exit code 137), how to set memory limits, debug memory leaks, and prevent OOM."
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
   - "debug-imagepullbackoff"
-tags: ["oom", "memory", "troubleshooting", "debugging", "resources"]
+tags: ["oomkilled", "oom", "memory", "troubleshooting", "debugging", "resources", "exit-code-137", "memory-limits"]
 ---
 
 > **💡 Quick Answer:** OOMKilled (exit code 137) means your container exceeded its memory limit. Fix it by increasing `resources.limits.memory` in your pod spec. Check current usage with `kubectl top pod <pod>`. If the app has a memory leak, profile it with tools like pprof (Go), VisualVM (Java), or heapdump (Node.js).
@@ -358,3 +358,18 @@ Inside the book, you'll master:
 > *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
 
 **👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+
+## Frequently Asked Questions
+
+### What does OOMKilled mean in Kubernetes?
+OOMKilled means the Linux kernel's Out-of-Memory (OOM) killer terminated your container because it exceeded its memory limit (exit code 137). This happens when `resources.limits.memory` is set too low or the application has a memory leak.
+
+### How do I check if a pod was OOMKilled?
+Run `kubectl describe pod <pod-name>` and look for `Reason: OOMKilled` in the container's Last State section. You can also use `kubectl get pods -o jsonpath='{.items[*].status.containerStatuses[*].lastState.terminated.reason}'` to check all pods at once.
+
+### How do I fix OOMKilled in Kubernetes?
+1. Check current memory usage with `kubectl top pod`
+2. Increase `resources.limits.memory` in your pod spec
+3. Set `resources.requests.memory` to the typical usage
+4. Profile your application for memory leaks
+5. Consider using Vertical Pod Autoscaler (VPA) to auto-tune limits

@@ -1,6 +1,6 @@
 ---
-title: "How to Debug CrashLoopBackOff Pods"
-description: "Master troubleshooting Kubernetes pods stuck in CrashLoopBackOff. Learn systematic debugging techniques, common causes, and solutions."
+title: "CrashLoopBackOff: How to Fix in Kubernetes"
+description: "Fix CrashLoopBackOff in Kubernetes pods. Learn why pods crash loop, systematic debugging with kubectl logs and describe, and solutions for common causes."
 category: "troubleshooting"
 difficulty: "beginner"
 timeToComplete: "15 minutes"
@@ -305,3 +305,18 @@ Inside the book, you'll master:
 > *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
 
 **👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+
+## Frequently Asked Questions
+
+### What is CrashLoopBackOff in Kubernetes?
+CrashLoopBackOff means Kubernetes is trying to restart a container that keeps crashing. The kubelet uses exponential backoff (10s, 20s, 40s, up to 5 minutes) between restart attempts. Common causes include missing environment variables, failed health checks, incorrect commands, and application errors.
+
+### How do I fix CrashLoopBackOff?
+1. Check logs: `kubectl logs <pod-name> --previous` (use `--previous` to see crash logs)
+2. Describe the pod: `kubectl describe pod <pod-name>` for events and exit codes
+3. Verify the container image and command are correct
+4. Check environment variables and ConfigMaps/Secrets exist
+5. Ensure liveness probes aren't killing healthy pods (increase `initialDelaySeconds`)
+
+### What's the difference between CrashLoopBackOff and Error?
+**Error** means the container exited with a non-zero exit code on its most recent attempt. **CrashLoopBackOff** means it has crashed repeatedly and Kubernetes is waiting before retrying. CrashLoopBackOff always follows repeated Error states.
