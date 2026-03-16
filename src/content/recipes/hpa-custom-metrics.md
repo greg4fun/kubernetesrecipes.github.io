@@ -4,6 +4,10 @@ description: "Configure Horizontal Pod Autoscaler with custom and external metri
 category: "autoscaling"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "vertical-pod-autoscaler"
+  - "debug-oom-killed"
+  - "horizontal-pod-autoscaler"
 tags: ["hpa", "autoscaling", "custom-metrics", "prometheus", "scaling"]
 ---
 

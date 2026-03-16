@@ -5,6 +5,7 @@ category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "debug-imagepullbackoff"
 tags: ["oomkilled", "oom", "memory", "troubleshooting", "debugging", "resources", "exit-code-137", "memory-limits"]
 ---

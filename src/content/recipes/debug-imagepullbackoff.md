@@ -5,6 +5,7 @@ category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "imagepullbackoff-troubleshooting"
   - "ephemeral-containers-debugging"
   - "debug-oom-killed"

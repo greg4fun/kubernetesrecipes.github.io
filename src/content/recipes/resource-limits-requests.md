@@ -4,6 +4,10 @@ description: "Set CPU and memory requests and limits for containers. Understand 
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+relatedRecipes:
+  - "vertical-pod-autoscaler"
+  - "debug-oom-killed"
+  - "horizontal-pod-autoscaler"
 tags: ["resources", "limits", "requests", "qos", "capacity-planning"]
 ---
 

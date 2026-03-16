@@ -5,6 +5,7 @@ category: "deployments"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 relatedRecipes:
+  - "liveness-readiness-probes"
   - "flux-gitops"
   - "argocd-sync-waves-crd-operators"
   - "argocd-sync-waves-canary"

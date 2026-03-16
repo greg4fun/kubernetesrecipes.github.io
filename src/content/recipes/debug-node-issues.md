@@ -5,6 +5,8 @@ category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
+  - "debug-crashloopbackoff"
+  - "debug-oom-killed"
   - "imagepullbackoff-troubleshooting"
   - "debug-imagepullbackoff"
 tags: ["nodes", "debugging", "troubleshooting", "kubelet", "resources"]

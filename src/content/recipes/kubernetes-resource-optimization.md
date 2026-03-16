@@ -11,6 +11,7 @@ prerequisites:
   - "Metrics Server installed"
   - "Prometheus (optional, for detailed analysis)"
 relatedRecipes:
+  - "debug-oom-killed"
   - "resource-requests-limits"
   - "vertical-pod-autoscaler"
   - "horizontal-pod-autoscaler"

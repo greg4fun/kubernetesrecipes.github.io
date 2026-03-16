@@ -11,6 +11,7 @@ prerequisites:
   - "etcd backup capability"
   - "Understanding of Kubernetes architecture"
 relatedRecipes:
+  - "liveness-readiness-probes"
   - "etcd-backup-restore"
   - "pod-disruption-budgets"
   - "rolling-update-deployment"
