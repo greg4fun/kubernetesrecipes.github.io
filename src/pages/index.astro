@@ -12,9 +12,48 @@ import Carousel from "@components/carousel.astro";
 import VideoSection from "@components/video-section.astro";
 import CoursesSection from "@components/courses-section.astro";
 import Layout from "@layouts/Layout.astro";
+
+const websiteLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Kubernetes Recipes",
+  "url": "https://kubernetes.recipes",
+  "description": "Production-Ready Container Patterns — 370+ hands-on Kubernetes and OpenShift recipes",
+  "author": {
+    "@type": "Person",
+    "name": "Luca Berton",
+    "url": "https://www.lucaberton.com"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://kubernetes.recipes/recipes/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+});
+
+const bookLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "Kubernetes Recipes",
+  "author": {
+    "@type": "Person",
+    "name": "Luca Berton"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Apress"
+  },
+  "url": "https://link.springer.com/book/10.1007/979-8-8688-1227-8",
+  "bookFormat": "https://schema.org/Hardcover",
+  "isbn": "979-8-8688-1227-8",
+  "image": "https://kubernetes.recipes/book/cover.jpg",
+  "description": "Production-Ready Container Patterns for Kubernetes and OpenShift"
+});
 ---
 
 <Layout title="">
+  <script type="application/ld+json" set:html={websiteLd} />
+  <script type="application/ld+json" set:html={bookLd} />
   <Container>
     <Hero />
   </Container>
