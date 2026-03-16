@@ -1,0 +1,57 @@
+name: IndexNow - Notify Search Engines
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/recipes/**'
+      - 'src/pages/**'
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get changed files
+        id: changed
+        run: |
+          CHANGED=$(git diff --name-only HEAD~1 HEAD -- 'src/content/recipes/' 'src/pages/' | head -100)
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Build URL list
+        id: urls
+        run: |
+          URLS=""
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            if [[ "$file" == src/content/recipes/*.md ]]; then
+              slug=$(basename "$file" .md)
+              # Determine category from frontmatter
+              cat_line=$(grep '^category:' "$file" | head -1)
+              category=$(echo "$cat_line" | sed 's/category: *"\{0,1\}\([^"]*\)"\{0,1\}/\1/' | tr -d ' "')
+              if [ -n "$category" ] && [ -n "$slug" ]; then
+                URLS="${URLS}\"https://kubernetes.recipes/recipes/${category}/${slug}/\","
+              fi
+            fi
+          done <<< "${{ steps.changed.outputs.files }}"
+          # Remove trailing comma
+          URLS="${URLS%,}"
+          echo "urls=$URLS" >> $GITHUB_OUTPUT
+
+      - name: Submit to IndexNow
+        if: steps.urls.outputs.urls != ''
+        run: |
+          curl -s -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "host": "kubernetes.recipes",
+              "key": "d4f8e2a1b3c5d7e9f0a1b2c3d4e5f6a7",
+              "keyLocation": "https://kubernetes.recipes/d4f8e2a1b3c5d7e9f0a1b2c3d4e5f6a7.txt",
+              "urlList": ['"${{ steps.urls.outputs.urls }}"']
+            }'
+          echo "Submitted URLs to IndexNow"
