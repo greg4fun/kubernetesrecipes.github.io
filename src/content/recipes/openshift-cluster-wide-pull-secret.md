@@ -12,6 +12,7 @@ prerequisites:
   - "oc CLI configured"
   - "jq installed"
 relatedRecipes:
+  - "quay-default-permissions-robot"
   - "quay-robot-account-kubernetes"
   - "image-pull-secrets"
   - "openshift-multi-tenant-certificates"

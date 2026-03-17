@@ -11,6 +11,7 @@ prerequisites:
   - "Quay organization admin or owner role"
   - "kubectl configured with cluster access"
 relatedRecipes:
+  - "quay-default-permissions-robot"
   - "rotate-quay-robot-tokens"
   - "openshift-custom-ca-registry"
   - "decode-docker-registry-secrets"

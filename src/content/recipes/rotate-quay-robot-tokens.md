@@ -12,6 +12,7 @@ prerequisites:
   - "Quay API token with robot management permissions"
   - "kubectl and jq installed"
 relatedRecipes:
+  - "quay-default-permissions-robot"
   - "quay-robot-account-kubernetes"
   - "openshift-cluster-wide-pull-secret"
   - "secrets-management-best-practices"
