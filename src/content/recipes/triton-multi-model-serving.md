@@ -10,6 +10,7 @@ prerequisites:
   - "Multiple GPUs or multi-GPU nodes"
   - "Triton with TensorRT-LLM and vLLM backends"
 relatedRecipes:
+  - "model-storage-hostpath-pvc"
   - "triton-tensorrt-llm-kubernetes"
   - "triton-vllm-kubernetes"
   - "triton-autoscaling-gpu-metrics"

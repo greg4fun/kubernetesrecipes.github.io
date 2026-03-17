@@ -10,6 +10,7 @@ prerequisites:
   - "4x A100 80GB or 2x H100 GPUs available"
   - "HuggingFace access token for Llama 2"
 relatedRecipes:
+  - "model-storage-hostpath-pvc"
   - "deploy-minimax-m25-kubernetes"
   - "triton-tensorrt-vllm-comparison"
   - "triton-tensorrt-llm-kubernetes"

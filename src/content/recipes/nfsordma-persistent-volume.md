@@ -12,6 +12,7 @@ tags:
   - "nfs"
   - "storage"
 relatedRecipes:
+  - "model-storage-hostpath-pvc"
   - "nfsordma-dedicated-nic"
   - "nfsordma-worker-node-setup"
   - "nfsordma-jumbo-frames-mtu"

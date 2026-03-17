@@ -10,6 +10,7 @@ prerequisites:
   - "A storage class supporting ReadWriteMany (NFS, CephFS, or EFS)"
   - "kubectl configured with cluster-admin permissions"
 relatedRecipes:
+  - "model-storage-hostpath-pvc"
   - "llm-serving-frameworks-compared"
   - "nvidia-nim-microservices"
   - "inference-autoscaling-gpu-metrics"
