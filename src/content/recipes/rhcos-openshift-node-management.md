@@ -14,6 +14,7 @@ tags:
   - "mco"
   - "ostree"
 relatedRecipes:
+  - "itms-registries-conf-machineconfig"
   - "openshift-mcp-itms-rollout"
   - "doca-driver-openshift-dtk"
   - "gpu-operator-mofed-driver"

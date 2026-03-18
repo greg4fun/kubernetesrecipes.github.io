@@ -13,6 +13,7 @@ prerequisites:
   - "Private registry (Quay, Artifactory, Nexus, Harbor)"
   - "Images pre-mirrored with skopeo or oc-mirror"
 relatedRecipes:
+  - "itms-registries-conf-machineconfig"
   - "openshift-itms-image-tag-mirror"
   - "openshift-idms-install-config"
   - "openshift-mcp-itms-rollout"
