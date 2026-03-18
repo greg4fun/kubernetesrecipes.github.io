@@ -13,6 +13,7 @@ tags:
   - "disconnected"
   - "idms"
 relatedRecipes:
+  - "itms-external-registry-mapping"
   - "openshift-idms-install-config"
   - "openshift-itms-image-tag-mirror"
   - "gitops-bootstrap-bare-metal-gpu"

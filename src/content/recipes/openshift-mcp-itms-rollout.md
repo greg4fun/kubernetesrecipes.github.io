@@ -10,6 +10,7 @@ prerequisites:
   - "oc CLI tool"
   - "Cluster admin access"
 relatedRecipes:
+  - "itms-external-registry-mapping"
   - "openshift-itms-image-tag-mirror"
   - "openshift-idms-install-config"
   - "openshift-cluster-wide-pull-secret"

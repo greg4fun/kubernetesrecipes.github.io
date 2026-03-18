@@ -10,6 +10,7 @@ prerequisites:
   - "oc CLI tool"
   - "Mirror registry (Quay, Harbor, Nexus)"
 relatedRecipes:
+  - "itms-external-registry-mapping"
   - "openshift-mcp-itms-rollout"
   - "openshift-idms-install-config"
   - "openshift-cluster-wide-pull-secret"

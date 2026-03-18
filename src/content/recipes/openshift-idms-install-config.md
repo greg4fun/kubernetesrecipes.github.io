@@ -10,6 +10,7 @@ prerequisites:
   - "oc CLI and oc-mirror plugin"
   - "Mirror registry (Quay, Harbor, Nexus, or mirror-registry)"
 relatedRecipes:
+  - "itms-external-registry-mapping"
   - "openshift-itms-image-tag-mirror"
   - "openshift-cluster-wide-pull-secret"
   - "openshift-custom-ca-registry"
