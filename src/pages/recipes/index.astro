@@ -1,397 +1,548 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "@layouts/Layout.astro";
-import Container from "@components/container.astro";
+import Layout from "../../layouts/Layout.astro";
 
-// Get all published recipes
-const allRecipes = await getCollection("recipes", ({ data }) => {
-  return !data.draft;
-});
+const recipes = (await getCollection("recipes"))
+  .filter((r: any) => !r.data.draft)
+  .sort((a: any, b: any) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
 
-// Category definitions with HF-style colors
-const categoryGroups = [
-  {
-    title: "Infrastructure & Networking",
-    categories: [
-      { slug: "networking", name: "Networking", description: "Ingress, Services, NetworkPolicies, DNS, NNCP, SR-IOV, and RDMA", color: "blue", count: 0 },
-      { slug: "storage", name: "Storage", description: "Persistent Volumes, StorageClasses, CSI drivers, and backup strategies", color: "red", count: 0 },
-      { slug: "configuration", name: "Configuration", description: "ConfigMaps, namespaces, DOCA drivers, and resource management", color: "teal", count: 0 },
-    ]
-  },
-  {
-    title: "Workloads & Deployments",
-    categories: [
-      { slug: "deployments", name: "Deployments", description: "Rolling updates, blue-green, canary, ArgoCD, and GitOps patterns", color: "indigo", count: 0 },
-      { slug: "helm", name: "Helm", description: "Chart development, templating, and Helm release management", color: "cyan", count: 0 },
-      { slug: "autoscaling", name: "Autoscaling", description: "HPA, VPA, KEDA event-driven, and cluster autoscaling", color: "green", count: 0 },
-    ]
-  },
-  {
-    title: "Security & Operations",
-    categories: [
-      { slug: "security", name: "Security", description: "RBAC, Pod Security Standards, secrets, scanning, and compliance", color: "orange", count: 0 },
-      { slug: "observability", name: "Observability", description: "Prometheus, Grafana, EFK logging, tracing, and alerting", color: "purple", count: 0 },
-      { slug: "troubleshooting", name: "Troubleshooting", description: "Debug pods, diagnose failures, fix common issues", color: "amber", count: 0 },
-    ]
-  },
-  {
-    title: "AI & Machine Learning",
-    categories: [
-      { slug: "ai", name: "AI & GPU Workloads", description: "NVIDIA GPU Operator, Triton, model serving, distributed training, and LLM deployment", color: "fuchsia", count: 0 },
-    ]
-  }
+const categories = [
+  { id: "ai", name: "AI & GPU", icon: "🤖", color: "purple" },
+  { id: "networking", name: "Networking", icon: "🌐", color: "blue" },
+  { id: "security", name: "Security", icon: "🔒", color: "red" },
+  { id: "deployments", name: "Deployments", icon: "🚀", color: "green" },
+  { id: "storage", name: "Storage", icon: "💾", color: "yellow" },
+  { id: "observability", name: "Observability", icon: "📊", color: "orange" },
+  { id: "autoscaling", name: "Autoscaling", icon: "⚡", color: "cyan" },
+  { id: "configuration", name: "Configuration", icon: "⚙️", color: "gray" },
+  { id: "helm", name: "Helm", icon: "🎯", color: "teal" },
+  { id: "troubleshooting", name: "Troubleshooting", icon: "🔧", color: "pink" },
 ];
 
-// Count recipes per category
-categoryGroups.forEach(group => {
-  group.categories.forEach(cat => {
-    cat.count = allRecipes.filter(r => r.data.category === cat.slug).length;
+const difficulties = ["beginner", "intermediate", "advanced"];
+
+// Collect all unique tags
+const tagCounts: Record<string, number> = {};
+recipes.forEach((r: any) => {
+  (r.data.tags || []).forEach((t: string) => {
+    tagCounts[t] = (tagCounts[t] || 0) + 1;
   });
 });
+const topTags = Object.entries(tagCounts)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 30)
+  .map(([tag]) => tag);
 
-// Build search index
-const searchIndex = allRecipes.map(recipe => ({
-  slug: recipe.slug,
-  title: recipe.data.title,
-  description: recipe.data.description,
-  category: recipe.data.category,
-  difficulty: recipe.data.difficulty,
-  tags: recipe.data.tags || [],
+// Category counts
+const catCounts: Record<string, number> = {};
+recipes.forEach((r: any) => {
+  catCounts[r.data.category] = (catCounts[r.data.category] || 0) + 1;
+});
+
+// Serialize recipes for client-side search
+const recipesData = recipes.map((r: any) => ({
+  slug: r.slug,
+  title: r.data.title,
+  description: r.data.description,
+  category: r.data.category,
+  difficulty: r.data.difficulty,
+  tags: r.data.tags || [],
+  publishDate: r.data.publishDate,
+  timeToComplete: r.data.timeToComplete || "",
 }));
-
-const totalRecipes = allRecipes.length;
 ---
 
-<Layout 
-  title="Kubernetes Recipes" 
-  description="Practical Kubernetes recipes with copy-paste YAML examples. Learn networking, storage, deployments, security, and observability for production clusters."
+<Layout
+  title="All Recipes"
+  description="Browse 400+ production-ready Kubernetes recipes. Search by category, difficulty, or topic — from AI/GPU workloads to networking, security, and platform engineering."
 >
-  <Container>
-    <!-- Header -->
-    <div class="max-w-5xl mx-auto pt-10 pb-2">
-      <h1 class="text-3xl font-bold text-slate-800 flex items-center gap-3">
-        <svg class="w-8 h-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-        </svg>
-        Recipes
-        <span class="text-base font-normal text-slate-400 ml-1">({totalRecipes})</span>
-      </h1>
-    </div>
-
-    <!-- Search Bar (HF-style) -->
-    <div class="max-w-5xl mx-auto mb-10">
-      <div class="relative">
-        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <input
-          type="text"
-          id="hf-search-input"
-          placeholder="Search recipes by name, category, or tag..."
-          class="w-full px-4 py-3.5 pl-12 bg-white border border-slate-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent text-slate-700 placeholder-slate-400 shadow-sm hover:shadow transition-shadow"
-          autocomplete="off"
-          spellcheck="false"
-        />
-        <button
-          id="hf-clear-btn"
-          class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition"
-          title="Clear search"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+  <main class="recipes-hub">
+    <!-- Hero Search -->
+    <section class="hub-hero">
+      <div class="hub-hero-inner">
+        <h1>Kubernetes Recipes</h1>
+        <p class="hub-subtitle">{recipes.length} production-ready recipes for every K8s challenge</p>
+        <div class="search-box">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input
+            type="search"
+            id="recipe-search"
+            placeholder="Search recipes... (e.g. HPA, GPU, ArgoCD, secrets)"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <kbd class="search-kbd">⌘K</kbd>
+        </div>
+        <div class="search-stats" id="search-stats">{recipes.length} recipes</div>
       </div>
-      
-      <!-- Search Results -->
-      <div id="hf-search-results" class="hidden mt-2 bg-white border border-slate-200 rounded-2xl shadow-xl max-h-[32rem] overflow-y-auto">
-      </div>
-    </div>
+    </section>
 
-    <!-- Category Groups (HF docs-style) -->
-    <div class="max-w-5xl mx-auto space-y-10">
-      {categoryGroups.map((group) => (
-        <div class="group/section">
-          <div class="mb-5 flex items-center gap-3">
-            <h2 class="text-xl font-semibold text-slate-800">{group.title}</h2>
-            <div class="h-px flex-1 bg-gradient-to-r from-slate-200/60 from-60% to-transparent"></div>
+    <!-- Filters -->
+    <section class="hub-filters">
+      <div class="hub-filters-inner">
+        <!-- Category pills -->
+        <div class="filter-group">
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="categories">Categories</button>
+            <button class="filter-tab" data-filter="difficulty">Difficulty</button>
+            <button class="filter-tab" data-filter="tags">Popular Tags</button>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {group.categories.map((cat) => (
-              <a 
-                href={`/recipes/${cat.slug}/`}
-                class={`
-                  block rounded-xl border border-slate-100 bg-gradient-to-r from-slate-50/70 to-transparent
-                  px-5 py-4 transition-all duration-150
-                  hover:from-${cat.color}-500/10 hover:to-${cat.color}-500/5 hover:border-${cat.color}-200
-                  hover:shadow-md
-                `}
-              >
-                <div class="flex items-center gap-2.5">
-                  <span class={`h-2 w-2 rounded-full bg-${cat.color}-500`}></span>
-                  <p class="text-base font-semibold text-slate-800">{cat.name}</p>
-                  <span class="ml-auto text-xs text-slate-400 font-medium">{cat.count}</span>
-                </div>
-                <p class="text-sm text-slate-500 mt-1.5 leading-relaxed">{cat.description}</p>
-              </a>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <!-- Book CTA (clean, minimal) -->
-    <div class="max-w-5xl mx-auto mt-14">
-      <div class="rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 p-8 md:p-10 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
-        <div class="relative flex flex-col md:flex-row items-center justify-between gap-6">
-          <div class="text-center md:text-left">
-            <h3 class="text-2xl md:text-3xl font-bold text-white">📘 Get All Recipes in One Book</h3>
-            <p class="mt-2 text-blue-100 max-w-xl">
-              Stop searching — get every production-ready pattern with detailed explanations, best practices, and copy-paste YAML.
-            </p>
-          </div>
-          <a 
-            href="https://amzn.to/3DzC8QA" target="_blank" rel="noopener" 
-            class="shrink-0 inline-flex items-center gap-2 bg-white text-blue-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 hover:scale-105 transition-all shadow-lg"
-          >
-            Get the Book →
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Latest Recipes -->
-    <div class="max-w-5xl mx-auto mt-14 mb-16">
-      <div class="mb-5 flex items-center gap-3">
-        <h2 class="text-xl font-semibold text-slate-800">Latest Recipes</h2>
-        <div class="h-px flex-1 bg-gradient-to-r from-slate-200/60 from-60% to-transparent"></div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {allRecipes
-          .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-          .slice(0, 8)
-          .map((recipe) => (
-            <a 
-              href={`/recipes/${recipe.data.category}/${recipe.slug}/`}
-              class="block rounded-xl border border-slate-100 bg-gradient-to-r from-slate-50/70 to-transparent px-5 py-4 hover:from-slate-100 hover:border-slate-200 hover:shadow-md transition-all duration-150"
-            >
-              <div class="flex items-center gap-2 mb-1.5">
-                <span class="text-xs uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-medium">
-                  {recipe.data.category}
-                </span>
-                <span class="text-xs text-slate-400">{recipe.data.difficulty}</span>
-              </div>
-              <p class="font-semibold text-slate-800 text-sm leading-snug">{recipe.data.title}</p>
-              <p class="text-xs text-slate-500 mt-1 line-clamp-2">{recipe.data.description}</p>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </Container>
-</Layout>
-
-<!-- Search Index -->
-<script define:vars={{ searchIndex }}>
-  window.recipeSearchIndex = searchIndex;
-</script>
-
-<script>
-  const searchInput = document.getElementById('hf-search-input');
-  const searchResults = document.getElementById('hf-search-results');
-  const clearBtn = document.getElementById('hf-clear-btn');
-  const searchIndex = window.recipeSearchIndex || [];
-
-  const catColors = {
-    networking: 'blue', storage: 'red', configuration: 'teal',
-    deployments: 'indigo', helm: 'cyan', autoscaling: 'green',
-    security: 'orange', observability: 'purple', troubleshooting: 'amber', ai: 'fuchsia'
-  };
-
-  const diffColors = {
-    beginner: 'bg-green-100 text-green-700',
-    intermediate: 'bg-yellow-100 text-yellow-700',
-    advanced: 'bg-red-100 text-red-700',
-  };
-
-  function search(query) {
-    if (!query || query.length < 2) return [];
-    const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 0);
-    
-    return searchIndex
-      .map(r => {
-        let score = 0;
-        for (const term of terms) {
-          if (r.title.toLowerCase().includes(term)) score += 10;
-          if (r.category.toLowerCase().includes(term)) score += 5;
-          if (r.tags.some(t => t.toLowerCase().includes(term))) score += 4;
-          if (r.description.toLowerCase().includes(term)) score += 2;
-        }
-        return { ...r, score };
-      })
-      .filter(r => r.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 20);
-  }
-
-  function highlight(text, query) {
-    if (!query) return text;
-    const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 0);
-    let result = text;
-    for (const term of terms) {
-      result = result.replace(new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'), 
-        '<mark class="bg-yellow-200/60 rounded px-0.5">$1</mark>');
-    }
-    return result;
-  }
-
-  function render(results, query) {
-    if (results.length === 0) {
-      searchResults.innerHTML = `
-        <div class="p-8 text-center text-slate-500">
-          <div class="text-3xl mb-2">🔍</div>
-          <p>No recipes found for "<strong>${query}</strong>"</p>
-          <p class="text-sm mt-1 text-slate-400">Try: ingress, gpu, argocd, triton, secrets, hpa</p>
-        </div>`;
-      searchResults.classList.remove('hidden');
-      return;
-    }
-
-    const html = results.map(r => {
-      const dc = diffColors[r.difficulty] || 'bg-slate-100 text-slate-700';
-      return `
-        <a href="/recipes/${r.category}/${r.slug}/" class="flex items-start gap-4 px-5 py-3.5 hover:bg-slate-50 border-b border-slate-100 last:border-b-0 transition-colors">
-          <span class="mt-0.5 h-2 w-2 rounded-full bg-${catColors[r.category] || 'slate'}-500 shrink-0"></span>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="font-semibold text-slate-800 text-sm">${highlight(r.title, query)}</span>
-              <span class="text-[0.65rem] px-1.5 py-0.5 rounded ${dc}">${r.difficulty}</span>
+          <div class="filter-panel active" id="panel-categories">
+            <div class="pill-grid">
+              {categories.map((cat) => (
+                <button
+                  class={`cat-pill cat-pill-${cat.color}`}
+                  data-category={cat.id}
+                >
+                  <span class="pill-icon">{cat.icon}</span>
+                  <span class="pill-name">{cat.name}</span>
+                  <span class="pill-count">{catCounts[cat.id] || 0}</span>
+                </button>
+              ))}
             </div>
-            <p class="text-xs text-slate-500 mt-0.5 line-clamp-1">${highlight(r.description, query)}</p>
           </div>
-          <span class="text-[0.65rem] text-slate-400 shrink-0 mt-1 uppercase tracking-wider">${r.category}</span>
-        </a>`;
-    }).join('');
 
-    searchResults.innerHTML = `
-      <div class="px-5 py-2.5 border-b border-slate-100 text-xs text-slate-400">
-        ${results.length} result${results.length !== 1 ? 's' : ''}
-      </div>${html}`;
-    searchResults.classList.remove('hidden');
-  }
+          <div class="filter-panel" id="panel-difficulty">
+            <div class="pill-grid">
+              {difficulties.map((d) => (
+                <button
+                  class={`diff-pill diff-pill-${d}`}
+                  data-difficulty={d}
+                >
+                  <span class="pill-name">{d}</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
-  let debounceTimer;
-  searchInput.addEventListener('input', (e) => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      const q = e.target.value.trim();
-      if (q.length < 2) {
-        searchResults.classList.add('hidden');
-        clearBtn.classList.add('hidden');
-        return;
+          <div class="filter-panel" id="panel-tags">
+            <div class="pill-grid pill-grid-tags">
+              {topTags.map((tag) => (
+                <button class="tag-pill" data-tag={tag}>
+                  {tag}
+                  <span class="pill-count">{tagCounts[tag]}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Active filters -->
+        <div class="active-filters" id="active-filters" style="display:none">
+          <span class="active-label">Filters:</span>
+          <div id="active-filter-chips"></div>
+          <button class="clear-all" id="clear-filters">Clear all</button>
+        </div>
+
+        <!-- Sort -->
+        <div class="sort-bar">
+          <select id="sort-select">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="az">A → Z</option>
+            <option value="za">Z → A</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="hub-results">
+      <div class="hub-results-inner">
+        <div class="recipe-grid" id="recipe-grid">
+          {recipes.map((recipe: any) => (
+            <a
+              href={`/recipes/${recipe.data.category}/${recipe.slug}/`}
+              class="recipe-card"
+              data-category={recipe.data.category}
+              data-difficulty={recipe.data.difficulty}
+              data-tags={(recipe.data.tags || []).join(",")}
+              data-title={recipe.data.title.toLowerCase()}
+              data-desc={recipe.data.description.toLowerCase()}
+            >
+              <div class="card-header">
+                <span class={`card-cat card-cat-${recipe.data.category}`}>
+                  {categories.find(c => c.id === recipe.data.category)?.icon}{" "}
+                  {categories.find(c => c.id === recipe.data.category)?.name || recipe.data.category}
+                </span>
+                {recipe.data.difficulty && (
+                  <span class={`card-diff card-diff-${recipe.data.difficulty}`}>
+                    {recipe.data.difficulty}
+                  </span>
+                )}
+              </div>
+              <h3 class="card-title">{recipe.data.title}</h3>
+              <p class="card-desc">{recipe.data.description}</p>
+              <div class="card-meta">
+                {recipe.data.timeToComplete && (
+                  <span class="card-time">⏱ {recipe.data.timeToComplete}</span>
+                )}
+                <span class="card-tags">
+                  {(recipe.data.tags || []).slice(0, 3).map((tag: string) => (
+                    <span class="card-tag">{tag}</span>
+                  ))}
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div class="no-results" id="no-results" style="display:none">
+          <p class="no-results-icon">🔍</p>
+          <p class="no-results-text">No recipes found</p>
+          <p class="no-results-hint">Try different keywords or clear your filters</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script define:vars={{ recipesData }}>
+    // Client-side search & filter
+    const searchInput = document.getElementById("recipe-search");
+    const grid = document.getElementById("recipe-grid");
+    const cards = Array.from(grid.querySelectorAll(".recipe-card"));
+    const statsEl = document.getElementById("search-stats");
+    const noResults = document.getElementById("no-results");
+    const activeFiltersEl = document.getElementById("active-filters");
+    const activeChipsEl = document.getElementById("active-filter-chips");
+    const clearBtn = document.getElementById("clear-filters");
+    const sortSelect = document.getElementById("sort-select");
+
+    let filters = { categories: [], difficulty: [], tags: [], query: "" };
+
+    // Filter tabs
+    document.querySelectorAll(".filter-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".filter-panel").forEach(p => p.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById("panel-" + tab.dataset.filter).classList.add("active");
+      });
+    });
+
+    // Category pills
+    document.querySelectorAll(".cat-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        const cat = pill.dataset.category;
+        pill.classList.toggle("selected");
+        if (filters.categories.includes(cat)) {
+          filters.categories = filters.categories.filter(c => c !== cat);
+        } else {
+          filters.categories.push(cat);
+        }
+        applyFilters();
+      });
+    });
+
+    // Difficulty pills
+    document.querySelectorAll(".diff-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        const d = pill.dataset.difficulty;
+        pill.classList.toggle("selected");
+        if (filters.difficulty.includes(d)) {
+          filters.difficulty = filters.difficulty.filter(x => x !== d);
+        } else {
+          filters.difficulty.push(d);
+        }
+        applyFilters();
+      });
+    });
+
+    // Tag pills
+    document.querySelectorAll(".tag-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        const t = pill.dataset.tag;
+        pill.classList.toggle("selected");
+        if (filters.tags.includes(t)) {
+          filters.tags = filters.tags.filter(x => x !== t);
+        } else {
+          filters.tags.push(t);
+        }
+        applyFilters();
+      });
+    });
+
+    // Search
+    let searchTimeout;
+    searchInput.addEventListener("input", () => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        filters.query = searchInput.value.toLowerCase().trim();
+        applyFilters();
+      }, 150);
+    });
+
+    // Keyboard shortcut
+    document.addEventListener("keydown", (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        searchInput.focus();
       }
-      clearBtn.classList.remove('hidden');
-      render(search(q), q);
-    }, 150);
-  });
+      if (e.key === "Escape" && document.activeElement === searchInput) {
+        searchInput.blur();
+      }
+    });
 
-  clearBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    searchResults.classList.add('hidden');
-    clearBtn.classList.add('hidden');
-    searchInput.focus();
-  });
+    // Sort
+    sortSelect.addEventListener("change", applyFilters);
 
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('#hf-search-input') && !e.target.closest('#hf-search-results')) {
-      searchResults.classList.add('hidden');
+    // Clear
+    clearBtn.addEventListener("click", () => {
+      filters = { categories: [], difficulty: [], tags: [], query: "" };
+      searchInput.value = "";
+      document.querySelectorAll(".selected").forEach(el => el.classList.remove("selected"));
+      applyFilters();
+    });
+
+    function applyFilters() {
+      const q = filters.query;
+      let visible = 0;
+
+      cards.forEach(card => {
+        const cat = card.dataset.category;
+        const diff = card.dataset.difficulty;
+        const tags = card.dataset.tags;
+        const title = card.dataset.title;
+        const desc = card.dataset.desc;
+
+        let show = true;
+
+        if (filters.categories.length && !filters.categories.includes(cat)) show = false;
+        if (filters.difficulty.length && !filters.difficulty.includes(diff)) show = false;
+        if (filters.tags.length && !filters.tags.some(t => tags.includes(t))) show = false;
+        if (q && !title.includes(q) && !desc.includes(q) && !tags.includes(q) && !cat.includes(q)) show = false;
+
+        card.style.display = show ? "" : "none";
+        if (show) visible++;
+      });
+
+      // Sort visible cards
+      const sortVal = sortSelect.value;
+      const sorted = cards.filter(c => c.style.display !== "none");
+      if (sortVal === "az") sorted.sort((a, b) => a.dataset.title.localeCompare(b.dataset.title));
+      else if (sortVal === "za") sorted.sort((a, b) => b.dataset.title.localeCompare(a.dataset.title));
+      // newest/oldest already sorted by DOM order or reverse
+      sorted.forEach(card => grid.appendChild(card));
+
+      statsEl.textContent = visible + " recipe" + (visible !== 1 ? "s" : "");
+      noResults.style.display = visible === 0 ? "" : "none";
+      grid.style.display = visible === 0 ? "none" : "";
+
+      // Active filters display
+      const hasFilters = filters.categories.length || filters.difficulty.length || filters.tags.length || filters.query;
+      activeFiltersEl.style.display = hasFilters ? "" : "none";
+      activeChipsEl.innerHTML = "";
+      [...filters.categories, ...filters.difficulty, ...filters.tags].forEach(f => {
+        const chip = document.createElement("span");
+        chip.className = "filter-chip";
+        chip.textContent = f;
+        chip.addEventListener("click", () => {
+          filters.categories = filters.categories.filter(x => x !== f);
+          filters.difficulty = filters.difficulty.filter(x => x !== f);
+          filters.tags = filters.tags.filter(x => x !== f);
+          document.querySelectorAll(`[data-category="${f}"],[data-difficulty="${f}"],[data-tag="${f}"]`).forEach(el => el.classList.remove("selected"));
+          applyFilters();
+        });
+        activeChipsEl.appendChild(chip);
+      });
+      if (filters.query) {
+        const chip = document.createElement("span");
+        chip.className = "filter-chip";
+        chip.textContent = `"${filters.query}"`;
+        chip.addEventListener("click", () => { filters.query = ""; searchInput.value = ""; applyFilters(); });
+        activeChipsEl.appendChild(chip);
+      }
     }
-  });
+  </script>
 
-  searchInput.addEventListener('focus', () => {
-    const q = searchInput.value.trim();
-    if (q.length >= 2) render(search(q), q);
-  });
+  <style>
+    .recipes-hub { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 
-  searchInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { searchResults.classList.add('hidden'); searchInput.blur(); }
-  });
-
-  // Handle ?tag= query param
-  const tagFilter = new URLSearchParams(window.location.search).get('tag');
-  if (tagFilter) {
-    searchInput.value = tagFilter;
-    clearBtn.classList.remove('hidden');
-    render(search(tagFilter), tagFilter);
-    searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    searchInput.focus();
-  }
-
-  // Keyboard shortcut: / to focus search
-  document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && document.activeElement !== searchInput && !e.ctrlKey && !e.metaKey) {
-      e.preventDefault();
-      searchInput.focus();
+    /* Hero */
+    .hub-hero { text-align: center; padding: 3rem 0 1.5rem; }
+    .hub-hero h1 { font-size: 2.2rem; font-weight: 800; margin: 0 0 0.3rem; color: #1a1a2e; }
+    .hub-subtitle { color: #666; font-size: 1.05rem; margin: 0 0 1.5rem; }
+    .search-box {
+      position: relative; max-width: 600px; margin: 0 auto;
     }
-  });
-</script>
+    .search-box input {
+      width: 100%; padding: 0.8rem 1rem 0.8rem 2.8rem;
+      border: 2px solid #e2e8f0; border-radius: 12px;
+      font-size: 1rem; background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .search-box input:focus {
+      border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+    }
+    .search-icon {
+      position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%);
+      width: 1.1rem; height: 1.1rem; color: #9ca3af;
+    }
+    .search-kbd {
+      position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%);
+      background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 4px;
+      padding: 0.1rem 0.4rem; font-size: 0.75rem; color: #94a3b8;
+      font-family: system-ui;
+    }
+    .search-stats { color: #9ca3af; font-size: 0.85rem; margin-top: 0.5rem; }
 
-<style>
-  .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  
-  /* Tailwind dynamic colors safelist */
-  .bg-blue-500 { background-color: rgb(59 130 246); }
-  .bg-red-500 { background-color: rgb(239 68 68); }
-  .bg-teal-500 { background-color: rgb(20 184 166); }
-  .bg-indigo-500 { background-color: rgb(99 102 241); }
-  .bg-cyan-500 { background-color: rgb(6 182 212); }
-  .bg-green-500 { background-color: rgb(34 197 94); }
-  .bg-orange-500 { background-color: rgb(249 115 22); }
-  .bg-purple-500 { background-color: rgb(168 85 247); }
-  .bg-amber-500 { background-color: rgb(245 158 11); }
-  .bg-fuchsia-500 { background-color: rgb(217 70 239); }
-  .bg-slate-500 { background-color: rgb(100 116 139); }
-  
-  .hover\:from-blue-500\/10:hover { --tw-gradient-from: rgb(59 130 246 / 0.1); }
-  .hover\:to-blue-500\/5:hover { --tw-gradient-to: rgb(59 130 246 / 0.05); }
-  .hover\:border-blue-200:hover { border-color: rgb(191 219 254); }
-  
-  .hover\:from-red-500\/10:hover { --tw-gradient-from: rgb(239 68 68 / 0.1); }
-  .hover\:to-red-500\/5:hover { --tw-gradient-to: rgb(239 68 68 / 0.05); }
-  .hover\:border-red-200:hover { border-color: rgb(254 202 202); }
-  
-  .hover\:from-teal-500\/10:hover { --tw-gradient-from: rgb(20 184 166 / 0.1); }
-  .hover\:to-teal-500\/5:hover { --tw-gradient-to: rgb(20 184 166 / 0.05); }
-  .hover\:border-teal-200:hover { border-color: rgb(153 246 228); }
-  
-  .hover\:from-indigo-500\/10:hover { --tw-gradient-from: rgb(99 102 241 / 0.1); }
-  .hover\:to-indigo-500\/5:hover { --tw-gradient-to: rgb(99 102 241 / 0.05); }
-  .hover\:border-indigo-200:hover { border-color: rgb(199 210 254); }
-  
-  .hover\:from-cyan-500\/10:hover { --tw-gradient-from: rgb(6 182 212 / 0.1); }
-  .hover\:to-cyan-500\/5:hover { --tw-gradient-to: rgb(6 182 212 / 0.05); }
-  .hover\:border-cyan-200:hover { border-color: rgb(165 243 252); }
-  
-  .hover\:from-green-500\/10:hover { --tw-gradient-from: rgb(34 197 94 / 0.1); }
-  .hover\:to-green-500\/5:hover { --tw-gradient-to: rgb(34 197 94 / 0.05); }
-  .hover\:border-green-200:hover { border-color: rgb(187 247 208); }
-  
-  .hover\:from-orange-500\/10:hover { --tw-gradient-from: rgb(249 115 22 / 0.1); }
-  .hover\:to-orange-500\/5:hover { --tw-gradient-to: rgb(249 115 22 / 0.05); }
-  .hover\:border-orange-200:hover { border-color: rgb(254 215 170); }
-  
-  .hover\:from-purple-500\/10:hover { --tw-gradient-from: rgb(168 85 247 / 0.1); }
-  .hover\:to-purple-500\/5:hover { --tw-gradient-to: rgb(168 85 247 / 0.05); }
-  .hover\:border-purple-200:hover { border-color: rgb(233 213 255); }
-  
-  .hover\:from-amber-500\/10:hover { --tw-gradient-from: rgb(245 158 11 / 0.1); }
-  .hover\:to-amber-500\/5:hover { --tw-gradient-to: rgb(245 158 11 / 0.05); }
-  .hover\:border-amber-200:hover { border-color: rgb(253 230 138); }
-  
-  .hover\:from-fuchsia-500\/10:hover { --tw-gradient-from: rgb(217 70 239 / 0.1); }
-  .hover\:to-fuchsia-500\/5:hover { --tw-gradient-to: rgb(217 70 239 / 0.05); }
-  .hover\:border-fuchsia-200:hover { border-color: rgb(245 208 254); }
-</style>
+    /* Filters */
+    .hub-filters { margin-bottom: 1.5rem; }
+    .filter-tabs {
+      display: flex; gap: 0.25rem; margin-bottom: 0.75rem;
+      border-bottom: 1px solid #e2e8f0; padding-bottom: 0;
+    }
+    .filter-tab {
+      padding: 0.4rem 0.8rem; border: none; background: none;
+      cursor: pointer; font-size: 0.85rem; font-weight: 500;
+      color: #64748b; border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .filter-tab:hover { color: #334155; }
+    .filter-tab.active { color: #1e293b; border-bottom-color: #3b82f6; }
+    .filter-panel { display: none; }
+    .filter-panel.active { display: block; }
+
+    .pill-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pill-grid-tags { gap: 0.35rem; }
+
+    /* Category pills */
+    .cat-pill {
+      display: flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 0.75rem; border-radius: 8px;
+      border: 1px solid #e2e8f0; background: #fff;
+      cursor: pointer; font-size: 0.85rem; font-weight: 500;
+      transition: all 0.15s; color: #334155;
+    }
+    .cat-pill:hover { border-color: #cbd5e1; background: #f8fafc; }
+    .cat-pill.selected { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
+    .pill-icon { font-size: 1rem; }
+    .pill-count {
+      background: #f1f5f9; padding: 0.05rem 0.4rem; border-radius: 10px;
+      font-size: 0.7rem; color: #64748b; font-weight: 600;
+    }
+    .cat-pill.selected .pill-count { background: #dbeafe; color: #2563eb; }
+
+    /* Difficulty pills */
+    .diff-pill {
+      padding: 0.35rem 0.8rem; border-radius: 20px;
+      border: 1px solid #e2e8f0; background: #fff;
+      cursor: pointer; font-size: 0.8rem; font-weight: 500;
+      text-transform: capitalize; transition: all 0.15s;
+    }
+    .diff-pill:hover { background: #f8fafc; }
+    .diff-pill.selected { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
+    .diff-pill-beginner { color: #16a34a; }
+    .diff-pill-intermediate { color: #ca8a04; }
+    .diff-pill-advanced { color: #dc2626; }
+
+    /* Tag pills */
+    .tag-pill {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.25rem 0.6rem; border-radius: 6px;
+      border: 1px solid #e2e8f0; background: #fff;
+      cursor: pointer; font-size: 0.78rem; color: #475569;
+      transition: all 0.15s;
+    }
+    .tag-pill:hover { border-color: #cbd5e1; background: #f8fafc; }
+    .tag-pill.selected { border-color: #8b5cf6; background: #f5f3ff; color: #7c3aed; }
+    .tag-pill .pill-count { font-size: 0.65rem; }
+
+    /* Active filters */
+    .active-filters {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.5rem 0; flex-wrap: wrap; margin-top: 0.5rem;
+    }
+    .active-label { font-size: 0.8rem; color: #64748b; font-weight: 500; }
+    .filter-chip {
+      display: inline-flex; align-items: center;
+      padding: 0.2rem 0.5rem; border-radius: 6px;
+      background: #eff6ff; color: #2563eb; font-size: 0.78rem;
+      cursor: pointer; font-weight: 500;
+    }
+    .filter-chip:hover { background: #dbeafe; }
+    .filter-chip::after { content: "×"; margin-left: 0.3rem; font-weight: 700; }
+    .clear-all {
+      border: none; background: none; color: #ef4444;
+      font-size: 0.78rem; cursor: pointer; font-weight: 500;
+    }
+
+    /* Sort */
+    .sort-bar { margin-top: 0.75rem; }
+    .sort-bar select {
+      padding: 0.35rem 0.6rem; border-radius: 8px;
+      border: 1px solid #e2e8f0; font-size: 0.82rem;
+      color: #475569; background: #fff; cursor: pointer;
+    }
+
+    /* Recipe grid */
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1rem; padding-bottom: 3rem;
+    }
+    .recipe-card {
+      display: flex; flex-direction: column;
+      padding: 1.1rem; border-radius: 12px;
+      border: 1px solid #e2e8f0; background: #fff;
+      text-decoration: none; color: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    }
+    .recipe-card:hover {
+      border-color: #3b82f6; box-shadow: 0 4px 12px rgba(59,130,246,0.1);
+      transform: translateY(-1px);
+    }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .card-cat {
+      font-size: 0.72rem; font-weight: 600; padding: 0.15rem 0.5rem;
+      border-radius: 6px; text-transform: capitalize;
+    }
+    .card-cat-ai { background: #f3e8ff; color: #7c3aed; }
+    .card-cat-networking { background: #dbeafe; color: #2563eb; }
+    .card-cat-security { background: #fee2e2; color: #dc2626; }
+    .card-cat-deployments { background: #dcfce7; color: #16a34a; }
+    .card-cat-storage { background: #fef9c3; color: #a16207; }
+    .card-cat-observability { background: #ffedd5; color: #c2410c; }
+    .card-cat-autoscaling { background: #cffafe; color: #0891b2; }
+    .card-cat-configuration { background: #f1f5f9; color: #475569; }
+    .card-cat-helm { background: #ccfbf1; color: #0d9488; }
+    .card-cat-troubleshooting { background: #fce7f3; color: #be185d; }
+    .card-diff {
+      font-size: 0.7rem; font-weight: 500; padding: 0.1rem 0.4rem;
+      border-radius: 4px; text-transform: capitalize;
+    }
+    .card-diff-beginner { background: #dcfce7; color: #16a34a; }
+    .card-diff-intermediate { background: #fef9c3; color: #a16207; }
+    .card-diff-advanced { background: #fee2e2; color: #dc2626; }
+    .card-title {
+      font-size: 0.95rem; font-weight: 700; margin: 0 0 0.4rem;
+      line-height: 1.3; color: #1e293b;
+    }
+    .recipe-card:hover .card-title { color: #2563eb; }
+    .card-desc {
+      font-size: 0.8rem; color: #64748b; line-height: 1.45;
+      margin: 0 0 0.6rem; flex: 1;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .card-time { font-size: 0.72rem; color: #94a3b8; }
+    .card-tags { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+    .card-tag {
+      font-size: 0.65rem; padding: 0.1rem 0.35rem; border-radius: 4px;
+      background: #f1f5f9; color: #64748b;
+    }
+
+    /* No results */
+    .no-results { text-align: center; padding: 4rem 0; }
+    .no-results-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+    .no-results-text { font-size: 1.2rem; font-weight: 600; color: #334155; }
+    .no-results-hint { color: #94a3b8; font-size: 0.9rem; }
+
+    @media (max-width: 640px) {
+      .recipe-grid { grid-template-columns: 1fr; }
+      .hub-hero h1 { font-size: 1.6rem; }
+      .search-kbd { display: none; }
+    }
+  </style>
+</Layout>
