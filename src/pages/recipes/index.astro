@@ -187,6 +187,8 @@ const recipesData = recipes.map((r: any) => ({
             </a>
           ))}
         </div>
+        <!-- Pagination -->
+        <div class="pagination" id="pagination"></div>
         <div class="no-results" id="no-results" style="display:none">
           <p class="no-results-icon">🔍</p>
           <p class="no-results-text">No recipes found</p>
@@ -197,7 +199,7 @@ const recipesData = recipes.map((r: any) => ({
   </main>
 
   <script define:vars={{ recipesData }}>
-    // Client-side search & filter
+    // Client-side search, filter & pagination
     const searchInput = document.getElementById("recipe-search");
     const grid = document.getElementById("recipe-grid");
     const cards = Array.from(grid.querySelectorAll(".recipe-card"));
@@ -207,7 +209,11 @@ const recipesData = recipes.map((r: any) => ({
     const activeChipsEl = document.getElementById("active-filter-chips");
     const clearBtn = document.getElementById("clear-filters");
     const sortSelect = document.getElementById("sort-select");
+    const paginationEl = document.getElementById("pagination");
 
+    const PAGE_SIZE = 24;
+    let currentPage = 1;
+    let filteredCards = [...cards];
     let filters = { categories: [], difficulty: [], tags: [], query: "" };
 
     // Filter tabs
@@ -230,6 +236,7 @@ const recipesData = recipes.map((r: any) => ({
         } else {
           filters.categories.push(cat);
         }
+        currentPage = 1;
         applyFilters();
       });
     });
@@ -244,6 +251,7 @@ const recipesData = recipes.map((r: any) => ({
         } else {
           filters.difficulty.push(d);
         }
+        currentPage = 1;
         applyFilters();
       });
     });
@@ -258,6 +266,7 @@ const recipesData = recipes.map((r: any) => ({
         } else {
           filters.tags.push(t);
         }
+        currentPage = 1;
         applyFilters();
       });
     });
@@ -268,6 +277,7 @@ const recipesData = recipes.map((r: any) => ({
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
         filters.query = searchInput.value.toLowerCase().trim();
+        currentPage = 1;
         applyFilters();
       }, 150);
     });
@@ -284,49 +294,60 @@ const recipesData = recipes.map((r: any) => ({
     });
 
     // Sort
-    sortSelect.addEventListener("change", applyFilters);
+    sortSelect.addEventListener("change", () => { currentPage = 1; applyFilters(); });
 
     // Clear
     clearBtn.addEventListener("click", () => {
       filters = { categories: [], difficulty: [], tags: [], query: "" };
       searchInput.value = "";
+      currentPage = 1;
       document.querySelectorAll(".selected").forEach(el => el.classList.remove("selected"));
       applyFilters();
     });
 
     function applyFilters() {
       const q = filters.query;
-      let visible = 0;
 
-      cards.forEach(card => {
+      // Filter
+      filteredCards = cards.filter(card => {
         const cat = card.dataset.category;
         const diff = card.dataset.difficulty;
         const tags = card.dataset.tags;
         const title = card.dataset.title;
         const desc = card.dataset.desc;
 
-        let show = true;
-
-        if (filters.categories.length && !filters.categories.includes(cat)) show = false;
-        if (filters.difficulty.length && !filters.difficulty.includes(diff)) show = false;
-        if (filters.tags.length && !filters.tags.some(t => tags.includes(t))) show = false;
-        if (q && !title.includes(q) && !desc.includes(q) && !tags.includes(q) && !cat.includes(q)) show = false;
-
-        card.style.display = show ? "" : "none";
-        if (show) visible++;
+        if (filters.categories.length && !filters.categories.includes(cat)) return false;
+        if (filters.difficulty.length && !filters.difficulty.includes(diff)) return false;
+        if (filters.tags.length && !filters.tags.some(t => tags.includes(t))) return false;
+        if (q && !title.includes(q) && !desc.includes(q) && !tags.includes(q) && !cat.includes(q)) return false;
+        return true;
       });
 
-      // Sort visible cards
+      // Sort
       const sortVal = sortSelect.value;
-      const sorted = cards.filter(c => c.style.display !== "none");
-      if (sortVal === "az") sorted.sort((a, b) => a.dataset.title.localeCompare(b.dataset.title));
-      else if (sortVal === "za") sorted.sort((a, b) => b.dataset.title.localeCompare(a.dataset.title));
-      // newest/oldest already sorted by DOM order or reverse
-      sorted.forEach(card => grid.appendChild(card));
+      if (sortVal === "az") filteredCards.sort((a, b) => a.dataset.title.localeCompare(b.dataset.title));
+      else if (sortVal === "za") filteredCards.sort((a, b) => b.dataset.title.localeCompare(a.dataset.title));
 
-      statsEl.textContent = visible + " recipe" + (visible !== 1 ? "s" : "");
-      noResults.style.display = visible === 0 ? "" : "none";
-      grid.style.display = visible === 0 ? "none" : "";
+      // Paginate
+      const totalPages = Math.max(1, Math.ceil(filteredCards.length / PAGE_SIZE));
+      if (currentPage > totalPages) currentPage = totalPages;
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const end = start + PAGE_SIZE;
+
+      // Show/hide cards
+      cards.forEach(c => c.style.display = "none");
+      filteredCards.slice(start, end).forEach(c => { c.style.display = ""; grid.appendChild(c); });
+
+      // Stats
+      const showing = Math.min(end, filteredCards.length);
+      statsEl.textContent = filteredCards.length === 0 
+        ? "0 recipes" 
+        : `Showing ${start + 1}–${showing} of ${filteredCards.length} recipes`;
+      noResults.style.display = filteredCards.length === 0 ? "" : "none";
+      grid.style.display = filteredCards.length === 0 ? "none" : "";
+
+      // Render pagination
+      renderPagination(totalPages);
 
       // Active filters display
       const hasFilters = filters.categories.length || filters.difficulty.length || filters.tags.length || filters.query;
@@ -341,6 +362,7 @@ const recipesData = recipes.map((r: any) => ({
           filters.difficulty = filters.difficulty.filter(x => x !== f);
           filters.tags = filters.tags.filter(x => x !== f);
           document.querySelectorAll(`[data-category="${f}"],[data-difficulty="${f}"],[data-tag="${f}"]`).forEach(el => el.classList.remove("selected"));
+          currentPage = 1;
           applyFilters();
         });
         activeChipsEl.appendChild(chip);
@@ -349,10 +371,63 @@ const recipesData = recipes.map((r: any) => ({
         const chip = document.createElement("span");
         chip.className = "filter-chip";
         chip.textContent = `"${filters.query}"`;
-        chip.addEventListener("click", () => { filters.query = ""; searchInput.value = ""; applyFilters(); });
+        chip.addEventListener("click", () => { filters.query = ""; searchInput.value = ""; currentPage = 1; applyFilters(); });
         activeChipsEl.appendChild(chip);
       }
     }
+
+    function renderPagination(totalPages) {
+      paginationEl.innerHTML = "";
+      if (totalPages <= 1) return;
+
+      // Prev button
+      const prev = document.createElement("button");
+      prev.textContent = "← Prev";
+      prev.className = "page-btn" + (currentPage === 1 ? " disabled" : "");
+      prev.disabled = currentPage === 1;
+      prev.addEventListener("click", () => { if (currentPage > 1) { currentPage--; applyFilters(); scrollToGrid(); } });
+      paginationEl.appendChild(prev);
+
+      // Page numbers with ellipsis
+      const pages = [];
+      pages.push(1);
+      if (currentPage > 3) pages.push("...");
+      for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+        pages.push(i);
+      }
+      if (currentPage < totalPages - 2) pages.push("...");
+      if (totalPages > 1) pages.push(totalPages);
+
+      pages.forEach(p => {
+        if (p === "...") {
+          const dots = document.createElement("span");
+          dots.textContent = "…";
+          dots.className = "page-dots";
+          paginationEl.appendChild(dots);
+        } else {
+          const btn = document.createElement("button");
+          btn.textContent = p;
+          btn.className = "page-btn" + (p === currentPage ? " active" : "");
+          btn.addEventListener("click", () => { currentPage = p; applyFilters(); scrollToGrid(); });
+          paginationEl.appendChild(btn);
+        }
+      });
+
+      // Next button
+      const next = document.createElement("button");
+      next.textContent = "Next →";
+      next.className = "page-btn" + (currentPage === totalPages ? " disabled" : "");
+      next.disabled = currentPage === totalPages;
+      next.addEventListener("click", () => { if (currentPage < totalPages) { currentPage++; applyFilters(); scrollToGrid(); } });
+      paginationEl.appendChild(next);
+    }
+
+    function scrollToGrid() {
+      document.querySelector(".hub-filters").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // Initial render with pagination
+    applyFilters();
   </script>
 
   <style>
@@ -532,6 +607,21 @@ const recipesData = recipes.map((r: any) => ({
       font-size: 0.65rem; padding: 0.1rem 0.35rem; border-radius: 4px;
       background: #f1f5f9; color: #64748b;
     }
+
+    /* Pagination */
+    .pagination {
+      display: flex; justify-content: center; align-items: center;
+      gap: 0.35rem; padding: 1.5rem 0 0.5rem; flex-wrap: wrap;
+    }
+    .page-btn {
+      padding: 0.4rem 0.75rem; border-radius: 8px; border: 1px solid #e2e8f0;
+      background: #fff; cursor: pointer; font-size: 0.85rem; font-weight: 500;
+      color: #475569; transition: all 0.15s;
+    }
+    .page-btn:hover:not(.disabled):not(.active) { border-color: #3b82f6; color: #2563eb; background: #f8fafc; }
+    .page-btn.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+    .page-btn.disabled { opacity: 0.4; cursor: not-allowed; }
+    .page-dots { color: #94a3b8; padding: 0 0.25rem; }
 
     /* No results */
     .no-results { text-align: center; padding: 4rem 0; }
