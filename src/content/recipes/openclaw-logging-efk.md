@@ -1,6 +1,6 @@
 ---
 title: "OpenClaw Logging with EFK Stack"
-description: "Collect and analyze OpenClaw agent logs using Elasticsearch, Fluent Bit, and Kibana for debugging and audit trails."
+description: "Collect and analyze OpenClaw agent logs using Elasticsearch, Fluent Bit, and Kibana (EFK stack) for debugging and audit trails."
 publishDate: "2026-02-26"
 author: "Luca Berton"
 category: "observability"

@@ -1,6 +1,6 @@
 ---
 title: "ResourceQuota and LimitRange for GPUs"
-description: "Configure ResourceQuota and LimitRange for GPU workloads with per-tenant caps on GPU, CPU, memory, and object counts."
+description: "Configure ResourceQuota and LimitRange for GPU workloads with per-tenant caps on GPU, CPU, memory, and object counts in Kubernetes."
 publishDate: "2026-02-26"
 author: "Luca Berton"
 category: "configuration"

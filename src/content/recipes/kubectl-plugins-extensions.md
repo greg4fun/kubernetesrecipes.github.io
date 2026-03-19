@@ -1,6 +1,6 @@
 ---
 title: "How to Extend kubectl with Plugins"
-description: "Enhance kubectl with custom plugins using Krew. Discover, install, and create plugins to boost Kubernetes productivity."
+description: "Enhance kubectl with custom plugins using Krew package manager. Discover, install, and create plugins to boost K8s productivity."
 category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-01-22"

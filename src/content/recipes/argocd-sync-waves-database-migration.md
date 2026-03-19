@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "ArgoCD Sync Waves for Database Migrations"
-description: "Use ArgoCD sync waves and PreSync hooks to run database migrations before deploying app code, with rollback strategies."
+description: "Use ArgoCD sync waves and PreSync hooks to run database migrations before deploying application code, with rollback strategies."
 category: "deployments"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

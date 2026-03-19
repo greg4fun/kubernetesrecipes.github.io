@@ -13,6 +13,9 @@ tags:
   - "disconnected"
   - "idms"
 relatedRecipes:
+  - "multi-container-pod-patterns"
+  - "deployment-strategies"
+  - "argocd-sync-waves-crd-operators"
   - "itms-external-registry-mapping"
   - "openshift-idms-install-config"
   - "openshift-itms-image-tag-mirror"

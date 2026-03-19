@@ -9,6 +9,7 @@ prerequisites:
   - "NVIDIA GPU Operator v25.3.0+ installed"
   - "Turing architecture or newer GPU"
 relatedRecipes:
+  - "resource-quotas-namespace"
   - "resource-limits-requests"
   - "pod-resource-management"
   - "pod-mutation-injection"

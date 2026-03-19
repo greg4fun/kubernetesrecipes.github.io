@@ -1,6 +1,6 @@
 ---
 title: "OpenClaw with Persistent Storage"
-description: "Configure persistent storage for OpenClaw workspaces using PVCs, StorageClasses, and backup strategies in Kubernetes."
+description: "Configure persistent storage for OpenClaw workspaces using PVCs, StorageClasses, and backup strategies in Kubernetes clusters."
 publishDate: "2026-02-26"
 author: "Luca Berton"
 category: "storage"

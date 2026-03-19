@@ -1,6 +1,6 @@
 ---
 title: "How ITMS Updates registries.conf via MachineConfig"
-description: "Deep-dive into OpenShift air-gap mirroring internals. How ITMS and IDMS update /etc/containers/registries.conf on immutable CoreOS nodes via MCO and MachineConfig."
+description: "How ITMS and IDMS update /etc/containers/registries.conf on immutable CoreOS nodes via MCO and MachineConfig. Full chain deep-dive."
 category: "configuration"
 difficulty: "advanced"
 timeToComplete: "25 minutes"

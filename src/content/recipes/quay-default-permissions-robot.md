@@ -1,6 +1,6 @@
 ---
 title: "Quay Default Permissions for Robot Accounts"
-description: "Configure organizational default permissions in Quay Registry to automatically grant read access to robot accounts on every new repository. LDAP and team patterns."
+description: "Configure Quay Registry default permissions to auto-grant read access to robot accounts on every new repository. API and team patterns."
 category: "security"
 difficulty: "intermediate"
 timeToComplete: "15 minutes"

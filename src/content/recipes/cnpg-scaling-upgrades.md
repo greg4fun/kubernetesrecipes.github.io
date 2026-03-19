@@ -1,6 +1,6 @@
 ---
 title: "CNPG Cluster Scaling and Upgrades"
-description: "Scale CloudNativePG clusters, perform rolling PostgreSQL major upgrades, and manage storage expansion without downtime."
+description: "Scale CloudNativePG clusters, perform rolling PostgreSQL major upgrades, and manage storage expansion without downtime in Kubernetes."
 publishDate: "2026-02-26"
 author: "Luca Berton"
 category: "deployments"

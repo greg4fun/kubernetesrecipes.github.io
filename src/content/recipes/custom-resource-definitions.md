@@ -5,6 +5,13 @@ category: "configuration"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 relatedRecipes:
+  - "pod-mutation-injection"
+  - "kubernetes-lease-objects"
+  - "kubernetes-finalizers"
+  - "kubeconfig-contexts"
+  - "kubernetes-api-aggregation"
+  - "kubernetes-labels-annotations"
+  - "kubernetes-cost-optimization"
   - "environment-variables-configmaps"
   - "api-versions-deprecations"
 tags: ["crd", "custom-resources", "api", "extensions", "operators"]

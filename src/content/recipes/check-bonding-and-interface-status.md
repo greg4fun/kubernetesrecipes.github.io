@@ -10,6 +10,8 @@ prerequisites:
   - "Node shell access"
   - "iproute2 and /proc access"
 relatedRecipes:
+  - "diagnose-nvidia-memory-only-modules"
+  - "sriov-vf-troubleshooting"
   - "troubleshoot-nv-ipam-pool-not-found"
   - "kubernetes-network-troubleshooting"
   - "kubernetes-gateway-api"

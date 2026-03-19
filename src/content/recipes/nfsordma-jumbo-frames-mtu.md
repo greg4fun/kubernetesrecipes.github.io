@@ -1,6 +1,6 @@
 ---
 title: "NFSoRDMA Jumbo Frames MTU Configuration"
-description: "Configure 9000 MTU jumbo frames for NFSoRDMA interfaces using NNCP to maximize RDMA throughput on Kubernetes nodes."
+description: "Configure 9000 MTU jumbo frames for NFSoRDMA interfaces using NNCP to maximize RDMA throughput on Kubernetes worker nodes."
 publishDate: "2026-02-26"
 author: "Luca Berton"
 category: "networking"

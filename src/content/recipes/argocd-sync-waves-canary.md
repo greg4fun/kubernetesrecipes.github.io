@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "ArgoCD Sync Waves for Canary Deployments"
-description: "Use ArgoCD sync waves for canary deployments with traffic splitting, automated validation, and progressive rollout."
+description: "Use ArgoCD sync waves for canary deployments with Istio traffic splitting, automated validation, and progressive rollout strategies."
 category: "deployments"
 difficulty: "advanced"
 timeToComplete: "20 minutes"

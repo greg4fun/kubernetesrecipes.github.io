@@ -1,6 +1,6 @@
 ---
 title: "HAProxy Keepalived Multi-Tenant GPU Ingress"
-description: "Configure HAProxy with Keepalived VIPs for per-tenant GPU cluster ingress with Jinja2 templates and per-tenant logging."
+description: "Configure HAProxy with Keepalived VIPs for per-tenant GPU cluster ingress with Jinja2 templates and per-tenant access logging."
 publishDate: "2026-02-26"
 author: "Luca Berton"
 category: "networking"

@@ -1,6 +1,6 @@
 ---
 title: "AI Model Storage: hostPath vs PVC for Inference"
-description: "Deploy AI models on Kubernetes using hostPath and PersistentVolumeClaim storage. Compare performance, security trade-offs, and production patterns for model serving."
+description: "Deploy AI models on Kubernetes using hostPath and PVC storage. Compare performance, security trade-offs, and production patterns for model serving."
 category: "ai"
 difficulty: "intermediate"
 timeToComplete: "30 minutes"

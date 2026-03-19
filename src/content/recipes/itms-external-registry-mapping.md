@@ -1,6 +1,6 @@
 ---
 title: "ITMS External-to-External Registry Mirroring"
-description: "Configure OpenShift ImageTagMirrorSet to map external registries to external registries. Mirror Docker Hub, GHCR, Quay.io, and NVIDIA NGC to your private registry."
+description: "Configure OpenShift ImageTagMirrorSet to map external registries to your private registry. Mirror Docker Hub, GHCR, Quay.io, and NVIDIA NGC."
 category: "configuration"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

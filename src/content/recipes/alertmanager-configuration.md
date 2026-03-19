@@ -10,6 +10,9 @@ prerequisites:
   - "Prometheus Operator installed"
   - "Basic understanding of alerting concepts"
 relatedRecipes:
+  - "node-problem-detector"
+  - "monitor-nccl-performance-prometheus"
+  - "gpu-tenant-monitoring-chargeback"
   - "prometheus-metrics-setup"
   - "grafana-dashboards"
   - "alertmanager-setup"

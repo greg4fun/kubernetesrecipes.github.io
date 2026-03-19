@@ -12,6 +12,9 @@ tags:
   - "replication"
   - "backup"
 relatedRecipes:
+  - "openclaw-persistent-storage"
+  - "dynamic-volume-provisioning"
+  - "nfsordma-persistent-volume"
   - "cnpg-postgresql-operator"
   - "cnpg-scaling-upgrades"
   - "velero-backup-disaster-recovery"

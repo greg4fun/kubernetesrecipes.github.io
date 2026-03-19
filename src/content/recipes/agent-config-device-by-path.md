@@ -10,6 +10,10 @@ prerequisites:
   - "Nodes with Mellanox or Intel SR-IOV capable NICs"
   - "PCI device path information from target nodes"
 relatedRecipes:
+  - "network-policies"
+  - "nodeport-raw-vs-https-ingress"
+  - "nncp-dns-routes-workers"
+  - "nfsordma-jumbo-frames-mtu"
   - "validate-gpudirect-rdma-performance"
   - "service-loadbalancer-nodeport"
   - "ingress-tls-certificates"
