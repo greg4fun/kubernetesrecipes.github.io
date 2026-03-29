@@ -1,268 +1,89 @@
 ---
-title: "How to Optimize Kubernetes Resource Usage"
-description: "Reduce Kubernetes costs and improve efficiency with resource optimization techniques. Learn to right-size workloads, implement VPA, and use spot instances."
+title: "Optimize Kubernetes Resource Usage"
+description: "Right-size pods with VPA recommendations, optimize cluster with Goldilocks, implement request-to-limit ratios, QoS classes, and cost-aware resource management strategies."
+publishDate: "2026-03-19"
+author: "Luca Berton"
 category: "autoscaling"
 difficulty: "intermediate"
-timeToComplete: "35 minutes"
+timeToComplete: "30 minutes"
 kubernetesVersion: "1.28+"
-prerequisites:
-  - "A running Kubernetes cluster"
-  - "kubectl configured with appropriate permissions"
-  - "Metrics Server installed"
-  - "Prometheus (optional, for detailed analysis)"
-relatedRecipes:
-  - "debug-oom-killed"
-  - "resource-requests-limits"
-  - "vertical-pod-autoscaler"
-  - "horizontal-pod-autoscaler"
 tags:
-  - cost-optimization
   - resources
-  - efficiency
+  - optimization
   - vpa
+  - goldilocks
   - right-sizing
-  - finops
-publishDate: "2026-01-28"
-author: "Luca Berton"
+  - cost
+  - qos
+relatedRecipes:
+  - "resource-quota-exceeded-error"
+  - "debug-pod-eviction-reasons"
+  - "inference-autoscaling-gpu-metrics"
 ---
-
-> 💡 **Quick Answer:** Optimize resources: analyze usage with `kubectl top pods`, install **Vertical Pod Autoscaler (VPA)** for recommendations, right-size requests/limits based on actual usage. Use **Goldilocks** dashboard for VPA insights. Target 60-80% utilization for efficient scheduling.
->
-> **Key command:** `kubectl top pods --containers` shows actual usage; compare with `kubectl get pods -o custom-columns` for requests.
->
-> **Gotcha:** Don't set requests too low (scheduling issues) or limits too tight (OOMKills)—use VPA recommendations as a starting point.
+> 💡 **Quick Answer:** Install VPA in recommendation mode (`updateMode: "Off"`), deploy Goldilocks dashboard, then right-size every Deployment's requests/limits based on actual P95 usage. Most clusters are 2-4x over-provisioned — right-sizing saves 40-60% compute cost without risk.
 
 ## The Problem
 
-Your Kubernetes cluster is over-provisioned, wasting resources and increasing costs. Pods request more CPU/memory than they use, or worse, have no limits and consume excessive resources.
+Your cluster is expensive but nodes show only 30-40% actual CPU/memory utilization. Pods are over-provisioned (developers request 1 CPU but use 50m), under-provisioned (OOM kills and throttling), or randomly sized. You're paying for 3x more compute than you need.
 
 ## The Solution
 
-Implement a comprehensive resource optimization strategy: analyze actual usage, right-size workloads, use autoscalers effectively, and leverage cost-efficient compute options.
-
-## Resource Optimization Overview
-
-```mermaid
-flowchart TB
-    subgraph workflow["OPTIMIZATION WORKFLOW"]
-        direction TB
-        
-        subgraph steps[" "]
-            direction LR
-            A["🔍 ANALYZE<br/>Usage"]
-            B["📏 RIGHT-SIZE<br/>Workloads"]
-            C["⚙️ AUTOMATE<br/>Scaling"]
-            A --> B --> C
-        end
-        
-        subgraph details[" "]
-            direction LR
-            subgraph analyze["Analyze"]
-                A1["• Metrics Server"]
-                A2["• Prometheus"]
-                A3["• kubectl top"]
-                A4["• Cost analysis"]
-            end
-            subgraph rightsize["Right-Size"]
-                B1["• Set requests"]
-                B2["• Set limits"]
-                B3["• Quality of Service"]
-                B4["• Priority classes"]
-            end
-            subgraph automate["Automate"]
-                C1["• HPA (horizontal)"]
-                C2["• VPA (vertical)"]
-                C3["• Cluster Autoscaler"]
-                C4["• KEDA (event-driven)"]
-            end
-        end
-        
-        subgraph infra["INFRASTRUCTURE OPTIMIZATION"]
-            I1["• Spot/Preemptible instances"]
-            I2["• Node pools by workload type"]
-            I3["• Bin packing optimization"]
-            I4["• Namespace quotas"]
-        end
-    end
-```
-
-## Step 1: Analyze Current Resource Usage
-
-### Install Metrics Server
+### Step 1: Understand Current Waste
 
 ```bash
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-
-# Verify metrics are available
-kubectl top nodes
-kubectl top pods -A
-```
-
-### View Resource Usage by Namespace
-
-```bash
-# CPU and memory by namespace
+# Compare requested vs actual usage across the cluster
 kubectl top pods -A --sort-by=cpu | head -20
-kubectl top pods -A --sort-by=memory | head -20
 
-# Summary by namespace
-for ns in $(kubectl get ns -o jsonpath='{.items[*].metadata.name}'); do
-  echo "=== $ns ==="
-  kubectl top pods -n $ns 2>/dev/null | tail -n +2 | awk '{cpu+=$2; mem+=$3} END {print "CPU: "cpu"m, Memory: "mem"Mi"}'
-done
+# Find the biggest over-provisioners
+kubectl get pods -A -o json | jq -r '
+  .items[] |
+  .metadata.namespace as $ns |
+  .metadata.name as $pod |
+  .spec.containers[] |
+  select(.resources.requests.cpu != null) |
+  "\($ns)/\($pod) requested=\(.resources.requests.cpu) limit=\(.resources.limits.cpu // "none")"
+' | head -30
 ```
 
-### Compare Requests vs Actual Usage
-
-```bash
-# Get requests and limits for all pods
-kubectl get pods -A -o custom-columns=\
-NAMESPACE:.metadata.namespace,\
-NAME:.metadata.name,\
-CPU_REQ:.spec.containers[*].resources.requests.cpu,\
-CPU_LIM:.spec.containers[*].resources.limits.cpu,\
-MEM_REQ:.spec.containers[*].resources.requests.memory,\
-MEM_LIM:.spec.containers[*].resources.limits.memory
-```
-
-### Resource Efficiency Script
+**Quick waste calculator:**
 
 ```bash
 #!/bin/bash
-# resource-efficiency.sh
+echo "=== Cluster Resource Efficiency ==="
 
-echo "Pod Resource Efficiency Report"
-echo "=============================="
+# Total allocatable
+TOTAL_CPU=$(kubectl get nodes -o json | jq '[.items[].status.allocatable.cpu | rtrimstr("m") | if endswith("") then (tonumber * 1000) else tonumber end] | add')
+TOTAL_MEM=$(kubectl get nodes -o json | jq '[.items[].status.allocatable.memory | rtrimstr("Ki") | tonumber] | add')
 
-kubectl get pods -A -o json | jq -r '
-  .items[] | 
-  select(.status.phase == "Running") |
-  "\(.metadata.namespace)/\(.metadata.name): CPU Request: \(.spec.containers[0].resources.requests.cpu // "none"), Memory Request: \(.spec.containers[0].resources.requests.memory // "none")"
-'
+# Total requested
+REQ_CPU=$(kubectl get pods -A -o json | jq '[.items[].spec.containers[].resources.requests.cpu // "0" | rtrimstr("m") | tonumber] | add')
+REQ_MEM=$(kubectl get pods -A -o json | jq '[.items[].spec.containers[].resources.requests.memory // "0" | rtrimstr("Mi") | tonumber] | add')
+
+echo "CPU: Requested ${REQ_CPU}m / Allocatable ${TOTAL_CPU}m ($(( REQ_CPU * 100 / TOTAL_CPU ))% allocated)"
+echo "Memory: Requested ${REQ_MEM}Mi / Allocatable $((TOTAL_MEM / 1024))Mi"
+echo ""
+echo "If actual usage is ~40% of requested → ~$(( REQ_CPU * 40 / 100 ))m CPU actually used"
+echo "Potential savings: ~$(( (REQ_CPU - REQ_CPU * 40 / 100) * 100 / TOTAL_CPU ))% of cluster cost"
 ```
 
-### Prometheus Queries for Analysis
+### Step 2: Install VPA (Vertical Pod Autoscaler)
 
-```promql
-# CPU usage vs requests ratio
-sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace, pod)
-/
-sum(kube_pod_container_resource_requests{resource="cpu"}) by (namespace, pod)
-
-# Memory usage vs requests ratio
-sum(container_memory_working_set_bytes{container!=""}) by (namespace, pod)
-/
-sum(kube_pod_container_resource_requests{resource="memory"}) by (namespace, pod)
-
-# Pods using less than 50% of requested CPU
-(
-  sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace, pod)
-  /
-  sum(kube_pod_container_resource_requests{resource="cpu"}) by (namespace, pod)
-) < 0.5
-
-# Over-provisioned namespaces
-sum(kube_pod_container_resource_requests{resource="cpu"}) by (namespace)
--
-sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (namespace)
-```
-
-## Step 2: Right-Size Workloads
-
-### Guidelines for Resource Requests
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: optimized-app
-spec:
-  replicas: 3
-  template:
-    spec:
-      containers:
-        - name: app
-          image: myapp:1.0
-          resources:
-            # Requests: Based on observed average usage + 20% buffer
-            requests:
-              cpu: "100m"      # Observed avg: 80m
-              memory: "128Mi"  # Observed avg: 100Mi
-            # Limits: Based on peak usage + 50% buffer  
-            limits:
-              cpu: "500m"      # Observed peak: 300m
-              memory: "256Mi"  # Observed peak: 180Mi
-```
-
-### Quality of Service Classes
-
-```yaml
-# Guaranteed QoS (requests = limits)
-# Best for critical workloads
-resources:
-  requests:
-    cpu: "500m"
-    memory: "512Mi"
-  limits:
-    cpu: "500m"
-    memory: "512Mi"
-
----
-# Burstable QoS (requests < limits)
-# Good for most workloads
-resources:
-  requests:
-    cpu: "100m"
-    memory: "128Mi"
-  limits:
-    cpu: "500m"
-    memory: "512Mi"
-
----
-# BestEffort QoS (no requests or limits)
-# Only for non-critical batch jobs
-# (Not recommended - first to be evicted)
-```
-
-### LimitRange for Defaults
-
-```yaml
-apiVersion: v1
-kind: LimitRange
-metadata:
-  name: default-limits
-  namespace: production
-spec:
-  limits:
-    - type: Container
-      default:
-        cpu: "500m"
-        memory: "256Mi"
-      defaultRequest:
-        cpu: "100m"
-        memory: "128Mi"
-      min:
-        cpu: "50m"
-        memory: "64Mi"
-      max:
-        cpu: "2"
-        memory: "2Gi"
-```
-
-## Step 3: Implement Vertical Pod Autoscaler (VPA)
-
-### Install VPA
+VPA observes actual resource consumption and recommends optimal requests/limits.
 
 ```bash
+# Install VPA
 git clone https://github.com/kubernetes/autoscaler.git
 cd autoscaler/vertical-pod-autoscaler
 ./hack/vpa-up.sh
 
-# Verify installation
+# Verify
 kubectl get pods -n kube-system | grep vpa
+# vpa-admission-controller-...   Running
+# vpa-recommender-...            Running
+# vpa-updater-...                Running
 ```
 
-### VPA in Recommendation Mode
+**Create VPA in recommendation-only mode (safe):**
 
 ```yaml
 apiVersion: autoscaling.k8s.io/v1
@@ -272,353 +93,264 @@ metadata:
   namespace: production
 spec:
   targetRef:
-    apiVersion: apps/v1
+    apiVersion: "apps/v1"
     kind: Deployment
     name: myapp
   updatePolicy:
-    updateMode: "Off"  # Only recommendations, no automatic updates
-  resourcePolicy:
-    containerPolicies:
-      - containerName: "*"
-        minAllowed:
-          cpu: "50m"
-          memory: "64Mi"
-        maxAllowed:
-          cpu: "2"
-          memory: "4Gi"
-        controlledResources: ["cpu", "memory"]
-```
-
-### View VPA Recommendations
-
-```bash
-# Get recommendations
-kubectl describe vpa myapp-vpa -n production
-
-# Output example:
-# Recommendation:
-#   Container Recommendations:
-#     Container Name: app
-#     Lower Bound:
-#       Cpu:     50m
-#       Memory:  128Mi
-#     Target:
-#       Cpu:     150m
-#       Memory:  256Mi
-#     Upper Bound:
-#       Cpu:     500m
-#       Memory:  512Mi
-```
-
-### VPA with Auto Updates
-
-```yaml
-apiVersion: autoscaling.k8s.io/v1
-kind: VerticalPodAutoscaler
-metadata:
-  name: myapp-vpa-auto
-  namespace: production
-spec:
-  targetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: myapp
-  updatePolicy:
-    updateMode: "Auto"  # Automatically update pod resources
-    minReplicas: 2      # Keep at least 2 replicas during updates
+    updateMode: "Off"    # Recommendation only — no auto-scaling
   resourcePolicy:
     containerPolicies:
       - containerName: app
         minAllowed:
-          cpu: "100m"
-          memory: "128Mi"
+          cpu: "50m"
+          memory: "64Mi"
         maxAllowed:
-          cpu: "1"
-          memory: "2Gi"
+          cpu: "2000m"
+          memory: "4Gi"
+        controlledResources: ["cpu", "memory"]
 ```
 
-## Step 4: Namespace Resource Quotas
-
-### Set Namespace Quotas
-
-```yaml
-apiVersion: v1
-kind: ResourceQuota
-metadata:
-  name: production-quota
-  namespace: production
-spec:
-  hard:
-    requests.cpu: "10"
-    requests.memory: "20Gi"
-    limits.cpu: "20"
-    limits.memory: "40Gi"
-    pods: "50"
-    services: "20"
-    persistentvolumeclaims: "10"
-    requests.storage: "100Gi"
-```
-
-### Monitor Quota Usage
+**Read VPA recommendations:**
 
 ```bash
-# View quota usage
-kubectl describe quota production-quota -n production
-
-# Get all quotas
-kubectl get resourcequotas -A
-
-# Alert when quota > 80%
-kubectl get resourcequota -A -o json | jq -r '
-  .items[] | 
-  select(.status.used["requests.cpu"] != null) |
-  "\(.metadata.namespace): CPU \(.status.used["requests.cpu"])/\(.status.hard["requests.cpu"])"
-'
+kubectl describe vpa myapp-vpa -n production
+# Recommendation:
+#   Container Recommendations:
+#     Container Name: app
+#     Lower Bound:    Cpu: 25m,   Memory: 128Mi
+#     Target:         Cpu: 100m,  Memory: 256Mi    ← Use this for requests
+#     Upper Bound:    Cpu: 500m,  Memory: 1Gi      ← Use this for limits
+#     Uncapped Target: Cpu: 100m, Memory: 256Mi
 ```
 
-## Step 5: Optimize Node Utilization
+### Step 3: Deploy Goldilocks Dashboard
 
-### Node Pool Strategy
-
-```yaml
-# Production node pool - On-demand, reliable
-apiVersion: karpenter.sh/v1alpha5
-kind: Provisioner
-metadata:
-  name: production
-spec:
-  requirements:
-    - key: node.kubernetes.io/instance-type
-      operator: In
-      values: ["m5.large", "m5.xlarge"]
-    - key: karpenter.sh/capacity-type
-      operator: In
-      values: ["on-demand"]
-  labels:
-    workload-type: production
-  taints:
-    - key: workload-type
-      value: production
-      effect: NoSchedule
-
----
-# Batch/Dev node pool - Spot instances, cost-effective
-apiVersion: karpenter.sh/v1alpha5
-kind: Provisioner
-metadata:
-  name: spot-batch
-spec:
-  requirements:
-    - key: karpenter.sh/capacity-type
-      operator: In
-      values: ["spot"]
-    - key: node.kubernetes.io/instance-type
-      operator: In
-      values: ["m5.large", "m5.xlarge", "m5a.large", "m5a.xlarge"]
-  labels:
-    workload-type: batch
-  ttlSecondsAfterEmpty: 300
-```
-
-### Schedule Workloads on Appropriate Nodes
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: batch-job
-spec:
-  template:
-    spec:
-      # Use spot instances for batch workloads
-      nodeSelector:
-        workload-type: batch
-      tolerations:
-        - key: "kubernetes.azure.com/scalesetpriority"
-          operator: "Equal"
-          value: "spot"
-          effect: "NoSchedule"
-      # Handle spot interruption gracefully
-      terminationGracePeriodSeconds: 30
-      containers:
-        - name: batch
-          image: batch-processor:1.0
-          resources:
-            requests:
-              cpu: "500m"
-              memory: "512Mi"
-```
-
-### Bin Packing with Pod Topology
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: efficient-packing
-spec:
-  replicas: 10
-  template:
-    spec:
-      # Spread pods but allow multiple per node for efficiency
-      topologySpreadConstraints:
-        - maxSkew: 3
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app: efficient-packing
-```
-
-## Step 6: Cost Monitoring and Alerts
-
-### Deploy Kubecost (Open Source)
-
-```bash
-helm repo add kubecost https://kubecost.github.io/cost-analyzer/
-helm install kubecost kubecost/cost-analyzer \
-  --namespace kubecost --create-namespace \
-  --set kubecostToken="<your-token>"
-
-# Access UI
-kubectl port-forward -n kubecost svc/kubecost-cost-analyzer 9090:9090
-```
-
-### Prometheus Cost Alerts
-
-```yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: cost-alerts
-  namespace: monitoring
-spec:
-  groups:
-    - name: cost-optimization
-      rules:
-        - alert: HighCPUOverProvisioning
-          expr: |
-            (
-              sum(kube_pod_container_resource_requests{resource="cpu"}) by (namespace)
-              -
-              sum(rate(container_cpu_usage_seconds_total{container!=""}[1h])) by (namespace)
-            )
-            /
-            sum(kube_pod_container_resource_requests{resource="cpu"}) by (namespace)
-            > 0.5
-          for: 24h
-          labels:
-            severity: warning
-          annotations:
-            summary: "Namespace {{ $labels.namespace }} is over-provisioned by >50%"
-            
-        - alert: UnderutilizedNodes
-          expr: |
-            (1 - (sum(rate(container_cpu_usage_seconds_total[5m])) by (node) 
-            / sum(kube_node_status_allocatable{resource="cpu"}) by (node))) > 0.7
-          for: 6h
-          labels:
-            severity: warning
-          annotations:
-            summary: "Node {{ $labels.node }} utilization below 30%"
-            
-        - alert: PodsWithoutLimits
-          expr: |
-            count(kube_pod_container_resource_limits{resource="cpu"} == 0) > 0
-          for: 1h
-          labels:
-            severity: info
-          annotations:
-            summary: "{{ $value }} pods running without CPU limits"
-```
-
-## Step 7: Optimization Automation
-
-### Goldilocks for VPA Recommendations
+Goldilocks creates VPAs for every Deployment in labeled namespaces and provides a web dashboard.
 
 ```bash
 # Install Goldilocks
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
-helm install goldilocks fairwinds-stable/goldilocks --namespace goldilocks --create-namespace
+helm install goldilocks fairwinds-stable/goldilocks \
+  --namespace goldilocks --create-namespace
 
-# Enable for namespace
-kubectl label ns production goldilocks.fairwinds.com/enabled=true
+# Enable for specific namespaces
+kubectl label namespace production goldilocks.fairwinds.com/enabled=true
+kubectl label namespace staging goldilocks.fairwinds.com/enabled=true
 
-# Access dashboard
+# Access the dashboard
 kubectl port-forward -n goldilocks svc/goldilocks-dashboard 8080:80
+# Open http://localhost:8080
 ```
 
-### Right-Sizing Script
+**Goldilocks shows for each Deployment:**
+- Current requests/limits
+- VPA-recommended requests/limits
+- QoS class impact
+- Savings if right-sized
+
+### Step 4: Right-Size Based on Recommendations
+
+```bash
+# Apply VPA recommendations to a Deployment
+kubectl set resources deploy myapp -n production \
+  --requests=cpu=100m,memory=256Mi \
+  --limits=cpu=500m,memory=1Gi
+```
+
+**Right-sizing rules:**
+- **Requests = VPA Target** (P50 usage with buffer)
+- **Limits = VPA Upper Bound** (P99 usage)
+- **CPU limit:request ratio ≤ 4:1** (higher = noisy neighbor)
+- **Memory limit:request ratio ≤ 2:1** (higher = OOM risk on busy nodes)
+
+### Step 5: QoS Classes — Use Them Strategically
+
+Kubernetes assigns QoS classes based on resource settings:
+
+```yaml
+# Guaranteed — highest priority, last to be evicted
+# requests == limits for ALL containers
+resources:
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+  limits:
+    cpu: "500m"        # Same as request
+    memory: "512Mi"    # Same as request
+
+---
+# Burstable — medium priority
+# requests < limits
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"        # Higher than request
+    memory: "1Gi"      # Higher than request
+
+---
+# BestEffort — lowest priority, first to be evicted
+# NO requests or limits set
+resources: {}          # ← Don't do this in production
+```
+
+**Strategy:**
+| Workload | QoS Class | Why |
+|----------|-----------|-----|
+| Databases, stateful | Guaranteed | Never evicted under memory pressure |
+| Web APIs, microservices | Burstable | Can burst for traffic spikes |
+| Batch jobs, dev workloads | Burstable (low) | Acceptable to throttle/evict |
+
+### Step 6: LimitRange Defaults
+
+Protect against pods deployed without resource specs:
+
+```yaml
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: resource-defaults
+  namespace: production
+spec:
+  limits:
+    - type: Container
+      default:              # Applied as limits if not specified
+        cpu: "500m"
+        memory: "512Mi"
+      defaultRequest:       # Applied as requests if not specified
+        cpu: "100m"
+        memory: "128Mi"
+      min:
+        cpu: "50m"
+        memory: "64Mi"
+      max:
+        cpu: "4000m"
+        memory: "8Gi"
+    - type: Pod
+      max:
+        cpu: "8000m"
+        memory: "16Gi"
+```
+
+### Step 7: Cost Monitoring
+
+```bash
+# Install kubecost (free tier) for cost visibility
+helm repo add kubecost https://kubecost.github.io/cost-analyzer/
+helm install kubecost kubecost/cost-analyzer \
+  --namespace kubecost --create-namespace \
+  --set kubecostToken="free"
+
+# Access dashboard
+kubectl port-forward -n kubecost svc/kubecost-cost-analyzer 9090:9090
+```
+
+### Optimization Checklist Script
 
 ```bash
 #!/bin/bash
-# generate-resource-recommendations.sh
+echo "=== Resource Optimization Checklist ==="
 
-NAMESPACE=$1
+# Pods without requests
+NO_REQ=$(kubectl get pods -A -o json | jq '[.items[].spec.containers[] | select(.resources.requests == null or .resources.requests == {})] | length')
+echo "❓ Containers without requests: $NO_REQ"
 
-echo "Resource Recommendations for namespace: $NAMESPACE"
-echo "================================================="
+# Pods without limits
+NO_LIM=$(kubectl get pods -A -o json | jq '[.items[].spec.containers[] | select(.resources.limits == null or .resources.limits == {})] | length')
+echo "❓ Containers without limits: $NO_LIM"
 
-for pod in $(kubectl get pods -n $NAMESPACE -o jsonpath='{.items[*].metadata.name}'); do
-  echo -e "\nPod: $pod"
-  
-  # Get current requests
-  CURRENT=$(kubectl get pod -n $NAMESPACE $pod -o jsonpath='{.spec.containers[0].resources.requests}')
-  echo "Current requests: $CURRENT"
-  
-  # Get actual usage (last hour average)
-  CPU_USAGE=$(kubectl top pod -n $NAMESPACE $pod --no-headers 2>/dev/null | awk '{print $2}')
-  MEM_USAGE=$(kubectl top pod -n $NAMESPACE $pod --no-headers 2>/dev/null | awk '{print $3}')
-  
-  echo "Current usage: CPU=$CPU_USAGE, Memory=$MEM_USAGE"
-  echo "Recommendation: Set requests to ~20% above current usage"
-done
+# QoS class distribution
+echo ""
+echo "=== QoS Distribution ==="
+kubectl get pods -A -o json | jq -r '[.items[].status.qosClass] | group_by(.) | .[] | "\(.[0]): \(length)"'
+
+# Guaranteed vs Burstable vs BestEffort
+echo ""
+echo "=== VPA Coverage ==="
+VPA_COUNT=$(kubectl get vpa -A --no-headers 2>/dev/null | wc -l)
+DEPLOY_COUNT=$(kubectl get deploy -A --no-headers | wc -l)
+echo "VPAs: $VPA_COUNT / $DEPLOY_COUNT deployments ($(( VPA_COUNT * 100 / (DEPLOY_COUNT + 1) ))% coverage)"
+
+echo ""
+echo "=== Top Over-Provisioned (CPU request > 500m) ==="
+kubectl get pods -A -o json | jq -r '
+  .items[] |
+  .metadata.namespace as $ns |
+  .metadata.name as $pod |
+  .spec.containers[] |
+  select(.resources.requests.cpu != null) |
+  (.resources.requests.cpu | rtrimstr("m") | tonumber) as $cpu |
+  select($cpu > 500) |
+  "\($ns)/\($pod): \($cpu)m CPU requested"
+' | sort -t: -k2 -rn | head -10
 ```
 
-## Quick Wins Checklist
-
-```markdown
-## Immediate Optimizations
-
-- [ ] Set resource requests on all pods
-- [ ] Set resource limits on all pods
-- [ ] Enable VPA in recommendation mode
-- [ ] Remove unused deployments (replicas: 0)
-- [ ] Delete orphaned PVCs
-- [ ] Review and reduce oversized requests
-
-## Medium-Term Optimizations
-
-- [ ] Implement namespace quotas
-- [ ] Use spot instances for non-critical workloads
-- [ ] Enable cluster autoscaler with scale-down
-- [ ] Consolidate underutilized nodes
-- [ ] Right-size based on VPA recommendations
-
-## Long-Term Optimizations
-
-- [ ] Implement FinOps practices
-- [ ] Regular resource audits (monthly)
-- [ ] Cost allocation by team/project
-- [ ] Chargeback/showback reporting
+```mermaid
+graph TD
+    A[Resource Optimization] --> B[Observe]
+    A --> C[Recommend]
+    A --> D[Apply]
+    A --> E[Monitor]
+    
+    B --> B1[VPA in Off mode]
+    B --> B2[kubectl top pods]
+    B --> B3[Goldilocks dashboard]
+    
+    C --> C1[VPA Target = requests]
+    C --> C2[VPA Upper Bound = limits]
+    C --> C3[Limit ratio check]
+    
+    D --> D1[kubectl set resources]
+    D --> D2[LimitRange defaults]
+    D --> D3[ResourceQuota caps]
+    
+    E --> E1[Kubecost dashboard]
+    E --> E2[Prometheus metrics]
+    E --> E3[Weekly right-sizing review]
 ```
 
-## Summary
+## Common Issues
 
-Resource optimization is an ongoing process. Start by analyzing actual usage, right-size workloads based on data, implement autoscalers (VPA/HPA), and continuously monitor costs. The goal is to balance performance with efficiency—not to under-provision, but to eliminate waste.
+### VPA and HPA Conflict
 
----
+VPA changes CPU requests, HPA scales based on CPU utilization. They can fight each other. **Use VPA for memory only** and HPA for CPU scaling:
 
-## 📘 Go Further with Kubernetes Recipes
+```yaml
+# VPA: only manage memory
+resourcePolicy:
+  containerPolicies:
+    - containerName: app
+      controlledResources: ["memory"]    # CPU managed by HPA
+```
 
-**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](https://amzn.to/3DzC8QA)**.
+### Over-Aggressive Right-Sizing Causes OOM
 
-Inside the book, you'll master:
-- ✅ Production-ready deployment strategies
-- ✅ Advanced networking and security patterns  
-- ✅ Observability, monitoring, and troubleshooting
-- ✅ Real-world best practices from industry experts
+Don't set memory limits exactly at the VPA target — add 20% buffer:
+```
+request = VPA target
+limit = VPA upper bound (or target × 1.5, whichever is higher)
+```
 
-> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+### Bursty Workloads Need Headroom
 
-**👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+APIs with traffic spikes need higher limits relative to requests. Set CPU limit:request at 4:1 and memory at 2:1.
+
+## Best Practices
+
+- **Start with VPA in `Off` mode** — observe for 7 days before applying recommendations
+- **Right-size requests first, limits second** — requests affect scheduling
+- **Use Goldilocks in every namespace** — instant visibility into waste
+- **Set LimitRange in every namespace** — catch pods with no resources set
+- **Review weekly** — usage patterns change with features and traffic
+- **Automate with VPA `Auto` mode** for stateless workloads in staging
+- **Never use BestEffort in production** — first to die under memory pressure
+
+## Key Takeaways
+
+- Most clusters are 2-4x over-provisioned — right-sizing saves 40-60% cost
+- VPA recommendation mode is safe — it just observes and suggests
+- Goldilocks gives you a dashboard for every namespace's resource efficiency
+- QoS classes determine eviction order: Guaranteed > Burstable > BestEffort
+- Requests = scheduling guarantee; limits = burst ceiling
+- VPA for memory + HPA for CPU = no conflict, optimal scaling
