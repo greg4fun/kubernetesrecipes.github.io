@@ -21,6 +21,7 @@ relatedRecipes:
   - "gpu-operator-gds-module"
   - "kai-scheduler-gpu-sharing"
   - "nvidia-h200-gpu-kubernetes"
+  - "node-feature-discovery-operator"
 ---
 
 > 💡 **Quick Answer:** Install the GPU Operator with `helm install gpu-operator nvidia/gpu-operator -n gpu-operator --create-namespace`. It auto-deploys NVIDIA drivers, container toolkit, device plugin, and DCGM exporter as DaemonSets — no manual driver installation on nodes required.
@@ -33,9 +34,16 @@ Running GPU workloads on Kubernetes requires multiple NVIDIA components: kernel 
 
 ### Step 1: Prerequisites
 
+> ⚠️ **Node Feature Discovery (NFD)** is a prerequisite for the GPU Operator. NFD automatically detects hardware features (GPUs, NICs, CPU capabilities) and labels nodes accordingly. The GPU Operator uses NFD labels to identify which nodes have NVIDIA GPUs. See the [NFD Operator recipe](/recipes/ai/node-feature-discovery-operator/) for full setup details.
+
 ```bash
-# Verify NVIDIA GPUs are present on nodes
-kubectl get nodes -o json | jq '.items[].status.capacity' | grep nvidia
+# Verify NFD is running (required by GPU Operator)
+kubectl get pods -n openshift-nfd -l app=nfd-master 2>/dev/null || \
+  kubectl get pods -n node-feature-discovery -l app=nfd-master
+
+# Verify NVIDIA GPUs are detected by NFD
+kubectl get nodes -o json | jq '.items[].metadata.labels' | grep "feature.node.kubernetes.io/pci-10de"
+# 10de = NVIDIA PCI vendor ID
 
 # Label GPU nodes (optional but recommended)
 kubectl label nodes <gpu-node> nvidia.com/gpu.present=true
