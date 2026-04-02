@@ -1,6 +1,6 @@
 ---
 title: "Helm before-hook-creation Hook"
-description: "Use Helm before-hook-creation hook to run database migrations, schema setup, and pre-install checks before resources are created. Complete hook lifecycle and weight ordering."
+description: "Use Helm before-hook-creation for database migrations and pre-install checks. Complete hook lifecycle, delete policies, and ordering."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "helm"

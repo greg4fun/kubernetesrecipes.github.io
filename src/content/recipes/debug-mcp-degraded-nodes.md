@@ -1,6 +1,6 @@
 ---
 title: "Debug MCP Degraded Nodes"
-description: "Investigate and fix nodes stuck in Degraded state after MachineConfig updates. Check MCD logs, on-disk state validation, and recovery procedures for degraded workers."
+description: "Fix nodes stuck Degraded after MachineConfig updates. Check MCD logs, on-disk validation, and recovery for degraded workers."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

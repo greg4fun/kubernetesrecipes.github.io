@@ -1,6 +1,6 @@
 ---
 title: "Detect ArgoCD Shadow Updates Out-of-Band"
-description: "Detect and prevent shadow updates in ArgoCD where manual kubectl changes bypass GitOps. Configure diff strategies, sync policies, and drift detection to maintain desired state."
+description: "Detect and prevent ArgoCD shadow updates where manual kubectl changes bypass GitOps. Configure self-heal, sync, and drift detection."
 publishDate: "2026-03-20"
 author: "Luca Berton"
 category: "deployments"

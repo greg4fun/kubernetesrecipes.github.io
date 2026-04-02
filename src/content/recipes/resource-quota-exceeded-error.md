@@ -1,6 +1,6 @@
 ---
 title: "Fix ResourceQuota Exceeded Errors"
-description: "Debug and resolve resource quota violations preventing pod scheduling. Understand LimitRange defaults, ResourceQuota accounting, and namespace resource management."
+description: "Debug resource quota violations preventing pod scheduling. Understand LimitRange defaults, ResourceQuota, and namespace management."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

@@ -1,6 +1,6 @@
 ---
 title: "Migrate Ingress to Gateway API ingress2gateway"
-description: "Migrate Kubernetes Ingress resources to Gateway API using ingress2gateway tool. Convert HTTPRoute, TLSRoute, and GRPCRoute with zero-downtime parallel migration strategy."
+description: "Migrate Ingress to Gateway API using ingress2gateway. Convert HTTPRoute and TLSRoute with zero-downtime parallel migration."
 publishDate: "2026-03-20"
 author: "Luca Berton"
 category: "networking"

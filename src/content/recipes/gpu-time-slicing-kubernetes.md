@@ -1,6 +1,6 @@
 ---
 title: "GPU Time-Slicing on Kubernetes"
-description: "Share GPUs across multiple workloads using NVIDIA time-slicing on Kubernetes. Configure the device plugin for oversubscription, set replica counts, and manage fairness."
+description: "Share GPUs across multiple workloads using NVIDIA time-slicing on Kubernetes. Configure the device plugin, set replica counts, and manage fairness."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "ai"

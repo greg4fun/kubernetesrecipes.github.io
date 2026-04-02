@@ -1,6 +1,6 @@
 ---
 title: "Debug OpenShift OAuth Login Failures"
-description: "Troubleshoot OpenShift console and CLI login failures. Check OAuth server pods, identity provider config, certificate issues, and expired tokens for authentication errors."
+description: "Troubleshoot OpenShift console and CLI login failures. Check OAuth server pods, identity provider config, and expired tokens."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

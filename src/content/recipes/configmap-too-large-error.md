@@ -1,6 +1,6 @@
 ---
 title: "Fix ConfigMap Too Large Error"
-description: "Resolve the 1MB ConfigMap size limit error. Split large configurations, use Secrets for binary data, mount volumes, or use external configuration stores like etcd or Vault."
+description: "Resolve the 1MB ConfigMap size limit error. Split configs, use Secrets for binary data, mount volumes, or use external stores."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

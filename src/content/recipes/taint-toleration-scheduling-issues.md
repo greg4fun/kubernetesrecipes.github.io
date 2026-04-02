@@ -1,6 +1,6 @@
 ---
 title: "Debug Taint and Toleration Scheduling"
-description: "Fix pods stuck Pending due to node taints without matching tolerations. Understand NoSchedule, PreferNoSchedule, and NoExecute taint effects and toleration syntax."
+description: "Fix pods stuck Pending due to node taints. Understand NoSchedule, PreferNoSchedule, NoExecute effects and toleration syntax."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

@@ -1,6 +1,6 @@
 ---
 title: "Enable User Workload Monitoring OpenShift"
-description: "Enable and configure user workload monitoring on OpenShift. Deploy ServiceMonitor and PodMonitor for custom application metrics. Set up alerting rules and Grafana dashboards."
+description: "Enable user workload monitoring on OpenShift. Deploy ServiceMonitor, PodMonitor, alerting rules, and Grafana dashboards."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "observability"

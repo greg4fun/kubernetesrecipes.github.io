@@ -1,6 +1,6 @@
 ---
 title: "Fix Admission Webhook Timeout Errors"
-description: "Debug admission webhook failures blocking pod creation and deployments. Identify failing webhooks, check timeout settings, and implement failurePolicy correctly."
+description: "Debug admission webhook failures blocking pod creation. Identify failing webhooks, check timeouts, and set failurePolicy."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

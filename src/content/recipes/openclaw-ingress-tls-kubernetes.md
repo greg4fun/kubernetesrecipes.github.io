@@ -1,6 +1,6 @@
 ---
 title: "Expose OpenClaw via Kubernetes Ingress with TLS"
-description: "Configure Kubernetes Ingress with TLS termination to securely expose OpenClaw gateway beyond port-forward. Covers cert-manager, NGINX Ingress, and allowed origins."
+description: "Configure Kubernetes Ingress with TLS to expose OpenClaw gateway securely. Covers cert-manager, NGINX Ingress, and allowed origins."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "networking"

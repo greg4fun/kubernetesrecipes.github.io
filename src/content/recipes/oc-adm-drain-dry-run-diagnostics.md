@@ -1,6 +1,6 @@
 ---
 title: "Use oc adm drain Dry-Run for Diagnostics"
-description: "Preview node drain impact without actually evicting pods. Use dry-run mode to identify PDB violations, unmanaged pods, and local storage blockers before maintenance."
+description: "Preview node drain impact without evicting pods. Identify PDB violations, unmanaged pods, and local storage blockers before maintenance."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "configuration"

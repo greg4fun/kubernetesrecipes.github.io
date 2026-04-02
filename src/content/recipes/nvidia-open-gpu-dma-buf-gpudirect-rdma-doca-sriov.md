@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA Open GPU + GPUDirect RDMA + DOCA-OFED + SR-IOV Stack"
-description: "Deploy the full NVIDIA AI networking stack on Kubernetes: Open GPU Kernel driver with DMA-BUF, GPUDirect RDMA for zero-copy GPU-NIC transfers, DOCA-OFED with NFSoRDMA, and SR-IOV for VF isolation."
+description: "Deploy NVIDIA AI networking on Kubernetes: Open GPU driver with DMA-BUF, GPUDirect RDMA, DOCA-OFED, and SR-IOV VF isolation."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "ai"

@@ -1,6 +1,6 @@
 ---
 title: "Configure PDBs for OpenShift Routers"
-description: "Set optimal PodDisruptionBudgets for OpenShift IngressController router deployments. Balance availability during maintenance with the ability to drain nodes for updates."
+description: "Set PodDisruptionBudgets for OpenShift IngressController routers. Balance availability during maintenance with node drain ability."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "configuration"

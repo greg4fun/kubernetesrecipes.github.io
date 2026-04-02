@@ -1,6 +1,6 @@
 ---
 title: "OpenClaw Multi-Environment Deployment with Kustomize"
-description: "Deploy OpenClaw across dev, staging, and production Kubernetes environments using Kustomize overlays. Manage configs, secrets, and resource limits per environment."
+description: "Deploy OpenClaw across dev, staging, and production Kubernetes environments using Kustomize overlays for configs and secrets."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "deployments"

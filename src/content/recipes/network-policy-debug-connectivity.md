@@ -1,6 +1,6 @@
 ---
 title: "Debug NetworkPolicy Connectivity Issues"
-description: "Troubleshoot pods unable to communicate despite correct Services. Verify NetworkPolicy rules, label selectors, ingress and egress policies, and default deny effects."
+description: "Troubleshoot pods unable to communicate despite correct Services. Verify NetworkPolicy rules, label selectors, and default deny."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

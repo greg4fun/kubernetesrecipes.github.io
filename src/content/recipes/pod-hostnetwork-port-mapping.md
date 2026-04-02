@@ -1,6 +1,6 @@
 ---
 title: "Manage hostNetwork Pod Port Allocation"
-description: "Plan and manage host port usage for hostNetwork pods across Kubernetes nodes. Prevent port conflicts, track allocations, and handle multi-deployment port exhaustion."
+description: "Plan and manage host port usage for hostNetwork pods. Prevent port conflicts, track allocations, and handle port exhaustion."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "networking"

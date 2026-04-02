@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA GPU Operator Setup on Kubernetes"
-description: "Complete guide to installing and configuring the NVIDIA GPU Operator on Kubernetes. Driver containers, toolkit, device plugin, DCGM monitoring, and ClusterPolicy."
+description: "Install and configure NVIDIA GPU Operator on Kubernetes. Driver containers, toolkit, device plugin, DCGM monitoring, and ClusterPolicy setup."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "ai"

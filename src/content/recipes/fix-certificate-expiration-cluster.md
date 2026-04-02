@@ -1,6 +1,6 @@
 ---
 title: "Fix Expired Certificates in Kubernetes"
-description: "Renew expired certificates that cause API server failures, kubelet disconnections, and etcd communication errors. Manual and automatic renewal for kubeadm and OpenShift."
+description: "Renew expired certificates causing API server failures and kubelet disconnections. Manual and automatic renewal for kubeadm and OpenShift."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

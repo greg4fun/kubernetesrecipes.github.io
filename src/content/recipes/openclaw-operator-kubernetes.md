@@ -1,6 +1,6 @@
 ---
 title: "OpenClaw Operator for Kubernetes"
-description: "Deploy and manage OpenClaw AI agents on Kubernetes using the official operator. CRD-based lifecycle, Chromium sidecar, auto-update, backup/restore, and self-configure."
+description: "Deploy OpenClaw AI agents on Kubernetes using the official operator. CRD-based lifecycle, Chromium sidecar, auto-update, and backup."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "deployments"

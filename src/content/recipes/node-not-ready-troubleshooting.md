@@ -1,6 +1,6 @@
 ---
 title: "Debug Node NotReady Status"
-description: "Diagnose and fix Kubernetes nodes stuck in NotReady state. Check kubelet logs, container runtime, network connectivity, disk pressure, and certificate expiration."
+description: "Diagnose Kubernetes nodes stuck in NotReady state. Check kubelet logs, container runtime, network, disk pressure, and certificates."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

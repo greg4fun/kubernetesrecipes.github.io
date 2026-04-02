@@ -1,6 +1,6 @@
 ---
 title: "OpenClaw Persistent State Management on Kubernetes"
-description: "Manage OpenClaw agent state, memory files, and workspace data with Kubernetes PVCs. Init container config seeding, backup strategies, and storage class selection."
+description: "Manage OpenClaw agent state and workspace data with Kubernetes PVCs. Init container config seeding, backups, and storage classes."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "storage"

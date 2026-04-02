@@ -1,6 +1,6 @@
 ---
 title: "Harden Kubernetes Security Posture"
-description: "Comprehensive Kubernetes security hardening guide. Configure Pod Security Standards, RBAC least-privilege, network policies, secret encryption, and audit logging for production."
+description: "Kubernetes security hardening: Pod Security Standards, RBAC least-privilege, network policies, secret encryption, and audit logging."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "security"

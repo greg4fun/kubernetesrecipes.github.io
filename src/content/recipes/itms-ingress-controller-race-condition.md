@@ -1,6 +1,6 @@
 ---
 title: "ITMS Race Condition with Ingress Controllers"
-description: "Understand and resolve the ITMS race condition where ImageTagMirrorSet rollouts deadlock with hostNetwork ingress controllers. MCO drain blocked by image pull failures on updated nodes."
+description: "Resolve the ITMS race condition where ImageTagMirrorSet rollouts deadlock with hostNetwork ingress controllers during MCO drain."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

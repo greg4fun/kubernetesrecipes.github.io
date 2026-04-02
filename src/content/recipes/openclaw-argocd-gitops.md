@@ -1,6 +1,6 @@
 ---
 title: "OpenClaw GitOps Deployment with ArgoCD"
-description: "Deploy and manage OpenClaw on Kubernetes using ArgoCD for automated GitOps. Application definition, sync policies, config drift detection, and secret management."
+description: "Deploy OpenClaw on Kubernetes using ArgoCD for GitOps automation. Application definition, sync policies, drift detection, and secrets."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "deployments"

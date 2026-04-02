@@ -1,6 +1,6 @@
 ---
 title: "Build a Kubernetes Operator with Docker Testing"
-description: "Build a Kubernetes operator from scratch using Operator SDK and Kubebuilder. Test locally with Docker, Kind, and envtest. Full TDD workflow from scaffolding to OLM bundle."
+description: "Build a Kubernetes operator with Operator SDK and Kubebuilder. Test with Docker, Kind, and envtest. Full TDD workflow to OLM bundle."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "deployments"

@@ -1,6 +1,6 @@
 ---
 title: "Set Kernel Parameters via MachineConfig"
-description: "Tune kernel sysctl parameters on OpenShift nodes using MachineConfig. Set networking, memory, and performance sysctls without SSH access to immutable RHCOS nodes."
+description: "Tune kernel sysctl parameters on OpenShift nodes using MachineConfig. Set networking, memory, and performance sysctls on RHCOS."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "configuration"

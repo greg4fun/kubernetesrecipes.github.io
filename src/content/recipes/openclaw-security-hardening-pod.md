@@ -1,6 +1,6 @@
 ---
 title: "OpenClaw Pod Security Hardening on Kubernetes"
-description: "Harden OpenClaw pods with read-only root filesystem, dropped capabilities, non-root user, seccomp profiles, and resource limits. Production security best practices."
+description: "Harden OpenClaw pods with read-only filesystem, dropped capabilities, non-root user, seccomp profiles, and resource limits."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "security"

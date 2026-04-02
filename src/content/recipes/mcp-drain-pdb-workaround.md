@@ -1,6 +1,6 @@
 ---
 title: "MCP Drain Blocked by PDB: Workaround"
-description: "Resolve OpenShift MachineConfigPool drain failures caused by PodDisruptionBudget violations. Safely scale down blocking deployments and restore after node update."
+description: "Resolve OpenShift MachineConfigPool drain failures caused by PodDisruptionBudget violations. Scale down and restore after update."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

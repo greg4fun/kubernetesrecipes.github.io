@@ -1,6 +1,6 @@
 ---
 title: "Optimize Kubernetes Resource Usage"
-description: "Right-size pods with VPA recommendations, optimize cluster with Goldilocks, implement request-to-limit ratios, QoS classes, and cost-aware resource management strategies."
+description: "Right-size pods with VPA, optimize with Goldilocks, implement request-to-limit ratios, QoS classes, and cost-aware management."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "autoscaling"

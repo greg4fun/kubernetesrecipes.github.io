@@ -1,6 +1,6 @@
 ---
 title: "Fix PV Stuck in Terminating State"
-description: "Resolve PersistentVolumes and PersistentVolumeClaims stuck in Terminating status. Remove finalizers safely, check volume detachment, and handle storage provider issues."
+description: "Resolve PVs and PVCs stuck in Terminating status. Remove finalizers safely, check volume detachment, and handle storage issues."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

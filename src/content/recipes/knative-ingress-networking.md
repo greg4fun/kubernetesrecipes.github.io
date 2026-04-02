@@ -1,6 +1,6 @@
 ---
 title: "Configure Knative Ingress Networking"
-description: "Set up Knative Serving ingress with Kourier, Istio, or Contour. Configure custom domains, TLS certificates, path-based routing, and external visibility for serverless workloads."
+description: "Set up Knative Serving ingress with Kourier, Istio, or Contour. Custom domains, TLS, path routing, and external visibility."
 publishDate: "2026-03-22"
 author: "Luca Berton"
 category: "networking"

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Resiliency Patterns Guide"
-description: "Build resilient Kubernetes applications with PDBs, topology spread, pod anti-affinity, health probes, circuit breakers, and graceful shutdown. Survive node failures and zone outages."
+description: "Build resilient Kubernetes apps with PDBs, topology spread, anti-affinity, health probes, and graceful shutdown patterns."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "deployments"

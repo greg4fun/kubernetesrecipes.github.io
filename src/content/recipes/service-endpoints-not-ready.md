@@ -1,6 +1,6 @@
 ---
 title: "Debug Service with No Ready Endpoints"
-description: "Troubleshoot Kubernetes Services showing zero endpoints. Verify label selectors, readiness probes, pod status, and port configuration mismatches causing traffic blackholes."
+description: "Troubleshoot Services showing zero endpoints. Verify label selectors, readiness probes, pod status, and port configuration."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

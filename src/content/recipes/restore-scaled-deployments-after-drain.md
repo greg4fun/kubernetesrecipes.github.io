@@ -1,6 +1,6 @@
 ---
 title: "Restore Scaled Deployments After Node Drain"
-description: "Safely restore deployments that were scaled down for maintenance. Verify node health, check pod scheduling, and confirm service availability after restoring replicas."
+description: "Restore deployments scaled down for maintenance. Verify node health, check pod scheduling, and confirm service availability."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "configuration"

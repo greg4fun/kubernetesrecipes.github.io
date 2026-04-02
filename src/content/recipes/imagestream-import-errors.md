@@ -1,6 +1,6 @@
 ---
 title: "Fix OpenShift ImageStream Import Errors"
-description: "Debug ImageStream import failures in OpenShift. Resolve DNS errors, authentication issues, TLS certificate problems, and registry rate limiting for external images."
+description: "Debug ImageStream import failures in OpenShift. Resolve DNS errors, auth issues, TLS problems, and registry rate limiting."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

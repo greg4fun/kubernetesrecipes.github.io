@@ -1,6 +1,6 @@
 ---
 title: "OpenClaw Resource Limits and Tuning on Kubernetes"
-description: "Size CPU, memory, and storage for OpenClaw workloads on Kubernetes. Tuning profiles for light usage, browser automation, multi-agent, and production deployments."
+description: "Size CPU, memory, and storage for OpenClaw on Kubernetes. Tuning profiles for light usage, browser automation, and production deployments."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "autoscaling"

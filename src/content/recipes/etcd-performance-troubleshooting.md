@@ -1,6 +1,6 @@
 ---
 title: "Debug etcd Performance Issues"
-description: "Diagnose slow etcd causing API server latency, leader election storms, and cluster instability. Check disk IOPS, compaction, defragmentation, and network latency."
+description: "Diagnose slow etcd causing API latency and leader election storms. Check disk IOPS, compaction, defrag, and network latency."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

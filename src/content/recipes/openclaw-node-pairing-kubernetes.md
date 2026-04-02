@@ -1,6 +1,6 @@
 ---
 title: "OpenClaw Node Pairing for IoT and Edge Devices"
-description: "Pair mobile phones, Raspberry Pi, and edge devices with OpenClaw running on Kubernetes. Camera, location, screen control, and remote command execution via paired nodes."
+description: "Pair phones, Raspberry Pi, and edge devices with OpenClaw on Kubernetes. Camera, location, screen control, and remote command execution."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "configuration"

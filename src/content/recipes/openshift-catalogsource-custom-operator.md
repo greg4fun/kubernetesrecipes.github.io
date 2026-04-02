@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Create Custom CatalogSources for OLM Operators"
-description: "Configure CatalogSource resources in OpenShift to serve custom operator catalogs from private registries, air-gapped environments, or curated operator collections."
+description: "Configure CatalogSource in OpenShift to serve custom operator catalogs from private registries or air-gapped environments."
 category: "configuration"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
