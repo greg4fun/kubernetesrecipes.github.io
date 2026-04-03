@@ -10,6 +10,7 @@ prerequisites:
   - "kubectl configured with appropriate permissions"
   - "Basic understanding of CronJobs"
 relatedRecipes:
+  - "liveness-readiness-probes"
   - "jobs-cronjobs"
   - "cronjob-timezone-handling"
   - "job-parallelism-completions"

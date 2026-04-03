@@ -7,6 +7,8 @@ publishDate: "2026-04-02"
 tags: ["keda", "autoscaling", "event-driven", "kafka", "serverless", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "vertical-pod-autoscaler"
+  - "horizontal-pod-autoscaler"
   - "hpa-custom-metrics"
   - "cluster-autoscaler"
   - "kubernetes-cost-optimization-strategies"

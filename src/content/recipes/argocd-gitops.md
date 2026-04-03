@@ -5,6 +5,7 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
+  - "liveness-readiness-probes"
   - "ab-testing-kubernetes"
   - "graceful-shutdown"
   - "kubernetes-leases"

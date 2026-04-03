@@ -6,6 +6,7 @@ difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["probes", "health-checks", "liveness", "readiness", "startup"]
 relatedRecipes:
+  - "liveness-readiness-probes"
   - "openclaw-openshift-deployment"
   - "openshift-serverless-knativeserving"
   - "argocd-app-of-apps-pattern"

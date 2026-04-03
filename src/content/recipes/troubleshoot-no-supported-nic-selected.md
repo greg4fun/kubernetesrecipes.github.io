@@ -10,6 +10,7 @@ prerequisites:
   - "OpenShift SR-IOV Network Operator installed"
   - "oc CLI and cluster-admin permissions"
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "openshift-sriov-vf-creation"
   - "identify-mellanox-nic-models"
   - "check-bonding-and-interface-status"

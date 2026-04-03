@@ -363,3 +363,23 @@ This deploys three components: Recommender (analyzes usage), Updater (evicts pod
 
 ### Can I use VPA and HPA together?
 Yes, but don't target the same metrics. Use HPA for CPU-based horizontal scaling and VPA for memory right-sizing only. Set VPA's `controlledResources: ["memory"]` to avoid conflicts with HPA's CPU scaling.
+
+## Frequently Asked Questions
+
+### What is Vertical Pod Autoscaler (VPA)?
+
+VPA automatically adjusts CPU and memory requests and limits for pods based on actual usage. Instead of adding more pods (horizontal), VPA makes each pod the right size (vertical).
+
+### How does VPA work?
+
+VPA has three components: Recommender (analyzes usage, generates recommendations), Updater (evicts pods needing resize), and Admission Controller (sets correct resources on new pods).
+
+### What are VPA update modes?
+
+`Off` — recommendations only, no changes. `Initial` — set resources only on pod creation. `Recreate` — evict and recreate pods to apply new resources. `Auto` — currently same as Recreate; in-place update planned for future Kubernetes versions.
+
+### VPA vs HPA: which should I use?
+
+Use both — they solve different problems. VPA right-sizes individual pods (especially memory). [HPA](/recipes/autoscaling/horizontal-pod-autoscaler/) scales the number of replicas based on load. Don't let both control the same metric.
+
+See also: [HPA Guide](/recipes/autoscaling/horizontal-pod-autoscaler/), [Cost Optimization](/recipes/autoscaling/kubernetes-cost-optimization-strategies/), [Resource Optimization](/recipes/configuration/kubernetes-resource-optimization/)

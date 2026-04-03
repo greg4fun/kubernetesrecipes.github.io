@@ -6,6 +6,7 @@ difficulty: "advanced"
 publishDate: "2026-01-22"
 tags: ["leases", "leader-election", "coordination", "high-availability", "distributed"]
 relatedRecipes:
+  - "liveness-readiness-probes"
   - "openclaw-kubernetes-deployment"
   - "pod-disruption-budget-config"
   - "openclaw-telegram-bot-kubernetes"

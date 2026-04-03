@@ -12,6 +12,7 @@ tags:
   - "deployment-strategy"
   - "rollback"
 relatedRecipes:
+  - "liveness-readiness-probes"
   - "openclaw-ha-kubernetes"
   - "openclaw-kubernetes-deployment"
   - "blue-green-deployment"

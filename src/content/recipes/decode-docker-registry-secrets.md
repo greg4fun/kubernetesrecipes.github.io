@@ -10,6 +10,7 @@ prerequisites:
   - "kubectl or oc CLI configured"
   - "Access to the namespace containing the secret"
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "quay-robot-account-kubernetes"
   - "openshift-cluster-wide-pull-secret"
   - "image-pull-secrets"

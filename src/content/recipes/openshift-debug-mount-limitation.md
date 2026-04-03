@@ -15,6 +15,7 @@ tags:
   - namespace
   - machineconfig
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "machineconfig-nfs-mount-openshift"
   - "fio-nfs-benchmark-openshift"
   - "openshift-mcd-logs-debugging"

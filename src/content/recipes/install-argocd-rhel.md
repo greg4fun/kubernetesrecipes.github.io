@@ -7,6 +7,7 @@ publishDate: "2026-04-02"
 tags: ["argocd", "gitops", "installation", "rhel", "continuous-delivery"]
 author: "Luca Berton"
 relatedRecipes:
+  - "liveness-readiness-probes"
   - "install-kubernetes-rhel"
   - "install-helm-rhel"
   - "argocd-sync-waves-ordering"

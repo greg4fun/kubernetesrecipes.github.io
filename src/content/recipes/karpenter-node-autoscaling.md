@@ -7,6 +7,8 @@ publishDate: "2026-04-02"
 tags: ["karpenter", "autoscaling", "nodes", "spot", "gpu", "cost-optimization", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "vertical-pod-autoscaler"
+  - "horizontal-pod-autoscaler"
   - "cluster-autoscaler"
   - "kubernetes-cost-optimization-strategies"
   - "keda-event-driven-autoscaling"

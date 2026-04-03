@@ -6,6 +6,7 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["topology", "scheduling", "availability", "zones", "spread"]
 relatedRecipes:
+  - "liveness-readiness-probes"
   - "quay-robot-account-kubernetes"
   - "argocd-multi-cluster-app-of-apps"
   - "argocd-sync-waves-ordering"

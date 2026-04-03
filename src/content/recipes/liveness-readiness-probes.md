@@ -339,3 +339,27 @@ readinessProbe:
   failureThreshold: 3
 ```
 This checks `/healthz` every 10 seconds. After 3 consecutive failures, the pod is marked unready and removed from Service endpoints.
+
+## Frequently Asked Questions
+
+### What is a readiness probe in Kubernetes?
+
+A readiness probe tells Kubernetes whether a pod is ready to receive traffic. If the readiness probe fails, the pod is removed from Service endpoints — no traffic is routed to it. Unlike liveness probes, a failed readiness probe does NOT restart the pod.
+
+### What is the difference between liveness and readiness probes?
+
+**Liveness probe**: Is the container alive? On failure → restart the container. Use to detect deadlocks and hangs. **Readiness probe**: Is the container ready for traffic? On failure → remove from Service endpoints. Use for slow startup and dependency checks.
+
+### Should I use liveness probes?
+
+Be careful with liveness probes. Never check external dependencies (database, cache) in liveness probes — if the DB is down, restarting your app won't fix it and creates a thundering herd. Set `initialDelaySeconds` high enough and use `failureThreshold: 3` minimum.
+
+### What is a startup probe?
+
+Startup probes (Kubernetes 1.20+) run only during container startup. Once the startup probe succeeds, liveness and readiness probes take over. Use startup probes for slow-starting applications (Java, ML models).
+
+### What probe types are available?
+
+HTTP GET (success = 200-399), TCP socket (success = port open), exec command (success = exit code 0), and gRPC health check (Kubernetes 1.27+).
+
+See also: [CrashLoopBackOff Troubleshooting](/recipes/troubleshooting/debug-crashloopbackoff/), [HPA Guide](/recipes/autoscaling/horizontal-pod-autoscaler/)

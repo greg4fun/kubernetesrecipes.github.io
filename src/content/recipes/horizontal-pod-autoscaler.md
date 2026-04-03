@@ -10,6 +10,7 @@ prerequisites:
   - "kubectl configured to access your cluster"
   - "A Deployment to scale"
 relatedRecipes:
+  - "vertical-pod-autoscaler"
   - "llm-autoscaling-kubernetes"
   - "vpa-configuration"
   - "cluster-autoscaler"
@@ -409,3 +410,23 @@ HPA scales horizontally (more replicas) while VPA scales vertically (more CPU/me
 
 ### What metrics can HPA use?
 HPA supports three metric types: **Resource metrics** (CPU, memory via metrics-server), **Custom metrics** (application-specific like requests-per-second via Prometheus Adapter), and **External metrics** (cloud provider metrics like SQS queue depth).
+
+## Frequently Asked Questions
+
+### What is HPA in Kubernetes?
+
+HPA (Horizontal Pod Autoscaler) automatically scales the number of pod replicas based on observed metrics like CPU utilization, memory usage, or custom metrics. When load increases, HPA adds pods; when it decreases, HPA removes them.
+
+### How does horizontal pod autoscaling work?
+
+HPA runs a control loop every 15 seconds: fetches current metric values from Metrics Server, calculates desired replicas using `ceil(currentReplicas × (currentMetric / targetMetric))`, and scales the Deployment up or down within min/max bounds.
+
+### Why is my HPA not scaling?
+
+Common reasons: Metrics Server not installed (run `kubectl top pods` to verify), no resource requests set on pods, already at min/max replicas, or the stabilization window hasn't elapsed (5 minutes default for scale-down).
+
+### Can HPA and VPA be used together?
+
+Yes, but with constraints. Use [VPA](/recipes/autoscaling/vertical-pod-autoscaler/) for memory right-sizing and HPA for CPU horizontal scaling. Don't let both control the same metric.
+
+See also: [VPA Setup](/recipes/autoscaling/vertical-pod-autoscaler/), [KEDA Event-Driven Autoscaling](/recipes/autoscaling/keda-event-driven-autoscaling/), [Cost Optimization](/recipes/autoscaling/kubernetes-cost-optimization-strategies/)

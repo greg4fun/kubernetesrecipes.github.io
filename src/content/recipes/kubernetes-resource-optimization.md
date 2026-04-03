@@ -16,6 +16,7 @@ tags:
   - cost
   - qos
 relatedRecipes:
+  - "horizontal-pod-autoscaler"
   - "resource-quota-exceeded-error"
   - "debug-pod-eviction-reasons"
   - "inference-autoscaling-gpu-metrics"

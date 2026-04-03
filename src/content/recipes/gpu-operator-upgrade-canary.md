@@ -12,6 +12,7 @@ tags:
   - "openshift"
   - "rollback"
 relatedRecipes:
+  - "liveness-readiness-probes"
   - "gpu-upgrade-version-matrix"
   - "gpu-operator-clusterpolicy-reference"
   - "open-kernel-modules-dma-buf"

@@ -7,6 +7,8 @@ publishDate: "2026-04-02"
 tags: ["cost-optimization", "finops", "spot-instances", "right-sizing", "autoscaling", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "vertical-pod-autoscaler"
+  - "horizontal-pod-autoscaler"
   - "cluster-autoscaler"
   - "kubernetes-resource-optimization"
   - "hpa-custom-metrics"

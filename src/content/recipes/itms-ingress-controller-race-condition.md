@@ -15,6 +15,7 @@ tags:
   - race-condition
   - troubleshooting
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "openshift-itms-image-tag-mirror"
   - "itms-registries-conf-machineconfig"
   - "itms-external-registry-mapping"

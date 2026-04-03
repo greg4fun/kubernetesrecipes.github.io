@@ -6,6 +6,7 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["taints", "tolerations", "scheduling", "node-affinity", "workload-isolation"]
 relatedRecipes:
+  - "liveness-readiness-probes"
   - "pod-affinity-anti-affinity"
   - "blue-green-deployment"
   - "openshift-idms-install-config"

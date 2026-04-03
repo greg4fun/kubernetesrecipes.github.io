@@ -14,6 +14,7 @@ tags:
   - performance
   - autoscaling
 relatedRecipes:
+  - "horizontal-pod-autoscaler"
   - "openclaw-kubernetes-deployment"
   - "openclaw-ha-kubernetes"
   - "resource-limits-requests"

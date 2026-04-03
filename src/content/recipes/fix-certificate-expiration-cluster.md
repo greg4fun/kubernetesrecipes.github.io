@@ -14,6 +14,7 @@ tags:
   - kubeadm
   - security
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "node-not-ready-troubleshooting"
   - "etcd-performance-troubleshooting"
   - "openshift-oauth-login-failures"

@@ -10,6 +10,7 @@ prerequisites:
   - "Shell access on worker nodes"
   - "ethtool and lspci utilities"
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "troubleshoot-nv-ipam-pool-not-found"
   - "openshift-sriov-vf-creation"
   - "troubleshoot-no-supported-nic-selected"

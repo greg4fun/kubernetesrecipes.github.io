@@ -7,6 +7,7 @@ publishDate: "2026-01-22"
 tags: ["keda", "autoscaling", "event-driven", "queues", "serverless"]
 author: "Luca Berton"
 relatedRecipes:
+  - "horizontal-pod-autoscaler"
   - "kubernetes-cost-optimization-strategies"
   - "vertical-pod-autoscaler"
   - "keda-event-driven-autoscaling"

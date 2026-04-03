@@ -7,6 +7,7 @@ publishDate: "2026-04-02"
 tags: ["crashloopbackoff", "pods", "debugging", "troubleshooting", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "oom-killed-troubleshooting"
   - "pod-pending-troubleshooting"
   - "node-not-ready-troubleshooting"

@@ -321,3 +321,27 @@ CrashLoopBackOff means Kubernetes is trying to restart a container that keeps cr
 
 ### What's the difference between CrashLoopBackOff and Error?
 **Error** means the container exited with a non-zero exit code on its most recent attempt. **CrashLoopBackOff** means it has crashed repeatedly and Kubernetes is waiting before retrying. CrashLoopBackOff always follows repeated Error states.
+
+## Frequently Asked Questions
+
+### What does CrashLoopBackOff mean in Kubernetes?
+
+CrashLoopBackOff means a pod's container keeps crashing and Kubernetes is restarting it with exponentially increasing delays (10s, 20s, 40s, up to 5 minutes). It's not an error itself — it's Kubernetes telling you the container keeps failing after restart attempts.
+
+### How do I fix CrashLoopBackOff?
+
+Start with `kubectl logs <pod> --previous` to see why the container crashed. Common fixes: increase memory limits if OOMKilled, fix application bugs, ensure ConfigMaps/Secrets exist, verify the container entrypoint, and adjust [liveness probe](/recipes/deployments/liveness-readiness-probes/) settings.
+
+### How long does CrashLoopBackOff last?
+
+The backoff delay increases exponentially: 10s → 20s → 40s → 80s → 160s → 300s (5 minutes max). Kubernetes retries indefinitely until the issue is fixed or the pod is deleted.
+
+### Can CrashLoopBackOff fix itself?
+
+Yes, if the root cause is transient (e.g., a database that was temporarily down). Once the dependency becomes available, the next restart succeeds.
+
+### How do I debug CrashLoopBackOff when there are no logs?
+
+If `kubectl logs` shows nothing, the container crashes before writing output. Check events with `kubectl describe pod`, run the image interactively with `kubectl run debug --rm -it --image=<image> -- /bin/sh`, or check for OOM kills in the pod status.
+
+See also: [OOMKilled Troubleshooting](/recipes/troubleshooting/oom-killed-troubleshooting/), [Pod Pending](/recipes/troubleshooting/pod-pending-troubleshooting/), [ImagePullBackOff](/recipes/troubleshooting/imagepullbackoff-troubleshooting/)
