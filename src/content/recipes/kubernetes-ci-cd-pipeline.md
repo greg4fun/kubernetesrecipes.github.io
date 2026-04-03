@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-04-03"
 tags: ["ci-cd", "github-actions", "pipeline", "automation", "deployment", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "argocd-gitops"
+  - "deployment-vs-statefulset"
+  - "kubernetes-deployment-guide"
+  - "kubernetes-operator-pattern"
 ---
 
 > 💡 **Quick Answer:** Build a complete CI/CD pipeline for Kubernetes with GitHub Actions. Covers Docker build, image push, Helm deploy, and automated rollback on failure.

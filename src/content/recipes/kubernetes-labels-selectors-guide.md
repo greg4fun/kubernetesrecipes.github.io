@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["labels", "selectors", "organization", "filtering", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-labels-annotations"
+  - "kubectl-cheat-sheet"
+  - "kubernetes-affinity-guide"
+  - "kubernetes-annotations-guide"
 ---
 
 > 💡 **Quick Answer:** Master Kubernetes labels and selectors for organizing and querying resources. Covers label conventions, equality selectors, set-based selectors, and field selectors.

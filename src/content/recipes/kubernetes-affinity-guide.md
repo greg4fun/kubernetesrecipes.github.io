@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-04-03"
 tags: ["affinity", "anti-affinity", "scheduling", "topology", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-taint-toleration-guide"
+  - "kubectl-cheat-sheet"
+  - "kubernetes-annotations-guide"
+  - "kubernetes-api-deprecation-migration"
 ---
 
 > 💡 **Quick Answer:** Configure node affinity, pod affinity, and anti-affinity rules for advanced Kubernetes scheduling. Control pod placement across zones, nodes, and topologies.

@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-04-02"
 tags: ["windows", "mixed-os", "node-selector", "taints", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "argocd-gitops"
+  - "backstage-kubernetes-developer-portal"
+  - "cluster-api-infrastructure-as-code"
+  - "deployment-vs-statefulset"
 ---
 
 > 💡 **Quick Answer:** Deploy Windows workloads on Kubernetes with mixed Linux and Windows node pools. Covers taints, node selectors, and Windows-specific networking.

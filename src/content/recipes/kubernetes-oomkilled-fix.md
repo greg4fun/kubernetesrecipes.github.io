@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["oomkilled", "memory", "out-of-memory", "troubleshooting", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "oom-killed-troubleshooting"
+  - "debug-oom-killed"
+  - "coredns-troubleshooting"
+  - "crashloopbackoff-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Debug and fix OOMKilled errors in Kubernetes. Find memory leaks, set correct limits, use VPA for right-sizing, and prevent container OOM kills.

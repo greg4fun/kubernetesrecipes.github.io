@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-04-02"
 tags: ["secrets", "vault", "external-secrets", "encryption", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "external-secrets-operator"
+  - "kubernetes-secrets-complete-guide"
+  - "secrets-encryption-kms"
+  - "secrets-management-best-practices"
 ---
 
 > 💡 **Quick Answer:** Secure secrets in Kubernetes with External Secrets Operator, Sealed Secrets, Vault, and SOPS. Encryption at rest, rotation, and zero-trust patterns.

@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["imagepullbackoff", "troubleshooting", "registry", "pull-secret", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "imagepullbackoff-troubleshooting"
+  - "coredns-troubleshooting"
+  - "crashloopbackoff-troubleshooting"
+  - "debug-imagepullbackoff"
 ---
 
 > 💡 **Quick Answer:** Debug and fix ImagePullBackOff errors in Kubernetes. Covers wrong image names, private registry auth, rate limits, and network connectivity issues.

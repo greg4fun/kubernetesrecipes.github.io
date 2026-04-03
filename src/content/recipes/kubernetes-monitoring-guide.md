@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-04-03"
 tags: ["monitoring", "prometheus", "grafana", "alerting", "metrics", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "prometheus-monitoring-setup"
+  - "prometheus-monitoring"
+  - "grafana-kubernetes-dashboards"
+  - "alertmanager-setup"
 ---
 
 > 💡 **Quick Answer:** Set up Kubernetes monitoring with Prometheus and Grafana. Covers kube-prometheus-stack, custom dashboards, alerting rules, and key metrics to monitor.

@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["annotations", "metadata", "ingress", "automation", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-labels-annotations"
+  - "downward-api-metadata"
+  - "downward-api"
+  - "kubectl-cheat-sheet"
 ---
 
 > 💡 **Quick Answer:** Use Kubernetes annotations for metadata, automation triggers, and controller configuration. Covers common annotation patterns, ingress annotations, and Helm labels.

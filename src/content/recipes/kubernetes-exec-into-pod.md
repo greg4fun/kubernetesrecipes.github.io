@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["kubectl-exec", "debugging", "shell", "troubleshooting", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "crashloopbackoff-troubleshooting"
+  - "kubernetes-debugging-toolkit"
+  - "coredns-troubleshooting"
+  - "debug-imagepullbackoff"
 ---
 
 > 💡 **Quick Answer:** Use kubectl exec to run commands and open shells inside Kubernetes pods. Covers interactive sessions, multi-container pods, and debugging with ephemeral containers.

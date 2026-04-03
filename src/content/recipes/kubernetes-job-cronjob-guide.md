@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["job", "cronjob", "batch", "scheduling", "cron", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "argocd-gitops"
+  - "backstage-kubernetes-developer-portal"
+  - "cluster-api-infrastructure-as-code"
+  - "deployment-vs-statefulset"
 ---
 
 > 💡 **Quick Answer:** Create Kubernetes Jobs for one-time tasks and CronJobs for scheduled work. Covers parallelism, backoff limits, completion tracking, and time zones.

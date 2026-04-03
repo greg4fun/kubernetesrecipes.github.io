@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-04-02"
 tags: ["cni", "calico", "cilium", "flannel", "multus", "networking"]
 author: "Luca Berton"
+relatedRecipes:
+  - "cilium-service-mesh-kubernetes"
+  - "coredns-configuration"
+  - "custom-dns-configuration"
+  - "dns-policies-configuration"
 ---
 
 > 💡 **Quick Answer:** Compare Calico, Cilium, Flannel, and Multus CNI plugins for Kubernetes. Performance benchmarks, features, and selection criteria for your cluster.

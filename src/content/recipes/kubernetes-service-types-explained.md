@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["service", "clusterip", "nodeport", "loadbalancer", "networking", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "cilium-service-mesh-kubernetes"
+  - "kubernetes-dns-how-it-works"
+  - "kubernetes-load-balancing"
+  - "coredns-configuration"
 ---
 
 > 💡 **Quick Answer:** Understand ClusterIP, NodePort, LoadBalancer, and ExternalName service types in Kubernetes. When to use each type with practical examples and comparisons.

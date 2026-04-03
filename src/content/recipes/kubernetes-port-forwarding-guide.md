@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["port-forward", "kubectl", "debugging", "local-access", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubectl-cheat-sheet"
+  - "kubeconfig-contexts"
+  - "kubernetes-affinity-guide"
+  - "kubernetes-annotations-guide"
 ---
 
 > 💡 **Quick Answer:** Use kubectl port-forward to access Kubernetes pods, services, and deployments from your local machine. Debug, test, and access internal services securely.

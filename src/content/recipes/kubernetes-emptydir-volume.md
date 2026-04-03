@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["emptydir", "volumes", "temporary-storage", "tmpfs", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-volume-types"
+  - "csi-drivers-storage"
+  - "kubernetes-persistent-volume-guide"
+  - "longhorn-distributed-storage"
 ---
 
 > 💡 **Quick Answer:** Use emptyDir volumes in Kubernetes for temporary storage, shared data between containers, and cache. Covers medium types, size limits, and tmpfs backing.

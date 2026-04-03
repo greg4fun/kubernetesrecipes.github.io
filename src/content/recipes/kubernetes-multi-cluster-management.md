@@ -6,6 +6,11 @@ difficulty: "advanced"
 publishDate: "2026-04-02"
 tags: ["multi-cluster", "federation", "gitops", "argocd", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "argocd-gitops"
+  - "argocd-multi-cluster-app-of-apps"
+  - "argocd-app-of-apps-pattern"
+  - "argocd-app-of-apps-sync-waves"
 ---
 
 > 💡 **Quick Answer:** Manage multiple Kubernetes clusters with federation, service mesh, and GitOps. Covers Admiralty, Liqo, Skupper, and ArgoCD ApplicationSets.

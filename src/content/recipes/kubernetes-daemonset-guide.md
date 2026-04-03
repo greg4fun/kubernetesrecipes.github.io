@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["daemonset", "per-node", "logging", "monitoring", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "argocd-gitops"
+  - "backstage-kubernetes-developer-portal"
+  - "cluster-api-infrastructure-as-code"
+  - "deployment-vs-statefulset"
 ---
 
 > 💡 **Quick Answer:** Deploy DaemonSets in Kubernetes to run exactly one pod per node. Covers logging agents, monitoring, CNI plugins, node-level operations, and rolling updates.

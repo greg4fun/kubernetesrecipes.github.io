@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["ingress", "routing", "tls", "nginx", "load-balancer", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "ingress-routing"
+  - "ingress-502-503-troubleshooting"
+  - "ingress-tls-certificates"
+  - "kubernetes-load-balancing"
 ---
 
 > 💡 **Quick Answer:** Configure Kubernetes Ingress for HTTP routing, TLS termination, and path-based routing. Covers NGINX, Traefik, and HAProxy ingress controllers.

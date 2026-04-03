@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["deployment", "replicas", "rolling-update", "rollback", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-rolling-update-strategy"
+  - "deployment-vs-statefulset"
+  - "kubernetes-ci-cd-pipeline"
+  - "kubernetes-replicaset-explained"
 ---
 
 > 💡 **Quick Answer:** Create and manage Kubernetes Deployments for stateless applications. Covers replicas, selectors, rolling updates, rollback, and deployment strategies.

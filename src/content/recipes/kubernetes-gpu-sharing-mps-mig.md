@@ -6,6 +6,11 @@ difficulty: "advanced"
 publishDate: "2026-04-02"
 tags: ["gpu-sharing", "mps", "mig", "nvidia", "inference", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "node-feature-discovery-operator"
+  - "ai-batch-processing-volcano"
+  - "aiperf-benchmark-llm-kubernetes"
+  - "aiperf-concurrency-sweep-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Share NVIDIA GPUs across multiple pods using MPS time-slicing and MIG hardware partitioning. Maximize GPU utilization for inference workloads.

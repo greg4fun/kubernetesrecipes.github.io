@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["kubectl", "cheat-sheet", "commands", "cli", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-port-forwarding-guide"
+  - "kubeconfig-contexts"
+  - "kubernetes-affinity-guide"
+  - "kubernetes-annotations-guide"
 ---
 
 > 💡 **Quick Answer:** Complete kubectl cheat sheet with essential commands for pods, deployments, services, logs, debugging, and cluster management. Copy-paste ready examples.

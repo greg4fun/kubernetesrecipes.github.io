@@ -6,6 +6,11 @@ difficulty: "advanced"
 publishDate: "2026-04-02"
 tags: ["disaster-recovery", "backup", "velero", "etcd", "rto-rpo", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-backup-restore"
+  - "kubernetes-etcd-operations-guide"
+  - "kubectl-cheat-sheet"
+  - "kubernetes-affinity-guide"
 ---
 
 > 💡 **Quick Answer:** Build a Kubernetes disaster recovery plan with etcd backups, Velero, cross-region replication, and RTO/RPO targets for production clusters.

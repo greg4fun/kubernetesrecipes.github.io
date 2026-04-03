@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-04-02"
 tags: ["blue-green", "canary", "argo-rollouts", "flagger", "progressive-delivery"]
 author: "Luca Berton"
+relatedRecipes:
+  - "argocd-sync-waves-canary"
+  - "deployment-strategies"
+  - "blue-green-deployments"
+  - "canary-deployments"
 ---
 
 > 💡 **Quick Answer:** Implement blue-green and canary deployment strategies with Argo Rollouts and Flagger. Progressive delivery with automated analysis and rollback.

@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["resources", "requests", "limits", "cpu", "memory", "qos", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "pod-resource-management"
+  - "resource-limits-requests"
+  - "kubectl-cheat-sheet"
+  - "kubernetes-affinity-guide"
 ---
 
 > 💡 **Quick Answer:** Configure CPU and memory requests and limits in Kubernetes. Understand QoS classes, OOMKilled, CPU throttling, and right-sizing with VPA recommendations.

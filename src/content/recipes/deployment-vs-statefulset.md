@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["deployment", "statefulset", "comparison", "databases", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-statefulset-patterns"
+  - "kubernetes-ci-cd-pipeline"
+  - "kubernetes-deployment-guide"
+  - "statefulset-management"
 ---
 
 > 💡 **Quick Answer:** Choose between Deployment and StatefulSet for your Kubernetes workloads. Compare identity, storage, ordering, scaling, and use cases for each controller.

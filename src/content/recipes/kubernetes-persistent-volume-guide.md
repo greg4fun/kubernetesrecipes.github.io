@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["persistent-volume", "pvc", "storage", "storageclass", "dynamic-provisioning", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "dynamic-volume-provisioning"
+  - "kubernetes-volume-types"
+  - "longhorn-distributed-storage"
+  - "persistent-volume-resize-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Create and manage Persistent Volumes and PersistentVolumeClaims in Kubernetes. Covers StorageClasses, dynamic provisioning, access modes, and volume expansion.

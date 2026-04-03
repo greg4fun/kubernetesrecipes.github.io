@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["secrets", "security", "encryption", "base64", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-secrets-management-guide"
+  - "secrets-encryption-kms"
+  - "secrets-management-best-practices"
+  - "external-secrets-operator"
 ---
 
 > 💡 **Quick Answer:** Create and manage Kubernetes Secrets for sensitive data. Covers types, encoding, mounting, external secrets operators, and encryption at rest best practices.

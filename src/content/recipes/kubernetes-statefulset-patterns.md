@@ -6,6 +6,11 @@ difficulty: "advanced"
 publishDate: "2026-04-02"
 tags: ["statefulset", "databases", "ordered-deployment", "headless-service", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "deployment-vs-statefulset"
+  - "statefulset-management"
+  - "argocd-gitops"
+  - "backstage-kubernetes-developer-portal"
 ---
 
 > 💡 **Quick Answer:** Advanced StatefulSet patterns for databases, message queues, and distributed systems. Covers ordered deployment, persistent identity, and headless services.

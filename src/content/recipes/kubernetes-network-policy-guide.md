@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["network-policy", "security", "ingress", "egress", "isolation", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-ingress-complete-guide"
+  - "kubernetes-load-balancing"
+  - "network-policies"
+  - "rate-limiting-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Create Kubernetes NetworkPolicies to control pod-to-pod traffic. Covers ingress and egress rules, CIDR blocks, namespace isolation, and default deny policies.

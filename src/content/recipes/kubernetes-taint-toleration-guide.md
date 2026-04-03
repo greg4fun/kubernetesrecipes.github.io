@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-04-03"
 tags: ["taints", "tolerations", "scheduling", "node-selection", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "node-taints-tolerations"
+  - "kubernetes-affinity-guide"
+  - "kubectl-cheat-sheet"
+  - "kubernetes-annotations-guide"
 ---
 
 > 💡 **Quick Answer:** Use Kubernetes taints and tolerations to control pod scheduling. Dedicate nodes for GPU workloads, isolate teams, and prevent scheduling on specific nodes.

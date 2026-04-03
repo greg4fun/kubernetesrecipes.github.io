@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["configmap", "configuration", "environment-variables", "volumes", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "downward-api"
+  - "environment-variables-configmaps"
+  - "kubernetes-environment-variables"
+  - "configmap-hot-reload-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Create and use ConfigMaps in Kubernetes for application configuration. Mount as files, inject as environment variables, and hot-reload without restarting pods.

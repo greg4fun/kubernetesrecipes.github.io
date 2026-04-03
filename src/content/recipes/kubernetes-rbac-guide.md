@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-04-03"
 tags: ["rbac", "roles", "clusterrole", "rolebinding", "access-control", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "api-access-control"
+  - "confidential-computing-kubernetes"
+  - "kubernetes-admission-controllers-guide"
+  - "kubernetes-multi-tenancy"
 ---
 
 > 💡 **Quick Answer:** Configure Kubernetes RBAC with Roles, ClusterRoles, RoleBindings, and service accounts. Least privilege access control for users, groups, and applications.

@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["environment-variables", "env", "configmap", "secrets", "downward-api", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-configmap-guide"
+  - "downward-api"
+  - "environment-variables-configmaps"
+  - "configmap-hot-reload-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Set environment variables in Kubernetes pods from literals, ConfigMaps, Secrets, and the Downward API. Covers variable ordering, references, and best practices.

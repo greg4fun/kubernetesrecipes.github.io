@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["rolling-update", "deployment-strategy", "zero-downtime", "rollback", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-deployment-guide"
+  - "argocd-gitops"
+  - "argocd-sync-waves-database-migration"
+  - "backstage-kubernetes-developer-portal"
 ---
 
 > 💡 **Quick Answer:** Configure rolling update strategies for zero-downtime deployments in Kubernetes. Covers maxSurge, maxUnavailable, rollback, and deployment health checks.

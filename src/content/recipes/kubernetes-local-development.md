@@ -6,6 +6,11 @@ difficulty: "beginner"
 publishDate: "2026-04-03"
 tags: ["minikube", "kind", "k3d", "local-development", "developer-experience", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "argocd-gitops"
+  - "backstage-kubernetes-developer-portal"
+  - "cluster-api-infrastructure-as-code"
+  - "deployment-vs-statefulset"
 ---
 
 > 💡 **Quick Answer:** Set up local Kubernetes clusters for development with Minikube, Kind, and k3d. Covers installation, configuration, local registries, and hot-reload workflows.

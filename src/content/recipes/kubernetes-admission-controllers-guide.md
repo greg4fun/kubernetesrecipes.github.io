@@ -6,6 +6,11 @@ difficulty: "advanced"
 publishDate: "2026-04-02"
 tags: ["admission-controllers", "webhooks", "opa", "kyverno", "policy", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kyverno-policies"
+  - "admission-webhooks"
+  - "confidential-computing-kubernetes"
+  - "kubernetes-multi-tenancy"
 ---
 
 > 💡 **Quick Answer:** Build validating and mutating admission webhooks for Kubernetes. Policy enforcement with OPA Gatekeeper, Kyverno, and custom webhooks.

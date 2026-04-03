@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-04-02"
 tags: ["service-accounts", "tokens", "oidc", "workload-identity", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "confidential-computing-kubernetes"
+  - "kubernetes-admission-controllers-guide"
+  - "kubernetes-multi-tenancy"
+  - "kubernetes-network-security-checklist"
 ---
 
 > 💡 **Quick Answer:** Configure service accounts, bound tokens, OIDC federation, and workload identity for Kubernetes. Migrate from legacy tokens to projected volumes.

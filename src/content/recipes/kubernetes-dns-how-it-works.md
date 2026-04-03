@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-04-03"
 tags: ["dns", "coredns", "service-discovery", "networking", "kubernetes"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-dns-configuration"
+  - "coredns-configuration"
+  - "custom-dns-configuration"
+  - "dns-policies-configuration"
 ---
 
 > 💡 **Quick Answer:** Understand Kubernetes DNS resolution with CoreDNS. Service discovery, pod DNS, headless services, custom DNS policies, and troubleshooting DNS failures.
