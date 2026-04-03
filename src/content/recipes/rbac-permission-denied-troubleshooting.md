@@ -1,6 +1,6 @@
 ---
 title: "Fix RBAC Permission Denied Errors"
-description: "Debug forbidden and unauthorized errors in Kubernetes RBAC. Covers ClusterRole vs Role scope, RoleBinding targeting, service account tokens, and permission auditing."
+description: "Debug RBAC forbidden and unauthorized errors in Kubernetes. Covers ClusterRole vs Role scope and service account permissions."
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-04-02"

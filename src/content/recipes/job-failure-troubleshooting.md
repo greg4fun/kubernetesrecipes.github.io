@@ -1,6 +1,6 @@
 ---
 title: "Fix Kubernetes Job Failures and Retries"
-description: "Debug Jobs stuck in backoff, hitting retry limits, or producing wrong completions count. Covers backoffLimit, activeDeadlineSeconds, TTL cleanup, and indexed Jobs."
+description: "Debug Kubernetes Jobs stuck in backoff or hitting retry limits. Covers backoffLimit, activeDeadlineSeconds, and CronJob overlap."
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-04-02"

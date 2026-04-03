@@ -1,6 +1,6 @@
 ---
 title: "Fix API Server Timeout and Overload"
-description: "Debug kubectl timeouts, API server connection refused errors, and slow API responses. Covers etcd latency, webhook timeouts, request throttling, and audit log impact."
+description: "Debug kubectl timeouts, API server overload, and connection refused errors. Covers etcd latency, webhook timeouts, and rate limiting."
 category: "troubleshooting"
 difficulty: "advanced"
 publishDate: "2026-04-02"

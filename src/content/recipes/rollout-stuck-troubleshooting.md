@@ -1,6 +1,6 @@
 ---
 title: "Fix Deployment Rollout Stuck at Partial Progress"
-description: "Debug deployments stuck with unavailable replicas during rollout. Covers resource constraints, failing readiness probes, ImagePullBackOff during rollout, and rollback."
+description: "Debug deployments stuck with unavailable replicas during rollout. Covers readiness probes, resource constraints, and rollback."
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-04-02"

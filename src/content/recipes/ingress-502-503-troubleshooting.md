@@ -1,6 +1,6 @@
 ---
 title: "Fix Ingress 502 and 503 Gateway Errors"
-description: "Debug 502 Bad Gateway and 503 Service Unavailable from Kubernetes ingress. Covers backend health checks, endpoint readiness, timeouts, and upstream connection issues."
+description: "Debug 502 Bad Gateway and 503 Service Unavailable from Kubernetes ingress controllers. Fix backend health and timeout issues."
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-04-02"

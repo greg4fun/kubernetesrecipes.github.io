@@ -1,6 +1,6 @@
 ---
 title: "Fix PVC Resize Stuck or Failed"
-description: "Debug PersistentVolumeClaim expansion failures. Covers allowVolumeExpansion, filesystem resize conditions, offline vs online expansion, and recovery from stuck resizes."
+description: "Debug PVC expansion failures in Kubernetes. Covers allowVolumeExpansion, filesystem resize, and offline vs online expansion."
 category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-04-02"
