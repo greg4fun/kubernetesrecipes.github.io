@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 tags: ["leases", "leader-election", "coordination", "high-availability", "distributed"]
+relatedRecipes:
+  - "openclaw-kubernetes-deployment"
+  - "pod-disruption-budget-config"
+  - "openclaw-telegram-bot-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Leases provide distributed coordination—one holder at a time. Create a Lease resource, have instances compete to acquire it via `holderIdentity`. The holder must renew before `leaseDurationSeconds` expires or lose leadership. Kubernetes system components (scheduler, controller-manager) use leases for HA.

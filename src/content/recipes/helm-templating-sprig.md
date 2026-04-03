@@ -5,6 +5,10 @@ category: "helm"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 tags: ["helm", "templating", "sprig", "functions", "charts"]
+relatedRecipes:
+  - "openclaw-helm-chart-chromium"
+  - "helm-before-hook-creation"
+  - "argocd-app-of-apps-helm-values"
 ---
 
 > 💡 **Quick Answer:** Use **Sprig functions** in Helm templates: `{{ .Values.name | lower | replace " " "-" }}` for string manipulation, `{{ if .Values.enabled }}` for conditionals, `{{ range .Values.items }}` for loops, and `{{ default "value" .Values.x }}` for defaults. Access built-in objects: `.Release`, `.Chart`, `.Values`.

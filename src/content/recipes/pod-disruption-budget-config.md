@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["pdb", "availability", "disruption", "maintenance", "upgrades"]
+relatedRecipes:
+  - "cnpg-postgresql-operator"
+  - "topology-spread-constraints"
+  - "argocd-sync-waves-ordering"
 ---
 
 > 💡 **Quick Answer:** Create PDB with `minAvailable: N` (minimum running pods) or `maxUnavailable: N` (maximum down at once). PDBs block `kubectl drain` and cluster autoscaler from disrupting too many pods. Use selector matching your deployment's labels.

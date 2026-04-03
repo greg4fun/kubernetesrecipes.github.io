@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["taints", "tolerations", "scheduling", "node-affinity", "workload-isolation"]
+relatedRecipes:
+  - "pod-affinity-anti-affinity"
+  - "blue-green-deployment"
+  - "openshift-idms-install-config"
 ---
 
 > 💡 **Quick Answer:** **Taints** on nodes repel pods; **tolerations** on pods allow scheduling on tainted nodes. Format: `key=value:effect`. Effects: `NoSchedule` (won't schedule), `PreferNoSchedule` (soft), `NoExecute` (evict existing). Use for GPU nodes, dedicated workloads, or draining nodes.

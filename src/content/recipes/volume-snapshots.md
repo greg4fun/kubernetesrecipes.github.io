@@ -5,6 +5,10 @@ category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["snapshots", "backup", "storage", "pvc", "disaster-recovery"]
+relatedRecipes:
+  - "statefulset-mysql"
+  - "cnpg-disaster-recovery"
+  - "enable-gpudirect-storage-openshift"
 ---
 
 > 💡 **Quick Answer:** Create `VolumeSnapshot` referencing a PVC to capture point-in-time backup. Restore by creating a new PVC with `dataSource: {kind: VolumeSnapshot, name: my-snapshot}`. Requires CSI driver with snapshot support and snapshot-controller installed.

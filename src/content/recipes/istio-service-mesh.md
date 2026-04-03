@@ -5,6 +5,10 @@ category: "networking"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 tags: ["istio", "service-mesh", "traffic", "mtls", "networking"]
+relatedRecipes:
+  - "nfsordma-troubleshooting-performance"
+  - "gpudirect-rdma-dma-buf"
+  - "verify-ovn-underlay-interface"
 ---
 
 > **💡 Quick Answer:** Install: `istioctl install --set profile=demo`. Enable sidecar injection: `kubectl label ns default istio-injection=enabled`. Istio auto-injects envoy proxy sidecars. Use `VirtualService` for traffic routing (canary, A/B), `DestinationRule` for load balancing/circuit breaking. mTLS enabled by default. Access Kiali dashboard: `istioctl dashboard kiali`. High resource overhead—evaluate if you need service mesh complexity.

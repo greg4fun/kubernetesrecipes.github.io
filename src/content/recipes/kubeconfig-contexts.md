@@ -5,6 +5,10 @@ category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["kubeconfig", "contexts", "clusters", "kubectl", "multi-cluster"]
+relatedRecipes:
+  - "kubernetes-lease-objects"
+  - "mcp-worker-infra-separation"
+  - "mofed-doca-driver-building-openshift"
 ---
 
 > 💡 **Quick Answer:** Switch clusters with `kubectl config use-context <context-name>`. View contexts with `kubectl config get-contexts`, current context with `kubectl config current-context`. Merge configs with `KUBECONFIG=~/.kube/config:new-config kubectl config view --flatten > merged`.

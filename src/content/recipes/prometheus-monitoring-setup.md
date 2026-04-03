@@ -5,6 +5,10 @@ category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["prometheus", "monitoring", "metrics", "grafana", "alerting"]
+relatedRecipes:
+  - "grafana-kubernetes-dashboards"
+  - "openclaw-monitoring-prometheus"
+  - "jaeger-distributed-tracing"
 ---
 
 > **💡 Quick Answer:** Install kube-prometheus-stack via Helm: `helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring --create-namespace`. Includes Prometheus, Grafana, and Alertmanager. Access Grafana: `kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring`. Default dashboards included. Add custom scraping via `ServiceMonitor` CRDs.

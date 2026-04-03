@@ -6,6 +6,10 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["blue-green", "deployment", "zero-downtime", "release", "traffic-switching"]
 author: "Luca Berton"
+relatedRecipes:
+  - "openclaw-kubernetes-deployment"
+  - "statefulset-management"
+  - "openclaw-multi-agent-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Run two identical environments (blue=current, green=new). Deploy to green, test it, then switch Service selector from `version: blue` to `version: green`. Instant rollback by switching back. Requires 2x resources during deployment.

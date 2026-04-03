@@ -6,6 +6,10 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["prometheus", "monitoring", "metrics", "alerting", "observability"]
 author: "Luca Berton"
+relatedRecipes:
+  - "opentelemetry-collector"
+  - "gpu-tenant-slo-observability"
+  - "monitor-nccl-performance-prometheus"
 ---
 
 > 💡 **Quick Answer:** Install Prometheus Operator via Helm (`helm install prometheus prometheus-community/kube-prometheus-stack`), then create `ServiceMonitor` CRDs to scrape your apps. Access Prometheus UI via port-forward: `kubectl port-forward svc/prometheus-operated 9090`.

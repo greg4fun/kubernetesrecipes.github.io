@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["topology", "scheduling", "availability", "zones", "spread"]
+relatedRecipes:
+  - "quay-robot-account-kubernetes"
+  - "argocd-multi-cluster-app-of-apps"
+  - "argocd-sync-waves-ordering"
 ---
 
 > 💡 **Quick Answer:** Add `topologySpreadConstraints` to pod spec to distribute pods across zones/nodes. Key fields: `topologyKey` (label to spread across, e.g., `topology.kubernetes.io/zone`), `maxSkew` (max pod count difference), `whenUnsatisfiable` (`DoNotSchedule` or `ScheduleAnyway`).

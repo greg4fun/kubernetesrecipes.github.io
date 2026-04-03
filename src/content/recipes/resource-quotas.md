@@ -5,6 +5,10 @@ category: "configuration"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["resource-quota", "limits", "multi-tenancy", "capacity", "governance"]
+relatedRecipes:
+  - "machineconfig-registries-conf"
+  - "itms-registries-conf-machineconfig"
+  - "doca-driver-openshift-dtk"
 ---
 
 > 💡 **Quick Answer:** Create `ResourceQuota` to limit namespace-wide resources: compute (`requests.cpu`, `limits.memory`), storage (`requests.storage`, `persistentvolumeclaims`), and objects (`count/pods`, `count/services`). Quotas enforce limits—requests exceeding quota are rejected.

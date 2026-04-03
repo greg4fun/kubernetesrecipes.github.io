@@ -5,6 +5,10 @@ category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["scheduling", "pending", "troubleshooting", "resources", "affinity"]
+relatedRecipes:
+  - "taint-toleration-scheduling-issues"
+  - "service-mesh-sidecar-troubleshooting"
+  - "imagepullbackoff-troubleshooting"
 ---
 
 > **💡 Quick Answer:** Pods stuck in `Pending` = scheduling failure. Run `kubectl describe pod <pod>` and check Events. Common causes: insufficient CPU/memory (add nodes or reduce requests), untolerated taints (`kubectl taint nodes <node> key:NoSchedule-`), node selector mismatch, or PVC not bound. Check with `kubectl get events --sort-by=.lastTimestamp`.

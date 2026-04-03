@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["blue-green", "canary", "deployment", "zero-downtime", "traffic"]
+relatedRecipes:
+  - "openclaw-webhook-automation-kubernetes"
+  - "pod-priority-preemption-scheduling"
+  - "openclaw-signal-kubernetes"
 ---
 
 > 💡 **Quick Answer:** **Blue-Green:** Deploy new version alongside old, switch Service selector from `version: blue` to `version: green`. **Canary:** Use two Deployments with weighted traffic (adjust replica counts or use Ingress annotations). Rollback by reverting selector or scaling down canary.

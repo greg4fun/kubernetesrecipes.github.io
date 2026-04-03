@@ -5,6 +5,10 @@ category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["ingress", "routing", "traffic", "nginx", "load-balancing"]
+relatedRecipes:
+  - "create-nv-ipam-ippool"
+  - "coredns-configuration"
+  - "networkpolicy-deny-all"
 ---
 
 > **💡 Quick Answer:** Create an Ingress with `spec.rules[].host` for domain-based routing and `spec.rules[].http.paths[]` for path-based routing. Set `ingressClassName: nginx` (or your controller). For HTTPS, add `spec.tls[]` with your certificate Secret. Install an Ingress Controller first (nginx-ingress, traefik, etc.).

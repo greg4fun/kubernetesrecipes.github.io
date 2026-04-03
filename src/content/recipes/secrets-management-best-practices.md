@@ -5,6 +5,10 @@ category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["secrets", "security", "encryption", "best-practices", "management"]
+relatedRecipes:
+  - "custom-ca-openshift"
+  - "admission-webhooks"
+  - "kubernetes-runtimeclass"
 ---
 
 > **💡 Quick Answer:** K8s Secrets are base64-encoded, NOT encrypted by default. Enable encryption at rest via `EncryptionConfiguration`. Never commit secrets to git—use Sealed Secrets or External Secrets Operator. Mount as files, not env vars (env vars appear in logs). Use RBAC to restrict `get secrets` permission. Rotate secrets regularly; update pods to pick up changes.

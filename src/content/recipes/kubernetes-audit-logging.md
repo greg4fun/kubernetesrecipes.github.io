@@ -5,6 +5,10 @@ category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 tags: ["audit", "logging", "security", "compliance", "api-server"]
+relatedRecipes:
+  - "rhacs-multi-cluster-management"
+  - "kubernetes-runtimeclass"
+  - "openclaw-networkpolicy-security"
 ---
 
 > 💡 **Quick Answer:** Configure API server with `--audit-policy-file` (defines what to log) and `--audit-log-path` (where to write). Policy uses `rules` with `level` (None, Metadata, Request, RequestResponse) and `resources` filters. Send to SIEM via `--audit-webhook-config-file` for centralized analysis.

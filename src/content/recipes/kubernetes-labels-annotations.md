@@ -5,6 +5,10 @@ category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["labels", "annotations", "organization", "selectors", "metadata"]
+relatedRecipes:
+  - "mcp-pause-unpause-rollout"
+  - "pod-mutation-injection"
+  - "openshift-project-request-template"
 ---
 
 > 💡 **Quick Answer:** **Labels** are for selection and querying (Services select pods by labels). **Annotations** store metadata for tools and humans (not queryable). Use consistent labeling: `app.kubernetes.io/name`, `app.kubernetes.io/version`, `app.kubernetes.io/component`. Query with `kubectl get pods -l app=myapp`.

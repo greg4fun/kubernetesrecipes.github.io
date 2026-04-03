@@ -6,6 +6,10 @@ difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["jobs", "cronjobs", "batch", "scheduling", "automation"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-recipes-400-pages-milestone"
+  - "configure-clusterpolicy-kernel-module-type"
+  - "oc-adm-drain-dry-run-diagnostics"
 ---
 
 > 💡 **Quick Answer:** **Job** = run-to-completion task (backups, migrations). **CronJob** = scheduled Job (like cron: `schedule: "0 2 * * *"`). Jobs track completions and retry on failure. Set `backoffLimit` for retries, `activeDeadlineSeconds` for timeout, `ttlSecondsAfterFinished` for auto-cleanup.

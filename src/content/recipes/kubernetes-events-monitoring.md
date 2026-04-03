@@ -5,6 +5,10 @@ category: "observability"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["events", "monitoring", "troubleshooting", "observability", "alerts"]
+relatedRecipes:
+  - "openshift-user-workload-monitoring"
+  - "alertmanager-setup"
+  - "openclaw-logging-efk"
 ---
 
 > 💡 **Quick Answer:** View events with `kubectl get events --sort-by=.lastTimestamp` or `kubectl describe <resource>`. Events show scheduling, pulling, starting, killing, and error conditions. Export to external systems using **event-exporter** or **Kubernetes Event Router** for long-term retention and alerting.

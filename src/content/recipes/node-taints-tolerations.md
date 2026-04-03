@@ -5,6 +5,10 @@ category: "configuration"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["taints", "tolerations", "scheduling", "dedicated-nodes", "workloads"]
+relatedRecipes:
+  - "machineconfig-chrony-ntp"
+  - "downward-api-metadata"
+  - "machineconfig-annotation-inspection"
 ---
 
 > 💡 **Quick Answer:** **Taints** repel pods from nodes; **Tolerations** allow pods onto tainted nodes. Add taint: `kubectl taint nodes node1 key=value:NoSchedule`. Add toleration in pod spec: `tolerations: [{key: "key", operator: "Equal", value: "value", effect: "NoSchedule"}]`. Effects: `NoSchedule`, `PreferNoSchedule`, `NoExecute`.

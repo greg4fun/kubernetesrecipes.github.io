@@ -5,6 +5,10 @@ category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["rbac", "service-accounts", "security", "authorization", "least-privilege"]
+relatedRecipes:
+  - "pod-security-context"
+  - "workload-identity-cloud-access"
+  - "networkpolicy-deny-default-gpu"
 ---
 
 > 💡 **Quick Answer:** Create `ServiceAccount`, then create `Role` (namespace-scoped) or `ClusterRole` (cluster-wide) with verb/resource permissions, then bind with `RoleBinding` or `ClusterRoleBinding`. Reference ServiceAccount in pod spec with `serviceAccountName`. Use `automountServiceAccountToken: false` when not needed.

@@ -5,6 +5,10 @@ category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["endpointslices", "services", "networking", "discovery", "scalability"]
+relatedRecipes:
+  - "ingress-routing"
+  - "ingress-tls-certificates"
+  - "networkpolicy-deny-all"
 ---
 
 > 💡 **Quick Answer:** EndpointSlices replace legacy Endpoints for better scalability—they chunk endpoints into ~100 per slice. View with `kubectl get endpointslices -l kubernetes.io/service-name=<svc>`. They're auto-managed by the EndpointSlice controller; you rarely create them manually.

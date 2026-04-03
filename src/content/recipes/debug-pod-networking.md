@@ -5,6 +5,10 @@ category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["networking", "debugging", "troubleshooting", "connectivity", "dns"]
+relatedRecipes:
+  - "openshift-mcd-logs-debugging"
+  - "debug-dns-issues"
+  - "webhook-timeout-admission-errors"
 ---
 
 > 💡 **Quick Answer:** Use a debug pod with network tools: `kubectl run netshoot --rm -it --image=nicolaka/netshoot -- bash`. Inside, test DNS (`nslookup kubernetes`), connectivity (`curl service-name:port`), and routing (`traceroute`). Check NetworkPolicies with `kubectl get networkpolicy` if traffic is blocked.

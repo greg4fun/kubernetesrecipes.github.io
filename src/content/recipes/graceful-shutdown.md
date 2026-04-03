@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["graceful-shutdown", "zero-downtime", "SIGTERM", "termination", "connections"]
+relatedRecipes:
+  - "blue-green-deployment"
+  - "argocd-declarative-application-setup"
+  - "flux-gitops-continuous-delivery"
 ---
 
 > **💡 Quick Answer:** K8s sends SIGTERM → wait `terminationGracePeriodSeconds` (default 30s) → SIGKILL. Your app MUST handle SIGTERM: stop accepting new requests, finish in-flight requests, close connections, exit. Add `preStop` hook for extra delay: `lifecycle: {preStop: {exec: {command: ["sleep", "5"]}}}`. Increase grace period for long requests. Always set `readinessProbe` to stop traffic before shutdown.

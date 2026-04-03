@@ -5,6 +5,10 @@ category: "configuration"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 tags: ["lease", "leader-election", "coordination", "high-availability", "distributed-systems"]
+relatedRecipes:
+  - "machineconfig-chrony-ntp"
+  - "openclaw-node-pairing-kubernetes"
+  - "kubeconfig-contexts"
 ---
 
 > 💡 **Quick Answer:** Leases enable **leader election** for HA controllers. One pod acquires the lease (becomes leader), others wait. If leader fails to renew within `leaseDurationSeconds`, another pod acquires it. Use client-go's `leaderelection` package or controller-runtime's built-in leader election.

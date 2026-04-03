@@ -5,6 +5,10 @@ category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["pod-security", "psa", "security", "policies", "hardening"]
+relatedRecipes:
+  - "pod-security-standards"
+  - "gvisor-container-runtime"
+  - "oidc-authentication-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Label namespaces with `pod-security.kubernetes.io/<mode>: <level>`. Modes: **enforce** (block violations), **audit** (log), **warn** (warn user). Levels: **privileged** (no restrictions), **baseline** (prevent escalations), **restricted** (hardened). Example: `pod-security.kubernetes.io/enforce: restricted`.

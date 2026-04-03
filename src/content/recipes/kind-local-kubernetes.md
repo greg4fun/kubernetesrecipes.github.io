@@ -5,6 +5,10 @@ category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["kind", "local-development", "docker", "testing", "development"]
+relatedRecipes:
+  - "taint-toleration-scheduling-issues"
+  - "troubleshoot-nv-ipam-pool-not-found"
+  - "troubleshoot-no-supported-nic-selected"
 ---
 
 > 💡 **Quick Answer:** Install kind (`brew install kind`), then create a cluster with `kind create cluster --name my-cluster`. For multi-node: use a config file with `nodes:` section specifying control-plane and workers. Kind uses Docker containers as nodes—perfect for local development and CI/CD.

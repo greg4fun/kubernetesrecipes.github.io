@@ -6,6 +6,10 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["flux", "gitops", "continuous-deployment", "helm", "kustomize"]
 author: "Luca Berton"
+relatedRecipes:
+  - "openshift-mcp-itms-rollout"
+  - "blue-green-deployments"
+  - "openclaw-whatsapp-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Bootstrap Flux with `flux bootstrap github --owner=myorg --repository=fleet-infra --path=clusters/production`. Create `GitRepository` + `Kustomization` CRDs to sync manifests, or `HelmRepository` + `HelmRelease` for Helm charts. Flux watches Git and auto-applies changes.

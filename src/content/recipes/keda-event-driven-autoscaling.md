@@ -5,6 +5,10 @@ category: "autoscaling"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["keda", "autoscaling", "event-driven", "scaling", "queues"]
+relatedRecipes:
+  - "openclaw-resource-limits-tuning"
+  - "hpa-custom-metrics"
+  - "kubernetes-cost-optimization-strategies"
 ---
 
 > 💡 **Quick Answer:** Install KEDA with Helm (`helm install keda kedacore/keda -n keda`), then create `ScaledObject` resources defining triggers (Kafka, RabbitMQ, Prometheus, cron, etc.) and target deployment. KEDA scales to zero when idle and up based on event source metrics.

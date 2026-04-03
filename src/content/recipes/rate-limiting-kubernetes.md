@@ -5,6 +5,10 @@ category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["rate-limiting", "ingress", "api-gateway", "traffic-management", "security"]
+relatedRecipes:
+  - "nncp-dns-routes-workers"
+  - "ingress2gateway-migration"
+  - "network-policies"
 ---
 
 > 💡 **Quick Answer:** Implement at **Ingress** (NGINX annotations: `nginx.ingress.kubernetes.io/limit-rps: "10"`), **Service Mesh** (Istio EnvoyFilter, Linkerd), or **API Gateway** (Kong, Ambassador). Rate limit by IP, user, or header. Return HTTP 429 when exceeded.

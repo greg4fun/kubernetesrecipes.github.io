@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 tags: ["canary", "deployments", "rollout", "traffic-splitting", "release"]
+relatedRecipes:
+  - "openclaw-kubernetes-deployment"
+  - "openclaw-multi-agent-kubernetes"
+  - "openclaw-multi-agent-team-kubernetes"
 ---
 
 > **💡 Quick Answer:** Canary = gradual traffic shift to new version. Simple approach: create two Deployments with same `app` label, adjust replica ratios (e.g., stable=9, canary=1 for 10% traffic). For precise control, use Ingress annotations (`nginx.ingress.kubernetes.io/canary-weight: "10"`) or service mesh (Istio VirtualService). Monitor metrics before increasing canary traffic.

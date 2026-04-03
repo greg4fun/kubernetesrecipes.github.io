@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["statefulset", "stateful", "storage", "databases", "persistence"]
+relatedRecipes:
+  - "blue-green-deployment"
+  - "argocd-presync-postsync-hooks"
+  - "pod-topology-constraints"
 ---
 
 > **💡 Quick Answer:** StatefulSet = stable pod names (`web-0`, `web-1`), persistent storage per pod, and ordered deployment. Requires a headless Service (`clusterIP: None`). Each pod gets its own PVC via `volumeClaimTemplates`. Scale carefully: `kubectl scale statefulset web --replicas=5`. Pods are created/deleted in order. Use for databases, Kafka, ZooKeeper—not for stateless apps.

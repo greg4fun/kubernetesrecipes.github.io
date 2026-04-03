@@ -5,6 +5,10 @@ category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["configmap", "environment-variables", "configuration", "settings", "twelve-factor"]
+relatedRecipes:
+  - "machineconfig-annotation-inspection"
+  - "switch-proprietary-to-open-kernel-modules"
+  - "resourcequota-limitrange-gpu"
 ---
 
 > 💡 **Quick Answer:** Create a ConfigMap with `kubectl create configmap myconfig --from-literal=KEY=value` or `--from-file=config.properties`. Reference in pods via `envFrom.configMapRef` (all keys as env vars) or `env.valueFrom.configMapKeyRef` (specific key). Mount as files with `volumes.configMap` for config files.

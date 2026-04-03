@@ -5,6 +5,10 @@ category: "helm"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["helm", "hooks", "lifecycle", "migrations", "automation"]
+relatedRecipes:
+  - "openclaw-helm-chart-chromium"
+  - "helm-sprig-tostring-function"
+  - "helm-chart-repositories"
 ---
 
 > 💡 **Quick Answer:** Add `helm.sh/hook` annotation to Jobs or Pods to run at lifecycle points: `pre-install`, `post-install`, `pre-upgrade`, `post-upgrade`, `pre-delete`, `post-delete`. Use `helm.sh/hook-weight` for ordering and `helm.sh/hook-delete-policy` to clean up hook resources.

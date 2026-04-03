@@ -5,6 +5,10 @@ category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["grafana", "monitoring", "dashboards", "prometheus", "visualization"]
+relatedRecipes:
+  - "alertmanager-configuration"
+  - "openclaw-logging-efk"
+  - "gpu-tenant-monitoring-chargeback"
 ---
 
 > 💡 **Quick Answer:** Deploy Grafana via **kube-prometheus-stack** Helm chart which includes pre-built Kubernetes dashboards. Import community dashboards by ID: **315** (Kubernetes cluster), **6417** (pods), **1860** (node exporter). Connect to Prometheus datasource at `http://prometheus-server:9090`.

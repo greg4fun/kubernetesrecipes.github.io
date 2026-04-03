@@ -5,6 +5,10 @@ category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["statefulset", "databases", "persistence", "storage", "stateful"]
+relatedRecipes:
+  - "s3-model-storage-permissions"
+  - "machineconfig-nfs-mount-openshift"
+  - "pvc-storageclass-examples"
 ---
 
 > 💡 **Quick Answer:** Use `StatefulSet` (not Deployment) for databases and distributed systems. StatefulSets provide: **stable pod names** (app-0, app-1), **persistent storage per pod** via volumeClaimTemplates, **ordered startup/shutdown**. Headless Service enables DNS records for each pod (`app-0.svc.namespace.svc.cluster.local`).

@@ -5,6 +5,10 @@ category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["image-pull-secrets", "registries", "docker", "authentication", "containers"]
+relatedRecipes:
+  - "mcp-maxunavailable-configuration"
+  - "kubernetes-api-aggregation"
+  - "priorityclasses-gpu-workloads"
 ---
 
 > 💡 **Quick Answer:** Create a secret with `kubectl create secret docker-registry <name> --docker-server=<registry> --docker-username=<user> --docker-password=<pass>`. Reference in pods via `spec.imagePullSecrets[].name` or attach to ServiceAccount with `kubectl patch sa default -p '{"imagePullSecrets": [{"name": "my-secret"}]}'`.

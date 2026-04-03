@@ -6,6 +6,10 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["kyverno", "policy", "security", "admission-control", "governance"]
 author: "Luca Berton"
+relatedRecipes:
+  - "api-access-control"
+  - "openshift-acs-kubernetes"
+  - "custom-ca-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Install Kyverno (`helm install kyverno kyverno/kyverno`), create `ClusterPolicy` or `Policy` CRDs with rules. Rules can **validate** (block non-compliant), **mutate** (auto-fix), or **generate** (create related resources). No coding—policies are YAML.

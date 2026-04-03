@@ -6,6 +6,10 @@ difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["downward-api", "metadata", "environment-variables", "volumes", "configuration"]
 author: "Luca Berton"
+relatedRecipes:
+  - "openshift-lifecycle-versions"
+  - "dra-mig-partitioning"
+  - "machineconfig-annotation-inspection"
 ---
 
 > 💡 **Quick Answer:** Downward API exposes pod/container metadata to containers via **environment variables** (`fieldRef`, `resourceFieldRef`) or **volume files**. Access pod name, namespace, labels, annotations, IP, resource requests/limits without hardcoding or API calls.

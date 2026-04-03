@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["probes", "health-checks", "liveness", "readiness", "startup"]
+relatedRecipes:
+  - "openclaw-openshift-deployment"
+  - "openshift-serverless-knativeserving"
+  - "argocd-app-of-apps-pattern"
 ---
 
 > 💡 **Quick Answer:** Three probe types: **Liveness** (restart if unhealthy), **Readiness** (remove from Service if not ready), **Startup** (delay other probes for slow apps). Configure with `httpGet`, `tcpSocket`, or `exec`. Set `initialDelaySeconds`, `periodSeconds`, and `failureThreshold` appropriately.

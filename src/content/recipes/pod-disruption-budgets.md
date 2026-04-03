@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["pdb", "disruption", "availability", "maintenance", "reliability"]
+relatedRecipes:
+  - "air-gapped-image-import-openshift"
+  - "gitops-bootstrap-bare-metal-gpu"
+  - "deployment-strategies"
 ---
 
 > **💡 Quick Answer:** PDB protects against voluntary disruptions (node drain, upgrades). Set `minAvailable: 2` or `maxUnavailable: 1` (not both). Example: `kubectl create pdb my-pdb --selector=app=web --min-available=2`. Blocks `kubectl drain` if it would violate the budget. Doesn't protect against crashes or OOMKills. Always create PDBs for production stateful apps and databases.

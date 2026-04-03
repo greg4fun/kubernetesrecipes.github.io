@@ -6,6 +6,10 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["keda", "autoscaling", "event-driven", "queues", "serverless"]
 author: "Luca Berton"
+relatedRecipes:
+  - "kubernetes-cost-optimization-strategies"
+  - "vertical-pod-autoscaler"
+  - "keda-event-driven-autoscaling"
 ---
 
 > 💡 **Quick Answer:** Install KEDA (`helm install keda kedacore/keda`), create `ScaledObject` pointing to your Deployment with a trigger (e.g., `type: rabbitmq`, `queueLength: 5`). KEDA scales from 0 to N based on event source metrics—not just CPU/memory.

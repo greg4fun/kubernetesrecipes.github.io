@@ -5,6 +5,10 @@ category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["kubectl", "krew", "plugins", "cli", "productivity"]
+relatedRecipes:
+  - "persistent-volume-stuck-terminating"
+  - "debug-dns-issues"
+  - "diagnose-nvidia-memory-only-modules"
 ---
 
 > 💡 **Quick Answer:** Install **Krew** plugin manager, then discover plugins with `kubectl krew search` and install with `kubectl krew install <plugin>`. Essential plugins: **ctx** (context switching), **ns** (namespace switching), **neat** (clean YAML output), **tree** (resource hierarchy), **images** (list images).

@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["priority", "preemption", "scheduling", "resources", "workloads"]
+relatedRecipes:
+  - "flux-gitops-continuous-delivery"
+  - "openclaw-multi-agent-kubernetes"
+  - "rolling-update-deployment"
 ---
 
 > 💡 **Quick Answer:** Create `PriorityClass` resources with `value` (integer, higher = more priority) and `preemptionPolicy` (PreemptLowerPriority or Never). Add `priorityClassName: <class-name>` to pod spec. Higher priority pods schedule first and can evict lower priority pods.

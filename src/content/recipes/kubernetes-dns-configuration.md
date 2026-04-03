@@ -5,6 +5,10 @@ category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["dns", "coredns", "networking", "service-discovery", "resolution"]
+relatedRecipes:
+  - "nncp-vlan-tagging-workers"
+  - "agent-config-device-by-path"
+  - "networkpolicy-deny-all"
 ---
 
 > 💡 **Quick Answer:** Services resolve via `<service>.<namespace>.svc.cluster.local`. Configure pod DNS with `dnsPolicy` (ClusterFirst, Default, None) and `dnsConfig` for custom nameservers/searches. Edit CoreDNS ConfigMap for cluster-wide changes like stub domains or upstream forwarders.

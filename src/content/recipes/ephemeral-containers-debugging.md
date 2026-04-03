@@ -5,6 +5,10 @@ category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["debugging", "ephemeral", "kubectl", "troubleshooting", "containers"]
+relatedRecipes:
+  - "fix-nvidia-peermem-not-detected"
+  - "taint-toleration-scheduling-issues"
+  - "service-mesh-sidecar-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Debug running pods without restart using `kubectl debug -it <pod> --image=busybox --target=<container>`. The `--target` flag shares the process namespace so you can see and interact with processes in the target container. Use `nicolaka/netshoot` for network debugging tools.

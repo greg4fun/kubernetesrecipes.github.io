@@ -5,6 +5,10 @@ category: "configuration"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["resourcequota", "limits", "namespaces", "governance", "multitenancy"]
+relatedRecipes:
+  - "pod-mutation-injection"
+  - "machineconfig-chrony-ntp"
+  - "itms-registries-conf-machineconfig"
 ---
 
 > 💡 **Quick Answer:** Create `ResourceQuota` in a namespace to limit total `requests.cpu`, `requests.memory`, `limits.cpu`, `limits.memory`, and object counts (`pods`, `services`, `secrets`). Once quota exists, all pods must specify resource requests/limits to be created.

@@ -5,6 +5,10 @@ category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["resources", "cpu", "memory", "limits", "requests", "qos"]
+relatedRecipes:
+  - "dra-tpu-allocation"
+  - "resource-quotas-namespace"
+  - "tune-nccl-env-rdma-ethernet"
 ---
 
 > 💡 **Quick Answer:** Set `resources.requests` (guaranteed minimum for scheduling) and `resources.limits` (maximum allowed). CPU limits throttle; memory limits OOMKill. Three QoS classes: **Guaranteed** (requests=limits), **Burstable** (requests<limits), **BestEffort** (no requests/limits).

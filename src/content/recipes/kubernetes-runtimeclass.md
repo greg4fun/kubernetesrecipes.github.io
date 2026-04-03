@@ -5,6 +5,10 @@ category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 tags: ["runtimeclass", "gvisor", "kata", "containers", "isolation"]
+relatedRecipes:
+  - "openclaw-security-hardening-pod"
+  - "openclaw-rbac-multi-tenant"
+  - "admission-webhooks"
 ---
 
 > 💡 **Quick Answer:** Create a `RuntimeClass` with `handler` matching your containerd/CRI-O config (e.g., `runsc` for gVisor, `kata` for Kata Containers). Add `runtimeClassName: <name>` to pod spec. Use for untrusted workloads needing stronger isolation than standard runc.

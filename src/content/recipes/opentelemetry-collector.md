@@ -5,6 +5,10 @@ category: "observability"
 difficulty: "advanced"
 publishDate: "2026-01-22"
 tags: ["opentelemetry", "otel", "metrics", "observability", "collector"]
+relatedRecipes:
+  - "openclaw-logging-efk"
+  - "prometheus-monitoring"
+  - "monitor-nccl-performance-prometheus"
 ---
 
 > 💡 **Quick Answer:** Deploy OpenTelemetry Collector as DaemonSet or Deployment. Configure pipeline: **Receivers** (OTLP, Prometheus, etc.) → **Processors** (batch, memory_limiter, attributes) → **Exporters** (Jaeger, Prometheus, Loki, etc.). Apps send telemetry to collector endpoint.

@@ -5,6 +5,10 @@ category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["kubectl", "debugging", "troubleshooting", "cli", "diagnostics"]
+relatedRecipes:
+  - "api-server-timeout-troubleshooting"
+  - "kubernetes-network-troubleshooting"
+  - "debug-oom-killed"
 ---
 
 > 💡 **Quick Answer:** Debug workflow: `kubectl get pods` (status), `kubectl describe pod <name>` (events/errors), `kubectl logs <pod> [-c container] [--previous]` (logs), `kubectl exec -it <pod> -- sh` (shell access). For crashed pods, use `kubectl logs --previous` to see pre-crash logs.

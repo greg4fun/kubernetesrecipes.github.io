@@ -5,6 +5,10 @@ category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["tls", "ssl", "certificates", "ingress", "letsencrypt", "cert-manager"]
+relatedRecipes:
+  - "sriov-vf-ai-workloads"
+  - "coredns-configuration"
+  - "kubernetes-endpointslices"
 ---
 
 > 💡 **Quick Answer:** Install **cert-manager**, create a `ClusterIssuer` for Let's Encrypt, then add annotation `cert-manager.io/cluster-issuer: letsencrypt-prod` to your Ingress. Cert-manager auto-provisions TLS certificates and stores them in the Secret referenced by `spec.tls[].secretName`.

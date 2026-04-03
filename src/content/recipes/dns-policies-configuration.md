@@ -5,6 +5,10 @@ category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["dns", "networking", "coredns", "resolution", "configuration"]
+relatedRecipes:
+  - "openclaw-ingress-tls-kubernetes"
+  - "nfsordma-worker-node-setup"
+  - "nodeport-raw-vs-https-ingress"
 ---
 
 > 💡 **Quick Answer:** Set `spec.dnsPolicy` in your pod: **ClusterFirst** (default—cluster DNS then node), **Default** (node's resolv.conf), **None** (fully custom via `dnsConfig`). Use `dnsConfig` to add nameservers, searches, and options like `ndots`.

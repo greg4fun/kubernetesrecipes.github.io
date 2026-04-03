@@ -5,6 +5,10 @@ category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["network-policies", "security", "networking", "zero-trust", "isolation"]
+relatedRecipes:
+  - "sriov-nicclusterpolicy-vfs"
+  - "nncp-mtu-jumbo-frames-workers"
+  - "nvidia-nic-driver-container-entrypoint"
 ---
 
 > **💡 Quick Answer:** Network Policies are firewall rules for pods. Start with deny-all: `spec: {podSelector: {}, policyTypes: [Ingress, Egress]}`. Then allow specific traffic with `ingress.from` and `egress.to` rules using `podSelector`, `namespaceSelector`, or `ipBlock`. Requires a CNI that supports policies (Calico, Cilium). Test with `kubectl exec <pod> -- curl <target>`.

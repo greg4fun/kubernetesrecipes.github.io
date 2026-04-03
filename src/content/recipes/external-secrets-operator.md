@@ -5,6 +5,10 @@ category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["secrets", "external-secrets", "vault", "aws", "security"]
+relatedRecipes:
+  - "admission-webhooks"
+  - "rotate-quay-robot-tokens"
+  - "service-accounts-rbac"
 ---
 
 > 💡 **Quick Answer:** Install ESO via Helm (`helm install external-secrets external-secrets/external-secrets`), create a `SecretStore` (or `ClusterSecretStore`) with provider credentials, then create `ExternalSecret` resources that reference secrets in AWS Secrets Manager, Vault, or Azure Key Vault. ESO syncs them to Kubernetes Secrets.

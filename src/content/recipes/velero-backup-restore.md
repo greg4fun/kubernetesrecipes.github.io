@@ -6,6 +6,10 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["velero", "backup", "restore", "disaster-recovery", "migration"]
 author: "Luca Berton"
+relatedRecipes:
+  - "etcd-backup-restore"
+  - "nfsordma-persistent-volume"
+  - "pvc-storageclass-examples"
 ---
 
 > 💡 **Quick Answer:** Install Velero with cloud provider plugin, create backups with `velero backup create my-backup`. Restore with `velero restore create --from-backup my-backup`. Schedule recurring backups with `velero schedule create`. Backs up Kubernetes resources + persistent volume snapshots.

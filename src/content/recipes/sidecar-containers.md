@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["sidecar", "patterns", "containers", "logging", "proxy"]
+relatedRecipes:
+  - "argocd-shadow-update-detection"
+  - "openclaw-signal-kubernetes"
+  - "flux-gitops"
 ---
 
 > 💡 **Quick Answer:** Add additional containers in pod spec alongside your main container. Sidecars share network (localhost communication) and can share volumes. Common uses: **logging** (ship logs), **proxy** (Envoy, linkerd-proxy), **config sync** (git-sync), **security** (Vault agent).

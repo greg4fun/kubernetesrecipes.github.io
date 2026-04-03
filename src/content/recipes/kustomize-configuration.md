@@ -5,6 +5,10 @@ category: "configuration"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["kustomize", "configuration", "overlays", "environments", "gitops"]
+relatedRecipes:
+  - "kubernetes-finalizers"
+  - "dra-computedomains-nvlink"
+  - "resource-quotas-namespace"
 ---
 
 > **💡 Quick Answer:** Kustomize = template-free config customization (built into kubectl). Structure: `base/` (shared manifests) + `overlays/dev|prod/` (environment-specific patches). Apply: `kubectl apply -k overlays/production/`. Use `kustomization.yaml` to define resources, patches, and transformations. Common ops: `namePrefix`, `commonLabels`, `configMapGenerator`. Preview changes: `kubectl kustomize overlays/production/`.

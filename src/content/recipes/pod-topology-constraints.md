@@ -5,6 +5,10 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["topology", "scheduling", "high-availability", "zones", "distribution"]
+relatedRecipes:
+  - "flux-gitops-continuous-delivery"
+  - "automate-nccl-preflight-ci"
+  - "argocd-sync-waves-crd-operators"
 ---
 
 > 💡 **Quick Answer:** Add `topologySpreadConstraints` to pod spec with `topologyKey` (e.g., `topology.kubernetes.io/zone`), `maxSkew` (max imbalance allowed), and `whenUnsatisfiable` (DoNotSchedule or ScheduleAnyway). Ensures pods spread across zones/nodes for high availability.
