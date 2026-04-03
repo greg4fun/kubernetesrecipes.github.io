@@ -1,6 +1,6 @@
 ---
-title: "Fix CrashLoopBackOff in Kubernetes Pods"
-description: "Debug and resolve CrashLoopBackOff status in Kubernetes pods. Covers OOMKilled, missing configs, failed health checks, and application crashes."
+title: "CrashLoopBackOff Fix: Kubernetes Troubleshooting"
+description: "Fix CrashLoopBackOff in Kubernetes step by step. Debug OOMKilled, missing configs, failed health probes, and image errors causing pod crash loops."
 category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-04-02"

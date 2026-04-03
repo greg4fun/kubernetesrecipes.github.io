@@ -1,6 +1,6 @@
 ---
-title: "VPA Example: Vertical Pod Autoscaler Setup"
-description: "Kubernetes VPA example with step-by-step setup. Configure Vertical Pod Autoscaler to automatically right-size pod CPU and memory requests and limits."
+title: "Vertical Pod Autoscaler (VPA) Guide"
+description: "Set up the Vertical Pod Autoscaler in Kubernetes. Auto-tune CPU and memory requests with VPA modes, recommendations, and production best practices."
 category: "autoscaling"
 difficulty: "intermediate"
 timeToComplete: "25 minutes"

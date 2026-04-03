@@ -1,6 +1,6 @@
 ---
-title: "How to Configure Kubernetes Probes"
-description: "Implement liveness, readiness, and startup probes for reliable applications. Configure HTTP, TCP, and exec probes with proper thresholds."
+title: "Kubernetes Probes: Liveness, Readiness, Startup"
+description: "Configure Kubernetes probes for reliable apps. Complete guide to liveness, readiness, and startup probes with httpGet, tcpSocket, exec, and gRPC examples."
 category: "deployments"
 difficulty: "beginner"
 publishDate: "2026-01-22"

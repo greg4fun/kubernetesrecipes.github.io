@@ -1,6 +1,6 @@
 ---
-title: "HPA in Kubernetes: Horizontal Pod Autoscaler Guide"
-description: "Configure HPA in Kubernetes for automatic horizontal pod autoscaling based on CPU, memory, and custom metrics. Step-by-step HPA examples and best practices."
+title: "HPA Kubernetes: Horizontal Pod Autoscaler"
+description: "Configure HPA in Kubernetes for auto-scaling pods on CPU, memory, and custom metrics. Horizontal Pod Autoscaler examples, thresholds, and best practices."
 category: "autoscaling"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

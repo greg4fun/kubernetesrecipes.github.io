@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Readiness Probe & Liveness Probe Guide"
-description: "Configure Kubernetes readiness probes and liveness probes for pod health checks. Learn probe types (HTTP, TCP, exec), best practices, and common pitfalls."
+title: "Kubernetes Readiness Probe and Liveness Probe"
+description: "Configure Kubernetes readiness probes and liveness probes for pod health checks. HTTP, TCP, exec, and gRPC probe examples with best practices."
 category: "deployments"
 difficulty: "beginner"
 timeToComplete: "15 minutes"
