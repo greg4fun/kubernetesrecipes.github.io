@@ -1,170 +1,126 @@
 ---
-title: "KEDA Event-Driven Autoscaling on Kubernetes"
-description: "Scale Kubernetes workloads based on external events with KEDA. Covers Kafka, RabbitMQ, Prometheus, cron, and AWS SQS scalers for zero-to-N scaling."
+title: "KEDA: Event-Driven Autoscaling for Kubernetes"
+description: "Scale Kubernetes workloads with KEDA based on external events: queue depth, cron schedules, Prometheus metrics, HTTP traffic, and 60+ event sources."
 category: "autoscaling"
 difficulty: "intermediate"
-publishDate: "2026-04-02"
-tags: ["keda", "autoscaling", "event-driven", "kafka", "serverless", "kubernetes"]
+publishDate: "2026-04-05"
+tags: ["keda", "event-driven", "autoscaling", "queue", "serverless"]
 author: "Luca Berton"
 relatedRecipes:
-  - "vertical-pod-autoscaler"
-  - "horizontal-pod-autoscaler"
-  - "hpa-custom-metrics"
-  - "cluster-autoscaler"
   - "kubernetes-cost-optimization-strategies"
+  - "openclaw-resource-limits-tuning"
+  - "hpa-custom-metrics"
+  - "horizontal-pod-autoscaler"
 ---
 
-> 💡 **Quick Answer:** Scale Kubernetes workloads based on external events with KEDA. Covers Kafka, RabbitMQ, Prometheus, cron, and AWS SQS scalers for zero-to-N scaling.
+> 💡 **Quick Answer:** Scale Kubernetes workloads with KEDA based on external events: queue depth, cron schedules, Prometheus metrics, HTTP traffic, and 60+ event sources.
 
 ## The Problem
 
-HPA only scales on CPU and memory. KEDA extends Kubernetes autoscaling to scale on any event source — message queue depth, database connections, Prometheus metrics, cron schedules, or custom metrics. It also scales to zero, eliminating idle resource costs.
+Engineers frequently search for this topic but find scattered, incomplete guides. This recipe provides a comprehensive, production-ready reference.
 
 ## The Solution
 
-### Step 1: Install KEDA
+### Install KEDA
 
 ```bash
 helm repo add kedacore https://kedacore.github.io/charts
-helm repo update
-
-helm install keda kedacore/keda \
-  --namespace keda --create-namespace \
-  --set prometheus.metricServer.enabled=true
+helm install keda kedacore/keda --namespace keda --create-namespace
 ```
 
-### Step 2: Scale on Kafka Queue Depth
+### Scale on Queue Depth (RabbitMQ)
 
 ```yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: kafka-consumer-scaler
+  name: rabbitmq-consumer
 spec:
   scaleTargetRef:
-    name: kafka-consumer        # Deployment to scale
-  minReplicaCount: 0            # Scale to zero when idle!
-  maxReplicaCount: 50
-  pollingInterval: 15
-  cooldownPeriod: 300
+    name: consumer-deployment
+  minReplicaCount: 0      # Scale to zero when idle!
+  maxReplicaCount: 30
   triggers:
-    - type: kafka
+    - type: rabbitmq
       metadata:
-        bootstrapServers: kafka.default.svc:9092
-        consumerGroup: my-consumer-group
-        topic: orders
-        lagThreshold: "100"     # Scale up when lag > 100
-        activationLagThreshold: "5"  # Activate from 0 when lag > 5
+        host: amqp://user:pass@rabbitmq.default:5672/
+        queueName: tasks
+        queueLength: "5"   # 1 pod per 5 messages
 ```
 
-### Step 3: Scale on Prometheus Metrics
+### Scale on Prometheus Metric
 
 ```yaml
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: http-scaler
+  name: api-scaler
 spec:
   scaleTargetRef:
-    name: web-api
-  minReplicaCount: 1
-  maxReplicaCount: 20
+    name: api-deployment
+  minReplicaCount: 2
+  maxReplicaCount: 50
   triggers:
     - type: prometheus
       metadata:
-        serverAddress: http://prometheus.monitoring.svc:9090
-        query: |
-          sum(rate(http_requests_total{service="web-api"}[2m]))
-        threshold: "100"        # Scale up at 100 req/s per replica
-        activationThreshold: "5"
+        serverAddress: http://prometheus.monitoring:9090
+        metricName: http_requests_per_second
+        query: sum(rate(http_requests_total{service="api"}[2m]))
+        threshold: "100"   # Scale at 100 req/s per pod
 ```
 
-### Step 4: Cron-Based Scaling
+### Scale on Cron Schedule
 
 ```yaml
-apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
-metadata:
-  name: business-hours-scaler
-spec:
-  scaleTargetRef:
-    name: web-frontend
-  minReplicaCount: 1
-  maxReplicaCount: 20
-  triggers:
-    - type: cron
-      metadata:
-        timezone: Europe/Paris
-        start: 0 8 * * 1-5      # Scale up 8AM weekdays
-        end: 0 20 * * 1-5       # Scale down 8PM weekdays
-        desiredReplicas: "10"
-    - type: cron
-      metadata:
-        timezone: Europe/Paris
-        start: 0 20 * * *       # Evening
-        end: 0 8 * * *          # Morning
-        desiredReplicas: "2"
+triggers:
+  - type: cron
+    metadata:
+      timezone: Europe/Paris
+      start: 0 8 * * 1-5     # 8 AM weekdays
+      end: 0 18 * * 1-5      # 6 PM weekdays
+      desiredReplicas: "10"   # Business hours
 ```
 
-### Step 5: Scale on AWS SQS
+### KEDA vs HPA
 
-```yaml
-apiVersion: keda.sh/v1alpha1
-kind: ScaledObject
-metadata:
-  name: sqs-processor
-spec:
-  scaleTargetRef:
-    name: queue-processor
-  minReplicaCount: 0
-  maxReplicaCount: 100
-  triggers:
-    - type: aws-sqs-queue
-      metadata:
-        queueURL: https://sqs.eu-west-1.amazonaws.com/123456789/orders
-        queueLength: "5"       # 1 pod per 5 messages
-        awsRegion: eu-west-1
-      authenticationRef:
-        name: aws-credentials
----
-apiVersion: keda.sh/v1alpha1
-kind: TriggerAuthentication
-metadata:
-  name: aws-credentials
-spec:
-  secretTargetRef:
-    - parameter: awsAccessKeyID
-      name: aws-secrets
-      key: access-key
-    - parameter: awsSecretAccessKey
-      name: aws-secrets
-      key: secret-key
-```
+| Feature | HPA | KEDA |
+|---------|-----|------|
+| Scale to zero | ❌ (min=1) | ✅ |
+| External metrics | Complex (adapter needed) | ✅ Built-in (60+ sources) |
+| Cron-based | ❌ | ✅ |
+| Queue-based | ❌ | ✅ |
+| CPU/memory | ✅ | ✅ (uses HPA internally) |
 
 ```mermaid
 graph TD
-    A[Event Sources] --> B[KEDA]
-    A1[Kafka lag: 500] --> B
-    A2[SQS depth: 200] --> B
-    A3[Prometheus: 150 req/s] --> B
-    A4[Cron: business hours] --> B
-    B --> C{Scale decision}
-    C -->|Scale up| D[Add pods]
-    C -->|Scale down| E[Remove pods]
-    C -->|Scale to zero| F[0 replicas - save costs]
-    D --> G[HPA-compatible metrics]
+    A[KEDA] --> B{Event source}
+    B -->|RabbitMQ queue depth| C[Scale consumers]
+    B -->|Prometheus metric| D[Scale API pods]
+    B -->|Cron schedule| E[Scale for business hours]
+    B -->|Kafka lag| F[Scale stream processors]
+    C -->|Queue empty| G[Scale to zero]
 ```
+
+## Frequently Asked Questions
+
+### Can KEDA scale CronJobs?
+
+Yes! Use `ScaledJob` instead of `ScaledObject` to create Jobs on events — perfect for batch processing from queues.
+
+### Does KEDA replace HPA?
+
+KEDA creates and manages HPA objects internally. You don't need to create separate HPAs when using KEDA.
 
 ## Best Practices
 
-- **Start small and iterate** — don't over-engineer on day one
-- **Monitor and measure** — you can't improve what you don't measure
-- **Automate repetitive tasks** — reduce human error and toil
-- **Document your decisions** — future you will thank present you
+- Start with the simplest approach that solves your problem
+- Test thoroughly in staging before production
+- Monitor and iterate based on real metrics
+- Document decisions for your team
 
 ## Key Takeaways
 
-- This is essential knowledge for production Kubernetes operations
-- Start with the simplest approach that solves your problem
-- Monitor the impact of every change you make
-- Share knowledge across your team with internal runbooks
+- This is essential Kubernetes operational knowledge
+- Production-readiness requires proper configuration and monitoring
+- Use `kubectl describe` and logs for troubleshooting
+- Automate where possible to reduce human error
