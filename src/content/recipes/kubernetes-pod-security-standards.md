@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Pod Security Standards Guide"
 description: "security"
-category: "intermediate"
+category: "security"
 difficulty: "Enforce Kubernetes Pod Security Standards with namespace labels. Covers Privileged, Baseline, and Restricted profiles, migration from PodSecurityPolicy, and exemptions."
 publishDate: "2026-04-05"
 tags: ["pod-security", "pss", "psa", "restricted", "security-context"]

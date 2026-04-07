@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Ingress Complete Guide"
 description: "networking"
-category: "intermediate"
+category: "networking"
 difficulty: "Configure Kubernetes Ingress for HTTP routing, TLS termination, and path-based routing. Covers NGINX Ingress Controller, cert-manager, and Ingress vs Gateway API."
 publishDate: "2026-04-07"
 tags: ["ingress", "nginx-ingress", "tls", "routing", "load-balancing"]

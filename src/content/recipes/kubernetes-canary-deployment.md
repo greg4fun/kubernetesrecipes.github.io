@@ -1,7 +1,7 @@
 ---
 title: "Canary Deployment in Kubernetes"
 description: "deployments"
-category: "intermediate"
+category: "deployments"
 difficulty: "Implement canary deployments in Kubernetes to gradually roll out changes. Covers native K8s, Argo Rollouts, Istio traffic splitting, and automated analysis."
 publishDate: "2026-04-05"
 tags: ["canary", "deployment-strategy", "progressive-delivery", "argo-rollouts", "kubernetes"]

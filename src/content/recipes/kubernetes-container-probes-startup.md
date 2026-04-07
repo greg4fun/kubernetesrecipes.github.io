@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Startup Probe Guide"
 description: "configuration"
-category: "beginner"
+category: "configuration"
 difficulty: "Configure Kubernetes startup probes for slow-starting applications. Prevent liveness probe kills during long initialization of Java apps, ML models, and databases."
 publishDate: "2026-04-05"
 tags: ["startup-probe", "slow-start", "initialization", "health-check", "kubernetes"]

@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Troubleshooting Flowchart"
 description: "troubleshooting"
-category: "beginner"
+category: "troubleshooting"
 difficulty: "Systematic Kubernetes troubleshooting guide with flowcharts. Debug pods, services, networking, storage, and node issues step by step with kubectl commands."
 publishDate: "2026-04-05"
 tags: ["troubleshooting", "debugging", "flowchart", "kubectl", "kubernetes"]

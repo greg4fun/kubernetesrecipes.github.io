@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Affinity and Anti-Affinity Guide"
 description: "configuration"
-category: "intermediate"
+category: "configuration"
 difficulty: "Schedule pods with Kubernetes node affinity, pod affinity, and anti-affinity rules. Spread across zones, co-locate related services, and optimize for performance."
 publishDate: "2026-04-07"
 tags: ["affinity", "anti-affinity", "scheduling", "topology", "kubernetes"]

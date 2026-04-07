@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Deployment Strategies Compared"
 description: "deployments"
-category: "intermediate"
+category: "deployments"
 difficulty: "Compare Kubernetes deployment strategies: rolling update, blue-green, canary, recreate, and A/B testing. Choose the right strategy for your application requirements."
 publishDate: "2026-04-07"
 tags: ["deployment-strategies", "rolling-update", "canary", "blue-green", "recreate"]

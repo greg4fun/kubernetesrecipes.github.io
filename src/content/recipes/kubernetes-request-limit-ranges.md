@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes LimitRange and ResourceQuota"
 description: "configuration"
-category: "intermediate"
+category: "configuration"
 difficulty: "Configure LimitRange and ResourceQuota in Kubernetes namespaces. Set default resource requests, enforce limits, and prevent resource exhaustion across teams."
 publishDate: "2026-04-05"
 tags: ["limitrange", "resourcequota", "resource-management", "quotas", "kubernetes"]

@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Pod Priority and Preemption"
 description: "configuration"
-category: "intermediate"
+category: "configuration"
 difficulty: "Configure Kubernetes Pod Priority and Preemption to ensure critical workloads always have resources. Lower-priority pods are evicted to make room for higher-priority ones."
 publishDate: "2026-04-05"
 tags: ["priority", "preemption", "scheduling", "priority-class", "kubernetes"]

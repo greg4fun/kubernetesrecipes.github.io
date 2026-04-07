@@ -1,7 +1,7 @@
 ---
 title: "Essential Kubernetes Commands Reference"
 description: "configuration"
-category: "beginner"
+category: "configuration"
 difficulty: "Master the most used Kubernetes commands for daily operations. Complete kubectl reference for pods, deployments, services, debugging, and cluster management."
 publishDate: "2026-04-07"
 tags: ["kubectl", "commands", "reference", "cli", "kubernetes"]

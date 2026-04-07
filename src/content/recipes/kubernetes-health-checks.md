@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Health Checks Best Practices"
 description: "configuration"
-category: "intermediate"
+category: "configuration"
 difficulty: "Design effective Kubernetes health checks with liveness, readiness, and startup probes. Avoid common anti-patterns like database checks in liveness probes."
 publishDate: "2026-04-05"
 tags: ["health-checks", "probes", "liveness", "readiness", "startup"]

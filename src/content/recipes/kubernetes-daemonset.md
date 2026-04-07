@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes DaemonSet Complete Guide"
 description: "deployments"
-category: "intermediate"
+category: "deployments"
 difficulty: "Deploy DaemonSets in Kubernetes to run one pod per node. Covers monitoring agents, log collectors, CNI plugins, node affinity, and rolling update strategies."
 publishDate: "2026-04-07"
 tags: ["daemonset", "per-node", "monitoring", "logging", "kubernetes"]

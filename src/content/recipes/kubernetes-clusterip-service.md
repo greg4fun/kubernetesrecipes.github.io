@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes ClusterIP Service Explained"
 description: "networking"
-category: "beginner"
+category: "networking"
 difficulty: "Understand Kubernetes ClusterIP services for internal communication. How kube-proxy routes traffic, DNS resolution, and when ClusterIP is the right service type."
 publishDate: "2026-04-07"
 tags: ["clusterip", "service", "internal", "dns", "networking"]

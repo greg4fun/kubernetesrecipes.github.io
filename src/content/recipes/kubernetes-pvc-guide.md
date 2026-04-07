@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes PVC and PV Complete Guide"
 description: "storage"
-category: "beginner"
+category: "storage"
 difficulty: "Create and manage Kubernetes PersistentVolumeClaims and PersistentVolumes. Covers dynamic provisioning, StorageClasses, access modes, volume expansion, and reclaim policies."
 publishDate: "2026-04-07"
 tags: ["pvc", "persistent-volume", "storage", "dynamic-provisioning", "kubernetes"]

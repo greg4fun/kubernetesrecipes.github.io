@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Labels and Selectors Guide"
 description: "configuration"
-category: "beginner"
+category: "configuration"
 difficulty: "Use Kubernetes labels and selectors to organize and query resources. Covers label conventions, selector types, recommended labels, and label-based operations."
 publishDate: "2026-04-07"
 tags: ["labels", "selectors", "organization", "filtering", "kubernetes"]

@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes etcd Backup and Restore"
 description: "configuration"
-category: "advanced"
+category: "configuration"
 difficulty: "Backup and restore Kubernetes etcd database for disaster recovery. Covers snapshot creation, scheduled backups, restore procedure, and etcd health monitoring."
 publishDate: "2026-04-05"
 tags: ["etcd", "backup", "disaster-recovery", "restore", "cluster-recovery"]

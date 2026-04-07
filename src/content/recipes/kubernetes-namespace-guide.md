@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Namespaces Complete Guide"
 description: "configuration"
-category: "beginner"
+category: "configuration"
 difficulty: "Create and manage Kubernetes namespaces for resource isolation. Covers namespace quotas, RBAC, network policies, default namespaces, and multi-tenant patterns."
 publishDate: "2026-04-05"
 tags: ["namespaces", "isolation", "multi-tenant", "rbac", "kubernetes"]

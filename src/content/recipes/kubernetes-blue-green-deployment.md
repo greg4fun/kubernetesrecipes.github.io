@@ -1,7 +1,7 @@
 ---
 title: "Blue-Green Deployment in Kubernetes"
 description: "deployments"
-category: "intermediate"
+category: "deployments"
 difficulty: "Implement blue-green deployments in Kubernetes for instant rollback. Covers Service selector switching, Argo Rollouts blue-green, and comparison with canary strategy."
 publishDate: "2026-04-05"
 tags: ["blue-green", "deployment-strategy", "zero-downtime", "rollback", "kubernetes"]

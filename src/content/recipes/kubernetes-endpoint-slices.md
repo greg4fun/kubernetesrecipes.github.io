@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes EndpointSlices Explained"
 description: "networking"
-category: "intermediate"
+category: "networking"
 difficulty: "Understand Kubernetes EndpointSlices for scalable service endpoint management. How they improve on Endpoints objects for large clusters with thousands of pods."
 publishDate: "2026-04-05"
 tags: ["endpointslices", "endpoints", "service-discovery", "networking", "scalability"]

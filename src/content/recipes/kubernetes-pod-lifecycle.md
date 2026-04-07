@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Pod Lifecycle Explained"
 description: "configuration"
-category: "beginner"
+category: "configuration"
 difficulty: "Understand the Kubernetes pod lifecycle from creation to termination. Covers pod phases, container states, init containers, hooks, and graceful shutdown sequence."
 publishDate: "2026-04-07"
 tags: ["pod-lifecycle", "phases", "hooks", "termination", "kubernetes"]

@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes CronJob Scheduling Guide"
 description: "deployments"
-category: "beginner"
+category: "deployments"
 difficulty: "Schedule recurring tasks with Kubernetes CronJobs. Covers cron syntax, timezone support, concurrency policies, job history, manual triggers, and monitoring."
 publishDate: "2026-04-07"
 tags: ["cronjob", "scheduling", "cron", "automation", "kubernetes"]

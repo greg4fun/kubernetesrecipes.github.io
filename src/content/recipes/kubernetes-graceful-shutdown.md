@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Graceful Shutdown Guide"
 description: "deployments"
-category: "intermediate"
+category: "deployments"
 difficulty: "Implement graceful shutdown in Kubernetes pods. Handle SIGTERM, drain connections, use preStop hooks, and configure terminationGracePeriodSeconds correctly."
 publishDate: "2026-04-05"
 tags: ["graceful-shutdown", "sigterm", "prestop", "termination", "zero-downtime"]

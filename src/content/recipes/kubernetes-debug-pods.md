@@ -1,7 +1,7 @@
 ---
 title: "Debug Kubernetes Pods: Complete Guide"
 description: "troubleshooting"
-category: "beginner"
+category: "troubleshooting"
 difficulty: "Debug Kubernetes pods with kubectl debug, ephemeral containers, and netshoot. Troubleshoot distroless images, network issues, and crashed pods step by step."
 publishDate: "2026-04-05"
 tags: ["debug", "kubectl-debug", "ephemeral-containers", "netshoot", "troubleshooting"]

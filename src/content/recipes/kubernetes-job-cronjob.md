@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Jobs and CronJobs Guide"
 description: "deployments"
-category: "beginner"
+category: "deployments"
 difficulty: "Run batch workloads with Kubernetes Jobs and CronJobs. Covers one-shot tasks, parallel processing, scheduled jobs, failure handling, and cleanup policies."
 publishDate: "2026-04-07"
 tags: ["job", "cronjob", "batch", "scheduled", "kubernetes"]

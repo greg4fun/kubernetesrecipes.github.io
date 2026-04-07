@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes StatefulSet Complete Guide"
 description: "deployments"
-category: "intermediate"
+category: "deployments"
 difficulty: "Deploy StatefulSets in Kubernetes for stateful applications like databases and message queues. Covers ordered deployment, stable storage, headless services, and scaling."
 publishDate: "2026-04-05"
 tags: ["statefulset", "databases", "persistent-storage", "ordered-deployment", "kubernetes"]

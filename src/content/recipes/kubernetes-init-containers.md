@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Init Containers Guide"
 description: "configuration"
-category: "beginner"
+category: "configuration"
 difficulty: "Use Kubernetes init containers to run setup tasks before your main application starts. Covers database migrations, config generation, dependency checks, and ordering."
 publishDate: "2026-04-05"
 tags: ["init-containers", "startup", "migrations", "dependencies", "kubernetes"]

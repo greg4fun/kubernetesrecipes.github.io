@@ -1,7 +1,7 @@
 ---
 title: "Zero-Downtime Deployment in Kubernetes"
 description: "deployments"
-category: "intermediate"
+category: "deployments"
 difficulty: "Achieve zero-downtime deployments in Kubernetes. Covers readiness probes, PDBs, preStop hooks, rolling update tuning, and connection draining best practices."
 publishDate: "2026-04-05"
 tags: ["zero-downtime", "rolling-update", "graceful-shutdown", "readiness", "kubernetes"]

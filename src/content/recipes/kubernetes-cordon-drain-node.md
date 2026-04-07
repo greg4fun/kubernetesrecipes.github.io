@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Cordon, Drain, and Uncordon Nodes"
 description: "configuration"
-category: "beginner"
+category: "configuration"
 difficulty: "Safely manage Kubernetes nodes with cordon, drain, and uncordon. Prepare nodes for maintenance, upgrades, and decommissioning without disrupting workloads."
 publishDate: "2026-04-05"
 tags: ["cordon", "drain", "node-maintenance", "uncordon", "kubernetes"]

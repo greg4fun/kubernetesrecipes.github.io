@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Persistent Volumes Deep Dive"
 description: "storage"
-category: "intermediate"
+category: "storage"
 difficulty: "Master Kubernetes PersistentVolumes: static and dynamic provisioning, reclaim policies, volume modes, and lifecycle. From PV creation to pod mounting and data retention."
 publishDate: "2026-04-07"
 tags: ["persistent-volume", "pv", "storage", "provisioning", "kubernetes"]

@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes NodePort Service Explained"
 description: "networking"
-category: "beginner"
+category: "networking"
 difficulty: "Expose Kubernetes services externally with NodePort. Understand port ranges, security implications, and when to use NodePort vs LoadBalancer vs Ingress."
 publishDate: "2026-04-07"
 tags: ["nodeport", "service", "external-access", "networking", "kubernetes"]

@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Service Accounts Guide"
 description: "security"
-category: "intermediate"
+category: "security"
 difficulty: "Create and manage Kubernetes service accounts for pod identity. Covers RBAC binding, token projection, workload identity, and least-privilege access for applications."
 publishDate: "2026-04-05"
 tags: ["service-account", "rbac", "tokens", "workload-identity", "security"]

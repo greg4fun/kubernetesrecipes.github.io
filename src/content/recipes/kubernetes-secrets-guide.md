@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Secrets Complete Guide"
 description: "security"
-category: "beginner"
+category: "security"
 difficulty: "Manage Kubernetes Secrets for passwords, tokens, and certificates. Covers creation, encryption at rest, external secret operators, and security best practices."
 publishDate: "2026-04-07"
 tags: ["secrets", "encryption", "security", "credentials", "kubernetes"]

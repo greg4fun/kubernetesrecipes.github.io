@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Rolling Update Strategy Guide"
 description: "deployments"
-category: "intermediate"
+category: "deployments"
 difficulty: "Configure Kubernetes rolling update strategy for zero-downtime deployments. Tune maxSurge, maxUnavailable, minReadySeconds, and rollback procedures."
 publishDate: "2026-04-07"
 tags: ["rolling-update", "deployment-strategy", "zero-downtime", "rollback", "kubernetes"]
