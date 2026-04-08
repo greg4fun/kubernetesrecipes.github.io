@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Load Balancing Strategies"
-description: "Configure load balancing in Kubernetes with Services, Ingress, and Gateway API. Covers round-robin, session affinity, weighted routing, and external traffic policy."
+description: "Configure Kubernetes load balancing with Services, Ingress, and Gateway API. Round-robin, session affinity, weighted routing, and traffic policy."
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-04-03"
@@ -13,7 +13,7 @@ relatedRecipes:
   - "kubernetes-service-types-explained"
 ---
 
-> 💡 **Quick Answer:** Configure load balancing in Kubernetes with Services, Ingress, and Gateway API. Covers round-robin, session affinity, weighted routing, and external traffic policy.
+> 💡 **Quick Answer:** Configure Kubernetes load balancing with Services, Ingress, and Gateway API. Round-robin, session affinity, weighted routing, and traffic policy.
 
 ## The Problem
 

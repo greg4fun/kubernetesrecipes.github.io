@@ -84,7 +84,7 @@ Fix: authenticate to Docker Hub or use a registry mirror.
 
 **"x509: certificate signed by unknown authority" — custom CA:**
 
-See the [Custom CA Registry](/recipes/troubleshooting/custom-ca-registry/) recipe.
+See the [Custom CA Registry](/recipes/security/custom-ca-openshift-kubernetes/) recipe.
 
 ```mermaid
 graph TD

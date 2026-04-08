@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Annotations Complete Guide"
-description: "Use Kubernetes annotations for metadata, automation triggers, and controller configuration. Covers common annotation patterns, ingress annotations, and Helm labels."
+description: "Use Kubernetes annotations for metadata, automation, and controller config. Common patterns for ingress annotations, Helm labels, and triggers."
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-04-03"
@@ -13,7 +13,7 @@ relatedRecipes:
   - "kubectl-cheat-sheet"
 ---
 
-> 💡 **Quick Answer:** Use Kubernetes annotations for metadata, automation triggers, and controller configuration. Covers common annotation patterns, ingress annotations, and Helm labels.
+> 💡 **Quick Answer:** Use Kubernetes annotations for metadata, automation, and controller config. Common patterns for ingress annotations, Helm labels, and triggers.
 
 ## The Problem
 

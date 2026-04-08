@@ -1,6 +1,6 @@
 ---
 title: "Goldilocks: VPA Recommendations Dashboard"
-description: "Deploy Goldilocks to visualize Vertical Pod Autoscaler recommendations across all namespaces. Right-size Kubernetes resource requests and limits with a web dashboard."
+description: "Deploy Goldilocks to visualize VPA recommendations across namespaces. Right-size Kubernetes resource requests and limits with a web dashboard."
 category: "autoscaling"
 difficulty: "beginner"
 publishDate: "2026-04-05"
@@ -13,7 +13,7 @@ relatedRecipes:
   - "horizontal-pod-autoscaler"
 ---
 
-> 💡 **Quick Answer:** Deploy Goldilocks to visualize Vertical Pod Autoscaler recommendations across all namespaces. Right-size Kubernetes resource requests and limits with a web dashboard.
+> 💡 **Quick Answer:** Deploy Goldilocks to visualize VPA recommendations across namespaces. Right-size Kubernetes resource requests and limits with a web dashboard.
 
 ## The Problem
 

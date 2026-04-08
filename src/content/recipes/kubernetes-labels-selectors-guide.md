@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Labels and Selectors Guide"
-description: "Master Kubernetes labels and selectors for organizing and querying resources. Covers label conventions, equality selectors, set-based selectors, and field selectors."
+description: "Master Kubernetes labels and selectors for organizing and querying resources. Label conventions, equality selectors, set-based selectors, and field selectors."
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-04-03"
@@ -13,7 +13,7 @@ relatedRecipes:
   - "kubernetes-annotations-guide"
 ---
 
-> 💡 **Quick Answer:** Master Kubernetes labels and selectors for organizing and querying resources. Covers label conventions, equality selectors, set-based selectors, and field selectors.
+> 💡 **Quick Answer:** Master Kubernetes labels and selectors for organizing and querying resources. Label conventions, equality selectors, set-based selectors, and field selectors.
 
 ## The Problem
 

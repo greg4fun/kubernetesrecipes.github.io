@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Storage Best Practices for Production"
-description: "Production storage best practices for Kubernetes. Covers StorageClass selection, backup strategies, volume expansion, data migration, and storage performance tuning."
+description: "Production storage best practices for Kubernetes. StorageClass selection, backup strategies, volume expansion, data migration, and performance tuning."
 category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-04-05"
@@ -13,7 +13,7 @@ relatedRecipes:
   - "velero-backup-disaster-recovery"
 ---
 
-> 💡 **Quick Answer:** Production storage best practices for Kubernetes. Covers StorageClass selection, backup strategies, volume expansion, data migration, and storage performance tuning.
+> 💡 **Quick Answer:** Production storage best practices for Kubernetes. StorageClass selection, backup strategies, volume expansion, data migration, and performance tuning.
 
 ## The Problem
 

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Cost Monitoring with Kubecost"
-description: "Monitor and optimize Kubernetes costs with Kubecost. Track per-namespace, per-deployment, and per-label spend with cloud billing integration and savings recommendations."
+description: "Monitor and optimize Kubernetes costs with Kubecost. Track per-namespace and per-deployment spend with cloud billing integration and savings tips."
 category: "observability"
 difficulty: "beginner"
 publishDate: "2026-04-05"
@@ -13,7 +13,7 @@ relatedRecipes:
   - "grafana-kubernetes-dashboards"
 ---
 
-> 💡 **Quick Answer:** Monitor and optimize Kubernetes costs with Kubecost. Track per-namespace, per-deployment, and per-label spend with cloud billing integration and savings recommendations.
+> 💡 **Quick Answer:** Monitor and optimize Kubernetes costs with Kubecost. Track per-namespace and per-deployment spend with cloud billing integration and savings tips.
 
 ## The Problem
 

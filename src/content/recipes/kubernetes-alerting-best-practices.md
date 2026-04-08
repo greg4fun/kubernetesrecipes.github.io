@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Alerting Best Practices"
-description: "Design effective Kubernetes alerts that reduce noise and catch real issues. Covers alert severity tiers, golden signals, runbook links, and alert fatigue prevention."
+description: "Design effective Kubernetes alerts that reduce noise and catch real issues. Covers severity tiers, golden signals, runbook links, and fatigue prevention."
 category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-04-05"
@@ -13,7 +13,7 @@ relatedRecipes:
   - "grafana-kubernetes-dashboards"
 ---
 
-> 💡 **Quick Answer:** Design effective Kubernetes alerts that reduce noise and catch real issues. Covers alert severity tiers, golden signals, runbook links, and alert fatigue prevention.
+> 💡 **Quick Answer:** Design effective Kubernetes alerts that reduce noise and catch real issues. Covers severity tiers, golden signals, runbook links, and fatigue prevention.
 
 ## The Problem
 
