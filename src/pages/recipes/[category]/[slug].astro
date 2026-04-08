@@ -88,9 +88,10 @@ const jsonLd = {
   "timeRequired": `PT${readingTime}M`,
   "proficiencyLevel": recipe.data.difficulty === "beginner" ? "Beginner" : recipe.data.difficulty === "intermediate" ? "Intermediate" : "Expert",
   "about": {
-    "@type": "SoftwareApplication",
+    "@type": "Thing",
     "name": "Kubernetes",
-    "applicationCategory": "Container Orchestration"
+    "description": "Open-source container orchestration platform",
+    "url": "https://kubernetes.io"
   },
   "keywords": (recipe.data.tags || []).join(", "),
   "isPartOf": {
