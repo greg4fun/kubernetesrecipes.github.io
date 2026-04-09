@@ -86,3 +86,5 @@ Sitemap: https://kubernetes.recipes/sitemap-index.xml
 # Canonical Host
 # ============================================
 Host: https://kubernetes.recipes
+# LLMs.txt - AI-friendly content index
+# https://llmstxt.org/
