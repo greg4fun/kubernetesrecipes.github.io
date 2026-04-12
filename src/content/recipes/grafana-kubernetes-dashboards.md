@@ -1,6 +1,6 @@
 ---
-title: "How to Monitor Kubernetes with Grafana Dashboards"
-description: "Create comprehensive Grafana dashboards for Kubernetes monitoring. Learn to visualize cluster, node, pod, and application metrics effectively."
+title: "Grafana Dashboard 6417: Kubernetes Pod Monitoring"
+description: "Set up Grafana dashboard 6417 for Kubernetes pod monitoring. Import, customize panels, PromQL queries, and cluster-wide resource visualization."
 category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"

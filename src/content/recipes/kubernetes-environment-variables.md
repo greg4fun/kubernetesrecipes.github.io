@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Environment Variables Guide"
-description: "Set environment variables in Kubernetes pods from literals, ConfigMaps, Secrets, and the Downward API. Covers variable ordering, references, and best practices."
+description: "Set Kubernetes environment variables with envFrom, configMapRef, secretKeyRef, and the Downward API. Variable ordering, fieldRef, and best practices."
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-04-03"

@@ -1,6 +1,6 @@
 ---
 title: "Secure Containers with gVisor Runtime"
-description: "Enhance container isolation using gVisor sandbox runtime to add an additional security layer between containers and the host kernel for untrusted workloads"
+description: "Deploy gVisor with Kubernetes RuntimeClass for sandboxed containers. Configure runsc runtime, pod isolation, and security hardening for untrusted workloads."
 category: "security"
 difficulty: "advanced"
 timeToComplete: "45 minutes"

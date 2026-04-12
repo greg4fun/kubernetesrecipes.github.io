@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Logging with ELK Stack"
-description: "Deploy centralized logging for Kubernetes with Elasticsearch, Fluentd, and Kibana. Covers log collection, parsing, indexing, and retention policies."
+title: "EFK Stack: Kubernetes Centralized Logging"
+description: "Deploy EFK stack for Kubernetes centralized logging. Elasticsearch, Fluentd, Kibana setup, log collection, parsing, and retention policies."
 category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-04-03"
