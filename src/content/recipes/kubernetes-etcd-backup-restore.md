@@ -1,41 +1,68 @@
 ---
-title: "Kubernetes etcd Backup and Restore"
-description: "configuration"
-category: "configuration"
-difficulty: "Backup and restore Kubernetes etcd database for disaster recovery. Covers snapshot creation, scheduled backups, restore procedure, and etcd health monitoring."
-publishDate: "2026-04-05"
-tags: ["etcd", "backup", "disaster-recovery", "restore", "cluster-recovery"]
+title: "Kubernetes etcd Backup and Restore Guide"
+description: "Backup and restore Kubernetes etcd cluster data. Snapshot creation, automated CronJob backups, disaster recovery, etcdctl commands, and S3 offsite storage."
+publishDate: "2026-04-12"
 author: "Luca Berton"
+category: "storage"
+tags:
+  - "etcd"
+  - "backup"
+  - "disaster-recovery"
+  - "etcdctl"
+  - "cluster-management"
+difficulty: "advanced"
+timeToComplete: "20 minutes"
 relatedRecipes:
-
+  - "kubernetes-disaster-recovery-enterprise"
+  - "velero-backup-restore"
+  - "kubernetes-persistent-volumes"
+  - "kubernetes-audit-logging-enterprise"
+  - "kubernetes-secrets-management"
 ---
 
-> 💡 **Quick Answer:** configuration
+> 💡 **Quick Answer:** Backup etcd with \`etcdctl snapshot save backup.db\` using the etcd client certificates. Restore with \`etcdctl snapshot restore backup.db --data-dir=/var/lib/etcd-restored\`, then update the etcd static pod manifest to point to the new data directory. Automate with a CronJob that saves snapshots to S3.
 
 ## The Problem
 
-This is a fundamental Kubernetes topic that engineers search for frequently. A comprehensive reference with production-ready examples saves hours of trial and error.
+etcd stores all Kubernetes cluster state — Deployments, Services, ConfigMaps, Secrets, everything. If etcd data is lost or corrupted, you lose the entire cluster. Regular backups are essential for disaster recovery, and you need to know how to restore before an emergency happens.
+
+```mermaid
+flowchart TB
+    ETCD["etcd cluster<br/>(all K8s state)"] -->|"etcdctl snapshot save"| SNAP["Snapshot backup.db"]
+    SNAP -->|"Store offsite"| S3["S3 / NFS / External"]
+    S3 -->|"etcdctl snapshot restore"| RESTORE["New etcd data dir"]
+    RESTORE --> RECOVER["Cluster recovered ✅"]
+```
 
 ## The Solution
 
-### Create etcd Snapshot
+### Manual Backup
 
 ```bash
-# Find etcd certs
-ls /etc/kubernetes/pki/etcd/
+# Set etcd connection variables
+export ETCDCTL_API=3
+export ETCD_ENDPOINTS=https://127.0.0.1:2379
+export ETCD_CACERT=/etc/kubernetes/pki/etcd/ca.crt
+export ETCD_CERT=/etc/kubernetes/pki/etcd/server.crt
+export ETCD_KEY=/etc/kubernetes/pki/etcd/server.key
 
 # Create snapshot
-ETCDCTL_API=3 etcdctl snapshot save /backup/etcd-$(date +%Y%m%d-%H%M).db \
-  --endpoints=https://127.0.0.1:2379 \
-  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
-  --cert=/etc/kubernetes/pki/etcd/server.crt \
-  --key=/etc/kubernetes/pki/etcd/server.key
+etcdctl snapshot save /backup/etcd-$(date +%Y%m%d-%H%M%S).db \
+  --endpoints=$ETCD_ENDPOINTS \
+  --cacert=$ETCD_CACERT \
+  --cert=$ETCD_CERT \
+  --key=$ETCD_KEY
 
 # Verify snapshot
-ETCDCTL_API=3 etcdctl snapshot status /backup/etcd-20260405.db --write-out=table
+etcdctl snapshot status /backup/etcd-20260412-100000.db --write-out=table
+# +----------+----------+------------+------------+
+# |   HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |
+# +----------+----------+------------+------------+
+# | 9a350b2c |  1285032 |       2847 |   15 MB    |
+# +----------+----------+------------+------------+
 ```
 
-### Automated Backup CronJob
+### Automated CronJob Backup
 
 ```yaml
 apiVersion: batch/v1
@@ -44,7 +71,8 @@ metadata:
   name: etcd-backup
   namespace: kube-system
 spec:
-  schedule: "0 */6 * * *"    # Every 6 hours
+  schedule: "0 */6 * * *"         # Every 6 hours
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
@@ -53,90 +81,144 @@ spec:
           nodeSelector:
             node-role.kubernetes.io/control-plane: ""
           tolerations:
-            - operator: Exists
+            - key: node-role.kubernetes.io/control-plane
+              effect: NoSchedule
           containers:
             - name: backup
-              image: bitnami/etcd:3.5
+              image: registry.k8s.io/etcd:3.5.15-0
               command: ["/bin/sh", "-c"]
               args:
                 - |
-                  etcdctl snapshot save /backup/etcd-$(date +%Y%m%d-%H%M).db \
+                  BACKUP_FILE="/backup/etcd-$(date +%Y%m%d-%H%M%S).db"
+                  etcdctl snapshot save "$BACKUP_FILE" \
                     --endpoints=https://127.0.0.1:2379 \
-                    --cacert=/certs/ca.crt \
-                    --cert=/certs/server.crt \
-                    --key=/certs/server.key
-                  # Keep last 7 days
+                    --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+                    --cert=/etc/kubernetes/pki/etcd/server.crt \
+                    --key=/etc/kubernetes/pki/etcd/server.key
+                  etcdctl snapshot status "$BACKUP_FILE" --write-out=table
+                  echo "Backup saved: $BACKUP_FILE"
+                  # Clean up backups older than 7 days
                   find /backup -name "etcd-*.db" -mtime +7 -delete
               volumeMounts:
                 - name: etcd-certs
-                  mountPath: /certs
+                  mountPath: /etc/kubernetes/pki/etcd
                   readOnly: true
-                - name: backup
+                - name: backup-dir
                   mountPath: /backup
           volumes:
             - name: etcd-certs
               hostPath:
                 path: /etc/kubernetes/pki/etcd
-            - name: backup
+            - name: backup-dir
               hostPath:
                 path: /var/backups/etcd
           restartPolicy: OnFailure
 ```
 
-### Restore from Snapshot
+### Upload to S3
 
 ```bash
-# STOP kube-apiserver and etcd on ALL control plane nodes
+#!/bin/bash
+# backup-etcd-s3.sh
+BACKUP_FILE="/tmp/etcd-$(date +%Y%m%d-%H%M%S).db"
+
+etcdctl snapshot save "$BACKUP_FILE" \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key
+
+# Upload to S3
+aws s3 cp "$BACKUP_FILE" s3://my-etcd-backups/$(hostname)/ \
+  --sse AES256
+
+# Verify upload
+aws s3 ls s3://my-etcd-backups/$(hostname)/ | tail -1
+
+rm -f "$BACKUP_FILE"
+echo "Backup uploaded to S3"
+```
+
+### Restore from Backup
+
+```bash
+# 1. Stop kube-apiserver and etcd
+# Move static pod manifests to pause them
 sudo mv /etc/kubernetes/manifests/kube-apiserver.yaml /tmp/
 sudo mv /etc/kubernetes/manifests/etcd.yaml /tmp/
 
-# Restore snapshot
-ETCDCTL_API=3 etcdctl snapshot restore /backup/etcd-20260405.db \
-  --data-dir=/var/lib/etcd-restored \
-  --name=$(hostname) \
-  --initial-cluster="cp1=https://cp1:2380,cp2=https://cp2:2380,cp3=https://cp3:2380" \
-  --initial-advertise-peer-urls=https://$(hostname):2380
+# 2. Verify containers stopped
+sudo crictl ps | grep -E "etcd|apiserver"
 
-# Replace etcd data
-sudo rm -rf /var/lib/etcd
+# 3. Restore snapshot to new data directory
+sudo ETCDCTL_API=3 etcdctl snapshot restore /backup/etcd-20260412-100000.db \
+  --data-dir=/var/lib/etcd-restored \
+  --name=master-01 \
+  --initial-cluster=master-01=https://192.168.1.10:2380 \
+  --initial-advertise-peer-urls=https://192.168.1.10:2380
+
+# 4. Replace etcd data directory
+sudo mv /var/lib/etcd /var/lib/etcd.old
 sudo mv /var/lib/etcd-restored /var/lib/etcd
 
-# Restart etcd and API server
+# 5. Restore static pod manifests
 sudo mv /tmp/etcd.yaml /etc/kubernetes/manifests/
 sudo mv /tmp/kube-apiserver.yaml /etc/kubernetes/manifests/
 
-# Verify
+# 6. Wait for etcd and apiserver to start
+watch crictl ps
+
+# 7. Verify cluster
 kubectl get nodes
-kubectl get pods -A
+kubectl get pods --all-namespaces
 ```
 
-```mermaid
-graph TD
-    A[CronJob: every 6h] --> B[etcdctl snapshot save]
-    B --> C[/var/backups/etcd/etcd-DATE.db]
-    C --> D[Copy to off-cluster storage!]
-    E[Disaster!] --> F[Stop API server + etcd]
-    F --> G[etcdctl snapshot restore]
-    G --> H[Replace data dir]
-    H --> I[Restart etcd + API server]
+### Multi-Node etcd Cluster Restore
+
+```bash
+# On EACH control plane node, restore with correct member info:
+# Node 1:
+etcdctl snapshot restore backup.db \
+  --data-dir=/var/lib/etcd-restored \
+  --name=master-01 \
+  --initial-cluster="master-01=https://10.0.0.1:2380,master-02=https://10.0.0.2:2380,master-03=https://10.0.0.3:2380" \
+  --initial-advertise-peer-urls=https://10.0.0.1:2380
+
+# Node 2:
+etcdctl snapshot restore backup.db \
+  --data-dir=/var/lib/etcd-restored \
+  --name=master-02 \
+  --initial-cluster="master-01=https://10.0.0.1:2380,master-02=https://10.0.0.2:2380,master-03=https://10.0.0.3:2380" \
+  --initial-advertise-peer-urls=https://10.0.0.2:2380
+
+# Node 3: (same pattern with master-03)
 ```
 
-## Frequently Asked Questions
+## Common Issues
 
-### How often should I backup etcd?
-
-Every 1-6 hours for production clusters. Always backup before cluster upgrades. Store backups off-cluster (S3, GCS) — if the cluster dies, local backups die with it.
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| \`permission denied\` on certs | Running as non-root | Use \`sudo\` or copy certs with correct permissions |
+| \`context deadline exceeded\` | etcd not reachable | Check endpoint and firewall |
+| Restored cluster has stale data | Backup is old | Use most recent backup, accept data loss since snapshot |
+| Pods in wrong state after restore | Controllers re-reconcile | Wait for controllers to sync — may take 5-10 minutes |
+| etcd won't start after restore | Wrong data-dir in static pod manifest | Verify \`--data-dir\` matches restored path |
 
 ## Best Practices
 
-- Start with the simplest configuration that meets your needs
-- Test changes in staging before production
-- Use `kubectl describe` and events for troubleshooting
-- Document your decisions for the team
+- **Backup every 6 hours minimum** — more frequent for high-change clusters
+- **Store backups offsite** — S3, GCS, NFS separate from cluster
+- **Test restores regularly** — untested backups are not backups
+- **Encrypt backup files** — they contain Secrets in plaintext
+- **Monitor backup job success** — alert on CronJob failures
+- **Keep 7-30 days retention** — balance storage vs recovery options
+- **Document the restore procedure** — every team member should know the steps
 
 ## Key Takeaways
 
-- This is essential Kubernetes knowledge for production operations
-- Follow the principle of least privilege and minimal configuration
-- Monitor and iterate based on real-world behavior
-- Automation reduces human error and improves consistency
+- etcd contains ALL Kubernetes state — losing it means losing the cluster
+- \`etcdctl snapshot save\` creates a consistent point-in-time backup
+- Restore requires stopping etcd, restoring to a new data-dir, then restarting
+- Automate with a CronJob on control plane nodes
+- Always store backups offsite (S3) and encrypt them
+- Test your restore procedure before you need it in an emergency
