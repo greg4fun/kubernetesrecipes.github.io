@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Disaster Recovery for Enterprise"
-description: "Implement enterprise DR with Velero cross-region backups, etcd snapshots, multi-cluster failover, and RTO/RPO-driven recovery strategies."
+description: "Kubernetes disaster recovery with Velero backup and restore. Cross-region replication, etcd snapshots, multi-cluster failover, and RTO/RPO strategies."
 publishDate: "2026-04-08"
 author: "Luca Berton"
 category: "configuration"

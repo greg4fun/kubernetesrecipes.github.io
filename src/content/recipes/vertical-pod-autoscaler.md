@@ -1,6 +1,6 @@
 ---
-title: "Vertical Pod Autoscaler (VPA) Guide"
-description: "Set up the Vertical Pod Autoscaler in Kubernetes. Auto-tune CPU and memory requests with VPA modes, recommendations, and production best practices."
+title: "Vertical Pod Autoscaler VPA Setup Guide"
+description: "Install and configure Kubernetes Vertical Pod Autoscaler. VPA updateMode Off, Initial, Auto, recommendations, hack/vpa-up.sh install, and HPA coexistence."
 category: "autoscaling"
 difficulty: "intermediate"
 timeToComplete: "25 minutes"

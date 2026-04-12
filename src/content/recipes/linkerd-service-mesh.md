@@ -1,6 +1,6 @@
 ---
-title: "How to Set Up Linkerd Service Mesh"
-description: "Deploy Linkerd service mesh for Kubernetes. Learn to add mTLS encryption, traffic management, and observability with minimal configuration overhead."
+title: "Linkerd Service Mesh: mTLS and Observability"
+description: "Deploy Linkerd service mesh on Kubernetes. Automatic mTLS, traffic management, observability dashboards, service profiles, and traffic splitting."
 category: "networking"
 difficulty: "intermediate"
 timeToComplete: "35 minutes"

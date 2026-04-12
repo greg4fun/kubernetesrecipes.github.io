@@ -1,6 +1,6 @@
 ---
-title: "How to Use Kubernetes Gateway API"
-description: "Implement the Gateway API for advanced traffic routing in Kubernetes. Learn HTTPRoute, TLSRoute, and traffic splitting with the next-generation Ingress."
+title: "Kubernetes Gateway API: HTTPRoute Guide"
+description: "Deploy Kubernetes Gateway API for HTTP routing. GatewayClass, Gateway, HTTPRoute, TLSRoute, traffic splitting, and migration from Ingress resources."
 category: "networking"
 difficulty: "intermediate"
 timeToComplete: "30 minutes"
