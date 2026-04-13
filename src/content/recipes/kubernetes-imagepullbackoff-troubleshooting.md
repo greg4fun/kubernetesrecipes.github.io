@@ -13,6 +13,7 @@ tags:
 difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
+  - "crashloopbackoff-troubleshooting"
   - "copy-nim-image-internal-quay-registry"
   - "kubernetes-pod-lifecycle"
   - "kubernetes-secrets-management"

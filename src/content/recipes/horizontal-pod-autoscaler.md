@@ -1,6 +1,6 @@
 ---
-title: "HPA Kubernetes: Horizontal Pod Autoscaler"
-description: "Configure HPA in Kubernetes for auto-scaling pods on CPU, memory, and custom metrics. Horizontal Pod Autoscaler examples, thresholds, and best practices."
+title: "HPA in Kubernetes: Horizontal Pod Autoscaler Guide"
+description: "HPA in Kubernetes explained with YAML examples. Configure Horizontal Pod Autoscaler for CPU, memory, and custom metrics with scaling policies and VPA comparison."
 category: "autoscaling"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
@@ -430,3 +430,20 @@ Common reasons: Metrics Server not installed (run `kubectl top pods` to verify),
 Yes, but with constraints. Use [VPA](/recipes/autoscaling/vertical-pod-autoscaler/) for memory right-sizing and HPA for CPU horizontal scaling. Don't let both control the same metric.
 
 See also: [VPA Setup](/recipes/autoscaling/vertical-pod-autoscaler/), [KEDA Event-Driven Autoscaling](/recipes/autoscaling/keda-event-driven-autoscaling/), [Cost Optimization](/recipes/autoscaling/kubernetes-cost-optimization-strategies/)
+
+## Frequently Asked Questions
+
+### What is HPA in Kubernetes?
+HPA (Horizontal Pod Autoscaler) automatically scales the number of pod replicas based on observed metrics like CPU utilization, memory usage, or custom metrics. When load increases above the target threshold, HPA adds pods; when load decreases, it removes them.
+
+### How does HPA work in Kubernetes?
+HPA runs a control loop every 15 seconds (default). It queries the Metrics API for current resource usage, calculates the desired replica count using `desiredReplicas = ceil(currentReplicas × (currentMetricValue / desiredMetricValue))`, and updates the Deployment's replica count.
+
+### What is the difference between HPA and VPA?
+HPA scales horizontally — adds or removes pod replicas based on load. VPA (Vertical Pod Autoscaler) scales vertically — adjusts CPU/memory requests on existing pods. Use HPA for stateless workloads that scale out well; use VPA for stateful workloads or single-replica deployments. They can coexist if VPA manages memory only and HPA manages CPU.
+
+### How do I configure HPA with custom metrics?
+Install a metrics adapter (Prometheus Adapter, KEDA, or Datadog), then create an HPA targeting `type: Pods` or `type: Object` metrics instead of `type: Resource`. For example, scale on requests-per-second from Prometheus using `pods/http_requests_per_second`.
+
+### What is the default HPA cooldown period?
+The default stabilization window is 300 seconds (5 minutes) for scale-down and 0 seconds for scale-up. Configure `behavior.scaleDown.stabilizationWindowSeconds` and `behavior.scaleUp` in the HPA spec to tune this.

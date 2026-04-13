@@ -1,6 +1,6 @@
 ---
-title: "OpenShift Lifecycle and Support Versions Guide"
-description: "Complete OpenShift lifecycle support matrix. Release dates, end-of-life, upgrade paths, Kubernetes version mapping, and extended update support for OCP 4.x."
+title: "OpenShift Support Lifecycle: Versions, EOL, Upgrades"
+description: "OpenShift support lifecycle with version matrix, EOL dates, EUS releases, and upgrade paths. Complete OCP 4.x lifecycle support guide updated 2026."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "deployments"
@@ -203,3 +203,17 @@ Before upgrading, verify:
 - Each OCP version maps to a specific Kubernetes version (e.g., OCP 4.18 = K8s 1.31)
 - Always check \`oc adm upgrade\` for available paths before upgrading
 - Take etcd backups and verify operator compatibility before every minor upgrade
+
+## Frequently Asked Questions
+
+### What is the OpenShift support lifecycle?
+OpenShift Container Platform follows a ~4-month release cycle. Each minor version receives Full Support (~14 months) then Maintenance Support (~4 months). Even-numbered releases (4.12, 4.14, 4.16, 4.18) qualify for Extended Update Support (EUS) with 24 months total coverage.
+
+### How long is OpenShift 4.16 supported?
+OpenShift 4.16 is an EUS release with 24 months of support from its GA date. Full support covers the first ~18 months with bug fixes and security patches, followed by ~6 months of maintenance support with critical fixes only.
+
+### Can I skip OpenShift versions when upgrading?
+You can skip minor versions only between EUS releases (e.g., 4.14 → 4.16). Non-EUS upgrades must go version by version (4.15 → 4.16 → 4.17). Always check the upgrade graph with `oc adm upgrade` before planning.
+
+### What happens when OpenShift reaches end of life?
+Once EOL, Red Hat no longer provides security patches, bug fixes, or technical support. Running EOL clusters is a compliance and security risk. Plan upgrades at least 2 months before EOL dates.

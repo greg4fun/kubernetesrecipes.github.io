@@ -13,6 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "10 minutes"
 relatedRecipes:
+  - "horizontal-pod-autoscaler"
   - "kubernetes-poddisruptionbudget-guide"
   - "debug-scheduling-failures"
   - "kubernetes-resource-optimization"

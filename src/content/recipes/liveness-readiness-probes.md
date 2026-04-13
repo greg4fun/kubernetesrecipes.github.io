@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Readiness Probe and Liveness Probe"
-description: "Configure Kubernetes readiness probes and liveness probes for pod health checks. HTTP, TCP, exec, and gRPC probe examples with best practices."
+title: "Kubernetes Readiness Probe: Complete YAML Guide"
+description: "Kubernetes readiness probe explained with YAML examples. Configure HTTP, TCP, exec, and gRPC readiness probes with liveness and startup probe comparison."
 category: "deployments"
 difficulty: "beginner"
 timeToComplete: "15 minutes"
@@ -363,3 +363,20 @@ Startup probes (Kubernetes 1.20+) run only during container startup. Once the st
 HTTP GET (success = 200-399), TCP socket (success = port open), exec command (success = exit code 0), and gRPC health check (Kubernetes 1.27+).
 
 See also: [CrashLoopBackOff Troubleshooting](/recipes/troubleshooting/debug-crashloopbackoff/), [HPA Guide](/recipes/autoscaling/horizontal-pod-autoscaler/)
+
+## Frequently Asked Questions
+
+### What is a readiness probe in Kubernetes?
+A readiness probe tells Kubernetes whether a pod is ready to receive traffic. If the readiness probe fails, the pod is removed from Service endpoints — no traffic is routed to it until it passes again. Unlike liveness probes, a failing readiness probe does NOT restart the container.
+
+### What is the difference between readiness and liveness probes?
+Readiness probes control traffic routing — a failing pod is removed from the Service but keeps running. Liveness probes control pod lifecycle — a failing pod is killed and restarted. Use readiness for "not ready yet" (warming up, loading data). Use liveness for "stuck and needs restart" (deadlock, hung process).
+
+### Should I use the same endpoint for readiness and liveness probes?
+No. Liveness probes should check only that the process is alive (simple `/healthz`). Readiness probes should check that the app can serve requests (database connected, cache warm, dependencies available). A liveness probe that checks the database can cause cascading restarts if the DB goes down briefly.
+
+### What is the default readiness probe in Kubernetes?
+If no readiness probe is configured, Kubernetes considers the pod ready as soon as the container starts. This can cause errors if the application needs warm-up time. Always configure readiness probes for production workloads.
+
+### How do I configure a gRPC readiness probe?
+Use `grpc.port` in the probe spec (Kubernetes 1.24+). The container must implement the gRPC Health Checking Protocol. Example: `readinessProbe: { grpc: { port: 50051 }, initialDelaySeconds: 5 }`.

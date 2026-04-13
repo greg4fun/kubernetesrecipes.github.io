@@ -1,6 +1,6 @@
 ---
-title: "CrashLoopBackOff Fix: Kubernetes Troubleshooting"
-description: "Fix CrashLoopBackOff in Kubernetes step by step. Debug OOMKilled, missing configs, failed health probes, and image errors causing pod crash loops."
+title: "How to Fix CrashLoopBackOff in Kubernetes"
+description: "Fix CrashLoopBackOff in Kubernetes with step-by-step troubleshooting. Debug OOMKilled, failed probes, missing configs, and image errors causing pod crash loops."
 category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-04-02"
@@ -190,3 +190,20 @@ Check for memory leaks. Also check if the JVM, Python, or Node.js runtime has it
 - Backoff delay maxes at 5 minutes — be patient or fix the root cause
 - Never make liveness probes check external dependencies
 - Use ephemeral debug containers or command overrides for interactive debugging
+
+## Frequently Asked Questions
+
+### What does CrashLoopBackOff mean in Kubernetes?
+CrashLoopBackOff means a container keeps crashing and Kubernetes keeps restarting it with exponentially increasing delays (10s, 20s, 40s, up to 5 minutes). It's not an error itself — it's Kubernetes telling you the container fails every time it starts.
+
+### How do I check CrashLoopBackOff logs?
+Run `kubectl logs <pod-name> --previous` to see logs from the last crashed container. The `--previous` flag is critical because the current container may have already crashed and been replaced. Also check `kubectl describe pod <pod-name>` for events and exit codes.
+
+### What causes CrashLoopBackOff?
+The most common causes are: application errors (unhandled exceptions), OOMKilled (memory limit too low), missing ConfigMaps or Secrets, failing liveness probes, wrong container command/entrypoint, missing environment variables, and image entrypoint errors.
+
+### How do I fix CrashLoopBackOff OOMKilled?
+Check the exit code — 137 means OOMKilled. Increase the memory limit in `resources.limits.memory`. Use `kubectl top pod` to see actual memory usage. If the application has a memory leak, fix the application code or use VPA to auto-adjust limits.
+
+### How long does CrashLoopBackOff last?
+Kubernetes retries with exponential backoff: 10s → 20s → 40s → 80s → 160s → 300s (5 min max). It will keep retrying indefinitely at the 5-minute interval until you fix the root cause or delete the pod.
