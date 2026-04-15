@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Secrets Management Best Practices"
-description: "Secure secrets in Kubernetes with External Secrets Operator, Sealed Secrets, Vault, and SOPS. Encryption at rest, rotation, and zero-trust patterns."
+description: "Kubernetes secrets management best practices 2026: External Secrets Operator, Vault, Sealed Secrets, SOPS, encryption at rest, and rotation."
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-04-02"

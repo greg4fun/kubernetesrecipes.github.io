@@ -1,6 +1,6 @@
 ---
 title: "Batch AI Workloads with Volcano Scheduler on Kubernetes"
-description: "Schedule and manage batch AI training and inference jobs using Volcano scheduler with gang scheduling, fair-share queues, job plugins, and preemption on."
+description: "Volcano gang scheduling on Kubernetes: batch AI training, fair-share queues, minAvailable, job plugins, and GPU preemption. Complete setup guide."
 category: "ai"
 difficulty: "advanced"
 timeToComplete: "35 minutes"
