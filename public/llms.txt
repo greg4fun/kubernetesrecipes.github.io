@@ -1,18 +1,18 @@
 # Kubernetes Recipes
 
-> Kubernetes Recipes is a collection of 721+ production-ready Kubernetes guides, tutorials, and troubleshooting recipes by Luca Berton. Covers deployments, networking, security, storage, AI/GPU workloads, Helm, observability, and autoscaling.
+> Kubernetes Recipes is a collection of 740+ production-ready Kubernetes guides, tutorials, and troubleshooting recipes by Luca Berton. Covers deployments, networking, security, storage, AI/GPU workloads, Helm, observability, and autoscaling.
 
 - [All Recipes](https://kubernetes.recipes/recipes/): Full recipe index
-- [Complete AI-readable index](https://kubernetes.recipes/llms-full.txt): All 721+ recipes with descriptions
+- [Complete AI-readable index](https://kubernetes.recipes/llms-full.txt): All 740+ recipes with descriptions
 
-## Ai (103 recipes)
+## Ai (107 recipes)
 
 - [AI Content Watermarking on Kubernetes](https://kubernetes.recipes/recipes/ai/ai-content-watermarking-kubernetes/): Deploy AI-generated content watermarking on Kubernetes. Invisible watermarks, SynthID integration, detection APIs, image and text watermarking pipelines.
 - [AI Infrastructure Cost Optimization on Kubernetes](https://kubernetes.recipes/recipes/ai/ai-infrastructure-cost-optimization-kubernetes/): Optimize AI infrastructure costs on Kubernetes. GPU sharing, spot instances, inference batching, model quantization, token economics, and right-sizing GPU workloads.
 - [AI Model Storage: hostPath vs PVC for Inference](https://kubernetes.recipes/recipes/ai/model-storage-hostpath-pvc/): Deploy AI models on Kubernetes using hostPath and PVC storage. Compare performance, security trade-offs, and production patterns for model serving.
 - [AI Supercomputing on Kubernetes GPU Clusters](https://kubernetes.recipes/recipes/ai/ai-supercomputing-kubernetes-gpu-clusters/): Build AI supercomputing platforms on Kubernetes. Multi-node GPU training, NVIDIA DGX SuperPOD, InfiniBand RDMA, NCCL tuning, Blackwell clusters, and job scheduling.
 - [AI-Native Development Platforms on Kubernetes](https://kubernetes.recipes/recipes/ai/ai-native-development-kubernetes/): Build AI-native development platforms on Kubernetes. AI coding agents, automated testing, Copilot infrastructure, dev containers, and AI-driven CI/CD pipelines.
-- ... and 98 more ai recipes in [full index](https://kubernetes.recipes/llms-full.txt)
+- ... and 102 more ai recipes in [full index](https://kubernetes.recipes/llms-full.txt)
 
 ## Autoscaling (19 recipes)
 
@@ -23,23 +23,23 @@
 - [How to Configure Cluster Autoscaler](https://kubernetes.recipes/recipes/autoscaling/cluster-autoscaler/): Automatically scale your Kubernetes cluster nodes based on workload demand. Learn to configure Cluster Autoscaler for AWS, GCP, and Azure.
 - ... and 14 more autoscaling recipes in [full index](https://kubernetes.recipes/llms-full.txt)
 
-## Configuration (116 recipes)
+## Configuration (118 recipes)
 
 - [400 Recipes Milestone: What We Built and What's Next](https://kubernetes.recipes/recipes/configuration/kubernetes-recipes-400-pages-milestone/): Kubernetes Recipes reaches 400 articles. Explore new AI/GPU infrastructure, NVIDIA networking, ArgoCD GitOps, OpenShift, and RHACS security recipes.
 - [Automate MCP Updates with Drain Script](https://kubernetes.recipes/recipes/configuration/mcp-update-automation-script/): Bash script to automate OpenShift MachineConfigPool updates when drains are blocked by PDB violations. Auto-detects blockers, scales down, drains, and restores.
 - [ClusterPolicy MOFED Upgrade Strategy](https://kubernetes.recipes/recipes/configuration/clusterpolicy-mofed-upgrade/): Configure safe MOFED driver upgrade policies in the NVIDIA GPU Operator ClusterPolicy with rolling updates, node draining, and rollback procedures.
 - [Configure ClusterPolicy kernelModuleType for GPU Operator](https://kubernetes.recipes/recipes/configuration/configure-clusterpolicy-kernel-module-type/): Understand and configure the driver.kernelModuleType field in the NVIDIA GPU Operator ClusterPolicy to choose between auto, open, and proprietary kernel.
 - [Configure Container Registries via MachineConfig](https://kubernetes.recipes/recipes/configuration/machineconfig-registries-conf/): Set up mirror registries and blocked registries on OpenShift nodes using MachineConfig to control CRI-O image pull on RHCOS.
-- ... and 111 more configuration recipes in [full index](https://kubernetes.recipes/llms-full.txt)
+- ... and 113 more configuration recipes in [full index](https://kubernetes.recipes/llms-full.txt)
 
-## Deployments (150 recipes)
+## Deployments (153 recipes)
 
 - [Air-Gapped Image Import for OpenShift Clusters](https://kubernetes.recipes/recipes/deployments/air-gapped-image-import-openshift/): Import container images into disconnected OpenShift clusters. Use podman save/load and internal registries when DNS and TLS block external pulls.
 - [Air-Gapped OpenShift with Quay Mirror](https://kubernetes.recipes/recipes/deployments/airgapped-openshift-quay-mirror/): Deploy OpenShift in air-gapped environments with local Quay registry mirror, ImageDigestMirrorSet, and custom CatalogSources.
 - [Argo Workflows on Kubernetes](https://kubernetes.recipes/recipes/deployments/argo-workflows-kubernetes/): deployments
 - [ArgoCD App of Apps Pattern](https://kubernetes.recipes/recipes/deployments/argocd-app-of-apps-pattern/): Implement the ArgoCD App of Apps pattern to manage multiple applications from a parent Application for cluster bootstrapping.
 - [ArgoCD App of Apps with Sync Waves](https://kubernetes.recipes/recipes/deployments/argocd-app-of-apps-sync-waves/): Combine the ArgoCD App of Apps pattern with sync waves to bootstrap entire clusters in dependency order, from CRDs and operators to application workloads.
-- ... and 145 more deployments recipes in [full index](https://kubernetes.recipes/llms-full.txt)
+- ... and 148 more deployments recipes in [full index](https://kubernetes.recipes/llms-full.txt)
 
 ## Helm (34 recipes)
 
@@ -59,23 +59,23 @@
 - [Configure SriovNetwork with NVIDIA nv-ipam](https://kubernetes.recipes/recipes/networking/configure-sriovnetwork-nv-ipam/): Create a SriovNetwork resource that auto-generates a Multus NetworkAttachmentDefinition using nv-ipam for high-performance SR-IOV secondary interfaces.
 - ... and 69 more networking recipes in [full index](https://kubernetes.recipes/llms-full.txt)
 
-## Observability (29 recipes)
+## Observability (35 recipes)
 
+- [Alertmanager Routing, Grouping, and Silences](https://kubernetes.recipes/recipes/observability/kubernetes-alertmanager-routing-silences/): Configure Alertmanager routing trees, receiver integrations, inhibition rules, silences, and alert grouping for production Kubernetes monitoring stacks.
 - [EFK Stack: Kubernetes Centralized Logging](https://kubernetes.recipes/recipes/observability/kubernetes-logging-elk-stack/): Deploy EFK stack for Kubernetes centralized logging. Elasticsearch, Fluentd, Kibana setup, log collection, parsing, and retention policies.
 - [Enable User Workload Monitoring OpenShift](https://kubernetes.recipes/recipes/observability/openshift-user-workload-monitoring/): Enable user workload monitoring on OpenShift. Deploy ServiceMonitor, PodMonitor, alerting rules, and Grafana dashboards.
 - [GPU Tenant SLO Observability](https://kubernetes.recipes/recipes/observability/gpu-tenant-slo-observability/): Define and monitor GPU tenant SLOs for queue time, inference latency, GPU utilization, and job completion rate with Prometheus alerting.
 - [Grafana Dashboard 6417: Kubernetes Pod Monitoring](https://kubernetes.recipes/recipes/observability/grafana-kubernetes-dashboards/): Set up Grafana dashboard 6417 for Kubernetes pod monitoring. Import, customize panels, PromQL queries, and cluster-wide resource visualization.
-- [Grafana Dashboard 6417: Node Exporter Full](https://kubernetes.recipes/recipes/observability/grafana-dashboard-6417-node-exporter/): Import and configure Grafana Dashboard 6417 Node Exporter Full for Kubernetes node monitoring. CPU, memory, disk, network metrics with Prometheus data source.
-- ... and 24 more observability recipes in [full index](https://kubernetes.recipes/llms-full.txt)
+- ... and 30 more observability recipes in [full index](https://kubernetes.recipes/llms-full.txt)
 
-## Security (79 recipes)
+## Security (83 recipes)
 
 - [AI Security Platforms on Kubernetes](https://kubernetes.recipes/recipes/security/ai-security-platform-kubernetes/): Secure AI workloads on Kubernetes. Model supply chain security, prompt injection defense, LLM output filtering, AI RBAC, GPU isolation, and inference API protection.
 - [Add Custom CA Certificates in Kubernetes](https://kubernetes.recipes/recipes/security/custom-ca-kubernetes/): Configure custom Certificate Authority trust in vanilla Kubernetes using ConfigMap mounts, node-level trust stores, and containerd registry configuration.
 - [Add Custom CA Certificates in OpenShift](https://kubernetes.recipes/recipes/security/custom-ca-openshift/): Configure custom Certificate Authority trust across an OpenShift cluster using proxy config, image config, and automatic CA bundle injection into pods.
 - [Add Custom CA in OpenShift and Kubernetes](https://kubernetes.recipes/recipes/security/custom-ca-openshift-kubernetes/): Configure custom Certificate Authority trust in both OpenShift and vanilla Kubernetes for private registries, internal services, and corporate PKI.
 - [Automated Secret Rotation on Kubernetes](https://kubernetes.recipes/recipes/security/kubernetes-enterprise-secret-rotation/): Implement zero-downtime secret rotation with External Secrets Operator, HashiCorp Vault dynamic secrets, and rolling restarts for enterprise compliance.
-- ... and 74 more security recipes in [full index](https://kubernetes.recipes/llms-full.txt)
+- ... and 78 more security recipes in [full index](https://kubernetes.recipes/llms-full.txt)
 
 ## Storage (37 recipes)
 
