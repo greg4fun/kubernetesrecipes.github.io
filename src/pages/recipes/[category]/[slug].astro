@@ -133,21 +133,8 @@ const breadcrumbLd = {
   ]
 };
 
-// FAQ schema from "Common Issues" section (improves rich snippet eligibility)
-const faqLd = recipe.data.title ? {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": `What is the quick answer for ${recipe.data.title}?`,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": recipe.data.description
-      }
-    }
-  ]
-} : null;
+// FAQ schema removed — Google deprecated FAQPage rich results for most sites (Aug 2023)
+// and synthetic questions triggered "rich results validation error" in Ahrefs audit
 ---
 
 <Layout 
@@ -162,7 +149,6 @@ const faqLd = recipe.data.title ? {
   <ReadingProgress />
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
-  {faqLd && <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />}
   <ShareButtons title={recipe.data.title} url={articleUrl} />
   <TocSidebar />
   <Container>
