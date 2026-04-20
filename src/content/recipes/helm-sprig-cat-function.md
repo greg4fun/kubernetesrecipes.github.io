@@ -1,6 +1,6 @@
 ---
-title: "Helm Sprig cat Function: Concatenate Strings"
-description: "Use the Helm Sprig cat function to concatenate strings in templates. Syntax, examples, conditionals, and common Kubernetes patterns."
+title: "Helm Template Sprig cat Function"
+description: "Helm template Sprig cat function concatenates strings with spaces. Syntax, examples with conditionals, and Kubernetes Helm chart patterns."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "helm"

@@ -1,5 +1,5 @@
 ---
-title: "Helm Sprig toString Function: Type Conversion"
+title: "Helm Sprig toString Function Guide"
 description: "Convert values to strings in Helm templates using the Sprig toString function. Handle integers, booleans, lists, and nil values safely in Kubernetes manifests."
 publishDate: "2026-03-19"
 author: "Luca Berton"
