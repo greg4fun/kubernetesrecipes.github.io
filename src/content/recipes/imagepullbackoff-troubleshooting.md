@@ -1,5 +1,5 @@
 ---
-title: "Fix ImagePullBackOff in Kubernetes"
+title: "ImagePullBackOff Troubleshooting Guide"
 description: "Debug and resolve ImagePullBackOff errors including auth failures, wrong tags, private registry access, and rate limiting from Docker Hub and Quay."
 category: "troubleshooting"
 difficulty: "beginner"

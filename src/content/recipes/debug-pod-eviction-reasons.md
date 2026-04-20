@@ -1,6 +1,6 @@
 ---
 title: "Debug Pod Eviction Reasons"
-description: "Investigate why pods were evicted. Check node pressure, resource limits, priority classes, and preemption events."
+description: "Investigate why pods were evicted. Check node pressure, resource limits, priority classes, and preemption events. Identify DiskPressure, MemoryPressure, and ..."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"

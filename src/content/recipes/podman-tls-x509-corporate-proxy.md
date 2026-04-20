@@ -1,5 +1,5 @@
 ---
-title: "Fix Podman TLS x509 Certificate Errors Behind Corporate Proxy"
+title: "Fix Podman TLS x509 Behind Corporate Proxy"
 description: "Resolve podman pull x509 certificate signed by unknown authority errors caused by corporate TLS-intercepting proxies. Extract and install the proxy CA."
 category: "troubleshooting"
 difficulty: "intermediate"
