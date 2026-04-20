@@ -251,22 +251,8 @@ const breadcrumbStructuredData = pathSegments.length > 0 ? {
   ]
 } : null;
 
-// FAQ Schema for recipe pages (improves SERP features)
+// FAQ Schema removed — Google deprecated FAQPage rich results for programmatic content (Aug 2023)
 const isRecipePage = pathname.includes('/recipes/') && pathSegments.length >= 3;
-const faqStructuredData = isRecipePage ? {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": `What is ${title}?`,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": description
-      }
-    }
-  ]
-} : null;
 
 // HowTo Schema for recipe pages - Enhanced for better SEO
 const howToStructuredData = isRecipePage ? {
