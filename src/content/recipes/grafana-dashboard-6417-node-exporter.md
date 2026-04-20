@@ -1,6 +1,6 @@
 ---
-title: "Grafana Dashboard 6417: Node Exporter Full"
-description: "Grafana Dashboard 6417 for Kubernetes: import Node Exporter Full, monitor pods, CPU, memory, disk, and network. Step-by-step Prometheus data source setup."
+title: "Grafana Dashboard 6417 Kubernetes Pods"
+description: "Import Grafana Dashboard 6417 for Kubernetes pod monitoring. Node Exporter Full setup with Prometheus, CPU, memory, disk, and network metrics."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "observability"

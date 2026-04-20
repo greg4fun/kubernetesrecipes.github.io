@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Lease API for Leader Election"
+title: "Kubernetes Lease API Leader Election"
 description: "Use Kubernetes Lease objects for leader election in controllers and operators. Lease API, client-go leaderelection, lock mechanisms, and HA deployment patterns."
 publishDate: "2026-04-12"
 author: "Luca Berton"
