@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "horizontal-pod-autoscaler"
   - "resource-requests-limits"
-  - "kubernetes-resource-optimization"
+  - "kubernetes-resource-limits-cpu-memory-format"
 tags:
   - autoscaling
   - vpa
@@ -382,4 +382,4 @@ VPA has three components: Recommender (analyzes usage, generates recommendations
 
 Use both — they solve different problems. VPA right-sizes individual pods (especially memory). [HPA](/recipes/autoscaling/horizontal-pod-autoscaler/) scales the number of replicas based on load. Don't let both control the same metric.
 
-See also: [HPA Guide](/recipes/autoscaling/horizontal-pod-autoscaler/), [Cost Optimization](/recipes/autoscaling/kubernetes-cost-optimization-strategies/), [Resource Optimization](/recipes/autoscaling/kubernetes-resource-optimization/)
+See also: [HPA Guide](/recipes/autoscaling/horizontal-pod-autoscaler/), [Cost Optimization](/recipes/autoscaling/kubernetes-cost-optimization-strategies/), [Resource Optimization](/recipes/configuration/kubernetes-resource-limits-cpu-memory-format/)
