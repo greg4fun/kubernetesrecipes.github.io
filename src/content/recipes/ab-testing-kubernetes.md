@@ -52,7 +52,7 @@ relatedRecipes:
   - "debug-imagepullbackoff"
   - "coredns-configuration"
   - "cert-manager-certificates"
-  - "blue-green-deployments"
+  - "blue-green-deployment"
   - "deployment-strategies"
   - "graceful-shutdown"
   - "kubernetes-leases"

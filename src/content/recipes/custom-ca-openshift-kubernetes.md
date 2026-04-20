@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "oidc-authentication-kubernetes"
   - "update-ca-certificates-kubernetes"
-  - "openshift-custom-ca-registry"
+  - "openshift-custom-ca-openshift-kubernetes"
   - "tls-certificates-ingress"
   - "cert-manager-setup"
   - "container-security-scanning"

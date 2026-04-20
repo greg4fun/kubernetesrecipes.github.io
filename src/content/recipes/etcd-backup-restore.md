@@ -11,7 +11,7 @@ prerequisites:
   - "etcdctl CLI tool installed"
   - "Root or sudo access on control plane nodes"
 relatedRecipes:
-  - "velero-backup-restore"
+  - "velero-backup-disaster-recovery"
   - "statefulset-management"
   - "secrets-management-best-practices"
   - "velero-backup-disaster-recovery"

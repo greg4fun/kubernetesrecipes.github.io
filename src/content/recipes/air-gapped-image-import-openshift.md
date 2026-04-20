@@ -8,7 +8,7 @@ tags: ["air-gapped", "disconnected", "podman", "registry", "openshift", "image-i
 author: "Luca Berton"
 relatedRecipes:
   - "podman-tls-x509-corporate-proxy"
-  - "custom-ca-registry"
+  - "custom-ca-openshift-kubernetes"
   - "cluster-wide-pull-secret"
   - "openshift-idms-mirror-registry"
 ---

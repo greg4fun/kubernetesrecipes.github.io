@@ -14,7 +14,7 @@ prerequisites:
 relatedRecipes:
   - "quay-robot-account-kubernetes"
   - "rotate-quay-robot-tokens"
-  - "openshift-custom-ca-registry"
+  - "openshift-custom-ca-openshift-kubernetes"
   - "decode-docker-registry-secrets"
   - "openshift-cluster-wide-pull-secret"
 tags:

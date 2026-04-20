@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "argocd-sync-waves-canary"
   - "deployment-strategies"
-  - "blue-green-deployments"
+  - "blue-green-deployment"
   - "canary-deployments"
 ---
 

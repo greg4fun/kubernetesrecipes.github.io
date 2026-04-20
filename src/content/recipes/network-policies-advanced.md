@@ -8,7 +8,7 @@ tags: ["networkpolicy", "security", "networking", "isolation", "zero-trust"]
 relatedRecipes:
   - "update-ca-certificates-kubernetes"
   - "certificate-expiry-troubleshooting"
-  - "kyverno-policies"
+  - "kyverno-policy-management"
 ---
 
 > 💡 **Quick Answer:** Start with **default-deny** policy, then explicitly allow needed traffic. Use `namespaceSelector` for cross-namespace rules, `ipBlock.cidr` for external IPs, and combine `podSelector` + `namespaceSelector` for precise targeting. Always allow DNS egress (`port: 53` to `kube-system`) after default-deny.

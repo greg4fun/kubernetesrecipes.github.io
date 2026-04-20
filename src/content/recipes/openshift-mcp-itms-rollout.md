@@ -15,7 +15,7 @@ relatedRecipes:
   - "openshift-itms-image-tag-mirror"
   - "openshift-idms-install-config"
   - "openshift-cluster-wide-pull-secret"
-  - "openshift-custom-ca-registry"
+  - "openshift-custom-ca-openshift-kubernetes"
 tags:
   - openshift
   - machineconfigpool

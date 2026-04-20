@@ -5,7 +5,7 @@ category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
-  - "container-logging"
+  - "container-logging-patterns"
   - "grafana-kubernetes-dashboards"
   - "jaeger-distributed-tracing"
   - "logging-efk-stack"

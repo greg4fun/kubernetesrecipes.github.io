@@ -21,7 +21,7 @@ relatedRecipes:
   - "sealed-secrets-gitops"
   - "canary-deployments"
   - "ab-testing-kubernetes"
-  - "blue-green-deployments"
+  - "blue-green-deployment"
   - "cronjob-concurrency-policy"
   - "graceful-shutdown"
   - "kubernetes-leases"

@@ -8,7 +8,7 @@ tags: ["monitoring", "prometheus", "grafana", "alerting", "metrics", "kubernetes
 author: "Luca Berton"
 relatedRecipes:
   - "prometheus-monitoring-setup"
-  - "prometheus-monitoring"
+  - "prometheus-monitoring-setup"
   - "grafana-kubernetes-dashboards"
   - "alertmanager-setup"
 ---

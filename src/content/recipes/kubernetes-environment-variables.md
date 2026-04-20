@@ -8,7 +8,7 @@ tags: ["environment-variables", "env", "configmap", "secrets", "downward-api", "
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-configmap-guide"
-  - "downward-api"
+  - "downward-api-metadata"
   - "environment-variables-configmaps"
   - "configmap-hot-reload-troubleshooting"
 ---

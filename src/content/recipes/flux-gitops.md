@@ -8,7 +8,7 @@ tags: ["flux", "gitops", "continuous-deployment", "helm", "kustomize"]
 author: "Luca Berton"
 relatedRecipes:
   - "openshift-mcp-itms-rollout"
-  - "blue-green-deployments"
+  - "blue-green-deployment"
   - "openclaw-whatsapp-kubernetes"
 ---
 

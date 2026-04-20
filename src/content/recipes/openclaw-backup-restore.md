@@ -11,7 +11,7 @@ prerequisites:
 relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-ha-kubernetes"
-  - "velero-backup-restore"
+  - "velero-backup-disaster-recovery"
   - "velero-backup-disaster-recovery"
 tags:
   - openclaw

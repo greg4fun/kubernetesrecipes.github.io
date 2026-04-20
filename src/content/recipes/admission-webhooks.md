@@ -47,7 +47,7 @@ relatedRecipes:
   - "container-security-scanning"
   - "gvisor-container-runtime"
   - "kubernetes-audit-logging"
-  - "kyverno-policies"
+  - "kyverno-policy-management"
   - "network-policies-advanced"
   - "secrets-encryption-kms"
   - "service-accounts-rbac"

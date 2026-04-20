@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["podman", "tls", "x509", "proxy", "certificate", "openshift", "troubleshooting"]
 author: "Luca Berton"
 relatedRecipes:
-  - "custom-ca-registry"
+  - "custom-ca-openshift-kubernetes"
   - "cluster-wide-pull-secret"
   - "openshift-debug-mount-limitation"
 ---

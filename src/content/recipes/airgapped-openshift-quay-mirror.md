@@ -20,7 +20,7 @@ relatedRecipes:
   - "openshift-idms-install-config"
   - "openshift-itms-image-tag-mirror"
   - "gitops-bootstrap-bare-metal-gpu"
-  - "openshift-custom-ca-registry"
+  - "openshift-custom-ca-openshift-kubernetes"
   - "quay-robot-account-kubernetes"
   - "gpu-operator-clusterpolicy-reference"
 ---

@@ -7,7 +7,7 @@ publishDate: "2026-04-03"
 tags: ["configmap", "configuration", "environment-variables", "volumes", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "downward-api"
+  - "downward-api-metadata"
   - "environment-variables-configmaps"
   - "kubernetes-environment-variables"
   - "configmap-hot-reload-troubleshooting"

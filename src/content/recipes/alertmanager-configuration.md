@@ -16,11 +16,11 @@ relatedRecipes:
   - "prometheus-metrics-setup"
   - "grafana-dashboards"
   - "alertmanager-setup"
-  - "container-logging"
+  - "container-logging-patterns"
   - "grafana-kubernetes-dashboards"
   - "logging-efk-stack"
   - "opentelemetry-collector"
-  - "prometheus-monitoring"
+  - "prometheus-monitoring-setup"
   - "jaeger-distributed-tracing"
 tags:
   - alertmanager

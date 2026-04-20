@@ -11,7 +11,7 @@ prerequisites:
   - "Custom CA certificate in PEM format"
 relatedRecipes:
   - "custom-ca-openshift-kubernetes"
-  - "openshift-custom-ca-registry"
+  - "openshift-custom-ca-openshift-kubernetes"
   - "custom-ca-kubernetes"
   - "update-ca-certificates-kubernetes"
   - "cert-manager-setup"

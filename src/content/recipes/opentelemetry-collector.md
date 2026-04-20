@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 tags: ["opentelemetry", "otel", "metrics", "observability", "collector"]
 relatedRecipes:
   - "openclaw-logging-efk"
-  - "prometheus-monitoring"
+  - "prometheus-monitoring-setup"
   - "monitor-nccl-performance-prometheus"
 ---
 

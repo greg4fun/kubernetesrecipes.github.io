@@ -14,7 +14,7 @@ difficulty: "advanced"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "kubernetes-disaster-recovery-enterprise"
-  - "velero-backup-restore"
+  - "velero-backup-disaster-recovery"
   - "kubernetes-persistent-volumes"
   - "kubernetes-audit-logging-enterprise"
   - "kubernetes-secrets-management"
