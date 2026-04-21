@@ -1,177 +1,146 @@
 ---
-title: "Kubernetes Ephemeral Containers: kubectl debug"
-description: "Use kubectl debug and ephemeral containers to troubleshoot running pods. Attach debug containers without restarting, inspect distroless images, and node debugging."
-publishDate: "2026-04-12"
+title: "Debug with Ephemeral Containers"
+description: "Use kubectl debug and ephemeral containers to troubleshoot running pods without restarting them. Attach debugging tools to distroless images."
+publishDate: "2026-04-21"
 author: "Luca Berton"
 category: "troubleshooting"
-tags:
-  - "ephemeral-containers"
-  - "kubectl-debug"
-  - "debugging"
-  - "troubleshooting"
-  - "distroless"
 difficulty: "intermediate"
 timeToComplete: "10 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - kubectl-debug
+  - ephemeral-containers
+  - troubleshooting
+  - distroless
 relatedRecipes:
-  - "debug-crashloopbackoff"
-  - "debug-oom-killed"
-  - "debug-scheduling-failures"
-  - "kubernetes-pod-lifecycle"
-  - "kubernetes-imagepullbackoff-troubleshooting"
+  - "kubernetes-exec-into-pod"
+  - "debug-pod-eviction-reasons"
+  - "crashloopbackoff-troubleshooting"
 ---
 
-> 💡 **Quick Answer:** \`kubectl debug\` adds an ephemeral container to a running pod for troubleshooting — no restart required. Use it to inspect distroless/scratch images that have no shell, debug network issues, or attach to node namespaces. Available since Kubernetes 1.25 (GA).
+> 💡 **Quick Answer:** `kubectl debug` injects an ephemeral container into a running pod, sharing its namespaces, letting you run debugging tools without modifying the original image or restarting the pod.
 
 ## The Problem
 
-Modern containers use minimal images (distroless, scratch, alpine without tools) for security. When something goes wrong, there's no \`sh\`, \`curl\`, \`dig\`, or \`strace\` inside the container. You can't exec in, and restarting with a debug image changes the behavior. Ephemeral containers let you attach a full debug toolkit to a running pod.
-
-```mermaid
-flowchart LR
-    POD["Running Pod<br/>(distroless, no shell)"] -->|"kubectl debug"| EPHEMERAL["Ephemeral Container<br/>(busybox/netshoot)<br/>Shares namespaces"]
-    EPHEMERAL --> NET["Debug network"]
-    EPHEMERAL --> FS["Inspect filesystem"]
-    EPHEMERAL --> PROC["View processes"]
-```
+Production containers are often distroless or minimal — no shell, no curl, no tcpdump. When issues arise you can't `kubectl exec` into them. Restarting with a debug image loses the problem state.
 
 ## The Solution
 
 ### Debug a Running Pod
 
 ```bash
-# Add a debug container to an existing pod
-kubectl debug -it my-app --image=busybox --target=my-app
-# --target shares process namespace with the specified container
-
-# With a full networking toolkit
-kubectl debug -it my-app --image=nicolaka/netshoot --target=my-app
-
-# Inside the debug container, you can:
-# - See processes from the target container (ps aux)
-# - Access the same network namespace (curl, dig, tcpdump)
-# - Access the filesystem at /proc/1/root/
-```
-
-### Debug with Process Namespace Sharing
-
-```bash
-# Share PID namespace — see all processes in the pod
-kubectl debug -it my-app \
-  --image=busybox \
-  --target=my-app \
+# Attach a debug container sharing the pod's process namespace
+kubectl debug -it pod/web-app-7f8d9c6b4-x2k9p \
+  --image=busybox:1.36 \
+  --target=app \
   -- sh
-
-# Inside debug container:
-ps aux
-# PID   USER     COMMAND
-# 1     1000     /app/server          ← target container process
-# 45    root     sh                   ← your debug shell
-
-# Access target container filesystem
-ls /proc/1/root/app/
-cat /proc/1/root/etc/resolv.conf
 ```
 
-### Debug a Pod by Copying
-
-Create a copy of the pod with modifications:
+### Debug with Full Tools
 
 ```bash
-# Copy pod with a different image (for debugging)
-kubectl debug my-app --copy-to=my-app-debug --image=ubuntu -- bash
+# Use nicolaka/netshoot for network debugging
+kubectl debug -it pod/web-app-7f8d9c6b4-x2k9p \
+  --image=nicolaka/netshoot \
+  --target=app \
+  -- bash
 
-# Copy pod and change one container's image
-kubectl debug my-app --copy-to=my-app-debug \
-  --set-image=my-app=ubuntu:22.04
-
-# Copy with shared process namespace
-kubectl debug my-app --copy-to=my-app-debug \
-  --share-processes \
-  --image=busybox
+# Inside: tcpdump, curl, dig, ss, ip, nslookup all available
+tcpdump -i eth0 -n port 8080
+ss -tlnp
+curl localhost:8080/healthz
 ```
 
-### Debug a Node
-
-Access the host filesystem and network:
+### Debug Node Issues
 
 ```bash
 # Create a debug pod on a specific node
-kubectl debug node/worker-01 -it --image=ubuntu
+kubectl debug node/worker-01 -it --image=ubuntu:22.04
 
-# Inside the node debug pod:
-chroot /host    # Access full host filesystem
-systemctl status kubelet
-journalctl -u kubelet --tail=50
-crictl ps       # List containers on node
-crictl logs <container-id>
-ip addr show
-iptables -L -n
+# Access host filesystem
+chroot /host
+journalctl -u kubelet --since "5 minutes ago"
+crictl ps
 ```
 
-### Common Debug Images
-
-| Image | Size | Tools | Best For |
-|-------|:----:|-------|----------|
-| \`busybox\` | 1.4MB | Basic Unix tools, sh, wget | Quick checks |
-| \`nicolaka/netshoot\` | 360MB | curl, dig, tcpdump, nmap, iperf | Network debugging |
-| \`ubuntu:22.04\` | 77MB | apt-get for installing anything | General debugging |
-| \`alpine\` | 7MB | sh, apk for installing tools | Lightweight debug |
-| \`registry.k8s.io/e2e-test-images/jessie-dnsutils:1.3\` | 80MB | dig, nslookup, host | DNS debugging |
-
-### Real-World Examples
+### Copy Pod for Offline Debugging
 
 ```bash
-# 1. Debug DNS resolution
-kubectl debug -it my-app --image=nicolaka/netshoot -- dig kubernetes.default.svc.cluster.local
-
-# 2. Check network connectivity
-kubectl debug -it my-app --image=nicolaka/netshoot -- curl -v http://backend-svc:8080/health
-
-# 3. Inspect environment variables of running container
-kubectl debug -it my-app --image=busybox --target=my-app -- cat /proc/1/environ | tr '\0' '\n'
-
-# 4. Check file permissions
-kubectl debug -it my-app --image=busybox --target=my-app -- ls -la /proc/1/root/data/
-
-# 5. Network capture
-kubectl debug -it my-app --image=nicolaka/netshoot --target=my-app -- tcpdump -i eth0 port 8080 -w /tmp/capture.pcap
-
-# 6. Strace a running process
-kubectl debug -it my-app --image=ubuntu --target=my-app -- strace -p 1
+# Create a copy of the pod with a different image
+kubectl debug pod/web-app-7f8d9c6b4-x2k9p \
+  --copy-to=debug-copy \
+  --container=app \
+  --image=myapp:debug \
+  -- sleep infinity
 ```
 
-### List Ephemeral Containers
+### Custom Debug Profile
 
 ```bash
-kubectl get pod my-app -o jsonpath='{.spec.ephemeralContainers[*].name}'
-# debugger-abc12
+# Run as root with all capabilities
+kubectl debug -it pod/web-app-7f8d9c6b4-x2k9p \
+  --image=busybox \
+  --target=app \
+  --profile=sysadmin \
+  -- sh
+```
 
-kubectl describe pod my-app | grep -A5 "Ephemeral Containers"
+Available profiles: `general`, `baseline`, `restricted`, `netadmin`, `sysadmin`
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant K as kubectl debug
+    participant API as API Server
+    participant P as Running Pod
+    participant E as Ephemeral Container
+    
+    U->>K: kubectl debug -it pod/app
+    K->>API: Patch pod (add ephemeral container)
+    API->>P: Inject ephemeral container
+    P->>E: Start with shared namespaces
+    E-->>U: Interactive shell attached
+    Note over E: Can see processes, network, filesystem
+    U->>E: Run debug commands
+    E-->>U: Results
+    Note over E: Container removed when exited
 ```
 
 ## Common Issues
 
-| Issue | Cause | Fix |
-|-------|-------|-----|
-| \`ephemeral containers are disabled\` | K8s < 1.25 | Upgrade to 1.25+ (GA feature) |
-| Can't see target processes | Missing \`--target\` flag | Add \`--target=container-name\` for PID sharing |
-| Permission denied on /proc/1/root | Security context blocks access | Use \`--copy-to\` with modified security context |
-| Can't install packages | No internet in pod | Use pre-built debug images like netshoot |
-| Ephemeral container stays after debug | Normal — they persist until pod is deleted | Delete and recreate pod to clean up |
+**Cannot see target container's processes**
+Ensure `--target` flag specifies the correct container name. Process namespace sharing must be enabled (default since 1.17).
+
+**Permission denied in ephemeral container**
+Use `--profile=sysadmin` for root access:
+```bash
+kubectl debug -it pod/app --image=busybox --profile=sysadmin -- sh
+```
+
+**Ephemeral containers not supported**
+The feature is GA since 1.25. Older clusters need the `EphemeralContainers` feature gate enabled.
+
+**Can't access target container's filesystem**
+The filesystem isn't shared by default. Access via `/proc/<PID>/root`:
+```bash
+ls /proc/1/root/app/config/
+cat /proc/1/root/etc/resolv.conf
+```
 
 ## Best Practices
 
-- **Use \`--target\` for PID namespace sharing** — essential for inspecting running processes
-- **Keep \`netshoot\` image cached** — pre-pull on nodes for faster debug sessions
-- **Use \`--copy-to\` for security-restricted pods** — copies allow relaxed security context
-- **Don't use in production long-term** — ephemeral containers are for debugging, not permanent sidecars
-- **Use node debug for kubelet/host issues** — \`chroot /host\` gives full system access
+- Keep a set of known-good debug images (netshoot, busybox, ubuntu)
+- Use `--target` to share the process namespace with a specific container
+- Use `--copy-to` when you need to modify the container image without affecting production
+- Prefer `--profile=restricted` unless you need elevated permissions
+- Document common debug commands in runbooks for your team
+- Use node debugging for kubelet, containerd, and OS-level issues
 
 ## Key Takeaways
 
-- \`kubectl debug\` adds temporary containers to running pods — no restart needed
-- \`--target\` shares PID namespace for process inspection and filesystem access
-- \`--copy-to\` creates a modified copy for deeper debugging
-- Node debugging with \`kubectl debug node/\` gives host-level access
-- Ephemeral containers persist until the pod is deleted
-- Essential for debugging distroless/scratch images with no shell
+- Ephemeral containers are injected into running pods without restart
+- `--target` shares the process namespace with the specified container
+- `--copy-to` creates an independent copy for safe experimentation
+- Node debugging mounts the host filesystem at `/host`
+- Profiles control security context (`sysadmin` = root + all capabilities)
+- Ephemeral containers cannot be removed — they stay until pod deletion

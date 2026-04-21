@@ -1,105 +1,157 @@
 ---
-title: "Kubernetes Startup Probe Guide"
-description: "configuration"
-category: "configuration"
-difficulty: "Configure Kubernetes startup probes for slow-starting applications. Prevent liveness probe kills during long initialization of Java apps, ML models, and databases."
-publishDate: "2026-04-05"
-tags: ["startup-probe", "slow-start", "initialization", "health-check", "kubernetes"]
+title: "Kubernetes startupProbe Guide"
+description: "Configure startupProbe for slow-starting containers to prevent premature kills. Understand interaction with liveness and readiness probes."
+publishDate: "2026-04-21"
 author: "Luca Berton"
+category: "configuration"
+difficulty: "beginner"
+timeToComplete: "8 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - startup-probe
+  - probes
+  - health-check
+  - slow-start
 relatedRecipes:
-  - "kubernetes-debug-pods"
-  - "kubernetes-cordon-drain-node"
-  - "kubernetes-troubleshooting-guide"
-  - "kubernetes-init-containers"
+  - "kubernetes-liveness-readiness-probes"
+  - "kubernetes-liveness-probe-best-practices"
+  - "crashloopbackoff-troubleshooting"
 ---
 
-> 💡 **Quick Answer:** configuration
+> 💡 **Quick Answer:** `startupProbe` disables liveness/readiness checks until the container is fully initialized. Set `failureThreshold × periodSeconds` to cover your app's maximum startup time.
 
 ## The Problem
 
-This is a fundamental Kubernetes topic that engineers search for frequently. A comprehensive reference with production-ready examples saves hours of trial and error.
+Java apps, ML models, and legacy services can take 60-300 seconds to start. Without a startupProbe:
+- Liveness probe kills the container before it's ready → CrashLoopBackOff
+- Setting high `initialDelaySeconds` on liveness is fragile and slows restart detection
 
 ## The Solution
 
-### Why Startup Probes Exist
+### Basic startupProbe
 
 ```yaml
-# WITHOUT startup probe — liveness kills slow-starting app!
-# App needs 2 minutes to load ML model
-# Liveness probe: failureThreshold=3, periodSeconds=10 → kills after 30s
-# Result: CrashLoopBackOff
-
-# WITH startup probe — liveness waits until startup succeeds
+apiVersion: v1
+kind: Pod
+metadata:
+  name: java-app
 spec:
   containers:
-    - name: ml-server
-      image: ml-server:v1
+    - name: app
+      image: spring-boot-app:3.0
+      ports:
+        - containerPort: 8080
       startupProbe:
         httpGet:
-          path: /healthz
+          path: /actuator/health/started
           port: 8080
-        failureThreshold: 30       # 30 × 10s = 5 minutes max startup
+        failureThreshold: 30
         periodSeconds: 10
+        # Total startup budget: 30 × 10 = 300 seconds
       livenessProbe:
         httpGet:
-          path: /healthz
+          path: /actuator/health/liveness
           port: 8080
         periodSeconds: 10
         failureThreshold: 3
       readinessProbe:
         httpGet:
-          path: /ready
+          path: /actuator/health/readiness
           port: 8080
         periodSeconds: 5
+        failureThreshold: 3
 ```
 
-### How They Work Together
+### TCP startupProbe (databases)
 
-| Phase | Active Probe | If Fails |
-|-------|-------------|----------|
-| Starting up | Startup probe only | Keep trying until failureThreshold |
-| Startup succeeded | Liveness + Readiness | Liveness → restart, Readiness → remove from Service |
-| Startup failed (exceeded threshold) | N/A | Container killed and restarted |
+```yaml
+startupProbe:
+  tcpSocket:
+    port: 5432
+  failureThreshold: 30
+  periodSeconds: 5
+  # Budget: 150 seconds for DB initialization
+```
 
-### Common Startup Times
+### Exec startupProbe (custom check)
 
-| Application | Typical Startup | Suggested failureThreshold × period |
-|-------------|----------------|-------------------------------------|
-| Node.js / Go | 1-5s | No startup probe needed |
-| Spring Boot | 30-90s | 12 × 10s = 120s |
-| ML model loading | 1-5 min | 30 × 10s = 300s |
-| Database initialization | 1-3 min | 18 × 10s = 180s |
-| Large Java EE | 2-10 min | 60 × 10s = 600s |
+```yaml
+startupProbe:
+  exec:
+    command:
+      - /bin/sh
+      - -c
+      - "test -f /app/ready.flag"
+  failureThreshold: 60
+  periodSeconds: 5
+  # Budget: 300 seconds for model loading
+```
 
 ```mermaid
-graph TD
-    A[Container starts] --> B{Startup probe}
-    B -->|Succeeds| C[Liveness + Readiness probes activate]
-    B -->|Fails| D{Threshold reached?}
-    D -->|No| B
-    D -->|Yes| E[Container killed + restarted]
+sequenceDiagram
+    participant K as Kubelet
+    participant C as Container
+    
+    K->>C: Start container
+    Note over K: startupProbe active<br/>liveness/readiness DISABLED
+    loop Every periodSeconds
+        K->>C: startupProbe check
+        C-->>K: Failure (still starting)
+    end
+    K->>C: startupProbe check
+    C-->>K: Success ✓
+    Note over K: startupProbe done<br/>liveness + readiness ENABLED
+    loop Ongoing
+        K->>C: livenessProbe check
+        K->>C: readinessProbe check
+    end
 ```
 
-## Frequently Asked Questions
+## Common Issues
 
-### Startup probe vs initialDelaySeconds on liveness?
+**Container killed during startup**
+Increase `failureThreshold`:
+```yaml
+startupProbe:
+  failureThreshold: 60  # 60 × 10s = 10 minutes
+  periodSeconds: 10
+```
 
-`initialDelaySeconds` is a fixed delay — if your app sometimes takes 30s and sometimes 2min, you waste time or risk kills. Startup probes actively check and transition as soon as the app is ready.
+**startupProbe succeeds but app not fully ready**
+Use separate endpoints: startup = "process is alive", readiness = "can serve traffic":
+```yaml
+startupProbe:
+  httpGet:
+    path: /started   # Returns 200 once JVM is up
+readinessProbe:
+  httpGet:
+    path: /ready     # Returns 200 once connections are warmed
+```
 
-### Can I use startup probe without liveness?
-
-Yes, but you lose the "restart if deadlocked" safety net. Best practice: use startup + liveness + readiness together.
+**Probe timeout too short**
+Default `timeoutSeconds` is 1. Slow health endpoints need more:
+```yaml
+startupProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  timeoutSeconds: 5
+```
 
 ## Best Practices
 
-- Start with the simplest configuration that meets your needs
-- Test changes in staging before production
-- Use `kubectl describe` and events for troubleshooting
-- Document your decisions for the team
+- Set startup budget = max observed startup time × 1.5
+- Use HTTP probes when possible (more informative than TCP)
+- Liveness probe should NEVER check external dependencies (causes cascading restarts)
+- Readiness probe CAN check dependencies (removes from Service endpoints)
+- Keep `periodSeconds` low (5-10s) for faster startup detection
+- Use separate health endpoints: `/started`, `/live`, `/ready`
 
 ## Key Takeaways
 
-- This is essential Kubernetes knowledge for production operations
-- Follow the principle of least privilege and minimal configuration
-- Monitor and iterate based on real-world behavior
-- Automation reduces human error and improves consistency
+- startupProbe runs first — liveness and readiness are paused until it succeeds
+- Max startup time = `failureThreshold × periodSeconds`
+- After startupProbe succeeds, it never runs again for that container
+- If startupProbe exhausts retries, container is killed (like liveness failure)
+- Replaces the anti-pattern of high `initialDelaySeconds` on liveness
+- Available since Kubernetes 1.20 (GA)
