@@ -1,96 +1,39 @@
 ---
 title: "OPA Gatekeeper Policy Enforcement"
-description: "Deploy OPA Gatekeeper for Kubernetes policy enforcement. ConstraintTemplates for image registries, resource limits, label requirements, and privilege restrictions."
+description: "Enforce policies with OPA Gatekeeper on Kubernetes. ConstraintTemplates, Constraints, dry-run mode, audit, and common policies for security compliance."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"
 difficulty: "intermediate"
-timeToComplete: "15 minutes"
+timeToComplete: "20 minutes"
 kubernetesVersion: "1.28+"
 tags:
-  - opa
-  - gatekeeper
-  - policy
-  - security
-  - admission
+  - "opa"
+  - "gatekeeper"
+  - "policy"
+  - "compliance"
+  - "rego"
 relatedRecipes:
-  - "kubernetes-validating-admission-policy"
   - "kubernetes-admission-webhooks-guide"
-  - "kubernetes-pod-security-admission"
-  - "kubernetes-image-governance-enterprise"
+  - "kubernetes-pod-security-standards"
 ---
 
-> 💡 **Quick Answer:** Install Gatekeeper, create `ConstraintTemplate` CRDs with Rego policies, then apply `Constraint` resources to enforce them. Start in `dryrun` mode to audit violations before blocking.
+> 💡 **Quick Answer:** Install OPA Gatekeeper and create `ConstraintTemplates` with Rego policies. Apply `Constraints` to enforce rules like requiring resource limits, blocking privileged containers, and mandating labels. Use `enforcementAction: dryrun` to audit before enforcing.
 
 ## The Problem
 
-Kubernetes doesn't enforce organizational policies natively: which registries are allowed, mandatory labels, resource limit requirements, or privilege restrictions. OPA Gatekeeper provides a policy-as-code framework with audit capabilities.
+RBAC and Pod Security Standards provide basic guardrails, but organizations need custom policies: 'all images must come from our approved registry,' 'every Deployment must have a team label,' 'no containers can run as root.' OPA Gatekeeper lets you define and enforce any policy declaratively.
 
 ## The Solution
 
 ### Install Gatekeeper
 
 ```bash
-helm install gatekeeper gatekeeper/gatekeeper \
-  --namespace gatekeeper-system \
-  --create-namespace
+helm repo add gatekeeper https://open-policy-agent.github.io/gatekeeper/charts
+helm install gatekeeper gatekeeper/gatekeeper --namespace gatekeeper-system --create-namespace
 ```
 
-### Allowed Registries Policy
-
-```yaml
-apiVersion: templates.gatekeeper.sh/v1
-kind: ConstraintTemplate
-metadata:
-  name: k8sallowedregistries
-spec:
-  crd:
-    spec:
-      names:
-        kind: K8sAllowedRegistries
-      validation:
-        openAPIV3Schema:
-          type: object
-          properties:
-            registries:
-              type: array
-              items:
-                type: string
-  targets:
-    - target: admission.k8s.gatekeeper.sh
-      rego: |
-        package k8sallowedregistries
-        violation[{"msg": msg}] {
-          container := input.review.object.spec.containers[_]
-          not startswith(container.image, input.parameters.registries[_])
-          msg := sprintf("Container %v uses image %v from unauthorized registry", [container.name, container.image])
-        }
-        violation[{"msg": msg}] {
-          container := input.review.object.spec.initContainers[_]
-          not startswith(container.image, input.parameters.registries[_])
-          msg := sprintf("Init container %v uses image %v from unauthorized registry", [container.name, container.image])
-        }
----
-apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sAllowedRegistries
-metadata:
-  name: allowed-registries
-spec:
-  enforcementAction: dryrun
-  match:
-    kinds:
-      - apiGroups: [""]
-        kinds: ["Pod"]
-    excludedNamespaces:
-      - kube-system
-      - gatekeeper-system
-  parameters:
-    registries:
-      - "registry.example.com/"
-      - "gcr.io/"
-```
-
-### Required Labels Policy
+### ConstraintTemplate: Require Labels
 
 ```yaml
 apiVersion: templates.gatekeeper.sh/v1
@@ -115,9 +58,11 @@ spec:
       rego: |
         package k8srequiredlabels
         violation[{"msg": msg}] {
-          required := input.parameters.labels[_]
-          not input.review.object.metadata.labels[required]
-          msg := sprintf("Missing required label: %v", [required])
+          provided := {l | input.review.object.metadata.labels[l]}
+          required := {l | l := input.parameters.labels[_]}
+          missing := required - provided
+          count(missing) > 0
+          msg := sprintf("Missing required labels: %v", [missing])
         }
 ---
 apiVersion: constraints.gatekeeper.sh/v1beta1
@@ -125,69 +70,80 @@ kind: K8sRequiredLabels
 metadata:
   name: require-team-label
 spec:
-  enforcementAction: deny
+  enforcementAction: dryrun
   match:
     kinds:
       - apiGroups: ["apps"]
         kinds: ["Deployment"]
   parameters:
-    labels:
-      - "team"
-      - "environment"
+    labels: ["team", "env"]
 ```
 
-### Enforcement Actions
+### Block Privileged Containers
 
-| Action | Behavior |
-|--------|----------|
-| `deny` | Block non-compliant resources |
-| `dryrun` | Log violations but allow creation |
-| `warn` | Allow creation but return warning to user |
+```yaml
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8sblockprivileged
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sBlockPrivileged
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8sblockprivileged
+        violation[{"msg": msg}] {
+          c := input.review.object.spec.containers[_]
+          c.securityContext.privileged == true
+          msg := sprintf("Privileged container not allowed: %v", [c.name])
+        }
+```
 
 ### Audit Violations
 
 ```bash
-# Check audit results
-kubectl get k8sallowedregistries allowed-registries -o yaml | \
-  yq '.status.violations'
+# Check violations without enforcing
+kubectl get k8srequiredlabels require-team-label -o yaml
+# status.violations shows all non-compliant resources
 
-# Count violations by constraint
-kubectl get constraints -o json | \
-  jq '.items[] | {name: .metadata.name, violations: (.status.totalViolations // 0)}'
+# Switch from dryrun to enforce
+kubectl patch k8srequiredlabels require-team-label \
+  --type=json -p='[{"op":"replace","path":"/spec/enforcementAction","value":"deny"}]'
 ```
 
 ```mermaid
-graph LR
-    REQ[API Request] --> GK[Gatekeeper Webhook]
-    GK --> CT[ConstraintTemplate<br/>Rego policy logic]
-    CT --> CON[Constraint<br/>Parameters + scope]
-    CON -->|Match| EVAL{Evaluate Policy}
-    EVAL -->|Pass| ALLOW[✅ Allowed]
-    EVAL -->|Fail + deny| REJECT[❌ Rejected]
-    EVAL -->|Fail + dryrun| AUDIT[📋 Audit log]
+graph TD
+    TEMPLATE[ConstraintTemplate<br/>Define policy in Rego] --> CONSTRAINT[Constraint<br/>Apply to resources]
+    CONSTRAINT -->|dryrun| AUDIT[Audit Mode<br/>Report violations]
+    CONSTRAINT -->|deny| ENFORCE[Enforce Mode<br/>Block non-compliant]
+    
+    CREATE[kubectl create deployment] --> GK[Gatekeeper Webhook]
+    GK -->|Check constraints| RESULT{Compliant?}
+    RESULT -->|Yes| ALLOW[✅ Allowed]
+    RESULT -->|No| DENY[❌ Denied with reason]
 ```
 
 ## Common Issues
 
-**Gatekeeper blocks system pods**
+**Gatekeeper blocking system resources**: Add `match.excludedNamespaces: [kube-system, gatekeeper-system]` to constraints.
 
-Always exclude `kube-system` and `gatekeeper-system` from constraints. Add all operator namespaces too.
-
-**Constraint shows 0 violations but pods are non-compliant**
-
-Check that `match.kinds` targets the right resource. Pods created by Deployments: target `Pod`, not `Deployment` (unless checking deployment-level metadata).
+**ConstraintTemplate not syncing**: Check Rego syntax: `kubectl describe constrainttemplate k8srequiredlabels`. Rego syntax errors prevent the template from compiling.
 
 ## Best Practices
 
-- **Start with `dryrun`** — audit existing violations before enforcing
-- **Exclude system namespaces** — preventing system pod creation breaks the cluster
-- **Library of reusable ConstraintTemplates** — the Gatekeeper library has 30+ ready-made policies
-- **Consider `ValidatingAdmissionPolicy`** (K8s 1.30+) for simple checks — no Rego needed
+- **Start with dryrun** — audit before enforcing
+- **Exclude system namespaces** — never block kube-system
+- **Version ConstraintTemplates** in Git — they're policy as code
+- **Audit dashboard** — Gatekeeper exposes Prometheus metrics
+- **Common policies**: required labels, image allowlist, no privileged, resource limits
 
 ## Key Takeaways
 
-- ConstraintTemplate defines the policy logic (Rego); Constraint applies it with parameters
-- Start in `dryrun` mode, audit, then switch to `deny`
-- Always exclude system namespaces from policy enforcement
-- Gatekeeper provides audit for existing non-compliant resources, not just new ones
-- K8s 1.30+ `ValidatingAdmissionPolicy` with CEL is simpler for basic checks
+- OPA Gatekeeper enforces custom policies on Kubernetes resources
+- ConstraintTemplates define policies in Rego; Constraints apply them
+- dryrun mode audits violations without blocking — always start here
+- Policies as code: version control ConstraintTemplates alongside manifests
+- Common use cases: required labels, image allowlists, no privileged containers
