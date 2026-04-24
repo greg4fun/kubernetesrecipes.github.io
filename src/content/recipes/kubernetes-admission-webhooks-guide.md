@@ -1,6 +1,6 @@
 ---
 title: "Admission Webhooks Guide Kubernetes"
-description: "Build and deploy mutating and validating admission webhooks for Kubernetes. Webhook configuration, certificate management, failure policies, and common use cases."
+description: "Build and deploy Kubernetes admission webhooks for policy enforcement. ValidatingWebhookConfiguration, MutatingWebhookConfiguration, cert-manager integration, and failure policies."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"
@@ -8,23 +8,20 @@ difficulty: "advanced"
 timeToComplete: "20 minutes"
 kubernetesVersion: "1.28+"
 tags:
-  - admission-webhook
-  - mutating
-  - validating
-  - security
-  - policy
+  - "admission-webhook"
+  - "validating"
+  - "mutating"
+  - "policy"
 relatedRecipes:
-  - "kubernetes-validating-admission-policy"
-  - "kubernetes-pod-security-admission"
-  - "openshift-scc-security-context-constraints"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-pod-security-standards"
 ---
 
-> 💡 **Quick Answer:** Create a `ValidatingWebhookConfiguration` that points to your webhook service, set `failurePolicy: Fail` for security-critical webhooks and `Ignore` for optional mutations, and use cert-manager to manage webhook TLS certificates automatically.
+> 💡 **Quick Answer:** Create a `ValidatingWebhookConfiguration` that intercepts pod creation and rejects pods without resource limits. Deploy the webhook server as a Deployment with TLS certs from cert-manager. Set `failurePolicy: Fail` for security-critical policies and `Ignore` for non-critical.
 
 ## The Problem
 
-Kubernetes admission webhooks intercept API requests before persistence — they can reject (validating) or modify (mutating) resources. Use cases: enforce naming conventions, inject sidecars, add default labels, block privileged containers, and enforce image registries.
+RBAC controls WHO can do things, but not WHAT they create. A developer with pod-create permissions can deploy a container with no resource limits, running as root, pulling from an untrusted registry. Admission webhooks enforce policies on the objects themselves.
 
 ## The Solution
 
@@ -34,67 +31,88 @@ Kubernetes admission webhooks intercept API requests before persistence — they
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: image-registry-validator
+  name: require-resource-limits
   annotations:
     cert-manager.io/inject-ca-from: webhooks/webhook-cert
-webhooks:
-  - name: registry.example.com
-    admissionReviewVersions: ["v1"]
-    sideEffects: None
-    failurePolicy: Fail
-    timeoutSeconds: 5
-    clientConfig:
-      service:
-        name: webhook-service
-        namespace: webhooks
-        path: /validate
-    rules:
-      - apiGroups: [""]
-        apiVersions: ["v1"]
-        operations: ["CREATE", "UPDATE"]
-        resources: ["pods"]
-        scope: Namespaced
-    namespaceSelector:
-      matchExpressions:
-        - key: webhooks.example.com/skip
-          operator: DoesNotExist
+spec:
+  webhooks:
+    - name: require-limits.kubernetes.recipes
+      admissionReviewVersions: ["v1"]
+      sideEffects: None
+      failurePolicy: Fail
+      clientConfig:
+        service:
+          name: webhook-server
+          namespace: webhooks
+          path: /validate
+          port: 443
+      rules:
+        - apiGroups: [""]
+          apiVersions: ["v1"]
+          operations: ["CREATE", "UPDATE"]
+          resources: ["pods"]
+      namespaceSelector:
+        matchExpressions:
+          - key: kubernetes.io/metadata.name
+            operator: NotIn
+            values: ["kube-system", "webhooks"]
 ```
 
-### MutatingWebhookConfiguration
+### MutatingWebhookConfiguration (Auto-inject defaults)
 
 ```yaml
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: default-labels-mutator
-webhooks:
-  - name: labels.example.com
-    admissionReviewVersions: ["v1"]
-    sideEffects: None
-    failurePolicy: Ignore
-    reinvocationPolicy: IfNeeded
-    clientConfig:
-      service:
-        name: webhook-service
-        namespace: webhooks
-        path: /mutate
-    rules:
-      - apiGroups: ["apps"]
-        apiVersions: ["v1"]
-        operations: ["CREATE"]
-        resources: ["deployments"]
+  name: inject-defaults
+spec:
+  webhooks:
+    - name: defaults.kubernetes.recipes
+      admissionReviewVersions: ["v1"]
+      sideEffects: None
+      failurePolicy: Ignore
+      clientConfig:
+        service:
+          name: webhook-server
+          namespace: webhooks
+          path: /mutate
+      rules:
+        - apiGroups: ["apps"]
+          apiVersions: ["v1"]
+          operations: ["CREATE"]
+          resources: ["deployments"]
 ```
 
-### Failure Policies
+### Webhook Server (Go)
 
-| Policy | Behavior | Use Case |
-|--------|----------|----------|
-| `Fail` | Reject request if webhook unreachable | Security-critical validation |
-| `Ignore` | Allow request if webhook unreachable | Optional mutations, labels |
+```go
+func validatePod(w http.ResponseWriter, r *http.Request) {
+    var review admissionv1.AdmissionReview
+    json.NewDecoder(r.Body).Decode(&review)
+    
+    var pod corev1.Pod
+    json.Unmarshal(review.Request.Object.Raw, &pod)
+    
+    // Check all containers have resource limits
+    for _, c := range pod.Spec.Containers {
+        if c.Resources.Limits.Memory().IsZero() {
+            review.Response = &admissionv1.AdmissionResponse{
+                Allowed: false,
+                Result: &metav1.Status{
+                    Message: fmt.Sprintf("container %s must have memory limits", c.Name),
+                },
+            }
+            json.NewEncoder(w).Encode(review)
+            return
+        }
+    }
+    
+    review.Response = &admissionv1.AdmissionResponse{Allowed: true}
+    json.NewEncoder(w).Encode(review)
+}
+```
 
-> ⚠️ `failurePolicy: Fail` can block ALL pod creation if your webhook service is down. Always use `namespaceSelector` to exclude `kube-system` and the webhook's own namespace.
-
-### Certificate Management with cert-manager
+### TLS with cert-manager
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -105,52 +123,51 @@ metadata:
 spec:
   secretName: webhook-tls
   dnsNames:
-    - webhook-service.webhooks.svc
-    - webhook-service.webhooks.svc.cluster.local
+    - webhook-server.webhooks.svc
+    - webhook-server.webhooks.svc.cluster.local
   issuerRef:
-    name: self-signed-issuer
+    name: cluster-issuer
     kind: ClusterIssuer
 ```
 
 ```mermaid
-graph LR
-    CLIENT[kubectl create pod] --> API[API Server]
-    API -->|1. Mutating| MUT[Mutating Webhook<br/>Add labels, inject sidecar]
-    MUT -->|2. Schema validation| SCHEMA[Object Schema]
-    SCHEMA -->|3. Validating| VAL[Validating Webhook<br/>Check registry, policy]
-    VAL -->|4. Persist| ETCD[etcd]
+sequenceDiagram
+    participant U as kubectl/User
+    participant API as API Server
+    participant MW as Mutating Webhook
+    participant VW as Validating Webhook
+    participant ETCD as etcd
     
-    VAL -->|Rejected| DENY[❌ Denied<br/>Policy violation]
+    U->>API: Create Pod
+    API->>MW: Mutate (inject defaults)
+    MW-->>API: Modified Pod
+    API->>VW: Validate (check policies)
+    VW-->>API: Allowed ✅ / Denied ❌
+    API->>ETCD: Store object
 ```
 
 ## Common Issues
 
-**Webhook blocks ALL pod creation — cluster stuck**
+**Webhook blocks all pods including system pods**
 
-Your webhook service is down and `failurePolicy: Fail` is set. Emergency fix:
-```bash
-kubectl delete validatingwebhookconfiguration image-registry-validator
-```
-Prevent this by excluding `kube-system` with `namespaceSelector`.
+Add `namespaceSelector` to exclude `kube-system`. Without it, the webhook can block critical system components.
 
-**Webhook timeout causes slow deployments**
+**Webhook server down — all pod creation fails**
 
-Set `timeoutSeconds: 5` (max 30). Optimize webhook response time — it's in the critical path for every matching API call.
+Set `failurePolicy: Ignore` for non-critical webhooks. `Fail` means if the webhook is unreachable, ALL matching requests are rejected.
 
 ## Best Practices
 
-- **Always exclude `kube-system`** from webhook rules — prevents cluster lockout
-- **Set `timeoutSeconds: 5`** — fail fast, don't slow the API server
-- **`failurePolicy: Fail` for security**, `Ignore` for convenience mutations
-- **Use cert-manager** for webhook certificates — auto-renewal, CA injection
-- **`sideEffects: None`** unless your webhook truly has side effects (most don't)
-- **Consider `ValidatingAdmissionPolicy`** (K8s 1.30+) for simple validations — no webhook needed
+- **`failurePolicy: Fail` for security** — reject if webhook is down
+- **`failurePolicy: Ignore` for convenience** — allow if webhook is down
+- **Always exclude kube-system** — never risk blocking system pods
+- **cert-manager for TLS** — automatic certificate rotation
+- **Timeout: 10s max** — slow webhooks slow down all API operations
 
 ## Key Takeaways
 
-- Mutating webhooks modify resources (add labels, inject sidecars); validating webhooks reject non-compliant resources
-- Mutating runs before validating — order matters
-- `failurePolicy: Fail` can lock out your cluster if the webhook service is down
-- cert-manager handles webhook TLS certificates automatically
-- `namespaceSelector` to exclude kube-system is mandatory for `Fail` policy webhooks
-- K8s 1.30+ `ValidatingAdmissionPolicy` replaces simple validating webhooks with in-process CEL expressions
+- Admission webhooks enforce policies on Kubernetes objects at creation/update time
+- Validating webhooks reject non-compliant resources; mutating webhooks auto-fix them
+- Webhooks need TLS — use cert-manager for automatic certificate management
+- Always exclude kube-system namespace to prevent breaking the cluster
+- failurePolicy controls behavior when webhook is unreachable: Fail (safe) vs Ignore (available)
