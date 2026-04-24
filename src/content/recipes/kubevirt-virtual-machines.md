@@ -7,6 +7,7 @@ publishDate: "2026-04-07"
 tags: ["kubevirt", "virtual-machines", "vm", "migration", "hybrid"]
 author: "Luca Berton"
 relatedRecipes:
+  - "debug-crashloopbackoff"
 
 ---
 

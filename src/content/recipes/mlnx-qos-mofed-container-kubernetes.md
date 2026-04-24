@@ -16,6 +16,7 @@ tags:
   - dscp
   - qos
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "pfc-nmstate-roce-lossless-kubernetes"
   - "sriov-network-node-policy-rdma-openshift"
   - "verify-nccl-rdma-traffic-debug"

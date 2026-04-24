@@ -7,6 +7,9 @@ publishDate: "2026-04-03"
 tags: ["monitoring", "prometheus", "grafana", "alerting", "metrics", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "install-helm-amazon-linux"
+  - "helm-sprig-cat-function"
+  - "debug-crashloopbackoff"
   - "prometheus-monitoring-setup"
   - "prometheus-monitoring-setup"
   - "grafana-kubernetes-dashboards"

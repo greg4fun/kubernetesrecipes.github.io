@@ -1,6 +1,6 @@
 ---
 title: "OpenShift Lifecycle and Version Support"
-description: "Understand OpenShift Container Platform version lifecycle, support phases, EUS releases, and upgrade planning for production clusters."
+description: "OpenShift support lifecycle guide covering version support phases, EUS releases, end-of-life dates, and upgrade planning for production clusters."
 publishDate: "2026-02-26"
 author: "Luca Berton"
 category: "configuration"

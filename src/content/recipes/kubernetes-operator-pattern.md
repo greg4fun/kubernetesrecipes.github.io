@@ -7,6 +7,9 @@ publishDate: "2026-04-03"
 tags: ["operator", "crd", "custom-resource", "controller", "automation", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "install-helm-amazon-linux"
+  - "helm-sprig-cat-function"
+  - "openshift-lifecycle-versions"
   - "argocd-gitops"
   - "kubernetes-ci-cd-pipeline"
   - "kubernetes-replicaset-explained"

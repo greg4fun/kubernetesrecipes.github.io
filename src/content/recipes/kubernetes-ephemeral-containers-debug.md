@@ -13,6 +13,7 @@ tags:
   - troubleshooting
   - distroless
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "kubernetes-exec-into-pod"
   - "debug-pod-eviction-reasons"
   - "crashloopbackoff-troubleshooting"

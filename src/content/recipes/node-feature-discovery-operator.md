@@ -7,6 +7,8 @@ publishDate: "2026-04-02"
 tags: ["nfd", "node-feature-discovery", "operator", "gpu", "hardware", "openshift", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "install-helm-amazon-linux"
+  - "debug-crashloopbackoff"
   - "nvidia-gpu-operator-setup"
   - "gpu-operator-clusterpolicy-reference"
   - "sriov-network-operator-nic-policy"

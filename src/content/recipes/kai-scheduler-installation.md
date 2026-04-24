@@ -11,6 +11,10 @@ prerequisites:
   - "Helm CLI installed"
   - "kubectl access to the cluster"
 relatedRecipes:
+  - "install-helm-amazon-linux"
+  - "helm-sprig-cat-function"
+  - "openshift-lifecycle-versions"
+  - "debug-crashloopbackoff"
   - "kai-scheduler-queues"
   - "kai-scheduler-podgroups"
   - "gpu-scheduling"

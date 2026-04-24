@@ -9,6 +9,7 @@ timeToComplete: "15 minutes"
 kubernetesVersion: "1.31+"
 tags: ["hugo", "nginx", "static-site", "k3s", "deployment", "brotli"]
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - gateway-api-httproutes-tls-k3s
   - gitea-actions-runner-quay-push
   - full-gitops-pipeline-k3s

@@ -10,6 +10,10 @@ prerequisites:
   - "Helm 3 installed"
   - "kubectl configured with cluster-admin permissions"
 relatedRecipes:
+  - "install-helm-amazon-linux"
+  - "helm-sprig-cat-function"
+  - "openshift-lifecycle-versions"
+  - "debug-crashloopbackoff"
   - "distributed-inference-kubernetes"
   - "dell-poweredge-xe7740-gpu-setup"
   - "aiperf-multi-model-benchmark"

@@ -7,6 +7,7 @@ publishDate: "2026-04-07"
 tags: ["helm", "oci", "registry", "ghcr", "chart-distribution"]
 author: "Luca Berton"
 relatedRecipes:
+  - "helm-sprig-cat-function"
   - "kubernetes-cluster-autoscaler-advanced"
   - "karpenter-node-autoscaling-kubernetes"
   - "kubeflow-operator-platform"

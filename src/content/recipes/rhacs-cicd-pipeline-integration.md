@@ -14,6 +14,8 @@ tags:
   - "pipeline"
   - "scanning"
 relatedRecipes:
+  - "install-helm-amazon-linux"
+  - "debug-crashloopbackoff"
   - "openshift-acs-kubernetes"
   - "rhacs-custom-security-policies"
   - "openshift-buildconfig-imagestream"

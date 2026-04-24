@@ -6,6 +6,8 @@ difficulty: "beginner"
 publishDate: "2026-01-22"
 tags: ["labels", "annotations", "organization", "selectors", "metadata"]
 relatedRecipes:
+  - "helm-sprig-cat-function"
+  - "openshift-lifecycle-versions"
   - "mcp-pause-unpause-rollout"
   - "pod-mutation-injection"
   - "openshift-project-request-template"

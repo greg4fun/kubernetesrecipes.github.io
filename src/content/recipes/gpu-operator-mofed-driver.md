@@ -12,6 +12,8 @@ prerequisites:
   - "NVIDIA GPU Operator Helm chart"
   - "Mellanox ConnectX NICs installed"
 relatedRecipes:
+  - "install-helm-amazon-linux"
+  - "debug-crashloopbackoff"
   - "configure-gpudirect-rdma-gpu-operator"
   - "switch-gpudirect-rdma-dma-buf"
   - "configure-sriovnetwork-nv-ipam"

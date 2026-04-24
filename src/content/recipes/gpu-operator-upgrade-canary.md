@@ -12,6 +12,7 @@ tags:
   - "openshift"
   - "rollback"
 relatedRecipes:
+  - "debug-crashloopbackoff"
   - "liveness-readiness-probes"
   - "gpu-upgrade-version-matrix"
   - "gpu-operator-clusterpolicy-reference"

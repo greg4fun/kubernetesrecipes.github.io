@@ -13,6 +13,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "30 minutes"
 relatedRecipes:
+  - "helm-sprig-cat-function"
   - "backstage-kubernetes-developer-portal"
   - "crossplane-kubernetes-infrastructure"
   - "argocd-app-of-apps-pattern"

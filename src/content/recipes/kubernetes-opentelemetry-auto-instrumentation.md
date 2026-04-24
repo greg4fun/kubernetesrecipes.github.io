@@ -13,6 +13,7 @@ tags:
   - auto-instrumentation
   - observability
 relatedRecipes:
+  - "helm-sprig-cat-function"
   - "opentelemetry-kubernetes-observability"
   - "opentelemetry-collector"
   - "kubernetes-golden-signals-sli-slo"
