@@ -13,6 +13,10 @@ tags:
   - "segmentation"
   - "zero-trust"
 relatedRecipes:
+  - "kubernetes-spiffe-spire-identity"
+  - "confidential-computing-attestation-kubernetes"
+  - "kubernetes-networkpolicy-examples"
+  - "kubernetes-network-policy-recipes"
   - "openshift-acs-kubernetes"
   - "rhacs-custom-security-policies"
   - "networkpolicy-deny-default-gpu"

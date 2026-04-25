@@ -13,6 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "25 minutes"
 relatedRecipes:
+  - "kubernetes-finalizers-ownership-guide"
   - "openshift-lifecycle-support-versions"
   - "openshift-lifecycle-versions"
   - "openshift-mcp-itms-rollout"

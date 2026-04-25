@@ -6,6 +6,11 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["topology", "scheduling", "availability", "zones", "spread"]
 relatedRecipes:
+  - "rollout-stuck-troubleshooting"
+  - "octopus-deploy-kubernetes-agent"
+  - "mutagen-kubernetes-file-sync"
+  - "multi-cluster-management-kubernetes"
+  - "kubevirt-virtual-machines"
   - "liveness-readiness-probes"
   - "quay-robot-account-kubernetes"
   - "argocd-multi-cluster-app-of-apps"

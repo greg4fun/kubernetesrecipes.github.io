@@ -13,6 +13,7 @@ tags:
   - "replication"
   - "backup"
 relatedRecipes:
+  - "cnpg-disaster-recovery"
   - "kubernetes-pod-security-standards"
 ---
 

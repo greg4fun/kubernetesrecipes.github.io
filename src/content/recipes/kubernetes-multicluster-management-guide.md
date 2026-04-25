@@ -13,6 +13,7 @@ tags:
   - "fleet"
   - "management"
 relatedRecipes:
+  - "rhacs-multi-cluster-management"
   - "kubernetes-pod-security-standards"
 ---
 

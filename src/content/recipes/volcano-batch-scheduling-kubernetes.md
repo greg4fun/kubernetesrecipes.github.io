@@ -14,6 +14,12 @@ tags:
   - "queue"
   - "fair-share"
 relatedRecipes:
+  - "feast-feature-store-kubernetes"
+  - "cnai-cncf-ai-projects-landscape"
+  - "autonomous-industrial-systems-kubernetes"
+  - "aiperf-vllm-benchmark-offline"
+  - "ai-native-development-kubernetes"
+  - "ai-content-watermarking-kubernetes"
   - "ai-resource-allocation-optimization-kubernetes"
   - "kueue-job-queuing-kubernetes"
   - "distributed-training-tensorflow-pytorch-kubernetes"

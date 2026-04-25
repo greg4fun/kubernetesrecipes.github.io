@@ -13,6 +13,7 @@ tags:
   - "metadata"
   - "selectors"
 relatedRecipes:
+  - "kubernetes-downward-api-guide"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

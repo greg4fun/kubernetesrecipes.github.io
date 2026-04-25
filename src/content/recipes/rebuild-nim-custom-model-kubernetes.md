@@ -13,6 +13,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "40 minutes"
 relatedRecipes:
+  - "domain-specific-language-models-kubernetes"
   - "nim-model-profiles-selection-kubernetes"
   - "nim-multinode-deployment-helm-kubernetes"
   - "deploy-multinode-nim-models-kubernetes"

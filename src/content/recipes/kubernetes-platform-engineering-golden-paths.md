@@ -13,6 +13,7 @@ tags:
 difficulty: "beginner"
 timeToComplete: "15 minutes"
 relatedRecipes:
+  - "kubernetes-backstage-developer-portal"
   - "kubernetes-namespace-template-instant-environments"
   - "kubernetes-reusable-pipeline-templates"
   - "kubernetes-deploy-new-app-five-minutes"

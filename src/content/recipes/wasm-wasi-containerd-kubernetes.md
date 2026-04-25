@@ -7,6 +7,12 @@ publishDate: "2026-04-07"
 tags: ["wasm", "wasi", "containerd", "wasmtime", "wasmedge"]
 author: "Luca Berton"
 relatedRecipes:
+  - "kubernetes-daemonset"
+  - "kubernetes-daemonset-update-strategy"
+  - "kubernetes-daemonset-guide"
+  - "kubernetes-blue-green-canary-deployments"
+  - "kubectl-rollout-restart-deployment"
+  - "kairos-k3s-hetzner-immutable-bootstrap"
   - "distributed-fio-kubernetes-openshift"
   - "kubeflow-operator-platform"
   - "k8s-fio-config-profiles-openshift"

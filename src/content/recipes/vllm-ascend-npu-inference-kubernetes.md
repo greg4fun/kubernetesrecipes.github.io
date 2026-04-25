@@ -13,6 +13,9 @@ tags:
 difficulty: "advanced"
 timeToComplete: "30 minutes"
 relatedRecipes:
+  - "triton-inference-server-vs-vllm-comparison"
+  - "quantum-computing-kubernetes-integration"
+  - "nccl-topo-dump-file-gpu-topology"
   - "deploy-vllm-inference-kubernetes"
   - "deploy-multinode-nim-models-kubernetes"
   - "kubernetes-dynamic-resource-allocation-gpu"

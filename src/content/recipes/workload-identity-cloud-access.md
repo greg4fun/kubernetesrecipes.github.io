@@ -10,6 +10,12 @@ prerequisites:
   - "kubectl configured with appropriate permissions"
   - "Cloud provider CLI (aws, az, or gcloud)"
 relatedRecipes:
+  - "kubernetes-service-accounts-workload-identity"
+  - "kubernetes-secrets-management-best-practices"
+  - "kubernetes-networkpolicy-default-deny-egress"
+  - "kubernetes-certificate-signing-request"
+  - "cve-2026-4342-ingress-nginx-fix"
+  - "cve-2026-3865-csi-smb-path-traversal"
   - "rbac-service-accounts"
   - "hashicorp-vault-kubernetes"
   - "external-secrets-operator"

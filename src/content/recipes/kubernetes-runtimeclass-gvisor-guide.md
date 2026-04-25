@@ -13,6 +13,7 @@ tags:
   - "runsc"
   - "sandbox"
 relatedRecipes:
+  - "kubernetes-gvisor-runtimeclass-guide"
   - "kubernetes-pod-security-standards"
 ---
 

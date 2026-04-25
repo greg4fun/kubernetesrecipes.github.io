@@ -13,6 +13,8 @@ tags:
   - "observability"
   - "collector"
 relatedRecipes:
+  - "kubernetes-tempo-tracing-guide"
+  - "kubernetes-jaeger-tracing-guide"
   - "prometheus-monitoring-kubernetes"
   - "kubernetes-loki-log-aggregation"
 ---

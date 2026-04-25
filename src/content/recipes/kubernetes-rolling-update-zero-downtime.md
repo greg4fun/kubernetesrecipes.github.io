@@ -13,6 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "15 minutes"
 relatedRecipes:
+  - "kubernetes-daemonset-update-strategies"
   - "liveness-readiness-probes"
   - "kubernetes-poddisruptionbudget-guide"
   - "kubernetes-health-probes-liveness-readiness"

@@ -14,6 +14,7 @@ tags:
   - "migration"
   - "disaster-recovery"
 relatedRecipes:
+  - "kubernetes-velero-snapshot-locations"
   - "kubernetes-disaster-recovery-enterprise"
   - "kubernetes-etcd-backup-restore"
 ---

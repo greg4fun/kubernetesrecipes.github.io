@@ -13,6 +13,7 @@ tags:
   - "development"
   - "api"
 relatedRecipes:
+  - "kubernetes-operator-sdk-guide"
   - "kubernetes-pod-security-standards"
 ---
 

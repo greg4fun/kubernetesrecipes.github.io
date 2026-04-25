@@ -13,6 +13,8 @@ tags:
 difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
+  - "kubernetes-imagepullsecrets-guide"
+  - "kubernetes-docker-registry-secret"
   - "kubernetes-imagepullbackoff-troubleshooting"
   - "quay-robot-account-kubernetes"
   - "copy-nim-image-internal-quay-registry"

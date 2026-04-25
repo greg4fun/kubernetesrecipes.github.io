@@ -14,6 +14,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
+  - "kubernetes-enterprise-secret-rotation"
   - "kubernetes-secret-rotation-enterprise"
   - "kubernetes-secrets-management"
   - "cert-manager-letsencrypt-kubernetes"

@@ -13,6 +13,9 @@ tags:
   - "inference"
   - "multi-tenant"
 relatedRecipes:
+  - "kubernetes-route-management-openshift-ingress"
+  - "kubernetes-ingress-path-routing"
+  - "kubernetes-letsencrypt-ingress-setup"
   - "haproxy-keepalived-multi-tenant-gpu"
   - "multi-tenant-gpu-namespace-isolation"
   - "triton-autoscaling-gpu-metrics"

@@ -13,6 +13,7 @@ tags:
   - "node-affinity"
   - "performance"
 relatedRecipes:
+  - "nfsordma-persistent-volume"
   - "kubernetes-pod-security-standards"
 ---
 

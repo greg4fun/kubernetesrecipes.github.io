@@ -12,6 +12,7 @@ tags:
   - "storageclass"
   - "backup"
 relatedRecipes:
+  - "kubernetes-longhorn-distributed-storage"
   - "openclaw-workspace-gitops"
   - "openclaw-backup-restore"
   - "openclaw-kubernetes-deployment"

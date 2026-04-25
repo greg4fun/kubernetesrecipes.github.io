@@ -13,6 +13,7 @@ tags:
   - "gpu"
   - "all-reduce"
 relatedRecipes:
+  - "nccl-environment-variables-guide"
   - "kubernetes-pod-security-standards"
 ---
 

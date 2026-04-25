@@ -13,6 +13,8 @@ tags:
   - "chart-testing"
   - "ci-cd"
 relatedRecipes:
+  - "kubernetes-helm-oci-registry"
+  - "kubernetes-helm-library-charts"
   - "kubernetes-pod-security-standards"
 ---
 

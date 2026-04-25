@@ -12,6 +12,7 @@ tags:
   - "fluent-bit"
   - "kibana"
 relatedRecipes:
+  - "kubernetes-efk-logging-stack"
   - "openclaw-monitoring-prometheus"
   - "openclaw-ha-kubernetes"
   - "logging-efk-stack"

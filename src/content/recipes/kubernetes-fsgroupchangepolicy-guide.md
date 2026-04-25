@@ -13,6 +13,7 @@ tags:
   - "chown"
   - "volume"
 relatedRecipes:
+  - "kubernetes-fsgroupchangepolicy"
   - "kubernetes-pod-security-standards"
 ---
 

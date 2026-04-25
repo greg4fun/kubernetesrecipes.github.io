@@ -13,6 +13,9 @@ tags:
   - "kubectl"
   - "autoscaling"
 relatedRecipes:
+  - "kubernetes-hpa-custom-metrics-guide"
+  - "kubernetes-hpa-cpu-memory-guide"
+  - "kubernetes-hpa-max-replicas-guide"
   - "kubernetes-pod-security-standards"
 ---
 

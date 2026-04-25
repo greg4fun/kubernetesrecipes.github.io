@@ -13,6 +13,9 @@ tags:
   - "secrets"
   - "envfrom"
 relatedRecipes:
+  - "kubernetes-configmap-subpath-updates"
+  - "kubernetes-configmap-best-practices"
+  - "kubernetes-envfrom-configmapref"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

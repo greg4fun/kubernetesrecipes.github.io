@@ -13,6 +13,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "45 minutes"
 relatedRecipes:
+  - "kubernetes-argocd-sync-waves"
   - "argocd-gitops"
   - "flux-gitops"
   - "kubernetes-ci-cd-pipeline"

@@ -14,6 +14,7 @@ tags:
   - "format"
   - "syntax"
 relatedRecipes:
+  - "kubernetes-resource-management-limits-cpu-memory"
   - "kubernetes-pod-security-standards"
 ---
 

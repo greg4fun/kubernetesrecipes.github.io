@@ -13,6 +13,7 @@ tags:
   - "encryption"
   - "gitops"
 relatedRecipes:
+  - "kubernetes-secrets-best-practices"
   - "kubernetes-secrets-management-external"
   - "argocd-gitops-kubernetes"
 ---

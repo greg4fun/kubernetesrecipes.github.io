@@ -13,6 +13,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "20 minutes"
 relatedRecipes:
+  - "kubernetes-cert-expiration-management"
   - "kubernetes-secrets-management"
   - "cilium-service-mesh-kubernetes"
   - "cert-manager-tls-automation"

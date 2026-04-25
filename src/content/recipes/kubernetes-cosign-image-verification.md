@@ -13,6 +13,7 @@ tags:
   - "image-signing"
   - "supply-chain"
 relatedRecipes:
+  - "kubernetes-enterprise-image-governance"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

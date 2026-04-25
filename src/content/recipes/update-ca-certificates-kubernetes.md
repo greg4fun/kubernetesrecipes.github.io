@@ -11,6 +11,8 @@ prerequisites:
   - "Access to control plane nodes (SSH or console)"
   - "kubeadm installed (for kubeadm-based clusters)"
 relatedRecipes:
+  - "preemptive-cybersecurity-kubernetes"
+  - "openshift-custom-ca-registry"
   - "cert-manager-setup"
   - "tls-certificates-ingress"
   - "etcd-backup-restore"

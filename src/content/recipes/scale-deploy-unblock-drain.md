@@ -14,6 +14,12 @@ tags:
   - maintenance
   - deployments
 relatedRecipes:
+  - "oc-adm-drain-dry-run-diagnostics"
+  - "kubernetes-terminationgraceperiodseconds"
+  - "kubernetes-taint-toleration"
+  - "kubernetes-startup-probe-slow-containers"
+  - "kubernetes-request-limit-ranges"
+  - "kubernetes-release-cycle-version-support"
   - "mcp-drain-pdb-workaround"
   - "mcp-update-automation-script"
   - "openshift-node-cordon-uncordon"

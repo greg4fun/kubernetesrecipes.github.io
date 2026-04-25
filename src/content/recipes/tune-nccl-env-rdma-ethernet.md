@@ -9,6 +9,12 @@ prerequisites:
   - "NCCL workloads running in Kubernetes"
   - "Knowledge of network interfaces used by pods"
 relatedRecipes:
+  - "kubernetes-change-management-enterprise"
+  - "kubernetes-api-priority-fairness"
+  - "kubernetes-affinity-anti-affinity"
+  - "kubecon-eu-2026-book-giveaway-success"
+  - "install-kubernetes-fedora-kubeadm"
+  - "databases-kubernetes-memory-overcommit"
   - "run-nccl-tests-kubernetes"
   - "debug-nccl-timeouts-kubernetes"
   - "nccl-allreduce-benchmark-profile"

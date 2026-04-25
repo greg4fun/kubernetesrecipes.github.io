@@ -13,6 +13,7 @@ tags:
   - "debug"
   - "shell"
 relatedRecipes:
+  - "kubernetes-network-debugging-tools"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

@@ -13,6 +13,8 @@ tags:
   - "persistent-volume"
   - "dynamic-provisioning"
 relatedRecipes:
+  - "kubernetes-csi-driver-development"
+  - "kubernetes-local-persistent-volumes"
   - "kubernetes-persistent-volume-expansion"
   - "troubleshooting-pending-pvc"
 ---

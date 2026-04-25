@@ -13,6 +13,7 @@ tags:
   - "parallel"
   - "completion"
 relatedRecipes:
+  - "kubernetes-job-ttl-cleanup"
   - "kubernetes-cronjob-best-practices"
   - "kubernetes-init-container-patterns"
 ---

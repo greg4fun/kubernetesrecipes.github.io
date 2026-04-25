@@ -13,6 +13,7 @@ tags:
   - "compliance"
   - "least-privilege"
 relatedRecipes:
+  - "sovereign-air-gapped-kubernetes-clusters"
   - "kubernetes-pod-security-standards"
 ---
 

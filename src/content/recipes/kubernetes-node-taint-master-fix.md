@@ -13,6 +13,7 @@ tags:
   - "control-plane"
   - "scheduling"
 relatedRecipes:
+  - "kubernetes-pending-pod-troubleshooting"
   - "kubernetes-pod-security-standards"
 ---
 

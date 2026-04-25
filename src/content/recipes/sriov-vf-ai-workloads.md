@@ -12,6 +12,7 @@ prerequisites:
   - "Multus CNI installed"
   - "NVIDIA GPUs with GPUDirect RDMA"
 relatedRecipes:
+  - "rdma-network-qos-traffic-classes-dcqcn"
   - "sriov-nicclusterpolicy-vfs"
   - "configure-gpudirect-rdma-gpu-operator"
   - "tune-nccl-env-rdma-ethernet"

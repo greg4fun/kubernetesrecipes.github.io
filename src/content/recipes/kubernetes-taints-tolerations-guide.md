@@ -13,6 +13,8 @@ tags:
   - "scheduling"
   - "dedicated-nodes"
 relatedRecipes:
+  - "kubernetes-custom-scheduler-guide"
+  - "kubernetes-cronjob-patterns-guide"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

@@ -13,6 +13,7 @@ tags:
   - "eviction"
   - "disk-pressure"
 relatedRecipes:
+  - "kubernetes-emptydir-tmpfs-guide"
   - "kubernetes-resource-quotas-limitranges"
   - "kubernetes-persistent-volume-expansion"
 ---

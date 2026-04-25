@@ -13,6 +13,7 @@ tags:
   - "environment-variables"
   - "bulk-injection"
 relatedRecipes:
+  - "kubernetes-env-configmap-secrets"
   - "kubernetes-pod-security-standards"
 ---
 

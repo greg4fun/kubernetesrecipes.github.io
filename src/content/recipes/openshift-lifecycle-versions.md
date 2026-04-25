@@ -12,6 +12,7 @@ tags:
   - "eus"
   - "support"
 relatedRecipes:
+  - "openshift-lifecycle-versions-guide"
   - "openshift-mcp-itms-rollout"
   - "openshift-idms-install-config"
   - "openshift-itms-image-tag-mirror"

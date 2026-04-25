@@ -13,6 +13,7 @@ tags:
   - "kubeadm"
   - "renewal"
 relatedRecipes:
+  - "post-quantum-cryptography-kubernetes"
   - "kubernetes-pod-security-standards"
 ---
 

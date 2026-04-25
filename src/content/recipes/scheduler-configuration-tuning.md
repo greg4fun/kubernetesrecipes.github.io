@@ -10,6 +10,12 @@ prerequisites:
   - "Knowledge of pod affinity and taints/tolerations"
   - "Familiarity with resource requests and limits"
 relatedRecipes:
+  - "kubernetes-priorityclass-missing-pod-priority"
+  - "kubernetes-pod-preemption-priority"
+  - "kubernetes-labels-selectors"
+  - "kubernetes-labels-selectors-guide"
+  - "kubernetes-kustomize-overlays-guide"
+  - "kubernetes-kustomization-yaml-guide"
   - "pod-affinity-anti-affinity"
   - "taints-tolerations"
   - "pod-priority-preemption"

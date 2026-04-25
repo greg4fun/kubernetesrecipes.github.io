@@ -13,6 +13,7 @@ tags:
   - "autoscaling"
   - "scaling-limits"
 relatedRecipes:
+  - "kubernetes-hpa-tutorial-guide"
   - "kubernetes-pod-security-standards"
 ---
 

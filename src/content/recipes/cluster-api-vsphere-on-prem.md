@@ -13,6 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "25 minutes"
 relatedRecipes:
+  - "cluster-api-clusterclass-topology"
   - "cluster-api-infrastructure-as-code"
   - "cluster-api-aws-eks-management"
   - "kubernetes-disaster-recovery-enterprise"

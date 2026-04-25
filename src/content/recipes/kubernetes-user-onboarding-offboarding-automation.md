@@ -14,6 +14,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
+  - "kubernetes-namespace-stuck-terminating"
   - "kubernetes-rbac-guide"
   - "kubernetes-oidc-sso-enterprise"
   - "kubernetes-multi-tenancy-enterprise"

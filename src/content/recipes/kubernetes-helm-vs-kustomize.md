@@ -7,6 +7,7 @@ publishDate: "2026-04-03"
 tags: ["helm", "kustomize", "comparison", "configuration-management", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "helm-secrets-sops-management"
   - "helm-chart-development-guide"
   - "argocd-app-of-apps-helm-values"
   - "helm-chart-creation"

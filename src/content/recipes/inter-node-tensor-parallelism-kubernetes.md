@@ -13,6 +13,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "45 minutes"
 relatedRecipes:
+  - "runai-vllm-distributed-inference-multimodal"
   - "deploy-multinode-nim-models-kubernetes"
   - "nvidia-dynamo-distributed-inference-kubernetes"
   - "distributed-inference-runai-kubernetes"

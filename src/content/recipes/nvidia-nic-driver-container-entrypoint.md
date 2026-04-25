@@ -15,6 +15,7 @@ tags:
   - "sriov"
   - "rdma"
 relatedRecipes:
+  - "kubernetes-gpu-operator-advanced-config"
   - "doca-driver-openshift-dtk"
   - "mofed-doca-driver-building-openshift"
   - "gpu-operator-mofed-driver"

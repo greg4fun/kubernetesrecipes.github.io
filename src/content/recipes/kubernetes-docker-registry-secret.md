@@ -13,6 +13,7 @@ tags:
   - "authentication"
   - "kubectl"
 relatedRecipes:
+  - "kubernetes-imagepullsecrets-private-registry"
   - "kubernetes-pod-security-standards"
 ---
 

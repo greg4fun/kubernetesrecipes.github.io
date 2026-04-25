@@ -6,6 +6,12 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["snapshots", "backup", "storage", "pvc", "disaster-recovery"]
 relatedRecipes:
+  - "kubernetes-rook-ceph-guide"
+  - "kubernetes-persistentvolumeclaimspec"
+  - "kubernetes-etcd-maintenance-operations"
+  - "kubernetes-ephemeral-volumes-generic"
+  - "kubernetes-csi-snapshots-restore"
+  - "k8s-io-benchmark-cli-fio-hammerdb"
   - "statefulset-mysql"
   - "cnpg-disaster-recovery"
   - "enable-gpudirect-storage-openshift"

@@ -13,6 +13,10 @@ tags:
   - "registry"
   - "harbor"
 relatedRecipes:
+  - "kubernetes-helm-vs-kustomize"
+  - "helm-hooks-lifecycle-guide"
+  - "kubernetes-helm-library-charts"
+  - "kubernetes-helm-chart-testing"
   - "kubernetes-pod-security-standards"
 ---
 

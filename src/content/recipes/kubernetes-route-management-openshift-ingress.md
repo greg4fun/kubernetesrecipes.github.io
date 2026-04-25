@@ -14,6 +14,8 @@ tags:
 difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
+  - "kubernetes-letsencrypt-ingress-setup"
+  - "kubernetes-gateway-api-httproute"
   - "kubernetes-gateway-api"
   - "kubernetes-ingress-controller"
   - "nginx-ingress-configuration"

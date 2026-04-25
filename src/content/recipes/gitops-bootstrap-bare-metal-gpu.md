@@ -13,6 +13,7 @@ tags:
   - "air-gap"
   - "kustomize"
 relatedRecipes:
+  - "kubernetes-argocd-sync-waves"
   - "argocd-app-of-apps-pattern"
   - "argocd-sync-waves-ordering"
   - "airgapped-openshift-quay-mirror"

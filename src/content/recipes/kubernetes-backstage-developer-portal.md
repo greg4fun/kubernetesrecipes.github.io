@@ -13,6 +13,7 @@ tags:
   - "platform-engineering"
   - "catalog"
 relatedRecipes:
+  - "platform-engineering-internal-developer-platform-kubernetes"
   - "kubernetes-pod-security-standards"
 ---
 

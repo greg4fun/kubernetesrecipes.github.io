@@ -13,6 +13,9 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
+  - "kubernetes-thanos-ha-prometheus"
+  - "kubernetes-tempo-tracing-guide"
+  - "kubernetes-grafana-dashboards-guide"
   - "grafana-kubernetes-dashboards"
   - "grafana-dashboard-6417-node-exporter"
   - "prometheus-monitoring-setup"

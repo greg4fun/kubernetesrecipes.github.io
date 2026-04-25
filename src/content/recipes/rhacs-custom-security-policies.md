@@ -13,6 +13,8 @@ tags:
   - "policy"
   - "compliance"
 relatedRecipes:
+  - "kubernetes-opa-gatekeeper-policies"
+  - "kubernetes-rbac-audit-guide"
   - "openshift-acs-kubernetes"
   - "container-security-scanning"
   - "networkpolicy-deny-default-gpu"

@@ -13,6 +13,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
+  - "ai-ml-security-compliance-kubernetes"
   - "kubernetes-secrets-management"
   - "pod-security-context"
   - "falco-runtime-security"

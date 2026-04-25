@@ -13,6 +13,7 @@ tags:
 difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
+  - "kubernetes-resource-format-syntax"
   - "kubernetes-resource-requests-limits"
   - "resource-limits-requests"
   - "kubernetes-resource-optimization"

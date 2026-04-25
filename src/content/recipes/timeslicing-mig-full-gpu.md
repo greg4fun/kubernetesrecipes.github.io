@@ -12,6 +12,7 @@ tags:
   - "multi-tenant"
   - "scheduling"
 relatedRecipes:
+  - "kubernetes-node-taint-master-fix"
   - "kai-scheduler-gpu-sharing"
   - "resourcequota-limitrange-gpu"
   - "priorityclasses-gpu-workloads"

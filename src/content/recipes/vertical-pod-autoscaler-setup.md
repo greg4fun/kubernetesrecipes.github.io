@@ -13,6 +13,11 @@ tags:
   - "installation"
   - "setup"
 relatedRecipes:
+  - "virtual-kubelet-serverless-scaling"
+  - "kubernetes-vertical-pod-autoscaler-guide"
+  - "kubernetes-multidimensional-pod-autoscaler"
+  - "kubernetes-hpa-custom-metrics-prometheus"
+  - "kubernetes-hpa-container-resource-metrics"
   - "kubernetes-pod-security-standards"
 ---
 

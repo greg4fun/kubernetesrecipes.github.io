@@ -13,6 +13,8 @@ tags:
 difficulty: "advanced"
 timeToComplete: "50 minutes"
 relatedRecipes:
+  - "kubernetes-multi-cluster-service-mesh"
+  - "kubernetes-istio-traffic-management"
   - "network-policies"
   - "kubernetes-load-balancing"
   - "service-mesh-sidecar-troubleshooting"

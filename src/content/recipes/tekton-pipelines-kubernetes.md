@@ -7,6 +7,10 @@ publishDate: "2026-04-07"
 tags: ["tekton", "ci-cd", "pipeline", "cloud-native", "automation"]
 author: "Luca Berton"
 relatedRecipes:
+  - "wasm-workloads-kubernetes"
+  - "wasm-wasi-containerd-kubernetes"
+  - "wasm-serverless-functions-kubernetes"
+  - "wasm-runtime-kubernetes"
   - "argo-workflows-kubernetes"
   - "falco-runtime-security"
 ---

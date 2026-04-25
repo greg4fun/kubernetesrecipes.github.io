@@ -13,6 +13,7 @@ tags:
   - "firewall"
   - "zero-trust"
 relatedRecipes:
+  - "rhacs-network-segmentation"
   - "kubernetes-pod-security-standards"
 ---
 

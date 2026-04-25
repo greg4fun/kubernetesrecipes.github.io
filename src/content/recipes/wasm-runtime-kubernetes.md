@@ -7,6 +7,12 @@ publishDate: "2026-04-07"
 tags: ["wasm", "spinkube", "spin", "webassembly", "serverless"]
 author: "Luca Berton"
 relatedRecipes:
+  - "kubernetes-zero-downtime-deployment"
+  - "kubernetes-windows-containers"
+  - "kubernetes-statefulset-management"
+  - "kubernetes-statefulset-headless-service"
+  - "kubernetes-rolling-update"
+  - "kubernetes-pod-disruption-budget"
   - "distributed-fio-kubernetes-openshift"
   - "kubeflow-operator-platform"
   - "k8s-fio-config-profiles-openshift"

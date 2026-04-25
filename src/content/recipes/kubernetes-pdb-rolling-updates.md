@@ -13,6 +13,7 @@ tags:
   - "disruption-budget"
   - "availability"
 relatedRecipes:
+  - "kubernetes-pdb-best-practices"
   - "kubernetes-pod-security-standards"
 ---
 

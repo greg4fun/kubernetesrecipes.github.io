@@ -13,6 +13,8 @@ tags:
 difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
+  - "kubernetes-network-observability-cilium-hubble"
+  - "kubernetes-cni-comparison-guide"
   - "linkerd-service-mesh"
   - "istio-traffic-management"
   - "kubernetes-networkpolicy-default-deny"

@@ -13,6 +13,7 @@ tags:
   - "troubleshooting"
   - "resources"
 relatedRecipes:
+  - "kubernetes-rbac-troubleshooting"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

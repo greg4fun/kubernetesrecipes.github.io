@@ -13,6 +13,7 @@ tags:
   - "finalizers"
   - "stuck"
 relatedRecipes:
+  - "multi-tenant-gpu-namespace-isolation"
   - "kubernetes-pod-security-standards"
 ---
 

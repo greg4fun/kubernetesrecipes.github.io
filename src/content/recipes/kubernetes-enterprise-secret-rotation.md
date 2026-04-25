@@ -13,6 +13,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "40 minutes"
 relatedRecipes:
+  - "kubernetes-secret-key-rotation-automation"
   - "kubernetes-secrets-management-guide"
   - "kubernetes-oidc-enterprise-sso"
   - "kubernetes-audit-logging-compliance"

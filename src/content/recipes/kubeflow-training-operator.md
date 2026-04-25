@@ -12,6 +12,7 @@ tags:
   - "pytorch"
   - "gpu"
 relatedRecipes:
+  - "kubernetes-kubeflow-pytorchjob"
   - "kubeflow-distributed-training"
   - "mpi-operator-kubernetes"
   - "multi-node-distributed-training"

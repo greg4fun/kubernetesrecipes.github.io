@@ -13,6 +13,9 @@ tags:
   - "alertmanager"
   - "monitoring"
 relatedRecipes:
+  - "kubernetes-metrics-server-setup"
+  - "kubernetes-alertmanager-routing-silences"
+  - "kubernetes-thanos-ha-prometheus"
   - "prometheus-monitoring-kubernetes"
   - "kubernetes-ai-workload-monitoring"
 ---

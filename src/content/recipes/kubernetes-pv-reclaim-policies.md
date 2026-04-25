@@ -13,6 +13,7 @@ tags:
   - "storage"
   - "data-recovery"
 relatedRecipes:
+  - "kubernetes-storage-classes-provisioners"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

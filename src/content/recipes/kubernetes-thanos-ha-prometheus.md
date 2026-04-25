@@ -13,6 +13,7 @@ tags:
   - "high-availability"
   - "long-term-storage"
 relatedRecipes:
+  - "kubernetes-prometheus-alerting-rules"
   - "kubernetes-pod-security-standards"
 ---
 

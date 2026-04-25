@@ -7,6 +7,12 @@ publishDate: "2026-04-07"
 tags: ["wasm", "serverless", "keda", "functions", "scale-to-zero"]
 author: "Luca Berton"
 relatedRecipes:
+  - "kubernetes-native-sidecar-containers-guide"
+  - "kubernetes-multi-cluster-management"
+  - "kubernetes-local-development"
+  - "kubernetes-kind-local-development"
+  - "kubernetes-job-cronjob-guide"
+  - "kubernetes-graceful-shutdown"
   - "distributed-fio-kubernetes-openshift"
   - "kubeflow-operator-platform"
   - "k8s-fio-config-profiles-openshift"

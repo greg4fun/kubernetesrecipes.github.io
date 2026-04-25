@@ -13,6 +13,7 @@ tags:
   - "http-get"
   - "tcp-socket"
 relatedRecipes:
+  - "kubernetes-readiness-liveness-startup"
   - "kubernetes-pod-security-standards"
 ---
 

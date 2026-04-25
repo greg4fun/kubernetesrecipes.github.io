@@ -13,6 +13,7 @@ tags:
   - "tls"
   - "cert-manager"
 relatedRecipes:
+  - "nodeport-raw-vs-https-ingress"
   - "kubernetes-pod-security-standards"
 ---
 

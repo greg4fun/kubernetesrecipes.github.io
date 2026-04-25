@@ -13,6 +13,7 @@ tags:
   - "authentication"
   - "docker"
 relatedRecipes:
+  - "kubernetes-imagepullsecrets-private-registry"
   - "kubernetes-pod-security-standards"
 ---
 

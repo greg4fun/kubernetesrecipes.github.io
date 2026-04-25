@@ -13,6 +13,7 @@ tags:
   - "grafana"
   - "traceql"
 relatedRecipes:
+  - "kubernetes-jaeger-tracing-guide"
   - "kubernetes-pod-security-standards"
 ---
 

@@ -13,6 +13,7 @@ tags:
   - "progressive-delivery"
   - "analysis"
 relatedRecipes:
+  - "gpu-operator-upgrade-canary"
   - "kubernetes-pod-security-standards"
 ---
 

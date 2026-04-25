@@ -13,6 +13,7 @@ tags:
   - "custom-config"
   - "forwarding"
 relatedRecipes:
+  - "kubernetes-horizontal-dns-autoscaling"
   - "kubernetes-pod-security-standards"
 ---
 

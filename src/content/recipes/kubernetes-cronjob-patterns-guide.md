@@ -13,6 +13,7 @@ tags:
   - "batch"
   - "concurrency"
 relatedRecipes:
+  - "kubernetes-job-ttl-cleanup"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

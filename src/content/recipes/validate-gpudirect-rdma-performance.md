@@ -11,6 +11,11 @@ prerequisites:
   - "Two GPU nodes with Mellanox ConnectX NICs"
   - "Secondary RDMA network configured"
 relatedRecipes:
+  - "pod-hostnetwork-port-mapping"
+  - "kubernetes-loadbalancer"
+  - "kubernetes-gateway-api-grpc-routes"
+  - "kubernetes-endpoint-slices"
+  - "kubernetes-dnspolicy-clusterfirstwithhostnet"
   - "nfsordma-troubleshooting-performance"
   - "configure-gpudirect-rdma-gpu-operator"
   - "switch-gpudirect-rdma-dma-buf"

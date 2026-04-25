@@ -13,6 +13,7 @@ tags:
   - "continuous-delivery"
   - "helm"
 relatedRecipes:
+  - "kubernetes-flux-sources-guide"
   - "argocd-gitops-kubernetes"
   - "kubernetes-kustomize-advanced-patterns"
 ---

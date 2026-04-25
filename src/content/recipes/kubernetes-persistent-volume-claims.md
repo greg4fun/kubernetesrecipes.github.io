@@ -13,6 +13,7 @@ tags:
   - "storage"
   - "access-modes"
 relatedRecipes:
+  - "kubernetes-pv-reclaim-policies"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

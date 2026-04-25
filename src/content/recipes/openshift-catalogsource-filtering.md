@@ -11,6 +11,7 @@ prerequisites:
   - "opm CLI installed"
   - "Source catalog image available"
 relatedRecipes:
+  - "kubernetes-security-checklist-2026"
   - "openshift-catalogsource-custom-operator"
   - "openshift-cluster-wide-pull-secret"
   - "kyverno-policy-management"

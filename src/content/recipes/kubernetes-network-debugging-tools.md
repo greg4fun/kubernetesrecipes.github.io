@@ -14,6 +14,8 @@ tags:
   - "conntrack"
   - "dns"
 relatedRecipes:
+  - "kubernetes-kubectl-exec-guide"
+  - "kubernetes-dns-debugging-guide"
   - "kubernetes-debug-container-ephemeral"
   - "kubernetes-networkpolicy-zero-trust"
 ---

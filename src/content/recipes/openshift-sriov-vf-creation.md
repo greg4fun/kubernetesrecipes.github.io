@@ -11,6 +11,7 @@ prerequisites:
   - "Worker nodes with SR-IOV-capable NICs"
   - "oc CLI access"
 relatedRecipes:
+  - "nmstate-nmstatectl-node-network-guide"
   - "enable-nic-feature-discovery"
   - "identify-mellanox-nic-models"
   - "validate-sriov-on-multiple-nodes"

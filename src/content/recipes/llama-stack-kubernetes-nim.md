@@ -14,6 +14,7 @@ tags:
   - "agents"
   - "gpu"
 relatedRecipes:
+  - "llama-70b-model-size-gpu-requirements"
   - "nvidia-nim-microservices"
   - "deploy-llama2-70b-kubernetes"
   - "triton-vllm-kubernetes"

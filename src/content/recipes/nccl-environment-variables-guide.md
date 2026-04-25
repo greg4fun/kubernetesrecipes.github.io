@@ -13,6 +13,7 @@ tags:
   - "gpu"
   - "infiniband"
 relatedRecipes:
+  - "nccl-test-benchmark-kubernetes"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

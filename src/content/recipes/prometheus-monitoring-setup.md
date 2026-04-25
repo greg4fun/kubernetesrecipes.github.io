@@ -6,6 +6,8 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 tags: ["prometheus", "monitoring", "metrics", "grafana", "alerting"]
 relatedRecipes:
+  - "kubernetes-opentelemetry-auto-instrumentation"
+  - "kubernetes-continuous-profiling-pyroscope"
   - "grafana-kubernetes-dashboards"
   - "openclaw-monitoring-prometheus"
   - "jaeger-distributed-tracing"

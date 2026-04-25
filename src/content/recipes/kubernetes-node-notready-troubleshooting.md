@@ -13,6 +13,7 @@ tags:
   - "troubleshooting"
   - "cluster-health"
 relatedRecipes:
+  - "kubernetes-rbac-troubleshooting"
   - "kubernetes-pod-security-standards"
 ---
 

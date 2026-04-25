@@ -7,6 +7,11 @@ publishDate: "2026-04-05"
 tags: ["virtual-kubelet", "serverless", "burst-scaling", "fargate", "aci"]
 author: "Luca Berton"
 relatedRecipes:
+  - "kubernetes-hpa-behavior-scaling-policies"
+  - "kubernetes-horizontal-pod-autoscaler-v2"
+  - "kubernetes-enterprise-capacity-planning"
+  - "kubernetes-custom-metrics-prometheus"
+  - "kubernetes-cluster-autoscaler-configuration"
   - "kubernetes-cost-optimization-strategies"
   - "openclaw-resource-limits-tuning"
   - "hpa-custom-metrics"

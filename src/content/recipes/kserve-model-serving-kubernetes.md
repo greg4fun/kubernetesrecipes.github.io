@@ -14,6 +14,7 @@ tags:
   - "serverless"
   - "modelmesh"
 relatedRecipes:
+  - "modelmesh-multi-model-serving-kubernetes"
   - "kubeflow-ml-platform-kubernetes"
   - "knative-serving-nim-inference-openshift"
   - "kubernetes-canary-deployment-flagger"

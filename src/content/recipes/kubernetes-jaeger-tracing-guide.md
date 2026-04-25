@@ -13,6 +13,7 @@ tags:
   - "distributed-tracing"
   - "observability"
 relatedRecipes:
+  - "kubernetes-opentelemetry-collector"
   - "kubernetes-pod-security-standards"
 ---
 

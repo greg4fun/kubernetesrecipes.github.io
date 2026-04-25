@@ -14,6 +14,8 @@ tags:
   - "linkerd"
   - "federation"
 relatedRecipes:
+  - "kubernetes-enterprise-service-mesh-mtls"
+  - "kubernetes-multicluster-management-guide"
   - "kubernetes-service-mesh-comparison"
   - "kubernetes-multicluster-management"
 ---

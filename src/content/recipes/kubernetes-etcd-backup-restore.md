@@ -13,6 +13,7 @@ tags:
   - "restore"
   - "disaster-recovery"
 relatedRecipes:
+  - "kubernetes-etcd-performance-tuning"
   - "kubernetes-disaster-recovery-enterprise"
   - "kubernetes-cluster-upgrade-strategies"
 ---

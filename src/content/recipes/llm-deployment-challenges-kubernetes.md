@@ -14,6 +14,8 @@ tags:
   - "inference"
   - "optimization"
 relatedRecipes:
+  - "kubernetes-ai-inference-optimization"
+  - "katib-hyperparameter-tuning-kubernetes"
   - "deploy-multinode-nim-models-kubernetes"
   - "gpu-sharing-mig-timeslicing-kubernetes"
   - "kubernetes-image-pull-optimization"

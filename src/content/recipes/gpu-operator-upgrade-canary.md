@@ -12,6 +12,7 @@ tags:
   - "openshift"
   - "rollback"
 relatedRecipes:
+  - "kubernetes-argo-rollouts-guide"
   - "debug-crashloopbackoff"
   - "liveness-readiness-probes"
   - "gpu-upgrade-version-matrix"

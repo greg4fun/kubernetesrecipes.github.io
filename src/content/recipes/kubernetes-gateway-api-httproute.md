@@ -13,6 +13,7 @@ tags:
   - "routing"
   - "traffic-splitting"
 relatedRecipes:
+  - "kubernetes-topology-aware-routing"
   - "kubernetes-pod-security-standards"
 ---
 

@@ -12,6 +12,8 @@ tags:
   - "nfs"
   - "storage"
 relatedRecipes:
+  - "kubernetes-nfs-provisioner-guide"
+  - "kubernetes-local-persistent-volumes"
   - "model-storage-hostpath-pvc"
   - "nfsordma-dedicated-nic"
   - "nfsordma-worker-node-setup"

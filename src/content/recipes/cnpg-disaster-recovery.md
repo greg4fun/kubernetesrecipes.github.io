@@ -12,6 +12,7 @@ tags:
   - "replication"
   - "backup"
 relatedRecipes:
+  - "kubernetes-longhorn-distributed-storage"
   - "openclaw-persistent-storage"
   - "dynamic-volume-provisioning"
   - "nfsordma-persistent-volume"

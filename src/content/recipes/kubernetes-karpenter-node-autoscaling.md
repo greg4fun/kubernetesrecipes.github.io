@@ -13,6 +13,7 @@ tags:
   - "cost-optimization"
   - "aws"
 relatedRecipes:
+  - "kubernetes-cluster-autoscaler-guide"
   - "kubernetes-pod-security-standards"
 ---
 

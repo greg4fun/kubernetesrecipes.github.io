@@ -13,6 +13,9 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "15 minutes"
 relatedRecipes:
+  - "kubectl-create-secret-docker-registry"
+  - "kubernetes-imagepullsecrets-guide"
+  - "kubernetes-docker-registry-secret"
   - "kubernetes-imagepullbackoff-troubleshooting"
   - "kubernetes-service-accounts-tokens"
   - "kubernetes-secrets-management-guide"

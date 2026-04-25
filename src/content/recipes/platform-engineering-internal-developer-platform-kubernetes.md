@@ -13,6 +13,9 @@ tags:
 difficulty: "advanced"
 timeToComplete: "30 minutes"
 relatedRecipes:
+  - "kubernetes-day-2-operations-leverage"
+  - "data-monetization-platform-kubernetes"
+  - "kubernetes-backstage-developer-portal"
   - "helm-sprig-cat-function"
   - "backstage-kubernetes-developer-portal"
   - "crossplane-kubernetes-infrastructure"

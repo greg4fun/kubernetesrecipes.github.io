@@ -14,6 +14,7 @@ tags:
   - "lets-encrypt"
   - "dns-challenge"
 relatedRecipes:
+  - "kubernetes-cert-expiration-management"
   - "kubernetes-ingress-tls-cert-manager"
   - "kubernetes-gateway-api-guide"
 ---

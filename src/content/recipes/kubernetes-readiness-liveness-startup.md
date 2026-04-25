@@ -14,6 +14,7 @@ tags:
   - "startup"
   - "health-check"
 relatedRecipes:
+  - "kubernetes-readiness-probe-guide"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

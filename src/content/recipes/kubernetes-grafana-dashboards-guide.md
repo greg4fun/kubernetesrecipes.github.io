@@ -13,6 +13,8 @@ tags:
   - "monitoring"
   - "prometheus"
 relatedRecipes:
+  - "grafana-dashboard-6417-kubernetes"
+  - "kubernetes-pod-resource-monitoring-grafana"
   - "kubernetes-pod-security-standards"
 ---
 

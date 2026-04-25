@@ -13,6 +13,8 @@ tags:
   - "prometheus-adapter"
   - "autoscaling"
 relatedRecipes:
+  - "kubernetes-hpa-tutorial-guide"
+  - "kubernetes-hpa-max-replicas-guide"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

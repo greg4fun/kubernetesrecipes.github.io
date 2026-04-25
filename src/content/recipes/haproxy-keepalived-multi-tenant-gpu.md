@@ -13,6 +13,7 @@ tags:
   - "ingress"
   - "load-balancer"
 relatedRecipes:
+  - "kubernetes-metallb-bare-metal-lb"
   - "multi-tenant-gpu-namespace-isolation"
   - "gpu-tenant-bootstrap-bundle"
   - "gpu-tenant-slo-observability"

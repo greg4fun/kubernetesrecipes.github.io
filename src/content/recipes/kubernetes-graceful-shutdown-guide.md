@@ -13,6 +13,7 @@ tags:
   - "sigterm"
   - "rolling-update"
 relatedRecipes:
+  - "kubernetes-terminationgraceperiod"
   - "kubernetes-rolling-update-strategies"
   - "kubernetes-pod-disruption-budget-strategies"
 ---

@@ -7,6 +7,13 @@ publishDate: "2026-04-02"
 tags: ["wasm", "webassembly", "spinkube", "containerd", "edge", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "hugo-nginx-static-site-k3s"
+  - "gitlab-runner-helm-kubernetes-executor"
+  - "gitea-postgresql-valkey-k3s"
+  - "gitea-actions-runner-quay-push"
+  - "full-gitops-pipeline-k3s"
+  - "cloudnativepg-postgresql-kubernetes"
+  - "build-kubernetes-operator-docker-testing"
   - "openshift-crun-runc-runtime-differences"
   - "cluster-autoscaler"
 ---

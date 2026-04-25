@@ -13,6 +13,7 @@ tags:
   - "permissions"
   - "authorization"
 relatedRecipes:
+  - "kubernetes-node-notready-troubleshooting"
   - "kubernetes-pod-security-standards"
 ---
 

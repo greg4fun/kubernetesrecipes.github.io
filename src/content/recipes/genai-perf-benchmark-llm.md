@@ -13,6 +13,7 @@ tags:
   - "nvidia"
   - "latency"
 relatedRecipes:
+  - "genai-perf-benchmark-kubernetes"
   - "aiperf-benchmark-llm-kubernetes"
   - "triton-vllm-kubernetes"
   - "triton-tensorrt-llm-kubernetes"

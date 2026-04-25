@@ -13,6 +13,7 @@ tags:
   - "openshift"
   - "rbac"
 relatedRecipes:
+  - "kubernetes-namespace-stuck-terminating"
   - "gpu-tenant-bootstrap-bundle"
   - "networkpolicy-deny-default-gpu"
   - "resourcequota-limitrange-gpu"

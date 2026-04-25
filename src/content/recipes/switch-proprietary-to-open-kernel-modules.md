@@ -11,6 +11,11 @@ prerequisites:
   - "Turing architecture or newer GPU"
   - "Maintenance window for node reboots"
 relatedRecipes:
+  - "kubernetes-image-pull-policy-always-never"
+  - "kubernetes-finalizers-explained"
+  - "kubernetes-crossplane-infrastructure"
+  - "kubernetes-configmap"
+  - "kubernetes-configmap-from-file"
   - "selinux-scc-gpu-operator-openshift"
   - "configure-clusterpolicy-kernel-module-type"
   - "enable-gpudirect-storage-openshift"

@@ -13,6 +13,7 @@ tags:
   - "best-practices"
   - "external-secrets"
 relatedRecipes:
+  - "kubernetes-sealed-secrets-management"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

@@ -14,6 +14,7 @@ tags:
   - "patches"
   - "gitops"
 relatedRecipes:
+  - "kustomize-vs-helm-comparison"
   - "argocd-gitops-kubernetes"
   - "kubernetes-configmap-reload-patterns"
 ---

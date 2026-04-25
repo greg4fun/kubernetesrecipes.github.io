@@ -12,6 +12,8 @@ tags:
   - "security"
   - "namespaces"
 relatedRecipes:
+  - "kubernetes-multitenancy-namespaces"
+  - "kubernetes-network-policy-recipes"
   - "openclaw-networkpolicy-security"
   - "openclaw-secrets-management"
   - "openclaw-multi-agent-kubernetes"

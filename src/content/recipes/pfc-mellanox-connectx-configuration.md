@@ -16,6 +16,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
+  - "ets-pfc-dscp-trust-mellanox-quickstart"
   - "pfc-nmstate-roce-lossless-kubernetes"
   - "verify-nccl-rdma-traffic-debug"
   - "infiniband-ethernet-ai-kubernetes"

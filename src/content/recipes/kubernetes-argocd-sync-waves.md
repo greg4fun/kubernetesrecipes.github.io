@@ -13,6 +13,7 @@ tags:
   - "hooks"
   - "ordering"
 relatedRecipes:
+  - "kubernetes-enterprise-gitops-fleet"
   - "kubernetes-pod-security-standards"
 ---
 

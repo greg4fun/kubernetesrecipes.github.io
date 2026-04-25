@@ -13,6 +13,9 @@ tags:
   - "autoscaling"
   - "node-local-dns"
 relatedRecipes:
+  - "kubernetes-dns-policy-configuration"
+  - "kubernetes-service-dns-discovery"
+  - "kubernetes-coredns-custom-config"
   - "kubernetes-coredns-customization-guide"
   - "kubernetes-hpa-autoscaling"
 ---

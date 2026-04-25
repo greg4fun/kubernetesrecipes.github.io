@@ -13,6 +13,8 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "10 minutes"
 relatedRecipes:
+  - "kubernetes-service-dns-discovery"
+  - "kubernetes-coredns-custom-config"
   - "kubernetes-networkpolicy-default-deny"
   - "coredns-custom-dns-configuration"
   - "kubernetes-service-discovery"

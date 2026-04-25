@@ -10,6 +10,7 @@ prerequisites:
   - "Access to S3-compatible object storage"
   - "Knowledge of Kubernetes resource types"
 relatedRecipes:
+  - "kubernetes-rook-ceph-storage"
   - "etcd-backup-restore"
   - "volume-snapshots"
   - "persistent-volumes-claims"

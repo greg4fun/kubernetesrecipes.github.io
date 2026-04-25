@@ -14,6 +14,7 @@ tags:
   - "performance"
   - "podman"
 relatedRecipes:
+  - "kubernetes-etcd-performance-tuning"
   - "kubernetes-container-runtime-comparison"
   - "kubernetes-runtimeclass"
 ---

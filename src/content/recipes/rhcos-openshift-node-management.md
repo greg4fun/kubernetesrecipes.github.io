@@ -14,6 +14,8 @@ tags:
   - "mco"
   - "ostree"
 relatedRecipes:
+  - "openshift-operatorhub-disable-sources"
+  - "openclaw-multi-model-providers-kubernetes"
   - "itms-registries-conf-machineconfig"
   - "openshift-mcp-itms-rollout"
   - "doca-driver-openshift-dtk"

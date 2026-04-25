@@ -13,6 +13,7 @@ tags:
   - "cloud"
   - "cost-optimization"
 relatedRecipes:
+  - "kubernetes-karpenter-node-autoscaling"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

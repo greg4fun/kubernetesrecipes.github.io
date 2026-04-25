@@ -13,6 +13,8 @@ tags:
   - "fqdn"
   - "headless"
 relatedRecipes:
+  - "kubernetes-external-dns-automation"
+  - "kubernetes-dnspolicy-config-guide"
   - "kubernetes-pod-security-standards"
 ---
 

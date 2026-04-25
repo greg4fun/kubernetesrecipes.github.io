@@ -13,6 +13,7 @@ tags:
   - "right-sizing"
   - "resources"
 relatedRecipes:
+  - "kubernetes-vpa-recommender-guide"
   - "vertical-pod-autoscaler-kubernetes"
   - "kubernetes-resource-limits-requests"
   - "kubernetes-hpa-cpu-memory"

@@ -13,6 +13,7 @@ tags:
 difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
+  - "kubernetes-grafana-dashboards-guide"
   - "grafana-kubernetes-dashboards"
   - "prometheus-monitoring-kubernetes"
   - "kubernetes-monitoring-metrics-server"

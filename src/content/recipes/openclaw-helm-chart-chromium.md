@@ -14,6 +14,11 @@ tags:
   - browser-automation
   - sidecar
 relatedRecipes:
+  - "helm-oci-registry-management"
+  - "helm-oci-registry-charts"
+  - "helm-library-charts"
+  - "helm-hook-delete-policy"
+  - "helm-chart-testing-ci"
   - "openclaw-kubernetes-deployment"
   - "openclaw-kustomize-overlays"
   - "openclaw-security-hardening-pod"

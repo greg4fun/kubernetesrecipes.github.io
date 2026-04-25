@@ -11,6 +11,7 @@ prerequisites:
   - "Operator catalog image built (opm or file-based catalog)"
   - "Registry credentials if using private registry"
 relatedRecipes:
+  - "kubernetes-finalizers-guide"
   - "openshift-idms-install-config"
   - "openshift-itms-image-tag-mirror"
   - "openshift-cluster-wide-pull-secret"

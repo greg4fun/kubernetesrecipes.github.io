@@ -13,6 +13,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "40 minutes"
 relatedRecipes:
+  - "kubernetes-cosign-image-verification"
   - "container-security-scanning"
   - "openshift-catalogsource-filtering"
   - "kyverno-policy-management"

@@ -11,6 +11,12 @@ prerequisites:
   - "SR-IOV Network Operator installed"
   - "A working SriovNetworkNodePolicy"
 relatedRecipes:
+  - "troubleshooting-pods-devices-gpu-kubernetes"
+  - "pod-eviction-troubleshooting"
+  - "kubernetes-pod-eviction"
+  - "kubernetes-oomkilled-fix"
+  - "kubernetes-node-status-check"
+  - "kubernetes-imagepullbackoff-fix"
   - "openshift-sriov-vf-creation"
   - "configure-sriovnetwork-nv-ipam"
   - "troubleshoot-no-supported-nic-selected"

@@ -13,6 +13,7 @@ tags:
   - "availability"
   - "upgrades"
 relatedRecipes:
+  - "kubernetes-pdb-rolling-updates"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

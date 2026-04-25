@@ -13,6 +13,7 @@ tags:
   - "cleanup"
   - "cronjob"
 relatedRecipes:
+  - "kubernetes-job-completion-patterns"
   - "kubernetes-pod-security-standards"
 ---
 

@@ -13,6 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
+  - "openshift-4-21-new-features-guide"
   - "openshift-lifecycle-support-versions"
   - "kubernetes-openshift-major-minor-upgrade"
   - "kubernetes-openshift-patch-update"

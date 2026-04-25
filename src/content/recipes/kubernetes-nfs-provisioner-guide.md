@@ -13,6 +13,8 @@ tags:
   - "readwritemany"
   - "provisioner"
 relatedRecipes:
+  - "access-zones-scaleout-nas-kubernetes"
+  - "nfsordma-persistent-volume"
   - "kubernetes-pod-security-standards"
 ---
 

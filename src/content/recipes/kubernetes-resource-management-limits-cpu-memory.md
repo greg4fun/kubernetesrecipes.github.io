@@ -14,6 +14,7 @@ tags:
   - "oomkill"
   - "throttling"
 relatedRecipes:
+  - "kubernetes-resource-format-syntax"
   - "kubernetes-resource-limits-requests"
   - "vertical-pod-autoscaler-kubernetes"
 ---

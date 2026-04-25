@@ -13,6 +13,7 @@ tags:
   - "controller"
   - "custom-resource"
 relatedRecipes:
+  - "kubernetes-crd-development-guide"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---

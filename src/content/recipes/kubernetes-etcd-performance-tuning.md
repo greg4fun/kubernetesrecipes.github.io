@@ -13,6 +13,8 @@ tags:
   - "tuning"
   - "monitoring"
 relatedRecipes:
+  - "crun-vs-runc-container-runtime"
+  - "kubernetes-etcd-backup-restore"
   - "kubernetes-pod-security-standards"
 ---
 

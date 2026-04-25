@@ -13,6 +13,10 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
+  - "kubernetes-gpu-sharing-mps-mig"
+  - "kubernetes-gpu-node-provisioning"
+  - "kubernetes-ai-cost-management"
+  - "nccl-test-benchmark-kubernetes"
   - "deploy-vllm-inference-kubernetes"
   - "vllm-ascend-npu-inference-kubernetes"
   - "kubernetes-ai-gateway-inference-extension"

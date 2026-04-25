@@ -13,6 +13,7 @@ tags:
 difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
+  - "helm-sprig-add1-trim-merge-functions"
   - "helm-sprig-cat-function"
   - "helm-sprig-tostring-function"
   - "helm-sprig-join-function"

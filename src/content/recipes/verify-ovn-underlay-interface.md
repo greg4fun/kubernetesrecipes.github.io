@@ -11,6 +11,12 @@ prerequisites:
   - "Node debug access"
   - "ovs-vsctl available on host"
 relatedRecipes:
+  - "kubernetes-dns-how-it-works"
+  - "kubernetes-dns-guide"
+  - "kubernetes-cni-comparison"
+  - "kubernetes-clusterip-service"
+  - "knative-ingress-networking"
+  - "external-dns-kubernetes"
   - "check-bonding-and-interface-status"
   - "troubleshoot-no-supported-nic-selected"
   - "validate-sriov-on-multiple-nodes"

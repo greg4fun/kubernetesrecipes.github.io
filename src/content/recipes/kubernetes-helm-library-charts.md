@@ -13,6 +13,8 @@ tags:
   - "templates"
   - "reusable"
 relatedRecipes:
+  - "kubernetes-helm-oci-registry"
+  - "kubernetes-helm-chart-testing"
   - "kubernetes-pod-security-standards"
 ---
 

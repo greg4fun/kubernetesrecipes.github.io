@@ -13,6 +13,7 @@ tags:
   - "deny"
   - "allow"
 relatedRecipes:
+  - "rhacs-network-segmentation"
   - "kubernetes-pod-security-standards"
 ---
 

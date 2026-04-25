@@ -13,6 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "10 minutes"
 relatedRecipes:
+  - "kubernetes-configmap-secret-immutable"
   - "kubernetes-environment-variables"
   - "configmap-secrets-management"
   - "kubernetes-downward-api-pod-metadata"
