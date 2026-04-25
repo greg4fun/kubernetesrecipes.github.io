@@ -1,5 +1,5 @@
 ---
-title: "Kubeflow Operator: Full ML Platform on Kubernetes"
+title: "Kubeflow Operator: Full ML Platform"
 description: "Deploy the complete Kubeflow platform on Kubernetes with the Kubeflow Operator. Covers Pipelines, Notebooks, KServe, Katib, and multi-tenant ML workflows."
 category: "ai"
 difficulty: "advanced"

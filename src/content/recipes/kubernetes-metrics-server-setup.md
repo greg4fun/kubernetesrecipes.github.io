@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Metrics Server: Install and Configure"
-description: "Install and configure Kubernetes Metrics Server for kubectl top, HPA autoscaling, and resource monitoring. Troubleshoot common metrics-server errors and TLS issues."
+title: "K8s Metrics Server: Install and Configure"
+description: "Install and configure Kubernetes Metrics Server for kubectl top, HPA autoscaling, and resource monitoring. Troubleshoot common metrics-server errors and TL."
 publishDate: "2026-04-13"
 author: "Luca Berton"
 category: "observability"

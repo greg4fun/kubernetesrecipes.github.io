@@ -1,5 +1,5 @@
 ---
-title: "How to Template Helm Values with Sprig Functions"
+title: "Template Helm Values with Sprig Functions"
 description: "Master Helm templating with Sprig functions. Learn string manipulation, conditionals, loops, and advanced templating patterns for dynamic charts."
 category: "helm"
 difficulty: "advanced"

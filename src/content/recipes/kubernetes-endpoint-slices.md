@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes EndpointSlices Explained"
-description: "networking"
+description: "Production guide for kubernetes endpointslices explained. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "networking"
 difficulty: "Understand Kubernetes EndpointSlices for scalable service endpoint management. How they improve on Endpoints objects for large clusters with thousands of pods."
 publishDate: "2026-04-05"

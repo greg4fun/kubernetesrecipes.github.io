@@ -1,6 +1,6 @@
 ---
 title: "Kairos k3s on Hetzner CPX42"
-description: "Deploy an immutable Kairos-based k3s cluster on Hetzner Cloud CPX42. Automated provisioning with cloud-init, immutable OS upgrades, and production-ready single-node setup."
+description: "Deploy an immutable Kairos-based k3s cluster on Hetzner Cloud CPX42. Automated provisioning with cloud-init, immutable OS upgrades."
 category: "deployments"
 publishDate: "2026-04-20"
 author: "Luca Berton"

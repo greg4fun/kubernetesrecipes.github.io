@@ -1,5 +1,5 @@
 ---
-title: "How to Expose Services with LoadBalancer and NodePort"
+title: "Expose Services with LoadBalancer and NodePort"
 description: "Learn different ways to expose Kubernetes services externally using LoadBalancer, NodePort, and ExternalIPs. Compare options for various environments."
 category: "networking"
 difficulty: "beginner"

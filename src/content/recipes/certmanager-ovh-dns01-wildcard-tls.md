@@ -1,6 +1,6 @@
 ---
 title: "cert-manager OVH DNS-01 Wildcard TLS"
-description: "Configure cert-manager with OVH DNS-01 challenge for automated wildcard TLS certificates on k3s. Let's Encrypt production certificates with zero downtime renewal."
+description: "Configure cert-manager with OVH DNS-01 challenge for automated wildcard TLS certificates on k3s. Let's Encrypt production certificates with zero downtime r."
 category: "security"
 publishDate: "2026-04-20"
 author: "Luca Berton"

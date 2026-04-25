@@ -1,6 +1,6 @@
 ---
 title: "GPU Sharing MIG and Time-Slicing Kubernetes"
-description: "Share GPUs across multiple pods with NVIDIA MIG and time-slicing on Kubernetes. MIG profiles for A100/H100, time-slicing configuration, and when to use each approach."
+description: "Share GPUs across multiple pods with NVIDIA MIG and time-slicing on Kubernetes. MIG profiles for A100/H100, time-slicing configuration."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

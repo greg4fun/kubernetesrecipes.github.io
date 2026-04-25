@@ -1,5 +1,5 @@
 ---
-title: "How to Collect Metrics with OpenTelemetry Collector"
+title: "Collect Metrics with OpenTelemetry Collector"
 description: "Deploy OpenTelemetry Collector for unified metrics, traces, and logs collection in Kubernetes. Learn pipelines, processors, and exporters configuration."
 category: "observability"
 difficulty: "advanced"

@@ -1,6 +1,6 @@
 ---
 title: "CPU and Memory Limits Deep Dive"
-description: "Deep dive into Kubernetes CPU and memory management. CFS bandwidth throttling, OOMKill scoring, cgroup v2 behavior, memory.high vs memory.max, and why you should avoid CPU limits."
+description: "Deep dive into Kubernetes CPU and memory management. CFS bandwidth throttling, OOMKill scoring, cgroup v2 behavior, memory.high vs memory."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

@@ -1,6 +1,6 @@
 ---
 title: "Ephemeral Storage Management Guide"
-description: "Manage ephemeral storage in Kubernetes with emptyDir size limits, ephemeral-storage requests and limits, and eviction thresholds. Prevent node disk pressure from container logs and temp files."
+description: "Manage ephemeral storage in Kubernetes with emptyDir size limits, ephemeral-storage requests and limits, and eviction thresholds."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "storage"

@@ -1,5 +1,5 @@
 ---
-title: "How to Manage Kubernetes API Versions and Deprecations"
+title: "Manage K8s API Versions and Deprecations"
 description: "Handle Kubernetes API version changes and deprecations. Migrate resources to stable APIs and ensure cluster upgrade compatibility."
 category: "configuration"
 difficulty: "intermediate"

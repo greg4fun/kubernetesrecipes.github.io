@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Service Types Explained"
-description: "networking"
+description: "Production guide for kubernetes service types explained. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "networking"
 difficulty: "Compare all Kubernetes service types: ClusterIP, NodePort, LoadBalancer, ExternalName, and headless. Choose the right type for internal, external, and hybrid access."
 publishDate: "2026-04-07"

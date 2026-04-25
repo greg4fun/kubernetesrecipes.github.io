@@ -1,6 +1,6 @@
 ---
-title: "imagePullSecrets Pod Configuration"
-description: "Configure imagePullSecrets for pulling from private container registries on Kubernetes. Docker registry secrets, service account default, and namespace-wide setup."
+title: "imagePullSecrets Pod Config K8s"
+description: "Configure imagePullSecrets for pulling from private container registries on Kubernetes. Docker registry secrets, service account default."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "configuration"

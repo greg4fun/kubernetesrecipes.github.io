@@ -1,5 +1,5 @@
 ---
-title: "How to Manage Kubernetes Namespaces Effectively"
+title: "How to Manage K8s Namespaces Effectively"
 description: "Master Kubernetes namespace organization for multi-team environments. Learn resource quotas, network policies, and RBAC per namespace."
 category: "configuration"
 difficulty: "beginner"

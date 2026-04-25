@@ -1,5 +1,5 @@
 ---
-title: "Multi-Tenancy with Namespaces"
+title: "Multi-Tenancy Namespaces Kubernetes"
 description: "Implement multi-tenancy on Kubernetes with namespaces. Resource quotas, network policies, RBAC isolation, and hierarchical namespaces for team separation."
 publishDate: "2026-04-24"
 author: "Luca Berton"

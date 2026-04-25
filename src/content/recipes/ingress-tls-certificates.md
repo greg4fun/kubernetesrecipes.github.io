@@ -1,5 +1,5 @@
 ---
-title: "How to Secure Ingress with SSL/TLS Certificates"
+title: "Secure Ingress with SSL/TLS Certificates"
 description: "Configure TLS termination for Kubernetes Ingress using cert-manager and Let's Encrypt. Automate certificate issuance and renewal."
 category: "networking"
 difficulty: "intermediate"

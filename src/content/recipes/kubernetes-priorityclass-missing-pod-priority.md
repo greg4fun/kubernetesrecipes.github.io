@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes PriorityClass and Missing Pod Priority"
+title: "K8s PriorityClass and Missing Pod Priority"
 description: "Fix missing pod priority in Kubernetes. PriorityClass configuration, preemption behavior, system-critical classes, and scheduling order for GPU workloads."
 category: "configuration"
 publishDate: "2026-04-20"

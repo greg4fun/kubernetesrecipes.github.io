@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "Troubleshoot nv-ipam 'Pool Not Found' Errors in Multus"
+title: "Fix nv-ipam 'Pool Not Found' Errors in Multus"
 description: "Fix nv-ipam IPPool lookup failures in Multus by aligning SriovNetwork, NetworkAttachmentDefinition, and IPPool names and namespaces correctly."
 category: "troubleshooting"
 difficulty: "advanced"

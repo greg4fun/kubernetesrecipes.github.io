@@ -1,6 +1,6 @@
 ---
-title: "Confidential Containers with Kata on Kubernetes"
-description: "Deploy confidential containers using Kata Containers and TEEs on Kubernetes. Hardware attestation, encrypted container images, and runtime isolation with SEV-SNP and TDX."
+title: "Confidential Containers with Kata"
+description: "Deploy confidential containers using Kata Containers and TEEs on Kubernetes. Hardware attestation, encrypted container images."
 publishDate: "2026-04-13"
 author: "Luca Berton"
 category: "security"

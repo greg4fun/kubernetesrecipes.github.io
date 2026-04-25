@@ -1,6 +1,6 @@
 ---
 title: "Cilium Network Policies Kubernetes"
-description: "Advanced network policies with Cilium on Kubernetes. L7 HTTP-aware policies, DNS-based egress, identity-based security, cluster-wide policies, and network policy troubleshooting."
+description: "Advanced network policies with Cilium on Kubernetes. L7 HTTP-aware policies, DNS-based egress, identity-based security, cluster-wide policies."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"

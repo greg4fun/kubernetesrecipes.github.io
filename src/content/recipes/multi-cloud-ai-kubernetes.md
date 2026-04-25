@@ -1,6 +1,6 @@
 ---
 title: "Multi-Cloud AI Workloads Kubernetes"
-description: "Run AI workloads across multiple cloud providers with Kubernetes. GPU instance availability, spot pricing arbitrage, model portability, and federated training across AWS EKS GCP GKE and Azure AKS."
+description: "Run AI workloads across multiple cloud providers with Kubernetes. GPU instance availability, spot pricing arbitrage, model portability."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

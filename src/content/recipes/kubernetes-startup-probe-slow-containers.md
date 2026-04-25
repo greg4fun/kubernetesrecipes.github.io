@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Startup Probes for Slow Containers"
-description: "Configure Kubernetes startup probes for containers with long initialization. Separate startup from liveness checks, failureThreshold tuning, and Java/database examples."
+description: "Configure Kubernetes startup probes for containers with long initialization. Separate startup from liveness checks, failureThreshold tuning."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "configuration"

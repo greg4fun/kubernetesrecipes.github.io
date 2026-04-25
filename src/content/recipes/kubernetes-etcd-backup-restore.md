@@ -1,6 +1,6 @@
 ---
 title: "etcd Backup and Restore Kubernetes"
-description: "Back up and restore etcd for Kubernetes disaster recovery. Automated snapshots, S3 upload, point-in-time restore, and etcdctl maintenance for production clusters."
+description: "Back up and restore etcd for Kubernetes disaster recovery. Automated snapshots, S3 upload, point-in-time restore."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

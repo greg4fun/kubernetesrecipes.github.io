@@ -1,6 +1,6 @@
 ---
-title: "Crossplane Kubernetes Infrastructure Management"
-description: "Manage cloud infrastructure from Kubernetes with Crossplane. Providers, Compositions, Claims, XRDs, and GitOps-driven infrastructure as code for AWS, GCP, and Azure."
+title: "Crossplane K8s Infrastructure Management"
+description: "Manage cloud infrastructure from Kubernetes with Crossplane. Providers, Compositions, Claims, XRDs, and GitOps-driven infrastructure as code for AWS, GCP."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "deployments"

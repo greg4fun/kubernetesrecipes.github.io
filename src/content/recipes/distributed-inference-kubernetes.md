@@ -1,5 +1,5 @@
 ---
-title: "Distributed Inference on Kubernetes"
+title: "Distributed Inference Kubernetes"
 description: "Deploy distributed LLM inference with tensor parallelism across multiple GPUs and pipeline parallelism across nodes on Kubernetes."
 publishDate: "2026-02-26"
 author: "Luca Berton"

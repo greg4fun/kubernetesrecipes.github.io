@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Route and Ingress Management Guide"
-description: "Manage OpenShift Routes and Kubernetes Ingress resources. TLS termination, path-based routing, weighted traffic splitting, and migration to Gateway API with examples."
+description: "Manage OpenShift Routes and Kubernetes Ingress resources. TLS termination, path-based routing, weighted traffic splitting."
 publishDate: "2026-04-17"
 author: "Luca Berton"
 category: "networking"

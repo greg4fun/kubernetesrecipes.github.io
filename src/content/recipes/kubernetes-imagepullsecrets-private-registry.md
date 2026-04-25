@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes imagePullSecrets: Private Registry Auth"
-description: "Configure imagePullSecrets for pulling container images from private registries. Create docker-registry secrets, attach to pods and ServiceAccounts, and troubleshoot ImagePullBackOff."
+title: "K8s imagePullSecrets: Private Registry Auth"
+description: "Configure imagePullSecrets for pulling container images from private registries. Create docker-registry secrets, attach to pods and ServiceAccounts."
 publishDate: "2026-04-15"
 author: "Luca Berton"
 category: "configuration"

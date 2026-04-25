@@ -1,5 +1,5 @@
 ---
-title: "Copy NVIDIA NIM Images to Internal Quay Registry"
+title: "Copy NVIDIA NIM Images to Internal Quay Reg..."
 description: "Pull NIM container images from nvcr.io and push to an internal Quay registry. Covers authentication, tagging, air-gapped workflows, and curl token issues."
 publishDate: "2026-04-08"
 author: "Luca Berton"

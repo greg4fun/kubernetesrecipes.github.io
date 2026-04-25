@@ -1,5 +1,5 @@
 ---
-title: "Operator SDK Development Guide"
+title: "Build Operators with Operator SDK"
 description: "Build Kubernetes operators with Operator SDK. Controller reconciliation, custom resources, status subresource, leader election, and testing patterns."
 publishDate: "2026-04-24"
 author: "Luca Berton"

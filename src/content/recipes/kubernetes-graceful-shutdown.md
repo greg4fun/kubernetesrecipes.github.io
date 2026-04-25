@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Graceful Shutdown Guide"
-description: "deployments"
+description: "Production guide for kubernetes graceful shutdown guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "deployments"
 difficulty: "Implement graceful shutdown in Kubernetes pods. Handle SIGTERM, drain connections, use preStop hooks, and configure terminationGracePeriodSeconds correctly."
 publishDate: "2026-04-05"

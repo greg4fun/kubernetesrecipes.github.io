@@ -1,5 +1,5 @@
 ---
-title: "DNS Policy Configuration Guide"
+title: "DNS Policy Configuration Kubernetes"
 description: "Configure Kubernetes DNS policies: Default, ClusterFirst, ClusterFirstWithHostNet, and None. Custom resolv.conf, ndots tuning, and DNS performance."
 publishDate: "2026-04-25"
 author: "Luca Berton"

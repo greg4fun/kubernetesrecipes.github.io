@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes CronJob Scheduling Guide"
-description: "deployments"
+description: "Production guide for kubernetes cronjob scheduling guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "deployments"
 difficulty: "Schedule recurring tasks with Kubernetes CronJobs. Covers cron syntax, timezone support, concurrency policies, job history, manual triggers, and monitoring."
 publishDate: "2026-04-07"

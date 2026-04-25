@@ -1,5 +1,5 @@
 ---
-title: "Node Affinity Scheduling Guide"
+title: "Node Affinity Scheduling Kubernetes"
 description: "Configure node affinity rules for Kubernetes pod scheduling. Required vs preferred affinity, label selectors, and combining with taints and tolerations."
 publishDate: "2026-04-24"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes fsGroupChangePolicy: Fix Slow Mounts"
-description: "Configure fsGroupChangePolicy OnRootMismatch to skip recursive chown on volume mounts. Fix slow pod starts caused by large persistent volumes with millions of files."
+title: "K8s fsGroupChangePolicy: Fix Slow Mounts"
+description: "Configure fsGroupChangePolicy OnRootMismatch to skip recursive chown on volume mounts. Fix slow pod starts caused by large persistent volumes with millions."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "storage"

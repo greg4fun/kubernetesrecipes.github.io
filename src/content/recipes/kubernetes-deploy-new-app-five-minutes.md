@@ -1,6 +1,6 @@
 ---
 title: "Deploy a New App in 5 Minutes on Kubernetes"
-description: "Deploy a production-ready application in 5 minutes on an existing Kubernetes cluster. Deployment, Service, Ingress, TLS, autoscaling, and health checks in one manifest."
+description: "Deploy a production-ready application in 5 minutes on an existing Kubernetes cluster. Deployment, Service, Ingress, TLS, autoscaling."
 publishDate: "2026-04-19"
 author: "Luca Berton"
 category: "deployments"

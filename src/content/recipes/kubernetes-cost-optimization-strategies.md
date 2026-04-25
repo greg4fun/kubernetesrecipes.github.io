@@ -1,6 +1,6 @@
 ---
 title: "Cost Optimization Strategies Kubernetes"
-description: "Reduce Kubernetes cloud costs with right-sizing, spot instances, cluster autoscaler tuning, resource quotas, and idle workload detection. Practical strategies for 30-50% savings."
+description: "Reduce Kubernetes cloud costs with right-sizing, spot instances, cluster autoscaler tuning, resource quotas, and idle workload detection."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

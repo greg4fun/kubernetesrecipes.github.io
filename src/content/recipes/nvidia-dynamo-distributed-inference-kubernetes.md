@@ -1,5 +1,5 @@
 ---
-title: "NVIDIA Dynamo Distributed Inference on Kubernetes"
+title: "NVIDIA Dynamo Distributed Inference"
 description: "Deploy NVIDIA Dynamo on Kubernetes for disaggregated LLM inference. KV-aware routing, prefill/decode splitting, Grove operator, and zero-config deployment."
 publishDate: "2026-04-09"
 author: "Luca Berton"

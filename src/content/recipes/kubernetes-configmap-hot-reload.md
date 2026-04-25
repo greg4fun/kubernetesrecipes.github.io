@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes ConfigMap Hot Reload Without Restart"
-description: "Reload Kubernetes ConfigMaps without pod restarts. Volume-mounted auto-update, Reloader controller, checksum annotations, and inotify-based config watch patterns."
+title: "K8s ConfigMap Hot Reload Without Restart"
+description: "Reload Kubernetes ConfigMaps without pod restarts. Volume-mounted auto-update, Reloader controller, checksum annotations."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "configuration"

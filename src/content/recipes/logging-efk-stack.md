@@ -1,5 +1,5 @@
 ---
-title: "How to Set Up Centralized Logging with EFK Stack"
+title: "Set Up Centralized Logging with EFK Stack"
 description: "Deploy Elasticsearch, Fluentd, and Kibana for centralized Kubernetes logging. Learn to collect, parse, and visualize container logs at scale."
 category: "observability"
 difficulty: "advanced"

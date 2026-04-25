@@ -1,5 +1,5 @@
 ---
-title: "kubectl exec: Run Commands Inside Kubernetes Pods"
+title: "kubectl exec: Run Commands Inside K8s Pods"
 description: "Use kubectl exec to run commands inside Kubernetes pods. Covers interactive sessions, multi-container pods, and ephemeral container debugging."
 category: "troubleshooting"
 difficulty: "beginner"

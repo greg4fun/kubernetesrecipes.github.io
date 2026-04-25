@@ -1,6 +1,6 @@
 ---
 title: "Flux vs ArgoCD: Kubernetes GitOps Compared"
-description: "Compare Flux and ArgoCD for Kubernetes GitOps. Architecture, multi-tenancy, Helm support, UI, scalability, and when to choose each for production GitOps delivery."
+description: "Compare Flux and ArgoCD for Kubernetes GitOps. Architecture, multi-tenancy, Helm support, UI, scalability, and when to choose each for production GitOps de."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "deployments"

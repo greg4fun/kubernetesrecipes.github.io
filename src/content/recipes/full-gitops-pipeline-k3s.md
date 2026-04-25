@@ -1,6 +1,6 @@
 ---
 title: "Full GitOps Pipeline k3s to Production"
-description: "End-to-end GitOps pipeline: git push triggers Gitea Actions build, pushes to quay.io, Octopus Deploy creates release with ephemeral preview, promotes to production via ArgoCD sync."
+description: "End-to-end GitOps pipeline: git push triggers Gitea Actions build, pushes to quay.io, Octopus Deploy creates release with ephemeral preview."
 category: "deployments"
 publishDate: "2026-04-20"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Cluster Autoscaler Configuration"
-description: "Configure Kubernetes Cluster Autoscaler: scale-down delay, node group settings, priority expander, GPU scaling, and cloud provider integration for EKS, GKE, AKS."
+description: "Configure Kubernetes Cluster Autoscaler: scale-down delay, node group settings, priority expander, GPU scaling, and cloud provider integration for EKS, GKE."
 category: "autoscaling"
 publishDate: "2026-04-20"
 author: "Luca Berton"

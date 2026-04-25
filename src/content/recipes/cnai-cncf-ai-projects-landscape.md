@@ -1,6 +1,6 @@
 ---
 title: "CNCF AI Projects Landscape Kubernetes"
-description: "Navigate the CNCF AI project landscape for Kubernetes. Kubeflow, KServe, KAITO, Volcano, and emerging projects for training, serving, scheduling, and monitoring AI workloads."
+description: "Navigate the CNCF AI project landscape for Kubernetes. Kubeflow, KServe, KAITO, Volcano, and emerging projects for training, serving, scheduling."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

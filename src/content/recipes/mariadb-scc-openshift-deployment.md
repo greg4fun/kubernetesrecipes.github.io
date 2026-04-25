@@ -1,6 +1,6 @@
 ---
 title: "Deploy MariaDB on OpenShift with SCC"
-description: "Deploy MariaDB on OpenShift with proper Security Context Constraints. Configure anyuid SCC, persistent storage, custom my.cnf, and Galera clustering with correct UID/GID."
+description: "Deploy MariaDB on OpenShift with proper Security Context Constraints. Configure anyuid SCC, persistent storage, custom my."
 publishDate: "2026-04-16"
 author: "Luca Berton"
 category: "deployments"

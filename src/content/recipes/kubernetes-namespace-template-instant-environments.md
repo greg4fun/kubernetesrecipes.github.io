@@ -1,5 +1,5 @@
 ---
-title: "Namespace Templates: Instant Environments in K8s"
+title: "Namespace Templates: Instant Envs in K8s"
 description: "Create production-ready namespace templates for instant environment provisioning. One command deploys namespace, RBAC, quotas, network policies, and monitoring."
 publishDate: "2026-04-19"
 author: "Luca Berton"

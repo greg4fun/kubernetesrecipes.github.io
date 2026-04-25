@@ -1,5 +1,5 @@
 ---
-title: "How to Manage Kubernetes Finalizers and Stuck Resources"
+title: "Manage K8s Finalizers and Stuck Resources"
 description: "Understand and manage finalizers for controlled resource deletion. Handle stuck resources and implement custom cleanup logic."
 category: "troubleshooting"
 difficulty: "intermediate"

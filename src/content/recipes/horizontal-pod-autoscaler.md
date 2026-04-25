@@ -1,6 +1,6 @@
 ---
-title: "HPA in Kubernetes: Horizontal Pod Autoscaler Guide"
-description: "HPA in Kubernetes explained with YAML examples. Configure Horizontal Pod Autoscaler for CPU, memory, and custom metrics with scaling policies and VPA comparison."
+title: "HPA in K8s: Horizontal Pod Autoscaler Guide"
+description: "HPA in Kubernetes explained with YAML examples. Configure Horizontal Pod Autoscaler for CPU, memory, and custom metrics with scaling policies and VPA compa."
 category: "autoscaling"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"

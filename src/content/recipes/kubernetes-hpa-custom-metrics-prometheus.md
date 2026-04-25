@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes HPA Custom Metrics with Prometheus"
-description: "Configure Kubernetes HPA with custom Prometheus metrics. Prometheus Adapter setup, custom and external metrics, scaling on request latency, queue depth, and GPU utilization."
+description: "Configure Kubernetes HPA with custom Prometheus metrics. Prometheus Adapter setup, custom and external metrics, scaling on request latency, queue depth."
 category: "autoscaling"
 publishDate: "2026-04-20"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Let's Encrypt Ingress with cert-manager"
+title: "K8s Let's Encrypt Ingress with cert-manager"
 description: "Automate TLS certificates for Kubernetes Ingress using cert-manager and Let's Encrypt. ClusterIssuer setup, HTTP-01 and DNS-01 challenges, and auto-renewal."
 category: "security"
 publishDate: "2026-04-20"

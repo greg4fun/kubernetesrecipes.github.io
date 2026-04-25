@@ -1,6 +1,6 @@
 ---
-title: "Helm Chart Testing and CI/CD Pipeline Integration"
-description: "Test Helm charts automatically with ct (chart-testing), helm unittest, and GitHub Actions. Validate templates, lint values, and run integration tests before release."
+title: "Helm Chart Testing & CI/CD Pipeline Integra..."
+description: "Test Helm charts automatically with ct (chart-testing), helm unittest, and GitHub Actions. Validate templates, lint values."
 category: "helm"
 difficulty: "intermediate"
 publishDate: "2026-04-07"

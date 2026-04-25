@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes RuntimeClass: gVisor and Kata Containers"
+title: "K8s RuntimeClass: gVisor and Kata Containers"
 description: "Configure different container runtimes for workloads. Use gVisor, Kata Containers, or other runtimes for enhanced security and isolation."
 category: "security"
 difficulty: "advanced"

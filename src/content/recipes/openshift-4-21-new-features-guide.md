@@ -1,6 +1,6 @@
 ---
 title: "OpenShift 4.21: New Features and Upgrade Guide"
-description: "OpenShift 4.21 new features, K8s 1.34 alignment, upgrade from 4.20. Non-EUS release with latest innovations: in-place pod resize GA, DRA improvements, OLM v1 default."
+description: "OpenShift 4.21 new features, K8s 1.34 alignment, upgrade from 4.20. Non-EUS release with latest innovations: in-place pod resize GA, DRA improvements."
 publishDate: "2026-04-16"
 author: "Luca Berton"
 category: "deployments"

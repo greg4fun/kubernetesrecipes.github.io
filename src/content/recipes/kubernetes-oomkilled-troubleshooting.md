@@ -1,5 +1,5 @@
 ---
-title: "Fix OOMKilled Errors Kubernetes"
+title: "Fix OOMKilled Kubernetes Guide"
 description: "Troubleshoot and fix OOMKilled errors in Kubernetes. Memory limit tuning, Java heap sizing, memory leak detection, and VPA recommendations."
 publishDate: "2026-04-25"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
-title: "Karpenter Node Autoscaling for Kubernetes on AWS"
-description: "Deploy Karpenter for fast, flexible node autoscaling on AWS EKS. Configure NodePools, EC2NodeClasses, consolidation, and GPU provisioning with sub-minute node startup."
+title: "Karpenter Node Autoscaling for K8s on AWS"
+description: "Deploy Karpenter for fast, flexible node autoscaling on AWS EKS. Configure NodePools, EC2NodeClasses, consolidation."
 category: "autoscaling"
 difficulty: "advanced"
 publishDate: "2026-04-07"

@@ -1,5 +1,5 @@
 ---
-title: "How to Configure Pod Affinity and Anti-Affinity"
+title: "Configure Pod Affinity and Anti-Affinity"
 description: "Control pod placement using affinity and anti-affinity rules. Co-locate related pods or spread them across nodes and zones for high availability."
 category: "deployments"
 difficulty: "intermediate"

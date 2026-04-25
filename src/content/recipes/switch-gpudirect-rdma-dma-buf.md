@@ -1,5 +1,5 @@
 ---
-title: "Switch GPUDirect RDMA from nvidia-peermem to DMA-BUF"
+title: "Switch GPUDirect RDMA from nvidia-peermem t..."
 description: "Migrate from the legacy nvidia-peermem kernel module to the recommended DMA-BUF GPUDirect RDMA path using the NVIDIA GPU Operator."
 category: "networking"
 difficulty: "advanced"

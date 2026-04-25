@@ -1,5 +1,5 @@
 ---
-title: "Chaos Engineering with LitmusChaos"
+title: "LitmusChaos Chaos Engineering K8s"
 description: "Run chaos experiments on Kubernetes with LitmusChaos. Pod kill, network latency, disk fill, and CPU stress experiments for resilience testing."
 publishDate: "2026-04-24"
 author: "Luca Berton"

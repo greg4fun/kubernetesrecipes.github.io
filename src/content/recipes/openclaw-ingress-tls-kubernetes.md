@@ -1,5 +1,5 @@
 ---
-title: "Expose OpenClaw via Kubernetes Ingress with TLS"
+title: "Expose OpenClaw via K8s Ingress with TLS"
 description: "Configure Kubernetes Ingress with TLS to expose OpenClaw gateway securely. Covers cert-manager, NGINX Ingress, and allowed origins."
 publishDate: "2026-03-19"
 author: "Luca Berton"

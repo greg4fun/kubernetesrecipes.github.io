@@ -1,6 +1,6 @@
 ---
 title: "DNS Autoscaling and CoreDNS Scaling"
-description: "Scale CoreDNS horizontally with dns-autoscaler and proportional autoscaling. Tune cache size, configure node-local DNS cache, and handle DNS throttling at scale."
+description: "Scale CoreDNS horizontally with dns-autoscaler and proportional autoscaling. Tune cache size, configure node-local DNS cache."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "networking"

@@ -1,5 +1,5 @@
 ---
-title: "HPA Custom Metrics Autoscaling"
+title: "HPA Custom Metrics Scaling Guide"
 description: "Scale Kubernetes workloads on custom Prometheus metrics with HPA. Prometheus Adapter, external metrics, and request-rate-based scaling for web services."
 publishDate: "2026-04-24"
 author: "Luca Berton"

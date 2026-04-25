@@ -1,6 +1,6 @@
 ---
 title: "NCCL_IB_DISABLE: When to Disable InfiniBand"
-description: "NCCL_IB_DISABLE environment variable explained. When to set NCCL_IB_DISABLE=1 for Ethernet clusters, troubleshoot IB errors, and optimize NCCL network selection."
+description: "NCCL_IB_DISABLE environment variable explained. When to set NCCL_IB_DISABLE=1 for Ethernet clusters, troubleshoot IB errors."
 publishDate: "2026-04-13"
 author: "Luca Berton"
 category: "ai"

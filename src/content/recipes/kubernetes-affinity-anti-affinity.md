@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Affinity and Anti-Affinity Guide"
-description: "configuration"
+description: "Production guide for kubernetes affinity and anti-affinity guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "configuration"
 difficulty: "Schedule pods with Kubernetes node affinity, pod affinity, and anti-affinity rules. Spread across zones, co-locate related services, and optimize for performance."
 publishDate: "2026-04-07"

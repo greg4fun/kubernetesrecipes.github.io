@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Deployment Strategies Compared"
-description: "deployments"
+description: "Production guide for kubernetes deployment strategies compared. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "deployments"
 difficulty: "Compare Kubernetes deployment strategies: rolling update, blue-green, canary, recreate, and A/B testing. Choose the right strategy for your application requirements."
 publishDate: "2026-04-07"

@@ -1,6 +1,6 @@
 ---
-title: "AI Infrastructure Cost Optimization on Kubernetes"
-description: "Optimize AI infrastructure costs on Kubernetes. GPU sharing, spot instances, inference batching, model quantization, token economics, and right-sizing GPU workloads."
+title: "AI Infrastructure Cost Optimization"
+description: "Optimize AI infrastructure costs on Kubernetes. GPU sharing, spot instances, inference batching, model quantization, token economics."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "ai"

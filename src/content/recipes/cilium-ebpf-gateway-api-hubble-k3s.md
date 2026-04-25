@@ -1,6 +1,6 @@
 ---
 title: "Cilium eBPF Gateway API Hubble k3s"
-description: "Install Cilium with eBPF dataplane, Gateway API support, and Hubble observability on k3s. Replace kube-proxy with eBPF, configure GatewayClass, and enable network flow visibility."
+description: "Install Cilium with eBPF dataplane, Gateway API support, and Hubble observability on k3s. Replace kube-proxy with eBPF, configure GatewayClass."
 category: "networking"
 publishDate: "2026-04-20"
 author: "Luca Berton"

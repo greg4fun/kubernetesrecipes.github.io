@@ -1,6 +1,6 @@
 ---
 title: "AI Workload Monitoring Kubernetes"
-description: "Monitor AI and GPU workloads on Kubernetes with DCGM Exporter, Prometheus, and Grafana. GPU utilization, memory usage, inference latency, training throughput, and cost dashboards."
+description: "Monitor AI and GPU workloads on Kubernetes with DCGM Exporter, Prometheus, and Grafana. GPU utilization, memory usage, inference latency."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "observability"

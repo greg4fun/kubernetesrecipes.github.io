@@ -1,5 +1,5 @@
 ---
-title: "NetworkPolicy Examples Cookbook"
+title: "NetworkPolicy Examples Cookbook K8s"
 description: "Copy-paste Kubernetes NetworkPolicy examples. Default deny all, allow DNS, allow specific namespace, database access, and external egress patterns."
 publishDate: "2026-04-25"
 author: "Luca Berton"

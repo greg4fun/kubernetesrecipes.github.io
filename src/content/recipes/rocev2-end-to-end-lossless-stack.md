@@ -1,6 +1,6 @@
 ---
 title: "RoCEv2 End-to-End Lossless Stack"
-description: "Complete RoCEv2 lossless fabric configuration from GPU node to switch and back. Dell OS10 switches, Mellanox NICs, OpenShift MachineConfig, PFC, ECN, DSCP trust."
+description: "Complete RoCEv2 lossless fabric configuration from GPU node to switch and back. Dell OS10 switches, Mellanox NICs, OpenShift MachineConfig, PFC, ECN."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "networking"

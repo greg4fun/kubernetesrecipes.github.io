@@ -1,5 +1,5 @@
 ---
-title: "OpenShift Lifecycle and Versions"
+title: "OpenShift Lifecycle Versions Guide"
 description: "OpenShift Container Platform lifecycle, version support, and upgrade planning. EUS versions, support timelines, K8s version mapping, and EOL dates."
 publishDate: "2026-04-25"
 author: "Luca Berton"

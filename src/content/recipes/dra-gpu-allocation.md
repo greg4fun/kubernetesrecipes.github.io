@@ -1,5 +1,5 @@
 ---
-title: "Dynamic Resource Allocation for GPUs with NVIDIA DRA Driver"
+title: "Dynamic Resource Allocation GPUs NVIDIA DRA..."
 description: "Learn to use Kubernetes Dynamic Resource Allocation (DRA) for flexible GPU allocation, sharing, and configuration with the NVIDIA DRA Driver"
 category: "configuration"
 difficulty: "advanced"

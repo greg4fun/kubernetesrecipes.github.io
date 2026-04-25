@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "Deploy a New Certificate for Each OpenShift Tenant"
+title: "Deploy a New Certificate Each OpenShift Tenant"
 description: "Replace and activate new TLS certificates tenant by tenant in OpenShift IngressController deployments with verification steps and rollback guidance."
 category: "security"
 difficulty: "intermediate"

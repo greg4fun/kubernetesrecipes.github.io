@@ -1,6 +1,6 @@
 ---
-title: "K8s-IO: Lightweight Kubernetes Benchmark CLI for fio and HammerDB"
-description: "Run distributed fio and HammerDB benchmarks on Kubernetes with K8s-IO — a Go CLI tool that replaces heavy operators. Config-driven storage and database performance testing."
+title: "K8s-IO Benchmark CLI for fio and HammerDB"
+description: "Run distributed fio and HammerDB benchmarks on Kubernetes with K8s-IO — a Go CLI tool that replaces heavy operators."
 category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-04-08"

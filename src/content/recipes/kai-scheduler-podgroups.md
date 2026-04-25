@@ -1,5 +1,5 @@
 ---
-title: "Batch Scheduling with PodGroups in KAI Scheduler"
+title: "Batch Scheduling PodGroups in KAI Scheduler"
 description: "Implement gang scheduling for distributed training jobs using KAI Scheduler PodGroups to ensure all-or-nothing pod scheduling"
 category: "ai"
 difficulty: "advanced"

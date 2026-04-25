@@ -1,5 +1,5 @@
 ---
-title: "VPA Recommender Configuration Guide"
+title: "VPA Recommender Setup Kubernetes"
 description: "Configure the VPA Recommender for Kubernetes resource right-sizing. Off mode recommendations, memory-only mode, and interpreting VPA suggestions."
 publishDate: "2026-04-25"
 author: "Luca Berton"

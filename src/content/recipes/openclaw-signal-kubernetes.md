@@ -1,5 +1,5 @@
 ---
-title: "Deploy an OpenClaw Signal Messenger Bot on Kubernetes"
+title: "Deploy an OpenClaw Signal Messenger Bot"
 description: "Run OpenClaw as a Signal messenger AI assistant on Kubernetes with linked device pairing, end-to-end encryption, and persistent sessions."
 category: "deployments"
 difficulty: "intermediate"

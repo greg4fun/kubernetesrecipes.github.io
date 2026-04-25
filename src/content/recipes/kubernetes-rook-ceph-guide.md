@@ -1,5 +1,5 @@
 ---
-title: "Rook Ceph Storage Guide"
+title: "Rook Ceph Storage Kubernetes Guide"
 description: "Deploy Rook-Ceph for enterprise storage on Kubernetes. Block, file, and object storage, erasure coding, and multi-site replication for production workloads."
 publishDate: "2026-04-24"
 author: "Luca Berton"

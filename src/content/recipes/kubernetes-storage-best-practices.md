@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Storage Best Practices for Production"
+title: "K8s Storage Best Practices for Production"
 description: "Production storage best practices for Kubernetes. StorageClass selection, backup strategies, volume expansion, data migration, and performance tuning."
 category: "storage"
 difficulty: "intermediate"

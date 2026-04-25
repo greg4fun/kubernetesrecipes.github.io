@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Day 2: Where the Leverage Kicks In"
-description: "Why Kubernetes pays off after initial setup. Day 2 operations leverage: auto-scaling, self-healing, rolling updates, observability, and consistent deployments across all services."
+description: "Why Kubernetes pays off after initial setup. Day 2 operations leverage: auto-scaling, self-healing, rolling updates, observability."
 publishDate: "2026-04-19"
 author: "Luca Berton"
 category: "deployments"

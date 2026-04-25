@@ -1,6 +1,6 @@
 ---
 title: "Preemptive Cybersecurity on Kubernetes"
-description: "Implement preemptive cybersecurity on Kubernetes. Threat prediction, automated vulnerability patching, runtime behavior analysis, CNAPP, and continuous security posture."
+description: "Implement preemptive cybersecurity on Kubernetes. Threat prediction, automated vulnerability patching, runtime behavior analysis, CNAPP."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "security"

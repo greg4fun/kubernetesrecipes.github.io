@@ -1,6 +1,6 @@
 ---
 title: "Pod Affinity and Anti-Affinity Guide"
-description: "Configure pod affinity and anti-affinity rules for Kubernetes scheduling. Co-locate cache with app, spread replicas across nodes, and combine with topology spread constraints."
+description: "Configure pod affinity and anti-affinity rules for Kubernetes scheduling. Co-locate cache with app, spread replicas across nodes."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

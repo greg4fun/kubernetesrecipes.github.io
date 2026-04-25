@@ -1,6 +1,6 @@
 ---
 title: "Access Zones on Scale-Out NAS for Kubernetes"
-description: "Configure access zones on scale-out NAS (Dell PowerScale/Isilon) for Kubernetes persistent storage. Multi-tenant isolation, CSI driver setup, and SmartConnect zones."
+description: "Configure access zones on scale-out NAS (Dell PowerScale/Isilon) for Kubernetes persistent storage. Multi-tenant isolation, CSI driver setup."
 publishDate: "2026-04-17"
 author: "Luca Berton"
 category: "storage"

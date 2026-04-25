@@ -1,5 +1,5 @@
 ---
-title: "Pod Topology Spread Constraints"
+title: "Pod Topology Spread Constraints Guide"
 description: "Use topologySpreadConstraints to distribute pods evenly across zones, nodes, and failure domains for high availability in Kubernetes."
 publishDate: "2026-04-21"
 author: "Luca Berton"

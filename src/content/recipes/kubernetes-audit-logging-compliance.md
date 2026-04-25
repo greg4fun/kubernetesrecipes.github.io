@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Audit Logging for Enterprise Compliance"
+title: "K8s Audit Logging for Enterprise Compliance"
 description: "Configure API server audit logging for SOC2, HIPAA, and PCI-DSS compliance. Structured audit policies, log shipping, and alerting on suspicious activity."
 publishDate: "2026-04-08"
 author: "Luca Berton"

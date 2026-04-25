@@ -1,5 +1,5 @@
 ---
-title: "HPA Max Replicas Configuration"
+title: "HPA Max Replicas Configuration K8s"
 description: "Set max replicas for Kubernetes HPA to control autoscaling ceiling. maxReplicas tuning, scaling behavior, stabilization window, and cost protection strategies."
 publishDate: "2026-04-25"
 author: "Luca Berton"

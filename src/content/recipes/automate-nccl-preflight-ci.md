@@ -1,5 +1,5 @@
 ---
-title: "Automate NCCL Preflight Checks in CI/CD Pipelines"
+title: "Automate NCCL Preflight Checks in CI/CD Pip..."
 description: "Run NCCL smoke benchmarks automatically in CI/CD pipelines before promoting GPU cluster changes to production, catching regressions early."
 category: "deployments"
 difficulty: "advanced"

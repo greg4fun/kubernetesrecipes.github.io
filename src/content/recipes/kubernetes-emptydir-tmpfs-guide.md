@@ -1,5 +1,5 @@
 ---
-title: "emptyDir and tmpfs Storage Guide"
+title: "emptyDir tmpfs Kubernetes Guide"
 description: "Configure emptyDir volumes with memory-backed tmpfs on Kubernetes. Size limits, memory accounting, sidecar sharing, and ephemeral cache patterns."
 publishDate: "2026-04-25"
 author: "Luca Berton"

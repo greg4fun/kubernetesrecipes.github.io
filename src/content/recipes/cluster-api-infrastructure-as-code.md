@@ -1,5 +1,5 @@
 ---
-title: "Cluster API for Kubernetes Lifecycle Management"
+title: "Cluster API for K8s Lifecycle Management"
 description: "Manage Kubernetes cluster lifecycle with Cluster API. Declarative cluster creation, upgrades, scaling, and multi-cloud infrastructure provisioning as code."
 category: "deployments"
 difficulty: "advanced"

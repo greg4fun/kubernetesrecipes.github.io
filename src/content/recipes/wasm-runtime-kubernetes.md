@@ -1,5 +1,5 @@
 ---
-title: "WebAssembly Runtime on Kubernetes with Spin and SpinKube"
+title: "WebAssembly Runtime with Spin and SpinKube"
 description: "Deploy WebAssembly workloads on Kubernetes using SpinKube and the Spin Operator. Run Wasm components alongside containers with sub-millisecond cold starts."
 category: "deployments"
 difficulty: "intermediate"

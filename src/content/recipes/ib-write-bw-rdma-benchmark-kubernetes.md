@@ -1,6 +1,6 @@
 ---
 title: "ib_write_bw RDMA Bandwidth Testing"
-description: "Run ib_write_bw from perftest on Kubernetes to measure RDMA write bandwidth between GPU nodes. Full CLI reference, bidirectional tests, HugePages, and rate limiting."
+description: "Run ib_write_bw from perftest on Kubernetes to measure RDMA write bandwidth between GPU nodes. Full CLI reference, bidirectional tests, HugePages."
 publishDate: "2026-04-23"
 author: "Luca Berton"
 category: "networking"

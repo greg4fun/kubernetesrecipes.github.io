@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Labels and Selectors Guide"
-description: "configuration"
+description: "Production guide for kubernetes labels and selectors guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "configuration"
 difficulty: "Use Kubernetes labels and selectors to organize and query resources. Covers label conventions, selector types, recommended labels, and label-based operations."
 publishDate: "2026-04-07"

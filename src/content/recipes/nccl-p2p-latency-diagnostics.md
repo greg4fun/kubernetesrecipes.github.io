@@ -1,5 +1,5 @@
 ---
-title: "Diagnose GPU Peer-to-Peer Latency with NCCL Tests"
+title: "Diagnose GPU Peer-to-Peer Latency NCCL Tests"
 description: "Use NCCL point-to-point and collective tests to isolate GPU peer-to-peer latency issues between GPU pairs in multi-node Kubernetes clusters."
 category: "troubleshooting"
 difficulty: "advanced"

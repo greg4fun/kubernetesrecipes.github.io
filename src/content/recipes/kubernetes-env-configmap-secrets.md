@@ -1,5 +1,5 @@
 ---
-title: "Environment Variables from ConfigMap"
+title: "Env Variables from ConfigMap K8s"
 description: "Inject environment variables from ConfigMaps and Secrets in Kubernetes. envFrom, valueFrom, configMapKeyRef, and secretKeyRef patterns."
 publishDate: "2026-04-25"
 author: "Luca Berton"

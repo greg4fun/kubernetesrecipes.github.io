@@ -1,6 +1,6 @@
 ---
 title: "Mellanox RoCE DSCP QoS DaemonSet"
-description: "Deploy a DaemonSet that configures DSCP trust, PFC priority 3, and RoCE ToS 106 on all Mellanox PFs. Uses DOCA driver image with ibdev2netdev, mlnx_qos, and cma_roce_tos."
+description: "Deploy a DaemonSet that configures DSCP trust, PFC priority 3, and RoCE ToS 106 on all Mellanox PFs. Uses DOCA driver image with ibdev2netdev, mlnx_qos."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "networking"

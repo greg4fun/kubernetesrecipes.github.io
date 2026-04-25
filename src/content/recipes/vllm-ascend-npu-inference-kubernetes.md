@@ -1,5 +1,5 @@
 ---
-title: "vLLM on Huawei Ascend NPU: Kubernetes Deployment"
+title: "vLLM on Huawei Ascend NPU: K8s Deployment"
 description: "Deploy vLLM inference on Huawei Ascend NPUs in Kubernetes. Atlas 300I/910B device plugin, vllm-ascend container image, tensor parallelism, and model serving."
 publishDate: "2026-04-13"
 author: "Luca Berton"

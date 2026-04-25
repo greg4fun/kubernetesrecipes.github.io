@@ -1,6 +1,6 @@
 ---
 title: "Mutagen Kubernetes File Sync Guide"
-description: "Sync files between local machine and Kubernetes pods with Mutagen. Real-time bidirectional sync for development, hot-reload workflows, and remote container editing."
+description: "Sync files between local machine and Kubernetes pods with Mutagen. Real-time bidirectional sync for development, hot-reload workflows."
 category: "deployments"
 publishDate: "2026-04-20"
 author: "Luca Berton"

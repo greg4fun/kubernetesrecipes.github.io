@@ -1,6 +1,6 @@
 ---
 title: "AIPerf LLM Benchmarking on K8s"
-description: "Benchmark generative AI inference on Kubernetes with NVIDIA AIPerf. Measure TTFT, ITL, throughput, and latency across vLLM, NIM, and TGI with traffic patterns and GPU telemetry."
+description: "Benchmark generative AI inference on Kubernetes with NVIDIA AIPerf. Measure TTFT, ITL, throughput, and latency across vLLM, NIM."
 publishDate: "2026-04-22"
 author: "Luca Berton"
 category: "ai"

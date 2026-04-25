@@ -1,6 +1,6 @@
 ---
-title: "Confidential Computing: SGX and SEV-SNP on Kubernetes"
-description: "Deploy confidential containers on Kubernetes with Intel SGX and AMD SEV-SNP. Encrypted memory, attestation, confidential VMs, Kata Containers, and TEE workloads."
+title: "Confidential Computing: SGX and SEV-SNP"
+description: "Deploy confidential containers on Kubernetes with Intel SGX and AMD SEV-SNP. Encrypted memory, attestation, confidential VMs, Kata Containers."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "security"

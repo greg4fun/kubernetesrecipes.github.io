@@ -1,6 +1,6 @@
 ---
-title: "Istio Traffic Management Guide"
-description: "Advanced Istio traffic management on Kubernetes. VirtualService routing, DestinationRule load balancing, traffic mirroring, fault injection, and circuit breaking."
+title: "Istio Traffic Management Kubernetes"
+description: "Advanced Istio traffic management on Kubernetes. VirtualService routing, DestinationRule load balancing, traffic mirroring, fault injection."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "networking"

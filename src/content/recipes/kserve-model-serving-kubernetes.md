@@ -1,6 +1,6 @@
 ---
 title: "KServe Model Serving Kubernetes"
-description: "Deploy ML models with KServe for serverless inference on Kubernetes. InferenceService, scale-to-zero, canary rollouts, model transformers, and multi-model serving with ModelMesh."
+description: "Deploy ML models with KServe for serverless inference on Kubernetes. InferenceService, scale-to-zero, canary rollouts, model transformers."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

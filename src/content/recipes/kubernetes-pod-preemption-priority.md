@@ -1,5 +1,5 @@
 ---
-title: "Pod Priority and Preemption Guide"
+title: "Pod Priority Preemption Kubernetes"
 description: "Configure PriorityClasses to ensure critical workloads get resources by preempting lower-priority pods. Understand preemption mechanics and safeguards."
 publishDate: "2026-04-21"
 author: "Luca Berton"

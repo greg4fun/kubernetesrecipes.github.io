@@ -1,6 +1,6 @@
 ---
-title: "Agentic AI and Multi-Agent Systems on Kubernetes"
-description: "Deploy autonomous AI agents and multi-agent orchestration on Kubernetes. LangGraph, CrewAI, AutoGen, tool-calling agents, agent-to-agent communication, and scaling patterns."
+title: "Agentic AI and Multi-Agent Systems"
+description: "Deploy autonomous AI agents and multi-agent orchestration on Kubernetes. LangGraph, CrewAI, AutoGen, tool-calling agents, agent-to-agent communication."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "ai"

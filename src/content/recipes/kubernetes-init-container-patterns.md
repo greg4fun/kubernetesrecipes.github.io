@@ -1,6 +1,6 @@
 ---
 title: "Init Container Patterns Kubernetes"
-description: "Use init containers for dependency waiting, database migration, config generation, certificate fetching, and permission setup. Sequential initialization with shared volumes."
+description: "Use init containers for dependency waiting, database migration, config generation, certificate fetching, and permission setup."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

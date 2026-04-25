@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Resource Format Syntax"
-description: "Understand Kubernetes resource format: CPU millicores (200m, 500m, 1) and memory units (256Mi, 1Gi). Syntax reference for requests, limits, and QoS class impact."
+title: "Resource Format 200m 256Mi Syntax"
+description: "Understand Kubernetes resource format: CPU millicores (200m, 500m, 1) and memory units (256Mi, 1Gi). Syntax reference for requests, limits."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "configuration"

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes StatefulSet Complete Guide"
-description: "deployments"
+description: "Production guide for kubernetes statefulset complete guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "deployments"
 difficulty: "Deploy StatefulSets in Kubernetes for stateful applications like databases and message queues. Covers ordered deployment, stable storage, headless services, and scaling."
 publishDate: "2026-04-05"

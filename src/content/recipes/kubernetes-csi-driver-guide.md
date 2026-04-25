@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes CSI Drivers: Storage Plugins Explained"
+title: "K8s CSI Drivers: Storage Plugins Explained"
 description: "Understand Container Storage Interface (CSI) drivers in Kubernetes. Install and configure CSI drivers for AWS EBS, Azure Disk, NFS, and Ceph storage backends."
 category: "storage"
 difficulty: "intermediate"

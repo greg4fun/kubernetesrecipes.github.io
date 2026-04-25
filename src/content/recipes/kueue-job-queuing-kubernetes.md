@@ -1,6 +1,6 @@
 ---
 title: "Kueue Job Queuing Fair Sharing Kubernetes"
-description: "Implement fair-share GPU job queuing with Kueue on Kubernetes. ClusterQueues, LocalQueues, ResourceFlavors, and cohort-based borrowing for multi-team AI clusters."
+description: "Implement fair-share GPU job queuing with Kueue on Kubernetes. ClusterQueues, LocalQueues, ResourceFlavors, and cohort-based borrowing for multi-team AI cl."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

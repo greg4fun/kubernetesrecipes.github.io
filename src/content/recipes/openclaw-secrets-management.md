@@ -1,5 +1,5 @@
 ---
-title: "Secure Secrets Management for OpenClaw on Kubernetes"
+title: "Secure Secrets Management for OpenClaw"
 description: "Manage API keys, bot tokens, and credentials for OpenClaw on Kubernetes using Kubernetes Secrets, External Secrets Operator, and Sealed Secrets."
 category: "security"
 difficulty: "intermediate"

@@ -1,6 +1,6 @@
 ---
 title: "Distributed Training TensorFlow PyTorch"
-description: "Run distributed training jobs on Kubernetes with TensorFlow and PyTorch. Training Operator, multi-worker strategies, NCCL configuration, and fault tolerance for large-scale GPU clusters."
+description: "Run distributed training jobs on Kubernetes with TensorFlow and PyTorch. Training Operator, multi-worker strategies, NCCL configuration."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

@@ -1,6 +1,6 @@
 ---
 title: "Service Accounts and Workload Identity"
-description: "Configure Kubernetes service accounts with cloud workload identity for AWS IRSA, GCP Workload Identity, and Azure AD. Eliminate static credentials for cloud API access."
+description: "Configure Kubernetes service accounts with cloud workload identity for AWS IRSA, GCP Workload Identity, and Azure AD."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"

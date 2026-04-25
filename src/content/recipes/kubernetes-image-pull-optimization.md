@@ -1,6 +1,6 @@
 ---
 title: "Image Pull Optimization Kubernetes"
-description: "Optimize container image pulls with pre-pulling DaemonSets, registry mirrors, image caching, and pull-through proxies. Reduce cold-start times from minutes to seconds for large AI images."
+description: "Optimize container image pulls with pre-pulling DaemonSets, registry mirrors, image caching, and pull-through proxies."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

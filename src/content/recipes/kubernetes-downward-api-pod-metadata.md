@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Downward API: Pod Metadata in Env"
-description: "Expose pod metadata to containers using Kubernetes Downward API. Access pod name, namespace, node name, labels, annotations, and resource limits via env vars or volume files."
+description: "Expose pod metadata to containers using Kubernetes Downward API. Access pod name, namespace, node name, labels, annotations."
 category: "configuration"
 publishDate: "2026-04-20"
 author: "Luca Berton"

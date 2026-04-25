@@ -1,6 +1,6 @@
 ---
-title: "Platform Engineering on Kubernetes: Build an IDP"
-description: "Build an internal developer platform on Kubernetes. Backstage, Crossplane, ArgoCD, self-service templates, golden paths, and platform team patterns for developer experience."
+title: "Platform Engineering on K8s: Build an IDP"
+description: "Build an internal developer platform on Kubernetes. Backstage, Crossplane, ArgoCD, self-service templates, golden paths."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "deployments"

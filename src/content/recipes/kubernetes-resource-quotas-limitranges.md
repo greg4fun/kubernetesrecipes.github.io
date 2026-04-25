@@ -1,6 +1,6 @@
 ---
 title: "Resource Quotas and LimitRanges Guide"
-description: "Configure ResourceQuotas and LimitRanges for Kubernetes namespace isolation. Set CPU, memory, GPU, and storage limits per namespace with default container resources."
+description: "Configure ResourceQuotas and LimitRanges for Kubernetes namespace isolation. Set CPU, memory, GPU, and storage limits per namespace with default container ."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

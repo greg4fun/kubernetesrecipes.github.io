@@ -1,5 +1,5 @@
 ---
-title: "Topology-Aware Routing Guide"
+title: "Topology-Aware Routing Kubernetes"
 description: "Enable topology-aware routing for cost optimization on Kubernetes. Zone-local traffic, EndpointSlice hints, and reducing cross-zone data transfer costs."
 publishDate: "2026-04-24"
 author: "Luca Berton"

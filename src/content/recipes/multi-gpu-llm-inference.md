@@ -1,5 +1,5 @@
 ---
-title: "Multi-GPU and Tensor Parallel LLM Inference on Kubernetes"
+title: "Multi-GPU and Tensor Parallel LLM Inference"
 description: "Deploy large language models across multiple GPUs using tensor parallelism with vLLM and NVIDIA NIM on Kubernetes for high-throughput inference serving."
 category: "ai"
 difficulty: "advanced"

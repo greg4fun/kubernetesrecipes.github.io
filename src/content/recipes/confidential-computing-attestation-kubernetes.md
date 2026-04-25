@@ -1,6 +1,6 @@
 ---
 title: "Hardware Attestation for Kubernetes Workloads"
-description: "Implement remote attestation for Kubernetes workloads. Verify TEE integrity with attestation services, release secrets to verified enclaves, and build zero-trust compute."
+description: "Implement remote attestation for Kubernetes workloads. Verify TEE integrity with attestation services, release secrets to verified enclaves."
 publishDate: "2026-04-13"
 author: "Luca Berton"
 category: "security"

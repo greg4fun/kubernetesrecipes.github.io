@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes and OpenShift Upgrade Strategy"
-description: "Complete upgrade strategy for Kubernetes and OpenShift clusters. Understand patch, minor, and major versions, upgrade paths, and pre-flight checks for zero-downtime upgrades."
+description: "Complete upgrade strategy for Kubernetes and OpenShift clusters. Understand patch, minor, and major versions, upgrade paths."
 publishDate: "2026-04-16"
 author: "Luca Berton"
 category: "deployments"

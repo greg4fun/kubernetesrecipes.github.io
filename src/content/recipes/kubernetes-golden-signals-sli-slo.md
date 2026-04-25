@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Golden Signals: SLI and SLO Monitoring"
+title: "K8s Golden Signals: SLI and SLO Monitoring"
 description: "Implement Google SRE golden signals on Kubernetes. Define SLIs, set SLO targets, configure error budgets, and build SLO dashboards with Prometheus and Sloth."
 publishDate: "2026-04-13"
 author: "Luca Berton"

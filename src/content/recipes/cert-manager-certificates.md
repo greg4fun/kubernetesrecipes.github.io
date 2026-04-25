@@ -1,5 +1,5 @@
 ---
-title: "How to Manage Kubernetes Certificates with cert-manager"
+title: "Manage K8s Certificates with cert-manager"
 description: "Automate TLS certificate management with cert-manager. Configure issuers, request certificates from Let's Encrypt, and enable automatic renewal."
 category: "security"
 difficulty: "intermediate"

@@ -1,6 +1,6 @@
 ---
 title: "Debug Kubernetes Pods: Complete Guide"
-description: "troubleshooting"
+description: "Production guide for debug kubernetes pods: complete guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "troubleshooting"
 difficulty: "Debug Kubernetes pods with kubectl debug, ephemeral containers, and netshoot. Troubleshoot distroless images, network issues, and crashed pods step by step."
 publishDate: "2026-04-05"

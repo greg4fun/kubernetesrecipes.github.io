@@ -1,6 +1,6 @@
 ---
 title: "cert-manager Advanced Configuration"
-description: "Advanced cert-manager patterns for Kubernetes. Wildcard certificates, DNS-01 challenges, certificate rotation, cross-namespace sharing, and integration with Istio and Gateway API."
+description: "Advanced cert-manager patterns for Kubernetes. Wildcard certificates, DNS-01 challenges, certificate rotation, cross-namespace sharing."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"

@@ -1,5 +1,5 @@
 ---
-title: "Docker Registry Secret Kubernetes"
+title: "Docker Registry Secret kubectl"
 description: "Create Kubernetes docker-registry secrets with kubectl. --docker-password-stdin, .dockerconfigjson format, and automating registry authentication."
 publishDate: "2026-04-25"
 author: "Luca Berton"

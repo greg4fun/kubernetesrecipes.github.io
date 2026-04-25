@@ -1,5 +1,5 @@
 ---
-title: "Helm Chart Testing Guide"
+title: "Helm Chart Testing CI/CD Guide"
 description: "Test Helm charts with helm test, helm lint, chart-testing, and conftest. Unit tests, integration tests, and CI/CD pipeline integration for chart quality."
 publishDate: "2026-04-24"
 author: "Luca Berton"

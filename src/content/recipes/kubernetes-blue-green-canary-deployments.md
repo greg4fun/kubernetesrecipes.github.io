@@ -1,5 +1,5 @@
 ---
-title: "Blue-Green and Canary Deployments on Kubernetes"
+title: "Blue-Green and Canary Deployments"
 description: "Implement blue-green and canary deployment strategies with Argo Rollouts and Flagger. Progressive delivery with automated analysis and rollback."
 category: "deployments"
 difficulty: "intermediate"

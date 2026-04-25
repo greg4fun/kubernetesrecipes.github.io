@@ -1,5 +1,5 @@
 ---
-title: "Automate User Onboarding and Offboarding in K8s"
+title: "Automate User Onboarding & Offboarding in K8s"
 description: "Automate Kubernetes user onboarding and offboarding. RBAC provisioning, namespace creation, quota assignment, OIDC group sync, and access revocation scripts."
 publishDate: "2026-04-17"
 author: "Luca Berton"

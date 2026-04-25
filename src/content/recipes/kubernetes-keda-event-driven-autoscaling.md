@@ -1,6 +1,6 @@
 ---
 title: "KEDA Event-Driven Autoscaling"
-description: "Scale Kubernetes workloads based on external events with KEDA. Kafka queue length, Prometheus metrics, cron schedules, and scale-to-zero for event-driven architectures."
+description: "Scale Kubernetes workloads based on external events with KEDA. Kafka queue length, Prometheus metrics, cron schedules."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "autoscaling"

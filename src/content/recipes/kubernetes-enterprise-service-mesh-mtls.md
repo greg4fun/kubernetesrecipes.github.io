@@ -1,5 +1,5 @@
 ---
-title: "Enterprise Service Mesh with mTLS and Observability"
+title: "Enterprise Service Mesh mTLS & Observability"
 description: "Deploy Istio service mesh for enterprise mTLS, traffic management, circuit breaking, and distributed tracing across microservices on Kubernetes."
 publishDate: "2026-04-08"
 author: "Luca Berton"

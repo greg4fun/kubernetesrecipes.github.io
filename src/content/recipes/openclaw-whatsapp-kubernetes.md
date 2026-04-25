@@ -1,5 +1,5 @@
 ---
-title: "Self-Host an OpenClaw WhatsApp AI Assistant on Kubernetes"
+title: "Self-Host an OpenClaw WhatsApp AI Assistant"
 description: "Deploy OpenClaw on Kubernetes to run a personal WhatsApp AI assistant with QR code pairing, persistent sessions, media support, and allow-list security."
 category: "deployments"
 difficulty: "intermediate"

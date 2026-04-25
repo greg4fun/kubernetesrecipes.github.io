@@ -1,6 +1,6 @@
 ---
 title: "Admission Webhooks Guide Kubernetes"
-description: "Build and deploy Kubernetes admission webhooks for policy enforcement. ValidatingWebhookConfiguration, MutatingWebhookConfiguration, cert-manager integration, and failure policies."
+description: "Build and deploy Kubernetes admission webhooks for policy enforcement. ValidatingWebhookConfiguration, MutatingWebhookConfiguration."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"

@@ -1,6 +1,6 @@
 ---
 title: "Falco Runtime Security for Kubernetes"
-description: "security"
+description: "Production guide for falco runtime security for kubernetes. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "security"
 difficulty: "Deploy Falco for Kubernetes runtime threat detection. Detect shell spawns in containers, privilege escalation, sensitive file access, and suspicious network activity in real time."
 publishDate: "2026-04-07"

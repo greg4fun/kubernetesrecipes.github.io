@@ -1,5 +1,5 @@
 ---
-title: "Grafana Dashboards Kubernetes Guide"
+title: "Grafana Dashboards Kubernetes"
 description: "Import and customize Grafana dashboards for Kubernetes monitoring. Dashboard 315, 6417, kube-prometheus-stack, and custom panel creation."
 publishDate: "2026-04-25"
 author: "Luca Berton"

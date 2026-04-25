@@ -1,5 +1,5 @@
 ---
-title: "How to Set Up Prometheus Monitoring for Applications"
+title: "Set Up Prometheus Monitoring for Applications"
 description: "Learn to instrument your Kubernetes applications with Prometheus metrics. Complete guide to ServiceMonitors, scraping configuration, and custom metrics."
 category: "observability"
 difficulty: "intermediate"

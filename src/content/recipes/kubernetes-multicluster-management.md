@@ -1,6 +1,6 @@
 ---
 title: "Multi-Cluster Management Kubernetes"
-description: "Manage multiple Kubernetes clusters with kubectx, Cluster API, Fleet, and federation patterns. Context switching, workload distribution, and centralized policy enforcement."
+description: "Manage multiple Kubernetes clusters with kubectx, Cluster API, Fleet, and federation patterns. Context switching, workload distribution."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

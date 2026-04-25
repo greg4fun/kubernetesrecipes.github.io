@@ -1,6 +1,6 @@
 ---
 title: "NCCL Topology Dump File for GPU Debugging"
-description: "Use NCCL_TOPO_DUMP_FILE to capture and analyze GPU interconnect topology in Kubernetes. Debug NVLink, NVSwitch, PCIe, and InfiniBand paths for multi-GPU training."
+description: "Use NCCL_TOPO_DUMP_FILE to capture and analyze GPU interconnect topology in Kubernetes. Debug NVLink, NVSwitch, PCIe."
 category: "ai"
 publishDate: "2026-04-20"
 author: "Luca Berton"

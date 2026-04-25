@@ -1,5 +1,5 @@
 ---
-title: "Certificate Expiration Management"
+title: "Certificate Expiration Management K8s"
 description: "Monitor and manage Kubernetes certificate expiration. kubeadm cert check, cert-manager alerts, auto-renewal, and preventing expired certificate outages."
 publishDate: "2026-04-25"
 author: "Luca Berton"

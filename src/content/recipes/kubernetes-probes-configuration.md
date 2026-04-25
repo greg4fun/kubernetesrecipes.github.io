@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Probes: Liveness, Readiness, Startup"
+title: "K8s Probes: Liveness, Readiness, Startup"
 description: "Configure Kubernetes probes for reliable apps. Complete guide to liveness, readiness, and startup probes with httpGet, tcpSocket, exec, and gRPC examples."
 category: "deployments"
 difficulty: "beginner"

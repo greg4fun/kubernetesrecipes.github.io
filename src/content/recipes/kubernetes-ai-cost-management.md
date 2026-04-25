@@ -1,6 +1,6 @@
 ---
 title: "AI Cost Management Kubernetes"
-description: "Control AI infrastructure costs on Kubernetes with GPU utilization tracking, chargeback per team, spot instance strategies, right-sizing recommendations, and idle GPU detection."
+description: "Control AI infrastructure costs on Kubernetes with GPU utilization tracking, chargeback per team, spot instance strategies, right-sizing recommendations."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

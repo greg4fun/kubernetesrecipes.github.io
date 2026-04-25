@@ -1,5 +1,5 @@
 ---
-title: "How to Implement Blue-Green and Canary Deployments"
+title: "Implement Blue-Green and Canary Deployments"
 description: "Deploy applications with zero downtime using blue-green and canary strategies. Configure traffic splitting, rollbacks, and progressive delivery."
 category: "deployments"
 difficulty: "intermediate"

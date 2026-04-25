@@ -1,6 +1,6 @@
 ---
 title: "Verify NCCL RDMA Traffic with Debug Logging"
-description: "Prove NCCL uses RDMA for GPU communication on Kubernetes. Use NCCL_DEBUG and NCCL_DEBUG_SUBSYS=ALL to verify InfiniBand, RoCE, and GPUDirect transport selection."
+description: "Prove NCCL uses RDMA for GPU communication on Kubernetes. Use NCCL_DEBUG and NCCL_DEBUG_SUBSYS=ALL to verify InfiniBand, RoCE."
 publishDate: "2026-04-15"
 author: "Luca Berton"
 category: "ai"

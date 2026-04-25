@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes PVC and PV Complete Guide"
-description: "storage"
+description: "Production guide for kubernetes pvc and pv complete guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "storage"
 difficulty: "Create and manage Kubernetes PersistentVolumeClaims and PersistentVolumes. Covers dynamic provisioning, StorageClasses, access modes, volume expansion, and reclaim policies."
 publishDate: "2026-04-07"

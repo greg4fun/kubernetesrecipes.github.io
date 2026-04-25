@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Pod Lifecycle Explained"
-description: "configuration"
+description: "Production guide for kubernetes pod lifecycle explained. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "configuration"
 difficulty: "Understand the Kubernetes pod lifecycle from creation to termination. Covers pod phases, container states, init containers, hooks, and graceful shutdown sequence."
 publishDate: "2026-04-07"

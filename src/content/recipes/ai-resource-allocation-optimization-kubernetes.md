@@ -1,6 +1,6 @@
 ---
 title: "AI Resource Allocation Optimization"
-description: "Optimize GPU and memory allocation for AI workloads on Kubernetes. Right-size GPU requests, bin-packing strategies, gang scheduling, topology-aware placement, and preemption for training jobs."
+description: "Optimize GPU and memory allocation for AI workloads on Kubernetes. Right-size GPU requests, bin-packing strategies, gang scheduling."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

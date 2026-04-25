@@ -1,6 +1,6 @@
 ---
-title: "Rolling Update Strategies Kubernetes"
-description: "Configure rolling update strategies for Kubernetes Deployments. MaxSurge, maxUnavailable, minReadySeconds, and progressDeadlineSeconds for zero-downtime deployments."
+title: "Rolling Update Strategy Kubernetes"
+description: "Configure rolling update strategies for Kubernetes Deployments. MaxSurge, maxUnavailable, minReadySeconds, and progressDeadlineSeconds for zero-downtime de."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

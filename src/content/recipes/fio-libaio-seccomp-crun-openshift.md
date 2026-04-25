@@ -1,5 +1,5 @@
 ---
-title: "Fix fio libaio Silent Exit on OpenShift crun Nodes"
+title: "Fix fio libaio Silent Exit on OpenShift cru..."
 description: "Debug fio instantly exiting with no output on crun-based OpenShift nodes. The root cause is seccomp blocking libaio syscalls — fix with psync or unconfined."
 category: "troubleshooting"
 difficulty: "advanced"

@@ -1,5 +1,5 @@
 ---
-title: "How to Set Resource Requests and Limits Properly"
+title: "Set Resource Requests and Limits Properly"
 description: "Master Kubernetes resource management with proper CPU and memory requests and limits. Avoid OOMKills, throttling, and resource contention."
 category: "configuration"
 difficulty: "beginner"

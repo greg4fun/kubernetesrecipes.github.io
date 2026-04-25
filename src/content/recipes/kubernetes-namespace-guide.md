@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Namespaces Complete Guide"
-description: "configuration"
+description: "Production guide for kubernetes namespaces complete guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "configuration"
 difficulty: "Create and manage Kubernetes namespaces for resource isolation. Covers namespace quotas, RBAC, network policies, default namespaces, and multi-tenant patterns."
 publishDate: "2026-04-05"

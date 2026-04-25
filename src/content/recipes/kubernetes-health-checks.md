@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Health Checks Best Practices"
-description: "configuration"
+description: "Production guide for kubernetes health checks best practices. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "configuration"
 difficulty: "Design effective Kubernetes health checks with liveness, readiness, and startup probes. Avoid common anti-patterns like database checks in liveness probes."
 publishDate: "2026-04-05"

@@ -1,5 +1,5 @@
 ---
-title: "Gateway API HTTPRoute Patterns"
+title: "Gateway API HTTPRoute Kubernetes"
 description: "Configure HTTPRoute for Kubernetes Gateway API. Path matching, header-based routing, traffic splitting, URL rewriting, and request mirroring."
 publishDate: "2026-04-24"
 author: "Luca Berton"

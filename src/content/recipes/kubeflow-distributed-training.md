@@ -1,5 +1,5 @@
 ---
-title: "Distributed Training with Kubeflow Training Operator"
+title: "Distrib. Training Kubeflow Training Operator"
 description: "Run multi-node distributed PyTorch and TensorFlow training jobs using Kubeflow Training Operator with NCCL, RDMA, and shared storage."
 publishDate: "2026-02-26"
 author: "Luca Berton"

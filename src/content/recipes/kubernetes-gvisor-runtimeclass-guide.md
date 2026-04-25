@@ -1,6 +1,6 @@
 ---
-title: "gVisor RuntimeClass on Kubernetes: Sandbox Pods"
-description: "Deploy gVisor sandbox containers on Kubernetes using RuntimeClass. Install runsc, configure containerd, and isolate untrusted workloads with application-level kernel."
+title: "gVisor RuntimeClass on K8s: Sandbox Pods"
+description: "Deploy gVisor sandbox containers on Kubernetes using RuntimeClass. Install runsc, configure containerd, and isolate untrusted workloads with application-le."
 publishDate: "2026-04-13"
 author: "Luca Berton"
 category: "security"

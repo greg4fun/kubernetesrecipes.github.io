@@ -1,5 +1,5 @@
 ---
-title: "PDB and Rolling Update Coordination"
+title: "PDB Rolling Update Coordination K8s"
 description: "Coordinate PodDisruptionBudgets with rolling updates on Kubernetes. minAvailable vs maxUnavailable, voluntary disruptions, and upgrade-safe configurations."
 publishDate: "2026-04-24"
 author: "Luca Berton"

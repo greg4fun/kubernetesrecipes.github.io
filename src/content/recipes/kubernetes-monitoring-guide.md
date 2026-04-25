@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Monitoring with Prometheus and Grafana"
+title: "K8s Monitoring with Prometheus and Grafana"
 description: "Set up Kubernetes monitoring with Prometheus and Grafana. Covers kube-prometheus-stack, custom dashboards, alerting rules, and key metrics to monitor."
 category: "observability"
 difficulty: "intermediate"

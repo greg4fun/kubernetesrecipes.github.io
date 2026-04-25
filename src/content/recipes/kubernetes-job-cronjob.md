@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Jobs and CronJobs Guide"
-description: "deployments"
+description: "Production guide for kubernetes jobs and cronjobs guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "deployments"
 difficulty: "Run batch workloads with Kubernetes Jobs and CronJobs. Covers one-shot tasks, parallel processing, scheduled jobs, failure handling, and cleanup policies."
 publishDate: "2026-04-07"

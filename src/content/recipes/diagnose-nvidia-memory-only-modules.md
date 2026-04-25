@@ -1,5 +1,5 @@
 ---
-title: "Diagnose NVIDIA Memory-Only Kernel Modules on OpenShift"
+title: "Diagnose NVIDIA Memory-Only Kernel Modules ..."
 description: "Understand why lsmod shows NVIDIA modules loaded but modinfo fails, and how the GPU Operator's proprietary driver container inserts modules without."
 category: "troubleshooting"
 difficulty: "advanced"

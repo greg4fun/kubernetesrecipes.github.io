@@ -1,5 +1,5 @@
 ---
-title: "Cosign Image Verification Kubernetes"
+title: "Cosign Image Signing Kubernetes"
 description: "Verify container image signatures with Cosign and Sigstore on Kubernetes. Policy enforcement with Kyverno, supply chain security, and SBOM attestation."
 publishDate: "2026-04-24"
 author: "Luca Berton"

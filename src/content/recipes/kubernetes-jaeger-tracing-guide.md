@@ -1,5 +1,5 @@
 ---
-title: "Jaeger Distributed Tracing Guide"
+title: "Jaeger Tracing Kubernetes Guide"
 description: "Deploy Jaeger for distributed tracing on Kubernetes. Collector, storage backends, sampling strategies, and trace analysis for microservice debugging."
 publishDate: "2026-04-24"
 author: "Luca Berton"

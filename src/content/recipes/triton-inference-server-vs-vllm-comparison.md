@@ -1,6 +1,6 @@
 ---
-title: "Triton Inference Server vs vLLM: Which to Choose"
-description: "Compare NVIDIA Triton Inference Server vs vLLM for LLM serving on Kubernetes. Performance, multi-model support, batching, GPU utilization, and deployment complexity."
+title: "Triton Inference Server vs vLLM: Which to C..."
+description: "Compare NVIDIA Triton Inference Server vs vLLM for LLM serving on Kubernetes. Performance, multi-model support, batching, GPU utilization."
 publishDate: "2026-04-15"
 author: "Luca Berton"
 category: "ai"

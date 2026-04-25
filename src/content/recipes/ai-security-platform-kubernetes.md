@@ -1,6 +1,6 @@
 ---
 title: "AI Security Platforms on Kubernetes"
-description: "Secure AI workloads on Kubernetes. Model supply chain security, prompt injection defense, LLM output filtering, AI RBAC, GPU isolation, and inference API protection."
+description: "Secure AI workloads on Kubernetes. Model supply chain security, prompt injection defense, LLM output filtering, AI RBAC, GPU isolation."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "security"

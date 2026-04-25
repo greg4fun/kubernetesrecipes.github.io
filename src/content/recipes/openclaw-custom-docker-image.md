@@ -1,5 +1,5 @@
 ---
-title: "Build a Custom OpenClaw Docker Image for Kubernetes"
+title: "Build a Custom OpenClaw Docker Image for K8s"
 description: "Create an optimized Docker image for OpenClaw with pre-installed dependencies, custom skills, and workspace files for faster Kubernetes deployments."
 category: "deployments"
 difficulty: "beginner"

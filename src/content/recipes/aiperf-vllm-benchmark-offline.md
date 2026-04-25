@@ -1,6 +1,6 @@
 ---
 title: "AIPerf Offline vLLM Benchmarking"
-description: "Benchmark vLLM inference with AIPerf in air-gapped Kubernetes clusters. Use dummy tokenizers, offline mode, custom endpoints, and server-side token counting for accurate results."
+description: "Benchmark vLLM inference with AIPerf in air-gapped Kubernetes clusters. Use dummy tokenizers, offline mode, custom endpoints."
 publishDate: "2026-04-23"
 author: "Luca Berton"
 category: "ai"

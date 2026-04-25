@@ -1,6 +1,6 @@
 ---
 title: "Kubeflow ML Platform Setup Kubernetes"
-description: "Deploy Kubeflow as a production-ready ML platform on Kubernetes. Notebooks, pipelines, training operators, and model serving with KServe for end-to-end MLOps workflows."
+description: "Deploy Kubeflow as a production-ready ML platform on Kubernetes. Notebooks, pipelines, training operators, and model serving with KServe for end-to-end MLO."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

@@ -1,6 +1,6 @@
 ---
 title: "Node Maintenance and Drain Operations"
-description: "Safely drain Kubernetes nodes for maintenance with cordon, drain, and uncordon. Handle PDBs, DaemonSets, local storage, and grace periods for zero-downtime node updates."
+description: "Safely drain Kubernetes nodes for maintenance with cordon, drain, and uncordon. Handle PDBs, DaemonSets, local storage."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

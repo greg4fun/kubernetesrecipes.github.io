@@ -1,5 +1,5 @@
 ---
-title: "Vertical Pod Autoscaler Setup Guide"
+title: "VPA Setup hack/vpa-up.sh Guide"
 description: "Install and configure VPA on Kubernetes with hack/vpa-up.sh. Recommender, Updater, Admission Controller components and production configuration."
 publishDate: "2026-04-25"
 author: "Luca Berton"

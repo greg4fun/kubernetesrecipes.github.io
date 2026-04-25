@@ -1,6 +1,6 @@
 ---
 title: "Disable OperatorHub Default Sources"
-description: "Disable default OperatorHub catalog sources in OpenShift for air-gapped clusters. Use OperatorHub CR to disable individual or all sources with Ansible automation."
+description: "Disable default OperatorHub catalog sources in OpenShift for air-gapped clusters. Use OperatorHub CR to disable individual or all sources with Ansible auto."
 publishDate: "2026-04-23"
 author: "Luca Berton"
 category: "configuration"

@@ -1,5 +1,5 @@
 ---
-title: "NFS Dynamic Provisioner Guide"
+title: "NFS Dynamic Provisioner Kubernetes"
 description: "Deploy NFS dynamic provisioner for ReadWriteMany storage on Kubernetes. NFS CSI driver, StorageClass configuration, and performance tuning with nconnect."
 publishDate: "2026-04-24"
 author: "Luca Berton"

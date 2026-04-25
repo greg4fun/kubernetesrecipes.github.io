@@ -1,6 +1,6 @@
 ---
 title: "Kustomize Advanced Patterns Kubernetes"
-description: "Advanced Kustomize patterns for Kubernetes configuration management. Strategic merge patches, JSON patches, components, replacements, and multi-environment overlays for production workflows."
+description: "Advanced Kustomize patterns for Kubernetes configuration management. Strategic merge patches, JSON patches, components, replacements."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

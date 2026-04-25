@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "ArgoCD Sync Waves for CRD and Operator Ordering"
+title: "ArgoCD Sync Waves for CRD & Operator Ordering"
 description: "Use ArgoCD sync waves to deploy Custom Resource Definitions before operators and custom resources, preventing CRD race conditions in GitOps pipelines."
 category: "deployments"
 difficulty: "intermediate"

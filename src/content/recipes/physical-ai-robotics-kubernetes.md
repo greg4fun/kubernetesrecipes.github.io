@@ -1,6 +1,6 @@
 ---
-title: "Physical AI and Robotics Orchestration on Kubernetes"
-description: "Orchestrate physical AI and robotics fleets with Kubernetes. ROS 2 on K8s, robot fleet management, edge-cloud hybrid, NVIDIA Isaac, and autonomous system deployment."
+title: "Physical AI and Robotics Orchestration"
+description: "Orchestrate physical AI and robotics fleets with Kubernetes. ROS 2 on K8s, robot fleet management, edge-cloud hybrid, NVIDIA Isaac."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "ai"

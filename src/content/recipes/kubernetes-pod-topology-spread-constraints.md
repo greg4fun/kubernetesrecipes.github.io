@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes topologySpreadConstraints Guide"
-description: "Configure pod topology spread constraints for even distribution across zones, nodes, and racks. maxSkew, topologyKey, whenUnsatisfiable, and scheduling examples."
+description: "Configure pod topology spread constraints for even distribution across zones, nodes, and racks. maxSkew, topologyKey, whenUnsatisfiable."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "deployments"

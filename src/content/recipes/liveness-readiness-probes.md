@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Readiness Probe: Complete YAML Guide"
+title: "K8s Readiness Probe: Complete YAML Guide"
 description: "Kubernetes readiness probe explained with YAML examples. Configure HTTP, TCP, exec, and gRPC readiness probes with liveness and startup probe comparison."
 category: "deployments"
 difficulty: "beginner"

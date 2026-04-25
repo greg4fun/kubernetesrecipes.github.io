@@ -1,6 +1,6 @@
 ---
 title: "OpenTelemetry Collector Kubernetes"
-description: "Deploy the OpenTelemetry Collector on Kubernetes for unified observability. Traces, metrics, and logs pipeline configuration, auto-instrumentation, and backend integration."
+description: "Deploy the OpenTelemetry Collector on Kubernetes for unified observability. Traces, metrics, and logs pipeline configuration, auto-instrumentation."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "observability"

@@ -1,6 +1,6 @@
 ---
 title: "Run:ai Distributed vLLM with NCCL"
-description: "Deploy distributed vLLM inference on Run:ai with NCCL over NVLink and RDMA. Tensor parallelism across GPUs with NCCL debug logging, SR-IOV networking, and offline model serving."
+description: "Deploy distributed vLLM inference on Run:ai with NCCL over NVLink and RDMA. Tensor parallelism across GPUs with NCCL debug logging, SR-IOV networking."
 publishDate: "2026-04-23"
 author: "Luca Berton"
 category: "ai"

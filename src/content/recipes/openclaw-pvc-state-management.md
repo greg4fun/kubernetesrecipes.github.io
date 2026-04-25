@@ -1,5 +1,5 @@
 ---
-title: "OpenClaw Persistent State Management on Kubernetes"
+title: "OpenClaw Persistent State Management"
 description: "Manage OpenClaw agent state and workspace data with Kubernetes PVCs. Init container config seeding, backups, and storage classes."
 publishDate: "2026-03-19"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
 title: "KAITO AI Model Inference Kubernetes"
-description: "Deploy AI models with KAITO (Kubernetes AI Toolchain Operator) for automated GPU provisioning and model serving. Workspace CRD, automatic node provisioning, preset models, and private registry support."
+description: "Deploy AI models with KAITO (Kubernetes AI Toolchain Operator) for automated GPU provisioning and model serving."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

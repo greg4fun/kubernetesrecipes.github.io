@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes 1.35 and 1.36 Upgrade Checklist"
-description: "Kubernetes 1.35 and 1.36 upgrade checklist with deprecated APIs, removed features, new GA capabilities, and step-by-step migration guide for production clusters."
+description: "Kubernetes 1.35 and 1.36 upgrade checklist with deprecated APIs, removed features, new GA capabilities, and step-by-step migration guide for production clu."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "configuration"

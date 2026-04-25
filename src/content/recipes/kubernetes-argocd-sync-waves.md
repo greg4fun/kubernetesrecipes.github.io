@@ -1,5 +1,5 @@
 ---
-title: "ArgoCD Sync Waves and Hooks"
+title: "ArgoCD Sync Waves Hooks Guide"
 description: "Configure ArgoCD sync waves for ordered deployments. Wave ordering, sync hooks, resource health checks, and dependency management patterns."
 publishDate: "2026-04-25"
 author: "Luca Berton"

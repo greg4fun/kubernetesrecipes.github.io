@@ -1,5 +1,5 @@
 ---
-title: "Container Runtime Comparison Guide"
+title: "Container Runtime Comparison K8s"
 description: "Compare Kubernetes container runtimes: containerd vs CRI-O vs Kata Containers. Performance, security, and use cases for each runtime in production."
 publishDate: "2026-04-24"
 author: "Luca Berton"

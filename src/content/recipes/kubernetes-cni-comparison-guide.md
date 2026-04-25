@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes CNI Comparison 2026"
-description: "Compare Kubernetes CNI plugins: Calico, Cilium, Flannel, Multus, and OVN-Kubernetes. Performance benchmarks, features, and when to use each for production clusters."
+title: "CNI Comparison 2026 Kubernetes"
+description: "Compare Kubernetes CNI plugins: Calico, Cilium, Flannel, Multus, and OVN-Kubernetes. Performance benchmarks, features."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "networking"

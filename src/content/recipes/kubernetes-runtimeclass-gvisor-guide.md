@@ -1,6 +1,6 @@
 ---
-title: "RuntimeClass gVisor Kubernetes Guide"
-description: "Deploy gVisor as a sandboxed container runtime on Kubernetes using RuntimeClass. Installation, runsc configuration, and security isolation for untrusted workloads."
+title: "RuntimeClass gVisor Kubernetes"
+description: "Deploy gVisor as a sandboxed container runtime on Kubernetes using RuntimeClass. Installation, runsc configuration."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "security"

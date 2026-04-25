@@ -1,6 +1,6 @@
 ---
 title: "Automate Secret and Key Rotation in Kubernetes"
-description: "Automate TLS certificate and secret key rotation in Kubernetes. CronJob-based rotation, external-secrets-operator, cert-manager auto-renewal, and HashiCorp Vault integration."
+description: "Automate TLS certificate and secret key rotation in Kubernetes. CronJob-based rotation, external-secrets-operator, cert-manager auto-renewal."
 publishDate: "2026-04-17"
 author: "Luca Berton"
 category: "security"

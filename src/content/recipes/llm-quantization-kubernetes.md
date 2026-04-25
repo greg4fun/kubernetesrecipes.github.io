@@ -1,5 +1,5 @@
 ---
-title: "Quantize LLMs for Efficient GPU Inference on Kubernetes"
+title: "Quantize LLMs for Efficient GPU Inference"
 description: "Run quantized LLM models (GPTQ, AWQ, GGUF) on Kubernetes to reduce GPU memory requirements and serve models on smaller GPUs."
 category: "ai"
 difficulty: "intermediate"

@@ -1,5 +1,5 @@
 ---
-title: "CoreDNS Custom Configuration"
+title: "CoreDNS Custom Config Kubernetes"
 description: "Customize CoreDNS on Kubernetes for advanced DNS needs. Forward zones, stub domains, custom records, caching tuning, and DNS debugging."
 publishDate: "2026-04-25"
 author: "Luca Berton"

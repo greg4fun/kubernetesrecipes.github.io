@@ -1,6 +1,6 @@
 ---
 title: "GitLab Runner Helm Kubernetes Executor"
-description: "Deploy GitLab Runner on Kubernetes with Helm. Configure concurrent jobs, internal registry, PodMonitor metrics, scale-to-zero, security contexts, and runner config template."
+description: "Deploy GitLab Runner on Kubernetes with Helm. Configure concurrent jobs, internal registry, PodMonitor metrics, scale-to-zero, security contexts."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

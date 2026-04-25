@@ -1,6 +1,6 @@
 ---
-title: "Data Sovereignty and Geopatriation on Kubernetes"
-description: "Implement data sovereignty and geopatriation on Kubernetes. Multi-region clusters, data residency policies, sovereign cloud, GDPR compliance, and federated workloads."
+title: "Data Sovereignty and Geopatriation"
+description: "Implement data sovereignty and geopatriation on Kubernetes. Multi-region clusters, data residency policies, sovereign cloud, GDPR compliance."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "security"

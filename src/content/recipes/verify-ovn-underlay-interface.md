@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "Verify Which Interface Carries OVN Underlay Traffic"
+title: "Verify Which Interface Carries OVN Underlay..."
 description: "Confirm the actual OVN underlay network path by checking ovn-encap-ip, bridge port ownership, and physical route associations on Kubernetes nodes."
 category: "networking"
 difficulty: "intermediate"

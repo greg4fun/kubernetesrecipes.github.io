@@ -1,5 +1,5 @@
 ---
-title: "Argo Rollouts Progressive Delivery"
+title: "Argo Rollouts Canary Blue-Green K8s"
 description: "Progressive delivery with Argo Rollouts on Kubernetes. Canary, blue-green, analysis templates, and experiment-based promotion for safe deployments."
 publishDate: "2026-04-24"
 author: "Luca Berton"

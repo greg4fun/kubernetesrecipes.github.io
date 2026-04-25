@@ -1,5 +1,5 @@
 ---
-title: "Enterprise Container Image Governance on Kubernetes"
+title: "Enterprise Container Image Governance"
 description: "Enforce image policies with admission controllers. Require signed images, block public registries, and automate vulnerability scanning gates."
 publishDate: "2026-04-08"
 author: "Luca Berton"

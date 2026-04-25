@@ -1,6 +1,6 @@
 ---
 title: "Fix 502 Bad Gateway in Kubernetes"
-description: "Troubleshoot and fix 502 Bad Gateway errors in Kubernetes. Causes include pod readiness timing, ingress misconfiguration, upstream timeouts, and connection draining."
+description: "Troubleshoot and fix 502 Bad Gateway errors in Kubernetes. Causes include pod readiness timing, ingress misconfiguration, upstream timeouts."
 category: "troubleshooting"
 publishDate: "2026-04-20"
 author: "Luca Berton"

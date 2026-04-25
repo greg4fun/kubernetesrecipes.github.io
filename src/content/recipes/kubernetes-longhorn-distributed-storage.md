@@ -1,5 +1,5 @@
 ---
-title: "Longhorn Distributed Storage"
+title: "Longhorn Distributed Storage K8s"
 description: "Deploy Longhorn for distributed block storage on Kubernetes. Replicated volumes, snapshots, backups, and disaster recovery for bare-metal clusters."
 publishDate: "2026-04-24"
 author: "Luca Berton"

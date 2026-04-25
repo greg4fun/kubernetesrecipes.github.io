@@ -1,5 +1,5 @@
 ---
-title: "RBAC Audit and Review Guide"
+title: "RBAC Audit Review Kubernetes Guide"
 description: "Audit Kubernetes RBAC permissions for security compliance. Identify over-permissioned roles, service account privileges, and least-privilege enforcement."
 publishDate: "2026-04-25"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "OpenClaw Resource Limits and Tuning on Kubernetes"
+title: "OpenClaw Resource Limits and Tuning"
 description: "Size CPU, memory, and storage for OpenClaw on Kubernetes. Tuning profiles for light usage, browser automation, and production deployments."
 publishDate: "2026-03-19"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "Enterprise GitOps at Scale with Fleet Management"
+title: "Enterprise GitOps at Scale with Fleet Mgmt"
 description: "Manage hundreds of Kubernetes clusters with ArgoCD ApplicationSets, Flux multi-cluster, and fleet-wide policy enforcement using GitOps principles."
 publishDate: "2026-04-08"
 author: "Luca Berton"

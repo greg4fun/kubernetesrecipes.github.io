@@ -1,6 +1,6 @@
 ---
 title: "AI Inference Optimization Kubernetes"
-description: "Optimize AI inference performance on Kubernetes. Request batching, KV cache tuning, speculative decoding, continuous batching, and hardware-specific optimizations for NVIDIA GPUs."
+description: "Optimize AI inference performance on Kubernetes. Request batching, KV cache tuning, speculative decoding, continuous batching."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

@@ -1,5 +1,5 @@
 ---
-title: "How to Use Kustomize for Configuration Management"
+title: "Use Kustomize for Configuration Management"
 description: "Manage Kubernetes configurations with Kustomize overlays. Customize base manifests for different environments without template duplication."
 category: "configuration"
 difficulty: "intermediate"

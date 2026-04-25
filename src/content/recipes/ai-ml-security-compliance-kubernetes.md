@@ -1,6 +1,6 @@
 ---
 title: "AI ML Security and Compliance Kubernetes"
-description: "Secure AI and ML workloads on Kubernetes with model encryption, data governance, audit logging, network isolation for training jobs, and compliance frameworks for regulated industries."
+description: "Secure AI and ML workloads on Kubernetes with model encryption, data governance, audit logging, network isolation for training jobs."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"

@@ -1,6 +1,6 @@
 ---
 title: "NCCL SR-IOV GDS PyTorch Configuration"
-description: "Configure NCCL with SR-IOV RDMA and GPUDirect Storage on Kubernetes. PyTorch 25.11 container with NCCL 2.28, CUDA 13, MOFED 5.4, GDRCopy 2.5, and multi-node torchrun."
+description: "Configure NCCL with SR-IOV RDMA and GPUDirect Storage on Kubernetes. PyTorch 25.11 container with NCCL 2.28, CUDA 13, MOFED 5.4, GDRCopy 2."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

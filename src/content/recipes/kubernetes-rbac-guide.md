@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes RBAC: Roles, ClusterRoles, and Bindings"
+title: "K8s RBAC: Roles, ClusterRoles, and Bindings"
 description: "Configure Kubernetes RBAC with Roles, ClusterRoles, RoleBindings, and service accounts. Least privilege access control for users, groups, and applications."
 category: "security"
 difficulty: "intermediate"

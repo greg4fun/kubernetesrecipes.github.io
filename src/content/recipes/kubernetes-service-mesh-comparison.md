@@ -1,6 +1,6 @@
 ---
 title: "Service Mesh Comparison Kubernetes"
-description: "Compare Istio, Linkerd, and Cilium service mesh for Kubernetes. mTLS, observability, traffic management, resource overhead, and sidecar vs sidecar-less architectures."
+description: "Compare Istio, Linkerd, and Cilium service mesh for Kubernetes. mTLS, observability, traffic management, resource overhead."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "networking"

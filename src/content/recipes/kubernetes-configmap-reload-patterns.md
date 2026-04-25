@@ -1,6 +1,6 @@
 ---
 title: "ConfigMap Reload Patterns Kubernetes"
-description: "Implement automatic ConfigMap reload in Kubernetes using volume projection, Reloader operator, checksum annotations, and inotify sidecars. No pod restart required."
+description: "Implement automatic ConfigMap reload in Kubernetes using volume projection, Reloader operator, checksum annotations, and inotify sidecars."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

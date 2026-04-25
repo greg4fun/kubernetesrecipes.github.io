@@ -1,5 +1,5 @@
 ---
-title: "TPU Allocation with Dynamic Resource Allocation"
+title: "TPU Allocation Dynamic Resource Allocation"
 description: "Configure Google Cloud TPUs in Kubernetes using DRA for flexible allocation, multi-slice workloads, and optimized machine learning training"
 category: "configuration"
 difficulty: "advanced"

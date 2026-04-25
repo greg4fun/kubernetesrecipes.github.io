@@ -1,5 +1,5 @@
 ---
-title: "Batch AI Workloads with Volcano Scheduler on Kubernetes"
+title: "Batch AI Workloads with Volcano Scheduler"
 description: "Volcano gang scheduling on Kubernetes: batch AI training, fair-share queues, minAvailable, job plugins, and GPU preemption. Complete setup guide."
 category: "ai"
 difficulty: "advanced"

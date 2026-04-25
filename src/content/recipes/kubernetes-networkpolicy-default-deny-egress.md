@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes NetworkPolicy Default Deny Egress"
-description: "Implement Kubernetes NetworkPolicy default deny egress rules. Block all outbound traffic, then allow specific destinations: DNS, external APIs, and internal services."
+description: "Implement Kubernetes NetworkPolicy default deny egress rules. Block all outbound traffic, then allow specific destinations: DNS, external APIs."
 category: "security"
 publishDate: "2026-04-20"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "OpenShift IDMS and install-config.yaml Mirror Registry"
+title: "OpenShift IDMS & install-config.yaml Mirror..."
 description: "Configure ImageDigestMirrorSet and install-config.yaml imageContentSources for OpenShift disconnected installations with mirror registries."
 category: "deployments"
 difficulty: "advanced"

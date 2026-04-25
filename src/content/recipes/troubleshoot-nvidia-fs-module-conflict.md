@@ -1,5 +1,5 @@
 ---
-title: "Troubleshoot nvidia-fs Module Conflict on OpenShift"
+title: "Fix nvidia-fs Module Conflict on OpenShift"
 description: "Diagnose and fix the 'insmod: ERROR: could not insert module nvidia-fs.ko: File exists' error when enabling GPUDirect Storage with the NVIDIA GPU Operator."
 category: "troubleshooting"
 difficulty: "advanced"

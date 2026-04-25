@@ -1,6 +1,6 @@
 ---
 title: "Databases on K8s: Memory Overcommit"
-description: "Why vm.overcommit_memory must be disabled for production databases on Kubernetes. Configure guaranteed QoS, disable swap, and prevent OOM kills on PostgreSQL, Redis, and MySQL."
+description: "Why vm.overcommit_memory must be disabled for production databases on Kubernetes. Configure guaranteed QoS, disable swap."
 publishDate: "2026-04-22"
 author: "Luca Berton"
 category: "configuration"

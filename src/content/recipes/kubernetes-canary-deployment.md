@@ -1,6 +1,6 @@
 ---
 title: "Canary Deployment in Kubernetes"
-description: "deployments"
+description: "Production guide for canary deployment in kubernetes. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "deployments"
 difficulty: "Implement canary deployments in Kubernetes to gradually roll out changes. Covers native K8s, Argo Rollouts, Istio traffic splitting, and automated analysis."
 publishDate: "2026-04-05"

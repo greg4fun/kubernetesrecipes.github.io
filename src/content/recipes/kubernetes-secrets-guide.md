@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Secrets Complete Guide"
-description: "security"
+description: "Production guide for kubernetes secrets complete guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "security"
 difficulty: "Manage Kubernetes Secrets for passwords, tokens, and certificates. Covers creation, encryption at rest, external secret operators, and security best practices."
 publishDate: "2026-04-07"

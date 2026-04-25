@@ -1,6 +1,6 @@
 ---
 title: "ModelMesh Multi-Model Serving Kubernetes"
-description: "Deploy hundreds of ML models on shared GPU infrastructure with ModelMesh. Intelligent model loading and unloading, memory management, routing, and cost optimization for multi-tenant inference."
+description: "Deploy hundreds of ML models on shared GPU infrastructure with ModelMesh. Intelligent model loading and unloading, memory management, routing."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

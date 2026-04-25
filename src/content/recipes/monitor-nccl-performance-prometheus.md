@@ -1,5 +1,5 @@
 ---
-title: "Monitor NCCL Benchmark Runs with Prometheus and Grafana"
+title: "Monitor NCCL Benchmark Runs Prometheus & Gr..."
 description: "Track NCCL benchmark outcomes and GPU telemetry over time with Prometheus and Grafana dashboards to detect communication regressions early."
 category: "observability"
 difficulty: "intermediate"

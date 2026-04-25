@@ -1,6 +1,6 @@
 ---
 title: "DaemonSet Update Strategies Kubernetes"
-description: "Configure DaemonSet rolling updates with maxUnavailable, OnDelete strategy, partition rollouts, and canary updates for node-level workloads like log collectors and CNI plugins."
+description: "Configure DaemonSet rolling updates with maxUnavailable, OnDelete strategy, partition rollouts, and canary updates for node-level workloads like log collec."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

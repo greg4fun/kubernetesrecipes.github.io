@@ -1,6 +1,6 @@
 ---
-title: "CRD Development Best Practices"
-description: "Design and implement Kubernetes Custom Resource Definitions. Schema validation, status subresource, printer columns, conversion webhooks, and versioning strategies."
+title: "CRD Development Kubernetes Guide"
+description: "Design and implement Kubernetes Custom Resource Definitions. Schema validation, status subresource, printer columns, conversion webhooks."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

@@ -1,6 +1,6 @@
 ---
 title: "Argo Workflows on Kubernetes"
-description: "deployments"
+description: "Production guide for argo workflows on kubernetes. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "deployments"
 difficulty: "Run CI/CD pipelines and data workflows with Argo Workflows on Kubernetes. Create DAG-based workflows, parallel steps, artifact passing, and cron workflows."
 publishDate: "2026-04-07"

@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Backup and Disaster Recovery with Velero"
+title: "K8s Backup and Disaster Recovery with Velero"
 description: "Implement comprehensive backup and disaster recovery strategies for Kubernetes clusters using Velero to protect workloads, configurations, and."
 category: "storage"
 difficulty: "intermediate"

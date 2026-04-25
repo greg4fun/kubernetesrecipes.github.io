@@ -1,6 +1,6 @@
 ---
 title: "Sovereign Air-Gapped Kubernetes Clusters"
-description: "Deploy sovereign and air-gapped Kubernetes clusters. Offline installation, private registry mirrors, disconnected GitOps, sovereign cloud, and compliance patterns."
+description: "Deploy sovereign and air-gapped Kubernetes clusters. Offline installation, private registry mirrors, disconnected GitOps, sovereign cloud."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "security"

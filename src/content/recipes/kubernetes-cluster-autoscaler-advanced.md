@@ -1,6 +1,6 @@
 ---
-title: "Advanced Cluster Autoscaler Configuration and Tuning"
-description: "Fine-tune the Kubernetes Cluster Autoscaler with expanders, priority-based scaling, mixed instance policies, and GPU node pool autoscaling for production clusters."
+title: "Advanced Cluster Autoscaler Config & Tuning"
+description: "Fine-tune the Kubernetes Cluster Autoscaler with expanders, priority-based scaling, mixed instance policies, and GPU node pool autoscaling for production c."
 category: "autoscaling"
 difficulty: "advanced"
 publishDate: "2026-04-07"

@@ -1,6 +1,6 @@
 ---
 title: "CronJob Best Practices Kubernetes"
-description: "Configure Kubernetes CronJobs with concurrency policies, failure handling, timezone scheduling, and resource limits. Avoid common pitfalls with startingDeadlineSeconds."
+description: "Configure Kubernetes CronJobs with concurrency policies, failure handling, timezone scheduling, and resource limits."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

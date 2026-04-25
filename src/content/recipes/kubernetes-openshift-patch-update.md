@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes and OpenShift Patch Updates"
-description: "Apply patch updates to Kubernetes and OpenShift clusters safely. Patch version upgrades for control plane, kubeadm, kubelet, and OpenShift errata with zero downtime."
+description: "Apply patch updates to Kubernetes and OpenShift clusters safely. Patch version upgrades for control plane, kubeadm, kubelet."
 publishDate: "2026-04-16"
 author: "Luca Berton"
 category: "deployments"

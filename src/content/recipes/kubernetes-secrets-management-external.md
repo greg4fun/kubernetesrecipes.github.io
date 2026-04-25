@@ -1,6 +1,6 @@
 ---
 title: "External Secrets Management Kubernetes"
-description: "Integrate Kubernetes with external secret stores using External Secrets Operator. Sync secrets from HashiCorp Vault, AWS Secrets Manager, Azure Key Vault, and GCP Secret Manager."
+description: "Integrate Kubernetes with external secret stores using External Secrets Operator. Sync secrets from HashiCorp Vault, AWS Secrets Manager, Azure Key Vault."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"

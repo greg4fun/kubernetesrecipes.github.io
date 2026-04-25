@@ -1,5 +1,5 @@
 ---
-title: "KIND Local Development Guide"
+title: "KIND Local Kubernetes Dev Guide"
 description: "Use KIND for local Kubernetes development. Multi-node clusters, ingress setup, load balancer, persistent storage, and CI/CD integration."
 publishDate: "2026-04-25"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "CSI Driver Development Guide"
+title: "Build Custom CSI Drivers Kubernetes"
 description: "Develop custom Container Storage Interface drivers for Kubernetes. CSI spec, controller and node plugins, volume lifecycle, and testing with csi-sanity."
 publishDate: "2026-04-24"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "Run NCCL Tests on Kubernetes for GPU Network Validation"
+title: "Run NCCL Tests for GPU Network Validation"
 description: "Benchmark GPU-to-GPU communication using NVIDIA nccl-tests on Kubernetes or OpenShift to validate bandwidth and latency."
 category: "ai"
 difficulty: "intermediate"

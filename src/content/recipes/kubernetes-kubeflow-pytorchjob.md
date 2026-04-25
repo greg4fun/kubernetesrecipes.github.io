@@ -1,5 +1,5 @@
 ---
-title: "Kubeflow PyTorchJob Training Guide"
+title: "Kubeflow PyTorchJob Training K8s"
 description: "Run distributed PyTorch training on Kubernetes with Kubeflow PyTorchJob. ElasticPolicy, nproc_per_node, RDMA configuration, and multi-GPU scaling."
 publishDate: "2026-04-25"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Liveness Probe Best Practices"
-description: "Configure Kubernetes liveness probes correctly. Best practices for httpGet, exec, and tcpSocket probes. Avoid database checks, thundering herd, and common anti-patterns."
+description: "Configure Kubernetes liveness probes correctly. Best practices for httpGet, exec, and tcpSocket probes. Avoid database checks, thundering herd."
 category: "configuration"
 publishDate: "2026-04-20"
 author: "Luca Berton"

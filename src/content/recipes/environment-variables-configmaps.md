@@ -1,5 +1,5 @@
 ---
-title: "How to Configure Environment Variables and ConfigMaps"
+title: "Configure Environment Variables and ConfigMaps"
 description: "Manage application configuration with environment variables and ConfigMaps. Learn injection methods, mounting as files, and dynamic configuration updates."
 category: "configuration"
 difficulty: "beginner"

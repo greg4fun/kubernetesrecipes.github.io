@@ -1,5 +1,5 @@
 ---
-title: "Fix Pending Pods Kubernetes"
+title: "Fix Pending Pods Kubernetes Guide"
 description: "Troubleshoot Kubernetes pods stuck in Pending state. Insufficient resources, node selector mismatch, PVC binding, taints, and scheduling failures."
 publishDate: "2026-04-25"
 author: "Luca Berton"

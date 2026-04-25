@@ -1,5 +1,5 @@
 ---
-title: "Validate GPUDirect RDMA Performance with DMA-BUF"
+title: "Validate GPUDirect RDMA Performance DMA-BUF"
 description: "Run ib_write_bw with CUDA DMA-BUF to verify GPUDirect RDMA data transfer rates between GPU pods and validate network operator configuration."
 category: "networking"
 difficulty: "advanced"

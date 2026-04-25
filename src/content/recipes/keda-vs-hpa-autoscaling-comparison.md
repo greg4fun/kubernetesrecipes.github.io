@@ -1,5 +1,5 @@
 ---
-title: "KEDA vs HPA: Event-Driven Autoscaling Explained"
+title: "KEDA vs HPA: Event-Driven Autoscaling Expla..."
 description: "Compare KEDA and HPA for Kubernetes autoscaling. Scale on Kafka lag, Prometheus metrics, queue depth, cron, and custom events. KEDA vs HPA decision guide."
 publishDate: "2026-04-12"
 author: "Luca Berton"

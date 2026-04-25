@@ -1,6 +1,6 @@
 ---
 title: "Run:ai Topology-Aware Scheduling Deep Dive"
-description: "Configure Run:ai topology-aware scheduling for distributed AI workloads. Multi-level hierarchies, required vs preferred placement, LeaderWorkerSet, and GB200 NVLink domains."
+description: "Configure Run:ai topology-aware scheduling for distributed AI workloads. Multi-level hierarchies, required vs preferred placement, LeaderWorkerSet."
 publishDate: "2026-04-10"
 author: "Luca Berton"
 category: "ai"

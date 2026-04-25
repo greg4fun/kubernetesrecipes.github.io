@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Security Checklist 2026"
+title: "Security Checklist Kubernetes 2026"
 description: "Complete Kubernetes security checklist for 2026. RBAC, network policies, pod security, image scanning, secrets, and compliance hardening steps."
 publishDate: "2026-04-25"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
-title: "Troubleshooting Pods with GPU Devices on Kubernetes"
-description: "Fix GPU device issues in Kubernetes pods. Troubleshoot device plugin errors, DRA claims, CUDA failures, driver mismatches, and GPU scheduling problems step by step."
+title: "Troubleshooting Pods with GPU Devices"
+description: "Fix GPU device issues in Kubernetes pods. Troubleshoot device plugin errors, DRA claims, CUDA failures, driver mismatches."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "troubleshooting"

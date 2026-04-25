@@ -1,5 +1,5 @@
 ---
-title: "Helm Library Charts Guide"
+title: "Helm Library Charts Reusable Guide"
 description: "Create reusable Helm library charts for Kubernetes. Shared templates, named templates, and standardizing deployments across teams with common patterns."
 publishDate: "2026-04-24"
 author: "Luca Berton"

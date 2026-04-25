@@ -1,6 +1,6 @@
 ---
-title: "Distributed fio Storage Benchmarking on Kubernetes and OpenShift"
-description: "Run distributed fio benchmarks on Kubernetes and OpenShift to test storage performance at scale. Covers fio-distributed with k8s Jobs, Red Hat dbench, and CSI throughput validation."
+title: "Distributed fio Storage Benchmark K8s"
+description: "Run distributed fio benchmarks on Kubernetes and OpenShift to test storage performance at scale. Covers fio-distributed with k8s Jobs, Red Hat dbench."
 category: "storage"
 difficulty: "advanced"
 publishDate: "2026-04-07"

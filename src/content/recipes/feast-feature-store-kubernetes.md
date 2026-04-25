@@ -1,6 +1,6 @@
 ---
 title: "Feast Feature Store Kubernetes"
-description: "Deploy Feast feature store on Kubernetes for ML feature management. Offline and online stores, feature serving, point-in-time joins, and feature freshness monitoring."
+description: "Deploy Feast feature store on Kubernetes for ML feature management. Offline and online stores, feature serving, point-in-time joins."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

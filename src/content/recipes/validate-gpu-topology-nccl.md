@@ -1,5 +1,5 @@
 ---
-title: "Validate GPU and NIC Topology Before NCCL Benchmarks"
+title: "Validate GPU & NIC Topology Before NCCL Ben..."
 description: "Inspect node-level GPU, NIC, and PCI topology on Kubernetes workers to predict and explain NCCL benchmark performance before running tests."
 category: "troubleshooting"
 difficulty: "intermediate"

@@ -1,5 +1,5 @@
 ---
-title: "OpenTelemetry on Kubernetes: Traces, Metrics, Logs"
+title: "OpenTelemetry on K8s: Traces, Metrics, Logs"
 description: "Deploy OpenTelemetry Collector on Kubernetes for unified observability. Collect traces, metrics, and logs with auto-instrumentation and export to any backend."
 category: "observability"
 difficulty: "intermediate"

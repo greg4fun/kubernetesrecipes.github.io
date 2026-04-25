@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes OIDC Integration with Enterprise SSO"
+title: "K8s OIDC Integration with Enterprise SSO"
 description: "Configure Kubernetes API server OIDC authentication with Keycloak, Azure AD, or Okta for enterprise single sign-on and group-based RBAC."
 publishDate: "2026-04-08"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
-title: "Extended Resources and RDMA Shared Device Plugin"
-description: "Kubernetes extended resources for RDMA devices using the shared device plugin. Advertise and schedule InfiniBand and RoCE NICs without SR-IOV using k8s-rdma-shared-dev-plugin."
+title: "Extended Resources & RDMA Shared Device Plugin"
+description: "Kubernetes extended resources for RDMA devices using the shared device plugin. Advertise and schedule InfiniBand and RoCE NICs without SR-IOV using k8s-rdm."
 publishDate: "2026-04-17"
 author: "Luca Berton"
 category: "networking"

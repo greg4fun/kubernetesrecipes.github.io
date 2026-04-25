@@ -1,5 +1,5 @@
 ---
-title: "OpenClaw Multi-Agent Team Deployment on Kubernetes"
+title: "OpenClaw Multi-Agent Team Deployment"
 description: "Deploy multiple specialized OpenClaw agents as Kubernetes pods. Dedicated DevOps, security, and writing agents with shared workspace."
 publishDate: "2026-03-19"
 author: "Luca Berton"

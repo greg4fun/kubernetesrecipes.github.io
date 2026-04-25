@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Headless Service Explained"
-description: "networking"
+description: "Production guide for kubernetes headless service explained. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "networking"
 difficulty: "Create Kubernetes headless services for StatefulSet DNS, direct pod addressing, and service discovery. Understand when clusterIP None is the right choice."
 publishDate: "2026-04-05"

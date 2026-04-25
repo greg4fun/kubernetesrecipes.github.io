@@ -1,5 +1,5 @@
 ---
-title: "How ITMS Updates registries.conf via MachineConfig"
+title: "How ITMS Updates registries.conf via Machin..."
 description: "How ITMS and IDMS update /etc/containers/registries.conf on immutable CoreOS nodes via MCO and MachineConfig. Full chain deep-dive."
 category: "configuration"
 difficulty: "advanced"

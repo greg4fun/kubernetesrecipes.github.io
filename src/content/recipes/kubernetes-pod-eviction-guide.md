@@ -1,5 +1,5 @@
 ---
-title: "Pod Eviction Troubleshooting Guide"
+title: "Fix Pod Eviction Kubernetes Guide"
 description: "Troubleshoot Kubernetes pod evictions. DiskPressure, MemoryPressure, ephemeral storage limits, and eviction thresholds configuration."
 publishDate: "2026-04-25"
 author: "Luca Berton"

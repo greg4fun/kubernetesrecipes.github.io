@@ -1,6 +1,6 @@
 ---
 title: "Custom Metrics with Prometheus Adapter"
-description: "Expose application metrics to Kubernetes HPA via Prometheus Adapter. Configure custom.metrics.k8s.io for HTTP requests per second, queue depth, and GPU utilization scaling."
+description: "Expose application metrics to Kubernetes HPA via Prometheus Adapter. Configure custom.metrics.k8s.io for HTTP requests per second, queue depth."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "autoscaling"

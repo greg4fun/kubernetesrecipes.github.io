@@ -1,5 +1,5 @@
 ---
-title: "Cluster Autoscaler Configuration"
+title: "Cluster Autoscaler Kubernetes Guide"
 description: "Configure Kubernetes Cluster Autoscaler for automatic node scaling. Scale-down delay, expanders, priority, and integration with cloud providers."
 publishDate: "2026-04-25"
 author: "Luca Berton"

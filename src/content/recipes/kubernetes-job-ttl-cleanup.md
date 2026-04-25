@@ -1,5 +1,5 @@
 ---
-title: "Job TTL and Cleanup Automation"
+title: "Job TTL Cleanup Kubernetes Guide"
 description: "Automate Kubernetes Job cleanup with TTL controller. ttlSecondsAfterFinished, CronJob history limits, and preventing completed Job accumulation."
 publishDate: "2026-04-24"
 author: "Luca Berton"

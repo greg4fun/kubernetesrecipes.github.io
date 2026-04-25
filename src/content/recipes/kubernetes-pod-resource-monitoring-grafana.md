@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Pod Resource Monitoring with Grafana"
-description: "Monitor Kubernetes pod CPU and memory with Grafana dashboards. Prometheus queries for resource usage, request vs limit tracking, and container performance alerting."
+title: "K8s Pod Resource Monitoring with Grafana"
+description: "Monitor Kubernetes pod CPU and memory with Grafana dashboards. Prometheus queries for resource usage, request vs limit tracking."
 publishDate: "2026-04-13"
 author: "Luca Berton"
 category: "observability"

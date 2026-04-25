@@ -1,5 +1,5 @@
 ---
-title: "Kueue for Batch Jobs and GPU Queues on Kubernetes"
+title: "Kueue for Batch Jobs and GPU Queues"
 description: "Use Kueue to manage batch job queues on Kubernetes. GPU quota, fair sharing, priority queues, ML training workloads, and multi-tenant cluster scheduling."
 publishDate: "2026-04-12"
 author: "Luca Berton"

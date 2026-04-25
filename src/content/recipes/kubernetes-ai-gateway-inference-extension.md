@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes AI Gateway: Inference Extension Guide"
-description: "Use the Kubernetes AI Gateway and Inference Extension to route LLM traffic. Model-aware routing, load balancing across inference backends, and Gateway API for AI workloads."
+title: "K8s AI Gateway: Inference Extension Guide"
+description: "Use the Kubernetes AI Gateway and Inference Extension to route LLM traffic. Model-aware routing, load balancing across inference backends."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "ai"

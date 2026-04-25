@@ -1,5 +1,5 @@
 ---
-title: "ClusterClass: Reusable Cluster Templates in CAPI"
+title: "ClusterClass: Reusable Cluster Templates in..."
 description: "Define reusable ClusterClass templates in Cluster API for consistent multi-cluster provisioning. Variables, patches, and topology-based cluster creation."
 publishDate: "2026-04-13"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "DNS Debugging Guide Kubernetes"
+title: "DNS Debugging Kubernetes Guide"
 description: "Debug Kubernetes DNS issues systematically. CoreDNS troubleshooting, ndots configuration, search domains, and resolving slow DNS lookups."
 publishDate: "2026-04-24"
 author: "Luca Berton"

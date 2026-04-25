@@ -1,5 +1,5 @@
 ---
-title: "Dynamic Resource Allocation for GPUs on Kubernetes"
+title: "Dynamic Resource Allocation for GPUs"
 description: "Use Kubernetes Dynamic Resource Allocation to schedule GPUs. DRA ResourceClaims, partitionable devices, GPU sharing, and structured parameters for accelerators."
 publishDate: "2026-04-12"
 author: "Luca Berton"

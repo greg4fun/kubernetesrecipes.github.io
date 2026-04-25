@@ -1,6 +1,6 @@
 ---
 title: "VPA Resource Right-Sizing Kubernetes"
-description: "Use Vertical Pod Autoscaler to right-size Kubernetes resource requests and limits. Off mode for recommendations, Auto mode for live adjustment, and integration with HPA for combined scaling."
+description: "Use Vertical Pod Autoscaler to right-size Kubernetes resource requests and limits. Off mode for recommendations, Auto mode for live adjustment."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "autoscaling"

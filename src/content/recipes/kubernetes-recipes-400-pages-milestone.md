@@ -1,5 +1,5 @@
 ---
-title: "400 Recipes Milestone: What We Built and What's Next"
+title: "400 Recipes Milestone: What We Built & What..."
 description: "Kubernetes Recipes reaches 400 articles. Explore new AI/GPU infrastructure, NVIDIA networking, ArgoCD GitOps, OpenShift, and RHACS security recipes."
 publishDate: "2026-03-17"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
 title: "RBAC Least Privilege Kubernetes"
-description: "Configure Kubernetes RBAC with least-privilege Roles, ClusterRoles, and service account bindings. Audit permissions, restrict secrets access, and namespace-scoped roles."
+description: "Configure Kubernetes RBAC with least-privilege Roles, ClusterRoles, and service account bindings. Audit permissions, restrict secrets access."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"

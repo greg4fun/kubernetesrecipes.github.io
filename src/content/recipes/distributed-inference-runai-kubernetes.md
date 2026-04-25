@@ -1,5 +1,5 @@
 ---
-title: "Distributed Inference on Kubernetes with Run:ai"
+title: "Distributed Inference with Run:ai"
 description: "Deploy distributed AI inference with NVIDIA Run:ai on Kubernetes. Single-node Knative, multinode LeaderWorkerSet, NIM, autoscaling, and observability."
 publishDate: "2026-04-08"
 author: "Luca Berton"

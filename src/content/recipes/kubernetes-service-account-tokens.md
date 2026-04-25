@@ -1,6 +1,6 @@
 ---
-title: "Service Account Token Management"
-description: "Manage Kubernetes service account tokens securely. Projected volumes, bound tokens, token request API, and eliminating long-lived tokens for zero-trust authentication."
+title: "Service Account Tokens Kubernetes"
+description: "Manage Kubernetes service account tokens securely. Projected volumes, bound tokens, token request API, and eliminating long-lived tokens for zero-trust aut."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"

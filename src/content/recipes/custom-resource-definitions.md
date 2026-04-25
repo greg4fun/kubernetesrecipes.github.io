@@ -1,5 +1,5 @@
 ---
-title: "How to Create Custom Resource Definitions (CRDs)"
+title: "Create Custom Resource Definitions (CRDs)"
 description: "Extend Kubernetes API with Custom Resource Definitions. Define custom objects, configure validation schemas, and manage CRD lifecycle."
 category: "configuration"
 difficulty: "advanced"

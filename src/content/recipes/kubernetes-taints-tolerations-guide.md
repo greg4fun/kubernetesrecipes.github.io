@@ -1,5 +1,5 @@
 ---
-title: "Taints and Tolerations Guide"
+title: "Taints Tolerations Kubernetes Guide"
 description: "Configure Kubernetes taints and tolerations for node scheduling. NoSchedule, PreferNoSchedule, NoExecute, and dedicated node patterns."
 publishDate: "2026-04-25"
 author: "Luca Berton"

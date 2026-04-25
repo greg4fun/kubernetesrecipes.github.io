@@ -1,5 +1,5 @@
 ---
-title: "OpenClaw Multi-Model Provider Setup on Kubernetes"
+title: "OpenClaw Multi-Model Provider Setup"
 description: "Configure OpenClaw with multiple AI providers on Kubernetes. Anthropic, OpenAI, Gemini, OpenRouter with fallback chains and cost control."
 publishDate: "2026-03-19"
 author: "Luca Berton"

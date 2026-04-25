@@ -1,5 +1,5 @@
 ---
-title: "How to Use Kubernetes Leases for Leader Election"
+title: "How to Use K8s Leases for Leader Election"
 description: "Implement distributed coordination with Kubernetes Leases. Configure leader election, distributed locks, and high availability patterns."
 category: "deployments"
 difficulty: "advanced"

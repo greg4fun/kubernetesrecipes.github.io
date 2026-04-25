@@ -1,6 +1,6 @@
 ---
-title: "NMState and nmstatectl: Node Network Management"
-description: "Manage node networking with NMState declarative API and nmstatectl CLI. Create NodeNetworkConfigurationPolicy manifests, verify with nmstatectl, troubleshoot state."
+title: "NMState & nmstatectl: Node Network Management"
+description: "Manage node networking with NMState declarative API and nmstatectl CLI. Create NodeNetworkConfigurationPolicy manifests, verify with nmstatectl."
 publishDate: "2026-04-19"
 author: "Luca Berton"
 category: "networking"

@@ -1,6 +1,6 @@
 ---
-title: "PV Reclaim Policies Deep Dive"
-description: "Understand Kubernetes PersistentVolume reclaim policies. Retain vs Delete vs Recycle, recovering data from released PVs, and changing policies on existing volumes."
+title: "PV Reclaim Policy Retain vs Delete"
+description: "Understand Kubernetes PersistentVolume reclaim policies. Retain vs Delete vs Recycle, recovering data from released PVs."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "storage"

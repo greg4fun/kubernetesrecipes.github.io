@@ -1,5 +1,5 @@
 ---
-title: "How to Customize DNS Configuration in Kubernetes"
+title: "How to Customize DNS Configuration in K8s"
 description: "Configure custom DNS settings in Kubernetes. Learn CoreDNS customization, stub domains, upstream servers, and pod DNS policies."
 category: "networking"
 difficulty: "intermediate"

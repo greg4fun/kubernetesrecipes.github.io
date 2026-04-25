@@ -1,6 +1,6 @@
 ---
 title: "LLM Deployment Challenges Kubernetes"
-description: "Address common LLM deployment challenges on Kubernetes. GPU memory management, model loading optimization, inference latency tuning, batch scheduling, and multi-node serving patterns."
+description: "Address common LLM deployment challenges on Kubernetes. GPU memory management, model loading optimization, inference latency tuning, batch scheduling."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

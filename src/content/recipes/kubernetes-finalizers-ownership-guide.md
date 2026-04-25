@@ -1,6 +1,6 @@
 ---
 title: "Finalizers and Ownership Guide"
-description: "Understand Kubernetes finalizers and owner references for resource lifecycle management. Prevent resource leaks, implement cleanup logic, and debug stuck deletions."
+description: "Understand Kubernetes finalizers and owner references for resource lifecycle management. Prevent resource leaks, implement cleanup logic."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Cordon, Drain, and Uncordon Nodes"
-description: "configuration"
+description: "Production guide for kubernetes cordon, drain, and uncordon nodes. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "configuration"
 difficulty: "Safely manage Kubernetes nodes with cordon, drain, and uncordon. Prepare nodes for maintenance, upgrades, and decommissioning without disrupting workloads."
 publishDate: "2026-04-05"

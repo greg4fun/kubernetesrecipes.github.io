@@ -1,5 +1,5 @@
 ---
-title: "OpenClaw API Keys with External Secrets Operator"
+title: "OpenClaw API Keys External Secrets Operator"
 description: "Manage OpenClaw API keys and gateway tokens using External Secrets Operator with AWS Secrets Manager, Vault, or GCP Secret Manager on Kubernetes."
 publishDate: "2026-03-19"
 author: "Luca Berton"

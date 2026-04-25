@@ -1,5 +1,5 @@
 ---
-title: "Helm OCI Registry Integration"
+title: "Helm OCI Registry Push Pull Guide"
 description: "Push and pull Helm charts from OCI registries. Harbor, ECR, ACR, and GCR integration for Helm chart distribution and versioning."
 publishDate: "2026-04-24"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "Kustomize vs Helm Comparison Guide"
+title: "Kustomize vs Helm Comparison"
 description: "Compare Kustomize vs Helm for Kubernetes configuration management. When to use each, migration strategies, and combining both for production workflows."
 publishDate: "2026-04-25"
 author: "Luca Berton"

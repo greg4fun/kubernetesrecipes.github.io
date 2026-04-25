@@ -1,5 +1,5 @@
 ---
-title: "How to Configure Alertmanager for Kubernetes Alerts"
+title: "How to Configure Alertmanager for K8s Alerts"
 description: "Set up Alertmanager to route, group, and deliver Kubernetes alerts. Learn to configure Slack, PagerDuty, and email notifications."
 category: "observability"
 difficulty: "intermediate"

@@ -1,6 +1,6 @@
 ---
 title: "Deploy vLLM OpenAI Container on Kubernetes"
-description: "Deploy the vLLM OpenAI-compatible server container on Kubernetes. Pull ghcr.io/vllm-project/vllm-openai, configure GPU resources, model loading, and autoscaling."
+description: "Deploy the vLLM OpenAI-compatible server container on Kubernetes. Pull ghcr.io/vllm-project/vllm-openai, configure GPU resources, model loading."
 publishDate: "2026-04-13"
 author: "Luca Berton"
 category: "ai"

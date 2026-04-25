@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Finalizers Explained"
-description: "How Kubernetes finalizers work: prevent resource deletion until cleanup completes. Custom finalizer patterns, stuck resource recovery, and controller implementation."
+description: "How Kubernetes finalizers work: prevent resource deletion until cleanup completes. Custom finalizer patterns, stuck resource recovery."
 category: "configuration"
 publishDate: "2026-04-20"
 author: "Luca Berton"

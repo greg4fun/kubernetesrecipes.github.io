@@ -1,6 +1,6 @@
 ---
 title: "mlnx_qos QoS on MOFED Containers"
-description: "Configure RDMA QoS with mlnx_qos from MOFED containers on Kubernetes. Set PFC, ETS, DSCP trust mode, and validate lossless RoCE traffic classes on ConnectX NICs."
+description: "Configure RDMA QoS with mlnx_qos from MOFED containers on Kubernetes. Set PFC, ETS, DSCP trust mode, and validate lossless RoCE traffic classes on ConnectX."
 publishDate: "2026-04-22"
 author: "Luca Berton"
 category: "networking"

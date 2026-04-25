@@ -1,6 +1,6 @@
 ---
 title: "Sealed Secrets Management Kubernetes"
-description: "Manage secrets securely with Bitnami Sealed Secrets on Kubernetes. Encrypt secrets for Git storage, cluster-scoped and namespace-scoped sealing, key rotation, and migration strategies."
+description: "Manage secrets securely with Bitnami Sealed Secrets on Kubernetes. Encrypt secrets for Git storage, cluster-scoped and namespace-scoped sealing."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"

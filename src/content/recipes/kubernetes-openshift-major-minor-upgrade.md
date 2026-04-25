@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes and OpenShift Major Version Upgrade"
-description: "Upgrade Kubernetes minor versions (1.31→1.32) and OpenShift (4.16→4.17, EUS-to-EUS). API deprecation migration, etcd backup, control plane and node upgrade procedure."
+description: "Upgrade Kubernetes minor versions (1.31→1.32) and OpenShift (4.16→4.17, EUS-to-EUS). API deprecation migration, etcd backup."
 publishDate: "2026-04-16"
 author: "Luca Berton"
 category: "deployments"

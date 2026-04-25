@@ -1,6 +1,6 @@
 ---
 title: "Gateway API HTTPRoutes TLS on k3s"
-description: "Configure Gateway API HTTPRoutes with TLS termination on k3s using Cilium. Route traffic to multiple services with wildcard certificates and HTTP-to-HTTPS redirects."
+description: "Configure Gateway API HTTPRoutes with TLS termination on k3s using Cilium. Route traffic to multiple services with wildcard certificates and HTTP-to-HTTPS ."
 category: "networking"
 publishDate: "2026-04-20"
 author: "Luca Berton"

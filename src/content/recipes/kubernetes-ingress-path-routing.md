@@ -1,5 +1,5 @@
 ---
-title: "Ingress Path-Based Routing Guide"
+title: "Ingress Path Routing Kubernetes"
 description: "Configure Kubernetes Ingress for path-based and host-based routing. PathType Prefix vs Exact, rewrite rules, and multi-service routing patterns."
 publishDate: "2026-04-25"
 author: "Luca Berton"

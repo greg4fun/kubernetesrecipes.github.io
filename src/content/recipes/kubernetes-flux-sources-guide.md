@@ -1,5 +1,5 @@
 ---
-title: "Flux Sources Configuration Guide"
+title: "Flux Sources Config Kubernetes"
 description: "Configure Flux source controllers for GitOps on Kubernetes. GitRepository, HelmRepository, OCIRepository, and Bucket sources for multi-source deployments."
 publishDate: "2026-04-25"
 author: "Luca Berton"

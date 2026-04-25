@@ -1,5 +1,5 @@
 ---
-title: "Fix Deployment Rollout Stuck at Partial Progress"
+title: "Fix Deploy Rollout Stuck at Partial Progress"
 description: "Debug deployments stuck with unavailable replicas during rollout. Covers readiness probes, resource constraints, and rollback."
 category: "deployments"
 difficulty: "intermediate"

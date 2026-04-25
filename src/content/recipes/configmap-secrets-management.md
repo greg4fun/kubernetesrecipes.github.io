@@ -1,5 +1,5 @@
 ---
-title: "How to Manage ConfigMaps and Secrets Effectively"
+title: "Manage ConfigMaps and Secrets Effectively"
 description: "Master Kubernetes ConfigMaps and Secrets for application configuration. Learn creation methods, mounting strategies, and security best practices."
 category: "configuration"
 difficulty: "beginner"

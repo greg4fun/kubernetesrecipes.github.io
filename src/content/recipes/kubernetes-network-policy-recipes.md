@@ -1,5 +1,5 @@
 ---
-title: "Network Policy Recipes Cookbook"
+title: "NetworkPolicy Recipes Cookbook K8s"
 description: "Common Kubernetes NetworkPolicy recipes. Default deny, allow DNS, namespace isolation, database access, and external egress patterns for zero-trust networking."
 publishDate: "2026-04-24"
 author: "Luca Berton"

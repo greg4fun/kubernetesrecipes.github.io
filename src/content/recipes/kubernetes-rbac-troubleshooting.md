@@ -1,5 +1,5 @@
 ---
-title: "RBAC Troubleshooting Guide"
+title: "Fix RBAC Permission Errors K8s"
 description: "Debug Kubernetes RBAC permission errors. kubectl auth can-i, impersonation testing, ClusterRole aggregation, and common permission mistakes."
 publishDate: "2026-04-24"
 author: "Luca Berton"

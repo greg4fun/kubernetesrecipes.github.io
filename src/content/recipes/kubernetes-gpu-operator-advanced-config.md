@@ -1,6 +1,6 @@
 ---
 title: "GPU Operator Advanced Configuration"
-description: "Advanced NVIDIA GPU Operator configuration on Kubernetes. Driver containers, CUDA toolkit, GDS, GPUDirect RDMA, MIG manager, DCGM Exporter, and per-node driver customization."
+description: "Advanced NVIDIA GPU Operator configuration on Kubernetes. Driver containers, CUDA toolkit, GDS, GPUDirect RDMA, MIG manager, DCGM Exporter."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

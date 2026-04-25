@@ -1,5 +1,5 @@
 ---
-title: "Grafana Tempo Tracing Guide"
+title: "Grafana Tempo Tracing Kubernetes"
 description: "Deploy Grafana Tempo for cost-effective distributed tracing on Kubernetes. Object storage backend, TraceQL queries, and Grafana integration."
 publishDate: "2026-04-24"
 author: "Luca Berton"

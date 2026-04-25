@@ -1,6 +1,6 @@
 ---
 title: "RDMA Network QoS Traffic Classes DCQCN"
-description: "Complete RDMA network QoS architecture with traffic classes TC0-TC6, DSCP and dot1p mappings, PFC, ECN, WRED, and DCQCN congestion control for lossless RoCEv2 fabrics."
+description: "Complete RDMA network QoS architecture with traffic classes TC0-TC6, DSCP and dot1p mappings, PFC, ECN, WRED, and DCQCN congestion control for lossless RoC."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "networking"

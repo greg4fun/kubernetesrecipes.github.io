@@ -1,6 +1,6 @@
 ---
 title: "Resource Limits and Requests Guide"
-description: "Configure CPU and memory requests and limits for Kubernetes pods. Guaranteed vs Burstable vs BestEffort QoS classes, OOMKill prevention, and CPU throttling behavior."
+description: "Configure CPU and memory requests and limits for Kubernetes pods. Guaranteed vs Burstable vs BestEffort QoS classes, OOMKill prevention."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

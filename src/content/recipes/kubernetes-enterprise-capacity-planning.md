@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Capacity Planning for Enterprise Clusters"
+title: "K8s Capacity Planning for Enterprise Clusters"
 description: "Right-size enterprise clusters with data-driven capacity planning. Forecast resource needs, optimize bin-packing, and plan for growth with metrics."
 publishDate: "2026-04-08"
 author: "Luca Berton"

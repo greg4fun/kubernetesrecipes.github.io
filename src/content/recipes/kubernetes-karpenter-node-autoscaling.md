@@ -1,5 +1,5 @@
 ---
-title: "Karpenter Node Autoscaling Guide"
+title: "Karpenter Node Autoscaler K8s"
 description: "Scale Kubernetes nodes with Karpenter. NodePool configuration, instance selection, consolidation, and cost optimization vs Cluster Autoscaler."
 publishDate: "2026-04-25"
 author: "Luca Berton"

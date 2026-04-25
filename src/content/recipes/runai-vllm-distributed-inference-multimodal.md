@@ -1,6 +1,6 @@
 ---
-title: "Run:ai Distributed vLLM Inference for Multimodal LLMs"
-description: "Deploy multimodal LLMs with Run:ai distributed inference and vLLM on Kubernetes. Tensor parallelism, NCCL over NVLink, GPUDirect RDMA, air-gapped registry setup."
+title: "Run:ai Distrib. vLLM Inference Multimodal LLMs"
+description: "Deploy multimodal LLMs with Run:ai distributed inference and vLLM on Kubernetes. Tensor parallelism, NCCL over NVLink, GPUDirect RDMA."
 publishDate: "2026-04-20"
 author: "Luca Berton"
 category: "ai"

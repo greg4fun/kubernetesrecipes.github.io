@@ -1,6 +1,6 @@
 ---
 title: "GitOps for AI Workloads on Kubernetes"
-description: "Deploy AI models with GitOps on Kubernetes. Version ML models in Git, ArgoCD for model rollouts, Flux for GPU cluster sync, and reproducible inference pipelines."
+description: "Deploy AI models with GitOps on Kubernetes. Version ML models in Git, ArgoCD for model rollouts, Flux for GPU cluster sync."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "ai"

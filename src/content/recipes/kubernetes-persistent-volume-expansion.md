@@ -1,6 +1,6 @@
 ---
 title: "Persistent Volume Expansion Kubernetes"
-description: "Expand PersistentVolumeClaims online without downtime. allowVolumeExpansion, filesystem resize, StatefulSet PVC expansion, and storage class configuration for volume growth."
+description: "Expand PersistentVolumeClaims online without downtime. allowVolumeExpansion, filesystem resize, StatefulSet PVC expansion."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "storage"

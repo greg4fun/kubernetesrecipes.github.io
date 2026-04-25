@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Change Management for Enterprise Operations"
+title: "K8s Change Mgmt for Enterprise Operations"
 description: "Implement ITIL-aligned change management for Kubernetes with approval gates, maintenance windows, rollback procedures, and change audit trails."
 publishDate: "2026-04-08"
 author: "Luca Berton"

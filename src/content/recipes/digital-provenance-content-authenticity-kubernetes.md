@@ -1,6 +1,6 @@
 ---
-title: "Digital Provenance and Content Authenticity on Kubernetes"
-description: "Implement digital provenance on Kubernetes with C2PA content credentials. Verify AI-generated content, sign media pipelines, and deploy content authenticity APIs."
+title: "Digital Provenance and Content Authenticity"
+description: "Implement digital provenance on Kubernetes with C2PA content credentials. Verify AI-generated content, sign media pipelines."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "security"

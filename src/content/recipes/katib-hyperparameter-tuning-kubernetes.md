@@ -1,6 +1,6 @@
 ---
 title: "Katib Hyperparameter Tuning Kubernetes"
-description: "Automate hyperparameter tuning with Katib on Kubernetes. Bayesian optimization, random search, grid search, early stopping, and neural architecture search for ML experiments."
+description: "Automate hyperparameter tuning with Katib on Kubernetes. Bayesian optimization, random search, grid search, early stopping."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

@@ -1,6 +1,6 @@
 ---
 title: "ML Pipeline Automation Kubernetes"
-description: "Automate ML pipelines on Kubernetes with Kubeflow Pipelines, Argo Workflows, and Tekton. Data preprocessing, training, evaluation, model registration, and deployment as code."
+description: "Automate ML pipelines on Kubernetes with Kubeflow Pipelines, Argo Workflows, and Tekton. Data preprocessing, training, evaluation, model registration."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

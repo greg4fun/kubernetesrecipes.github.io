@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes ConfigMap Complete Guide"
-description: "configuration"
+description: "Production guide for kubernetes configmap complete guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "configuration"
 difficulty: "Create and use Kubernetes ConfigMaps for application configuration. Mount as files, inject as environment variables, and manage config updates without redeploying."
 publishDate: "2026-04-07"

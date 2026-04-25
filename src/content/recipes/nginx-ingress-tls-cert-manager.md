@@ -1,5 +1,5 @@
 ---
-title: "How to Configure NGINX Ingress with TLS using cert-manager"
+title: "Configure NGINX Ingress TLS using cert-manager"
 description: "Learn how to set up NGINX Ingress Controller with automatic TLS certificates from Let's Encrypt using cert-manager. Complete YAML examples and."
 category: "networking"
 difficulty: "intermediate"

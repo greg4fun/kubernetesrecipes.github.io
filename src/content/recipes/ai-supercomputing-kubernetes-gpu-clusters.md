@@ -1,6 +1,6 @@
 ---
 title: "AI Supercomputing on Kubernetes GPU Clusters"
-description: "Build AI supercomputing platforms on Kubernetes. Multi-node GPU training, NVIDIA DGX SuperPOD, InfiniBand RDMA, NCCL tuning, Blackwell clusters, and job scheduling."
+description: "Build AI supercomputing platforms on Kubernetes. Multi-node GPU training, NVIDIA DGX SuperPOD, InfiniBand RDMA, NCCL tuning, Blackwell clusters."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "ai"

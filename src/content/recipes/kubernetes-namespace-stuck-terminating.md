@@ -1,5 +1,5 @@
 ---
-title: "Fix Namespace Stuck Terminating"
+title: "Fix Namespace Stuck Terminating K8s"
 description: "Fix Kubernetes namespaces stuck in Terminating state. Finalizer removal, API resource cleanup, and force deletion of stuck namespaces."
 publishDate: "2026-04-25"
 author: "Luca Berton"

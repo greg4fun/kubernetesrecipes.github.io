@@ -1,6 +1,6 @@
 ---
-title: "Helm Hooks for Database Migrations and Lifecycle Management"
-description: "Use Helm hooks to run database migrations, backups, and validation jobs during install, upgrade, and rollback. Control execution order with hook weights and deletion policies."
+title: "Helm Hooks Database Migrations & Lifecycle ..."
+description: "Use Helm hooks to run database migrations, backups, and validation jobs during install, upgrade, and rollback. Control execution order with hook weights an."
 category: "helm"
 difficulty: "intermediate"
 publishDate: "2026-04-07"

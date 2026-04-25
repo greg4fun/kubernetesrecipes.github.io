@@ -1,6 +1,6 @@
 ---
 title: "Debug Containers and Ephemeral Pods"
-description: "Use kubectl debug with ephemeral containers to troubleshoot running pods without restart. Debug distroless images, node debugging, and copy-pod debugging patterns."
+description: "Use kubectl debug with ephemeral containers to troubleshoot running pods without restart. Debug distroless images, node debugging."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "troubleshooting"

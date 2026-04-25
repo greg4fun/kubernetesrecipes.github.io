@@ -1,6 +1,6 @@
 ---
-title: "Reusable CI/CD Pipeline Templates for Kubernetes"
-description: "Build once, deploy anything. Reusable CI/CD pipeline templates for Kubernetes using GitHub Actions, GitLab CI, and Tekton. Standardize deployments across all services."
+title: "Reusable CI/CD Pipeline Templates for K8s"
+description: "Build once, deploy anything. Reusable CI/CD pipeline templates for Kubernetes using GitHub Actions, GitLab CI, and Tekton."
 publishDate: "2026-04-19"
 author: "Luca Berton"
 category: "deployments"

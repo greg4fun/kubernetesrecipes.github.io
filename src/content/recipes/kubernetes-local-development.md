@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Local Development with Minikube and Kind"
+title: "K8s Local Development with Minikube and Kind"
 description: "Set up local Kubernetes clusters for development with Minikube, Kind, and k3d. Covers installation, configuration, local registries, and hot-reload workflows."
 category: "deployments"
 difficulty: "beginner"

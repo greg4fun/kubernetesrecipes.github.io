@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "NicClusterPolicy MOFED Affinity and Node Selection"
+title: "NicClusterPolicy MOFED Affinity & Node Sele..."
 description: "Configure NicClusterPolicy node selectors and affinity rules to deploy MOFED drivers only on RDMA-capable nodes in Kubernetes clusters."
 category: "configuration"
 difficulty: "intermediate"

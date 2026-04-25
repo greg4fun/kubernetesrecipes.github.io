@@ -1,6 +1,6 @@
 ---
 title: "Kustomize Overlays Guide Kubernetes"
-description: "Manage Kubernetes manifests with Kustomize overlays. Base and overlay patterns, strategic merge patches, JSON patches, ConfigMap generators, and multi-environment deployments."
+description: "Manage Kubernetes manifests with Kustomize overlays. Base and overlay patterns, strategic merge patches, JSON patches, ConfigMap generators."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

@@ -1,5 +1,5 @@
 ---
-title: "DCB on Mellanox ConnectX: Lossless Ethernet Setup"
+title: "DCB on Mellanox ConnectX: Lossless Ethernet..."
 description: "Configure Data Center Bridging (DCB) on Mellanox ConnectX NICs. DCBX negotiation, PFC, ETS, and CN for lossless RoCE Ethernet in Kubernetes AI clusters."
 publishDate: "2026-04-19"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "Helm Secrets Management with SOPS and Age Encryption"
+title: "Helm Secrets Mgmt with SOPS & Age Encryption"
 description: "Encrypt Helm values files using SOPS with Age or GPG keys. Manage secrets in Git safely with helm-secrets plugin for transparent encrypt/decrypt workflows."
 category: "helm"
 difficulty: "intermediate"

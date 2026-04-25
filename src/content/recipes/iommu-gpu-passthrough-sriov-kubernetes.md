@@ -1,5 +1,5 @@
 ---
-title: "IOMMU on Kubernetes: GPU Passthrough and SR-IOV"
+title: "IOMMU on K8s: GPU Passthrough and SR-IOV"
 description: "Enable and configure IOMMU for GPU passthrough, SR-IOV, and VFIO on Kubernetes. Kernel parameters, IOMMU groups, device isolation, and troubleshooting guide."
 publishDate: "2026-04-16"
 author: "Luca Berton"

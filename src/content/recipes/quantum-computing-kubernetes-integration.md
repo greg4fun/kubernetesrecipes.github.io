@@ -1,5 +1,5 @@
 ---
-title: "Quantum Computing on Kubernetes: Hybrid Workflows"
+title: "Quantum Computing on K8s: Hybrid Workflows"
 description: "Run quantum computing workloads on Kubernetes. Qiskit, Cirq, PennyLane hybrid classical-quantum pipelines, quantum job scheduling, and QPU integration patterns."
 publishDate: "2026-04-12"
 author: "Luca Berton"

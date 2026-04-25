@@ -1,6 +1,6 @@
 ---
 title: "CoreDNS Customization Guide Kubernetes"
-description: "Customize CoreDNS with forward zones, rewrite rules, cache tuning, and stub domains. Troubleshoot DNS resolution failures and optimize query performance in Kubernetes clusters."
+description: "Customize CoreDNS with forward zones, rewrite rules, cache tuning, and stub domains. Troubleshoot DNS resolution failures and optimize query performance in."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "networking"

@@ -1,5 +1,5 @@
 ---
-title: "Virtual Kubelet for Serverless Kubernetes Scaling"
+title: "Virtual Kubelet for Serverless K8s Scaling"
 description: "Deploy Virtual Kubelet to burst Kubernetes workloads to serverless backends like Azure ACI, AWS Fargate, and Hashicorp Nomad for infinite scaling."
 category: "autoscaling"
 difficulty: "advanced"

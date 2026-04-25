@@ -1,6 +1,6 @@
 ---
 title: "Custom Scheduler Kubernetes Guide"
-description: "Build and deploy custom Kubernetes schedulers for specialized workloads. Scheduler profiles, extender webhooks, scoring plugins, and multi-scheduler configurations for GPU and AI workloads."
+description: "Build and deploy custom Kubernetes schedulers for specialized workloads. Scheduler profiles, extender webhooks, scoring plugins."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

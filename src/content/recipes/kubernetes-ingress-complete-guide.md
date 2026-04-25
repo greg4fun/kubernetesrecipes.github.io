@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Ingress: Routing, TLS, and Controllers"
+title: "K8s Ingress: Routing, TLS, and Controllers"
 description: "Configure Kubernetes Ingress for HTTP routing, TLS termination, and path-based routing. Covers NGINX, Traefik, and HAProxy ingress controllers."
 category: "networking"
 difficulty: "beginner"

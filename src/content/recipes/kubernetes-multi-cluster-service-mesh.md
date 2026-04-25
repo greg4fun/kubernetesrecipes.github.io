@@ -1,6 +1,6 @@
 ---
 title: "Multi-Cluster Service Mesh Kubernetes"
-description: "Connect multiple Kubernetes clusters with service mesh federation. Istio multi-cluster, Linkerd multi-cluster, cross-cluster service discovery, and traffic failover between clusters."
+description: "Connect multiple Kubernetes clusters with service mesh federation. Istio multi-cluster, Linkerd multi-cluster, cross-cluster service discovery."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "networking"

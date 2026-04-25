@@ -1,6 +1,6 @@
 ---
 title: "Install Kubernetes on Fedora with kubeadm"
-description: "Step-by-step guide to install Kubernetes on Fedora Linux using kubeadm. Disable swap, configure containerd, install kubeadm kubelet kubectl, and initialize cluster."
+description: "Step-by-step guide to install Kubernetes on Fedora Linux using kubeadm. Disable swap, configure containerd, install kubeadm kubelet kubectl."
 category: "configuration"
 publishDate: "2026-04-20"
 author: "Luca Berton"

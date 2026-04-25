@@ -1,5 +1,5 @@
 ---
-title: "ConfigMap Best Practices Kubernetes"
+title: "ConfigMap Best Practices K8s Guide"
 description: "ConfigMap best practices for Kubernetes applications. Size limits, binary data, environment variables vs volume mounts, and hot-reload patterns."
 publishDate: "2026-04-24"
 author: "Luca Berton"

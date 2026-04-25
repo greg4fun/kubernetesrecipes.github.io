@@ -1,6 +1,6 @@
 ---
-title: "SPIFFE SPIRE Workload Identity"
-description: "Implement zero-trust workload identity with SPIFFE and SPIRE on Kubernetes. SVIDs, attestation, and automatic identity rotation for service-to-service authentication."
+title: "SPIFFE SPIRE Workload Identity K8s"
+description: "Implement zero-trust workload identity with SPIFFE and SPIRE on Kubernetes. SVIDs, attestation, and automatic identity rotation for service-to-service auth."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"

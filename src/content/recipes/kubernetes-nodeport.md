@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes NodePort Service Explained"
-description: "networking"
+description: "Production guide for kubernetes nodeport service explained. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "networking"
 difficulty: "Expose Kubernetes services externally with NodePort. Understand port ranges, security implications, and when to use NodePort vs LoadBalancer vs Ingress."
 publishDate: "2026-04-07"

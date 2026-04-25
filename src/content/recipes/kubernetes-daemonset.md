@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes DaemonSet Complete Guide"
-description: "deployments"
+description: "Production guide for kubernetes daemonset complete guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "deployments"
 difficulty: "Deploy DaemonSets in Kubernetes to run one pod per node. Covers monitoring agents, log collectors, CNI plugins, node affinity, and rolling update strategies."
 publishDate: "2026-04-07"

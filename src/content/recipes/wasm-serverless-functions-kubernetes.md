@@ -1,5 +1,5 @@
 ---
-title: "Serverless Functions with WebAssembly on Kubernetes"
+title: "Serverless Functions with WebAssembly"
 description: "Build serverless functions using WebAssembly on Kubernetes with Fermyon Cloud, KEDA, and SpinKube. Achieve sub-millisecond scale-to-zero with Wasm cold starts."
 category: "deployments"
 difficulty: "intermediate"

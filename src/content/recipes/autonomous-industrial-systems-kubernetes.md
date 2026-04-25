@@ -1,6 +1,6 @@
 ---
 title: "Autonomous Industrial Systems on Kubernetes"
-description: "Orchestrate autonomous factories and logistics with Kubernetes. Digital twins, robot fleet coordination, industrial IoT pipelines, predictive maintenance, and OPC UA integration."
+description: "Orchestrate autonomous factories and logistics with Kubernetes. Digital twins, robot fleet coordination, industrial IoT pipelines, predictive maintenance."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "ai"

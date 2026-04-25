@@ -1,5 +1,5 @@
 ---
-title: "Configure ClusterPolicy kernelModuleType for GPU Operator"
+title: "Configure ClusterPolicy kernelModuleType GP..."
 description: "Understand and configure the driver.kernelModuleType field in the NVIDIA GPU Operator ClusterPolicy to choose between auto, open, and proprietary kernel."
 category: "configuration"
 difficulty: "intermediate"

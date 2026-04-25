@@ -1,5 +1,5 @@
 ---
-title: "Local Persistent Volumes Guide"
+title: "Local Persistent Volumes Kubernetes"
 description: "Configure local persistent volumes on Kubernetes for high-performance storage. Node affinity, local-path-provisioner, and SSD-backed database workloads."
 publishDate: "2026-04-25"
 author: "Luca Berton"

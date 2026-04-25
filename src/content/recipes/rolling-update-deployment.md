@@ -1,5 +1,5 @@
 ---
-title: "How to Perform Rolling Updates with Zero Downtime"
+title: "Perform Rolling Updates with Zero Downtime"
 description: "Master Kubernetes rolling updates to deploy new application versions without service interruption. Learn update strategies, rollback procedures, and."
 category: "deployments"
 difficulty: "beginner"

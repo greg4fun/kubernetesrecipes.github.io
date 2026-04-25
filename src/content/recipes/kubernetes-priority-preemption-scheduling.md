@@ -1,6 +1,6 @@
 ---
 title: "Priority and Preemption Scheduling"
-description: "Configure PriorityClasses for Kubernetes workload scheduling. System-critical pods, GPU training preemption, and preemptionPolicy Never for batch workloads that queue without evicting."
+description: "Configure PriorityClasses for Kubernetes workload scheduling. System-critical pods, GPU training preemption, and preemptionPolicy Never for batch workloads."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

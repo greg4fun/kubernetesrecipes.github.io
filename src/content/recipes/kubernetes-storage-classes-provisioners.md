@@ -1,6 +1,6 @@
 ---
 title: "Storage Classes and Provisioners"
-description: "Configure Kubernetes StorageClasses for dynamic volume provisioning. CSI drivers, reclaim policies, volume expansion, topology-aware provisioning, and storage class selection strategies."
+description: "Configure Kubernetes StorageClasses for dynamic volume provisioning. CSI drivers, reclaim policies, volume expansion, topology-aware provisioning."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "storage"

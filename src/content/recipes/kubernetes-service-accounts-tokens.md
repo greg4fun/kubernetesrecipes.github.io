@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Service Accounts and Token Management"
+title: "K8s Service Accounts and Token Management"
 description: "Configure service accounts, bound tokens, OIDC federation, and workload identity for Kubernetes. Migrate from legacy tokens to projected volumes."
 category: "security"
 difficulty: "intermediate"

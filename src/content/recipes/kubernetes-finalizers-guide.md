@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Finalizers: Prevent Premature Deletion"
+title: "K8s Finalizers: Prevent Premature Deletion"
 description: "How Kubernetes finalizers work to prevent premature resource deletion. Add, remove, and troubleshoot stuck finalizers on PVCs, namespaces, and custom resources."
 publishDate: "2026-04-12"
 author: "Luca Berton"

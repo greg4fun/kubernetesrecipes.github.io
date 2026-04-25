@@ -1,6 +1,6 @@
 ---
 title: "DOCA Perftest RDMA Benchmarking"
-description: "Run NVIDIA DOCA perftest on Kubernetes to benchmark RDMA bandwidth and latency between GPU nodes. Traffic patterns, GPUDirect memory modes, and multi-node validation."
+description: "Run NVIDIA DOCA perftest on Kubernetes to benchmark RDMA bandwidth and latency between GPU nodes. Traffic patterns, GPUDirect memory modes."
 publishDate: "2026-04-22"
 author: "Luca Berton"
 category: "ai"

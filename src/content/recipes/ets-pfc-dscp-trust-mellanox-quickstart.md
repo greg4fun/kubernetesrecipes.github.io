@@ -1,5 +1,5 @@
 ---
-title: "ETS Queue, PFC, DSCP Trust on Mellanox Quick Start"
+title: "ETS Queue, PFC, DSCP Trust on Mellanox Quic..."
 description: "Quick reference for enabling ETS queues, PFC, DSCP trust, and DSCP-to-priority mapping on Mellanox ConnectX NICs. Three commands for lossless RoCE Ethernet."
 publishDate: "2026-04-19"
 author: "Luca Berton"

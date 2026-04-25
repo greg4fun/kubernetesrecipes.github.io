@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes LimitRange and ResourceQuota"
-description: "configuration"
+description: "Production guide for kubernetes limitrange and resourcequota. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "configuration"
 difficulty: "Configure LimitRange and ResourceQuota in Kubernetes namespaces. Set default resource requests, enforce limits, and prevent resource exhaustion across teams."
 publishDate: "2026-04-05"

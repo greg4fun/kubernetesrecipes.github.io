@@ -1,5 +1,5 @@
 ---
-title: "Grafana Dashboard 6417: Kubernetes Pod Monitoring"
+title: "Grafana Dashboard 6417: K8s Pod Monitoring"
 description: "Set up Grafana dashboard 6417 for Kubernetes pod monitoring. Import, customize panels, PromQL queries, and cluster-wide resource visualization."
 category: "observability"
 difficulty: "intermediate"

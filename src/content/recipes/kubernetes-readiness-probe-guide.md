@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Readiness Probe Guide"
+title: "Readiness Probe Kubernetes Guide"
 description: "Configure readiness probes correctly on Kubernetes. HTTP, TCP, exec probes, failure threshold tuning, and why readiness probes should never check databases."
 publishDate: "2026-04-25"
 author: "Luca Berton"

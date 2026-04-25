@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Downward API Guide"
+title: "Downward API Kubernetes Guide"
 description: "Expose pod and container metadata to applications using the Downward API. Environment variables, volume files, fieldRef, resourceFieldRef, and common patterns."
 publishDate: "2026-04-25"
 author: "Luca Berton"

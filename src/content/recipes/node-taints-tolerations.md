@@ -1,5 +1,5 @@
 ---
-title: "How to Implement Kubernetes Taints and Tolerations"
+title: "How to Implement K8s Taints and Tolerations"
 description: "Control pod scheduling with taints and tolerations. Dedicate nodes for specific workloads, handle node conditions, and implement scheduling constraints."
 category: "configuration"
 difficulty: "intermediate"

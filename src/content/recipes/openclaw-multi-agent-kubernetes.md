@@ -1,5 +1,5 @@
 ---
-title: "Multi-Agent Routing with OpenClaw on Kubernetes"
+title: "Multi-Agent Routing with OpenClaw"
 description: "Configure multiple isolated AI agents in a single OpenClaw gateway on Kubernetes with per-agent workspaces, channel bindings, and session isolation."
 category: "deployments"
 difficulty: "advanced"

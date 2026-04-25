@@ -1,6 +1,6 @@
 ---
 title: "Canary Deployments with Flagger"
-description: "Automate canary deployments in Kubernetes using Flagger with Istio, Linkerd, or NGINX ingress. Progressive traffic shifting, metric analysis, and automatic rollback."
+description: "Automate canary deployments in Kubernetes using Flagger with Istio, Linkerd, or NGINX ingress. Progressive traffic shifting, metric analysis."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

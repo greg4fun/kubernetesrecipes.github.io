@@ -1,5 +1,5 @@
 ---
-title: "Deploy Mistral 7B with NVIDIA NIM on Kubernetes"
+title: "Deploy Mistral 7B with NVIDIA NIM"
 description: "Step-by-step guide to deploy Mistral-7B using NVIDIA NIM with TensorRT-LLM backend on Kubernetes for optimized GPU inference."
 category: "ai"
 difficulty: "advanced"

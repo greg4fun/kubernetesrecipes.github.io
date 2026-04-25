@@ -1,5 +1,5 @@
 ---
-title: "How to Implement Distributed Tracing with Jaeger"
+title: "Implement Distributed Tracing with Jaeger"
 description: "Deploy Jaeger for distributed tracing in Kubernetes. Learn to instrument applications, trace requests across services, and identify performance."
 category: "observability"
 difficulty: "advanced"

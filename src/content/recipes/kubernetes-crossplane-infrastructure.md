@@ -1,6 +1,6 @@
 ---
 title: "Crossplane Infrastructure as Code"
-description: "Manage cloud infrastructure from Kubernetes with Crossplane. Composite Resources, Compositions, provider configuration, and GitOps-driven infrastructure provisioning."
+description: "Manage cloud infrastructure from Kubernetes with Crossplane. Composite Resources, Compositions, provider configuration."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

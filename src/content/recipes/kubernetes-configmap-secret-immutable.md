@@ -1,6 +1,6 @@
 ---
 title: "Immutable ConfigMaps and Secrets"
-description: "Use immutable ConfigMaps and Secrets for performance and safety in Kubernetes. Reduce API server load, prevent accidental changes, and implement versioned configuration patterns."
+description: "Use immutable ConfigMaps and Secrets for performance and safety in Kubernetes. Reduce API server load, prevent accidental changes."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

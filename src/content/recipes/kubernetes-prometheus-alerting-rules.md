@@ -1,6 +1,6 @@
 ---
 title: "Prometheus Alerting Rules Kubernetes"
-description: "Write effective Prometheus alerting rules for Kubernetes. Alertmanager routing, inhibition, silence, and production-ready alert templates for CPU, memory, disk, and pod health."
+description: "Write effective Prometheus alerting rules for Kubernetes. Alertmanager routing, inhibition, silence, and production-ready alert templates for CPU, memory."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "observability"

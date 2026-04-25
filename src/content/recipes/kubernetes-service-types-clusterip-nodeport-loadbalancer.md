@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Service Types: ClusterIP vs NodePort vs LoadBalancer"
-description: "Compare Kubernetes Service types: ClusterIP for internal access, NodePort for direct port exposure, LoadBalancer for external traffic, and ExternalName for DNS aliases."
+title: "Kubernetes Service Types Comparison"
+description: "Compare Kubernetes Service types: ClusterIP for internal access, NodePort for direct port exposure, LoadBalancer for external traffic."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "networking"

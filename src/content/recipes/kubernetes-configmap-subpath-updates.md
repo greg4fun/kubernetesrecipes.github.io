@@ -1,5 +1,5 @@
 ---
-title: "ConfigMap subPath Updates Guide"
+title: "ConfigMap subPath Update Fix K8s"
 description: "Handle ConfigMap subPath mount limitations in Kubernetes. Why subPath mounts don't auto-update, workarounds, and alternative patterns."
 publishDate: "2026-04-25"
 author: "Luca Berton"

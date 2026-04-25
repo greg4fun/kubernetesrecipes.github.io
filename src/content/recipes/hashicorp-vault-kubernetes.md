@@ -1,5 +1,5 @@
 ---
-title: "How to Integrate HashiCorp Vault with Kubernetes"
+title: "How to Integrate HashiCorp Vault with K8s"
 description: "Securely manage secrets with HashiCorp Vault in Kubernetes. Learn to inject secrets into pods using the Vault Agent Injector and CSI Provider."
 category: "security"
 difficulty: "advanced"

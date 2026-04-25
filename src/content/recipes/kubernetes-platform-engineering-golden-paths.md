@@ -1,6 +1,6 @@
 ---
-title: "Platform Engineering: Golden Paths in Kubernetes"
-description: "Build golden paths for developers on Kubernetes. Internal developer platform with Backstage, self-service namespaces, pre-built Helm charts, and paved road templates."
+title: "Platform Engineering: Golden Paths in K8s"
+description: "Build golden paths for developers on Kubernetes. Internal developer platform with Backstage, self-service namespaces, pre-built Helm charts."
 publishDate: "2026-04-19"
 author: "Luca Berton"
 category: "configuration"

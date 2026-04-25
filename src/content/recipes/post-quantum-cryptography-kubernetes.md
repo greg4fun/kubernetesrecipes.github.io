@@ -1,6 +1,6 @@
 ---
 title: "Post-Quantum Cryptography on Kubernetes"
-description: "Prepare Kubernetes clusters for post-quantum cryptography. NIST PQC standards, hybrid TLS certificates, quantum-safe mTLS, Istio/Cilium integration, and migration strategy."
+description: "Prepare Kubernetes clusters for post-quantum cryptography. NIST PQC standards, hybrid TLS certificates, quantum-safe mTLS, Istio/Cilium integration."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "security"

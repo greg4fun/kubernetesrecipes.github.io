@@ -1,6 +1,6 @@
 ---
 title: "Pod Disruption Budget Strategies"
-description: "Configure PodDisruptionBudgets for zero-downtime maintenance. MinAvailable vs maxUnavailable strategies for stateful workloads, GPU training, and high-availability services."
+description: "Configure PodDisruptionBudgets for zero-downtime maintenance. MinAvailable vs maxUnavailable strategies for stateful workloads, GPU training."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

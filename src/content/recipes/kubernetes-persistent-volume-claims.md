@@ -1,5 +1,5 @@
 ---
-title: "PersistentVolumeClaim Guide"
+title: "PersistentVolumeClaim PVC Guide K8s"
 description: "Create and manage PersistentVolumeClaims on Kubernetes. Access modes, storage classes, volume expansion, and namespace-scoped PVC lifecycle."
 publishDate: "2026-04-25"
 author: "Luca Berton"

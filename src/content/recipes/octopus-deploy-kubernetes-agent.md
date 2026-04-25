@@ -1,6 +1,6 @@
 ---
 title: "Octopus Deploy 2025.4 on Kubernetes"
-description: "Deploy Octopus Deploy 2025.4 with MSSQL and Kubernetes agent on k3s. Release orchestration with ephemeral preview environments, approval gates, and ArgoCD promotion."
+description: "Deploy Octopus Deploy 2025.4 with MSSQL and Kubernetes agent on k3s. Release orchestration with ephemeral preview environments, approval gates."
 category: "deployments"
 publishDate: "2026-04-20"
 author: "Luca Berton"
