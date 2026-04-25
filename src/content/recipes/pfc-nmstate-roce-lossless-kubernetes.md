@@ -22,7 +22,6 @@ relatedRecipes:
   - "tune-nccl-env-rdma-ethernet"
   - "nccl-ib-disable-environment-variable"
   - "inter-node-tensor-parallelism-kubernetes"
-  - "nfsoRDMA-scalable-ai-storage"
 ---
 
 > 💡 **Quick Answer:** Priority Flow Control (PFC) makes RoCEv2 lossless by pausing specific traffic classes instead of dropping packets. On OpenShift/Kubernetes, configure PFC via `NodeNetworkConfigurationPolicy` (NNCP) using the NMState operator. Enable PFC on priority 3 (default RoCE), set jumbo frames (MTU 9000), and configure the switch to match. Without PFC, RoCE performance degrades catastrophically under congestion — TCP retransmits on RDMA destroy throughput.

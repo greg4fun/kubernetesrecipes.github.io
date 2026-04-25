@@ -12,7 +12,6 @@ prerequisites:
 relatedRecipes:
   - "vertical-pod-autoscaler"
   - "llm-autoscaling-kubernetes"
-  - "vpa-configuration"
   - "cluster-autoscaler"
   - "hpa-custom-metrics"
   - "keda-event-driven-autoscaling"

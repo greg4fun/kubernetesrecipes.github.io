@@ -20,7 +20,6 @@ relatedRecipes:
   - "dell-poweredge-xe7740-gpu-setup"
   - "verify-nccl-rdma-traffic-debug"
   - "pfc-nmstate-roce-lossless-kubernetes"
-  - "kubernetes-runtimeclass-gvisor-kata"
 ---
 
 > 💡 **Quick Answer:** IOMMU (Input-Output Memory Management Unit) provides hardware-level device isolation — required for GPU passthrough (VFIO), SR-IOV virtual functions, and secure DMA. Enable with `intel_iommu=on` (Intel) or `amd_iommu=on` (AMD) kernel parameters. On OpenShift, use `MachineConfig`; on vanilla Kubernetes, update GRUB. Verify with `dmesg | grep -i iommu`. Without IOMMU, devices can DMA to any physical address — a security and stability risk.

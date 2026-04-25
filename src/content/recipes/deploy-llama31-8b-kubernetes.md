@@ -14,7 +14,6 @@ relatedRecipes:
   - "deploy-phi4-kubernetes"
   - "deploy-qwen3-235b-moe-kubernetes"
   - "triton-vllm-kubernetes"
-  - "inference-autoscaling-gpu-metrics"
   - "aiperf-benchmark-llm-kubernetes"
 tags:
   - llama

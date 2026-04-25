@@ -15,7 +15,6 @@ tags:
 relatedRecipes:
   - "kubernetes-topology-aware-routing"
   - "kubernetes-node-affinity-scheduling"
-  - "kubernetes-pod-disruption-budgets"
   - "runai-topology-aware-scheduling-kubernetes"
 ---
 

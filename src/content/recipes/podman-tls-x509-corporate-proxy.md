@@ -8,7 +8,6 @@ tags: ["podman", "tls", "x509", "proxy", "certificate", "openshift", "troublesho
 author: "Luca Berton"
 relatedRecipes:
   - "custom-ca-openshift-kubernetes"
-  - "cluster-wide-pull-secret"
   - "openshift-debug-mount-limitation"
 ---
 

@@ -13,11 +13,8 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "10 minutes"
 relatedRecipes:
-  - "kubernetes-operator-development"
   - "kubernetes-lease-leader-election"
   - "kubernetes-pod-lifecycle"
-  - "kubernetes-persistent-volumes"
-  - "kubernetes-namespace-management"
 ---
 
 > 💡 **Quick Answer:** Finalizers are metadata entries that prevent a resource from being deleted until a controller performs cleanup. When you delete a resource with finalizers, Kubernetes sets \`deletionTimestamp\` but doesn't remove it until all finalizers are cleared. Stuck finalizers are the #1 cause of namespaces and PVCs that won't delete.

@@ -9,6 +9,8 @@ timeToComplete: "15 minutes"
 kubernetesVersion: "1.21+"
 tags: ["502", "bad-gateway", "ingress", "troubleshooting", "nginx", "load-balancer"]
 relatedRecipes:
+  - "debug-crashloopbackoff"
+  - "kubernetes-oomkilled-troubleshooting"
   - kubernetes-graceful-shutdown
   - kubernetes-terminationgraceperiodseconds
   - kubernetes-readiness-probes

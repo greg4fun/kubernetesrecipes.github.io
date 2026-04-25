@@ -13,7 +13,6 @@ relatedRecipes:
   - "deploy-whisper-kubernetes"
   - "deploy-stable-diffusion-xl-kubernetes"
   - "deploy-sarvam-105b-kubernetes"
-  - "inference-autoscaling-gpu-metrics"
 tags:
   - fish-audio
   - text-to-speech

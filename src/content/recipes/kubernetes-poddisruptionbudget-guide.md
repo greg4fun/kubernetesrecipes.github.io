@@ -15,9 +15,7 @@ timeToComplete: "10 minutes"
 relatedRecipes:
   - "kubernetes-node-maintenance-drain"
   - "kubernetes-pdb-rolling-updates"
-  - "rolling-update-zero-downtime"
   - "kubernetes-pod-lifecycle"
-  - "ha-deployments-antiaffinity"
   - "cluster-autoscaler-setup"
   - "openshift-lifecycle-support-versions"
 ---

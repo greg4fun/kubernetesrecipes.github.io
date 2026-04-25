@@ -14,7 +14,6 @@ relatedRecipes:
   - "triton-multi-model-serving"
   - "triton-autoscaling-gpu-metrics"
   - "triton-tensorrt-vllm-comparison"
-  - "inference-autoscaling-gpu-metrics"
 tags:
   - triton
   - vllm

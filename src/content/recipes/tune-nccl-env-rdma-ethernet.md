@@ -60,3 +60,79 @@ NCCL_SOCKET_IFNAME=eth0
 - Change one variable at a time when troubleshooting.
 - Keep per-cluster baseline profiles under version control.
 - Re-test after CNI, firmware, or driver upgrades.
+
+## NCCL Environment Tuning for RDMA and Ethernet
+
+Configure NCCL environment variables to optimize GPU communication over RDMA (InfiniBand/RoCE) and Ethernet networks.
+
+### RDMA Configuration
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nccl-rdma-training
+spec:
+  containers:
+  - name: training
+    image: nvcr.io/nvidia/pytorch:25.11-py3
+    env:
+    # Force RDMA transport (disable TCP fallback)
+    - name: NCCL_IB_DISABLE
+      value: "0"
+    # Select IB interface
+    - name: NCCL_IB_HCA
+      value: "mlx5_0,mlx5_1"
+    # Enable GPUDirect RDMA
+    - name: NCCL_NET_GDR_LEVEL
+      value: "SYS"
+    # Tune buffer sizes for large messages
+    - name: NCCL_BUFFSIZE
+      value: "8388608"
+    # Use adaptive routing if switch supports it
+    - name: NCCL_IB_ADAPTIVE_ROUTING
+      value: "1"
+    resources:
+      limits:
+        nvidia.com/gpu: 8
+        rdma/rdma_shared_device_a: 1
+```
+
+### Ethernet/RoCE Configuration
+
+```yaml
+env:
+# Disable IB (use RoCE over Ethernet)
+- name: NCCL_IB_DISABLE
+  value: "0"
+# Force specific NIC for TCP socket communication
+- name: NCCL_SOCKET_IFNAME
+  value: "eth0"
+# RoCE-specific GID index (usually 3 for RoCEv2)
+- name: NCCL_IB_GID_INDEX
+  value: "3"
+# Enable ECN for RoCE congestion control
+- name: NCCL_IB_TC
+  value: "106"
+```
+
+### Debugging NCCL Transport Selection
+
+```bash
+# Enable detailed NCCL logging
+export NCCL_DEBUG=INFO
+export NCCL_DEBUG_SUBSYS=NET,INIT
+
+# Verify RDMA is being used (look for "NET/IB" not "NET/Socket")
+# Good: [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE
+# Bad:  [0] NCCL INFO NET/Socket : Using [0]eth0
+```
+
+### Performance Comparison
+
+| Transport | Bandwidth | Latency | Use Case |
+|-----------|-----------|---------|----------|
+| NVLink | 900 GB/s | <1μs | Intra-node GPU-GPU |
+| IB HDR | 200 Gb/s | 1-2μs | Inter-node RDMA |
+| RoCE v2 | 100 Gb/s | 2-5μs | Inter-node Ethernet |
+| TCP | 25-100 Gb/s | 10-50μs | Fallback only |

@@ -9,6 +9,8 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["liveness", "probes", "health-check", "best-practices", "reliability"]
 relatedRecipes:
+  - "kubernetes-configmap-guide"
+  - "kubernetes-resource-requests-limits"
   - kubernetes-readiness-probes
   - kubernetes-health-probes
   - fix-502-bad-gateway-kubernetes

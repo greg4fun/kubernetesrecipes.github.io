@@ -17,7 +17,6 @@ relatedRecipes:
   - "nim-model-profiles-selection-kubernetes"
   - "rebuild-nim-custom-model-kubernetes"
   - "deploy-multinode-nim-models-kubernetes"
-  - "huggingface-model-kubernetes-deployment"
   - "agentic-ai-multiagent-kubernetes"
 ---
 

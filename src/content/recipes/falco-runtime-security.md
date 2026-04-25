@@ -7,6 +7,8 @@ publishDate: "2026-04-07"
 tags: ["falco", "runtime-security", "threat-detection", "intrusion-detection", "security"]
 author: "Luca Berton"
 relatedRecipes:
+  - "kubernetes-pod-security-standards"
+  - "kubernetes-rbac-least-privilege"
 
 ---
 

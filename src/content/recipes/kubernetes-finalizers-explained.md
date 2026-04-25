@@ -9,6 +9,8 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["finalizers", "deletion", "controllers", "lifecycle", "cleanup"]
 relatedRecipes:
+  - "kubernetes-configmap-guide"
+  - "kubernetes-resource-requests-limits"
   - namespace-stuck-terminating
   - persistent-volume-stuck-terminating
   - kubernetes-operator-development

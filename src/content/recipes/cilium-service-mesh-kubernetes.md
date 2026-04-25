@@ -19,7 +19,6 @@ relatedRecipes:
   - "istio-traffic-management"
   - "kubernetes-networkpolicy-default-deny"
   - "kubernetes-gateway-api"
-  - "observability-pipeline-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Cilium service mesh uses eBPF in the Linux kernel instead of sidecar proxies. This gives you mTLS, L7 traffic management, and observability with lower latency and resource usage than Istio or Linkerd. Install with \`cilium install --set kubeProxyReplacement=true\`, then enable mesh features with Cilium Network Policies and Hubble.

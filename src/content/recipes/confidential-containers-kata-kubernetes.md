@@ -15,7 +15,6 @@ timeToComplete: "25 minutes"
 relatedRecipes:
   - "confidential-computing-kubernetes"
   - "confidential-computing-sgx-sev-kubernetes"
-  - "kubernetes-runtimeclass-gvisor-kata"
   - "kubernetes-pod-security-admission"
   - "kubernetes-network-security-checklist"
 ---

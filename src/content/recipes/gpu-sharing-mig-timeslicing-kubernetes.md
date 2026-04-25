@@ -14,7 +14,6 @@ tags:
   - "nvidia"
   - "sharing"
 relatedRecipes:
-  - "kubernetes-gpu-operator-setup"
   - "kubernetes-cost-optimization-strategies"
   - "nim-support-matrix-gpu-compatibility"
 ---

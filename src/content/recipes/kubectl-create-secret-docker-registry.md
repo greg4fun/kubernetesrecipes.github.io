@@ -18,7 +18,6 @@ relatedRecipes:
   - "kubernetes-imagepullbackoff-troubleshooting"
   - "quay-robot-account-kubernetes"
   - "copy-nim-image-internal-quay-registry"
-  - "kubernetes-secrets-management"
   - "secrets-management-best-practices"
 ---
 

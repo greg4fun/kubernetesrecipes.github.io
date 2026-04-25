@@ -17,7 +17,6 @@ relatedRecipes:
   - "gpu-operator-clusterpolicy-reference"
   - "gpu-operator-mofed-driver"
   - "triton-tensorrt-llm-kubernetes"
-  - "inference-autoscaling-gpu-metrics"
   - "deploy-nemotron-120b-kubernetes"
 ---
 

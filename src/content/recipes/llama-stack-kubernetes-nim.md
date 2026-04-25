@@ -15,12 +15,10 @@ tags:
   - "gpu"
 relatedRecipes:
   - "llama-70b-model-size-gpu-requirements"
-  - "nvidia-nim-microservices"
   - "deploy-llama2-70b-kubernetes"
   - "triton-vllm-kubernetes"
   - "triton-autoscaling-gpu-metrics"
   - "vector-database-kubernetes"
-  - "kubernetes-ai-gateway"
 ---
 
 > 💡 **Quick Answer:** Deploy the Llama Stack starter distribution as a Kubernetes Deployment, configure NVIDIA NIM as the inference provider, and use the unified Llama Stack APIs for inference, RAG, agents, safety, and evals — all through a single endpoint.

@@ -18,7 +18,6 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-kustomize-overlays"
   - "openclaw-security-hardening-pod"
-  - "kind-local-cluster"
 ---
 
 > 💡 **Quick Answer:** Run `./scripts/k8s/create-kind.sh` to create a local Kind cluster (auto-detects Docker or Podman), then `export ANTHROPIC_API_KEY="..." && ./scripts/k8s/deploy.sh` to deploy OpenClaw. Access via `kubectl port-forward svc/openclaw 18789:18789 -n openclaw`.

@@ -9,6 +9,8 @@ timeToComplete: "15 minutes"
 kubernetesVersion: "1.25+"
 tags: ["nccl", "topology", "gpu", "nvlink", "debugging", "multi-gpu"]
 relatedRecipes:
+  - "vllm-kubernetes-deployment-guide"
+  - "nvidia-gpu-time-slicing-mig"
   - verify-nccl-rdma-traffic-debug
   - run-nccl-tests-kubernetes
   - inter-node-tensor-parallelism-kubernetes

@@ -15,7 +15,6 @@ tags:
 relatedRecipes:
   - "imagepullbackoff-troubleshooting"
   - "image-pull-secrets"
-  - "kubernetes-image-governance-enterprise"
 ---
 
 > 💡 **Quick Answer:** `IfNotPresent` uses cached images (default for tagged images); `Always` checks the registry every time (default for `:latest`); `Never` only uses pre-pulled local images.

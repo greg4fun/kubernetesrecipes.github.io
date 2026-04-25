@@ -18,7 +18,6 @@ relatedRecipes:
   - "gpu-operator-mofed-driver"
   - "deploy-llama2-70b-kubernetes"
   - "triton-tensorrt-llm-kubernetes"
-  - "inference-autoscaling-gpu-metrics"
 ---
 
 > 💡 **Quick Answer:** Use node selectors targeting `nvidia.com/gpu.product: NVIDIA-H200` and request `nvidia.com/gpu` resources. H200's 141GB HBM3e enables running 70B+ models on a single GPU and 405B models across 8 GPUs without CPU offloading.

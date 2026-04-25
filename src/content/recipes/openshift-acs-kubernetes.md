@@ -16,7 +16,6 @@ tags:
 relatedRecipes:
   - "networkpolicy-deny-default-gpu"
   - "container-security-scanning"
-  - "secrets-management-kubernetes"
   - "multi-tenant-gpu-namespace-isolation"
   - "resourcequota-limitrange-gpu"
 ---

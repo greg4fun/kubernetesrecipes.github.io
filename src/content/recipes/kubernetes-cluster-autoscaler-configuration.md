@@ -9,6 +9,8 @@ timeToComplete: "15 minutes"
 kubernetesVersion: "1.25+"
 tags: ["cluster-autoscaler", "autoscaling", "node-scaling", "eks", "gke", "aks"]
 relatedRecipes:
+  - "kubernetes-hpa-cpu-memory-guide"
+  - "kubernetes-cluster-autoscaler-guide"
   - cluster-autoscaler-setup
   - cluster-autoscaler
   - kubernetes-hpa-custom-metrics-prometheus

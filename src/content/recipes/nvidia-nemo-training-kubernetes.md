@@ -18,8 +18,6 @@ relatedRecipes:
   - "nvidia-h300-gpu-kubernetes"
   - "kubeflow-distributed-training"
   - "kubeflow-training-operator"
-  - "multi-node-distributed-training"
-  - "fine-tuning-llm-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Deploy NeMo using the `nvcr.io/nvidia/nemo` container with PyTorchJob or LeaderWorkerSet. NeMo provides pre-built recipes for LLM pre-training, fine-tuning (SFT, LoRA, RLHF), with built-in parallelism strategies (TP, PP, DP, EP) and automatic mixed precision.

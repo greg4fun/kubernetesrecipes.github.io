@@ -12,7 +12,6 @@ relatedRecipes:
   - "deploy-ltx-video-kubernetes"
   - "deploy-retinanet-kubernetes"
   - "triton-tensorrt-llm-kubernetes"
-  - "inference-autoscaling-gpu-metrics"
   - "deploy-whisper-kubernetes"
 tags:
   - stable-diffusion

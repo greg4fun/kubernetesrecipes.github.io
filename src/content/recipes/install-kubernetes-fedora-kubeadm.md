@@ -9,6 +9,8 @@ timeToComplete: "30 minutes"
 kubernetesVersion: "1.30+"
 tags: ["fedora", "kubeadm", "install", "containerd", "linux"]
 relatedRecipes:
+  - "kubernetes-configmap-guide"
+  - "kubernetes-resource-requests-limits"
   - kubernetes-release-cycle-version-support
   - kind-local-kubernetes
   - kubernetes-install-debian

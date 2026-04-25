@@ -12,8 +12,6 @@ prerequisites:
 relatedRecipes:
   - "model-storage-hostpath-pvc"
   - "llm-serving-frameworks-compared"
-  - "nvidia-nim-microservices"
-  - "inference-autoscaling-gpu-metrics"
   - "dynamic-volume-provisioning"
 tags:
   - model-caching

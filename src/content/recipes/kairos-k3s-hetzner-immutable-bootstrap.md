@@ -9,6 +9,8 @@ timeToComplete: "45 minutes"
 kubernetesVersion: "1.31+"
 tags: ["kairos", "k3s", "hetzner", "immutable", "cloud-init", "single-node"]
 relatedRecipes:
+  - "kubernetes-readiness-liveness-startup"
+  - "kubernetes-graceful-shutdown-guide"
   - cilium-ebpf-gateway-api-hubble-k3s
   - certmanager-ovh-dns01-wildcard-tls
   - gateway-api-httproutes-tls-k3s

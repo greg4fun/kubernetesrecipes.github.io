@@ -15,10 +15,8 @@ tags:
   - aws
   - azure
 relatedRecipes:
-  - "kubernetes-secret-rotation-automation"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-configmap-reload-patterns"
-  - "helm-secrets-management-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Install External Secrets Operator (ESO), create a `SecretStore` pointing to your vault/cloud provider, then define `ExternalSecret` resources that sync secrets into Kubernetes `Secret` objects. Secrets auto-refresh on the configured interval.

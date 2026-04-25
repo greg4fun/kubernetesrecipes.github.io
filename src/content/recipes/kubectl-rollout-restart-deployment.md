@@ -9,6 +9,8 @@ timeToComplete: "5 minutes"
 kubernetesVersion: "1.15+"
 tags: ["kubectl", "rollout", "restart", "deployment", "rolling-update"]
 relatedRecipes:
+  - "kubernetes-readiness-liveness-startup"
+  - "kubernetes-graceful-shutdown-guide"
   - kubernetes-rolling-update-strategies
   - kubernetes-deployment-strategies
   - kubectl-cheatsheet

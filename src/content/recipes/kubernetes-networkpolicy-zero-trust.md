@@ -14,10 +14,8 @@ tags:
   - namespace-isolation
   - cilium
 relatedRecipes:
-  - "kubernetes-egress-network-policies"
-  - "cilium-network-policy-kubernetes"
-  - "kubernetes-namespace-resource-management"
-  - "pod-security-context-kubernetes"
+  - "kubernetes-pod-security-standards"
+  - "kubernetes-rbac-least-privilege"
 ---
 
 > 💡 **Quick Answer:** Apply a default-deny NetworkPolicy in every namespace, then explicitly allow only required ingress/egress. Always allow DNS egress (port 53) to `kube-system` or your DNS namespace first — without it, all name resolution breaks.

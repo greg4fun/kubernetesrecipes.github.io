@@ -15,7 +15,6 @@ timeToComplete: "10 minutes"
 relatedRecipes:
   - "kubernetes-cronjob-concurrencypolicy"
   - "argo-workflows-kubernetes"
-  - "tekton-pipeline-ci-cd"
   - "kubernetes-pod-lifecycle"
   - "kubernetes-pod-priority-preemption"
 ---

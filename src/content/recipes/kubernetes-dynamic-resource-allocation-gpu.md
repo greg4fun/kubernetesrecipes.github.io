@@ -13,7 +13,6 @@ tags:
 difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
-  - "nvidia-gpu-operator-kubernetes"
   - "kueue-batch-gpu-jobs-kubernetes"
   - "ai-infrastructure-cost-optimization-kubernetes"
   - "kubernetes-resource-limits-cpu-memory-format"

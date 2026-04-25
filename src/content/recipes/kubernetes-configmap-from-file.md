@@ -9,6 +9,8 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["configmap", "kubectl", "configuration", "volumes", "environment-variables"]
 relatedRecipes:
+  - "kubernetes-configmap-guide"
+  - "kubernetes-resource-requests-limits"
   - configmap-hot-reload-troubleshooting
   - kubernetes-environment-variables
   - kubernetes-secrets-management

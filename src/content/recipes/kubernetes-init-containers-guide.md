@@ -16,7 +16,6 @@ relatedRecipes:
   - "kubernetes-pod-lifecycle"
   - "kubernetes-ephemeral-containers-debug"
   - "kubernetes-fsgroupchangepolicy"
-  - "kubernetes-health-probes-liveness-readiness"
   - "debug-crashloopbackoff"
 ---
 

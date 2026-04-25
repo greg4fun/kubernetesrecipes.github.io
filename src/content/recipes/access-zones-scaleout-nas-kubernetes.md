@@ -17,11 +17,7 @@ difficulty: "advanced"
 timeToComplete: "30 minutes"
 relatedRecipes:
   - "kubernetes-nfs-provisioner-guide"
-  - "kubernetes-nfs-persistent-volumes"
-  - "kubernetes-storage-classes"
   - "kubernetes-multi-tenancy-enterprise"
-  - "kubernetes-resource-quotas"
-  - "nfs-fio-mount-debugging-kubernetes"
   - "kubernetes-csi-driver-guide"
 ---
 

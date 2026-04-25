@@ -14,9 +14,7 @@ tags:
 difficulty: "beginner"
 timeToComplete: "15 minutes"
 relatedRecipes:
-  - "argocd-application-set-kubernetes"
   - "tekton-pipelines-kubernetes"
-  - "kubernetes-gitops-fleet-management"
   - "kubernetes-deploy-new-app-five-minutes"
 ---
 

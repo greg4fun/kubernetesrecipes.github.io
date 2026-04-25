@@ -12,7 +12,6 @@ prerequisites:
   - "A domain name pointing to your cluster's external IP"
 relatedRecipes:
   - "networkpolicy-deny-all"
-  - "ingress-annotations-cheatsheet"
 tags:
   - ingress
   - nginx

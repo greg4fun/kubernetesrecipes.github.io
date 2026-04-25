@@ -15,8 +15,6 @@ tags:
   - sync
   - desired-state
 relatedRecipes:
-  - "argocd-applicationset-generators"
-  - "argocd-sync-waves-hooks"
   - "openclaw-argocd-gitops"
   - "argocd-app-of-apps-pattern"
 ---

@@ -15,10 +15,6 @@ timeToComplete: "10 minutes"
 relatedRecipes:
   - "kubernetes-grafana-dashboards-guide"
   - "grafana-kubernetes-dashboards"
-  - "prometheus-monitoring-kubernetes"
-  - "kubernetes-monitoring-metrics-server"
-  - "prometheus-alerting-rules"
-  - "observability-pipeline-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Grafana Dashboard 6417 ("Node Exporter Full") is the most popular Grafana dashboard for Linux/Kubernetes node monitoring. Import it via Grafana UI (Dashboards → Import → ID \`6417\`), select your Prometheus data source, and get instant visibility into CPU, memory, disk I/O, network, and system metrics from \`node_exporter\`.

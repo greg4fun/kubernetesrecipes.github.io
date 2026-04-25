@@ -15,7 +15,6 @@ tags:
 relatedRecipes:
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-networkpolicy-zero-trust"
-  - "kubernetes-audit-logging-enterprise"
 ---
 
 > 💡 **Quick Answer:** Secure AI workloads with: (1) network isolation for training jobs (no egress except storage), (2) RBAC per ML team with GPU quotas, (3) model encryption at rest and in transit, (4) audit logging of model access and data downloads, (5) image scanning for ML framework CVEs.

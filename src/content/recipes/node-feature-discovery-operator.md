@@ -11,7 +11,6 @@ relatedRecipes:
   - "debug-crashloopbackoff"
   - "nvidia-gpu-operator-setup"
   - "gpu-operator-clusterpolicy-reference"
-  - "sriov-network-operator-nic-policy"
   - "openshift-crun-runc-runtime-differences"
 ---
 

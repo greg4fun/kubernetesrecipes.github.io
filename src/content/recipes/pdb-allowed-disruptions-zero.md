@@ -14,7 +14,6 @@ tags:
   - maintenance
   - troubleshooting
 relatedRecipes:
-  - "pod-disruption-budget"
   - "mcp-drain-pdb-workaround"
   - "mcp-blocked-stale-update"
   - "node-drain-hostnetwork-ports"

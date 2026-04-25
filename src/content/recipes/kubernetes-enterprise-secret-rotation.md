@@ -17,7 +17,6 @@ relatedRecipes:
   - "kubernetes-secrets-management-guide"
   - "kubernetes-oidc-enterprise-sso"
   - "kubernetes-audit-logging-compliance"
-  - "helm-secrets-sops-age"
 ---
 
 > 💡 **Quick Answer:** Use External Secrets Operator to sync secrets from Vault/AWS Secrets Manager with `refreshInterval: 1h`. Vault dynamic secrets auto-expire. Combine with Reloader or stakater to trigger rolling restarts when secrets change — zero-downtime rotation.

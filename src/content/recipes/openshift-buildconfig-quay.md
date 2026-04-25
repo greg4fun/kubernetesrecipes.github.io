@@ -17,7 +17,6 @@ relatedRecipes:
   - "openshift-idms-install-config"
   - "openshift-itms-image-tag-mirror"
   - "mofed-doca-driver-building-openshift"
-  - "openshift-custom-ca-openshift-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Create a push secret with Quay robot account credentials, reference it in BuildConfig `output.pushSecret`, and set `output.to.kind: DockerImage` with the full Quay image path. Add Quay's CA to the cluster for HTTPS trust.

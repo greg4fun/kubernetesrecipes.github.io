@@ -9,7 +9,6 @@ author: "Luca Berton"
 relatedRecipes:
   - "logging-efk-stack"
   - "container-logging-patterns"
-  - "container-logging-patterns"
   - "kubernetes-monitoring-guide"
 ---
 

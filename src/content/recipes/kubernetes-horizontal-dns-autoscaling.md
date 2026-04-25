@@ -17,7 +17,6 @@ relatedRecipes:
   - "kubernetes-service-dns-discovery"
   - "kubernetes-coredns-custom-config"
   - "kubernetes-coredns-customization-guide"
-  - "kubernetes-hpa-autoscaling"
 ---
 
 > 💡 **Quick Answer:** Deploy `cluster-proportional-autoscaler` to scale CoreDNS replicas with cluster size. For large clusters (500+ nodes), add NodeLocal DNS Cache — each node runs a local DNS cache that reduces CoreDNS load by 90%.

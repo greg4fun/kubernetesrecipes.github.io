@@ -15,9 +15,7 @@ relatedRecipes:
   - "triton-tensorrt-vllm-comparison"
   - "triton-tensorrt-llm-kubernetes"
   - "triton-vllm-kubernetes"
-  - "inference-autoscaling-gpu-metrics"
   - "deploy-phi4-kubernetes"
-  - "gpu-memory-oversubscription"
 tags:
   - llama
   - llm

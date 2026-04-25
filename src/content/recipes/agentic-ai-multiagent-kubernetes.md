@@ -15,7 +15,6 @@ timeToComplete: "25 minutes"
 relatedRecipes:
   - "deploy-multinode-nim-models-kubernetes"
   - "nvidia-dynamo-distributed-inference-kubernetes"
-  - "llama-stack-kubernetes-deployment"
   - "kubernetes-job-completion-parallelism"
   - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
 ---

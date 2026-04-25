@@ -14,7 +14,6 @@ relatedRecipes:
   - "triton-vllm-kubernetes"
   - "triton-multi-model-serving"
   - "triton-tensorrt-vllm-comparison"
-  - "inference-autoscaling-gpu-metrics"
   - "keda-event-driven-autoscaling"
 tags:
   - triton

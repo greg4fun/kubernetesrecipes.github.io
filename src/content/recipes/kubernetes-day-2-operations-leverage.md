@@ -14,9 +14,7 @@ difficulty: "beginner"
 timeToComplete: "15 minutes"
 relatedRecipes:
   - "kubernetes-platform-engineering-golden-paths"
-  - "kubernetes-hpa-autoscaling"
   - "kubernetes-rolling-update-zero-downtime"
-  - "kubernetes-probes-liveness-readiness"
 ---
 
 > 💡 **Quick Answer:** Kubernetes day 1 is painful (cluster setup, networking, storage). Day 2 is where you win: every new service automatically gets autoscaling, self-healing, rolling updates, observability, and security — with zero additional infrastructure work. The investment pays off exponentially as you scale from 1 to 100 services.

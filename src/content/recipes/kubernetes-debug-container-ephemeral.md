@@ -13,9 +13,6 @@ tags:
   - troubleshooting
   - kubectl-debug
 relatedRecipes:
-  - "kubernetes-ephemeral-containers-debugging"
-  - "troubleshoot-crashloopbackoff-kubernetes"
-  - "kubernetes-pod-troubleshooting-guide"
   - "kubectl-config-context-management"
 ---
 

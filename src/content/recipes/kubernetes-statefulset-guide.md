@@ -7,6 +7,8 @@ publishDate: "2026-04-05"
 tags: ["statefulset", "databases", "persistent-storage", "ordered-deployment", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "kubernetes-readiness-liveness-startup"
+  - "kubernetes-graceful-shutdown-guide"
 
 ---
 

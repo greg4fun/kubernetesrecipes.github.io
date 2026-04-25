@@ -9,7 +9,6 @@ author: "Luca Berton"
 relatedRecipes:
   - "pod-pending-troubleshooting"
   - "statefulset-management"
-  - "nfs-persistent-volumes"
 ---
 
 > 💡 **Quick Answer:** PVC stuck in Pending means no PV can satisfy the claim. Check `kubectl describe pvc` for the reason: no matching StorageClass, provisioner not installed, insufficient capacity, or access mode mismatch. For dynamic provisioning, verify the StorageClass provisioner pod is running.

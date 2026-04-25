@@ -1,5 +1,5 @@
 ---
-title: "Secrets Best Practices Kubernetes"
+title: "Secrets Security Best Practices K8s"
 description: "Kubernetes secrets management best practices. Encryption at rest, external secrets operator, rotation, RBAC, and avoiding common security mistakes."
 publishDate: "2026-04-25"
 author: "Luca Berton"

@@ -13,8 +13,6 @@ prerequisites:
 relatedRecipes:
   - "preemptive-cybersecurity-kubernetes"
   - "openshift-custom-ca-registry"
-  - "cert-manager-setup"
-  - "tls-certificates-ingress"
   - "etcd-backup-restore"
 tags:
   - certificates

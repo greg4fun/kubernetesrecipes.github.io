@@ -16,8 +16,6 @@ relatedRecipes:
   - "kubernetes-load-balancing"
   - "kubernetes-gateway-api"
   - "kubernetes-networkpolicy-default-deny"
-  - "kubernetes-service-discovery"
-  - "metallb-bare-metal-loadbalancer"
 ---
 
 > 💡 **Quick Answer:** \`ClusterIP\` (default) = internal-only access within the cluster. \`NodePort\` = exposes on every node's IP at a static port (30000-32767). \`LoadBalancer\` = provisions an external cloud load balancer. \`ExternalName\` = DNS CNAME alias to an external service.

@@ -13,7 +13,6 @@ tags:
   - security
   - zero-trust
 relatedRecipes:
-  - "kubernetes-network-policies"
   - "cilium-ebpf-gateway-api-hubble-k3s"
   - "kubernetes-endpointslice-service-discovery"
 ---

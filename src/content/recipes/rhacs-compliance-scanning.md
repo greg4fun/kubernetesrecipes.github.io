@@ -19,7 +19,6 @@ relatedRecipes:
   - "rhacs-custom-security-policies"
   - "rhacs-network-segmentation"
   - "gpu-tenant-slo-observability"
-  - "secrets-management-kubernetes"
 ---
 
 > 💡 **Quick Answer:** RHACS includes built-in compliance scanning for CIS Kubernetes Benchmark, NIST 800-53/800-190, PCI DSS, HIPAA, and NERC-CIP. Trigger scans via UI or `roxctl`, get per-control pass/fail results, and export reports as CSV/PDF for auditors.

@@ -17,7 +17,6 @@ relatedRecipes:
   - "agentic-ai-multiagent-kubernetes"
   - "ai-supercomputing-kubernetes-gpu-clusters"
   - "kubernetes-pod-topology-spread-constraints"
-  - "observability-pipeline-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Autonomous industrial systems use AI + robotics to run factories and logistics with minimal human intervention. Kubernetes orchestrates the stack: edge nodes (K3s) on factory floor devices, cloud GPU clusters for training/simulation, MQTT/OPC UA for sensor data ingestion, and ML inference for predictive maintenance, quality inspection, and autonomous robot coordination.

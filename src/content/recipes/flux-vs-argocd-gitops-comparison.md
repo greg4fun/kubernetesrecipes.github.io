@@ -17,7 +17,6 @@ relatedRecipes:
   - "flux-gitops-continuous-delivery"
   - "argocd-app-of-apps-pattern"
   - "platform-engineering-internal-developer-platform-kubernetes"
-  - "kubernetes-gitops-fleet-management"
   - "argocd-app-of-apps-sync-waves"
 ---
 

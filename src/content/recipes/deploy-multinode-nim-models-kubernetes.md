@@ -19,7 +19,6 @@ relatedRecipes:
   - "gpu-clusterpolicy-gds-enable"
   - "copy-nim-image-internal-quay-registry"
   - "kai-scheduler-podgroups"
-  - "nfd-gpu-operator-network-operator-sriov"
 ---
 
 > 💡 **Quick Answer:** Multinode NIM deploys models too large for a single node (like DeepSeek-R1 671B or Llama 3.1 405B) across multiple GPU nodes using tensor parallelism over NCCL + InfiniBand. Deploy as a Kubernetes LeaderWorkerSet or paired Jobs with RDMA networking for optimal performance.

@@ -15,7 +15,6 @@ timeToComplete: "25 minutes"
 relatedRecipes:
   - "kubernetes-pod-security-admission"
   - "selinux-scc-gpu-operator-openshift"
-  - "kubernetes-security-checklist"
   - "kubernetes-rbac-guide"
   - "kubernetes-multi-tenancy"
 ---

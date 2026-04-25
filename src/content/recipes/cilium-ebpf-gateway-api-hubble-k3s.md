@@ -9,6 +9,8 @@ timeToComplete: "30 minutes"
 kubernetesVersion: "1.31+"
 tags: ["cilium", "ebpf", "gateway-api", "hubble", "k3s", "cni", "observability"]
 relatedRecipes:
+  - "kubernetes-service-types-explained"
+  - "kubernetes-ingress-path-routing"
   - kairos-k3s-hetzner-immutable-bootstrap
   - certmanager-ovh-dns01-wildcard-tls
   - gateway-api-httproutes-tls-k3s

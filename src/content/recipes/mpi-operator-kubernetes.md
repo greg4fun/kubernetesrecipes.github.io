@@ -11,9 +11,7 @@ prerequisites:
 relatedRecipes:
   - "slurm-kubernetes-integration"
   - "nvidia-pyxis-slurm-containers"
-  - "multi-node-distributed-training"
   - "ai-batch-processing-volcano"
-  - "gpu-memory-oversubscription"
   - "kubeflow-training-operator"
   - "kubeflow-distributed-training"
 tags:

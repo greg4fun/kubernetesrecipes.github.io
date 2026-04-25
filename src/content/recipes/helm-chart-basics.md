@@ -12,8 +12,6 @@ prerequisites:
 relatedRecipes:
   - "rolling-update-deployment"
   - "openclaw-signal-kubernetes"
-  - "helm-chart-best-practices"
-  - "helmfile-multi-environment"
   - "helm-chart-repositories"
   - "helm-dependencies"
   - "helm-hooks"

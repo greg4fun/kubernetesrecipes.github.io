@@ -15,7 +15,6 @@ tags:
 relatedRecipes:
   - "kubernetes-secrets-best-practices"
   - "kubernetes-secrets-management-external"
-  - "argocd-gitops-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Use `kubeseal` to encrypt Kubernetes Secrets into `SealedSecret` resources that are safe to store in Git. The Sealed Secrets controller in the cluster decrypts them back to regular Secrets. Only the cluster's private key can decrypt — even you can't read them after sealing.

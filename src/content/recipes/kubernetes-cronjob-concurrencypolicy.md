@@ -13,11 +13,9 @@ tags:
 difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
-  - "kubernetes-jobs-batch-processing"
   - "kubernetes-pod-lifecycle"
   - "kubernetes-resource-optimization"
   - "argo-workflows-kubernetes"
-  - "tekton-pipeline-ci-cd"
 ---
 
 > 💡 **Quick Answer:** \`concurrencyPolicy\` controls what happens when a CronJob triggers while a previous run is still active. \`Allow\` (default) lets jobs overlap. \`Forbid\` skips the new run. \`Replace\` terminates the old run and starts a new one.

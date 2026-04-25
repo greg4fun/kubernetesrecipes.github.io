@@ -22,7 +22,6 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-kustomize-overlays"
   - "openclaw-security-hardening-pod"
-  - "helm-chart-development"
 ---
 
 > 💡 **Quick Answer:** Install the community Helm chart with `helm install openclaw oci://ghcr.io/serhanekicii/openclaw-helm/openclaw` to deploy OpenClaw with an optional Chromium sidecar for browser automation and an init container for declarative skill installation.

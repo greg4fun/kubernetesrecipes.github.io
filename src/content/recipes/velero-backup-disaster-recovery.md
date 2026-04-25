@@ -13,7 +13,6 @@ relatedRecipes:
   - "kubernetes-rook-ceph-storage"
   - "etcd-backup-restore"
   - "volume-snapshots"
-  - "persistent-volumes-claims"
 tags:
   - velero
   - backup

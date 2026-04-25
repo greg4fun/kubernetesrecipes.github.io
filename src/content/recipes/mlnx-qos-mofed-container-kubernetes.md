@@ -21,7 +21,6 @@ relatedRecipes:
   - "sriov-network-node-policy-rdma-openshift"
   - "verify-nccl-rdma-traffic-debug"
   - "doca-perftest-rdma-benchmark-kubernetes"
-  - "ets-pfc-dscp-trust-quickstart"
 ---
 
 > 💡 **Quick Answer:** `mlnx_qos -i eth0` shows PFC, ETS, and DSCP trust configuration on Mellanox/NVIDIA ConnectX NICs. Run it from a MOFED (Mellanox OFED) privileged container DaemonSet with `hostNetwork: true` and access to `/dev/mst` devices.

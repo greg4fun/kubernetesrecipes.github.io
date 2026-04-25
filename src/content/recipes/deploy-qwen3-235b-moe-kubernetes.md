@@ -17,7 +17,6 @@ relatedRecipes:
   - "deploy-phi4-kubernetes"
   - "triton-vllm-kubernetes"
   - "triton-tensorrt-llm-kubernetes"
-  - "gpu-memory-oversubscription"
 tags:
   - qwen3
   - mixture-of-experts

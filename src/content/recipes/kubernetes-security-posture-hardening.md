@@ -16,9 +16,7 @@ tags:
   - audit
   - encryption
 relatedRecipes:
-  - "networkpolicy-security"
   - "openshift-acs-kubernetes"
-  - "rhacs-policy-enforcement"
   - "openclaw-security-hardening-pod"
 ---
 > 💡 **Quick Answer:** Harden your cluster with 5 layers: (1) Pod Security Standards (`Restricted` profile), (2) RBAC least-privilege with audit, (3) NetworkPolicies default-deny, (4) etcd encryption at rest, (5) API server audit logging. Use `kube-bench` to validate against CIS benchmarks.

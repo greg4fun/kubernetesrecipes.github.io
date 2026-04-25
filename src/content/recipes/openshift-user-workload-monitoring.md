@@ -16,7 +16,6 @@ tags:
   - grafana
   - user-workload
 relatedRecipes:
-  - "monitoring-prometheus"
   - "openclaw-monitoring-prometheus"
   - "kubernetes-resource-optimization"
 ---

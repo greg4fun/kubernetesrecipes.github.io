@@ -13,10 +13,8 @@ tags:
 difficulty: "advanced"
 timeToComplete: "20 minutes"
 relatedRecipes:
-  - "platform-engineering-kubernetes"
   - "data-sovereignty-geopatriation-kubernetes"
   - "kubernetes-multi-tenancy-enterprise"
-  - "kubernetes-audit-logging-enterprise"
   - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
 ---
 

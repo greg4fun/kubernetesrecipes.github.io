@@ -14,8 +14,6 @@ tags:
   - configuration
   - rolling-update
 relatedRecipes:
-  - "kubernetes-environment-variables-configmap"
-  - "kubernetes-projected-volumes-guide"
   - "kubernetes-rolling-update-strategies"
 ---
 

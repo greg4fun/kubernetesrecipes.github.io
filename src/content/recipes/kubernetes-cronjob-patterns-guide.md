@@ -1,5 +1,5 @@
 ---
-title: "CronJob Best Practices Kubernetes"
+title: "CronJob Patterns Advanced K8s"
 description: "Kubernetes CronJob patterns for production. ConcurrencyPolicy, startingDeadlineSeconds, successfulJobsHistoryLimit, and handling job failures."
 publishDate: "2026-04-25"
 author: "Luca Berton"

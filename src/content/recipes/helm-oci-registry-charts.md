@@ -14,9 +14,8 @@ tags:
   - charts
   - ghcr
 relatedRecipes:
-  - "helm-chart-development"
-  - "helm-dependency-management"
-  - "helm-chart-testing"
+  - "helm-values-override-patterns"
+  - "helm-rollback-history-guide"
 ---
 
 > 💡 **Quick Answer:** Use `helm push mychart-1.0.0.tgz oci://ghcr.io/myorg/charts` to store charts in OCI registries. Pull with `helm pull oci://ghcr.io/myorg/charts/mychart --version 1.0.0`. Install directly: `helm install myrelease oci://ghcr.io/myorg/charts/mychart --version 1.0.0`. No `helm repo add` needed — OCI registries replace traditional chart repos.

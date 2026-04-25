@@ -14,7 +14,6 @@ tags:
   - "grafana"
   - "ai-observability"
 relatedRecipes:
-  - "prometheus-monitoring-kubernetes"
   - "grafana-kubernetes-dashboards"
   - "gpu-sharing-mig-timeslicing-kubernetes"
 ---

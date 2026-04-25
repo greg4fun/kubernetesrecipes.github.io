@@ -15,8 +15,6 @@ relatedRecipes:
   - "kubernetes-kubeflow-pytorchjob"
   - "kubeflow-distributed-training"
   - "mpi-operator-kubernetes"
-  - "multi-node-distributed-training"
-  - "fine-tuning-llm-kubernetes"
   - "kai-scheduler-gpu-sharing"
   - "triton-autoscaling-gpu-metrics"
 ---

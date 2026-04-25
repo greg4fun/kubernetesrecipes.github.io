@@ -9,6 +9,8 @@ timeToComplete: "20 minutes"
 kubernetesVersion: "1.31+"
 tags: ["cert-manager", "ovh", "dns-01", "tls", "lets-encrypt", "wildcard", "k3s"]
 relatedRecipes:
+  - "kubernetes-pod-security-standards"
+  - "kubernetes-rbac-least-privilege"
   - kairos-k3s-hetzner-immutable-bootstrap
   - cilium-ebpf-gateway-api-hubble-k3s
   - gateway-api-httproutes-tls-k3s

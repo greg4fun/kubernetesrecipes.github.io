@@ -13,7 +13,6 @@ prerequisites:
 relatedRecipes:
   - "quay-default-permissions-robot"
   - "rotate-quay-robot-tokens"
-  - "openshift-custom-ca-openshift-kubernetes"
   - "decode-docker-registry-secrets"
   - "openshift-project-request-template"
   - "openshift-cluster-wide-pull-secret"

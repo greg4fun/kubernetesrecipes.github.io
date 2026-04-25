@@ -17,7 +17,6 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-backup-restore"
   - "openclaw-workspace-gitops"
-  - "persistent-volume-claims"
 ---
 
 > 💡 **Quick Answer:** OpenClaw stores agent state, memory, skills, and config in `/home/node/.openclaw`, backed by a 10Gi PVC. An init container seeds the config from a ConfigMap on every start without overwriting existing workspace data. Use `Recreate` strategy (not RollingUpdate) since the PVC is RWO.

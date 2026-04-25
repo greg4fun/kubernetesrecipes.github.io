@@ -11,7 +11,6 @@ prerequisites:
 relatedRecipes:
   - "deploy-stable-diffusion-xl-kubernetes"
   - "deploy-sarvam-105b-kubernetes"
-  - "inference-autoscaling-gpu-metrics"
   - "triton-multi-model-serving"
 tags:
   - ltx

@@ -24,7 +24,6 @@ relatedRecipes:
   - "leaderworkerset-operator"
   - "llm-autoscaling-kubernetes"
   - "cronjob-concurrency-policy"
-  - "multi-node-distributed-training"
   - "kai-scheduler-queues"
   - "jobs-cronjobs"
 tags:

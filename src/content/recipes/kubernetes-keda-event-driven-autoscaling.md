@@ -15,7 +15,6 @@ tags:
   - "scale-to-zero"
 relatedRecipes:
   - "openclaw-autoscaling-keda"
-  - "kubernetes-hpa-cpu-memory"
   - "kubernetes-vpa-resource-rightsizing"
 ---
 

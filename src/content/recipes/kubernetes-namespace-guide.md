@@ -7,6 +7,8 @@ publishDate: "2026-04-05"
 tags: ["namespaces", "isolation", "multi-tenant", "rbac", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "kubernetes-configmap-guide"
+  - "kubernetes-resource-requests-limits"
 
 ---
 

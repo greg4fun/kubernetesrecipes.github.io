@@ -14,9 +14,7 @@ difficulty: "beginner"
 timeToComplete: "15 minutes"
 relatedRecipes:
   - "kubernetes-user-onboarding-offboarding-automation"
-  - "kubernetes-resource-quotas"
   - "kubernetes-multi-tenancy-enterprise"
-  - "kubernetes-gitops-fleet-management"
 ---
 
 > 💡 **Quick Answer:** Create a namespace template (Helm chart or Kustomize base) that provisions a complete environment in one command: namespace + ResourceQuota + LimitRange + RBAC + NetworkPolicy + monitoring ServiceMonitor. New teams/apps get production-ready isolation in seconds, not days.

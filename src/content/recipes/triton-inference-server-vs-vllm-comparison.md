@@ -14,7 +14,6 @@ difficulty: "intermediate"
 timeToComplete: "15 minutes"
 relatedRecipes:
   - "triton-tensorrt-vllm-comparison"
-  - "deploy-vllm-inference-kubernetes"
   - "vllm-openai-container-kubernetes"
   - "triton-tensorrt-llm-kubernetes"
   - "kubernetes-ai-gateway-inference-extension"

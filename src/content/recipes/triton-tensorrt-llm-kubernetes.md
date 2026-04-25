@@ -16,8 +16,6 @@ relatedRecipes:
   - "triton-multi-model-serving"
   - "triton-autoscaling-gpu-metrics"
   - "triton-tensorrt-vllm-comparison"
-  - "inference-autoscaling-gpu-metrics"
-  - "nvidia-nim-microservices"
 tags:
   - triton
   - tensorrt-llm

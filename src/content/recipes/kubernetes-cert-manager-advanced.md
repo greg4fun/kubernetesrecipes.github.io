@@ -16,7 +16,6 @@ tags:
 relatedRecipes:
   - "kubernetes-cert-expiration-management"
   - "kubernetes-ingress-tls-cert-manager"
-  - "kubernetes-gateway-api-guide"
 ---
 
 > 💡 **Quick Answer:** Use DNS-01 challenge for wildcard certificates (`*.example.com`). Configure `Certificate` resources with 60-day duration and 30-day renewBefore for safe rotation. Share certificates across namespaces with `trust-manager` or `reflector`. Integrate with Gateway API via `gateway.networking.k8s.io/v1` references.

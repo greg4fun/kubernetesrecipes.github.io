@@ -24,7 +24,6 @@ relatedRecipes:
   - "mellanox-roce-dscp-qos-daemonset"
   - "mlnx-qos-mofed-container-kubernetes"
   - "pfc-nmstate-roce-lossless-kubernetes"
-  - "ets-pfc-dscp-quick-start-roce-kubernetes"
 ---
 
 > 💡 **Quick Answer:** RDMA QoS uses three traffic classes: **TC0** (lossy best-effort), **TC3** (lossless RDMA, DSCP 24/26), and **TC6** (CNP congestion notification). PFC makes TC3 lossless, ECN+WRED mark congestion, and DCQCN is the end-to-end congestion control algorithm combining all three mechanisms.

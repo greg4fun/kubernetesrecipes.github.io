@@ -12,7 +12,6 @@ prerequisites:
 relatedRecipes:
   - "slurm-kubernetes-integration"
   - "mpi-operator-kubernetes"
-  - "multi-node-distributed-training"
   - "gpu-operator-clusterpolicy-reference"
 tags:
   - pyxis

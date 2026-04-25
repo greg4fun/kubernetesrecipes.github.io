@@ -18,7 +18,6 @@ relatedRecipes:
   - "openshift-acs-kubernetes"
   - "container-security-scanning"
   - "networkpolicy-deny-default-gpu"
-  - "secrets-management-kubernetes"
   - "multi-tenant-gpu-namespace-isolation"
 ---
 

@@ -20,7 +20,6 @@ tags:
 relatedRecipes:
   - "pfc-nmstate-roce-lossless-kubernetes"
   - "mlnx-qos-mofed-container-kubernetes"
-  - "ets-pfc-dscp-quick-start-roce-kubernetes"
   - "verify-nccl-rdma-traffic-debug"
   - "sriov-network-node-policy-rdma-openshift"
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Multi-Cluster Management Kubernetes"
+title: "Multi-Cluster K8s Mgmt Patterns"
 description: "Manage multiple Kubernetes clusters with kubectx, Cluster API, Fleet, and federation patterns. Context switching, workload distribution."
 publishDate: "2026-04-24"
 author: "Luca Berton"
@@ -15,8 +15,6 @@ tags:
   - federation
 relatedRecipes:
   - "kubectl-config-context-management"
-  - "cluster-api-management-kubernetes"
-  - "argocd-gitops-kubernetes"
   - "kubernetes-disaster-recovery-enterprise"
 ---
 

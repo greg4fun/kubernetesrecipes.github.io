@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Secrets Complete Guide"
+title: "Secrets Encryption Rotation K8s Guide"
 description: "Production guide for kubernetes secrets complete guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "security"
 difficulty: "Manage Kubernetes Secrets for passwords, tokens, and certificates. Covers creation, encryption at rest, external secret operators, and security best practices."

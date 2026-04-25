@@ -13,7 +13,6 @@ relatedRecipes:
   - "triton-vllm-kubernetes"
   - "triton-multi-model-serving"
   - "triton-autoscaling-gpu-metrics"
-  - "inference-autoscaling-gpu-metrics"
 tags:
   - triton
   - tensorrt-llm

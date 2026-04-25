@@ -17,7 +17,6 @@ relatedRecipes:
   - "ai-infrastructure-cost-optimization-kubernetes"
   - "kubernetes-pod-priority-preemption"
   - "horizontal-pod-autoscaler"
-  - "nvidia-gpu-operator-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Kueue is a Kubernetes-native job queueing system that manages when and where batch Jobs run based on available quotas. Install Kueue, define `ResourceFlavors` (CPU/GPU types), `ClusterQueues` (resource pools), and `LocalQueues` (per-namespace). Jobs wait in queue until quota is available — no more overcommitting GPUs or starving lower-priority teams.

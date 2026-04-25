@@ -9,6 +9,8 @@ timeToComplete: "15 minutes"
 kubernetesVersion: "1.21+"
 tags: ["pvc", "persistent-volume", "storage", "storageclass", "volumes"]
 relatedRecipes:
+  - "kubernetes-persistent-volume-claims"
+  - "kubernetes-storage-class-guide"
   - kubernetes-persistent-volumes
   - kubernetes-storage-best-practices
   - kubernetes-hostpath-volume

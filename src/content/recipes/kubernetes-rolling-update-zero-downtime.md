@@ -16,10 +16,8 @@ relatedRecipes:
   - "kubernetes-daemonset-update-strategies"
   - "liveness-readiness-probes"
   - "kubernetes-poddisruptionbudget-guide"
-  - "kubernetes-health-probes-liveness-readiness"
   - "kubernetes-pod-lifecycle"
   - "ab-testing-kubernetes"
-  - "rolling-update-zero-downtime"
 ---
 
 > 💡 **Quick Answer:** Zero-downtime rolling updates require: (1) readiness probe to delay traffic until ready, (2) \`preStop\` lifecycle hook to drain connections before termination, (3) proper \`maxSurge\`/\`maxUnavailable\` settings, and (4) \`terminationGracePeriodSeconds\` long enough for in-flight requests to complete.

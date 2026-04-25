@@ -9,6 +9,8 @@ timeToComplete: "15 minutes"
 kubernetesVersion: "1.21+"
 tags: ["secrets", "security", "encryption", "external-secrets", "vault", "best-practices"]
 relatedRecipes:
+  - "kubernetes-pod-security-standards"
+  - "kubernetes-rbac-least-privilege"
   - kubernetes-secrets-management
   - openclaw-secrets-management
   - key-rotation-automation-kubernetes

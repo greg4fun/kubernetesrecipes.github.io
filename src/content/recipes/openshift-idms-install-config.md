@@ -13,7 +13,6 @@ relatedRecipes:
   - "itms-external-registry-mapping"
   - "openshift-itms-image-tag-mirror"
   - "openshift-cluster-wide-pull-secret"
-  - "openshift-custom-ca-openshift-kubernetes"
   - "custom-ca-openshift"
   - "quay-robot-account-kubernetes"
   - "container-security-scanning"

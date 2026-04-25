@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes PodDisruptionBudget Guide"
+title: "PDB Disruption Budget K8s"
 description: "Configure PodDisruptionBudgets to protect application availability during node drains, upgrades, and voluntary disruptions in Kubernetes."
 category: "deployments"
 difficulty: "intermediate"

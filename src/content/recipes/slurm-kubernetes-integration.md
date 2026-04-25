@@ -12,9 +12,7 @@ prerequisites:
 relatedRecipes:
   - "mpi-operator-kubernetes"
   - "nvidia-pyxis-slurm-containers"
-  - "multi-node-distributed-training"
   - "ai-batch-processing-volcano"
-  - "gpu-memory-oversubscription"
 tags:
   - slurm
   - hpc

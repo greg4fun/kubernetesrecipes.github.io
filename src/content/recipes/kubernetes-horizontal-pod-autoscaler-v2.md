@@ -14,7 +14,6 @@ tags:
   - custom-metrics
 relatedRecipes:
   - "horizontal-pod-autoscaler"
-  - "hpa-custom-metrics-prometheus-kubernetes"
   - "kubernetes-custom-metrics-autoscaling"
 ---
 

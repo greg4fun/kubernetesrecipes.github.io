@@ -9,6 +9,8 @@ timeToComplete: "60 minutes"
 kubernetesVersion: "1.31+"
 tags: ["gitops", "argocd", "octopus-deploy", "gitea", "ci-cd", "pipeline", "k3s"]
 relatedRecipes:
+  - "kubernetes-readiness-liveness-startup"
+  - "kubernetes-graceful-shutdown-guide"
   - gitea-actions-runner-quay-push
   - octopus-deploy-kubernetes-agent
   - hugo-nginx-static-site-k3s

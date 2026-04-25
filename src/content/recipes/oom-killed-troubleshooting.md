@@ -10,7 +10,6 @@ relatedRecipes:
   - "crashloopbackoff-troubleshooting"
   - "resource-quota-exceeded-error"
   - "kubernetes-resource-optimization"
-  - "vpa-vertical-pod-autoscaler"
 ---
 
 > 💡 **Quick Answer:** OOMKilled (exit code 137) means your container exceeded its memory limit and the kernel killed it. Fix: increase `resources.limits.memory`, fix memory leaks, or use VPA to auto-right-size. Check actual usage with `kubectl top pod` before adjusting limits.

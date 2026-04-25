@@ -16,7 +16,6 @@ tags:
 relatedRecipes:
   - "mcp-drain-pdb-workaround"
   - "mcp-blocked-stale-update"
-  - "pod-disruption-budget"
   - "mcp-update-automation-script"
 ---
 

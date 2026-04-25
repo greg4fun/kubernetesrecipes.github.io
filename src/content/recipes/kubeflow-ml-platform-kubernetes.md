@@ -13,9 +13,7 @@ tags:
   - "machine-learning"
   - "platform"
 relatedRecipes:
-  - "kubeflow-operator-kubernetes"
   - "kserve-model-serving-kubernetes"
-  - "kubernetes-gpu-operator-setup"
 ---
 
 > 💡 **Quick Answer:** Deploy Kubeflow with `kustomize build` or the Kubeflow Operator for a complete ML platform: Jupyter notebooks for experimentation, Training Operators for distributed training, Katib for hyperparameter tuning, Pipelines for workflow automation, and KServe for model serving.

@@ -13,7 +13,6 @@ tags:
   - "high-availability"
 relatedRecipes:
   - "velero-backup-disaster-recovery"
-  - "csi-driver-configuration"
   - "horizontal-pod-autoscaler"
   - "pod-disruption-budgets"
   - "openclaw-persistent-storage"

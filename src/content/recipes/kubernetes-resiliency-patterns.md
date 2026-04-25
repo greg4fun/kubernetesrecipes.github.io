@@ -19,7 +19,6 @@ relatedRecipes:
   - "pdb-allowed-disruptions-zero"
   - "node-not-ready-troubleshooting"
   - "debug-pod-eviction-reasons"
-  - "kubernetes-readiness-probe"
 ---
 > 💡 **Quick Answer:** Resilient Kubernetes apps need 6 patterns: (1) PodDisruptionBudgets to survive maintenance, (2) topology spread across zones, (3) pod anti-affinity to prevent co-location, (4) proper health probes (liveness ≠ readiness ≠ startup), (5) graceful shutdown with preStop hooks, (6) resource requests/limits for predictable scheduling.
 

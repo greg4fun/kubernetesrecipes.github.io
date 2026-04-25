@@ -9,6 +9,8 @@ timeToComplete: "5 minutes"
 kubernetesVersion: "1.21+"
 tags: ["kubectl", "cp", "copy", "files", "debugging", "troubleshooting"]
 relatedRecipes:
+  - "debug-crashloopbackoff"
+  - "kubernetes-oomkilled-troubleshooting"
   - kubernetes-exec-into-pod
   - kubectl-cheatsheet
   - ephemeral-debug-containers

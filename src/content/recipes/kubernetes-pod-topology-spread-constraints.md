@@ -13,10 +13,8 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "15 minutes"
 relatedRecipes:
-  - "ha-deployments-antiaffinity"
   - "kubernetes-poddisruptionbudget-guide"
   - "runai-topology-aware-scheduling-kubernetes"
-  - "node-affinity-scheduling"
   - "karpenter-node-autoscaling"
 ---
 

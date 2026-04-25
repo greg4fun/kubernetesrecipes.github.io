@@ -12,8 +12,6 @@ prerequisites:
   - "Understanding of distributed GPU workloads"
 relatedRecipes:
   - "dra-gpu-allocation"
-  - "distributed-training-kubernetes"
-  - "gpu-workloads-kubernetes"
   - "dra-mig-partitioning"
   - "switch-proprietary-to-open-kernel-modules"
 tags:

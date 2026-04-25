@@ -14,7 +14,6 @@ relatedRecipes:
   - "aiperf-goodput-slo-benchmark"
   - "aiperf-trace-replay-kubernetes"
   - "triton-autoscaling-gpu-metrics"
-  - "inference-autoscaling-gpu-metrics"
 tags:
   - aiperf
   - benchmarking

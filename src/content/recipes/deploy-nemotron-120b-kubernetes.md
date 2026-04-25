@@ -14,7 +14,6 @@ relatedRecipes:
   - "deploy-qwen35-35b-moe-kubernetes"
   - "deploy-llama31-8b-kubernetes"
   - "triton-tensorrt-llm-kubernetes"
-  - "nvidia-nim-microservices"
 tags:
   - nemotron
   - nvidia

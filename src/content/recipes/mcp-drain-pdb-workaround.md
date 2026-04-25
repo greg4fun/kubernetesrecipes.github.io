@@ -19,7 +19,6 @@ relatedRecipes:
   - "node-drain-hostnetwork-ports"
   - "mcp-update-automation-script"
   - "openshift-mcp-itms-rollout"
-  - "pod-disruption-budget"
 ---
 
 > 💡 **Quick Answer:** When MCP drain hangs on "Cannot evict pod — violates PodDisruptionBudget", scale the blocking deployment to 0 replicas (`oc scale deploy/<name> --replicas=0`), let the drain complete, wait for the node to reboot and rejoin, then restore the original replica count.

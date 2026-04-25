@@ -9,6 +9,8 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["networkpolicy", "egress", "deny", "security", "zero-trust"]
 relatedRecipes:
+  - "kubernetes-pod-security-standards"
+  - "kubernetes-rbac-least-privilege"
   - kubernetes-networkpolicy-default-deny
   - kubernetes-network-policy-recipes
   - kubernetes-security-best-practices

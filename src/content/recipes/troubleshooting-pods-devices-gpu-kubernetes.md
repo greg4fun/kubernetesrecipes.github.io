@@ -13,9 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
-  - "nvidia-gpu-operator-kubernetes"
   - "kubernetes-dynamic-resource-allocation-gpu"
-  - "gpu-operator-troubleshooting"
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-resource-limits-cpu-memory-format"
 ---

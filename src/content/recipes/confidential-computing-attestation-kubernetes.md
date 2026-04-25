@@ -16,7 +16,6 @@ relatedRecipes:
   - "confidential-containers-kata-kubernetes"
   - "confidential-computing-sgx-sev-kubernetes"
   - "kubernetes-oidc-enterprise-sso"
-  - "kubernetes-secret-rotation-enterprise"
   - "kubernetes-pod-security-admission"
 ---
 

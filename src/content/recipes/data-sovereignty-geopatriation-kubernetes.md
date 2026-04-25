@@ -15,7 +15,6 @@ timeToComplete: "20 minutes"
 relatedRecipes:
   - "kubernetes-multi-tenancy-enterprise"
   - "kubernetes-disaster-recovery-enterprise"
-  - "kubernetes-audit-logging-enterprise"
   - "kubernetes-networkpolicy-default-deny"
   - "confidential-computing-kubernetes"
 ---

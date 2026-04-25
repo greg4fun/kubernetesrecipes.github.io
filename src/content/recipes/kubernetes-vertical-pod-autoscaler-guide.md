@@ -13,9 +13,6 @@ tags:
   - right-sizing
   - resource-optimization
 relatedRecipes:
-  - "vertical-pod-autoscaler-kubernetes"
-  - "kubernetes-hpa-autoscaling"
-  - "kubernetes-hpav2-custom-metrics"
   - "kubernetes-resource-limits-requests"
 ---
 

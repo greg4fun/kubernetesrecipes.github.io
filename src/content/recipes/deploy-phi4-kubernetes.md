@@ -12,7 +12,6 @@ relatedRecipes:
   - "deploy-phi4-reasoning-vision-kubernetes"
   - "deploy-llama2-70b-kubernetes"
   - "triton-vllm-kubernetes"
-  - "inference-autoscaling-gpu-metrics"
   - "aiperf-benchmark-llm-kubernetes"
 tags:
   - phi-4

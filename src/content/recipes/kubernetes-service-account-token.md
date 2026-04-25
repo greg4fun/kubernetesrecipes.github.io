@@ -9,6 +9,8 @@ timeToComplete: "15 minutes"
 kubernetesVersion: "1.24+"
 tags: ["service-account", "token", "rbac", "authentication", "security", "tokenrequest"]
 relatedRecipes:
+  - "kubernetes-pod-security-standards"
+  - "kubernetes-rbac-least-privilege"
   - kubernetes-rbac-configuration
   - kubernetes-secrets-management
   - kubernetes-user-onboarding-offboarding-automation

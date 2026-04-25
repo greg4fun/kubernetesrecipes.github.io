@@ -19,7 +19,6 @@ relatedRecipes:
   - "nfsordma-worker-node-setup"
   - "nfsordma-jumbo-frames-mtu"
   - "nfsordma-troubleshooting-performance"
-  - "csi-driver-configuration"
   - "cnpg-postgresql-operator"
 ---
 

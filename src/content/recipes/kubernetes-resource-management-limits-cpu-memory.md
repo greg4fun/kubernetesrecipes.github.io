@@ -16,7 +16,6 @@ tags:
 relatedRecipes:
   - "kubernetes-resource-format-syntax"
   - "kubernetes-resource-limits-requests"
-  - "vertical-pod-autoscaler-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Use cgroup v2 `memory.high` (soft limit) for gradual throttling before OOMKill. Remove CPU limits on latency-sensitive services — CFS quota causes 5-10ms throttling bursts even at 30% average utilization. Set `memory.max` equal to memory limit for hard OOMKill protection.

@@ -17,7 +17,6 @@ tags:
   - iops
 relatedRecipes:
   - "machineconfig-nfs-mount-openshift"
-  - "nfsordma-dedicated-nic-configuration"
   - "kubernetes-resource-optimization"
 ---
 

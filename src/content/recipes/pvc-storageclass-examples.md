@@ -9,7 +9,6 @@ prerequisites:
   - "A Kubernetes cluster with a storage provisioner"
   - "kubectl configured to access your cluster"
 relatedRecipes:
-  - "statefulset-storage-patterns"
   - "troubleshooting-pending-pvc"
 tags:
   - storage

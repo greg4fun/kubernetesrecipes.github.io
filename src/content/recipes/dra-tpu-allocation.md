@@ -12,8 +12,6 @@ prerequisites:
   - "Understanding of TPU architectures (v4, v5e, v5p)"
 relatedRecipes:
   - "dra-gpu-allocation"
-  - "gke-workload-identity"
-  - "distributed-training-kubernetes"
   - "dra-mixed-accelerators"
 tags:
   - dra

@@ -8,7 +8,6 @@ tags: ["cluster-api", "capi", "infrastructure", "multi-cloud", "lifecycle", "kub
 author: "Luca Berton"
 relatedRecipes:
   - "liveness-readiness-probes"
-  - "crossplane-cloud-resources"
   - "argocd-sync-waves-ordering"
 ---
 

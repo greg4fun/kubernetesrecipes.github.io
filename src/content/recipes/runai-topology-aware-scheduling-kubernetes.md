@@ -17,7 +17,6 @@ relatedRecipes:
   - "nvidia-dynamo-distributed-inference-kubernetes"
   - "distributed-inference-runai-kubernetes"
   - "runai-nim-distributed-inference-tutorial"
-  - "nccl-preflight-checks-ci-cd"
 ---
 
 > 💡 **Quick Answer:** Run:ai topology-aware scheduling uses Kubernetes node labels to represent your cluster's physical network hierarchy (region → zone → block → rack → hostname). The scheduler evaluates the full workload as a unit and places all pods at the closest available topology level — eliminating cross-rack fragmentation that pod affinity causes.

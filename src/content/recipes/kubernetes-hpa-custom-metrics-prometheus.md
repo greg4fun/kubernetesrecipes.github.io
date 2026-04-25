@@ -9,6 +9,8 @@ timeToComplete: "20 minutes"
 kubernetesVersion: "1.25+"
 tags: ["hpa", "autoscaling", "prometheus", "custom-metrics", "prometheus-adapter"]
 relatedRecipes:
+  - "kubernetes-hpa-cpu-memory-guide"
+  - "kubernetes-cluster-autoscaler-guide"
   - kubernetes-hpa-custom-metrics
   - horizontal-pod-autoscaler
   - kubernetes-hpa-memory-cpu

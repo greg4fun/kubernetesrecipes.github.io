@@ -16,9 +16,6 @@ relatedRecipes:
   - "crashloopbackoff-troubleshooting"
   - "copy-nim-image-internal-quay-registry"
   - "kubernetes-pod-lifecycle"
-  - "kubernetes-secrets-management"
-  - "private-registry-setup"
-  - "openshift-idms-mirror-guide"
 ---
 
 > 💡 **Quick Answer:** \`ImagePullBackOff\` means Kubernetes failed to pull a container image and is backing off retries. Common causes: wrong image name/tag, missing \`imagePullSecrets\` for private registries, Docker Hub rate limits, or network issues. Check \`kubectl describe pod\` for the exact error message.

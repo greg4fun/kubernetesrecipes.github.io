@@ -14,8 +14,6 @@ tags:
   - resource-management
   - multi-tenancy
 relatedRecipes:
-  - "kubernetes-limitrange-defaults"
-  - "kubernetes-namespace-resource-management"
   - "kubernetes-resource-limits-requests"
   - "kubernetes-multi-tenancy-enterprise"
 ---

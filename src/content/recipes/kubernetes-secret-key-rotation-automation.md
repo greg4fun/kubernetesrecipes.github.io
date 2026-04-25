@@ -15,11 +15,7 @@ difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
   - "kubernetes-enterprise-secret-rotation"
-  - "kubernetes-secret-rotation-enterprise"
-  - "kubernetes-secrets-management"
-  - "cert-manager-letsencrypt-kubernetes"
   - "kubernetes-rbac-guide"
-  - "kubernetes-cronjob-patterns"
 ---
 
 > 💡 **Quick Answer:** Automate key rotation using **cert-manager** for TLS certificates (auto-renews before expiry), **External Secrets Operator** for syncing secrets from Vault/AWS/Azure (with `refreshInterval`), and **CronJobs** for custom rotation scripts. Never rotate manually — humans forget, automation doesn't.

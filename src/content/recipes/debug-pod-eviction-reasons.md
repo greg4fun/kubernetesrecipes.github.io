@@ -14,8 +14,6 @@ tags:
   - troubleshooting
   - oom
 relatedRecipes:
-  - "fix-oomkilled-pod"
-  - "pod-disruption-budget"
   - "pdb-allowed-disruptions-zero"
 ---
 > 💡 **Quick Answer:** Check `kubectl describe pod <evicted-pod>` for the eviction reason — usually `The node was low on resource: memory` or `The node had condition: [DiskPressure]`. Then check `kubectl describe node <node>` for pressure conditions and resource allocation.

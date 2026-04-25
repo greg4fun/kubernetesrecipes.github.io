@@ -14,9 +14,6 @@ difficulty: "intermediate"
 timeToComplete: "15 minutes"
 relatedRecipes:
   - "network-policies"
-  - "kubernetes-security-checklist"
-  - "namespace-resource-quotas"
-  - "calico-network-policies"
   - "istio-service-mesh"
 ---
 

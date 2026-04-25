@@ -9,6 +9,8 @@ timeToComplete: "40 minutes"
 kubernetesVersion: "1.31+"
 tags: ["octopus-deploy", "mssql", "release-management", "k3s", "ci-cd", "preview-environments"]
 relatedRecipes:
+  - "kubernetes-readiness-liveness-startup"
+  - "kubernetes-graceful-shutdown-guide"
   - gitea-actions-runner-quay-push
   - full-gitops-pipeline-k3s
   - hugo-nginx-static-site-k3s

@@ -16,10 +16,8 @@ tags:
   - openshift
   - gpu
 relatedRecipes:
-  - "knative-serverless-kubernetes"
   - "deploy-multinode-nim-models-kubernetes"
   - "nim-model-profiles-selection-kubernetes"
-  - "kubernetes-hpa-autoscaling"
   - "custom-ca-openshift-kubernetes"
 ---
 

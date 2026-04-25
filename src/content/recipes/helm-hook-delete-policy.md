@@ -9,6 +9,8 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["helm", "hooks", "delete-policy", "jobs", "lifecycle"]
 relatedRecipes:
+  - "helm-values-override-patterns"
+  - "helm-rollback-history-guide"
   - helm-hooks-lifecycle
   - helm-hooks
   - helm-sprig-cat-function

@@ -17,7 +17,6 @@ relatedRecipes:
   - "gpu-tenant-bootstrap-bundle"
   - "infiniband-ethernet-ai-kubernetes"
   - "sriov-mixed-nic-gpu-nodes"
-  - "networkpolicy-security"
 ---
 
 > 💡 **Quick Answer:** Apply a deny-all NetworkPolicy first, then add allow rules for intra-namespace traffic (including NCCL ports), DNS egress to kube-system, and specific cross-namespace services. NCCL uses dynamic ports — allow all ports within namespace.

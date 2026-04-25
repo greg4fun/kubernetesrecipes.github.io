@@ -13,8 +13,6 @@ relatedRecipes:
   - "debug-crashloopbackoff"
   - "liveness-readiness-probes"
   - "jobs-cronjobs"
-  - "cronjob-timezone-handling"
-  - "job-parallelism-completions"
   - "pod-priority-preemption-scheduling"
 tags:
   - cronjob

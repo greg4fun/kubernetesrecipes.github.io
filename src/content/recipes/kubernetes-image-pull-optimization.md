@@ -13,7 +13,6 @@ tags:
   - "cache"
   - "optimization"
 relatedRecipes:
-  - "kubernetes-image-governance-enterprise"
   - "kubernetes-init-container-patterns"
 ---
 

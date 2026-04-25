@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Taints and Tolerations Guide"
+title: "Taint Toleration K8s Patterns"
 description: "Production guide for kubernetes taints and tolerations guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "configuration"
 difficulty: "Control pod scheduling with Kubernetes taints and tolerations. Dedicate nodes for specific workloads, prevent scheduling on control plane nodes, and handle GPU nodes."

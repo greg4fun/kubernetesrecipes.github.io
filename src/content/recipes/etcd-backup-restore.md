@@ -14,7 +14,6 @@ relatedRecipes:
   - "velero-backup-disaster-recovery"
   - "statefulset-management"
   - "secrets-management-best-practices"
-  - "velero-backup-disaster-recovery"
   - "csi-drivers-storage"
   - "local-persistent-volumes"
   - "statefulset-mysql"

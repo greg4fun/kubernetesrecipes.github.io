@@ -13,7 +13,6 @@ relatedRecipes:
   - "openclaw-signal-kubernetes"
   - "kubernetes-cluster-upgrade"
   - "rolling-update-deployment"
-  - "canary-deployment-istio"
 tags:
   - deployment
   - blue-green

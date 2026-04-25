@@ -9,6 +9,8 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["priority", "priorityclass", "scheduling", "preemption", "resource-management"]
 relatedRecipes:
+  - "kubernetes-configmap-guide"
+  - "kubernetes-resource-requests-limits"
   - priorityclasses-gpu-workloads
   - taint-toleration-scheduling-issues
   - kubernetes-resource-limits-cpu-memory-format

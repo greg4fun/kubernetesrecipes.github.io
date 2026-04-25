@@ -14,11 +14,8 @@ difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
   - "ai-ml-security-compliance-kubernetes"
-  - "kubernetes-secrets-management"
   - "pod-security-context"
   - "falco-runtime-security"
-  - "rhacs-kubernetes-security"
-  - "kubernetes-image-governance-enterprise"
 ---
 
 > 💡 **Quick Answer:** AI security on Kubernetes covers four layers: (1) model supply chain — scan and sign model artifacts like container images, (2) runtime protection — prompt injection filters, output guardrails, and rate limiting, (3) infrastructure — GPU isolation, network policies, encrypted inference, and (4) data security — prevent training data leakage and PII exposure through inference APIs.

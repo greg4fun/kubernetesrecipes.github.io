@@ -14,7 +14,6 @@ relatedRecipes:
   - "deploy-qwen35-397b-moe-kubernetes"
   - "deploy-qwen3-235b-moe-kubernetes"
   - "deploy-minimax-m25-kubernetes"
-  - "multi-node-distributed-training"
 tags:
   - kimi
   - moonshot

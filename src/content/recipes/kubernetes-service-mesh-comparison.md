@@ -15,10 +15,8 @@ tags:
   - mtls
   - observability
 relatedRecipes:
-  - "linkerd-service-mesh-kubernetes"
-  - "istio-service-mesh-kubernetes"
-  - "cilium-network-policy-kubernetes"
-  - "kubernetes-mtls-service-mesh-enterprise"
+  - "kubernetes-service-types-explained"
+  - "kubernetes-ingress-path-routing"
 ---
 
 > 💡 **Quick Answer:** Use **Linkerd** for simplicity and low overhead, **Istio** for advanced traffic management (canary, fault injection, multi-cluster), or **Cilium** for sidecar-less mesh with eBPF (lowest latency, no extra containers). All three provide mTLS and observability.

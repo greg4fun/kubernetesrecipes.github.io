@@ -15,7 +15,6 @@ tags:
   - "gds"
   - "rdma"
 relatedRecipes:
-  - "kubernetes-gpu-operator-setup"
   - "nccl-sriov-gds-pytorch-kubernetes"
   - "iommu-gpu-passthrough-sriov-kubernetes"
 ---

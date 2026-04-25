@@ -13,8 +13,6 @@ relatedRecipes:
   - "gpu-operator-clusterpolicy-reference"
   - "triton-multi-model-serving"
   - "deploy-retinanet-kubernetes"
-  - "nvidia-nim-microservices"
-  - "inference-autoscaling-gpu-metrics"
 tags:
   - nvidia
   - clara

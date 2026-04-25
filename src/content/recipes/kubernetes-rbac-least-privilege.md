@@ -14,8 +14,6 @@ tags:
   - service-account
   - roles
 relatedRecipes:
-  - "kubernetes-audit-logging-enterprise"
-  - "pod-security-context-kubernetes"
   - "kubernetes-pod-security-admission"
   - "openshift-scc-security-context-constraints"
 ---

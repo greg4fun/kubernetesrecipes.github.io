@@ -9,6 +9,8 @@ timeToComplete: "20 minutes"
 kubernetesVersion: "1.25+"
 tags: ["cloudnativepg", "postgresql", "database", "operator", "backup", "high-availability"]
 relatedRecipes:
+  - "kubernetes-readiness-liveness-startup"
+  - "kubernetes-graceful-shutdown-guide"
   - mariadb-scc-openshift-deployment
   - kubernetes-persistent-volumes
   - kubernetes-storage-best-practices

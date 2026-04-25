@@ -9,6 +9,8 @@ timeToComplete: "15 minutes"
 kubernetesVersion: "1.21+"
 tags: ["mutagen", "file-sync", "development", "hot-reload", "remote-development"]
 relatedRecipes:
+  - "kubernetes-readiness-liveness-startup"
+  - "kubernetes-graceful-shutdown-guide"
   - kubectl-cp-copy-files-pods
   - kubernetes-exec-into-pod
   - kubernetes-port-forward

@@ -14,7 +14,6 @@ difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
   - "liveness-readiness-probes"
-  - "kubernetes-health-probes-liveness-readiness"
   - "kubernetes-rolling-update-zero-downtime"
   - "kubernetes-init-containers-guide"
   - "debug-crashloopbackoff"

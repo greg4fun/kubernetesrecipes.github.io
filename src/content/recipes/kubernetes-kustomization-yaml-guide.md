@@ -9,6 +9,8 @@ timeToComplete: "15 minutes"
 kubernetesVersion: "1.21+"
 tags: ["kustomize", "kustomization", "configuration", "overlays", "gitops"]
 relatedRecipes:
+  - "kubernetes-configmap-guide"
+  - "kubernetes-resource-requests-limits"
   - kubernetes-helm-vs-kustomize
   - argocd-gitops-deployment
   - kubernetes-configmap-from-file

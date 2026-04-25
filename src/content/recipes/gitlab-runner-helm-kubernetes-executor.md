@@ -16,11 +16,8 @@ tags:
   - monitoring
   - podmonitor
 relatedRecipes:
-  - "helm-chart-kubernetes-deployment"
-  - "kubernetes-cicd-pipeline-setup"
-  - "imagepullsecrets-private-registry-kubernetes"
-  - "pod-security-context-kubernetes"
-  - "kubernetes-hpa-autoscaling"
+  - "kubernetes-readiness-liveness-startup"
+  - "kubernetes-graceful-shutdown-guide"
 ---
 
 > 💡 **Quick Answer:** Install GitLab Runner via `helm install gitlab-runner gitlab/gitlab-runner -f values.yaml` with the Kubernetes executor. Key settings: `concurrent: 60` for parallel jobs, internal registry in `registriesSkippingTagResolving`, PodMonitor for Prometheus metrics, and hardened `securityContext` dropping all capabilities.

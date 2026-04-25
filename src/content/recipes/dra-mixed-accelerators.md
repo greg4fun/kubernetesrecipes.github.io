@@ -13,7 +13,6 @@ prerequisites:
 relatedRecipes:
   - "dra-gpu-allocation"
   - "dra-tpu-allocation"
-  - "device-plugins"
 tags:
   - dra
   - gpu

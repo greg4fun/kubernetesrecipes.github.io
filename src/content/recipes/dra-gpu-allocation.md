@@ -11,8 +11,6 @@ prerequisites:
   - "NVIDIA Container Toolkit installed"
   - "Helm 3.x for driver installation"
 relatedRecipes:
-  - "gpu-workloads-kubernetes"
-  - "device-plugins"
   - "resource-requests-limits"
   - "dra-mixed-accelerators"
   - "dra-computedomains-nvlink"

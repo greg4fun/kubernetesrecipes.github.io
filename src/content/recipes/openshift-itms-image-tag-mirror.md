@@ -15,7 +15,6 @@ relatedRecipes:
   - "openshift-mcp-itms-rollout"
   - "openshift-idms-install-config"
   - "openshift-cluster-wide-pull-secret"
-  - "openshift-custom-ca-openshift-kubernetes"
   - "custom-ca-openshift"
   - "quay-robot-account-kubernetes"
 tags:

@@ -14,7 +14,6 @@ relatedRecipes:
   - "openclaw-networkpolicy-security"
   - "openclaw-kubernetes-deployment"
   - "external-secrets-operator"
-  - "sealed-secrets"
   - "oidc-authentication-kubernetes"
 tags:
   - openclaw

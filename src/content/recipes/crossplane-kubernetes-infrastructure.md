@@ -16,8 +16,6 @@ relatedRecipes:
   - "cluster-api-infrastructure-as-code"
   - "argocd-gitops-deployment"
   - "flux-gitops-continuous-delivery"
-  - "terraform-kubernetes-integration"
-  - "platform-engineering-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Crossplane extends Kubernetes with CRDs that manage cloud infrastructure (databases, networks, clusters) using the same kubectl/GitOps workflows as your workloads. Define an XRD (schema), build a Composition (implementation), and users claim resources via simple YAML — no cloud console or Terraform needed.

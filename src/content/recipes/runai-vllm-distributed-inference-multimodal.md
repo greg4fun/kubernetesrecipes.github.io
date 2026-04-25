@@ -23,7 +23,6 @@ relatedRecipes:
   - "inter-node-tensor-parallelism-kubernetes"
   - "verify-nccl-rdma-traffic-debug"
   - "pfc-mellanox-connectx-configuration"
-  - "vllm-openai-compatible-inference-kubernetes"
   - "copy-nim-image-internal-quay-registry"
 ---
 

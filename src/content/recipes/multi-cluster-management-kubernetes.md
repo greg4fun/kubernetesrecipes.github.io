@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Multi-Cluster Management Guide"
+title: "Multi-Cluster Fleet Mgmt K8s"
 description: "Manage multiple Kubernetes clusters with kubectl contexts, federation, GitOps fleet patterns, and tools like Rancher, ArgoCD, and Cluster API."
 category: "deployments"
 publishDate: "2026-04-20"
@@ -9,6 +9,8 @@ timeToComplete: "20 minutes"
 kubernetesVersion: "1.25+"
 tags: ["multi-cluster", "federation", "fleet", "gitops", "management"]
 relatedRecipes:
+  - "kubernetes-readiness-liveness-startup"
+  - "kubernetes-graceful-shutdown-guide"
   - argocd-multi-cluster-app-of-apps
   - kubectl-config-context-management
   - kubernetes-multi-cluster-management

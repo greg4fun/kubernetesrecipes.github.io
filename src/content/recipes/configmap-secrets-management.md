@@ -26,7 +26,6 @@ relatedRecipes:
   - "sealed-secrets-gitops"
   - "api-versions-deprecations"
   - "downward-api-metadata"
-  - "downward-api-metadata"
   - "scheduler-configuration-tuning"
   - "environment-variables-configmaps"
   - "kubeconfig-contexts"

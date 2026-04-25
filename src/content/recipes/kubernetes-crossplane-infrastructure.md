@@ -13,7 +13,6 @@ tags:
   - "cloud"
   - "compositions"
 relatedRecipes:
-  - "argocd-gitops-kubernetes"
   - "kubernetes-multicluster-management"
 ---
 

@@ -9,6 +9,8 @@ timeToComplete: "30 minutes"
 kubernetesVersion: "1.31+"
 tags: ["gitea", "postgresql", "valkey", "redis", "k3s", "git", "ci-cd"]
 relatedRecipes:
+  - "kubernetes-readiness-liveness-startup"
+  - "kubernetes-graceful-shutdown-guide"
   - kairos-k3s-hetzner-immutable-bootstrap
   - gateway-api-httproutes-tls-k3s
   - gitea-actions-runner-quay-push

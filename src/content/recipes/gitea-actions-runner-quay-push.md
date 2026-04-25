@@ -9,6 +9,8 @@ timeToComplete: "25 minutes"
 kubernetesVersion: "1.31+"
 tags: ["gitea", "actions", "ci-cd", "kaniko", "quay", "container-build", "k3s"]
 relatedRecipes:
+  - "kubernetes-readiness-liveness-startup"
+  - "kubernetes-graceful-shutdown-guide"
   - gitea-postgresql-valkey-k3s
   - octopus-deploy-kubernetes-agent
   - full-gitops-pipeline-k3s

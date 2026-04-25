@@ -8,7 +8,6 @@ tags: ["imagepullbackoff", "registry", "pull-secret", "troubleshooting", "kubern
 author: "Luca Berton"
 relatedRecipes:
   - "image-pull-secrets"
-  - "cluster-wide-pull-secret"
   - "custom-ca-openshift-kubernetes"
   - "crashloopbackoff-troubleshooting"
 ---

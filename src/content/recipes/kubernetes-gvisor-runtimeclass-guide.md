@@ -14,7 +14,6 @@ difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "kubernetes-runtimeclass-gvisor-guide"
-  - "kubernetes-runtimeclass-gvisor-kata"
   - "confidential-containers-kata-kubernetes"
   - "kubernetes-pod-security-admission"
   - "kubernetes-network-security-checklist"

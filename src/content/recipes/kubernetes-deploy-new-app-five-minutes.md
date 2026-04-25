@@ -13,8 +13,6 @@ difficulty: "beginner"
 timeToComplete: "15 minutes"
 relatedRecipes:
   - "kubernetes-rolling-update-zero-downtime"
-  - "kubernetes-hpa-autoscaling"
-  - "kubernetes-probes-liveness-readiness"
   - "kubernetes-gateway-api"
 ---
 

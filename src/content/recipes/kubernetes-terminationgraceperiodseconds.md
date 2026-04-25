@@ -9,6 +9,8 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["termination", "graceful-shutdown", "sigterm", "prestop", "pod-lifecycle"]
 relatedRecipes:
+  - "kubernetes-configmap-guide"
+  - "kubernetes-resource-requests-limits"
   - kubernetes-graceful-shutdown
   - graceful-shutdown
   - kubectl-rollout-restart-deployment

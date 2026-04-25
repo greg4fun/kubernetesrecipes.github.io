@@ -14,7 +14,6 @@ tags:
   - "qos"
   - "oomkill"
 relatedRecipes:
-  - "vertical-pod-autoscaler-kubernetes"
   - "kubernetes-resource-quotas-limitranges"
 ---
 

@@ -16,10 +16,8 @@ timeToComplete: "25 minutes"
 relatedRecipes:
   - "kubernetes-namespace-stuck-terminating"
   - "kubernetes-rbac-guide"
-  - "kubernetes-oidc-sso-enterprise"
   - "kubernetes-multi-tenancy-enterprise"
   - "openshift-scc-security-context-constraints"
-  - "kubernetes-resource-quotas"
 ---
 
 > 💡 **Quick Answer:** Automate user onboarding with a script or GitOps pipeline that creates a **namespace**, assigns **ResourceQuotas**, binds **RBAC roles**, and configures **NetworkPolicies** — all from a single config file. Offboarding revokes RoleBindings, disables OIDC group membership, and optionally archives the namespace. Use OIDC group sync for hands-free access management.

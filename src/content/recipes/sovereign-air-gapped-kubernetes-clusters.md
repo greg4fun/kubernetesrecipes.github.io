@@ -15,9 +15,7 @@ timeToComplete: "30 minutes"
 relatedRecipes:
   - "kubernetes-rbac-audit-guide"
   - "data-sovereignty-geopatriation-kubernetes"
-  - "openshift-idms-mirror-guide"
   - "copy-nim-image-internal-quay-registry"
-  - "kubernetes-image-governance-enterprise"
   - "kubernetes-etcd-backup-restore"
 ---
 

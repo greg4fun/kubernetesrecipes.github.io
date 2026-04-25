@@ -13,7 +13,6 @@ tags:
   - health-check
   - slow-start
 relatedRecipes:
-  - "kubernetes-liveness-readiness-probes"
   - "kubernetes-liveness-probe-best-practices"
   - "crashloopbackoff-troubleshooting"
 ---

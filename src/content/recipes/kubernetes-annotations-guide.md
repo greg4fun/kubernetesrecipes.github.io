@@ -9,7 +9,6 @@ author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-labels-annotations"
   - "downward-api-metadata"
-  - "downward-api-metadata"
   - "kubectl-cheat-sheet"
 ---
 

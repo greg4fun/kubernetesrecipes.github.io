@@ -15,7 +15,6 @@ tags:
 relatedRecipes:
   - "kyverno-policy-management"
   - "kubernetes-pod-security-admission"
-  - "opa-gatekeeper-kubernetes"
 ---
 
 > 💡 **Quick Answer:** ValidatingAdmissionPolicy uses CEL (Common Expression Language) to enforce policies directly in the API server — no webhooks, no external dependencies, sub-millisecond evaluation.

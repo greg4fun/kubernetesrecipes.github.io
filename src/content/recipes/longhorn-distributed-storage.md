@@ -9,7 +9,6 @@ author: "Luca Berton"
 relatedRecipes:
   - "pvc-pending-troubleshooting"
   - "persistent-volume-resize-troubleshooting"
-  - "velero-backup-strategy"
 ---
 
 > 💡 **Quick Answer:** Install Longhorn for distributed block storage on Kubernetes. Replicated volumes, snapshots, backups to S3, and disaster recovery across nodes.

@@ -15,7 +15,6 @@ tags:
 relatedRecipes:
   - "kubeflow-ml-platform-kubernetes"
   - "argo-workflows-kubernetes"
-  - "argocd-gitops-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Use Kubeflow Pipelines for ML-specific workflows (data prep → train → evaluate → deploy) or Argo Workflows for general-purpose DAG execution. Define pipelines as Python code with the KFP SDK, compile to YAML, and schedule recurring runs for model retraining.

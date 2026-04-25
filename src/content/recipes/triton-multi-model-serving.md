@@ -15,7 +15,6 @@ relatedRecipes:
   - "triton-vllm-kubernetes"
   - "triton-autoscaling-gpu-metrics"
   - "triton-tensorrt-vllm-comparison"
-  - "nvidia-nim-microservices"
 tags:
   - triton
   - multi-model

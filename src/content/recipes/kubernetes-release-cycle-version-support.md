@@ -9,6 +9,8 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.30+"
 tags: ["release-cycle", "versioning", "upgrade", "support", "lifecycle"]
 relatedRecipes:
+  - "kubernetes-configmap-guide"
+  - "kubernetes-resource-requests-limits"
   - kubernetes-openshift-upgrade-overview
   - kubernetes-openshift-major-minor-upgrade
   - openshift-lifecycle-support-versions

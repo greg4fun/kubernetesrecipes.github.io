@@ -14,10 +14,8 @@ difficulty: "advanced"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "agentic-ai-multiagent-kubernetes"
-  - "tekton-pipeline-ci-cd"
   - "argocd-gitops-deployment"
   - "kubernetes-ephemeral-containers-debug"
-  - "platform-engineering-kubernetes"
 ---
 
 > 💡 **Quick Answer:** AI-native development platforms run AI coding assistants, test generators, and review bots as first-class Kubernetes workloads. Deploy self-hosted Copilot alternatives (Tabby, Continue.dev + local LLM), AI-powered CI/CD pipelines that auto-fix failures, and ephemeral dev environments with integrated AI tooling — all orchestrated by Kubernetes.

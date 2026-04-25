@@ -14,7 +14,6 @@ tags:
   - "statefulset"
 relatedRecipes:
   - "kubernetes-velero-backup-restore"
-  - "kubernetes-storage-class-configuration"
 ---
 
 > 💡 **Quick Answer:** Set `allowVolumeExpansion: true` on your StorageClass, then `kubectl edit pvc <name>` and increase `spec.resources.requests.storage`. The volume and filesystem expand automatically (online for most CSI drivers).

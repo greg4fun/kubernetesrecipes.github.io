@@ -9,6 +9,8 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["downward-api", "environment-variables", "metadata", "fieldref", "pod-info"]
 relatedRecipes:
+  - "kubernetes-configmap-guide"
+  - "kubernetes-resource-requests-limits"
   - kubernetes-environment-variables
   - kubernetes-configmap-from-file
   - kubernetes-service-account-token

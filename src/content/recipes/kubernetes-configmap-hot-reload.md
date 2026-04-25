@@ -17,7 +17,6 @@ relatedRecipes:
   - "kubernetes-environment-variables"
   - "configmap-secrets-management"
   - "kubernetes-downward-api-pod-metadata"
-  - "rolling-update-zero-downtime"
   - "kubernetes-rolling-update-zero-downtime"
 ---
 

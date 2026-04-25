@@ -12,7 +12,6 @@ relatedRecipes:
   - "deploy-stable-diffusion-xl-kubernetes"
   - "deploy-retinanet-kubernetes"
   - "triton-multi-model-serving"
-  - "inference-autoscaling-gpu-metrics"
 tags:
   - whisper
   - speech-to-text

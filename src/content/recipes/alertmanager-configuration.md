@@ -14,7 +14,6 @@ relatedRecipes:
   - "monitor-nccl-performance-prometheus"
   - "gpu-tenant-monitoring-chargeback"
   - "prometheus-metrics-setup"
-  - "grafana-dashboards"
   - "alertmanager-setup"
   - "container-logging-patterns"
   - "grafana-kubernetes-dashboards"

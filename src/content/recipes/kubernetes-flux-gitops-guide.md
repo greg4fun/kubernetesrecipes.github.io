@@ -14,7 +14,6 @@ tags:
   - "helm"
 relatedRecipes:
   - "kubernetes-flux-sources-guide"
-  - "argocd-gitops-kubernetes"
   - "kubernetes-kustomize-advanced-patterns"
 ---
 

@@ -15,8 +15,6 @@ timeToComplete: "10 minutes"
 relatedRecipes:
   - "kubernetes-fsgroupchangepolicy-guide"
   - "pod-security-context"
-  - "kubernetes-persistent-volumes"
-  - "nfs-storage-kubernetes"
   - "kubernetes-pod-lifecycle"
   - "kubernetes-resource-optimization"
 ---

@@ -16,7 +16,6 @@ tags:
 relatedRecipes:
   - "helm-sprig-tostring-function"
   - "helm-sprig-join-function"
-  - "helm-chart-development"
   - "helm-hooks-lifecycle"
 ---
 

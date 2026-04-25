@@ -15,9 +15,7 @@ tags:
   - traffic-splitting
 relatedRecipes:
   - "kubernetes-rolling-update-strategies"
-  - "argo-rollouts-kubernetes"
   - "kubernetes-service-mesh-comparison"
-  - "kubernetes-hpa-autoscaling"
 ---
 
 > 💡 **Quick Answer:** Install Flagger, create a `Canary` resource targeting your Deployment, define success metrics (error rate < 1%, p99 latency < 500ms), and set traffic step weights. Flagger progressively shifts traffic from stable to canary, rolling back automatically if metrics fail.

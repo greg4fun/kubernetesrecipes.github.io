@@ -14,7 +14,6 @@ tags:
   - pvc
 relatedRecipes:
   - "kubernetes-storage-best-practices"
-  - "csi-volume-snapshots-restore-kubernetes"
   - "kubernetes-hostpath-volume"
 ---
 

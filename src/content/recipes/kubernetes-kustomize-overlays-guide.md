@@ -13,8 +13,6 @@ tags:
   - configuration
   - gitops
 relatedRecipes:
-  - "argocd-gitops-kubernetes"
-  - "helm-chart-kubernetes-deployment"
   - "kubernetes-configmap-reload-patterns"
 ---
 

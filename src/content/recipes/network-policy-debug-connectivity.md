@@ -14,7 +14,6 @@ tags:
   - firewall
   - pods
 relatedRecipes:
-  - "networkpolicy-security"
   - "openclaw-networkpolicy-security"
 ---
 > 💡 **Quick Answer:** Run `kubectl get networkpolicy -n <namespace>` to see active policies. A default-deny policy blocks all traffic unless explicitly allowed. Test connectivity with `kubectl exec <pod> -- curl -m5 <target-service>`. Missing ingress or egress rules are the #1 cause.

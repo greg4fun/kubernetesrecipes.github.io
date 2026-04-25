@@ -15,7 +15,6 @@ tags:
 relatedRecipes:
   - "kubernetes-etcd-performance-tuning"
   - "kubernetes-disaster-recovery-enterprise"
-  - "kubernetes-cluster-upgrade-strategies"
 ---
 
 > 💡 **Quick Answer:** Run `etcdctl snapshot save /backup/etcd-$(date +%Y%m%d).db` as a CronJob every 6 hours. Upload to S3 with lifecycle policies. Restore with `etcdctl snapshot restore` on a fresh cluster. Always test restores — untested backups aren't backups.

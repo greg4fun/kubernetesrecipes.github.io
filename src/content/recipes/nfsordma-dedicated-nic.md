@@ -19,7 +19,6 @@ relatedRecipes:
   - "nfsordma-troubleshooting-performance"
   - "nncp-bond-interfaces-workers"
   - "nncp-mtu-jumbo-frames-workers"
-  - "configure-gpudirect-rdma"
 tags:
   - nfsordma
   - rdma

@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Secrets Management Best Practices"
+title: "Secrets Mgmt Patterns K8s"
 description: "Kubernetes secrets management best practices 2026: External Secrets Operator, Vault, Sealed Secrets, SOPS, encryption at rest, and rotation."
 category: "security"
 difficulty: "intermediate"

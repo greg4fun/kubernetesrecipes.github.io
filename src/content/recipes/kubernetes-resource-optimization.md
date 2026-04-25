@@ -19,7 +19,6 @@ relatedRecipes:
   - "horizontal-pod-autoscaler"
   - "resource-quota-exceeded-error"
   - "debug-pod-eviction-reasons"
-  - "inference-autoscaling-gpu-metrics"
 ---
 > 💡 **Quick Answer:** Install VPA in recommendation mode (`updateMode: "Off"`), deploy Goldilocks dashboard, then right-size every Deployment's requests/limits based on actual P95 usage. Most clusters are 2-4x over-provisioned — right-sizing saves 40-60% compute cost without risk.
 

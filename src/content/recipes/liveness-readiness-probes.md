@@ -10,8 +10,6 @@ prerequisites:
   - "kubectl configured to access your cluster"
 relatedRecipes:
   - "kubernetes-cluster-upgrade"
-  - "rolling-update-strategies"
-  - "pod-disruption-budget"
 tags:
   - probes
   - health-checks

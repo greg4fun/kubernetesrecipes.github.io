@@ -12,7 +12,6 @@ tags:
   - "autoscaling"
   - "scale-to-zero"
 relatedRecipes:
-  - "inference-autoscaling-gpu-metrics"
   - "keda-event-driven-autoscaling"
   - "argocd-declarative-application-setup"
   - "haproxy-keepalived-multi-tenant-gpu"

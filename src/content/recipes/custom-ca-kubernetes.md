@@ -16,8 +16,6 @@ relatedRecipes:
   - "custom-ca-openshift-kubernetes"
   - "custom-ca-openshift"
   - "update-ca-certificates-kubernetes"
-  - "cert-manager-setup"
-  - "tls-certificates-ingress"
 tags:
   - certificates
   - ca

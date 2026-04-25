@@ -1,6 +1,6 @@
 ---
 title: "hostPath vs PVC Kubernetes Guide"
-description: "Compare hostPath and PVC for K8s storage. Security risks, node affinity, and when to use each storage type."
+description: "Compare hostPath and PVC storage options for Kubernetes. Security risks of hostPath, node affinity constraints, and when to use each storage type."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "storage"

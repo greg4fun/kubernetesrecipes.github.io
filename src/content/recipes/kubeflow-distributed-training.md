@@ -15,9 +15,7 @@ tags:
 relatedRecipes:
   - "kubeflow-training-operator"
   - "mpi-operator-kubernetes"
-  - "multi-node-distributed-training"
   - "nfsordma-persistent-volume"
-  - "fine-tuning-llm-kubernetes"
   - "gpu-operator-mofed-driver"
 ---
 

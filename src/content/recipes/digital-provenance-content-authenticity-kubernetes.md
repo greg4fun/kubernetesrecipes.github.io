@@ -14,10 +14,7 @@ difficulty: "advanced"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "ai-security-platform-kubernetes"
-  - "kubernetes-secrets-management"
-  - "kubernetes-image-governance-enterprise"
   - "agentic-ai-multiagent-kubernetes"
-  - "cert-manager-tls-automation"
 ---
 
 > 💡 **Quick Answer:** Digital provenance tracks where digital content came from and how it was modified. The C2PA standard embeds cryptographic "content credentials" in images, videos, and documents. On Kubernetes, deploy provenance signing as a sidecar or pipeline step — every AI-generated image gets signed with origin metadata (model, timestamp, creator) that viewers can verify.

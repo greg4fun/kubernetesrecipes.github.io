@@ -16,8 +16,6 @@ relatedRecipes:
   - "api-versions-deprecations"
   - "openshift-catalogsource-troubleshooting"
   - "gpu-upgrade-version-matrix"
-  - "openshift-idms-mirror-guide"
-  - "kubernetes-release-cycle-guide"
 ---
 
 > 💡 **Quick Answer:** OpenShift 4.x follows a ~4-month release cycle. Each minor release receives full support for ~14 months, then maintenance support for ~4 months. Extended Update Support (EUS) releases (even-numbered: 4.12, 4.14, 4.16, 4.18) get 24 months total. Always upgrade to the latest EUS for longest support.

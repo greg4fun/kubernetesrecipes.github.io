@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Multi-Cluster Management Guide"
+title: "Multi-Cluster Mgmt Strategies K8s"
 description: "Manage multiple Kubernetes clusters with federation, service mesh, and GitOps. Covers Admiralty, Liqo, Skupper, and ArgoCD ApplicationSets."
 category: "deployments"
 difficulty: "advanced"

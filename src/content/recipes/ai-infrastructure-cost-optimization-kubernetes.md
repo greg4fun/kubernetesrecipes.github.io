@@ -13,7 +13,6 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
-  - "gpu-operator-time-slicing"
   - "nim-model-profiles-selection-kubernetes"
   - "kubernetes-resource-optimization"
   - "karpenter-node-autoscaling"

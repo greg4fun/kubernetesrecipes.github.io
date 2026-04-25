@@ -14,9 +14,7 @@ difficulty: "advanced"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "falco-runtime-security"
-  - "rhacs-kubernetes-security"
   - "ai-security-platform-kubernetes"
-  - "kubernetes-image-governance-enterprise"
   - "kubernetes-networkpolicy-default-deny"
 ---
 

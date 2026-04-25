@@ -12,8 +12,6 @@ tags:
   - scheduling
   - best-practices
 relatedRecipes:
-  - "kubernetes-job-parallelism-patterns"
-  - "pod-security-context-kubernetes"
   - "kubernetes-resource-limits-requests"
 ---
 

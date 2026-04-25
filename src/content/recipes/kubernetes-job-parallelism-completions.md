@@ -14,7 +14,6 @@ tags:
   - indexed-job
 relatedRecipes:
   - "kubernetes-cronjob-concurrencypolicy"
-  - "kubernetes-job-parallelism-completions"
   - "ai-batch-processing-volcano"
 ---
 

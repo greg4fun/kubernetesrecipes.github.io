@@ -16,7 +16,6 @@ relatedRecipes:
   - "deploy-qwen35-397b-moe-kubernetes"
   - "deploy-qwen3-235b-moe-kubernetes"
   - "deploy-nemotron-120b-kubernetes"
-  - "multi-node-distributed-training"
 tags:
   - glm-5
   - zhipu

@@ -18,7 +18,6 @@ relatedRecipes:
   - "kubeconfig-contexts"
   - "crossplane-infrastructure-management"
   - "downward-api-metadata"
-  - "downward-api-metadata"
   - "environment-variables-configmaps"
   - "kubernetes-api-aggregation"
   - "kubernetes-cluster-upgrade"

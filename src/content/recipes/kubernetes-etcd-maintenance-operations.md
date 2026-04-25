@@ -14,10 +14,8 @@ tags:
   - compaction
   - defragmentation
 relatedRecipes:
-  - "etcd-backup-restore-kubernetes"
   - "kubernetes-disaster-recovery-enterprise"
   - "kubernetes-velero-backup-restore"
-  - "kubernetes-audit-logging-enterprise"
 ---
 
 > 💡 **Quick Answer:** Run `etcdctl defrag` after compaction to reclaim disk space, take snapshots with `etcdctl snapshot save`, check member health with `etcdctl endpoint health --cluster`, and monitor `db_size` vs `db_size_in_use` to detect fragmentation.

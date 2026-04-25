@@ -13,7 +13,6 @@ relatedRecipes:
   - "namespace-management"
   - "openclaw-kubernetes-deployment"
   - "openclaw-secrets-management"
-  - "network-policies-kubernetes"
   - "oidc-authentication-kubernetes"
 tags:
   - openclaw

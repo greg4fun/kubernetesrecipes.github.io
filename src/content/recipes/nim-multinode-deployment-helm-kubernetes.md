@@ -19,7 +19,6 @@ relatedRecipes:
   - "distributed-inference-runai-kubernetes"
   - "runai-nim-distributed-inference-tutorial"
   - "nvidia-gpu-operator-setup"
-  - "nccl-preflight-checks-ci-cd"
 ---
 
 > 💡 **Quick Answer:** Enable `multiNode.enabled=true` in the NIM Helm chart with `tensorParallelSize` and `pipelineParallelSize` values. NIM uses LeaderWorkerSet + Ray for cluster formation and vLLM for distributed execution. The leader downloads the model to shared storage (RWX PVC); workers join via Ray and provide GPU resources.

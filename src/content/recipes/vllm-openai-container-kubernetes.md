@@ -17,7 +17,6 @@ relatedRecipes:
   - "kubernetes-gpu-node-provisioning"
   - "kubernetes-ai-cost-management"
   - "nccl-test-benchmark-kubernetes"
-  - "deploy-vllm-inference-kubernetes"
   - "vllm-ascend-npu-inference-kubernetes"
   - "kubernetes-ai-gateway-inference-extension"
   - "nvidia-dynamo-distributed-inference-kubernetes"

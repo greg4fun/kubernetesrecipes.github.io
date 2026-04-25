@@ -17,7 +17,6 @@ relatedRecipes:
   - "deploy-multinode-nim-models-kubernetes"
   - "runai-topology-aware-scheduling-kubernetes"
   - "nccl-socket-ifname-environment-variable"
-  - "gpu-operator-time-slicing"
 ---
 
 > 💡 **Quick Answer:** AI supercomputing on Kubernetes combines GPU Operator, Network Operator (for InfiniBand/RDMA), and topology-aware scheduling to run distributed training across hundreds of GPUs. Key components: LeaderWorkerSet for multi-node jobs, NCCL for GPU communication, GPUDirect RDMA for bypassing CPU, and Run:ai or Volcano for fair scheduling.

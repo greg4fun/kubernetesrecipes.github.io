@@ -17,7 +17,6 @@ tags:
 relatedRecipes:
   - "openshift-lifecycle-versions"
   - "debug-crashloopbackoff"
-  - "nfsordma-dedicated-nic-configuration"
   - "machineconfig-kernel-parameters"
   - "machineconfig-chrony-ntp"
   - "fio-nfs-benchmark-openshift"

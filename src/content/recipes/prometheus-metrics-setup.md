@@ -10,7 +10,6 @@ prerequisites:
   - "Prometheus Operator installed (or kube-prometheus-stack)"
   - "Basic understanding of metrics concepts"
 relatedRecipes:
-  - "grafana-dashboards"
   - "alertmanager-configuration"
 tags:
   - prometheus

@@ -17,7 +17,6 @@ relatedRecipes:
   - "debug-crashloopbackoff"
   - "kai-scheduler-queues"
   - "kai-scheduler-podgroups"
-  - "gpu-scheduling"
 tags:
   - kai-scheduler
   - nvidia

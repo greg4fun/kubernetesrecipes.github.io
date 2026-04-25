@@ -12,7 +12,6 @@ prerequisites:
 relatedRecipes:
   - "kai-scheduler-installation"
   - "kai-scheduler-queues"
-  - "pytorch-distributed-training"
 tags:
   - kai-scheduler
   - nvidia

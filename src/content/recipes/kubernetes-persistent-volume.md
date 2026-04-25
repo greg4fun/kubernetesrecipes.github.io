@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Persistent Volumes Deep Dive"
+title: "Persistent Volume NFS iSCSI Guide"
 description: "Production guide for kubernetes persistent volumes deep dive. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
 category: "storage"
 difficulty: "Master Kubernetes PersistentVolumes: static and dynamic provisioning, reclaim policies, volume modes, and lifecycle. From PV creation to pod mounting and data retention."
