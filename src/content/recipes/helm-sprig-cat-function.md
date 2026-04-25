@@ -1,6 +1,6 @@
 ---
-title: "Helm Template Sprig cat Function"
-description: "Helm string concat with the Sprig cat function for template string concatenation. Syntax, examples with conditionals, and Helm chart patterns."
+title: "Helm Sprig cat Function: Concatenate Strings"
+description: "Use the Helm Sprig cat function to concatenate strings in templates. Syntax, spaces between arguments, conditionals, and real examples."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "helm"

@@ -1,6 +1,6 @@
 ---
 title: "Helm Sprig join Function: List to String"
-description: "Convert lists to delimited strings in Helm templates using the Sprig join function. CSV outputs, label values, annotation lists, and multi-value configurations."
+description: "Helm Sprig join function to convert lists to delimited strings. CSV output, label values, and multi-value Helm template examples."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "helm"

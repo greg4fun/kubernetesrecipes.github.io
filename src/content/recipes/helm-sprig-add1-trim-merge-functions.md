@@ -1,6 +1,6 @@
 ---
 title: "Helm Sprig add1 trim merge Functions"
-description: "Use Helm Sprig add1 for incrementing, trim for whitespace cleanup, and merge for combining dictionaries. Practical Kubernetes Helm template examples."
+description: "Helm Sprig add1 for incrementing, trim for whitespace, and merge for dictionaries. Practical Helm template examples and patterns."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "helm"

@@ -1,6 +1,6 @@
 ---
 title: "Helm Sprig print quote default Functions"
-description: "Use Helm Sprig print, quote, and default functions in templates. String formatting, safe quoting for YAML, fallback values, and real-world Kubernetes examples."
+description: "Helm Sprig print, quote, and default functions for templates. Concatenate without spaces, safe YAML quoting, and fallback values."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "helm"
