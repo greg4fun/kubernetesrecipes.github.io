@@ -10,7 +10,6 @@ Allow: /
 Disallow: /api/
 Disallow: /_astro/
 Disallow: /*?*
-Disallow: /KubernetesRecipes-sample.pdf
 Crawl-delay: 0
 
 User-agent: Googlebot-Image
@@ -22,7 +21,6 @@ Allow: /
 Disallow: /api/
 Disallow: /_astro/
 Disallow: /*?*
-Disallow: /KubernetesRecipes-sample.pdf
 Crawl-delay: 1
 
 User-agent: Slurp
@@ -74,7 +72,6 @@ Allow: /
 Disallow: /api/
 Disallow: /_astro/
 Disallow: /*?*
-Disallow: /KubernetesRecipes-sample.pdf
 Crawl-delay: 2
 
 # ============================================
