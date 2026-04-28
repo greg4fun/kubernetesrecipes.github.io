@@ -132,6 +132,8 @@ oc mirror --config=imageset-config.yaml \
 
 ### Step 3: Install the OSUS Operator
 
+In disconnected clusters, OLM cannot access Red Hat's remote OperatorHub sources. You need a mirrored or pruned catalog containing the OpenShift Update Service Operator. Include `cincinnati-operator` in your `oc-mirror` `ImageSetConfiguration` operators list.
+
 ```yaml
 # Namespace
 apiVersion: v1
@@ -216,13 +218,19 @@ kubectl get route -n openshift-update-service
 ### Step 5: Configure ClusterVersion to Use Local OSUS
 
 ```bash
-# Get the OSUS route (with CA if using custom certs)
-OSUS_URL="https://$(kubectl get route update-service -n openshift-update-service -o jsonpath='{.spec.host}')/api/upgrades_info/v1/graph"
+# Get the OSUS policy engine URI from the UpdateService status
+NAMESPACE=openshift-update-service
+NAME=update-service
+
+POLICY_ENGINE_GRAPH_URI="$(
+  oc -n "${NAMESPACE}" get updateservice "${NAME}" \
+    -o jsonpath='{.status.policyEngineURI}/api/upgrades_info/v1/graph{"\n"}'
+)"
 
 # Point ClusterVersion to local OSUS
 oc patch clusterversion version --type merge -p "{
   \"spec\": {
-    \"upstream\": \"${OSUS_URL}\"
+    \"upstream\": \"${POLICY_ENGINE_GRAPH_URI}\"
   }
 }"
 
@@ -234,6 +242,9 @@ If using a custom CA for the internal registry:
 
 ```bash
 # Create a ConfigMap with the CA bundle
+# IMPORTANT: The key MUST be named "updateservice-registry"
+# If your registry URL includes a port, replace ":" with ".."
+# e.g., registry.example.com:5000 → key: "registry.example.com..5000"
 oc create configmap custom-ca \
   --from-file=updateservice-registry=ca-bundle.crt \
   -n openshift-config
@@ -246,6 +257,10 @@ oc patch proxy/cluster --type merge -p '{
     }
   }
 }'
+
+# Also ensure the cluster trusts the ingress/router CA
+# CVO communicates with OSUS over the ingress route — if using
+# self-signed ingress certificates, CVO must trust that CA too
 ```
 
 ### Step 6: Verify the Graph is Serving
@@ -345,7 +360,11 @@ Check if the `graphDataImage` is accessible from within the cluster. Run `kubect
 
 **Certificate errors querying OSUS route**
 
-The OSUS route uses the cluster's default ingress certificate. If using a custom CA, ensure it's in the cluster proxy's `trustedCA` ConfigMap and the ClusterVersion operator trusts it.
+The OSUS route uses the cluster's default ingress certificate. If using self-signed ingress certificates, the CVO must trust the router CA to communicate with OSUS. This is the #1 missed step in air-gapped deployments — Red Hat's guidance specifically calls out that the cluster must trust the router CA for CVO→OSUS communication over ingress.
+
+**Registry CA ConfigMap key naming**
+
+The ConfigMap key for the registry CA must be exactly `updateservice-registry`. If your registry URL includes a port (e.g., `registry.example.com:5000`), replace `:` with `..` in the key name: `registry.example.com..5000`. Wrong key names cause silent trust failures.
 
 **Graph shows versions but release pull fails**
 
