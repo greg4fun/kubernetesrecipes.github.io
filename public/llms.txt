@@ -1,106 +1,104 @@
 # kubernetes.recipes
 
-> Kubernetes Recipes — 1000+ production-ready guides for Kubernetes, OpenShift, AI/GPU infrastructure, Helm, and cloud-native operations.
+> A collection of 1056 practical Kubernetes recipes, guides, and troubleshooting articles.
+> Covering networking, storage, security, deployments, observability, troubleshooting, autoscaling, configuration, Helm, and AI/GPU workloads.
+> By Luca Berton.
 
 ## About
 
-kubernetes.recipes is a comprehensive collection of Kubernetes recipes by Luca Berton. Each recipe provides quick answers, YAML examples, architecture diagrams, common issues, and best practices.
+kubernetes.recipes is a comprehensive knowledge base for Kubernetes operators, SREs, and platform engineers.
+Each recipe includes a quick answer, problem statement, solution with YAML/code examples, common issues, and best practices.
 
-Total recipes: 1000
-Categories: ai, autoscaling, configuration, deployments, helm, networking, observability, security, storage, troubleshooting
+- Total recipes: 1056
+- Categories: 10
+- Updated: 2026-04-28
 
-## Categories
+## Ai (149 recipes)
 
-### Ai (140 recipes)
-
-- [Agentic AI and Multi-Agent Systems on Kubernetes](https://kubernetes.recipes/recipes/ai/agentic-ai-multiagent-kubernetes/): Deploy autonomous AI agents and multi-agent orchestration on Kubernetes. LangGraph, CrewAI, AutoGen, tool-calling agents, agent-to-agent communication, and scaling patterns.
-- [Batch AI Workloads with Volcano Scheduler on Kubernetes](https://kubernetes.recipes/recipes/ai/ai-batch-processing-volcano/): Volcano gang scheduling on Kubernetes: batch AI training, fair-share queues, minAvailable, job plugins, and GPU preemption. Complete setup guide.
+- [Agentic AI and Multi-Agent Systems](https://kubernetes.recipes/recipes/ai/agentic-ai-multiagent-kubernetes/): Deploy autonomous AI agents and multi-agent orchestration on Kubernetes. LangGraph, CrewAI, AutoGen, tool-calling agents, agent-to-agent communication.
+- [Batch AI Workloads with Volcano Scheduler](https://kubernetes.recipes/recipes/ai/ai-batch-processing-volcano/): Volcano gang scheduling on Kubernetes: batch AI training, fair-share queues, minAvailable, job plugins, and GPU preemption. Complete setup guide.
 - [AI Content Watermarking on Kubernetes](https://kubernetes.recipes/recipes/ai/ai-content-watermarking-kubernetes/): Deploy AI-generated content watermarking on Kubernetes. Invisible watermarks, SynthID integration, detection APIs, image and text watermarking pipelines.
-- [AI Infrastructure Cost Optimization on Kubernetes](https://kubernetes.recipes/recipes/ai/ai-infrastructure-cost-optimization-kubernetes/): Optimize AI infrastructure costs on Kubernetes. GPU sharing, spot instances, inference batching, model quantization, token economics, and right-sizing GPU workloads.
+- [AI Infrastructure Cost Optimization](https://kubernetes.recipes/recipes/ai/ai-infrastructure-cost-optimization-kubernetes/): Optimize AI infrastructure costs on Kubernetes. GPU sharing, spot instances, inference batching, model quantization, token economics.
 - [AI-Native Development Platforms on Kubernetes](https://kubernetes.recipes/recipes/ai/ai-native-development-kubernetes/): Build AI-native development platforms on Kubernetes. AI coding agents, automated testing, Copilot infrastructure, dev containers, and AI-driven CI/CD pipelines.
-- ... and 135 more
+- ... and 144 more
 
-### Autoscaling (32 recipes)
+## Autoscaling (37 recipes)
 
 - [Kubernetes Cluster Autoscaler Setup Guide](https://kubernetes.recipes/recipes/autoscaling/cluster-autoscaler-setup/): Configure the Cluster Autoscaler to automatically add and remove nodes based on pod scheduling demands. Covers AWS, GKE, Azure, and bare-metal setups.
 - [How to Configure Cluster Autoscaler](https://kubernetes.recipes/recipes/autoscaling/cluster-autoscaler/): Automatically scale your Kubernetes cluster nodes based on workload demand. Learn to configure Cluster Autoscaler for AWS, GCP, and Azure.
-- [HPA in Kubernetes: Horizontal Pod Autoscaler Guide](https://kubernetes.recipes/recipes/autoscaling/horizontal-pod-autoscaler/): HPA in Kubernetes explained with YAML examples. Configure Horizontal Pod Autoscaler for CPU, memory, and custom metrics with scaling policies and VPA comparison.
+- [HPA in K8s: Horizontal Pod Autoscaler Guide](https://kubernetes.recipes/recipes/autoscaling/horizontal-pod-autoscaler/): HPA in Kubernetes explained with YAML examples. Configure Horizontal Pod Autoscaler for CPU, memory, and custom metrics with scaling policies and VPA compa.
 - [How to Scale Based on Custom Metrics](https://kubernetes.recipes/recipes/autoscaling/hpa-custom-metrics/): Configure Horizontal Pod Autoscaler with custom and external metrics. Learn to scale on application-specific metrics like queue depth and request latency.
-- [Karpenter Node Autoscaling for Kubernetes on AWS](https://kubernetes.recipes/recipes/autoscaling/karpenter-node-autoscaling-kubernetes/): Deploy Karpenter for fast, flexible node autoscaling on AWS EKS. Configure NodePools, EC2NodeClasses, consolidation, and GPU provisioning with sub-minute node startup.
-- ... and 27 more
+- [Karpenter Node Autoscaling for K8s on AWS](https://kubernetes.recipes/recipes/autoscaling/karpenter-node-autoscaling-kubernetes/): Deploy Karpenter for fast, flexible node autoscaling on AWS EKS. Configure NodePools, EC2NodeClasses, consolidation.
+- ... and 32 more
 
-### Configuration (162 recipes)
+## Configuration (168 recipes)
 
-- [How to Manage Kubernetes API Versions and Deprecations](https://kubernetes.recipes/recipes/configuration/api-versions-deprecations/): Handle Kubernetes API version changes and deprecations. Migrate resources to stable APIs and ensure cluster upgrade compatibility.
+- [Manage K8s API Versions and Deprecations](https://kubernetes.recipes/recipes/configuration/api-versions-deprecations/): Handle Kubernetes API version changes and deprecations. Migrate resources to stable APIs and ensure cluster upgrade compatibility.
 - [ClusterPolicy MOFED Upgrade Strategy](https://kubernetes.recipes/recipes/configuration/clusterpolicy-mofed-upgrade/): Configure safe MOFED driver upgrade policies in the NVIDIA GPU Operator ClusterPolicy with rolling updates, node draining, and rollback procedures.
 - [Fix ConfigMap Changes Not Applied to Pods](https://kubernetes.recipes/recipes/configuration/configmap-hot-reload-troubleshooting/): Debug ConfigMap updates not reflected in running pods. Covers volume mount propagation delays, env var immutability, and sidecar-based reload strategies.
-- [How to Manage ConfigMaps and Secrets Effectively](https://kubernetes.recipes/recipes/configuration/configmap-secrets-management/): Master Kubernetes ConfigMaps and Secrets for application configuration. Learn creation methods, mounting strategies, and security best practices.
-- [Configure ClusterPolicy kernelModuleType for GPU Operator](https://kubernetes.recipes/recipes/configuration/configure-clusterpolicy-kernel-module-type/): Understand and configure the driver.kernelModuleType field in the NVIDIA GPU Operator ClusterPolicy to choose between auto, open, and proprietary kernel.
-- ... and 157 more
+- [Manage ConfigMaps and Secrets Effectively](https://kubernetes.recipes/recipes/configuration/configmap-secrets-management/): Master Kubernetes ConfigMaps and Secrets for application configuration. Learn creation methods, mounting strategies, and security best practices.
+- [Configure ClusterPolicy kernelModuleType GP...](https://kubernetes.recipes/recipes/configuration/configure-clusterpolicy-kernel-module-type/): Understand and configure the driver.kernelModuleType field in the NVIDIA GPU Operator ClusterPolicy to choose between auto, open, and proprietary kernel.
+- ... and 163 more
 
-### Deployments (206 recipes)
+## Deployments (210 recipes)
 
 - [How to Implement A/B Testing with Kubernetes](https://kubernetes.recipes/recipes/deployments/ab-testing-kubernetes/): Route traffic between application versions for A/B testing. Use service mesh, ingress, and custom routing rules to validate features with real users.
 - [Air-Gapped Image Import for OpenShift Clusters](https://kubernetes.recipes/recipes/deployments/air-gapped-image-import-openshift/): Import container images into disconnected OpenShift clusters. Use podman save/load and internal registries when DNS and TLS block external pulls.
 - [Air-Gapped OpenShift with Quay Mirror](https://kubernetes.recipes/recipes/deployments/airgapped-openshift-quay-mirror/): Deploy OpenShift in air-gapped environments with local Quay registry mirror, ImageDigestMirrorSet, and custom CatalogSources.
-- [Argo Workflows on Kubernetes](https://kubernetes.recipes/recipes/deployments/argo-workflows-kubernetes/): deployments
+- [Argo Workflows on Kubernetes](https://kubernetes.recipes/recipes/deployments/argo-workflows-kubernetes/): Production guide for argo workflows on kubernetes. Step-by-step YAML examples, common issues, and best practices for K8s clusters.
 - [ArgoCD App of Apps Pattern](https://kubernetes.recipes/recipes/deployments/argocd-app-of-apps-pattern/): Implement the ArgoCD App of Apps pattern to manage multiple applications from a parent Application for cluster bootstrapping.
-- ... and 201 more
+- ... and 205 more
 
-### Helm (40 recipes)
+## Helm (43 recipes)
 
 - [ArgoCD App of Apps with Helm Values](https://kubernetes.recipes/recipes/helm/argocd-app-of-apps-helm-values/): Use the ArgoCD App of Apps pattern with Helm value overrides per environment, enabling templated Application manifests and DRY multi-environment configurations.
 - [Helm before-hook-creation Hook](https://kubernetes.recipes/recipes/helm/helm-before-hook-creation/): Use Helm before-hook-creation for database migrations and pre-install checks. Complete hook lifecycle, delete policies, and ordering.
 - [How to Create and Use Helm Charts](https://kubernetes.recipes/recipes/helm/helm-chart-basics/): Master Helm, the Kubernetes package manager. Learn to create charts, manage releases, and template your deployments for reusability.
 - [How to Create Helm Charts from Scratch](https://kubernetes.recipes/recipes/helm/helm-chart-creation/): Build custom Helm charts for your applications. Learn chart structure, templates, values, dependencies, and best practices for packaging Kubernetes.
-- [Helm Chart Development from Scratch](https://kubernetes.recipes/recipes/helm/helm-chart-development-guide/): Build production-ready Helm charts with templates, values, helpers, hooks, tests, and CI validation. Complete guide from chart create to publishing.
-- ... and 35 more
-
-### Networking (112 recipes)
-
-- [Configure SR-IOV agent-config.yaml with Device by Path](https://kubernetes.recipes/recipes/networking/agent-config-device-by-path/): Use agent-config.yaml to select network devices by PCI path for SR-IOV VF creation, ensuring deterministic NIC targeting across OpenShift nodes.
-- [Cilium eBPF Gateway API Hubble k3s](https://kubernetes.recipes/recipes/networking/cilium-ebpf-gateway-api-hubble-k3s/): Install Cilium with eBPF dataplane, Gateway API support, and Hubble observability on k3s. Replace kube-proxy with eBPF, configure GatewayClass, and enable network flow visibility.
-- [Cilium Service Mesh: eBPF-Powered Kubernetes](https://kubernetes.recipes/recipes/networking/cilium-service-mesh-kubernetes/): Deploy Cilium service mesh on Kubernetes with eBPF. Sidecar-free mTLS, L7 traffic management, network policies, Hubble observability, and Gateway API support.
-- [Configure GPUDirect RDMA with the NVIDIA GPU Operator](https://kubernetes.recipes/recipes/networking/configure-gpudirect-rdma-gpu-operator/): Set up GPUDirect RDMA on Kubernetes using the NVIDIA GPU Operator with either DMA-BUF or legacy nvidia-peermem, including Network Operator integration.
-- [Configure SriovNetwork with NVIDIA nv-ipam](https://kubernetes.recipes/recipes/networking/configure-sriovnetwork-nv-ipam/): Create a SriovNetwork resource that auto-generates a Multus NetworkAttachmentDefinition using nv-ipam for high-performance SR-IOV secondary interfaces.
-- ... and 107 more
-
-### Observability (43 recipes)
-
-- [How to Configure Alertmanager for Kubernetes Alerts](https://kubernetes.recipes/recipes/observability/alertmanager-configuration/): Set up Alertmanager to route, group, and deliver Kubernetes alerts. Learn to configure Slack, PagerDuty, and email notifications.
-- [How to Set Up Alertmanager for Prometheus](https://kubernetes.recipes/recipes/observability/alertmanager-setup/): Configure Alertmanager to route and manage Prometheus alerts. Set up notification channels including Slack, PagerDuty, and email with routing rules.
-- [How to Implement Container Logging Patterns](https://kubernetes.recipes/recipes/observability/container-logging-patterns/): Configure logging for Kubernetes applications. Implement sidecar logging, log aggregation, and structured logging best practices.
-- [How to Implement Distributed Tracing with Jaeger](https://kubernetes.recipes/recipes/observability/distributed-tracing-jaeger/): Deploy Jaeger for distributed tracing in Kubernetes. Learn to instrument applications, trace requests across services, and identify performance.
-- [Per-Tenant GPU Monitoring and Chargeback](https://kubernetes.recipes/recipes/observability/gpu-tenant-monitoring-chargeback/): Build per-tenant GPU monitoring dashboards with queue time, utilization, thermal metrics, and GPU-hour chargeback on Kubernetes.
+- [Helm Chart Dependencies Guide](https://kubernetes.recipes/recipes/helm/helm-chart-dependencies-guide/): Manage Helm chart dependencies and subcharts. Condition flags, tags, import-values, alias patterns, and dependency update workflow for K8s.
 - ... and 38 more
 
-### Security (112 recipes)
+## Networking (119 recipes)
+
+- [Configure SR-IOV agent-config.yaml Device b...](https://kubernetes.recipes/recipes/networking/agent-config-device-by-path/): Use agent-config.yaml to select network devices by PCI path for SR-IOV VF creation, ensuring deterministic NIC targeting across OpenShift nodes.
+- [cert-manager Cloudflare DNS01 K8s](https://kubernetes.recipes/recipes/networking/cert-manager-cloudflare-dns01-k8s/): Configure cert-manager with Cloudflare DNS01 challenge for wildcard TLS certificates on Kubernetes. API token secret, ClusterIssuer, and auto-renewal.
+- [Cilium ClusterMesh Multi-Cluster](https://kubernetes.recipes/recipes/networking/cilium-clustermesh-multicluster/): Connect multiple K8s clusters with Cilium ClusterMesh. Shared services, global service discovery, and cross-cluster network policies.
+- [Cilium eBPF Gateway API Hubble k3s](https://kubernetes.recipes/recipes/networking/cilium-ebpf-gateway-api-hubble-k3s/): Install Cilium with eBPF dataplane, Gateway API support, and Hubble observability on k3s. Replace kube-proxy with eBPF, configure GatewayClass.
+- [Cilium Service Mesh: eBPF-Powered Kubernetes](https://kubernetes.recipes/recipes/networking/cilium-service-mesh-kubernetes/): Deploy Cilium service mesh on Kubernetes with eBPF. Sidecar-free mTLS, L7 traffic management, network policies, Hubble observability, and Gateway API support.
+- ... and 114 more
+
+## Observability (46 recipes)
+
+- [How to Configure Alertmanager for K8s Alerts](https://kubernetes.recipes/recipes/observability/alertmanager-configuration/): Set up Alertmanager to route, group, and deliver Kubernetes alerts. Learn to configure Slack, PagerDuty, and email notifications.
+- [How to Set Up Alertmanager for Prometheus](https://kubernetes.recipes/recipes/observability/alertmanager-setup/): Configure Alertmanager to route and manage Prometheus alerts. Set up notification channels including Slack, PagerDuty, and email with routing rules.
+- [Cilium Hubble Observability Guide](https://kubernetes.recipes/recipes/observability/cilium-hubble-observability-guide/): Monitor Kubernetes network flows with Cilium Hubble. CLI usage, Hubble UI, flow filtering, DNS visibility, and L7 HTTP observability.
+- [How to Implement Container Logging Patterns](https://kubernetes.recipes/recipes/observability/container-logging-patterns/): Configure logging for Kubernetes applications. Implement sidecar logging, log aggregation, and structured logging best practices.
+- [Implement Distributed Tracing with Jaeger](https://kubernetes.recipes/recipes/observability/distributed-tracing-jaeger/): Deploy Jaeger for distributed tracing in Kubernetes. Learn to instrument applications, trace requests across services, and identify performance.
+- ... and 41 more
+
+## Security (120 recipes)
 
 - [How to Create Admission Webhooks](https://kubernetes.recipes/recipes/security/admission-webhooks/): Build validating and mutating admission webhooks to enforce policies and modify resources. Implement custom admission controllers for Kubernetes.
-- [AI ML Security and Compliance Kubernetes](https://kubernetes.recipes/recipes/security/ai-ml-security-compliance-kubernetes/): Secure AI and ML workloads on Kubernetes with model encryption, data governance, audit logging, network isolation for training jobs, and compliance frameworks for regulated industries.
-- [AI Security Platforms on Kubernetes](https://kubernetes.recipes/recipes/security/ai-security-platform-kubernetes/): Secure AI workloads on Kubernetes. Model supply chain security, prompt injection defense, LLM output filtering, AI RBAC, GPU isolation, and inference API protection.
+- [AI ML Security and Compliance Kubernetes](https://kubernetes.recipes/recipes/security/ai-ml-security-compliance-kubernetes/): Secure AI and ML workloads on Kubernetes with model encryption, data governance, audit logging, network isolation for training jobs.
+- [AI Security Platforms on Kubernetes](https://kubernetes.recipes/recipes/security/ai-security-platform-kubernetes/): Secure AI workloads on Kubernetes. Model supply chain security, prompt injection defense, LLM output filtering, AI RBAC, GPU isolation.
 - [How to Configure Kubernetes API Access Control](https://kubernetes.recipes/recipes/security/api-access-control/): Set up secure API server access with authentication and authorization. Configure RBAC, API groups, and audit logging for cluster security.
-- [How to Manage Kubernetes Certificates with cert-manager](https://kubernetes.recipes/recipes/security/cert-manager-certificates/): Automate TLS certificate management with cert-manager. Configure issuers, request certificates from Let's Encrypt, and enable automatic renewal.
-- ... and 107 more
+- [Manage K8s Certificates with cert-manager](https://kubernetes.recipes/recipes/security/cert-manager-certificates/): Automate TLS certificate management with cert-manager. Configure issuers, request certificates from Let's Encrypt, and enable automatic renewal.
+- ... and 115 more
 
-### Storage (56 recipes)
+## Storage (60 recipes)
 
-- [Access Zones on Scale-Out NAS for Kubernetes](https://kubernetes.recipes/recipes/storage/access-zones-scaleout-nas-kubernetes/): Configure access zones on scale-out NAS (Dell PowerScale/Isilon) for Kubernetes persistent storage. Multi-tenant isolation, CSI driver setup, and SmartConnect zones.
+- [Access Zones on Scale-Out NAS for Kubernetes](https://kubernetes.recipes/recipes/storage/access-zones-scaleout-nas-kubernetes/): Configure access zones on scale-out NAS (Dell PowerScale/Isilon) for Kubernetes persistent storage. Multi-tenant isolation, CSI driver setup.
 - [CNPG Disaster Recovery and Replication](https://kubernetes.recipes/recipes/storage/cnpg-disaster-recovery/): Set up cross-region PostgreSQL disaster recovery with CloudNativePG using replica clusters, WAL shipping, and automated failover.
 - [How to Configure CSI Drivers for Storage](https://kubernetes.recipes/recipes/storage/csi-drivers-storage/): Install and configure Container Storage Interface (CSI) drivers for cloud and on-premises storage. Set up dynamic provisioning with AWS EBS, GCP PD, and.
-- [Distributed fio Storage Benchmarking on Kubernetes and OpenShift](https://kubernetes.recipes/recipes/storage/distributed-fio-kubernetes-openshift/): Run distributed fio benchmarks on Kubernetes and OpenShift to test storage performance at scale. Covers fio-distributed with k8s Jobs, Red Hat dbench, and CSI throughput validation.
-- [How to Configure Dynamic Volume Provisioning](https://kubernetes.recipes/recipes/storage/dynamic-volume-provisioning/): Set up dynamic volume provisioning in Kubernetes with StorageClasses. Learn to configure provisioners for AWS EBS, GCP PD, Azure Disk, and NFS.
-- ... and 51 more
+- [CSI Snapshot and Restore K8s Guide](https://kubernetes.recipes/recipes/storage/csi-snapshot-restore-guide/): Create and restore volume snapshots with CSI on K8s. VolumeSnapshot, VolumeSnapshotClass, and cross-namespace clone patterns.
+- [Distributed fio Storage Benchmark K8s](https://kubernetes.recipes/recipes/storage/distributed-fio-kubernetes-openshift/): Run distributed fio benchmarks on Kubernetes and OpenShift to test storage performance at scale. Covers fio-distributed with k8s Jobs, Red Hat dbench.
+- ... and 55 more
 
-### Troubleshooting (97 recipes)
+## Troubleshooting (104 recipes)
 
 - [Fix API Server Timeout and Overload](https://kubernetes.recipes/recipes/troubleshooting/api-server-timeout-troubleshooting/): Debug kubectl timeouts, API server overload, and connection refused errors. Covers etcd latency, webhook timeouts, and rate limiting.
 - [Check Bonding and Interface Status for SR-IOV](https://kubernetes.recipes/recipes/troubleshooting/check-bonding-and-interface-status/): Inspect bond membership, interface state, and link aggregation to confirm which NICs can be correctly targeted by SR-IOV network policies on Kubernetes.
+- [Cilium Debug Pod Troubleshooting](https://kubernetes.recipes/recipes/troubleshooting/cilium-debug-pod-troubleshooting/): Debug Kubernetes networking with Cilium debug pods and containers. cilium-dbg, netshoot, hubble observe, and endpoint connectivity troubleshooting.
 - [Fix ConfigMap Too Large Error](https://kubernetes.recipes/recipes/troubleshooting/configmap-too-large-error/): Resolve the 1MB ConfigMap size limit error. Split configs, use Secrets for binary data, mount volumes, or use external stores.
 - [Fix CoreDNS Resolution Failures in Kubernetes](https://kubernetes.recipes/recipes/troubleshooting/coredns-troubleshooting/): Debug DNS resolution failures in Kubernetes pods. Covers CoreDNS crashes, NXDOMAIN errors, ndots configuration, and upstream DNS timeouts.
-- [How to Fix CrashLoopBackOff in Kubernetes](https://kubernetes.recipes/recipes/troubleshooting/crashloopbackoff-troubleshooting/): Fix CrashLoopBackOff in Kubernetes with step-by-step troubleshooting. Debug OOMKilled, failed probes, missing configs, and image errors causing pod crash loops.
-- ... and 92 more
-
-## Full Index
-
-For the complete list of all recipes, see [llms-full.txt](https://kubernetes.recipes/llms-full.txt)
+- ... and 99 more
