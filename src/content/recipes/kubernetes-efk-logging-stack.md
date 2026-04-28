@@ -1,6 +1,6 @@
 ---
-title: "EFK Stack Kubernetes Logging Guide"
-description: "Deploy the EFK stack on Kubernetes for centralized logging. Elasticsearch, Fluentd, Kibana setup, log parsing, retention, and production tuning."
+title: "EFK Stack Centralized Logging K8s"
+description: "Deploy the EFK stack for centralized logging on Kubernetes. Elasticsearch, Fluentd, Kibana setup, log parsing, retention, and production cluster tuning."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "observability"

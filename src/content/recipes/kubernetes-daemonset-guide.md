@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes DaemonSet: Run Pods on Every Node"
-description: "Deploy DaemonSets in Kubernetes to run exactly one pod per node. Covers logging agents, monitoring, CNI plugins, node-level operations, and rolling updates."
+title: "DaemonSet One Pod Per Node K8s Docs"
+description: "Kubernetes DaemonSet runs one pod per node. Node selectors, tolerations, update strategies, and monitoring agent deployment for production clusters."
 category: "deployments"
 difficulty: "beginner"
 publishDate: "2026-04-03"

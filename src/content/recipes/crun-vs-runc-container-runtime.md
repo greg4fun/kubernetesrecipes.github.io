@@ -1,6 +1,6 @@
 ---
-title: "crun vs runc Container Runtime"
-description: "Compare crun vs runc container runtimes for Kubernetes and Podman. Performance benchmarks, cgroup v2 support, memory footprint, startup time."
+title: "crun vs runc Container Runtime 2026"
+description: "Compare crun vs runc container runtimes for Kubernetes. Performance benchmarks, memory usage, cgroup v2 support, and migration from runc to crun guide."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "configuration"

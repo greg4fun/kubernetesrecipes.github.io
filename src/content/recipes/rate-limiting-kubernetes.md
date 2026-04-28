@@ -1,6 +1,6 @@
 ---
-title: "How to Implement Rate Limiting in Kubernetes"
-description: "Protect your services with rate limiting. Configure rate limits using Ingress, service mesh, and API gateways to prevent abuse and ensure fair usage."
+title: "Kubernetes Rate Limiting Guide"
+description: "Implement Kubernetes rate limiting for API protection. Ingress NGINX annotations, Istio rate limits, Kong plugins, and per-service rate limiting patterns."
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"

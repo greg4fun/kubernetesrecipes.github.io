@@ -1,6 +1,6 @@
 ---
-title: "Graceful Shutdown Configuration Guide"
-description: "Configure graceful shutdown for Kubernetes pods with preStop hooks, terminationGracePeriodSeconds, connection draining, and SIGTERM handling."
+title: "Graceful Shutdown Kubernetes Pods"
+description: "Configure graceful shutdown for Kubernetes pods. PreStop hooks, terminationGracePeriodSeconds, SIGTERM handling, and zero-downtime connection draining."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

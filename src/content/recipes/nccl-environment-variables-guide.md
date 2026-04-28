@@ -1,6 +1,6 @@
 ---
-title: "NCCL Environment Variables Guide"
-description: "Complete guide to NCCL environment variables for GPU communication. NCCL_IB_DISABLE, NCCL_SOCKET_IFNAME, NCCL_DEBUG, and tuning for InfiniBand and RoCE."
+title: "NCCL_IB_DISABLE Env Variables Guide"
+description: "NCCL_IB_DISABLE and NCCL_SOCKET_IFNAME environment variables guide. Complete NCCL env var reference for GPU communication tuning on Kubernetes."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "ai"

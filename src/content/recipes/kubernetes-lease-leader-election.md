@@ -1,6 +1,6 @@
 ---
-title: "Lease-Based Leader Election Kubernetes"
-description: "Implement leader election using Kubernetes Lease objects for HA controllers. Lease duration, renew interval, custom operator patterns, and graceful failover."
+title: "K8s Lease API Leader Election Guide"
+description: "Kubernetes Lease API leader election documentation. How controllers use coordination.k8s.io Lease objects for leader election with practical examples."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

@@ -1,6 +1,6 @@
 ---
-title: "Multi-Cluster Management Kubernetes"
-description: "Manage multiple Kubernetes clusters effectively. Federation, Cluster API, Rancher, and GitOps patterns for fleet management across environments."
+title: "K8s Multi-Cluster Management Guide"
+description: "Kubernetes multi-cluster management guide. Federation, Cluster API, Rancher, and GitOps patterns for fleet management across production environments."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "deployments"

@@ -1,6 +1,6 @@
 ---
-title: "Labels vs Annotations Kubernetes"
-description: "Understand the difference between Kubernetes labels and annotations. When to use each, recommended labels, label selectors, and annotation patterns."
+title: "K8s Labels vs Annotations Explained"
+description: "Kubernetes labels vs annotations differences explained. When to use each, recommended labels, label selectors, and annotation best practices for K8s."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "configuration"

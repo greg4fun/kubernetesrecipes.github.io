@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Namespace Best Practices"
-description: "Design and manage Kubernetes namespaces effectively. Covers naming conventions, resource quotas, RBAC isolation, network policies, and multi-tenancy patterns."
+title: "K8s Namespace Best Practices Guide"
+description: "Kubernetes namespace best practices for multi-team environments. Naming conventions, resource quotas, default limits, and namespace lifecycle management."
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-04-02"

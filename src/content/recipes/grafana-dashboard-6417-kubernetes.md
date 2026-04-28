@@ -1,6 +1,6 @@
 ---
-title: "Grafana Dashboard 6417 Kubernetes"
-description: "Deploy Grafana dashboard 6417 for Kubernetes pod monitoring. Import setup, Prometheus datasource, pod resource usage, and customization for production clusters."
+title: "Grafana Dashboard 6417 K8s Pods"
+description: "Deploy Grafana dashboard 6417 for Kubernetes pod monitoring. Import setup, Prometheus datasource configuration, and pod resource usage customization."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "observability"

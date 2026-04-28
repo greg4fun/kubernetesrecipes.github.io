@@ -1,6 +1,6 @@
 ---
-title: "Admission Controllers List K8s"
-description: "Complete list of K8s admission controllers. Enable/disable controllers, common ones (PodSecurity, ResourceQuota), and custom webhooks."
+title: "K8s Admission Controllers List Guide"
+description: "Complete list of Kubernetes admission controllers. Enable and disable controllers, PodSecurity, ResourceQuota, and custom validating webhooks guide."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "configuration"

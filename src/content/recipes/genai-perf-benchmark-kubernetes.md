@@ -1,6 +1,6 @@
 ---
-title: "GenAI-Perf Benchmark Kubernetes"
-description: "Benchmark AI inference endpoints with GenAI-Perf on Kubernetes. Latency profiling, throughput testing, TTFT measurement, and vLLM/TRT-LLM comparison."
+title: "GenAI-Perf Profile LLM Benchmark"
+description: "Benchmark LLM inference with GenAI-Perf on Kubernetes. TTFT, throughput profiling, --service-kind openai, and vLLM vs TRT-LLM performance comparison."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "ai"

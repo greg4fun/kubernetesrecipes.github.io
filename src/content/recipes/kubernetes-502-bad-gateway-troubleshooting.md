@@ -1,6 +1,6 @@
 ---
-title: "Fix 502 Bad Gateway Kubernetes"
-description: "Troubleshoot and fix 502 Bad Gateway errors in Kubernetes. Ingress controller misconfig, backend pod not ready, upstream timeout, and readiness probe failures."
+title: "Fix 502 Bad Gateway Kubernetes Ingress"
+description: "Fix 502 Bad Gateway errors in Kubernetes Ingress. Backend not ready, timeout tuning, readiness probes, and NGINX ingress controller troubleshooting."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "troubleshooting"

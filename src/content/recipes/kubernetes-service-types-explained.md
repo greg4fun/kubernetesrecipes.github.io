@@ -1,6 +1,6 @@
 ---
-title: "Service Types Explained Kubernetes"
-description: "Understand all Kubernetes Service types: ClusterIP, NodePort, LoadBalancer, ExternalName, and headless. When to use each type and how traffic flows through."
+title: "K8s Service Types ClusterIP NodePort"
+description: "Kubernetes Service types explained: ClusterIP, NodePort, LoadBalancer, ExternalName, and Headless. When to use each type with practical YAML examples."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "networking"

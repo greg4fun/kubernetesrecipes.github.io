@@ -1,6 +1,6 @@
 ---
-title: "Volcano Batch Scheduling Kubernetes"
-description: "Deploy Volcano for advanced batch scheduling on Kubernetes. Gang scheduling, fair-share queues, SLA plugins, task topology."
+title: "Volcano Job minAvailable Gang Schedule"
+description: "Volcano batch scheduling with minAvailable gang scheduling on Kubernetes. Job configuration, queue policies, and AI training workload scheduling."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

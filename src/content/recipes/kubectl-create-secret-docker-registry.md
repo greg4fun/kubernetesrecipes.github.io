@@ -1,6 +1,6 @@
 ---
-title: "kubectl create secret docker-registry Guide"
-description: "Create Kubernetes docker-registry secrets with kubectl. Private registry auth, --docker-password-stdin, imagePullSecrets, service account attachment."
+title: "kubectl create secret docker-registry"
+description: "kubectl create secret docker-registry with --docker-password-stdin for secure private registry auth. Complete syntax, examples, and service account setup."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "configuration"

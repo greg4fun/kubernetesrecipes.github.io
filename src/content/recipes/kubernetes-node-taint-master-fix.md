@@ -1,6 +1,6 @@
 ---
-title: "Fix Master Node Taint Kubernetes"
-description: "Remove or tolerate the node-role.kubernetes.io/master taint on Kubernetes control plane nodes. Schedule workloads on master nodes for single-node clusters."
+title: "Fix node-role.kubernetes.io/master"
+description: "Remove the node-role.kubernetes.io/master taint to schedule pods on control plane nodes. Single-node clusters, tolerations, and untolerated taint fix."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "troubleshooting"
