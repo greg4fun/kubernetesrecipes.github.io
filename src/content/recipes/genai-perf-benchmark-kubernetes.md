@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "nvidia-pytorch-container-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Benchmark AI inference endpoints with GenAI-Perf on Kubernetes. Latency profiling, throughput testing, TTFT measurement, and vLLM/TRT-LLM comparison.

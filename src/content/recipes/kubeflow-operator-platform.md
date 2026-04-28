@@ -9,6 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "kubeflow-training-operator"
   - "kubeflow-distributed-training"
+  - "dgx-h100-gpu-topology-nvidia-smi"
 ---
 
 > 💡 **Quick Answer:** Deploy the complete Kubeflow platform on Kubernetes with the Kubeflow Operator. Covers Pipelines, Notebooks, KServe, Katib, and multi-tenant ML workflows.

@@ -7,6 +7,7 @@ publishDate: "2026-01-22"
 relatedRecipes:
   - "opentelemetry-collector"
   - "logging-efk-stack"
+  - "nvidia-dcgm-exporter-monitoring"
 tags: ["tracing", "jaeger", "opentelemetry", "observability", "microservices"]
 ---
 

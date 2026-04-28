@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "debug-crashloopbackoff"
   - "persistent-volume-stuck-terminating"
+  - "fix-kubernetes-certificate-errors"
 ---
 > 💡 **Quick Answer:** A namespace stuck in Terminating has resources with unresolvable finalizers. Check `kubectl get all -n <ns>` for remaining resources, then `kubectl get ns <ns> -o json | jq '.status.conditions'` for the reason. Remove stuck finalizers or delete orphaned resources to unblock.
 

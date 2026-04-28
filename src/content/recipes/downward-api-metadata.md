@@ -6,6 +6,7 @@ difficulty: "beginner"
 publishDate: "2026-01-22"
 relatedRecipes:
   - "environment-variables-configmaps"
+  - "kubernetes-job-parallelism-completions"
 tags: ["downward-api", "metadata", "environment", "configuration", "pods"]
 ---
 

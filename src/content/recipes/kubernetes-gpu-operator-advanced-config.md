@@ -17,6 +17,7 @@ tags:
 relatedRecipes:
   - "nccl-sriov-gds-pytorch-kubernetes"
   - "iommu-gpu-passthrough-sriov-kubernetes"
+  - "vllm-alternatives-llm-inference-k8s"
 ---
 
 > 💡 **Quick Answer:** Configure GPU Operator ClusterPolicy for production: enable `driver.useOpenKernelModules: true` for GPUDirect RDMA, configure `gds.enabled: true` for storage bypass, set `migManager.enabled: true` for A100/H100 MIG support, and customize DCGM Exporter metrics for Prometheus.

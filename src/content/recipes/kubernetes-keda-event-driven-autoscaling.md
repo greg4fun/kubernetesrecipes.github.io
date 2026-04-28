@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "openclaw-autoscaling-keda"
   - "kubernetes-vpa-resource-rightsizing"
+  - "kubernetes-keda-scalers-guide"
 ---
 
 > 💡 **Quick Answer:** Install KEDA and create `ScaledObject` resources that define custom scaling triggers. Scale on Kafka consumer lag, Prometheus query results, cron schedules, or any of 60+ supported scalers. KEDA enables true scale-to-zero — 0 pods when no events, instant scale-up on first event.

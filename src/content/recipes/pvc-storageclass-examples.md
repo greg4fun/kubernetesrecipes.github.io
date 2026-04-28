@@ -10,6 +10,7 @@ prerequisites:
   - "kubectl configured to access your cluster"
 relatedRecipes:
   - "troubleshooting-pending-pvc"
+  - "csi-snapshot-restore-guide"
 tags:
   - storage
   - pvc

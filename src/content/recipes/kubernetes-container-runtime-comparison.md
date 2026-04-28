@@ -14,6 +14,7 @@ tags:
   - "kata"
 relatedRecipes:
   - "kubernetes-pod-security-standards"
+  - "kubernetes-api-versions-explained"
 ---
 
 > 💡 **Quick Answer:** Compare Kubernetes container runtimes: containerd vs CRI-O vs Kata Containers. Performance, security, and use cases for each runtime in production.

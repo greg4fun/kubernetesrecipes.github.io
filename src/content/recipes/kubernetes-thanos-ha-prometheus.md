@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-prometheus-alerting-rules"
   - "kubernetes-pod-security-standards"
+  - "nvidia-dcgm-exporter-monitoring"
 ---
 
 > 💡 **Quick Answer:** Scale Prometheus with Thanos for high availability and long-term storage on Kubernetes. Sidecar, Store, Compactor, and Query frontend for multi-cluster metrics.

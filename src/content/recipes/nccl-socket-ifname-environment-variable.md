@@ -14,6 +14,7 @@ difficulty: "advanced"
 timeToComplete: "15 minutes"
 relatedRecipes:
   - "nvidia-gpu-operator-setup"
+  - "cilium-clustermesh-multicluster"
 ---
 
 > 💡 **Quick Answer:** \`NCCL_SOCKET_IFNAME\` tells NCCL which network interface to use for GPU-to-GPU communication. Set it to your high-speed interface (e.g., \`eth0\`, \`bond0\`, \`ib0\`) to avoid NCCL using a slow or wrong interface. Prefix with \`^{name}\` to exclude interfaces.

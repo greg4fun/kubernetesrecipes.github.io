@@ -9,6 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "etcd-high-latency-troubleshooting"
   - "webhook-timeout-admission-errors"
+  - "fix-kubernetes-pod-cgroup-errors"
 ---
 
 > 💡 **Quick Answer:** Debug kubectl timeouts, API server connection refused errors, and slow API responses. Covers etcd latency, webhook timeouts, request throttling, and audit log impact.

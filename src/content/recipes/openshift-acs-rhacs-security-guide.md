@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "ubuntu-2604-kubernetes-sudo-rs"
 ---
 
 > 💡 **Quick Answer:** Deploy Red Hat Advanced Cluster Security (RHACS/ACS) on OpenShift. Vulnerability scanning, compliance, runtime threat detection, and policy enforcement.

@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-hpa-prometheus-adapter"
 ---
 
 > 💡 **Quick Answer:** Configure the VPA Recommender for Kubernetes resource right-sizing. Off mode recommendations, memory-only mode, and interpreting VPA suggestions.

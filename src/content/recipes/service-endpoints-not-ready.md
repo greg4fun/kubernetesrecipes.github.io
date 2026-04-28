@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "debug-crashloopbackoff"
   - "network-policy-debug-connectivity"
+  - "fix-kubernetes-certificate-errors"
 ---
 > 💡 **Quick Answer:** Run `kubectl get endpoints <service-name>` — if empty, the Service selector doesn't match any Ready pods. Check: (1) `kubectl get pods --show-labels` matches Service selector, (2) pods are Running AND passing readiness probes, (3) Service `targetPort` matches container port.
 

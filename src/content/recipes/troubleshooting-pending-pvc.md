@@ -11,6 +11,7 @@ prerequisites:
 relatedRecipes:
   - "debug-crashloopbackoff"
   - "pvc-storageclass-examples"
+  - "fix-kubernetes-service-not-reachable"
 tags:
   - troubleshooting
   - pvc

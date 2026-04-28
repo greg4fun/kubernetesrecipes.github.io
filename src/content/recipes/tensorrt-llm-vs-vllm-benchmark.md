@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "nvidia-peermem-gpudirect-rdma-k8s"
 ---
 
 > 💡 **Quick Answer:** Compare TensorRT-LLM vs vLLM for LLM inference on Kubernetes. TTFT, throughput, GPU utilization benchmarks, and when to use each inference engine.

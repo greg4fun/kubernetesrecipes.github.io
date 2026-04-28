@@ -15,6 +15,7 @@ tags:
   - "l2"
 relatedRecipes:
   - "kubernetes-service-types-explained"
+  - "cert-manager-cloudflare-dns01-k8s"
 ---
 
 > 💡 **Quick Answer:** Install MetalLB and configure an `IPAddressPool` with your available IPs. Choose L2 mode for simple setups (ARP-based, single node handles traffic) or BGP mode for production (announces routes to your network router, true load distribution).

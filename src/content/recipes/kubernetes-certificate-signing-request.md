@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "certmanager-ovh-dns01-wildcard-tls"
   - "kubernetes-letsencrypt-ingress-cert-manager"
+  - "kubernetes-image-scanning-trivy"
 ---
 
 > 💡 **Quick Answer:** The CSR API lets you request certificates signed by the cluster CA. Create a CSR resource, approve it (manually or via controller), then retrieve the signed certificate from `.status.certificate`.

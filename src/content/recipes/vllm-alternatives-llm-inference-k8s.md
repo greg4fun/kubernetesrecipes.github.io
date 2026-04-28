@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "nvidia-pytorch-container-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Compare vLLM alternatives for LLM inference on Kubernetes. TensorRT-LLM, SGLang, NVIDIA NIM, Ollama, and text-generation-inference feature comparison.

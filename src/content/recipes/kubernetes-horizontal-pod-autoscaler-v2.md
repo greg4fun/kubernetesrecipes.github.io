@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "horizontal-pod-autoscaler"
   - "kubernetes-custom-metrics-autoscaling"
+  - "kubernetes-keda-scalers-guide"
 ---
 
 > 💡 **Quick Answer:** HPAv2 scales based on multiple metrics simultaneously (CPU + custom + external). Use `behavior` to control scale-up/down speed with stabilization windows and rate limiting.

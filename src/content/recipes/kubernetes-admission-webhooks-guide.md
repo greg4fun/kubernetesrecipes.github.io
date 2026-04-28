@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-pod-security-standards"
+  - "kubernetes-image-scanning-trivy"
 ---
 
 > 💡 **Quick Answer:** Create a `ValidatingWebhookConfiguration` that intercepts pod creation and rejects pods without resource limits. Deploy the webhook server as a Deployment with TLS certs from cert-manager. Set `failurePolicy: Fail` for security-critical policies and `Ignore` for non-critical.

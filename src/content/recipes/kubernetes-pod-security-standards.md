@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-admission"
   - "kubernetes-rbac-least-privilege"
+  - "ubuntu-2604-kubernetes-sudo-rs"
 ---
 
 > 💡 **Quick Answer:** Label namespaces with `pod-security.kubernetes.io/enforce: restricted` to enforce Pod Security Standards. Start with `warn` mode to audit violations, then switch to `enforce` when clean.

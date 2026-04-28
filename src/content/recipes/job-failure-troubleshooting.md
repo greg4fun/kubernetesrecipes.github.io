@@ -9,6 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "debug-crashloopbackoff"
   - "cronjob-concurrency-policy"
+  - "fix-kubernetes-certificate-errors"
 ---
 
 > 💡 **Quick Answer:** Debug Jobs stuck in backoff, hitting retry limits, or producing wrong completions count. Covers backoffLimit, activeDeadlineSeconds, TTL cleanup, and indexed Jobs.

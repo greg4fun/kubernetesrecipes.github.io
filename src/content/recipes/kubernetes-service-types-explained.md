@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-ingress-tls-cert-manager"
   - "kubernetes-endpoint-slices-service-topology"
+  - "kubernetes-ingress-rate-limit-nginx"
 ---
 
 > 💡 **Quick Answer:** Use `ClusterIP` (default) for internal services, `NodePort` for development/testing, `LoadBalancer` for production external access, `ExternalName` for external service aliasing, and headless (`clusterIP: None`) for StatefulSet direct pod addressing.

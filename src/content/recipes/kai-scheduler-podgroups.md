@@ -12,6 +12,7 @@ prerequisites:
 relatedRecipes:
   - "kai-scheduler-installation"
   - "kai-scheduler-queues"
+  - "vllm-alternatives-llm-inference-k8s"
 tags:
   - kai-scheduler
   - nvidia

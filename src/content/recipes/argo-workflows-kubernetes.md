@@ -8,6 +8,8 @@ tags: ["argo-workflows", "ci-cd", "pipeline", "dag", "automation"]
 author: "Luca Berton"
 relatedRecipes:
   - "falco-runtime-security"
+  - "cloudnativepg-kubernetes-postgresql"
+  - "kubernetes-canary-deployment-guide"
 ---
 
 > 💡 **Quick Answer:** deployments

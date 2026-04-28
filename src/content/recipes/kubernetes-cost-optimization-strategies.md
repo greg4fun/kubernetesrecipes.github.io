@@ -15,6 +15,7 @@ tags:
   - finops
 relatedRecipes:
   - "kubernetes-resource-quotas-limitranges"
+  - "kubernetes-admission-controller-list"
 ---
 
 > 💡 **Quick Answer:** Start with VPA recommendations to right-size requests (30% savings typical), enable cluster autoscaler with `--scale-down-unneeded-time=10m`, use spot/preemptible nodes for batch workloads (60-90% cheaper), and set ResourceQuotas per namespace to prevent sprawl.

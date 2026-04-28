@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubeflow-ml-platform-kubernetes"
   - "ml-pipeline-automation-kubernetes"
+  - "tensorrt-llm-vs-vllm-benchmark"
 ---
 
 > 💡 **Quick Answer:** Deploy Feast on Kubernetes with a Redis online store for real-time serving (<5ms p99) and an offline store (BigQuery/Redshift/file) for training data. Define features as code in `feature_store.yaml`, materialize from offline to online, and serve via gRPC/HTTP.

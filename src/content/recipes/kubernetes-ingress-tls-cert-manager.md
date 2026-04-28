@@ -15,6 +15,8 @@ tags:
   - certificates
 relatedRecipes:
   - "custom-ca-openshift-kubernetes"
+  - "cert-manager-cloudflare-dns01-k8s"
+  - "cilium-clustermesh-multicluster"
 ---
 
 > 💡 **Quick Answer:** Install cert-manager, create a `ClusterIssuer` for Let's Encrypt, then annotate your Ingress with `cert-manager.io/cluster-issuer: letsencrypt-prod`. cert-manager automatically requests, renews, and stores TLS certificates as Kubernetes Secrets.

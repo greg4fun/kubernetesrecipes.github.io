@@ -15,6 +15,8 @@ tags:
   - etcd
 relatedRecipes:
   - "openclaw-external-secrets-kubernetes"
+  - "cilium-debug-pod-troubleshooting"
+  - "fix-kubernetes-pod-cgroup-errors"
 ---
 > 💡 **Quick Answer:** ConfigMaps are limited to ~1MB (etcd value size limit). Split large configs into multiple ConfigMaps, use a PersistentVolume for large files, or use an init container to download configs from external storage (S3, Vault, etc.).
 

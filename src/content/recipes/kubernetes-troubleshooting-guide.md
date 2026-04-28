@@ -8,6 +8,7 @@ tags: ["troubleshooting", "debugging", "flowchart", "kubectl", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-namespace-guide"
+  - "fix-etcd-leader-election-timeout"
 ---
 
 > 💡 **Quick Answer:** troubleshooting

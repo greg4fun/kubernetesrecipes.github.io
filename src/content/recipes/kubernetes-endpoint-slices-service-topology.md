@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-service-mesh-comparison"
   - "kubernetes-horizontal-dns-autoscaling"
+  - "kubernetes-ingress-rate-limit-nginx"
 ---
 
 > 💡 **Quick Answer:** EndpointSlices replace Endpoints for clusters with 100+ pod backends. Enable topology-aware routing with `service.kubernetes.io/topology-mode: Auto` to prefer same-zone backends — reducing cross-zone data transfer costs by 60-80%.

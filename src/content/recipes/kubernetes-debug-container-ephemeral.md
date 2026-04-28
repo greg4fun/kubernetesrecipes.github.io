@@ -14,6 +14,8 @@ tags:
   - kubectl-debug
 relatedRecipes:
   - "kubectl-config-context-management"
+  - "cilium-debug-pod-troubleshooting"
+  - "fix-kubernetes-dns-resolution"
 ---
 
 > 💡 **Quick Answer:** Use `kubectl debug -it my-pod --image=busybox --target=my-container` to attach an ephemeral debug container to a running pod. It shares the process namespace and network of the target container — perfect for debugging distroless or minimal images.

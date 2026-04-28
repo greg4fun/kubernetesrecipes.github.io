@@ -8,6 +8,7 @@ tags: ["sidecar", "multi-container", "logging", "proxy", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-statefulset-guide"
+  - "kubernetes-job-parallelism-completions"
 ---
 
 > 💡 **Quick Answer:** configuration

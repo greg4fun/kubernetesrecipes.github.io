@@ -14,6 +14,8 @@ tags:
   - "platform"
 relatedRecipes:
   - "kserve-model-serving-kubernetes"
+  - "dgx-h100-gpu-topology-nvidia-smi"
+  - "tensorrt-llm-vs-vllm-benchmark"
 ---
 
 > 💡 **Quick Answer:** Deploy Kubeflow with `kustomize build` or the Kubeflow Operator for a complete ML platform: Jupyter notebooks for experimentation, Training Operators for distributed training, Katib for hyperparameter tuning, Pipelines for workflow automation, and KServe for model serving.

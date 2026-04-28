@@ -14,6 +14,7 @@ tags:
   - resource-optimization
 relatedRecipes:
   - "kubernetes-resource-limits-requests"
+  - "kubernetes-hpa-prometheus-adapter"
 ---
 
 > 💡 **Quick Answer:** Deploy VPA in `Off` mode first to get recommendations without changes, then switch to `Auto` for memory only (let HPA handle CPU scaling). Set `minAllowed` and `maxAllowed` to prevent extreme values. VPA and HPA can coexist if they control different resources.

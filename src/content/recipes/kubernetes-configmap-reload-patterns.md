@@ -15,6 +15,7 @@ tags:
   - rolling-update
 relatedRecipes:
   - "kubernetes-rolling-update-strategies"
+  - "kubernetes-api-versions-explained"
 ---
 
 > 💡 **Quick Answer:** Use the Reloader operator (`stakater/Reloader`) for automatic rolling restarts on ConfigMap changes, or use volume-mounted ConfigMaps with inotify-based reload for zero-downtime config updates without pod restarts.

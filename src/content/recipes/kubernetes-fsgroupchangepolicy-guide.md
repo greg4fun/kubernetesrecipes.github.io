@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-fsgroupchangepolicy"
   - "kubernetes-pod-security-standards"
+  - "kubernetes-hostpath-vs-pvc"
 ---
 
 > 💡 **Quick Answer:** Configure fsGroupChangePolicy OnRootMismatch to skip recursive chown on volume mounts. Fix slow pod startup with large persistent volumes on Kubernetes.

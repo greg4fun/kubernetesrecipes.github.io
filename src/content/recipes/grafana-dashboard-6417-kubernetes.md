@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "nvidia-dcgm-exporter-monitoring"
 ---
 
 > 💡 **Quick Answer:** Deploy Grafana dashboard 6417 for Kubernetes pod monitoring. Import setup, Prometheus datasource, pod resource usage, and customization for production clusters.

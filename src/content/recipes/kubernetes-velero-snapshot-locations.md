@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-hostpath-vs-pvc"
 ---
 
 > 💡 **Quick Answer:** Configure Velero snapshot locations for Kubernetes backup. Volume snapshots, file system backup, cross-region copies, and backup verification.

@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-falco-rules-guide"
 ---
 
 > 💡 **Quick Answer:** Protect K8s services with OpenShift OAuth proxy sidecar. Authentication, RBAC delegation, and SSO for internal dashboards.

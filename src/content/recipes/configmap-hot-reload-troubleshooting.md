@@ -8,6 +8,7 @@ tags: ["configmap", "hot-reload", "volumes", "troubleshooting"]
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-resource-optimization"
+  - "kubernetes-admission-controller-list"
 ---
 
 > 💡 **Quick Answer:** Debug ConfigMap updates not reflected in running pods. Covers volume mount propagation delays, env var immutability, and sidecar-based reload strategies.

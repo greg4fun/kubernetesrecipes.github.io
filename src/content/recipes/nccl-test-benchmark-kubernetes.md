@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "nccl-environment-variables-guide"
   - "kubernetes-pod-security-standards"
+  - "nvidia-peermem-gpudirect-rdma-k8s"
 ---
 
 > 💡 **Quick Answer:** Run NCCL tests on Kubernetes for GPU communication benchmarking. all_reduce_perf, all_gather_perf, multi-node bandwidth, and latency validation.

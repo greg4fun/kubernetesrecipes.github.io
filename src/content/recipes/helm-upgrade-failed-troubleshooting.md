@@ -9,6 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "helm-hooks"
   - "helm-before-hook-creation"
+  - "helm-chart-dependencies-guide"
 ---
 
 > 💡 **Quick Answer:** Debug failed Helm releases stuck in pending-upgrade or failed state. Covers atomic upgrades, manual rollback, secret storage cleanup, and history limits.

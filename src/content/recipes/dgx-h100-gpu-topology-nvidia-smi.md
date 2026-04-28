@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "nvidia-peermem-gpudirect-rdma-k8s"
 ---
 
 > 💡 **Quick Answer:** Inspect DGX H100 GPU topology with nvidia-smi topo -m. NVSwitch NV18 links, cross-socket detection, PCIe hierarchy, and NCCL performance validation.

@@ -6,6 +6,7 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
   - "helm-templating-sprig"
+  - "helm-chart-dependencies-guide"
 tags: ["helm", "dependencies", "subcharts", "packaging", "charts"]
 ---
 

@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-admission"
   - "openshift-scc-security-context-constraints"
+  - "openshift-acs-rhacs-security-guide"
 ---
 
 > 💡 **Quick Answer:** Use namespace-scoped `Role` (not `ClusterRole`) wherever possible, bind to specific `ServiceAccount` (not `default`), never grant `*` verbs on secrets, and audit with `kubectl auth can-i --list --as=system:serviceaccount:ns:sa`.

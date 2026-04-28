@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "grafana-kubernetes-dashboards"
   - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "cilium-hubble-observability-guide"
 ---
 
 > 💡 **Quick Answer:** Deploy DCGM Exporter as a DaemonSet to expose GPU metrics to Prometheus. Monitor `DCGM_FI_DEV_GPU_UTIL` (utilization), `DCGM_FI_DEV_FB_USED` (memory), `DCGM_FI_DEV_POWER_USAGE` (power), and application-level metrics like inference latency and tokens/second.

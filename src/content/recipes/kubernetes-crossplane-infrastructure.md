@@ -14,6 +14,7 @@ tags:
   - "compositions"
 relatedRecipes:
   - "kubernetes-multicluster-management"
+  - "kubernetes-api-versions-explained"
 ---
 
 > 💡 **Quick Answer:** Install Crossplane and cloud providers (AWS, GCP, Azure). Define `CompositeResourceDefinitions` (XRDs) for your infrastructure API, and `Compositions` for implementation. Teams request infrastructure via standard Kubernetes CRs — Crossplane provisions cloud resources.

@@ -11,6 +11,7 @@ prerequisites:
 relatedRecipes:
   - "networkpolicy-deny-all"
   - "pod-security-standards"
+  - "openshift-acs-rhacs-security-guide"
 tags:
   - rbac
   - security

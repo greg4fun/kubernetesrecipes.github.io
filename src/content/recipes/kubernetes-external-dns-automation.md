@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-ingress-tls-cert-manager"
   - "kubernetes-cert-manager-advanced"
+  - "kubernetes-calico-networkpolicy"
 ---
 
 > 💡 **Quick Answer:** Deploy ExternalDNS as a Deployment with permissions to manage DNS records. Annotate Ingress/Service/Gateway resources with `external-dns.alpha.kubernetes.io/hostname` — ExternalDNS automatically creates and updates A/CNAME records in your DNS provider.

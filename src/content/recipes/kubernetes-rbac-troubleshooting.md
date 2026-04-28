@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-node-notready-troubleshooting"
   - "kubernetes-pod-security-standards"
+  - "fix-kubernetes-pod-cgroup-errors"
 ---
 
 > 💡 **Quick Answer:** Debug Kubernetes RBAC permission errors. kubectl auth can-i, impersonation testing, ClusterRole aggregation, and common permission mistakes.

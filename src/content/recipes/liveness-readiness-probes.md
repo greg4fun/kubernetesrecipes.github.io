@@ -10,6 +10,7 @@ prerequisites:
   - "kubectl configured to access your cluster"
 relatedRecipes:
   - "kubernetes-cluster-upgrade"
+  - "cloudnativepg-kubernetes-postgresql"
 tags:
   - probes
   - health-checks

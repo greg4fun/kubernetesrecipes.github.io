@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "tensorrt-llm-kubernetes-guide"
 ---
 
 > 💡 **Quick Answer:** Deploy nvcr.io/nvidia/pytorch containers on Kubernetes. Version selection, CUDA compatibility, multi-GPU training, and NCCL configuration for production.

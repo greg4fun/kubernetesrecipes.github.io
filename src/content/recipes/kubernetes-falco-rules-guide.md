@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "openshift-acs-rhacs-security-guide"
 ---
 
 > 💡 **Quick Answer:** Write custom Falco rules for K8s runtime security. Syscall detection, container escape alerts, and cryptomining detection.

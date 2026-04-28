@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "tensorrt-llm-vs-vllm-benchmark"
 ---
 
 > 💡 **Quick Answer:** Deploy vLLM inference engine on K8s. Model loading, tensor parallelism, continuous batching, and OpenAI-compatible API setup.

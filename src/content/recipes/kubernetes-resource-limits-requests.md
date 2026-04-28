@@ -15,6 +15,7 @@ tags:
   - "oomkill"
 relatedRecipes:
   - "kubernetes-resource-quotas-limitranges"
+  - "kubernetes-job-parallelism-completions"
 ---
 
 > 💡 **Quick Answer:** Set `requests` equal to expected steady-state usage and `limits` to 2x requests for burstable workloads. For critical services, set `requests == limits` (Guaranteed QoS) to prevent OOMKill during node pressure. Never set CPU limits on latency-sensitive services — CPU throttling causes tail latency spikes.

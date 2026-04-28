@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "fix-kubernetes-service-not-reachable"
 ---
 
 > 💡 **Quick Answer:** Troubleshoot Kubernetes DNS resolution failures. ndots, search domains, CoreDNS CrashLoop, and pod-level DNS debugging steps.

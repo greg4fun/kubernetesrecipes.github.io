@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "dgx-h100-gpu-topology-nvidia-smi"
 ---
 
 > 💡 **Quick Answer:** Run distributed PyTorch training on Kubernetes with Kubeflow PyTorchJob. ElasticPolicy, nproc_per_node, RDMA configuration, and multi-GPU scaling.

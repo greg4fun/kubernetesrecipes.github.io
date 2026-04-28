@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "openshift-scc-guide-2026"
 ---
 
 > 💡 **Quick Answer:** Implement multi-tenancy on Kubernetes with namespaces. Resource quotas, network policies, RBAC isolation, and hierarchical namespaces for team separation.

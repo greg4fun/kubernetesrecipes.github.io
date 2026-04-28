@@ -11,6 +11,7 @@ prerequisites:
 relatedRecipes:
   - "nginx-ingress-tls-cert-manager"
   - "networkpolicy-deny-all"
+  - "openshift-routes-vs-ingress"
 tags:
   - service
   - loadbalancer

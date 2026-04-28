@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-keda-scalers-guide"
 ---
 
 > 💡 **Quick Answer:** Configure HPA for CPU and memory-based autoscaling on Kubernetes. Target utilization, scaling behavior, stabilization windows, and combined metrics.

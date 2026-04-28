@@ -15,6 +15,7 @@ tags:
   - troubleshooting
 relatedRecipes:
   - "debug-pod-eviction-reasons"
+  - "fix-etcd-leader-election-timeout"
 ---
 > 💡 **Quick Answer:** `forbidden: exceeded quota` means the namespace has a ResourceQuota and your pod's requests exceed the remaining budget. Check `kubectl describe quota -n <ns>` to see used vs. hard limits. Free up quota by deleting unused pods or increasing the quota.
 

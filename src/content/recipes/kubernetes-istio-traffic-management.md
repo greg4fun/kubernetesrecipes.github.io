@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "openshift-routes-vs-ingress"
 ---
 
 > 💡 **Quick Answer:** Advanced Istio traffic management on Kubernetes. VirtualService routing, DestinationRule load balancing, traffic mirroring, fault injection, and circuit breaking.

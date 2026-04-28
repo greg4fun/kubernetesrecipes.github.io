@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "helm-chart-dependencies-guide"
 ---
 
 > 💡 **Quick Answer:** Master Helm hooks for Kubernetes deployments. Pre-install, post-install, pre-upgrade, hook weights, deletion policies, and database migration patterns.

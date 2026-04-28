@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "openshift-scc-guide-2026"
 ---
 
 > 💡 **Quick Answer:** Implement zero-trust workload identity with SPIFFE and SPIRE on Kubernetes. SVIDs, attestation, and automatic identity rotation for service-to-service authentication.

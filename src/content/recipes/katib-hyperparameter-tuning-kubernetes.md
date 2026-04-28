@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "kubeflow-ml-platform-kubernetes"
   - "kubernetes-job-completion-patterns"
+  - "tensorrt-llm-kubernetes-guide"
 ---
 
 > 💡 **Quick Answer:** Create a Katib `Experiment` defining the search space (learning rate, batch size, layers), objective metric, and search algorithm. Katib runs parallel trials as Kubernetes Jobs, tracks metrics, and identifies optimal hyperparameters automatically.

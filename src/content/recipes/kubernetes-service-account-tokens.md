@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "openshift-oauth-proxy-guide"
 ---
 
 > 💡 **Quick Answer:** Manage Kubernetes service account tokens securely. Projected volumes, bound tokens, token request API, and eliminating long-lived tokens for zero-trust authentication.

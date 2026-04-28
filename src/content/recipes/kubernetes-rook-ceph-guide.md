@@ -14,6 +14,7 @@ tags:
   - "object-storage"
 relatedRecipes:
   - "kubernetes-pod-security-standards"
+  - "csi-snapshot-restore-guide"
 ---
 
 > 💡 **Quick Answer:** Deploy Rook-Ceph for enterprise storage on Kubernetes. Block, file, and object storage, erasure coding, and multi-site replication for production workloads.

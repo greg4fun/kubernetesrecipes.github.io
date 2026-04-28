@@ -14,6 +14,7 @@ tags:
   - "optimization"
 relatedRecipes:
   - "kubernetes-init-container-patterns"
+  - "kubernetes-canary-deployment-guide"
 ---
 
 > 💡 **Quick Answer:** Use a pull-through registry mirror (Harbor, Zot) to cache images locally. Pre-pull large images (GPU/AI containers) with a DaemonSet. Set `imagePullPolicy: IfNotPresent` and use immutable tags to avoid unnecessary pulls.

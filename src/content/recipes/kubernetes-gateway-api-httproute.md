@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-topology-aware-routing"
   - "kubernetes-pod-security-standards"
+  - "kubernetes-calico-networkpolicy"
 ---
 
 > 💡 **Quick Answer:** Configure HTTPRoute for Kubernetes Gateway API. Path matching, header-based routing, traffic splitting, URL rewriting, and request mirroring.

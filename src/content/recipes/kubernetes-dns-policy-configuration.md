@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "openshift-routes-vs-ingress"
 ---
 
 > 💡 **Quick Answer:** Configure Kubernetes DNS policies: Default, ClusterFirst, ClusterFirstWithHostNet, and None. Custom resolv.conf, ndots tuning, and DNS performance.

@@ -14,6 +14,7 @@ tags:
   - gitops
 relatedRecipes:
   - "kubernetes-configmap-reload-patterns"
+  - "kubernetes-admission-controller-list"
 ---
 
 > 💡 **Quick Answer:** Create a `base/` with shared manifests and a `kustomization.yaml`, then create `overlays/dev/` and `overlays/prod/` that patch the base with environment-specific changes. Apply with `kubectl apply -k overlays/prod/`.

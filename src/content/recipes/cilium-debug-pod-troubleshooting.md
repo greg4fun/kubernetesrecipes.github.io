@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "fix-kubernetes-service-not-reachable"
 ---
 
 > 💡 **Quick Answer:** Debug Kubernetes networking with Cilium debug pods and containers. cilium-dbg, netshoot, hubble observe, and endpoint connectivity troubleshooting.

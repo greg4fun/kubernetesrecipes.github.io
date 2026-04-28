@@ -8,6 +8,7 @@ tags: ["opentelemetry", "otel", "tracing", "metrics", "observability", "kubernet
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-resource-optimization"
+  - "cilium-hubble-observability-guide"
 ---
 
 > 💡 **Quick Answer:** Deploy OpenTelemetry Collector, auto-instrumentation, and exporters on Kubernetes. Unified traces, metrics, and logs pipeline to Jaeger, Prometheus, and Loki.

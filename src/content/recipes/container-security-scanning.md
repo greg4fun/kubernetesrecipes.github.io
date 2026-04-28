@@ -6,6 +6,7 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
   - "service-accounts-rbac"
+  - "kubernetes-falco-rules-guide"
 tags: ["security", "scanning", "vulnerabilities", "trivy", "admission-control"]
 ---
 

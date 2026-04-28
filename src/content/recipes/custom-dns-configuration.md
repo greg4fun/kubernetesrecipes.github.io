@@ -6,6 +6,8 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
   - "dns-policies-configuration"
+  - "cert-manager-cloudflare-dns01-k8s"
+  - "kubernetes-calico-networkpolicy"
 tags: ["dns", "coredns", "networking", "configuration", "resolution"]
 ---
 

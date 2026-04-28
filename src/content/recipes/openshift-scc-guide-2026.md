@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "openshift-oauth-proxy-guide"
 ---
 
 > 💡 **Quick Answer:** Configure OpenShift Security Context Constraints for pods. Restricted, anyuid, privileged SCCs, custom SCC, and migration to PSA.

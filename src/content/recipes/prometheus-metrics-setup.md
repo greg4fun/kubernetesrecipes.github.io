@@ -11,6 +11,7 @@ prerequisites:
   - "Basic understanding of metrics concepts"
 relatedRecipes:
   - "alertmanager-configuration"
+  - "cilium-hubble-observability-guide"
 tags:
   - prometheus
   - monitoring

@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "nvidia-pytorch-container-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Compare NVIDIA GPU time-slicing and MIG for K8s workloads. When to use each, performance trade-offs, and configuration examples.
