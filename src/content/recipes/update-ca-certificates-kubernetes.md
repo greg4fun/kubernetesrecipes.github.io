@@ -12,7 +12,7 @@ prerequisites:
   - "kubeadm installed (for kubeadm-based clusters)"
 relatedRecipes:
   - "preemptive-cybersecurity-kubernetes"
-  - "openshift-custom-ca-registry"
+  - "custom-ca-openshift-kubernetes"
   - "etcd-backup-restore"
 tags:
   - certificates
