@@ -11,6 +11,8 @@ const redirectPages = [
   "blue-green-deployments",
   "prometheus-monitoring", 
   "argocd-gitops",
+  "kubernetes-resource-optimization",
+  "custom-ca-registry",
   "flux-gitops",
   "kubernetes-jobs-cronjobs",
   "keda-event-autoscaling",
