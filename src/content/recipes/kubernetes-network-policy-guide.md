@@ -1,70 +1,101 @@
 ---
-title: "Kubernetes Network Policy Complete Guide"
-description: "Create Kubernetes NetworkPolicies to control pod-to-pod traffic. Covers ingress and egress rules, CIDR blocks, namespace isolation, and default deny policies."
-category: "networking"
-difficulty: "beginner"
-publishDate: "2026-04-03"
-tags: ["network-policy", "security", "ingress", "egress", "isolation", "kubernetes"]
+title: "Kubernetes NetworkPolicy Guide"
+description: "Secure pod-to-pod traffic with Kubernetes NetworkPolicies. Ingress and egress rules, namespace selectors, deny-all policies, and CNI requirements."
+publishDate: "2026-04-29"
 author: "Luca Berton"
+category: "security"
+difficulty: "intermediate"
+timeToComplete: "18 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - "network-policy"
+  - "security"
+  - "networking"
+  - "zero-trust"
+  - "microsegmentation"
 relatedRecipes:
-  - "kubernetes-ingress-complete-guide"
-  - "kubernetes-load-balancing"
-  - "network-policies"
-  - "rate-limiting-kubernetes"
+  - "calico-network-policy-kubernetes"
+  - "cilium-hubble-network-observability"
+  - "kubernetes-namespace-management-guide"
+  - "nfs-tenant-segregation-kubernetes"
 ---
 
-> 💡 **Quick Answer:** Create Kubernetes NetworkPolicies to control pod-to-pod traffic. Covers ingress and egress rules, CIDR blocks, namespace isolation, and default deny policies.
+> 💡 **Quick Answer:** NetworkPolicies are Kubernetes-native firewall rules that control pod-to-pod and pod-to-external traffic. Start with a deny-all policy per namespace, then explicitly allow required traffic. Requires a CNI that supports NetworkPolicy (Calico, Cilium, Antrea) — default kubenet does NOT enforce them.
 
 ## The Problem
 
-This is one of the most searched Kubernetes topics. A comprehensive, well-structured guide helps engineers of all levels quickly find actionable solutions.
+By default, every pod can communicate with every other pod in the cluster — no segmentation. This means:
+
+- Compromised pod can reach databases directly
+- No tenant isolation in multi-tenant clusters
+- Lateral movement after initial breach is unrestricted
+- Compliance requirements (PCI-DSS, HIPAA) unmet
 
 ## The Solution
 
-Detailed implementation with production-ready examples below.
-
-
-### Default Deny All
+### Deny All (Default Stance)
 
 ```yaml
-# Block all ingress and egress in a namespace
+# Deny all ingress to namespace
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-all
+  name: deny-all-ingress
   namespace: production
 spec:
-  podSelector: {}       # Apply to ALL pods
+  podSelector: {}          # Applies to ALL pods in namespace
   policyTypes:
-    - Ingress
-    - Egress
-```
+  - Ingress
 
-### Allow Specific Traffic
-
-```yaml
-# Allow frontend → backend on port 8080
+---
+# Deny all egress from namespace
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-frontend-to-backend
+  name: deny-all-egress
+  namespace: production
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+```
+
+### Allow Specific Ingress
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-to-api
   namespace: production
 spec:
   podSelector:
     matchLabels:
-      app: backend
+      app: api-server         # Target: api-server pods
   policyTypes:
-    - Ingress
+  - Ingress
   ingress:
-    - from:
-        - podSelector:
-            matchLabels:
-              app: frontend
-      ports:
-        - protocol: TCP
-          port: 8080
----
-# Allow DNS (always needed with default-deny egress)
+  - from:
+    # Allow from frontend pods
+    - podSelector:
+        matchLabels:
+          app: frontend
+    # Allow from monitoring namespace
+    - namespaceSelector:
+        matchLabels:
+          purpose: monitoring
+      podSelector:
+        matchLabels:
+          app: prometheus
+    ports:
+    - protocol: TCP
+      port: 8080
+```
+
+### Allow DNS Egress (Essential)
+
+```yaml
+# Must allow DNS for any egress-restricted namespace
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -73,96 +104,169 @@ metadata:
 spec:
   podSelector: {}
   policyTypes:
-    - Egress
+  - Egress
   egress:
-    - to:
-        - namespaceSelector: {}
-          podSelector:
-            matchLabels:
-              k8s-app: kube-dns
-      ports:
-        - protocol: UDP
-          port: 53
-        - protocol: TCP
-          port: 53
----
-# Allow egress to external CIDR
+  - to:
+    - namespaceSelector: {}
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+```
+
+### Allow Egress to External
+
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-external-api
+  namespace: production
 spec:
   podSelector:
     matchLabels:
-      app: backend
+      app: api-server
   policyTypes:
-    - Egress
+  - Egress
   egress:
-    - to:
-        - ipBlock:
-            cidr: 0.0.0.0/0
-            except:
-              - 10.0.0.0/8
-              - 172.16.0.0/12
-              - 192.168.0.0/16
-      ports:
-        - protocol: TCP
-          port: 443
+  # Allow to external API
+  - to:
+    - ipBlock:
+        cidr: 203.0.113.0/24
+    ports:
+    - protocol: TCP
+      port: 443
+  # Allow to database
+  - to:
+    - podSelector:
+        matchLabels:
+          app: postgres
+    ports:
+    - protocol: TCP
+      port: 5432
 ```
 
-### Cross-Namespace Policy
+### Complete 3-Tier Application
 
 ```yaml
-# Allow monitoring namespace to scrape metrics
+# Frontend: accept from ingress controller only
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-prometheus
+  name: frontend-policy
   namespace: production
 spec:
-  podSelector: {}
+  podSelector:
+    matchLabels:
+      tier: frontend
   ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              name: monitoring
-      ports:
-        - port: 9090
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          app: ingress-nginx
+    ports:
+    - port: 8080
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          tier: api
+    ports:
+    - port: 8080
+---
+# API: accept from frontend only, talk to database
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: api-policy
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      tier: api
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          tier: frontend
+    ports:
+    - port: 8080
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          tier: database
+    ports:
+    - port: 5432
+---
+# Database: accept from API only, no egress
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: database-policy
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      tier: database
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          tier: api
+    ports:
+    - port: 5432
+  policyTypes:
+  - Ingress
+  - Egress    # Empty egress = deny all outbound
 ```
 
 ```mermaid
-graph TD
-    A[Default: deny all] --> B{NetworkPolicy rules}
-    B -->|from: frontend pods| C[Allow frontend → backend :8080]
-    B -->|to: kube-dns| D[Allow DNS :53]
-    B -->|to: 0.0.0.0/0 except RFC1918| E[Allow external HTTPS :443]
-    B -->|from: monitoring namespace| F[Allow Prometheus scrape :9090]
+graph LR
+    I[Ingress Controller] --> |:8080| F[Frontend<br/>tier: frontend]
+    F --> |:8080| A[API<br/>tier: api]
+    A --> |:5432| D[Database<br/>tier: database]
+    
+    F -.-> |❌ blocked| D
+    I -.-> |❌ blocked| D
+    
+    style F fill:#2196F3,color:white
+    style A fill:#FF9800,color:white
+    style D fill:#4CAF50,color:white
 ```
-
-## Frequently Asked Questions
-
-### Do I need a CNI that supports NetworkPolicies?
-
-Yes! Default kubenet does NOT enforce NetworkPolicies. Use Calico, Cilium, or Weave Net. Without a supporting CNI, NetworkPolicy resources are created but have no effect.
-
-### Are NetworkPolicies additive or subtractive?
-
-Additive. If no policy selects a pod, all traffic is allowed. Once any policy selects a pod, only traffic matching that policy's rules is allowed. Multiple policies are OR'd together.
 
 ## Common Issues
 
-Check `kubectl describe` and `kubectl get events` first — most issues have clear error messages pointing to the root cause.
+**NetworkPolicy not enforced**
+
+Your CNI doesn't support NetworkPolicy. Default kubenet and Flannel do NOT enforce them. Use Calico, Cilium, or Antrea.
+
+**Pods can't resolve DNS after deny-all egress**
+
+You need an explicit DNS allow rule. Egress deny-all blocks DNS (UDP/TCP 53) — add the DNS egress policy above.
+
+**AND vs OR confusion in rules**
+
+Multiple items in the same `from` entry are AND'd. Separate `from` entries are OR'd. This is the #1 NetworkPolicy mistake.
 
 ## Best Practices
 
-- **Follow least privilege** — only grant the access that's needed
-- **Test in staging** before applying to production
-- **Monitor and alert** on key metrics
-- **Document your runbooks** for the team
+- **Deny-all first, allow explicitly** — zero-trust networking
+- **Always allow DNS when restricting egress** — everything breaks without it
+- **Use namespace selectors for cross-namespace rules**
+- **Test with `kubectl exec` and `curl`** — verify connectivity before and after
+- **Use Calico or Cilium for enforcement** — kubenet ignores policies silently
+- **Label namespaces for selector targeting** — makes policies more readable
 
 ## Key Takeaways
 
-- Essential knowledge for Kubernetes operations
-- Start simple and evolve your approach
-- Automation reduces human error
-- Share knowledge with your team
+- NetworkPolicies are additive — if no policy selects a pod, all traffic is allowed
+- Once ANY policy selects a pod, only explicitly allowed traffic gets through
+- Requires a compatible CNI (Calico, Cilium, Antrea) — kubenet does NOT enforce
+- Always allow DNS egress when using deny-all egress policies
+- Multiple `from`/`to` entries are OR'd; multiple selectors in ONE entry are AND'd
+- Start with deny-all per namespace, then build allow rules incrementally
