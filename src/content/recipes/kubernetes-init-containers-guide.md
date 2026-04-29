@@ -1,220 +1,195 @@
 ---
-title: "Kubernetes Init Containers: Complete Guide"
-description: "Use Kubernetes init containers for pre-startup tasks. Wait for dependencies, populate volumes, run migrations, configure permissions, and debug init failures."
-publishDate: "2026-04-12"
+title: "Kubernetes Init Containers Guide"
+description: "Use init containers in Kubernetes for pre-start tasks. Database migrations, dependency checks, config generation, and permission setup before main containers start."
+publishDate: "2026-04-29"
 author: "Luca Berton"
-category: "configuration"
+category: "deployments"
+difficulty: "beginner"
+timeToComplete: "12 minutes"
+kubernetesVersion: "1.28+"
 tags:
   - "init-containers"
   - "pod-lifecycle"
   - "startup"
-  - "dependencies"
-  - "database-migration"
-difficulty: "beginner"
-timeToComplete: "10 minutes"
+  - "patterns"
 relatedRecipes:
-  - "kubernetes-pod-lifecycle"
-  - "kubernetes-ephemeral-containers-debug"
-  - "kubernetes-fsgroupchangepolicy"
-  - "debug-crashloopbackoff"
+  - "kubernetes-sidecar-containers-guide"
+  - "kubernetes-pod-lifecycle-hooks"
+  - "kubernetes-configmap-secrets-management"
+  - "troubleshoot-pod-pending-kubernetes"
 ---
 
-> 💡 **Quick Answer:** Init containers run before app containers start, executing one at a time in order. Use them to wait for dependencies (\`until nslookup my-db; do sleep 2; done\`), run database migrations, clone Git repos, set file permissions, or download config files. If any init container fails, the pod restarts.
+> 💡 **Quick Answer:** Init containers run before app containers, execute sequentially, and must succeed before the main container starts. Use them for dependency waiting (`wait-for-db`), config file generation, schema migrations, permission setup, and file downloads. Each init container runs to completion before the next one starts.
 
 ## The Problem
 
-Your application needs preconditions before starting: a database must be reachable, config files must exist, migrations must run, or permissions must be set. Putting these checks in the app container leads to complex entrypoint scripts, race conditions, and difficult debugging. Init containers separate concerns cleanly.
+Applications often need setup tasks before they can start:
 
-```mermaid
-flowchart LR
-    INIT1["Init 1:<br/>Wait for DB"] -->|"✅ Complete"| INIT2["Init 2:<br/>Run migrations"]
-    INIT2 -->|"✅ Complete"| INIT3["Init 3:<br/>Download config"]
-    INIT3 -->|"✅ Complete"| APP["App Container:<br/>Start serving"]
-    INIT1 -->|"❌ Fail"| RESTART["Pod restarts<br/>(back to Init 1)"]
-```
+- Wait for a database to be ready
+- Run schema migrations before the app connects
+- Download configuration from a remote source
+- Set file permissions on shared volumes
+- Clone a git repository for content
+- Check that upstream services are healthy
+
+Putting these in the main container bloats the image and complicates the entrypoint.
 
 ## The Solution
 
-### Wait for a Dependency
+### Basic Init Container
 
 ```yaml
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: my-app
+  name: web-app
 spec:
-  initContainers:
-    - name: wait-for-db
-      image: busybox
-      command: ["sh", "-c"]
-      args:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      initContainers:
+      # Wait for database
+      - name: wait-for-db
+        image: busybox:1.36
+        command:
+        - sh
+        - -c
         - |
-          until nslookup postgres.default.svc.cluster.local; do
-            echo "Waiting for postgres..."
+          until nc -z postgres-svc 5432; do
+            echo "Waiting for database..."
             sleep 2
           done
           echo "Database is ready!"
-  containers:
-    - name: app
-      image: myapp:v1.0
-```
-
-### Run Database Migrations
-
-```yaml
-initContainers:
-  - name: run-migrations
-    image: myapp:v1.0
-    command: ["python", "manage.py", "migrate", "--noinput"]
-    env:
-      - name: DATABASE_URL
-        valueFrom:
-          secretKeyRef:
-            name: db-secret
-            key: url
-```
-
-### Clone a Git Repository
-
-```yaml
-initContainers:
-  - name: clone-repo
-    image: alpine/git
-    command: ["git", "clone", "https://github.com/org/config.git", "/config"]
-    volumeMounts:
-      - name: config-volume
-        mountPath: /config
-containers:
-  - name: app
-    image: nginx
-    volumeMounts:
-      - name: config-volume
-        mountPath: /usr/share/nginx/html
-volumes:
-  - name: config-volume
-    emptyDir: {}
-```
-
-### Download and Prepare Files
-
-```yaml
-initContainers:
-  - name: download-model
-    image: curlimages/curl
-    command: ["sh", "-c"]
-    args:
-      - |
-        curl -L -o /models/model.bin \
-          https://models.example.com/llama-7b.bin
-        echo "Model downloaded successfully"
-    volumeMounts:
-      - name: model-storage
-        mountPath: /models
-```
-
-### Set Permissions
-
-```yaml
-initContainers:
-  - name: fix-permissions
-    image: busybox
-    command: ["sh", "-c", "chown -R 1000:1000 /data && chmod 750 /data"]
-    securityContext:
-      runAsUser: 0     # Root — only for permission fixing
-    volumeMounts:
+      
+      # Run migrations
+      - name: run-migrations
+        image: myapp:v1
+        command: ["python", "manage.py", "migrate"]
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: url
+      
+      # Fix volume permissions
+      - name: fix-permissions
+        image: busybox:1.36
+        command: ["sh", "-c", "chown -R 1000:1000 /data"]
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      
+      containers:
+      - name: web-app
+        image: myapp:v1
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      
+      volumes:
       - name: data
-        mountPath: /data
-containers:
-  - name: app
-    securityContext:
-      runAsUser: 1000   # Non-root
-    volumeMounts:
-      - name: data
-        mountPath: /data
+        persistentVolumeClaim:
+          claimName: app-data
 ```
 
-### Multiple Init Containers (Ordered)
+### Download Config Init Container
 
 ```yaml
 initContainers:
-  # Step 1: Wait for dependency
-  - name: wait-for-redis
-    image: busybox
-    command: ["sh", "-c", "until nc -z redis 6379; do sleep 1; done"]
+- name: download-config
+  image: curlimages/curl:8.7.1
+  command:
+  - sh
+  - -c
+  - |
+    curl -sSL https://config.example.com/app/prod.yaml \
+      -o /config/app.yaml
+    echo "Config downloaded"
+  volumeMounts:
+  - name: config
+    mountPath: /config
 
-  # Step 2: Wait for another dependency
-  - name: wait-for-db
-    image: busybox
-    command: ["sh", "-c", "until nc -z postgres 5432; do sleep 1; done"]
-
-  # Step 3: Run migrations (only after both are ready)
-  - name: migrate
-    image: myapp:v1.0
-    command: ["./migrate.sh"]
-    env:
-      - name: DB_HOST
-        value: postgres
-
-# All init containers must succeed before app starts
 containers:
-  - name: app
-    image: myapp:v1.0
+- name: app
+  image: myapp:v1
+  volumeMounts:
+  - name: config
+    mountPath: /etc/app
+    readOnly: true
 ```
 
-### Debug Init Container Failures
+### Git Clone Init Container
 
-```bash
-# Check which init container is failing
-kubectl get pod my-app
-# NAME    READY   STATUS     RESTARTS   AGE
-# my-app  0/1     Init:1/3   0          5m    ← stuck on 2nd init container
+```yaml
+initContainers:
+- name: git-clone
+  image: alpine/git:2.43.0
+  command:
+  - git
+  - clone
+  - --depth=1
+  - https://github.com/example/website-content.git
+  - /content
+  volumeMounts:
+  - name: content
+    mountPath: /content
 
-# Check init container logs
-kubectl logs my-app -c wait-for-db
-# Waiting for postgres...
-# Waiting for postgres...
-
-# Describe pod for events
-kubectl describe pod my-app | grep -A20 "Init Containers"
-
-# Exec into running init container (if it's still running)
-kubectl exec -it my-app -c wait-for-db -- sh
+containers:
+- name: nginx
+  image: nginx:1.27
+  volumeMounts:
+  - name: content
+    mountPath: /usr/share/nginx/html
+    readOnly: true
 ```
 
-### Init Containers vs Startup Probes
-
-| Feature | Init Containers | Startup Probes |
-|---------|:--------------:|:--------------:|
-| Run before app starts | ✅ | ❌ (runs alongside) |
-| Different image | ✅ | ❌ (same container) |
-| Access different volumes | ✅ | ❌ |
-| Block app startup | ✅ | ✅ (delays readiness) |
-| Use case | External setup tasks | Slow-starting apps |
+```mermaid
+graph LR
+    I1[Init 1:<br/>wait-for-db] --> I2[Init 2:<br/>migrate]
+    I2 --> I3[Init 3:<br/>fix-perms]
+    I3 --> C[Main Container:<br/>web-app]
+    
+    style I1 fill:#FF9800,color:white
+    style I2 fill:#FF9800,color:white
+    style I3 fill:#FF9800,color:white
+    style C fill:#4CAF50,color:white
+```
 
 ## Common Issues
 
-| Issue | Cause | Fix |
-|-------|-------|-----|
-| Pod stuck in \`Init:0/1\` | Init container failing or waiting | Check logs: \`kubectl logs pod -c init-name\` |
-| Init container CrashLoopBackOff | Command exits non-zero | Fix the script, check exit codes |
-| Init container slow | Downloading large files | Use a PVC with pre-populated data |
-| Volume not shared | Missing shared emptyDir volume | Ensure both init and app mount same volume |
-| Permission denied | Init runs as non-root | Add \`securityContext.runAsUser: 0\` to init container only |
+**Pod stuck in Init:0/3**
+
+First init container is failing or stuck. Check: `kubectl logs <pod> -c wait-for-db`. The dependency service may not be ready.
+
+**Init container succeeds but main container fails**
+
+Init containers share volumes but NOT environment from the main container. Ensure volume mount paths match between init and main containers.
+
+**Init containers re-run on pod restart**
+
+By design — init containers run every time the pod starts. Make init logic idempotent (safe to run multiple times).
 
 ## Best Practices
 
-- **One concern per init container** — don't combine wait + migrate + download
-- **Set resource limits** — init containers consume resources too
-- **Use timeouts** — don't wait forever: \`timeout 120 sh -c "until ..."\`
-- **Keep images minimal** — use busybox/alpine, not your full app image
-- **Prefer \`fsGroupChangePolicy\`** over permission-fixing init containers
-- **Log what's happening** — echo progress messages for debugging
+- **Keep init containers lightweight** — use small images like `busybox` or `alpine`
+- **Make init logic idempotent** — migrations should be re-runnable
+- **Set resource limits on init containers** — they consume cluster resources too
+- **Use init containers instead of entrypoint scripts** — cleaner separation of concerns
+- **Timeout your waits** — don't wait forever for dependencies; fail and let Kubernetes retry
 
 ## Key Takeaways
 
-- Init containers run sequentially before app containers, in order
-- If any init container fails, the pod restarts (all init containers re-run)
-- Use them for: dependency waits, migrations, file downloads, permission setup
-- Can use different images from app containers (e.g., busybox for waiting)
-- Debug with \`kubectl logs <pod> -c <init-container-name>\`
-- Each init container must complete successfully before the next one starts
+- Init containers run sequentially before main containers, must succeed to proceed
+- Common uses: dependency waiting, migrations, config download, permission setup
+- Share volumes with main containers for data passing
+- Each init container runs to completion before the next starts
+- Failed init containers cause pod restart — Kubernetes retries with backoff

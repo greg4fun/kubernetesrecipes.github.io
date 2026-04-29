@@ -1,108 +1,172 @@
 ---
-title: "PDB Disruption Budget K8s"
-description: "Configure PodDisruptionBudgets to protect application availability during node drains, upgrades, and voluntary disruptions in Kubernetes."
-category: "deployments"
-difficulty: "intermediate"
-publishDate: "2026-04-03"
-tags: ["pdb", "disruption", "availability", "node-drain", "upgrades", "kubernetes"]
+title: "Kubernetes PodDisruptionBudget Guide"
+description: "Configure PodDisruptionBudgets to ensure application availability during node drains, upgrades, and maintenance. minAvailable, maxUnavailable, and eviction policies."
+publishDate: "2026-04-29"
 author: "Luca Berton"
+category: "deployments"
+difficulty: "beginner"
+timeToComplete: "15 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - "pdb"
+  - "availability"
+  - "eviction"
+  - "node-drain"
+  - "upgrades"
 relatedRecipes:
-  - "pod-disruption-budget-config"
-  - "pod-disruption-budgets"
-  - "argocd-gitops"
-  - "backstage-kubernetes-developer-portal"
+  - "kubernetes-rolling-update-strategy"
+  - "kubernetes-node-drain-cordon"
+  - "pod-priority-preemption-kubernetes"
+  - "daemonset-update-strategies-kubernetes"
 ---
 
-> 💡 **Quick Answer:** Configure PodDisruptionBudgets to protect application availability during node drains, upgrades, and voluntary disruptions in Kubernetes.
+> 💡 **Quick Answer:** A PodDisruptionBudget (PDB) limits how many pods of a workload can be simultaneously unavailable during voluntary disruptions like node drains and cluster upgrades. Use `minAvailable: 1` to ensure at least one pod always runs, or `maxUnavailable: 1` to allow only one pod down at a time.
 
 ## The Problem
 
-This is one of the most searched Kubernetes topics. A comprehensive, well-structured guide helps engineers of all levels quickly find actionable solutions.
+During node maintenance, upgrades, or scaling, Kubernetes evicts pods. Without PDBs:
+
+- All replicas of a service can be evicted simultaneously
+- Node drains during upgrades cause downtime
+- Cluster autoscaler can't respect application availability requirements
+- Critical workloads get disrupted by routine operations
 
 ## The Solution
 
-Detailed implementation with production-ready examples below.
-
-
-### Create a PodDisruptionBudget
+### Basic PDB with minAvailable
 
 ```yaml
-# Option 1: Minimum available
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: web-pdb
+  name: web-app-pdb
+  namespace: production
 spec:
-  minAvailable: 2          # At least 2 pods must be running
+  minAvailable: 2        # At least 2 pods must always be running
   selector:
     matchLabels:
-      app: web
----
-# Option 2: Maximum unavailable
+      app: web-app
+```
+
+### PDB with maxUnavailable
+
+```yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: api-pdb
+  namespace: production
 spec:
-  maxUnavailable: 1        # At most 1 pod can be down
+  maxUnavailable: 1      # At most 1 pod can be unavailable
   selector:
     matchLabels:
-      app: api
----
-# Option 3: Percentage
+      app: api-server
+```
+
+### Percentage-Based PDB
+
+```yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: worker-pdb
 spec:
-  minAvailable: "50%"      # At least 50% must remain
+  maxUnavailable: "25%"   # Allow 25% of pods to be down
   selector:
     matchLabels:
       app: worker
 ```
 
-```bash
-# Check PDB status
-kubectl get pdb
-# NAME       MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
-# web-pdb    2               N/A               1                     1h
+### PDB for StatefulSets
 
-# Node drain respects PDBs
-kubectl drain node-1 --ignore-daemonsets --delete-emptydir-data
-# Waits if draining would violate PDB
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: database-pdb
+spec:
+  minAvailable: 2        # Quorum: 2 of 3 must be up
+  selector:
+    matchLabels:
+      app: postgres
+      role: replica
+```
+
+### Unhealthy Pod Eviction Policy (v1.27+)
+
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: app-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: my-app
+  unhealthyPodEvictionPolicy: AlwaysAllow  # Evict unhealthy even if PDB violated
+```
+
+| Policy | Behavior |
+|--------|----------|
+| `IfHealthy` (default) | Only evict unhealthy pods if PDB is not violated |
+| `AlwaysAllow` | Always allow eviction of unhealthy pods regardless of PDB |
+
+### Check PDB Status
+
+```bash
+# List all PDBs
+kubectl get pdb -A
+
+# Check disruptions allowed
+kubectl get pdb web-app-pdb -o wide
+# NAME          MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+# web-app-pdb   2               N/A               1                     5m
+
+# Describe for details
+kubectl describe pdb web-app-pdb
 ```
 
 ```mermaid
 graph TD
-    A[kubectl drain node-1] --> B{Check PDBs}
-    B -->|web-pdb: minAvailable=2, current=3| C[Can evict 1 pod ✅]
-    B -->|api-pdb: maxUnavailable=1, already 1 down| D[Cannot evict ❌ - waits]
+    A[Node Drain Requested] --> B{PDB Exists?}
+    B --> |No| C[Evict All Pods]
+    B --> |Yes| D{Disruption Allowed?}
+    D --> |Yes| E[Evict Pod]
+    D --> |No| F[Wait / Block Drain]
+    E --> D
+    
+    style F fill:#FF5722,color:white
+    style E fill:#4CAF50,color:white
 ```
-
-## Frequently Asked Questions
-
-### When should I create PDBs?
-
-For any production workload with 2+ replicas. PDBs protect against: node drains, cluster upgrades, spot/preemptible node reclaims, and cluster autoscaler scale-downs.
-
-### PDB with single replica?
-
-A PDB with `minAvailable: 1` on a single-replica deployment blocks ALL voluntary disruptions (node drains hang forever). Use `maxUnavailable: 1` instead, or scale to 2+ replicas.
 
 ## Common Issues
 
-Check `kubectl describe` and `kubectl get events` first — most issues have clear error messages pointing to the root cause.
+**Node drain stuck — "Cannot evict pod"**
+
+PDB is blocking eviction. Check `ALLOWED DISRUPTIONS` — if 0, no more pods can be evicted. Either wait for unhealthy pods to recover, or delete the PDB temporarily.
+
+**PDB with minAvailable = replicas deadlocks drains**
+
+If `minAvailable` equals the total replica count, NO pod can ever be evicted. Use `maxUnavailable: 1` instead.
+
+**Single-replica deployments with PDB**
+
+A PDB with `minAvailable: 1` on a single-replica deployment blocks ALL drains. Either increase replicas or don't use PDB for single-replica workloads.
 
 ## Best Practices
 
-- **Follow least privilege** — only grant the access that's needed
-- **Test in staging** before applying to production
-- **Monitor and alert** on key metrics
-- **Document your runbooks** for the team
+- **Use `maxUnavailable` over `minAvailable`** — simpler to reason about during scaling
+- **Never set `minAvailable` equal to replica count** — deadlocks node drains
+- **Always create PDBs for production workloads** — even `maxUnavailable: 1` prevents mass eviction
+- **Use `AlwaysAllow` unhealthy eviction** — prevents stuck drains from CrashLooping pods
+- **PDBs only protect against voluntary disruptions** — node crashes bypass PDB entirely
+- **Test PDBs before cluster upgrades** — simulate with `kubectl drain --dry-run`
 
 ## Key Takeaways
 
-- Essential knowledge for Kubernetes operations
-- Start simple and evolve your approach
-- Automation reduces human error
-- Share knowledge with your team
+- PDBs limit simultaneous pod disruptions during node drains and upgrades
+- `maxUnavailable: 1` is the safest default for most workloads
+- PDBs don't protect against involuntary disruptions (node failures, OOMKill)
+- `unhealthyPodEvictionPolicy: AlwaysAllow` prevents CrashLooping pods from blocking drains
+- Always pair PDBs with sufficient replicas — PDB on a single replica deadlocks drains
