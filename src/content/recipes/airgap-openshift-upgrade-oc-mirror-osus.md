@@ -23,7 +23,7 @@ relatedRecipes:
   - "oc-mirror-disconnected-openshift"
 ---
 
-> 💡 **Quick Answer:** In an air-gapped OpenShift cluster, the cluster only "knows" about a target version (e.g., 4.20.12) after you mirror both the release payload AND the Cincinnati update graph from an internet-connected environment. Use `oc-mirror` with `graph: true`, transfer the archive to the disconnected site, push to the local registry, apply IDMS/ITMS resources, configure OSUS with the mirrored graph-data image, and patch CVO to use the local OSUS graph URL. Then `oc adm upgrade --to=4.20.12` drives the upgrade.
+> 💡 **Quick Answer:** In an air-gapped OpenShift cluster, the cluster only "knows" about a target version (e.g., 4.20.12) after you mirror both the release payload AND the Cincinnati update graph. Use `oc mirror` with `graph: true` and `shortestPath: true` on a connected bastion — this pulls release images from Red Hat/Quay AND builds/pushes the graph-data image required by OSUS. Transfer the archive to the disconnected site, push to the local registry, apply the generated `cluster-resources/` manifests (mirror rules + UpdateService), and `oc adm upgrade --to=4.20.12` drives the upgrade.
 
 ## The Problem
 
@@ -42,19 +42,18 @@ Without both the release payload AND the graph data mirrored locally, `oc adm up
 
 ```mermaid
 graph TD
-    subgraph Connected Site
-        ISC[ImageSetConfiguration<br/>stable-4.20, graph: true] --> MIRROR[oc-mirror<br/>→ archive.tar]
+    subgraph Connected Bastion
+        ISC[ImageSetConfiguration<br/>stable-4.20, graph: true<br/>shortestPath: true] --> MIRROR[oc mirror -c config<br/>file:///data/oc-mirror-4.20 --v2]
     end
     
     subgraph Transfer
-        MIRROR --> |sneakernet / diode| ARCHIVE[Archive on<br/>removable media]
+        MIRROR --> |sneakernet / diode| ARCHIVE[/data/oc-mirror-4.20<br/>on removable media]
     end
     
     subgraph Disconnected Site
-        ARCHIVE --> PUSH[oc-mirror<br/>→ local registry]
-        PUSH --> IDMS[Apply IDMS/ITMS<br/>rewrite pullspecs]
-        PUSH --> OSUS[Configure OSUS<br/>graphDataImage]
-        OSUS --> CVO[Patch CVO<br/>spec.upstream]
+        ARCHIVE --> PUSH[oc mirror --from file://<br/>docker://registry:5000 --v2]
+        PUSH --> MANIFESTS[Apply cluster-resources/<br/>mirror rules + UpdateService]
+        MANIFESTS --> CVO[Patch CVO<br/>spec.upstream → OSUS]
         CVO --> UPGRADE[oc adm upgrade<br/>--to=4.20.12]
     end
     
@@ -73,55 +72,60 @@ apiVersion: mirror.openshift.io/v2alpha1
 kind: ImageSetConfiguration
 mirror:
   platform:
+    architectures:
+    - amd64
     channels:
     - name: stable-4.20
+      type: ocp
       minVersion: 4.20.8
       maxVersion: 4.20.12
-      type: ocp
-    graph: true              # ← Critical: mirrors Cincinnati graph-data image
-  additionalImages:
-  - name: registry.redhat.io/openshift-update-service/graph-data:latest
+      shortestPath: true      # Only mirror the shortest upgrade path
+    graph: true                # Builds and pushes the graph-data image for OSUS
 ```
 
 Key settings:
 
 | Field | Purpose |
 |-------|---------|
-| `minVersion: 4.20.8` | Only mirror from current version onward (saves space) |
+| `architectures: [amd64]` | Target architecture (also `arm64`, `multi`) |
+| `minVersion: 4.20.8` | Start from current cluster version |
 | `maxVersion: 4.20.12` | Target upgrade version |
-| `graph: true` | Mirror the Cincinnati graph-data container image |
-| `additionalImages` | Explicitly include graph-data as backup |
+| `shortestPath: true` | Only mirror versions on the shortest upgrade path (saves space) |
+| `graph: true` | **Critical** — builds and pushes the Cincinnati graph-data image for OSUS |
+
+Without `graph: true`, oc-mirror only mirrors release images — OSUS has nothing to serve and CVO sees no upgrade path.
 
 ### Step 2: Mirror to Archive (Connected Side)
 
 ```bash
-# Mirror to a portable archive (not directly to registry)
-oc mirror --config imageset-config.yaml \
-  file:///mnt/mirror-archive \
+# Mirror to a portable archive
+oc mirror -c imageset-config.yaml \
+  file:///data/oc-mirror-4.20 \
   --v2
 
 # Output structure:
-# /mnt/mirror-archive/
-# ├── mirror_seq1_000000.tar      ← Release images
-# ├── oc-mirror-workspace/
-# │   ├── results-*
-# │   │   ├── imageDigestMirrorSet-*.yaml
-# │   │   ├── imageTagMirrorSet-*.yaml
-# │   │   ├── catalogSource-*.yaml
-# │   │   └── release-signatures/
-# │   └── mapping.txt
+# /data/oc-mirror-4.20/
+# ├── mirror_seq1_000000.tar           ← Release image layers
+# ├── working-dir/
+# │   └── cluster-resources/
+# │       ├── itms-oc-mirror.yaml      ← ImageTagMirrorSet
+# │       ├── idms-oc-mirror.yaml      ← ImageDigestMirrorSet
+# │       ├── updateService.yaml       ← Generated OSUS UpdateService
+# │       └── release-signatures/
 # └── publish/
 
-# Check what was mirrored
-ls -lh /mnt/mirror-archive/mirror_seq1_*.tar
-# ~15-25 GB for a 4-version range
+# Check archive size
+du -sh /data/oc-mirror-4.20/
+# ~8-15 GB with shortestPath: true (vs 25+ GB without)
 ```
+
+`graph: true` tells oc-mirror to build the Cincinnati graph-data container image containing the upgrade graph for the mirrored version range and push it alongside the release images.
 
 ### Step 3: Transfer to Disconnected Site
 
 ```bash
 # Copy archive to removable media
-cp -r /mnt/mirror-archive /media/usb-drive/
+cp -r /data/oc-mirror-4.20 /media/usb-drive/
 
 # Or use data diode / secure file transfer
 # The archive contains only container image layers — no secrets
@@ -131,152 +135,92 @@ cp -r /mnt/mirror-archive /media/usb-drive/
 
 ```bash
 # Push from archive to the internal mirror registry
-oc mirror --from /media/usb-drive/mirror-archive \
-  docker://registry.example.com:8443 \
+oc mirror \
+  -c imageset-config.yaml \
+  --from file:///data/oc-mirror-4.20 \
+  docker://registry.example.com:5000 \
   --v2
 
 # This pushes:
-# - OCP release images → registry.example.com:8443/openshift/release-images
-# - Graph-data image   → registry.example.com:8443/openshift-update-service/graph-data
-# - Generates IDMS/ITMS YAML in results directory
+# - OCP release payload images → registry.example.com:5000/openshift/release-images
+# - Graph-data image → registry.example.com:5000/openshift-update-service/graph-data
+# - Generates cluster-resources/ with IDMS, ITMS, and UpdateService manifests
 ```
 
-### Step 5: Apply ImageDigestMirrorSet / ImageTagMirrorSet
+### Step 5: Apply Generated Manifests
 
 ```bash
-# Apply the generated mirror set resources
-oc apply -f oc-mirror-workspace/results-*/imageDigestMirrorSet-*.yaml
-oc apply -f oc-mirror-workspace/results-*/imageTagMirrorSet-*.yaml
-```
+# Apply ALL generated cluster-resources manifests
+# These include mirror rules AND the OSUS UpdateService
+oc apply -f /data/oc-mirror-4.20/working-dir/cluster-resources/
 
-Example generated IDMS:
+# This applies:
+# - ImageDigestMirrorSet — rewrites release image pullspecs to mirror
+# - ImageTagMirrorSet — tag-based mirror rules
+# - UpdateService — OSUS configuration pointing to mirrored graph-data
 
-```yaml
-apiVersion: config.openshift.io/v1
-kind: ImageDigestMirrorSet
-metadata:
-  name: release-mirror-0
-spec:
-  imageDigestMirrors:
-  - mirrors:
-    - registry.example.com:8443/openshift/release-images
-    source: quay.io/openshift-release-dev/ocp-release
-    mirrorSourcePolicy: AllowContactingSource  # or NeverContactSource for strict air-gap
-  - mirrors:
-    - registry.example.com:8443/openshift/release
-    source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
-    mirrorSourcePolicy: NeverContactSource
-```
-
-```bash
-# Verify mirror sets applied
+# Verify
 oc get imagedigestmirrorset
 oc get imagetagmirrorset
-
-# Nodes will start rolling out MachineConfig for mirror configuration
-# Wait for MCP to finish
-oc get mcp -w
+oc get updateservice -n openshift-update-service
 ```
 
-### Step 6: Configure Registry CA Trust
+The generated `UpdateService` manifest already has `spec.releases` and `spec.graphDataImage` pointing to your mirror registry — oc-mirror builds this for you.
+
+### Step 6: Configure Registry CA Trust + Pull Secret
 
 ```bash
 # Add mirror registry CA to cluster trust
 oc create configmap registry-ca \
-  --from-file=registry.example.com..8443=/path/to/ca-bundle.crt \
+  --from-file=registry.example.com..5000=/path/to/ca-bundle.crt \
   -n openshift-config
 
-# Patch image config
 oc patch image.config.openshift.io/cluster \
   --type merge \
   --patch '{"spec":{"additionalTrustedCA":{"name":"registry-ca"}}}'
 
-# Verify nodes can pull from mirror
-oc debug node/master-0 -- chroot /host \
-  podman pull registry.example.com:8443/openshift/release-images:4.20.12-x86_64
-```
-
-### Step 7: Configure Pull Secret
-
-```bash
-# Extract current pull secret
-oc get secret/pull-secret -n openshift-config \
-  -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d > pull-secret.json
-
-# Add mirror registry credentials
-# Using oc-mirror credential helper or manual jq edit:
-MIRROR_AUTH=$(echo -n "user:password" | base64)
-jq --arg auth "$MIRROR_AUTH" \
-  '.auths["registry.example.com:8443"] = {"auth": $auth}' \
-  pull-secret.json > pull-secret-updated.json
-
-# Apply updated pull secret
-oc set data secret/pull-secret -n openshift-config \
-  --from-file=.dockerconfigjson=pull-secret-updated.json
-
-# This triggers a rolling reboot of all nodes — wait for MCPs
-oc get mcp -w
-```
-
-### Step 8: Deploy/Update OSUS
-
-```yaml
-# UpdateService pointing to mirrored graph-data and release images
-apiVersion: updateservice.operator.openshift.io/v1
-kind: UpdateService
-metadata:
-  name: update-service
-  namespace: openshift-update-service
-spec:
-  replicas: 2
-  releases: registry.example.com:8443/openshift/release-images
-  graphDataImage: registry.example.com:8443/openshift-update-service/graph-data:latest
-```
-
-```bash
-oc apply -f updateservice.yaml
-
-# Wait for OSUS pods to be ready
-oc get pods -n openshift-update-service -w
-
-# Get the policy engine URI
-oc get updateservice update-service -n openshift-update-service \
-  -o jsonpath='{.status.policyEngineURI}'
-```
-
-Create CA trust ConfigMap for OSUS:
-
-```bash
-# OSUS needs to trust the mirror registry CA separately
+# OSUS also needs CA trust
 oc create configmap update-service-trusted-ca \
   --from-file=updateservice-registry=/path/to/ca-bundle.crt \
   -n openshift-update-service
+# Key MUST be "updateservice-registry" (or "registry.example.com..5000")
 
-# Key MUST be "updateservice-registry"
-# If registry URL has port, use ".." separator:
-#   --from-file=registry.example.com..8443=/path/to/ca-bundle.crt
+# Update pull secret with mirror registry credentials
+oc get secret/pull-secret -n openshift-config \
+  -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d > pull-secret.json
+
+MIRROR_AUTH=$(echo -n "user:password" | base64)
+jq --arg auth "$MIRROR_AUTH" \
+  '.auths["registry.example.com:5000"] = {"auth": $auth}' \
+  pull-secret.json > pull-secret-updated.json
+
+oc set data secret/pull-secret -n openshift-config \
+  --from-file=.dockerconfigjson=pull-secret-updated.json
+
+# Wait for MCP rolling reboot
+oc get mcp -w
 ```
 
-### Step 9: Patch CVO to Use OSUS
+### Step 7: Patch CVO to Use OSUS
 
 ```bash
-# Get OSUS graph URL
+# Get the OSUS policy engine URI
 OSUS_URL=$(oc get updateservice update-service -n openshift-update-service \
   -o jsonpath='{.status.policyEngineURI}')
 
-# Patch CVO
+# Patch CVO to read upgrade graph from local OSUS
 oc patch clusterversion version \
   --type merge \
   --patch "{\"spec\":{\"upstream\":\"${OSUS_URL}/api/upgrades_info/v1/graph\"}}"
 
-# Verify CVO is using local OSUS
+# Verify
 oc get clusterversion version -o jsonpath='{.spec.upstream}'
 ```
 
-### Step 10: Verify and Upgrade
+### Step 8: Verify and Upgrade
 
 ```bash
-# Check available upgrades
+# Check available upgrades — should list mirrored versions
 oc adm upgrade
 # Cluster version is 4.20.8
 #
@@ -284,20 +228,43 @@ oc adm upgrade
 #
 # Recommended updates:
 #   VERSION    IMAGE
-#   4.20.9     registry.example.com:8443/openshift/release-images@sha256:...
-#   4.20.10    registry.example.com:8443/openshift/release-images@sha256:...
-#   4.20.11    registry.example.com:8443/openshift/release-images@sha256:...
-#   4.20.12    registry.example.com:8443/openshift/release-images@sha256:...
+#   4.20.10    registry.example.com:5000/openshift/release-images@sha256:...
+#   4.20.12    registry.example.com:5000/openshift/release-images@sha256:...
 
 # Start the upgrade
 oc adm upgrade --to=4.20.12
 
-# Monitor
-oc get clusterversion -w
-oc get co    # Check all cluster operators
-oc get mcp   # Watch node rollout
-oc get nodes
+# Monitor CVO-driven upgrade
+watch 'oc get clusterversion; echo; oc get co | grep -v "True.*False.*False"; echo; oc get mcp'
 ```
+
+### What `graph: true` Actually Does
+
+```mermaid
+graph LR
+    OC[oc-mirror] --> |pulls| REL[Release Images<br/>from quay.io]
+    OC --> |graph: true| BUILD[Builds graph-data<br/>container image]
+    BUILD --> |contains| GRAPH[Cincinnati Graph<br/>channels/ + blocked-edges/<br/>+ conditional-edges/]
+    OC --> |pushes both| REG[Mirror Registry]
+    OC --> |generates| US[UpdateService<br/>manifest]
+    
+    style BUILD fill:#FF9800,color:white
+    style GRAPH fill:#FF9800,color:white
+```
+
+The graph-data image contains the Cincinnati upgrade graph database:
+- **channels/** — which versions are in `stable-4.20`, `fast-4.20`, `eus-4.20`
+- **blocked-edges/** — versions Red Hat has blocked (CVEs, regressions)
+- **conditional-edges/** — "update with caution" advisories
+
+Without this image, OSUS serves an empty graph → CVO sees no upgrades.
+
+### `shortestPath` vs Full Mirror
+
+| Mode | Versions Mirrored | Size | Use Case |
+|------|------------------|------|----------|
+| `shortestPath: true` | Only versions on shortest path (e.g., 4.20.8 → 4.20.12 directly, or 4.20.8 → 4.20.10 → 4.20.12) | 8-15 GB | Production upgrades with known target |
+| `shortestPath: false` | ALL versions between min and max | 25-50+ GB | When you need flexibility to stop at intermediate versions |
 
 ### Verification Script
 
@@ -307,84 +274,76 @@ oc get nodes
 set -euo pipefail
 
 TARGET="${1:-4.20.12}"
-REGISTRY="${2:-registry.example.com:8443}"
+REGISTRY="${2:-registry.example.com:5000}"
 
 echo "=== Air-Gap Upgrade Readiness Check ==="
 
 echo "[1/7] Mirror registry reachable..."
-curl -sk "https://${REGISTRY}/v2/" > /dev/null && echo "✅ Registry OK" || echo "❌ Registry unreachable"
+curl -sk "https://${REGISTRY}/v2/" > /dev/null 2>&1 && echo "✅ OK" || echo "❌ Unreachable"
 
-echo "[2/7] Release image exists..."
+echo "[2/7] Release image mirrored..."
 oc image info "${REGISTRY}/openshift/release-images:${TARGET}-x86_64" > /dev/null 2>&1 \
-  && echo "✅ Release ${TARGET} mirrored" || echo "❌ Release ${TARGET} NOT found"
+  && echo "✅ ${TARGET} found" || echo "❌ ${TARGET} NOT found"
 
 echo "[3/7] IDMS/ITMS applied..."
-IDMS=$(oc get imagedigestmirrorset -o name 2>/dev/null | wc -l)
-echo "   ${IDMS} ImageDigestMirrorSet(s) applied"
+echo "   $(oc get imagedigestmirrorset -o name 2>/dev/null | wc -l) IDMS"
+echo "   $(oc get imagetagmirrorset -o name 2>/dev/null | wc -l) ITMS"
 
 echo "[4/7] MCPs ready..."
 DEGRADED=$(oc get mcp -o json | jq '[.items[] | select(.status.conditions[] | select(.type=="Degraded" and .status=="True"))] | length')
-echo "   Degraded MCPs: ${DEGRADED}"
+[ "$DEGRADED" -eq 0 ] && echo "✅ All MCPs healthy" || echo "❌ ${DEGRADED} degraded MCPs"
 
 echo "[5/7] OSUS running..."
-OSUS_READY=$(oc get pods -n openshift-update-service -l app=update-service --field-selector=status.phase=Running -o name 2>/dev/null | wc -l)
-echo "   OSUS pods running: ${OSUS_READY}"
+OSUS_READY=$(oc get pods -n openshift-update-service -l app=update-service \
+  --field-selector=status.phase=Running -o name 2>/dev/null | wc -l)
+echo "   ${OSUS_READY} OSUS pod(s) running"
 
 echo "[6/7] CVO upstream..."
-UPSTREAM=$(oc get clusterversion version -o jsonpath='{.spec.upstream}' 2>/dev/null)
-echo "   CVO upstream: ${UPSTREAM}"
+echo "   $(oc get clusterversion version -o jsonpath='{.spec.upstream}')"
 
 echo "[7/7] Available upgrades..."
 oc adm upgrade 2>&1 | head -15
 
-echo ""
-echo "=== Readiness check complete ==="
+echo "=== Check complete ==="
 ```
 
 ## Common Issues
 
-**"No updates available" after mirroring**
+**"No updates available" after mirroring everything**
 
-Three things must align: release images mirrored, graph-data image mirrored, CVO `spec.upstream` pointing to OSUS. Missing any one = no updates visible. Run the verification script above.
+Three things must align: release images mirrored, graph-data image mirrored (`graph: true`), CVO `spec.upstream` pointing to OSUS. Missing any one = no updates. Also check OSUS pods are Running and serving the graph.
 
 **Graph shows version but "Unable to apply update"**
 
-Release image is in the graph but not mirrored. The graph-data image lists all versions; only mirrored ones are installable. Re-run oc-mirror with the correct `maxVersion`.
-
-**MCPs stuck updating after IDMS apply**
-
-IDMS changes trigger MachineConfig updates on all nodes (mirror config in `/etc/containers/registries.conf`). Wait for rolling reboot to complete before proceeding.
+Release image is in the graph but not mirrored to the registry. If you used `shortestPath: true`, intermediate versions may be skipped. Re-mirror with the specific version included.
 
 **OSUS "failed to pull graph-data image"**
 
-CA trust not configured for OSUS namespace. Create the ConfigMap with key `updateservice-registry` in `openshift-update-service` namespace.
+CA trust not configured for OSUS namespace. Create ConfigMap with key `updateservice-registry` in `openshift-update-service`.
 
-**oc-mirror v2 vs v1 archive format incompatible**
+**oc-mirror v2 vs v1 archive incompatible**
 
-Don't mix oc-mirror versions between connected and disconnected sides. Use `--v2` on both sides or neither.
+Use `--v2` on both connected and disconnected sides. Don't mix versions.
 
-**Upgrade stuck at 60-80% — operators degraded**
+**MCPs stuck after IDMS/pull-secret apply**
 
-Some operators need to pull images from Red Hat registries not in the mirror set. Check `oc get co` for degraded operators, then mirror their images. Common: marketplace, samples, insights.
+Both IDMS and pull-secret changes trigger rolling node reboots. Wait for all MCPs to reach `UPDATED=True` before proceeding. This can take 30-60 minutes for large clusters.
 
 ## Best Practices
 
-- **Always `graph: true`** in ImageSetConfiguration — without graph data, OSUS has nothing to serve
-- **Set `minVersion` to current cluster version** — don't mirror hundreds of old releases
-- **`NeverContactSource` for strict air-gap** — prevents accidental internet pull attempts
-- **Mirror before maintenance window** — oc-mirror + transfer can take hours
-- **Test OSUS graph with curl first** — verify versions appear before patching CVO
-- **Keep oc-mirror versions consistent** — same binary on connected and disconnected sides
-- **Update graph-data image with each mirror run** — stale graph = missing safe paths and blocks
-- **Run verification script before `oc adm upgrade`** — confirm all 7 prerequisites
+- **Always `graph: true`** — without it, oc-mirror only mirrors images, not the upgrade graph
+- **`shortestPath: true` for targeted upgrades** — saves 50-70% mirror size
+- **Set `minVersion` to current cluster version** — don't mirror old releases
+- **Apply ALL `cluster-resources/` manifests** — oc-mirror generates IDMS, ITMS, and UpdateService together
+- **Test OSUS graph with curl first** — `curl -s "${OSUS_URL}/api/upgrades_info/v1/graph?channel=stable-4.20" | jq '.nodes | length'`
+- **Keep oc-mirror binary version consistent** — same binary on both sides
+- **Run verification script before upgrading** — confirm all 7 prerequisites pass
 
 ## Key Takeaways
 
-- Air-gapped upgrades require BOTH release images AND graph-data mirrored
-- `oc-mirror` with `graph: true` handles both in one archive
-- IDMS/ITMS resources rewrite Red Hat pullspecs to your mirror registry
-- OSUS `spec.graphDataImage` must point to the mirrored graph-data image (replicated mode)
-- CVO `spec.upstream` must point to the OSUS `policyEngineURI` graph URL
-- CA trust and pull secrets are the #1 and #2 failure points
-- Always verify all 7 prerequisites before starting the upgrade
-- The workflow is: mirror → transfer → push → IDMS → CA/secrets → OSUS → CVO → upgrade
+- `oc mirror` with `graph: true` pulls release images AND builds/pushes the graph-data image in one operation
+- `shortestPath: true` mirrors only versions on the shortest upgrade path — significantly smaller archives
+- The generated `cluster-resources/` directory contains everything: mirror rules (IDMS/ITMS) and the OSUS UpdateService manifest
+- OSUS serves the Cincinnati graph locally so CVO can discover available upgrades
+- CA trust and pull secrets are the #1 and #2 failure points in air-gapped setups
+- The workflow: mirror → transfer → push → apply manifests → CA/secrets → patch CVO → upgrade
