@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-networkpolicy-guide"
   - "kubernetes-ingress-nginx-guide"
   - "kubernetes-cert-manager-guide"
+  - "kubernetes-linkerd-service-mesh-guide"
 ---
 
 > 💡 **Quick Answer:** Istio injects sidecar proxies (Envoy) alongside your containers to handle traffic management, security (mTLS), and observability. Install: `istioctl install --set profile=demo`. Enable injection: `kubectl label namespace default istio-injection=enabled`. Route traffic with `VirtualService`, configure load balancing with `DestinationRule`, expose externally with `Gateway`.

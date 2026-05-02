@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-serviceaccount-guide"
   - "kubernetes-rbac-role-rolebinding"
   - "kubernetes-operator-pattern-guide"
+  - "kubernetes-tekton-pipelines-guide"
 ---
 
 > 💡 **Quick Answer:** CronJob uses standard cron syntax: `schedule: "0 2 * * *"` (2 AM daily). Key settings: `concurrencyPolicy: Forbid` (skip if previous still running), `startingDeadlineSeconds: 300` (skip if >5min late), `successfulJobsHistoryLimit: 3`, `failedJobsHistoryLimit: 3`. Timezone support (K8s 1.27+): `timeZone: "America/New_York"`. Suspend without deleting: `spec.suspend: true`.

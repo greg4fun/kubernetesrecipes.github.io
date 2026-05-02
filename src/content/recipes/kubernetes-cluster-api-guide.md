@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-kubeadm-init-guide"
   - "kubernetes-kubeadm-upgrade-guide"
   - "kubernetes-operator-pattern-guide"
+  - "kubernetes-crossplane-infrastructure-guide"
 ---
 
 > 💡 **Quick Answer:** Cluster API (CAPI) manages Kubernetes clusters as Kubernetes resources. A management cluster runs CAPI controllers that provision workload clusters on AWS, Azure, GCP, vSphere, bare metal, etc. Define clusters in YAML, apply to management cluster, CAPI handles provisioning. Key resources: `Cluster`, `MachineDeployment`, `MachinePool`. Install: `clusterctl init --infrastructure aws`.
