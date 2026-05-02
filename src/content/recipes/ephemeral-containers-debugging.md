@@ -1,6 +1,6 @@
 ---
-title: "How to Use Ephemeral Containers for Debugging"
-description: "Debug running pods using ephemeral containers without restarting. Learn kubectl debug techniques for troubleshooting production workloads."
+title: "Ephemeral Containers: Debug Running Pods"
+description: "Debug running pods with ephemeral containers using kubectl debug. Attach debug containers without restart for production troubleshooting on Kubernetes."
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"

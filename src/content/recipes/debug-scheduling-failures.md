@@ -1,6 +1,6 @@
 ---
-title: "How to Debug Pod Scheduling Failures"
-description: "Troubleshoot pods stuck in Pending state due to scheduling issues. Learn to diagnose resource constraints, node affinity, taints, and topology spread."
+title: "Debug Pod Scheduling Failures in K8s"
+description: "Fix pods stuck in Pending from scheduling failures. Diagnose resource constraints, node affinity, taints, tolerations, and topology spread conflicts."
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"

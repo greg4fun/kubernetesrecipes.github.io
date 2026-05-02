@@ -1,6 +1,6 @@
 ---
-title: "Manage K8s Finalizers and Stuck Resources"
-description: "Understand and manage finalizers for controlled resource deletion. Handle stuck resources and implement custom cleanup logic."
+title: "Fix K8s Stuck Resources and Finalizers"
+description: "Fix Kubernetes resources stuck in Terminating state by managing finalizers. Remove stuck namespaces, PVs, and CRDs with force-delete procedures."
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"

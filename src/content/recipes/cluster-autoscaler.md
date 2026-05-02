@@ -1,6 +1,6 @@
 ---
-title: "How to Configure Cluster Autoscaler"
-description: "Automatically scale your Kubernetes cluster nodes based on workload demand. Learn to configure Cluster Autoscaler for AWS, GCP, and Azure."
+title: "Kubernetes Cluster Autoscaler Setup"
+description: "Configure Kubernetes Cluster Autoscaler for automatic node scaling. AWS, GCP, and Azure setup, scaling policies, and pod priority integration."
 category: "autoscaling"
 difficulty: "intermediate"
 timeToComplete: "30 minutes"

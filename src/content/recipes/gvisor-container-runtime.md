@@ -1,6 +1,6 @@
 ---
-title: "Secure Containers with gVisor Runtime"
-description: "Deploy gVisor with Kubernetes RuntimeClass for sandboxed containers. Configure runsc runtime, pod isolation, and security hardening for untrusted workloads."
+title: "gVisor Runtime Sandboxed Containers K8s"
+description: "Deploy gVisor with Kubernetes RuntimeClass for sandboxed containers. Configure runsc runtime, pod isolation, and security hardening for untrusted code."
 category: "security"
 difficulty: "advanced"
 timeToComplete: "45 minutes"
