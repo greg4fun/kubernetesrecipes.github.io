@@ -1,6 +1,6 @@
 ---
-title: "OOMKilled in Kubernetes: How to Debug and Fix"
-description: "Fix OOMKilled errors in Kubernetes pods. Learn why containers get OOMKilled (exit code 137), how to set memory limits, debug memory leaks, and prevent OOM."
+title: "Fix OOMKilled in Kubernetes Pods"
+description: "Fix OOMKilled errors in Kubernetes pods (exit code 137). Debug memory leaks, set correct memory limits, and prevent OOM kills in containers."
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"

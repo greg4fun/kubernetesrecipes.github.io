@@ -1,6 +1,6 @@
 ---
-title: "How to Scale Based on Custom Metrics"
-description: "Configure Horizontal Pod Autoscaler with custom and external metrics. Learn to scale on application-specific metrics like queue depth and request latency."
+title: "HPA Custom Metrics: Scale on Queue Depth"
+description: "Configure Kubernetes HPA with custom and external metrics. Scale pods on queue depth, request latency, and Prometheus metrics via autoscaling/v2."
 category: "autoscaling"
 difficulty: "advanced"
 publishDate: "2026-01-22"

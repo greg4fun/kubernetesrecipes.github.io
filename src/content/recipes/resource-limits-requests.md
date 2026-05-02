@@ -1,6 +1,6 @@
 ---
-title: "How to Configure Resource Limits and Requests"
-description: "Set CPU and memory requests and limits for containers. Understand QoS classes, resource quotas, and best practices for right-sizing workloads."
+title: "K8s Resource Limits: CPU 500m Memory 256Mi"
+description: "Configure Kubernetes container resource limits and requests. CPU 200m/500m, memory 256Mi syntax and format explained with QoS classes and right-sizing."
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"

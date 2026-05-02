@@ -1,6 +1,6 @@
 ---
-title: "NetworkPolicy: Default Deny All Traffic"
-description: "Implement a zero-trust network security model in Kubernetes by creating a default deny-all NetworkPolicy. Learn how to block all ingress and egress."
+title: "K8s NetworkPolicy: Default Deny All Traffic"
+description: "Implement zero-trust network security in Kubernetes with default deny-all NetworkPolicy. Block all ingress and egress traffic with allow-list rules."
 category: "networking"
 difficulty: "beginner"
 timeToComplete: "10 minutes"

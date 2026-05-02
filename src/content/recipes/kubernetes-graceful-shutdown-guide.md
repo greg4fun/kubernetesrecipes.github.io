@@ -1,7 +1,7 @@
 ---
-title: "Graceful Shutdown Kubernetes Pods"
-description: "Configure graceful shutdown for Kubernetes pods. PreStop hooks, terminationGracePeriodSeconds, SIGTERM handling, and zero-downtime connection draining."
-publishDate: "2026-04-24"
+title: "Kubernetes Graceful Shutdown Guide"
+description: "Implement graceful shutdown in Kubernetes pods. Configure terminationGracePeriodSeconds, preStop hooks, SIGTERM handling, and drain connections properly."
+publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "deployments"
 difficulty: "intermediate"
@@ -9,122 +9,194 @@ timeToComplete: "15 minutes"
 kubernetesVersion: "1.28+"
 tags:
   - "graceful-shutdown"
-  - "prestop"
+  - "deployments"
+  - "lifecycle"
   - "sigterm"
-  - "rolling-update"
+  - "preStop"
 relatedRecipes:
-  - "kubernetes-terminationgraceperiod"
-  - "kubernetes-rolling-update-strategies"
-  - "kubernetes-pod-disruption-budget-strategies"
+  - "graceful-shutdown"
+  - "kubernetes-pod-lifecycle-guide"
+  - "kubernetes-deployment-strategies-guide"
+  - "kubernetes-liveness-readiness-startup-probes"
 ---
 
-> 💡 **Quick Answer:** Set `terminationGracePeriodSeconds: 60`, add a `preStop` hook with `sleep 5` to allow endpoint removal propagation, and handle SIGTERM in your application to drain connections. This prevents 502 errors during rolling updates.
+> 💡 **Quick Answer:** Kubernetes sends SIGTERM to your container, waits `terminationGracePeriodSeconds` (default 30s), then sends SIGKILL. For graceful shutdown: (1) handle SIGTERM in your app to stop accepting new requests and drain existing ones, (2) add a `preStop` hook with `sleep 5` to allow endpoint removal to propagate, (3) increase `terminationGracePeriodSeconds` if your app needs more time. The `preStop` sleep is critical — without it, traffic arrives at pods that are already shutting down.
 
 ## The Problem
 
-During rolling updates, users see 502/503 errors for 1-5 seconds. The pod receives traffic AFTER receiving SIGTERM because endpoint removal is asynchronous — the pod terminates before all kube-proxies/ingress controllers update their routing tables.
+Pods receiving traffic during shutdown cause:
+
+- HTTP 502/503 errors during deployments
+- Dropped WebSocket connections
+- Lost in-flight requests
+- Database transaction rollbacks
+- Message queue messages processed twice
 
 ## The Solution
 
-### The Shutdown Race Condition
+### Pod Termination Sequence
 
 ```
-1. Pod marked for termination
-2. SIMULTANEOUSLY:
-   a. kubelet sends SIGTERM to container
-   b. Endpoint controller removes pod from Endpoints
-3. Problem: kube-proxy/ingress may still route traffic for 1-5 seconds
-   after SIGTERM — app already shutting down = 502 errors
+1. Pod marked for deletion (kubectl delete / rollout)
+2. Pod removed from Service endpoints (async!)
+3. preStop hook runs (if configured)
+4. SIGTERM sent to PID 1 in container
+5. Wait terminationGracePeriodSeconds (default: 30s)
+6. SIGKILL sent (forced kill)
 ```
 
-### Solution: preStop Hook Delay
+The critical issue: steps 2 and 3-4 happen **in parallel**. Traffic can still arrive after SIGTERM.
+
+### Complete Graceful Shutdown Config
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-server
+  name: web-app
 spec:
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0      # Never reduce below desired count
+      maxSurge: 1            # One extra pod during rollout
   template:
     spec:
-      terminationGracePeriodSeconds: 60
+      terminationGracePeriodSeconds: 60  # Total budget
       containers:
-        - name: web
-          image: registry.example.com/web:1.0
-          lifecycle:
-            preStop:
-              exec:
-                command: ["sh", "-c", "sleep 5"]
-          ports:
-            - containerPort: 8080
-              name: http
+      - name: app
+        image: myapp:v2
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          periodSeconds: 5
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - |
+                # Wait for endpoint removal to propagate
+                sleep 5
+                # Signal app to drain (optional — app can use SIGTERM)
+                kill -SIGTERM 1
+                # Wait for drain to complete
+                sleep 25
 ```
 
-The `sleep 5` in preStop runs BEFORE SIGTERM is sent to the container, giving time for endpoint removal to propagate.
+### Handle SIGTERM in Your Application
 
-### Application-Side SIGTERM Handling
+**Node.js:**
+```javascript
+const server = app.listen(8080);
 
-```python
-import signal
-import sys
-
-# Flag to stop accepting new requests
-shutting_down = False
-
-def handle_sigterm(signum, frame):
-    global shutting_down
-    shutting_down = True
-    # Stop accepting new connections
-    server.stop_accepting()
-    # Wait for in-flight requests (max 30s)
-    server.drain(timeout=30)
-    sys.exit(0)
-
-signal.signal(signal.SIGTERM, handle_sigterm)
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, draining connections...');
+  server.close(() => {
+    console.log('All connections drained, exiting');
+    process.exit(0);
+  });
+  // Force exit after 25s if connections don't drain
+  setTimeout(() => process.exit(1), 25000);
+});
 ```
 
-### Complete Timeline
+**Go:**
+```go
+srv := &http.Server{Addr: ":8080"}
+go srv.ListenAndServe()
 
-```mermaid
-sequenceDiagram
-    participant K as Kubernetes
-    participant P as Pod
-    participant E as Endpoints
-    participant KP as kube-proxy
-    
-    K->>P: Mark for termination
-    K->>E: Remove from Endpoints
-    P->>P: preStop: sleep 5
-    E->>KP: Update iptables (1-5s propagation)
-    Note over P: preStop completes
-    K->>P: SIGTERM
-    P->>P: Drain connections (30s)
-    P->>P: Exit 0
-    Note over K,P: terminationGracePeriodSeconds=60 total budget
+sigCh := make(chan os.Signal, 1)
+signal.Notify(sigCh, syscall.SIGTERM)
+<-sigCh
+
+ctx, cancel := context.WithTimeout(context.Background(), 25*time.Second)
+defer cancel()
+srv.Shutdown(ctx) // Drains existing connections
+```
+
+**Python (Flask/Gunicorn):**
+```bash
+# Gunicorn handles SIGTERM gracefully by default
+gunicorn --graceful-timeout 30 --timeout 60 app:app
+```
+
+### Why preStop sleep Is Essential
+
+```
+Without preStop sleep:
+  t=0: SIGTERM sent + endpoint removal starts
+  t=0: App starts draining
+  t=1: kube-proxy still has old endpoints → traffic to dying pod → 502!
+  t=3: Endpoints finally removed
+
+With preStop sleep 5:
+  t=0: preStop starts → sleep 5
+  t=3: Endpoints removed from all kube-proxies
+  t=5: preStop ends, SIGTERM sent
+  t=5: App starts draining (no more new traffic) ✅
+```
+
+### Long-Running Request Handling
+
+```yaml
+# For apps with long requests (file uploads, reports, etc.)
+spec:
+  terminationGracePeriodSeconds: 300  # 5 minutes
+  containers:
+  - name: app
+    lifecycle:
+      preStop:
+        exec:
+          command: ["sleep", "5"]
+    # App must handle SIGTERM and drain within 295s
+```
+
+### Verify Graceful Shutdown
+
+```bash
+# Watch pod termination in real-time
+kubectl delete pod my-app-abc123 &
+kubectl get events -w --field-selector involvedObject.name=my-app-abc123
+
+# Test with traffic during rollout
+kubectl rollout restart deployment/web-app &
+# In another terminal, send requests:
+while true; do curl -s -o /dev/null -w "%{http_code}\n" http://web-app:8080/; sleep 0.1; done
+# Should see 0 non-200 responses with proper graceful shutdown
 ```
 
 ## Common Issues
 
-**502 errors during rolling update**
+**SIGTERM not reaching the app**
 
-preStop hook missing or too short. Add `sleep 5` preStop to allow endpoint removal propagation.
+Shell scripts as entrypoint (`/bin/sh -c "my-app"`) don't forward signals. Use `exec` form: `CMD ["my-app"]` or `exec my-app` in shell scripts.
 
-**Pod killed with SIGKILL after grace period**
+**502s during deployment despite preStop**
 
-`terminationGracePeriodSeconds` is too short. The total budget must cover: preStop delay + connection drain + cleanup. Set to `preStop + drain + 10s buffer`.
+`maxUnavailable: 1` (default) removes pods before new ones are ready. Set `maxUnavailable: 0` and `maxSurge: 1`.
+
+**Pod killed before drain completes**
+
+`terminationGracePeriodSeconds` is the TOTAL budget including preStop. If preStop sleeps 30s and app needs 30s to drain, you need ≥60s total.
 
 ## Best Practices
 
-- **Always add `preStop: sleep 5`** for HTTP services — prevents 502 during rolling updates
-- **`terminationGracePeriodSeconds`** = preStop + drain time + buffer (minimum 30s)
-- **Handle SIGTERM in your application** — stop accepting new connections, drain in-flight
-- **Never use SIGKILL for shutdown** — it's the last resort after grace period expires
-- **Test with `kubectl rollout restart`** — watch for errors during rollout
+- **Always add `preStop: sleep 5`** — allows endpoint removal propagation
+- **Set `maxUnavailable: 0`** for zero-downtime deployments
+- **Handle SIGTERM in your app** — don't rely on SIGKILL
+- **`terminationGracePeriodSeconds` = preStop + drain time + buffer**
+- **Use `exec` form in Dockerfile CMD** — ensures PID 1 receives signals
+- **Test with traffic during rollout** — verify zero 5xx errors
 
 ## Key Takeaways
 
-- The pod termination / endpoint removal race causes 502 errors during rolling updates
-- `preStop: sleep 5` delays SIGTERM, giving time for routing tables to update
-- `terminationGracePeriodSeconds` is the TOTAL budget for preStop + SIGTERM handling
-- Applications must handle SIGTERM: stop accepting, drain connections, then exit
-- This applies to every HTTP service — without it, every rolling update has a brief error window
+- SIGTERM and endpoint removal happen in parallel — `preStop: sleep 5` bridges the gap
+- `terminationGracePeriodSeconds` is the total budget (preStop + app drain + buffer)
+- Always use `maxUnavailable: 0` for zero-downtime deployments
+- Handle SIGTERM in your app to drain connections gracefully
+- Shell entrypoints (`sh -c`) swallow signals — use exec form

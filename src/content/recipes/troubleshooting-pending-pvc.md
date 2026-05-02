@@ -1,6 +1,6 @@
 ---
-title: "Troubleshooting Pending PersistentVolumeClaims"
-description: "Diagnose and fix PVCs stuck in Pending status. Learn common causes including StorageClass issues, capacity problems, and node affinity conflicts with."
+title: "Fix Pending PVC in Kubernetes"
+description: "Fix PersistentVolumeClaims stuck in Pending status. Diagnose StorageClass issues, capacity problems, node affinity conflicts, and provisioner failures."
 category: "troubleshooting"
 difficulty: "intermediate"
 timeToComplete: "15 minutes"

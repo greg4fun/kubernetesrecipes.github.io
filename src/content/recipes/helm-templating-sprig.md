@@ -1,6 +1,6 @@
 ---
-title: "Template Helm Values with Sprig Functions"
-description: "Master Helm templating with Sprig functions. Learn string manipulation, conditionals, loops, and advanced templating patterns for dynamic charts."
+title: "Helm Sprig Functions: cat, print, toString"
+description: "Master Helm Sprig functions: cat, print, toString, add1, join, and quote. String manipulation, conditionals, and advanced templating patterns."
 category: "helm"
 difficulty: "advanced"
 publishDate: "2026-01-22"

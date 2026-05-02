@@ -1,31 +1,47 @@
 ---
-title: "Kubernetes PersistentVolumeClaimSpec Guide"
-description: "Complete PersistentVolumeClaimSpec reference: accessModes, storageClassName, resources, volumeMode, selector, and dataSource for Kubernetes PVCs."
-category: "storage"
-publishDate: "2026-04-20"
+title: "K8s PersistentVolumeClaimSpec Reference"
+description: "Complete PersistentVolumeClaimSpec reference for Kubernetes. accessModes, storageClassName, resources, selector, volumeMode, and dataSource explained."
+publishDate: "2026-05-02"
 author: "Luca Berton"
-difficulty: "intermediate"
-timeToComplete: "15 minutes"
-kubernetesVersion: "1.21+"
-tags: ["pvc", "persistent-volume", "storage", "storageclass", "volumes"]
+category: "storage"
+difficulty: "beginner"
+timeToComplete: "10 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - "storage"
+  - "pvc"
+  - "persistent-volumes"
+  - "storageclass"
 relatedRecipes:
-  - "kubernetes-persistent-volume-claims"
-  - "kubernetes-storage-class-guide"
-  - kubernetes-storage-best-practices
-  - kubernetes-hostpath-volume
+  - "kubernetes-persistent-volumes-guide"
+  - "troubleshooting-pending-pvc"
+  - "csi-volume-snapshots-kubernetes"
+  - "kubernetes-storageclass-guide"
 ---
 
-> 💡 **Quick Answer:** `PersistentVolumeClaimSpec` defines storage requirements: `accessModes` (ReadWriteOnce/ReadWriteMany/ReadOnlyMany), `resources.requests.storage` (size), `storageClassName` (which provisioner), and optionally `volumeMode`, `selector`, or `dataSource` for cloning.
+> 💡 **Quick Answer:** `PersistentVolumeClaimSpec` defines storage requirements: `accessModes` (ReadWriteOnce/ReadWriteMany/ReadOnlyMany), `resources.requests.storage` (size like 10Gi), `storageClassName` (which provisioner to use), and optionally `volumeMode` (Filesystem or Block), `selector` (bind to specific PV), and `dataSource` (clone or snapshot). Most PVCs only need accessModes + storage size + storageClassName.
 
 ## The Problem
 
-Creating PVCs requires understanding the spec fields:
-- Which access mode matches your workload?
-- How does `storageClassName` interact with dynamic provisioning?
-- When to use `volumeMode: Block` vs `Filesystem`?
-- How to clone volumes or restore from snapshots?
+PVC specs have many fields and it's unclear which are required, what values are valid, and how they interact with StorageClasses and PVs.
 
 ## The Solution
+
+### Minimal PVC
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-data
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard
+```
 
 ### Complete PersistentVolumeClaimSpec
 
@@ -33,212 +49,166 @@ Creating PVCs requires understanding the spec fields:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: myapp-data
-  namespace: default
+  name: my-data
+  namespace: production
 spec:
   # Required: How the volume can be mounted
   accessModes:
-    - ReadWriteOnce        # Single node read-write
-
-  # Required: Storage size request
+  - ReadWriteOnce          # Single node read-write
+  # - ReadWriteMany        # Multiple nodes read-write (NFS, CephFS)
+  # - ReadOnlyMany         # Multiple nodes read-only
+  # - ReadWriteOncePod     # Single pod read-write (K8s 1.27+)
+  
+  # Required: Storage size
   resources:
     requests:
-      storage: 10Gi       # Minimum size
-    limits:
-      storage: 20Gi       # Maximum (optional, rarely used)
-
-  # StorageClass for dynamic provisioning
-  storageClassName: standard  # "" = no dynamic provisioning (bind to existing PV)
-
+      storage: 10Gi        # Minimum size
+    # limits:              # Optional — rarely used
+    #   storage: 20Gi
+  
+  # Which StorageClass to use (omit for cluster default)
+  storageClassName: gp3-encrypted
+  # storageClassName: ""   # Empty string = bind to pre-provisioned PV only
+  
   # Filesystem (default) or Block
   volumeMode: Filesystem
-
-  # Optional: Select specific PV by labels
-  selector:
-    matchLabels:
-      environment: production
-
-  # Optional: Clone from existing PVC or snapshot
-  dataSource:
-    kind: PersistentVolumeClaim
-    name: source-pvc
+  # volumeMode: Block      # Raw block device — no filesystem
+  
+  # Bind to specific PV (static provisioning)
+  # selector:
+  #   matchLabels:
+  #     app: database
+  #   matchExpressions:
+  #   - key: environment
+  #     operator: In
+  #     values: ["production"]
+  
+  # Clone from existing PVC or restore from snapshot
+  # dataSource:
+  #   name: existing-pvc
+  #   kind: PersistentVolumeClaim
+  # dataSource:
+  #   name: my-snapshot
+  #   kind: VolumeSnapshot
+  #   apiGroup: snapshot.storage.k8s.io
+  
+  # Cross-namespace clone (K8s 1.29+)
+  # dataSourceRef:
+  #   name: source-pvc
+  #   kind: PersistentVolumeClaim
+  #   namespace: other-namespace
 ```
 
-### Access Modes Explained
+### Access Modes Comparison
 
-```yaml
-# ReadWriteOnce (RWO) — most common, single node
-# Use for: databases, stateful apps, single-replica deployments
-spec:
-  accessModes:
-    - ReadWriteOnce
+| Mode | Short | Nodes | Use Case |
+|------|-------|-------|----------|
+| **ReadWriteOnce** | RWO | 1 node | Databases, single-writer apps |
+| **ReadWriteMany** | RWX | Multiple | Shared data, CMS uploads, ML datasets |
+| **ReadOnlyMany** | ROX | Multiple | Config files, static assets |
+| **ReadWriteOncePod** | RWOP | 1 pod | Strict single-writer (K8s 1.27+) |
 
-# ReadWriteMany (RWX) — multiple nodes simultaneous write
-# Use for: shared file storage, CMS uploads, ML training data
-# Requires: NFS, CephFS, Azure Files, EFS
-spec:
-  accessModes:
-    - ReadWriteMany
+### StorageClass Examples
 
-# ReadOnlyMany (ROX) — multiple nodes read-only
-# Use for: shared config, static assets, model weights
-spec:
-  accessModes:
-    - ReadOnlyMany
+```bash
+# List available StorageClasses
+kubectl get storageclass
+# NAME            PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE
+# gp3 (default)   ebs.csi.aws.com        Delete          WaitForFirstConsumer
+# efs-sc          efs.csi.aws.com        Retain          Immediate
+# standard        kubernetes.io/gce-pd    Delete          Immediate
 
-# ReadWriteOncePod (RWOP) — single pod (K8s 1.27+)
-# Use for: strict single-writer guarantee
-spec:
-  accessModes:
-    - ReadWriteOncePod
+# See default StorageClass
+kubectl get sc -o jsonpath='{.items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")].metadata.name}'
 ```
 
-### StorageClass Selection
+### Use in Pods
 
 ```yaml
-# Dynamic provisioning (most common)
-spec:
-  storageClassName: gp3           # AWS EBS gp3
-  storageClassName: premium-rwo   # GKE premium SSD
-  storageClassName: managed-csi   # Azure managed disk
-
-# Use cluster default StorageClass (omit field entirely)
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-  # storageClassName not specified = use default
-
-# Disable dynamic provisioning — bind to pre-created PV
-spec:
-  storageClassName: ""
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-```
-
-### Volume Cloning
-
-```yaml
-# Clone from existing PVC (same namespace, same StorageClass)
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: Pod
 metadata:
-  name: myapp-data-clone
+  name: my-app
 spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 10Gi
-  dataSource:
-    kind: PersistentVolumeClaim
-    name: myapp-data  # Source PVC
+  containers:
+  - name: app
+    image: myapp:v1
+    volumeMounts:
+    - name: data
+      mountPath: /data
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: my-data      # References the PVC
+      readOnly: false
+
 ---
-# Restore from VolumeSnapshot
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: myapp-data-restored
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 10Gi
-  dataSource:
-    kind: VolumeSnapshot
-    name: myapp-data-snapshot-20260420
-    apiGroup: snapshot.storage.k8s.io
-```
-
-### Architecture
-
-```mermaid
-graph TD
-    A[PersistentVolumeClaim] -->|storageClassName| B[StorageClass]
-    B -->|provisioner| C[CSI Driver]
-    C -->|creates| D[PersistentVolume]
-    D -->|binds to| A
-    
-    A -->|mounted by| E[Pod]
-    E -->|volumeMount| F[Container Filesystem]
-    
-    G[selector/matchLabels] -->|optional| H[Pre-created PV]
-    H -->|binds to| A
-```
-
-### StatefulSet with PVC Template
-
-```yaml
+# StatefulSet with volumeClaimTemplates (auto-creates PVCs)
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgres
+  name: database
 spec:
-  serviceName: postgres
+  serviceName: database
   replicas: 3
   template:
     spec:
       containers:
-        - name: postgres
-          image: postgres:16
-          volumeMounts:
-            - name: data
-              mountPath: /var/lib/postgresql/data
+      - name: db
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/db
   volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: fast-ssd
-        resources:
-          requests:
-            storage: 50Gi
+  - metadata:
+      name: data
+    spec:                      # This IS the PersistentVolumeClaimSpec
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: gp3-encrypted
+      resources:
+        requests:
+          storage: 50Gi
 ```
 
 ### Volume Expansion
 
-```yaml
-# StorageClass must have allowVolumeExpansion: true
-# Edit existing PVC to increase size
-kubectl patch pvc myapp-data -p '{"spec":{"resources":{"requests":{"storage":"20Gi"}}}}'
+```bash
+# Check if StorageClass allows expansion
+kubectl get sc gp3 -o jsonpath='{.allowVolumeExpansion}'
+# true
+
+# Expand PVC (only increase — shrinking not supported)
+kubectl patch pvc my-data -p '{"spec":{"resources":{"requests":{"storage":"20Gi"}}}}'
 
 # Check expansion status
-kubectl get pvc myapp-data
-# NAME         STATUS   VOLUME     CAPACITY   ACCESS MODES
-# myapp-data   Bound    pv-xxx     20Gi       RWO
+kubectl get pvc my-data -o yaml | grep -A5 conditions
 ```
 
 ## Common Issues
 
-| Issue | Cause | Fix |
-|-------|-------|-----|
-| PVC stuck "Pending" | No PV matches / no StorageClass | Check `kubectl describe pvc` events |
-| "no persistent volumes available" | StorageClass not found | Verify `kubectl get sc` |
-| Volume won't expand | StorageClass lacks `allowVolumeExpansion` | Create new SC with expansion enabled |
-| Access mode mismatch | PV has RWO, pod on different node | Use RWX or reschedule to same node |
-| Clone fails | Different StorageClass or namespace | Source and target must match |
+**PVC stuck in Pending**
+
+Check events: `kubectl describe pvc my-data`. Common causes: no matching StorageClass, no capacity, WaitForFirstConsumer binding mode (needs a pod to schedule first).
+
+**"storageClassName must be provided" error**
+
+No default StorageClass set. Either specify one explicitly or mark a StorageClass as default.
+
+**accessMode mismatch**
+
+PV and PVC accessModes must be compatible. EBS only supports RWO — if you need RWX, use EFS, NFS, or CephFS.
 
 ## Best Practices
 
-1. **Always specify `storageClassName`** — don't rely on default (it can change)
-2. **Use `ReadWriteOncePod` for databases** — prevents accidental multi-attach corruption
-3. **Set `resources.requests.storage` realistically** — over-provisioning wastes cloud spend
-4. **Use VolumeSnapshots for backups** — CSI-native, faster than file-level backup
-5. **Label PVCs in StatefulSets** — easier filtering and lifecycle management
+- **Always specify `storageClassName`** — don't rely on default (it can change)
+- **Use `ReadWriteOncePod`** for databases — prevents accidental multi-attach
+- **Set `WaitForFirstConsumer`** on StorageClass — ensures volume is in the same zone as the pod
+- **Use `volumeClaimTemplates`** in StatefulSets — automatic per-replica PVCs
+- **Enable volume expansion** on StorageClass — avoid recreating PVCs for resizing
 
 ## Key Takeaways
 
-- `PersistentVolumeClaimSpec` has 6 fields: accessModes, resources, storageClassName, volumeMode, selector, dataSource
-- `accessModes` determines how many nodes/pods can mount: RWO (1 node), RWX (many), RWOP (1 pod)
-- Empty `storageClassName: ""` disables dynamic provisioning — binds to pre-created PVs
-- `dataSource` enables cloning (from PVC) and restore (from VolumeSnapshot)
-- PVCs are namespace-scoped; PVs are cluster-scoped
+- Most PVCs need only 3 fields: accessModes, storage size, and storageClassName
+- RWO for databases, RWX for shared storage, RWOP for strict single-writer
+- `storageClassName: ""` binds to pre-provisioned PVs only (no dynamic provisioning)
+- `dataSource` enables PVC cloning and snapshot restore
+- StatefulSet `volumeClaimTemplates` spec IS a PersistentVolumeClaimSpec
