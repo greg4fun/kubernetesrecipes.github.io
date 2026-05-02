@@ -21,6 +21,8 @@ relatedRecipes:
   - "kubernetes-kubelet-configuration"
   - "kubernetes-kustomize-guide"
   - "kubernetes-kubeadm-init-guide"
+  - "kubernetes-cluster-api-guide"
+  - "kubernetes-container-runtime-guide"
 ---
 
 > 💡 **Quick Answer:** Projected volumes combine multiple sources into one mount: `projected: {sources: [{secret: {name: creds}}, {configMap: {name: config}}, {downwardAPI: {items: [{path: "labels", fieldRef: {fieldPath: metadata.labels}}]}}]}`. All sources appear as files in the same directory. Most useful for combining secrets + configmaps + token into `/etc/app/`.

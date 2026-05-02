@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-pod-disruption-budget"
   - "kubernetes-taints-tolerations-guide"
   - "kubernetes-kubeadm-init-guide"
+  - "kubernetes-cluster-api-guide"
 ---
 
 > 💡 **Quick Answer:** Upgrade kubeadm first: `apt-get install kubeadm=1.30.0-*`. Then `kubeadm upgrade plan` to verify, `kubeadm upgrade apply v1.30.0` on the first control plane node. Drain each node, upgrade kubelet + kubectl, restart kubelet, uncordon. Always upgrade one minor version at a time (1.28→1.29→1.30, never 1.28→1.30). Backup etcd before starting.

@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubectl-describe-pod-events"
   - "kubectl-get-pods-examples"
   - "kubernetes-kubectl-debug-guide"
+  - "kubernetes-createcontainererror-troubleshoot"
 ---
 
 > 💡 **Quick Answer:** `kubectl exec -it <pod> -- /bin/sh` opens an interactive shell inside a running pod. For multi-container pods, add `-c <container>`. Use `kubectl exec <pod> -- <command>` for one-off commands without interactive mode. The `--` separator is mandatory to distinguish kubectl flags from the command to run inside the container.

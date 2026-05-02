@@ -18,6 +18,7 @@ relatedRecipes:
   - "image-pull-secrets"
   - "kubernetes-serviceaccount-guide"
   - "containerd-certs-d-registry-ca-trust"
+  - "kubernetes-createcontainererror-troubleshoot"
 ---
 
 > 💡 **Quick Answer:** ImagePullBackOff means Kubernetes can't pull your container image. Check: 1) Image name/tag correct? `kubectl describe pod <name>` shows the exact error. 2) Private registry? Create an imagePullSecret: `kubectl create secret docker-registry regcred --docker-server=registry.example.com --docker-username=user --docker-password=pass`. 3) Network issue? Test from node: `crictl pull <image>`.

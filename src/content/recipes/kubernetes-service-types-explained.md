@@ -20,6 +20,7 @@ relatedRecipes:
   - "kubernetes-service-mesh-comparison"
   - "kubernetes-networkpolicy-guide"
   - "kubernetes-endpoint-slices-discovery"
+  - "kubernetes-dns-services-guide"
 ---
 
 > 💡 **Quick Answer:** Kubernetes has 4 Service types: **ClusterIP** (internal-only, default) — accessible within the cluster via virtual IP. **NodePort** — exposes on every node's IP at a static port (30000-32767). **LoadBalancer** — provisions cloud load balancer with external IP. **ExternalName** — DNS CNAME alias to external service. Choose ClusterIP for microservice communication, NodePort for dev/testing, LoadBalancer for production external access.

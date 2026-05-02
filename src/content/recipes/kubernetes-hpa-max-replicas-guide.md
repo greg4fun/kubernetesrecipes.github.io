@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-hpa-prometheus-adapter"
   - "kubernetes-horizontal-pod-autoscaler-guide"
+  - "kubernetes-horizontal-scaling-patterns"
 ---
 
 > 💡 **Quick Answer:** Set max replicas for Kubernetes HPA to control autoscaling ceiling. maxReplicas tuning, scaling behavior, stabilization window, and cost protection strategies.

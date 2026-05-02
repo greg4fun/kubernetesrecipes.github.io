@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-coredns-troubleshooting"
   - "kubernetes-ingress-nginx-guide"
   - "dns-policies-configuration"
+  - "kubernetes-dns-services-guide"
 ---
 
 > 💡 **Quick Answer:** EndpointSlices are the scalable replacement for Endpoints objects. Each slice holds up to 100 endpoints, enabling efficient updates in large clusters. Kubernetes auto-creates them for Services. For service discovery: `my-svc.my-ns.svc.cluster.local` resolves to the ClusterIP. Headless services (`clusterIP: None`) return individual pod IPs. Use `ExternalName` services to alias external DNS.
