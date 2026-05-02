@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-velero-snapshot-locations"
   - "kubernetes-disaster-recovery-enterprise"
   - "kubernetes-etcd-backup-restore"
+  - "kubernetes-velero-backup-guide"
 ---
 
 > 💡 **Quick Answer:** Install Velero with a cloud storage plugin, create `Schedule` resources for automated daily backups, and use `Restore` to recover applications. Velero backs up both Kubernetes resources (YAML) and persistent volume data (via snapshots or Restic/Kopia).

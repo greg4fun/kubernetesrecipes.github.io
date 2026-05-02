@@ -1,257 +1,305 @@
 ---
-title: "Kubernetes Gateway API Complete Guide"
-description: "Deploy Kubernetes Gateway API with HTTPRoute, GRPCRoute, and TLSRoute. Replace Ingress with the next-generation traffic management standard."
+title: "Gateway API: Next-Gen K8s Ingress"
+description: "Replace Kubernetes Ingress with Gateway API. HTTPRoute, GRPCRoute, TLSRoute configuration. Multi-tenant gateways, traffic splitting, and header-based routing."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "networking"
 difficulty: "intermediate"
-timeToComplete: "20 minutes"
+timeToComplete: "12 minutes"
 kubernetesVersion: "1.28+"
 tags:
   - "gateway-api"
   - "networking"
   - "ingress"
-  - "envoy"
+  - "routing"
   - "traffic-management"
 relatedRecipes:
-  - "kubernetes-ingress-guide"
-  - "kubernetes-rate-limiting-guide"
-  - "nginx-ingress-limit-burst-multiplier"
-  - "kubernetes-ingress-fundamentals"
+  - "kubernetes-ingress-nginx-guide"
+  - "kubernetes-service-mesh-istio-guide"
+  - "kubernetes-cert-manager-guide"
 ---
 
-> 💡 **Quick Answer:** Gateway API is the successor to Ingress. Install CRDs (`kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml`), deploy a Gateway implementation (Envoy Gateway, Cilium, Istio, or NGINX), create a `Gateway` resource for the listener, and `HTTPRoute` for routing rules. Key advantage: role-based resource model (infra team manages Gateway, app teams manage Routes).
+> 💡 **Quick Answer:** Gateway API is the official successor to Ingress. Install CRDs: `kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/standard-install.yaml`. Create a `Gateway` (infra team), then `HTTPRoute` (app teams). Supports traffic splitting, header matching, URL rewriting, and cross-namespace routing. Works with Envoy Gateway, Istio, Cilium, NGINX, Traefik.
 
 ## The Problem
 
 Kubernetes Ingress has limitations:
 
-- No standard way to define TCP/UDP/gRPC routing
-- Vendor-specific annotations for every feature
-- No role separation (infra vs app teams)
-- Limited traffic splitting for canary deployments
-- No header-based routing without custom annotations
+- No standard traffic splitting (canary/blue-green)
+- No header-based routing without annotations
+- Single resource type for different roles (infra vs app team)
+- Implementation-specific features via annotations
+- No support for gRPC, TCP, UDP routing
 
 ## The Solution
 
 ### Install Gateway API CRDs
 
 ```bash
-# Install standard channel CRDs (stable APIs)
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml
+# Standard channel (stable features)
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/standard-install.yaml
 
-# Or experimental channel (includes TCPRoute, TLSRoute, etc.)
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/experimental-install.yaml
+# Experimental channel (includes TCPRoute, UDPRoute, GRPCRoute)
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/experimental-install.yaml
 
-# Verify
-kubectl get crd | grep gateway
-# gatewayclasses.gateway.networking.k8s.io
-# gateways.gateway.networking.k8s.io
-# httproutes.gateway.networking.k8s.io
+# Install a Gateway controller (pick one):
+# Envoy Gateway
+helm install eg oci://docker.io/envoyproxy/gateway-helm -n envoy-gateway-system --create-namespace
+
+# Or Istio
+istioctl install --set profile=minimal
+
+# Or Cilium
+cilium install --set gatewayAPI.enabled=true
 ```
 
-### Install a Gateway Implementation
-
-```bash
-# Option 1: Envoy Gateway
-helm install eg oci://docker.io/envoyproxy/gateway-helm \
-  --version v1.2.0 -n envoy-gateway-system --create-namespace
-
-# Option 2: Cilium (if already using Cilium CNI)
-helm upgrade cilium cilium/cilium -n kube-system \
-  --set gatewayAPI.enabled=true
-
-# Option 3: NGINX Gateway Fabric
-helm install ngf oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric \
-  --create-namespace -n nginx-gateway
-
-# Verify GatewayClass is available
-kubectl get gatewayclass
-# NAME            CONTROLLER                        ACCEPTED
-# eg              gateway.envoyproxy.io/controller   True
-```
-
-### Create a Gateway
+### GatewayClass + Gateway
 
 ```yaml
-# Infrastructure team creates the Gateway (load balancer)
+# GatewayClass (cluster-scoped, like StorageClass)
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: envoy
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+
+---
+# Gateway (infra team creates this)
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: api-gateway
-  namespace: infra
+  name: production
+  namespace: gateway-system
 spec:
-  gatewayClassName: eg          # Matches GatewayClass
+  gatewayClassName: envoy
   listeners:
   - name: http
     protocol: HTTP
     port: 80
     allowedRoutes:
       namespaces:
-        from: All               # Routes from any namespace can attach
+        from: All              # Any namespace can attach routes
+  
   - name: https
     protocol: HTTPS
     port: 443
     tls:
       mode: Terminate
       certificateRefs:
-      - kind: Secret
-        name: wildcard-tls
+      - name: wildcard-tls
+        namespace: gateway-system
     allowedRoutes:
       namespaces:
         from: Selector
         selector:
           matchLabels:
-            gateway-access: "true"   # Only labeled namespaces
+            gateway-access: "true"
 ```
 
-### HTTPRoute — Basic Routing
+### HTTPRoute
 
 ```yaml
-# App team creates routes (no infra access needed)
+# Simple routing (app team creates this)
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: api-routes
+  name: my-app
   namespace: production
 spec:
   parentRefs:
-  - name: api-gateway
-    namespace: infra
+  - name: production
+    namespace: gateway-system
   hostnames:
-  - api.example.com
+  - app.example.com
   rules:
-  # Path-based routing
   - matches:
     - path:
         type: PathPrefix
-        value: /v1/users
+        value: /api
     backendRefs:
-    - name: users-service
+    - name: api-service
       port: 8080
-  
-  # Header-based routing
   - matches:
-    - headers:
-      - name: x-api-version
-        value: "2"
-    backendRefs:
-    - name: users-v2-service
-      port: 8080
-  
-  # Method-based routing
-  - matches:
-    - method: POST
-      path:
+    - path:
         type: PathPrefix
-        value: /v1/orders
+        value: /
     backendRefs:
-    - name: orders-write-service
-      port: 8080
-```
+    - name: frontend
+      port: 80
 
-### Traffic Splitting (Canary Deployments)
-
-```yaml
+---
+# Traffic splitting (canary)
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: canary-route
 spec:
   parentRefs:
-  - name: api-gateway
-    namespace: infra
+  - name: production
+    namespace: gateway-system
   hostnames:
   - app.example.com
   rules:
   - backendRefs:
-    - name: app-stable
-      port: 8080
-      weight: 90          # 90% to stable
-    - name: app-canary
-      port: 8080
-      weight: 10          # 10% to canary
-```
+    - name: app-v1
+      port: 80
+      weight: 90
+    - name: app-v2
+      port: 80
+      weight: 10
 
-### Request/Response Manipulation
-
-```yaml
+---
+# Header-based routing
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: header-route
 spec:
   parentRefs:
-  - name: api-gateway
-    namespace: infra
+  - name: production
+    namespace: gateway-system
+  hostnames:
+  - app.example.com
+  rules:
+  - matches:
+    - headers:
+      - name: x-version
+        value: beta
+    backendRefs:
+    - name: app-beta
+      port: 80
+  - backendRefs:
+    - name: app-stable
+      port: 80
+```
+
+### Advanced Features
+
+```yaml
+# URL rewriting
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: rewrite-route
+spec:
+  parentRefs:
+  - name: production
+    namespace: gateway-system
   rules:
   - matches:
     - path:
         type: PathPrefix
-        value: /api
+        value: /old-api
     filters:
-    # Add request header
-    - type: RequestHeaderModifier
-      requestHeaderModifier:
-        add:
-        - name: X-Forwarded-Proto
-          value: https
-    # Redirect
-    - type: RequestRedirect
-      requestRedirect:
-        scheme: https
-        statusCode: 301
-    # URL rewrite
     - type: URLRewrite
       urlRewrite:
-        hostname: backend.internal
         path:
           type: ReplacePrefixMatch
           replacePrefixMatch: /v2/api
     backendRefs:
     - name: api-service
       port: 8080
+
+---
+# Request header modification
+  rules:
+  - filters:
+    - type: RequestHeaderModifier
+      requestHeaderModifier:
+        add:
+        - name: X-Gateway
+          value: production
+        remove:
+        - X-Internal-Debug
+    backendRefs:
+    - name: backend
+      port: 80
+
+---
+# Redirect
+  rules:
+  - matches:
+    - path:
+        type: Exact
+        value: /old-page
+    filters:
+    - type: RequestRedirect
+      requestRedirect:
+        hostname: new.example.com
+        statusCode: 301
 ```
 
-### Gateway API vs Ingress
+### Role Separation
 
-| Feature | Ingress | Gateway API |
-|---------|---------|-------------|
-| HTTP routing | ✅ Basic | ✅ Advanced (header, method, query) |
-| TLS termination | ✅ | ✅ + passthrough |
-| TCP/UDP routing | ❌ | ✅ (TCPRoute, UDPRoute) |
-| gRPC routing | ❌ (annotations) | ✅ (GRPCRoute) |
-| Traffic splitting | ❌ (annotations) | ✅ Native (weight) |
-| Role separation | ❌ | ✅ (Gateway vs Route) |
-| Cross-namespace | ❌ | ✅ (ReferenceGrant) |
-| Header manipulation | ❌ (annotations) | ✅ Native (filters) |
+```
+Ingress (old):
+  One resource, one role → all config in one place
+  
+Gateway API (new):
+  GatewayClass  → Platform team (cluster-wide, which controller)
+  Gateway       → Infra team (listeners, TLS, namespaces)
+  HTTPRoute     → App team (routing rules for their service)
+  
+  Clear separation of concerns!
+```
+
+### Comparison: Ingress vs Gateway API
+
+```
+Feature              | Ingress           | Gateway API
+---------------------|-------------------|-------------------
+Traffic splitting    | ❌ (annotations)  | ✅ weight-based
+Header matching      | ❌ (annotations)  | ✅ native
+URL rewriting        | ❌ (annotations)  | ✅ native
+gRPC routing         | ❌                | ✅ GRPCRoute
+TCP/UDP routing      | ❌                | ✅ TCPRoute/UDPRoute
+Multi-tenant         | ❌                | ✅ cross-namespace
+Role separation      | ❌                | ✅ Gateway/Route split
+Portable config      | ⚠️ annotations    | ✅ standard API
+```
+
+### Check Status
+
+```bash
+# Gateway status
+kubectl get gateway -A
+kubectl describe gateway production -n gateway-system
+
+# HTTPRoute status
+kubectl get httproute -A
+kubectl describe httproute my-app
+
+# Check if route is attached to gateway
+kubectl get httproute my-app -o jsonpath='{.status.parents[0].conditions}'
+```
 
 ## Common Issues
 
-**"no matching parent gateway" on HTTPRoute**
+**HTTPRoute not working — no traffic**
 
-Route references a Gateway in another namespace. Check `parentRefs.namespace` and ensure the Gateway's `allowedRoutes.namespaces` includes your namespace.
+Route not attached to Gateway. Check: `kubectl describe httproute` → parentRef conditions. Ensure namespace is allowed by Gateway's `allowedRoutes`.
 
-**Gateway stuck in "Programmed: False"**
+**Gateway stuck in "Not Accepted"**
 
-Implementation controller not running or misconfigured. Check: `kubectl get gatewayclass` and the controller pod logs.
+GatewayClass controller not installed or not matching. Verify: `kubectl get gatewayclass`.
 
-**TLS certificate not working**
+**Cross-namespace route rejected**
 
-Secret must be in the same namespace as the Gateway (or use ReferenceGrant for cross-namespace).
+Gateway `allowedRoutes.namespaces.from` must be `All` or `Selector` matching the route's namespace.
 
 ## Best Practices
 
-- **Use Gateway API for new clusters** — Ingress is in maintenance mode
-- **Infra team manages Gateway, app teams manage Routes** — role separation
-- **One Gateway per domain/environment** — keep listener config centralized
-- **Use ReferenceGrant** for cross-namespace Secret/Service references
-- **Traffic splitting for canary** — native, no annotations needed
+- **Use Gateway API over Ingress** for new clusters — it's the future
+- **Separate Gateway from Routes** — infra team manages Gateway, app teams manage Routes
+- **Traffic splitting for canary** — native weight-based routing
+- **Cross-namespace references** — enable controlled multi-tenant routing
+- **Check controller compatibility** — not all controllers support all features yet
 
 ## Key Takeaways
 
-- Gateway API is the official successor to Ingress (GA since K8s 1.29)
-- Role model: infra team → GatewayClass + Gateway, app teams → HTTPRoute
-- Native traffic splitting, header routing, and request manipulation
-- Implementations: Envoy Gateway, Cilium, Istio, NGINX Gateway Fabric
-- Install CRDs first, then a controller — Gateway API is just an API spec
+- Gateway API is the official Ingress successor (GA since K8s 1.28)
+- Separates concerns: GatewayClass (platform) → Gateway (infra) → Route (app)
+- Native traffic splitting, header routing, URL rewriting — no annotations
+- Supports HTTP, gRPC, TCP, UDP routing
+- Works with Envoy Gateway, Istio, Cilium, NGINX, Traefik

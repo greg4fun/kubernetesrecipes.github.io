@@ -19,6 +19,7 @@ relatedRecipes:
   - "kubernetes-security-context-guide"
   - "kubernetes-audit-logging-guide"
   - "kubernetes-certificate-management"
+  - "kubernetes-kyverno-policy-guide"
 ---
 
 > 💡 **Quick Answer:** Label namespaces with `pod-security.kubernetes.io/enforce: restricted` to enforce Pod Security Standards. Three profiles: `privileged` (unrestricted), `baseline` (prevent known escalations), `restricted` (hardened best practices). Three modes: `enforce` (reject), `audit` (log), `warn` (warning). PSA replaced PodSecurityPolicy in K8s 1.25.

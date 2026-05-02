@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-hostpath-vs-pvc"
   - "kubernetes-etcd-backup-guide"
+  - "kubernetes-velero-backup-guide"
 ---
 
 > 💡 **Quick Answer:** Configure Velero snapshot locations for Kubernetes backup. Volume snapshots, file system backup, cross-region copies, and backup verification.

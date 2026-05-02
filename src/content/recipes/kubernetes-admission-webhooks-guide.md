@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-pod-security-admission"
   - "kubernetes-rbac-role-rolebinding"
   - "kubernetes-certificate-management"
+  - "kubernetes-kyverno-policy-guide"
 ---
 
 > 💡 **Quick Answer:** Admission webhooks intercept API requests before persistence. **Validating** webhooks accept/reject requests (enforce policies). **Mutating** webhooks modify requests (inject sidecars, add labels). Configure with `ValidatingWebhookConfiguration` or `MutatingWebhookConfiguration`. The webhook runs as a Service in-cluster, must serve HTTPS, and the CA bundle must be configured in the webhook config.

@@ -15,6 +15,7 @@ tags:
   - "storage"
 relatedRecipes:
   - "etcd-backup-restore-kubernetes"
+  - "kubernetes-velero-backup-guide"
 ---
 
 > 💡 **Quick Answer:** Install Velero with `velero install --provider aws --bucket my-backup --secret-file ./credentials`, then schedule backups with `velero schedule create daily --schedule="0 2 * * *"`. Velero backs up Kubernetes resources and persistent volumes to S3-compatible storage, enabling full namespace restore and cluster migration.
