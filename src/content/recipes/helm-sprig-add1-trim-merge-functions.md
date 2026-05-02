@@ -1,6 +1,6 @@
 ---
 title: "Helm Sprig add1 trim merge Functions"
-description: "Helm Sprig add1 for incrementing, trim for whitespace, and merge for dictionaries. Practical Helm template examples and patterns."
+description: "Helm Sprig add1 function increments integers in templates. Plus trim for whitespace removal and merge for combining dictionaries in Helm charts."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "helm"

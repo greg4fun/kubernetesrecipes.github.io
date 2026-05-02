@@ -1,6 +1,6 @@
 ---
 title: "Helm Sprig print quote default Functions"
-description: "Helm Sprig print, quote, and default functions for templates. Concatenate without spaces, safe YAML quoting, and fallback values."
+description: "Helm Sprig print function concatenates without spaces, quote wraps in double quotes, default provides fallback values. Template examples and patterns."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "helm"

@@ -1,6 +1,6 @@
 ---
 title: "Helm Sprig cat Function: Concatenate Strings"
-description: "Use the Helm Sprig cat function to concatenate strings in templates. Syntax, spaces between arguments, conditionals, and real examples."
+description: "Helm Sprig cat function concatenates strings with spaces between arguments. Syntax, why cat inserts spaces, conditionals, and template examples."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "helm"

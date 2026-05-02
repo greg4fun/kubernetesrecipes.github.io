@@ -1,6 +1,6 @@
 ---
 title: "Helm Sprig toString Function Guide"
-description: "Helm Sprig toString function to convert values to strings in templates. Handle integers, booleans, lists, and nil values safely."
+description: "Helm Sprig toString function converts values to strings in templates. Handle integers, booleans, lists, and nil values safely in Helm charts."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "helm"
