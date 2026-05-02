@@ -21,6 +21,7 @@ relatedRecipes:
   - "gpu-feature-discovery-kubernetes"
   - "multi-gpu-pytorch-ddp-kubernetes"
   - "nvidia-driver-update-kubernetes"
+  - "gpu-node-affinity-scheduling"
 ---
 
 > 💡 **Quick Answer:** Configure GPU resource limits and requests in Kubernetes pod specs. nvidia.com/gpu resource, fractional GPUs, MIG slices, and multi-GPU allocation.

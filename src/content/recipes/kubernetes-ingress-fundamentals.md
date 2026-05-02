@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-service-types-explained"
   - "openshift-routes-vs-ingress"
   - "nginx-ingress-limit-burst-multiplier"
+  - "kubernetes-ingress-nginx-guide"
 ---
 
 > 💡 **Quick Answer:** Ingress routes external HTTP/HTTPS traffic to internal Services based on hostname and path. Install an Ingress Controller (NGINX, Traefik, HAProxy), then create Ingress resources: `host: app.example.com` → `service: app-svc, port: 80`. Add TLS with a Secret reference. For Kubernetes 1.28+, consider Gateway API as the modern replacement.

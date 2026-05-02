@@ -1,27 +1,38 @@
 ---
-title: "Kubernetes Jobs and CronJobs Complete Guide"
-description: "Create Kubernetes Jobs for one-time tasks and CronJobs for scheduled work. Covers parallelism, backoff limits, completion tracking, and time zones."
+title: "K8s Jobs and CronJobs: Complete Guide"
+description: "Create Kubernetes Jobs and CronJobs for batch processing. Parallelism, backoff limits, completion counts, cron schedules, and failure handling patterns."
+publishDate: "2026-05-02"
+author: "Luca Berton"
 category: "deployments"
 difficulty: "beginner"
-publishDate: "2026-04-03"
-tags: ["job", "cronjob", "batch", "scheduling", "cron", "kubernetes"]
-author: "Luca Berton"
+timeToComplete: "10 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - "jobs"
+  - "cronjobs"
+  - "batch"
+  - "scheduling"
+  - "cka"
 relatedRecipes:
-  - "argocd-gitops"
-  - "backstage-kubernetes-developer-portal"
-  - "cluster-api-infrastructure-as-code"
-  - "deployment-vs-statefulset"
+  - "cronjob-concurrency-policy"
+  - "kubernetes-init-containers-guide"
+  - "kubernetes-deployment-rolling-update"
 ---
 
-> 💡 **Quick Answer:** Create Kubernetes Jobs for one-time tasks and CronJobs for scheduled work. Covers parallelism, backoff limits, completion tracking, and time zones.
+> 💡 **Quick Answer:** A Job runs a pod to completion: `kubectl create job myjob --image=busybox -- echo hello`. A CronJob runs Jobs on a schedule: `schedule: "0 * * * *"` (hourly). Key settings: `backoffLimit: 4` (retries), `completions: 5` (run 5 times), `parallelism: 3` (3 pods at once), `concurrencyPolicy: Forbid` (skip if previous still running).
 
 ## The Problem
 
-This is one of the most searched Kubernetes topics. Having a comprehensive, well-structured guide helps both beginners and experienced users quickly find what they need.
+Not all workloads run forever — some need to:
+
+- Process a batch of items and exit
+- Run database migrations once
+- Generate reports on a schedule
+- Clean up old resources periodically
 
 ## The Solution
 
-### Create a Job
+### Basic Job
 
 ```yaml
 apiVersion: batch/v1
@@ -29,125 +40,187 @@ kind: Job
 metadata:
   name: data-migration
 spec:
-  backoffLimit: 3               # Retry up to 3 times on failure
-  activeDeadlineSeconds: 600    # Timeout after 10 minutes
-  ttlSecondsAfterFinished: 3600 # Clean up after 1 hour
+  backoffLimit: 4           # Retry up to 4 times on failure
+  activeDeadlineSeconds: 600  # Kill after 10 minutes
   template:
     spec:
       containers:
-        - name: migrate
-          image: my-app:v1
-          command: ["python", "migrate.py"]
-          env:
-            - name: DATABASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: url
-      restartPolicy: Never       # Required for Jobs
+      - name: migrate
+        image: myapp:v2
+        command: ["./migrate", "--target", "latest"]
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: url
+      restartPolicy: Never    # Required: Never or OnFailure
+```
+
+```bash
+# Create job imperatively
+kubectl create job myjob --image=busybox -- echo "hello world"
+
+# Watch job status
+kubectl get jobs -w
+# NAME             COMPLETIONS   DURATION   AGE
+# data-migration   1/1           45s        2m
+
+# Check logs
+kubectl logs job/data-migration
+
+# Delete job (and its pods)
+kubectl delete job data-migration
 ```
 
 ### Parallel Jobs
 
 ```yaml
+# Process 10 items, 3 at a time
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: process-queue
+  name: batch-processor
 spec:
-  parallelism: 5        # Run 5 pods simultaneously
-  completions: 20       # Total tasks to complete
-  backoffLimit: 3
+  completions: 10     # Total successful completions needed
+  parallelism: 3      # Run 3 pods simultaneously
+  backoffLimit: 5
   template:
     spec:
       containers:
-        - name: worker
-          image: worker:v1
+      - name: worker
+        image: myworker:v1
+        env:
+        - name: JOB_COMPLETION_INDEX
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
+      restartPolicy: Never
+
+---
+# Indexed job (K8s 1.24+) — each pod gets unique index
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: indexed-job
+spec:
+  completions: 5
+  parallelism: 5
+  completionMode: Indexed    # Each pod gets JOB_COMPLETION_INDEX 0-4
+  template:
+    spec:
+      containers:
+      - name: worker
+        image: myworker:v1
+        command: ["./process", "--partition"]
+        env:
+        - name: PARTITION
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
       restartPolicy: Never
 ```
 
-### CronJob (Scheduled Jobs)
+### CronJob
 
 ```yaml
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: nightly-backup
+  name: daily-report
 spec:
-  schedule: "0 2 * * *"         # 2 AM daily
-  timeZone: "Europe/Paris"      # K8s 1.27+
-  concurrencyPolicy: Forbid     # Don't overlap
-  successfulJobsHistoryLimit: 3
-  failedJobsHistoryLimit: 3
-  startingDeadlineSeconds: 300  # Skip if >5min late
+  schedule: "0 6 * * *"          # 6 AM daily
+  timeZone: "Europe/Rome"        # K8s 1.27+
+  concurrencyPolicy: Forbid      # Skip if previous still running
+  successfulJobsHistoryLimit: 3  # Keep last 3 successful
+  failedJobsHistoryLimit: 1      # Keep last 1 failed
+  startingDeadlineSeconds: 300   # Don't start if 5min late
   jobTemplate:
     spec:
+      backoffLimit: 2
       template:
         spec:
           containers:
-            - name: backup
-              image: backup-tool:v1
-              command: ["./backup.sh"]
+          - name: reporter
+            image: myapp:v2
+            command: ["./generate-report"]
           restartPolicy: OnFailure
 ```
 
-### Cron Schedule Reference
+### Cron Schedule Syntax
 
-| Schedule | Meaning |
-|----------|---------|
-| `*/5 * * * *` | Every 5 minutes |
-| `0 * * * *` | Every hour |
-| `0 2 * * *` | Daily at 2 AM |
-| `0 2 * * 1` | Weekly Monday 2 AM |
-| `0 0 1 * *` | Monthly 1st at midnight |
+```
+┌───────── minute (0-59)
+│ ┌───────── hour (0-23)
+│ │ ┌───────── day of month (1-31)
+│ │ │ ┌───────── month (1-12)
+│ │ │ │ ┌───────── day of week (0-6, Sun=0)
+│ │ │ │ │
+* * * * *
+
+# Examples:
+"0 * * * *"      # Every hour
+"*/15 * * * *"   # Every 15 minutes
+"0 6 * * *"      # Daily at 6 AM
+"0 6 * * 1-5"    # Weekdays at 6 AM
+"0 0 1 * *"      # First day of month at midnight
+"0 6,18 * * *"   # 6 AM and 6 PM daily
+```
+
+### ConcurrencyPolicy Options
+
+| Policy | Behavior |
+|--------|----------|
+| `Allow` (default) | Multiple jobs can run simultaneously |
+| `Forbid` | Skip new job if previous still running |
+| `Replace` | Kill running job, start new one |
+
+### Manage Jobs
 
 ```bash
-# Check jobs
-kubectl get jobs
-kubectl get cronjobs
+# Create CronJob
+kubectl create cronjob hourly-cleanup --image=busybox \
+  --schedule="0 * * * *" -- /bin/sh -c "echo cleanup"
 
-# Manually trigger a CronJob
-kubectl create job manual-backup --from=cronjob/nightly-backup
+# Trigger CronJob manually
+kubectl create job manual-run --from=cronjob/daily-report
 
-# Check job logs
-kubectl logs job/data-migration
+# Suspend CronJob
+kubectl patch cronjob daily-report -p '{"spec":{"suspend":true}}'
 
-# Delete completed jobs
-kubectl delete jobs --field-selector status.successful=1
+# Resume
+kubectl patch cronjob daily-report -p '{"spec":{"suspend":false}}'
+
+# List recent jobs from a CronJob
+kubectl get jobs -l job-name -o wide
 ```
 
-```mermaid
-graph TD
-    A[CronJob] -->|Schedule triggers| B[Job created]
-    B --> C[Pod 1 - working]
-    B --> D[Pod 2 - working]
-    B --> E[Pod 3 - working]
-    C -->|Success| F[Complete]
-    D -->|Failure| G{Retry?}
-    G -->|backoffLimit not reached| H[New Pod]
-    G -->|backoffLimit reached| I[Failed]
-```
+## Common Issues
 
-## Frequently Asked Questions
+**Job pods not cleaned up**
 
-### What's the difference between Job and CronJob?
+Set `ttlSecondsAfterFinished: 300` to auto-delete completed job pods after 5 minutes.
 
-A **Job** runs once and completes. A **CronJob** creates Jobs on a schedule (like cron on Linux). CronJobs are for recurring tasks.
+**CronJob missed schedule**
 
-### Why use `restartPolicy: Never` vs `OnFailure`?
+If `startingDeadlineSeconds` passed, the run is skipped. Check controller logs: `kubectl logs -n kube-system -l component=kube-controller-manager`.
 
-`Never` creates a new pod on failure (good for debugging — you can see logs). `OnFailure` restarts the same pod in-place.
+**Job stuck — pods keep failing**
+
+`backoffLimit` reached. Check pod logs: `kubectl logs <pod>`. Exponential backoff: 10s, 20s, 40s...
 
 ## Best Practices
 
-- **Start simple** — use the basic form first, add complexity as needed
-- **Be consistent** — follow naming conventions across your cluster
-- **Document your choices** — add annotations explaining why, not just what
-- **Monitor and iterate** — review configurations regularly
+- **Set `activeDeadlineSeconds`** — prevent runaway jobs from consuming resources forever
+- **Set `backoffLimit`** — don't retry infinitely on permanent failures
+- **Use `concurrencyPolicy: Forbid`** for CronJobs — prevent overlap
+- **Set `ttlSecondsAfterFinished`** — auto-cleanup completed job pods
+- **Use `timeZone`** (K8s 1.27+) — avoid UTC confusion for scheduled tasks
 
 ## Key Takeaways
 
-- This is fundamental Kubernetes knowledge every engineer needs
-- Start with the simplest approach that solves your problem
-- Use `kubectl explain` and `kubectl describe` when unsure
-- Practice in a test cluster before applying to production
+- Jobs run pods to completion with configurable retries and parallelism
+- CronJobs create Jobs on a cron schedule with concurrency control
+- `completions` × `parallelism` controls total work and concurrent pods
+- `concurrencyPolicy: Forbid` prevents overlapping runs
+- Always set `backoffLimit` and `activeDeadlineSeconds` for safety

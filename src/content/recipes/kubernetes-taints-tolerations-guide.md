@@ -1,68 +1,91 @@
 ---
-title: "Kubernetes Taints Tolerations Guide"
-description: "Configure Kubernetes taints and tolerations for node scheduling control. Dedicate nodes, repel pods, and manage GPU or specialized hardware."
-publishDate: "2026-04-29"
+title: "K8s Taints and Tolerations Explained"
+description: "Configure Kubernetes taints and tolerations for pod scheduling. NoSchedule, PreferNoSchedule, NoExecute effects, GPU node taints, and drain behavior."
+publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"
 difficulty: "intermediate"
-timeToComplete: "15 minutes"
+timeToComplete: "10 minutes"
 kubernetesVersion: "1.28+"
 tags:
   - "taints"
   - "tolerations"
   - "scheduling"
-  - "node-affinity"
-  - "gpu"
+  - "nodes"
+  - "cka"
 relatedRecipes:
-  - "gpu-node-affinity-scheduling"
-  - "kubernetes-node-drain-cordon"
+  - "node-taints-tolerations"
+  - "kubernetes-node-affinity-guide"
+  - "kubernetes-node-untolerated-taint-master"
+  - "debug-scheduling-failures"
 ---
 
-> 💡 **Quick Answer:** Taints on nodes repel pods unless the pod has a matching toleration. `kubectl taint nodes gpu-1 nvidia.com/gpu=true:NoSchedule` prevents non-GPU pods from scheduling on GPU nodes. Pods needing GPU add a toleration to bypass the taint. Three effects: `NoSchedule` (prevent scheduling), `PreferNoSchedule` (soft preference), `NoExecute` (evict existing pods).
+> 💡 **Quick Answer:** Taints repel pods from nodes: `kubectl taint nodes node1 gpu=true:NoSchedule`. Tolerations allow pods to schedule on tainted nodes: `tolerations: [{key: "gpu", operator: "Equal", value: "true", effect: "NoSchedule"}]`. Three effects: **NoSchedule** (hard block), **PreferNoSchedule** (soft, avoid if possible), **NoExecute** (evict existing pods too). Control plane nodes have `node-role.kubernetes.io/control-plane:NoSchedule` by default.
 
 ## The Problem
 
-Without scheduling constraints:
+Some nodes are special — you don't want arbitrary workloads on them:
 
-- Non-GPU workloads consume expensive GPU nodes
-- Noisy neighbors affect latency-sensitive workloads
-- Development pods land on production-dedicated nodes
-- System maintenance needs drain all pods (not just some)
+- GPU nodes should only run GPU workloads
+- Control plane nodes shouldn't run user pods
+- Nodes being drained shouldn't accept new pods
+- Dedicated nodes for specific teams or workloads
 
 ## The Solution
 
-### Taint a Node
+### Add Taints to Nodes
 
 ```bash
-# Add taint
-kubectl taint nodes gpu-node-1 nvidia.com/gpu=present:NoSchedule
+# Taint a node
+kubectl taint nodes gpu-node-1 nvidia.com/gpu=true:NoSchedule
 
-# Add taint for dedicated team
-kubectl taint nodes team-a-node-1 team=team-a:NoSchedule
+# Multiple taints
+kubectl taint nodes gpu-node-1 dedicated=ml-team:NoSchedule
 
-# View taints
-kubectl describe node gpu-node-1 | grep Taints
+# PreferNoSchedule (soft — try to avoid, not hard block)
+kubectl taint nodes spot-node-1 spot=true:PreferNoSchedule
 
-# Remove taint (trailing minus)
-kubectl taint nodes gpu-node-1 nvidia.com/gpu=present:NoSchedule-
+# NoExecute (evicts existing pods without toleration!)
+kubectl taint nodes node-1 maintenance=true:NoExecute
+
+# Remove a taint (add minus at end)
+kubectl taint nodes gpu-node-1 nvidia.com/gpu=true:NoSchedule-
+
+# Check taints
+kubectl describe node gpu-node-1 | grep Taint
+# Taints: nvidia.com/gpu=true:NoSchedule
 ```
 
-### Pod with Toleration
+### Add Tolerations to Pods
 
 ```yaml
 apiVersion: v1
 kind: Pod
 metadata:
-  name: gpu-workload
+  name: gpu-training
 spec:
   tolerations:
-  - key: nvidia.com/gpu
-    operator: Equal
-    value: present
-    effect: NoSchedule
+  # Tolerate specific taint
+  - key: "nvidia.com/gpu"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
+  
+  # Tolerate by key existence (any value)
+  - key: "dedicated"
+    operator: "Exists"
+    effect: "NoSchedule"
+  
+  # Tolerate NoExecute with timeout
+  - key: "maintenance"
+    operator: "Equal"
+    value: "true"
+    effect: "NoExecute"
+    tolerationSeconds: 300    # Stay for 5 min, then evicted
+  
   containers:
   - name: training
-    image: pytorch/pytorch:2.4.0-cuda12.4-cudnn9-runtime
+    image: pytorch:latest
     resources:
       limits:
         nvidia.com/gpu: 1
@@ -70,111 +93,96 @@ spec:
 
 ### Taint Effects
 
-| Effect | Behavior |
-|--------|----------|
-| `NoSchedule` | New pods without toleration won't schedule |
-| `PreferNoSchedule` | Scheduler tries to avoid, but can still place |
-| `NoExecute` | Evict running pods without toleration |
+| Effect | New pods without toleration | Existing pods without toleration |
+|--------|---------------------------|--------------------------------|
+| `NoSchedule` | ❌ Not scheduled | ✅ Stay running |
+| `PreferNoSchedule` | ⚠️ Avoid if possible | ✅ Stay running |
+| `NoExecute` | ❌ Not scheduled | ❌ Evicted immediately |
 
-### NoExecute with Eviction Timeout
-
-```yaml
-tolerations:
-- key: node.kubernetes.io/unreachable
-  operator: Exists
-  effect: NoExecute
-  tolerationSeconds: 300    # Evict after 5 minutes if node unreachable
-```
-
-### Operator Types
+### Tolerate Everything (DaemonSets)
 
 ```yaml
-# Equal: key, value, and effect must match
+# System DaemonSets should run on ALL nodes including tainted ones
 tolerations:
-- key: team
-  operator: Equal
-  value: team-a
-  effect: NoSchedule
-
-# Exists: key and effect match (any value)
-tolerations:
-- key: nvidia.com/gpu
-  operator: Exists
-  effect: NoSchedule
-
-# Tolerate everything (DaemonSets do this)
-tolerations:
-- operator: Exists
+- operator: "Exists"    # Tolerates ALL taints
 ```
 
-### Built-in Taints
-
-Kubernetes auto-adds these taints on node conditions:
-
-| Taint | Trigger |
-|-------|---------|
-| `node.kubernetes.io/not-ready` | Node NotReady |
-| `node.kubernetes.io/unreachable` | Node unreachable |
-| `node.kubernetes.io/memory-pressure` | Memory pressure |
-| `node.kubernetes.io/disk-pressure` | Disk pressure |
-| `node.kubernetes.io/pid-pressure` | PID pressure |
-| `node.kubernetes.io/unschedulable` | Node cordoned |
-
-### Common Patterns
+### Common Taint Patterns
 
 ```bash
-# Dedicated GPU nodes
-kubectl taint nodes gpu-pool nvidia.com/gpu=present:NoSchedule
+# GPU nodes — only GPU workloads
+kubectl taint nodes gpu-node-1 nvidia.com/gpu=present:NoSchedule
 
 # Dedicated team nodes
-kubectl taint nodes team-a-pool team=a:NoSchedule
+kubectl taint nodes team-a-node dedicated=team-a:NoSchedule
 
 # Spot/preemptible nodes
-kubectl taint nodes spot-pool cloud.google.com/gke-spot=true:NoSchedule
+kubectl taint nodes spot-1 cloud.google.com/gke-spot=true:NoSchedule
 
-# Control plane (already tainted by default)
+# Master/control-plane (built-in)
 # node-role.kubernetes.io/control-plane:NoSchedule
+
+# Node drain (automatic)
+kubectl drain node-1
+# Adds: node.kubernetes.io/unschedulable:NoSchedule
 ```
 
-```mermaid
-graph TD
-    subgraph Scheduling
-        P1[GPU Pod<br/>+toleration] --> |✅ Scheduled| G[GPU Node<br/>taint: nvidia.com/gpu]
-        P2[Regular Pod<br/>no toleration] --> |❌ Rejected| G
-        P2 --> |✅ Scheduled| W[Worker Node<br/>no taint]
-    end
-    
-    style G fill:#76B900,color:white
-    style P1 fill:#4CAF50,color:white
-    style P2 fill:#2196F3,color:white
+### Schedule Pods on Control Plane
+
+```yaml
+# Tolerate control-plane taint (for small clusters / dev)
+tolerations:
+- key: "node-role.kubernetes.io/control-plane"
+  operator: "Exists"
+  effect: "NoSchedule"
+```
+
+```bash
+# Or remove the taint from control plane
+kubectl taint nodes control-plane-1 node-role.kubernetes.io/control-plane:NoSchedule-
+```
+
+### Built-in Node Condition Taints
+
+```bash
+# Kubernetes auto-adds these taints based on node conditions:
+# node.kubernetes.io/not-ready:NoExecute
+# node.kubernetes.io/unreachable:NoExecute
+# node.kubernetes.io/memory-pressure:NoSchedule
+# node.kubernetes.io/disk-pressure:NoSchedule
+# node.kubernetes.io/pid-pressure:NoSchedule
+# node.kubernetes.io/network-unavailable:NoSchedule
+
+# Default toleration for not-ready/unreachable: 300s (5 min)
+# After 5 min of node being unreachable, pods are evicted
 ```
 
 ## Common Issues
 
-**Pods pending with "node(s) had untolerated taint"**
+**"1 node(s) had untolerated taint"**
 
-Pod doesn't have a toleration matching the node's taint. Add the correct toleration or remove the taint.
+Pod doesn't tolerate node's taint. Add matching toleration or remove the taint. See: `kubectl describe pod <pod>` Events section.
 
-**Toleration exists but pod still not scheduled**
+**Pods evicted after adding NoExecute taint**
 
-Taints + tolerations only remove the repulsion. You also need node affinity or nodeSelector to ATTRACT the pod to specific nodes. Tolerations alone don't guarantee placement.
+By design — NoExecute evicts existing pods. Use `tolerationSeconds` to give pods time to gracefully shutdown.
 
-**DaemonSet pods not running on tainted nodes**
+**DaemonSet pods not scheduling on tainted nodes**
 
-Add tolerations to the DaemonSet pod template. System DaemonSets (like kube-proxy) have `operator: Exists` to tolerate everything.
+Add `tolerations: [{operator: "Exists"}]` to the DaemonSet template. System DaemonSets (kube-proxy, CNI) already have this.
 
 ## Best Practices
 
-- **Combine taints with node affinity** — tolerations allow, affinity attracts
-- **Use `NoSchedule` for dedication** — prevents scheduling but doesn't evict existing pods
-- **Use `NoExecute` for isolation** — evicts pods that shouldn't be there
-- **`PreferNoSchedule` for soft preferences** — avoids but allows overflow
-- **Automate taints with labels** — use admission webhooks to auto-taint based on labels
+- **Use taints + tolerations for node dedication** — GPUs, teams, special hardware
+- **Prefer `NoSchedule` over `NoExecute`** — less disruptive
+- **Use `PreferNoSchedule` for soft preferences** — scheduling falls back if needed
+- **Combine with node affinity** — taints repel, affinity attracts
+- **DaemonSets should tolerate all taints** — monitoring/logging must run everywhere
 
 ## Key Takeaways
 
-- Taints repel pods, tolerations are the exception pass
-- Three effects: NoSchedule (block), PreferNoSchedule (soft), NoExecute (evict)
-- Tolerations alone don't attract — combine with nodeSelector or affinity
-- Kubernetes auto-taints nodes on conditions (NotReady, disk-pressure, etc.)
-- Essential for GPU dedication, team isolation, and spot instance workloads
+- Taints on nodes repel pods; tolerations on pods override taints
+- NoSchedule blocks new pods; NoExecute also evicts existing ones
+- Control plane nodes are tainted by default — tolerate to schedule there
+- Kubernetes auto-taints nodes with conditions (not-ready, memory-pressure)
+- Combine taints (repel unwanted) with node affinity (attract wanted) for full control

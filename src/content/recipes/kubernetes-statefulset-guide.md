@@ -1,58 +1,60 @@
 ---
-title: "Kubernetes StatefulSet Guide"
-description: "Deploy StatefulSets in Kubernetes for stateful workloads. Stable network identity, ordered rollouts, persistent storage, and headless services."
-publishDate: "2026-04-29"
+title: "K8s StatefulSet: Stable Identity Guide"
+description: "Deploy stateful applications with Kubernetes StatefulSets. Stable network identity, ordered deployment, persistent storage, and headless service patterns."
+publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "deployments"
 difficulty: "intermediate"
-timeToComplete: "18 minutes"
+timeToComplete: "12 minutes"
 kubernetesVersion: "1.28+"
 tags:
   - "statefulset"
-  - "stateful"
+  - "deployments"
+  - "storage"
   - "databases"
-  - "persistent-storage"
-  - "ordered-deployment"
+  - "cka"
 relatedRecipes:
-  - "kubernetes-persistent-volumes-guide"
+  - "kubernetes-persistent-volume-guide"
   - "kubernetes-service-types-explained"
-  - "kubernetes-pod-disruption-budget"
-  - "kubernetes-backup-velero-guide"
+  - "kubernetes-deployment-rolling-update"
+  - "kubernetes-init-containers-guide"
 ---
 
-> 💡 **Quick Answer:** StatefulSets provide stable pod identities (`pod-0`, `pod-1`, `pod-2`), ordered deployment/scaling, and per-pod persistent storage via `volumeClaimTemplates`. Use for databases (PostgreSQL, MySQL), message queues (Kafka, RabbitMQ), and any workload needing stable hostnames or persistent identity. Requires a Headless Service for DNS.
+> 💡 **Quick Answer:** StatefulSet gives each pod a stable hostname (`web-0`, `web-1`, `web-2`), stable persistent storage (one PVC per pod), and ordered deployment/scaling. Requires a headless Service (`clusterIP: None`). Use for databases (PostgreSQL, MySQL), distributed systems (Kafka, ZooKeeper, etcd), and any workload needing stable identity.
 
 ## The Problem
 
-Deployments treat pods as interchangeable — fine for stateless apps, broken for:
+Deployments treat pods as interchangeable — but some workloads need:
 
-- Databases needing stable storage per replica
-- Distributed systems requiring peer discovery by hostname
-- Applications needing ordered startup (primary before replicas)
-- Workloads where pod identity matters (Kafka broker IDs, ZooKeeper ensemble)
+- **Stable hostnames** — database replicas need to know who is primary vs replica
+- **Stable storage** — each pod needs its own persistent volume, even after rescheduling
+- **Ordered startup** — pod-0 must be ready before pod-1 starts
+- **Ordered termination** — scale down from highest ordinal first
 
 ## The Solution
 
 ### StatefulSet with Headless Service
 
 ```yaml
+# Headless Service (required for StatefulSet DNS)
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-headless
+  name: postgres
 spec:
-  clusterIP: None             # Headless — required for StatefulSet
+  clusterIP: None      # Headless — no virtual IP
   selector:
     app: postgres
   ports:
   - port: 5432
+
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
 spec:
-  serviceName: postgres-headless   # Must match headless service
+  serviceName: postgres    # Must match headless service name
   replicas: 3
   selector:
     matchLabels:
@@ -71,13 +73,12 @@ spec:
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: pg-secret
+              name: pg-creds
               key: password
         volumeMounts:
         - name: data
           mountPath: /var/lib/postgresql/data
-  
-  volumeClaimTemplates:          # One PVC per pod, automatically
+  volumeClaimTemplates:
   - metadata:
       name: data
     spec:
@@ -88,25 +89,63 @@ spec:
           storage: 50Gi
 ```
 
-### Pod Identity and DNS
+### Stable Network Identity
 
 ```bash
-# Pods get stable names
+# StatefulSet pods get predictable hostnames
 kubectl get pods
-# postgres-0   Running
-# postgres-1   Running
-# postgres-2   Running
+# postgres-0   1/1   Running
+# postgres-1   1/1   Running
+# postgres-2   1/1   Running
 
-# Stable DNS names (within cluster)
-# postgres-0.postgres-headless.default.svc.cluster.local
-# postgres-1.postgres-headless.default.svc.cluster.local
-# postgres-2.postgres-headless.default.svc.cluster.local
+# DNS records (headless service)
+# postgres-0.postgres.default.svc.cluster.local
+# postgres-1.postgres.default.svc.cluster.local
+# postgres-2.postgres.default.svc.cluster.local
 
-# PVCs are per-pod and retained
+# From inside any pod:
+nslookup postgres-0.postgres
+# Address: 10.244.1.5
+
+# The service itself returns all pod IPs
+nslookup postgres
+# Address: 10.244.1.5
+# Address: 10.244.2.3
+# Address: 10.244.3.7
+```
+
+### Stable Storage
+
+```bash
+# Each pod gets its own PVC
 kubectl get pvc
-# data-postgres-0   Bound   50Gi
-# data-postgres-1   Bound   50Gi
-# data-postgres-2   Bound   50Gi
+# NAME              STATUS   VOLUME       CAPACITY
+# data-postgres-0   Bound    pv-abc123    50Gi
+# data-postgres-1   Bound    pv-def456    50Gi
+# data-postgres-2   Bound    pv-ghi789    50Gi
+
+# If postgres-1 is rescheduled to another node,
+# it reattaches to data-postgres-1 (same data!)
+```
+
+### Ordered Operations
+
+```bash
+# Startup: 0 → 1 → 2 (sequential)
+# postgres-0 must be Running+Ready before postgres-1 starts
+
+# Scale up: adds next ordinal
+kubectl scale statefulset postgres --replicas=5
+# postgres-3 created, then postgres-4
+
+# Scale down: removes highest ordinal first
+kubectl scale statefulset postgres --replicas=2
+# postgres-4 deleted, then postgres-3, then postgres-2
+
+# Parallel startup (opt-in, K8s 1.27+)
+spec:
+  podManagementPolicy: Parallel  # All pods start simultaneously
+  # Default: OrderedReady
 ```
 
 ### Update Strategies
@@ -114,88 +153,82 @@ kubectl get pvc
 ```yaml
 spec:
   updateStrategy:
-    type: RollingUpdate       # Default
+    type: RollingUpdate      # Default
     rollingUpdate:
-      partition: 1            # Only update pods ≥ ordinal 1
-      maxUnavailable: 1       # v1.24+: parallel updates
-```
+      partition: 2           # Only update pods with ordinal >= 2
+      maxUnavailable: 1      # K8s 1.24+
 
-| Strategy | Behavior |
-|----------|----------|
-| `RollingUpdate` | Updates pods in reverse order (N-1 → 0) |
-| `OnDelete` | Only updates when pod is manually deleted |
-| `partition: N` | Canary: only update pods with ordinal ≥ N |
+# Canary: set partition=2 → only postgres-2 gets new image
+# Verify, then set partition=0 → updates all
 
-### Pod Management Policies
-
-```yaml
+# OnDelete: manual control
 spec:
-  podManagementPolicy: Parallel    # Start all pods simultaneously
-  # Default: OrderedReady — one at a time, wait for Ready
+  updateStrategy:
+    type: OnDelete
+# Pods only update when manually deleted
 ```
 
-```mermaid
-graph LR
-    subgraph StatefulSet: postgres
-        P0[postgres-0<br/>Primary] --> |ordered| P1[postgres-1<br/>Replica]
-        P1 --> |ordered| P2[postgres-2<br/>Replica]
-    end
-    
-    subgraph Storage
-        P0 --> PV0[(data-postgres-0<br/>50Gi)]
-        P1 --> PV1[(data-postgres-1<br/>50Gi)]
-        P2 --> PV2[(data-postgres-2<br/>50Gi)]
-    end
-    
-    HS[Headless Service] --> P0
-    HS --> P1
-    HS --> P2
-    
-    style HS fill:#2196F3,color:white
-    style P0 fill:#4CAF50,color:white
-```
+### StatefulSet vs Deployment
 
-### Scaling
+| Feature | Deployment | StatefulSet |
+|---------|-----------|-------------|
+| Pod names | Random suffix | Ordered (0, 1, 2) |
+| DNS per pod | ❌ | ✅ (via headless service) |
+| Storage per pod | Shared PVC | Individual PVCs |
+| Startup order | Parallel | Sequential (default) |
+| Scale down order | Random | Highest ordinal first |
+| Rolling update | All at once | One at a time, highest first |
+| Use case | Stateless apps | Databases, distributed systems |
+
+### Common StatefulSet Workloads
 
 ```bash
-# Scale up (new pods get sequential ordinals)
-kubectl scale statefulset postgres --replicas=5
-# Creates postgres-3, postgres-4
+# Databases
+# PostgreSQL, MySQL, MongoDB, CockroachDB
 
-# Scale down (removes highest ordinal first)
-kubectl scale statefulset postgres --replicas=3
-# Removes postgres-4, then postgres-3
-# PVCs are NOT deleted — data preserved
+# Message queues
+# Kafka, RabbitMQ, NATS
+
+# Distributed coordination
+# etcd, ZooKeeper, Consul
+
+# Search engines
+# Elasticsearch, OpenSearch
+
+# Caches with persistence
+# Redis (with AOF/RDB)
 ```
 
 ## Common Issues
 
-**Pod stuck in Pending after scale-up**
+**StatefulSet pods stuck in Pending**
 
-PVC can't be provisioned — check StorageClass and available capacity. With `WaitForFirstConsumer`, the pod must be schedulable first.
+PVC can't be provisioned. Check StorageClass: `kubectl describe pvc data-postgres-0`.
 
-**Pods not starting in order**
+**Pod won't start — waiting for predecessor**
 
-Default `OrderedReady` waits for each pod to be Ready before starting the next. If pod-0 has no readiness probe, it may never be "Ready" and blocks pod-1.
+Previous pod not Ready. Check: `kubectl describe pod postgres-0`. Fix the earlier pod first.
 
-**PVCs remain after StatefulSet deletion**
+**PVCs not deleted when StatefulSet is deleted**
 
-By design — PVCs are NOT garbage collected. Delete them manually if data isn't needed: `kubectl delete pvc data-postgres-{0,1,2}`.
+By design — PVCs are retained to prevent data loss. Delete manually: `kubectl delete pvc -l app=postgres`.
+
+**Split-brain after network partition**
+
+Application-level concern. Use proper leader election (Kubernetes Leases) or database-native replication.
 
 ## Best Practices
 
-- **Always use a Headless Service** — StatefulSet requires it for stable DNS
-- **`volumeClaimTemplates` for per-pod storage** — don't share PVCs between StatefulSet pods
-- **Use `partition` for canary updates** — test on one replica before rolling out
-- **PDBs are critical** — `minAvailable: 2` for a 3-replica database ensures quorum
-- **Back up before scaling down** — data on removed PVCs is preserved but pod is gone
-- **`OrderedReady` for databases** — primary must be ready before replicas start
+- **Always use headless Service** — required for stable DNS per pod
+- **Use `volumeClaimTemplates`** — automatic PVC per replica
+- **Keep `podManagementPolicy: OrderedReady`** for databases — startup order matters
+- **Use `partition` for canary updates** — test on highest ordinal first
+- **Don't delete PVCs automatically** — data loss protection
 
 ## Key Takeaways
 
-- StatefulSets provide stable pod names, ordered lifecycle, and per-pod persistent storage
-- Headless Service is mandatory for stable DNS resolution (`pod-0.svc.ns.svc`)
-- `volumeClaimTemplates` automatically create one PVC per pod
-- PVCs survive pod deletion and scale-down — data is preserved
-- Update in reverse order (highest ordinal first) — primary is last to update
-- Use Deployment for stateless, StatefulSet for stateful workloads
+- StatefulSets provide stable hostnames, persistent storage, and ordered operations
+- Requires a headless Service (`clusterIP: None`) for DNS-based identity
+- Each pod gets its own PVC via `volumeClaimTemplates`
+- Pods start in order (0, 1, 2) and scale down in reverse
+- Use `partition` in rolling updates for canary deployments

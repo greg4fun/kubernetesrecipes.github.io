@@ -19,6 +19,7 @@ relatedRecipes:
   - "nvidia-smi-kubernetes-monitoring"
   - "multi-gpu-pytorch-ddp-kubernetes"
   - "nvidia-driver-update-kubernetes"
+  - "gpu-node-affinity-scheduling"
 ---
 
 > 💡 **Quick Answer:** Configure NVIDIA GPU Feature Discovery for automatic node labeling on Kubernetes. GPU model, driver version, CUDA, and MIG labels for scheduling.

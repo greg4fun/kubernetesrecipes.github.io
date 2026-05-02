@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "gvisor-container-runtime"
   - "pod-security-context"
+  - "kubernetes-rbac-role-rolebinding"
 ---
 
 > 💡 **Quick Answer:** Kata Containers runs pods inside lightweight VMs (microVMs) for hardware-level isolation. Install kata-containers on nodes, configure containerd with a `kata` runtime handler, create a `RuntimeClass` named `kata`, then set `runtimeClassName: kata` on pods. Each pod gets its own kernel — stronger isolation than gVisor, at the cost of ~100ms startup overhead and ~128MB memory per pod.

@@ -18,6 +18,7 @@ relatedRecipes:
   - "gpu-feature-discovery-kubernetes"
   - "multi-gpu-pytorch-ddp-kubernetes"
   - "nvidia-driver-update-kubernetes"
+  - "gpu-node-affinity-scheduling"
 ---
 
 > 💡 **Quick Answer:** Run nvidia-smi inside Kubernetes pods for GPU monitoring. Memory usage, temperature, utilization, and automated health checks with liveness probes.
