@@ -1,224 +1,250 @@
 ---
 title: "kubectl create secret docker-registry"
-description: "kubectl create secret docker-registry with --docker-password-stdin for secure private registry auth. Complete syntax, examples, and service account setup."
-publishDate: "2026-04-12"
+description: "Create Kubernetes Docker registry secrets with kubectl create secret docker-registry and --docker-password-stdin. Authenticate to private registries, configure imagePullSecrets, and manage credentials securely."
+publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "configuration"
-tags:
-  - "secrets"
-  - "docker-registry"
-  - "imagepullsecrets"
-  - "private-registry"
-  - "authentication"
 difficulty: "beginner"
 timeToComplete: "10 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - "kubectl"
+  - "secrets"
+  - "registry"
+  - "docker"
+  - "authentication"
+  - "security"
 relatedRecipes:
-  - "kubernetes-imagepullsecrets-guide"
-  - "kubernetes-docker-registry-secret"
-  - "kubernetes-imagepullbackoff-troubleshooting"
-  - "quay-robot-account-kubernetes"
-  - "copy-nim-image-internal-quay-registry"
-  - "secrets-management-best-practices"
+  - "kubernetes-configmaps-secrets-guide"
+  - "quay-registry-kubernetes-guide"
+  - "openshift-idms-itms-mirror-rules"
+  - "image-governance-policy-kubernetes"
 ---
 
-> 💡 **Quick Answer:** \`kubectl create secret docker-registry\` creates a Kubernetes Secret containing Docker registry credentials. Use \`--docker-password-stdin\` to avoid passwords in shell history. Reference the secret in pod spec \`imagePullSecrets\` or attach to a ServiceAccount for cluster-wide use.
+> 💡 **Quick Answer:** Use `kubectl create secret docker-registry` with `--docker-password-stdin` to create registry credentials without exposing the password in shell history: `echo $TOKEN | kubectl create secret docker-registry my-registry --docker-server=registry.example.com --docker-username=user --docker-password-stdin`. Then reference it in pods via `imagePullSecrets` or attach it to a ServiceAccount for automatic use.
 
 ## The Problem
 
-Pulling images from private registries (Docker Hub authenticated, GHCR, Quay, ECR, ACR, NGC, Harbor) requires authentication. Kubernetes needs registry credentials stored as a Secret of type \`kubernetes.io/dockerconfigjson\`, properly referenced in pod specs.
+Kubernetes needs credentials to pull images from private registries. Common mistakes:
+
+- Password visible in shell history (`--docker-password=mysecret`)
+- Secret created in wrong namespace
+- `imagePullSecrets` not configured on pod or ServiceAccount
+- Secret format doesn't match registry authentication scheme
+- Credentials expire but secret isn't updated
 
 ## The Solution
 
-### Basic Usage
+### Create Secret with --docker-password-stdin
 
 ```bash
-kubectl create secret docker-registry regcred \
+# ✅ SECURE — password from stdin (not in shell history)
+echo "$REGISTRY_PASSWORD" | kubectl create secret docker-registry my-registry \
   --docker-server=registry.example.com \
   --docker-username=myuser \
-  --docker-password=mypassword \
-  --docker-email=user@example.com
+  --docker-password-stdin \
+  -n my-namespace
+
+# ❌ INSECURE — password visible in shell history and ps output
+kubectl create secret docker-registry my-registry \
+  --docker-server=registry.example.com \
+  --docker-username=myuser \
+  --docker-password=mysecret    # Don't do this!
 ```
 
-### Using --docker-password-stdin (Recommended)
-
-Avoid passwords appearing in shell history or process lists:
+### Common Registry Servers
 
 ```bash
-# From environment variable
-echo $REGISTRY_PASSWORD | kubectl create secret docker-registry regcred \
-  --docker-server=registry.example.com \
-  --docker-username=myuser \
-  --docker-password-stdin
-
-# From a file
-kubectl create secret docker-registry regcred \
-  --docker-server=registry.example.com \
-  --docker-username=myuser \
-  --docker-password-stdin < /path/to/password-file
-
-# From a password manager
-pass show registry/password | kubectl create secret docker-registry regcred \
-  --docker-server=registry.example.com \
-  --docker-username=myuser \
-  --docker-password-stdin
-```
-
-### Common Registries
-
-```bash
-# Docker Hub (authenticated — higher rate limits)
-kubectl create secret docker-registry dockerhub \
+# Docker Hub
+echo "$DOCKERHUB_TOKEN" | kubectl create secret docker-registry dockerhub \
   --docker-server=https://index.docker.io/v1/ \
   --docker-username=myuser \
-  --docker-password-stdin <<< "$DOCKERHUB_TOKEN"
+  --docker-password-stdin
 
-# GitHub Container Registry (GHCR)
-kubectl create secret docker-registry ghcr \
+# GitHub Container Registry (ghcr.io)
+echo "$GITHUB_TOKEN" | kubectl create secret docker-registry ghcr \
   --docker-server=ghcr.io \
   --docker-username=myuser \
-  --docker-password-stdin <<< "$GITHUB_PAT"
+  --docker-password-stdin
 
-# Quay.io
-kubectl create secret docker-registry quay \
-  --docker-server=quay.io \
-  --docker-username="myorg+robot" \
-  --docker-password-stdin <<< "$QUAY_TOKEN"
-
-# NVIDIA NGC
-kubectl create secret docker-registry ngc \
-  --docker-server=nvcr.io \
-  --docker-username='$oauthtoken' \
-  --docker-password-stdin <<< "$NGC_API_KEY"
-
-# AWS ECR (token expires every 12h)
+# AWS ECR (token from aws ecr get-login-password)
 aws ecr get-login-password --region us-east-1 | \
   kubectl create secret docker-registry ecr \
-    --docker-server=123456789.dkr.ecr.us-east-1.amazonaws.com \
-    --docker-username=AWS \
-    --docker-password-stdin
+  --docker-server=123456789.dkr.ecr.us-east-1.amazonaws.com \
+  --docker-username=AWS \
+  --docker-password-stdin
 
-# Azure ACR
-kubectl create secret docker-registry acr \
-  --docker-server=myregistry.azurecr.io \
-  --docker-username=$ACR_SP_ID \
-  --docker-password-stdin <<< "$ACR_SP_PASSWORD"
+# Google Artifact Registry
+cat key.json | kubectl create secret docker-registry gar \
+  --docker-server=us-docker.pkg.dev \
+  --docker-username=_json_key \
+  --docker-password-stdin
 
-# Harbor
-kubectl create secret docker-registry harbor \
-  --docker-server=harbor.example.com \
+# Quay.io
+echo "$QUAY_TOKEN" | kubectl create secret docker-registry quay \
+  --docker-server=quay.io \
+  --docker-username=myuser \
+  --docker-password-stdin
+
+# Self-hosted with custom CA (secret + CA trust separately)
+echo "$REG_PASSWORD" | kubectl create secret docker-registry internal-reg \
+  --docker-server=registry.example.com:5000 \
   --docker-username=admin \
-  --docker-password-stdin <<< "$HARBOR_PASSWORD"
+  --docker-password-stdin
 ```
 
-### Reference in Pod Spec
+### Use in Pods
 
 ```yaml
+# Option 1: imagePullSecrets on the Pod
 apiVersion: v1
 kind: Pod
 metadata:
   name: my-app
 spec:
-  imagePullSecrets:
-    - name: regcred        # Must match secret name
   containers:
-    - name: app
-      image: registry.example.com/myapp:v1.0
+  - name: app
+    image: registry.example.com/myapp:v1.0
+  imagePullSecrets:
+  - name: my-registry
+
+---
+# Option 2: Attach to ServiceAccount (automatic for all pods)
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: my-namespace
+imagePullSecrets:
+- name: my-registry
 ```
 
-### Attach to ServiceAccount (Cluster-Wide)
-
 ```bash
-# All pods using 'default' SA get pull credentials automatically
-kubectl patch serviceaccount default \
-  -p '{"imagePullSecrets": [{"name": "regcred"}]}'
+# Attach secret to existing ServiceAccount
+kubectl patch serviceaccount default -n my-namespace \
+  -p '{"imagePullSecrets": [{"name": "my-registry"}]}'
 
-# Or for a specific service account
-kubectl patch serviceaccount my-app-sa \
-  -p '{"imagePullSecrets": [{"name": "regcred"}]}'
+# Verify ServiceAccount has the secret
+kubectl get sa default -n my-namespace -o yaml | grep -A5 imagePullSecrets
 ```
 
-### Create in Specific Namespace
+### Create from Existing Docker Config
 
 ```bash
-kubectl create secret docker-registry regcred \
+# If you already have ~/.docker/config.json with credentials
+kubectl create secret generic my-registry \
+  --from-file=.dockerconfigjson=$HOME/.docker/config.json \
+  --type=kubernetes.io/dockerconfigjson \
+  -n my-namespace
+
+# Or from a specific config file
+kubectl create secret generic my-registry \
+  --from-file=.dockerconfigjson=/path/to/config.json \
+  --type=kubernetes.io/dockerconfigjson
+```
+
+### Verify Secret
+
+```bash
+# Check secret exists and type is correct
+kubectl get secret my-registry -n my-namespace
+# NAME          TYPE                             DATA   AGE
+# my-registry   kubernetes.io/dockerconfigjson   1      5s
+
+# Decode and verify contents
+kubectl get secret my-registry -n my-namespace -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d | jq .
+# {
+#   "auths": {
+#     "registry.example.com": {
+#       "username": "myuser",
+#       "password": "...",
+#       "auth": "base64(user:pass)"
+#     }
+#   }
+# }
+
+# Test pull with the secret
+kubectl run test-pull --image=registry.example.com/myapp:v1.0 \
+  --overrides='{"spec":{"imagePullSecrets":[{"name":"my-registry"}]}}' \
+  --restart=Never
+kubectl get pod test-pull
+kubectl delete pod test-pull
+```
+
+### Update Existing Secret
+
+```bash
+# Delete and recreate (simplest)
+kubectl delete secret my-registry -n my-namespace
+echo "$NEW_PASSWORD" | kubectl create secret docker-registry my-registry \
   --docker-server=registry.example.com \
   --docker-username=myuser \
   --docker-password-stdin \
-  -n production <<< "$REGISTRY_PASSWORD"
-```
+  -n my-namespace
 
-### YAML Equivalent
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: regcred
-type: kubernetes.io/dockerconfigjson
-data:
-  .dockerconfigjson: <base64-encoded-docker-config>
-```
-
-Generate the base64 value:
-
-```bash
-# Create the JSON manually
-echo -n '{"auths":{"registry.example.com":{"username":"myuser","password":"mypassword","auth":"bXl1c2VyOm15cGFzc3dvcmQ="}}}' | base64 -w0
+# Or patch in-place
+NEW_AUTH=$(echo -n '{"auths":{"registry.example.com":{"username":"myuser","password":"newpass","auth":"'$(echo -n myuser:newpass | base64)'"}}}' | base64 -w0)
+kubectl patch secret my-registry -n my-namespace \
+  -p "{\"data\":{\".dockerconfigjson\":\"${NEW_AUTH}\"}}"
 ```
 
 ### Multiple Registries in One Secret
 
 ```bash
-# Create from existing Docker config (supports multiple registries)
-kubectl create secret generic regcred \
-  --from-file=.dockerconfigjson=$HOME/.docker/config.json \
+# Create config.json with multiple registries
+cat > /tmp/docker-config.json << 'EOF'
+{
+  "auths": {
+    "registry.example.com": {
+      "auth": "dXNlcjpwYXNz"
+    },
+    "ghcr.io": {
+      "auth": "dXNlcjp0b2tlbg=="
+    },
+    "quay.io": {
+      "auth": "dXNlcjpwYXNz"
+    }
+  }
+}
+EOF
+
+kubectl create secret generic all-registries \
+  --from-file=.dockerconfigjson=/tmp/docker-config.json \
   --type=kubernetes.io/dockerconfigjson
-```
 
-### Verify the Secret
-
-```bash
-# Check secret exists
-kubectl get secret regcred
-
-# Decode and inspect
-kubectl get secret regcred -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d | jq .
-# {
-#   "auths": {
-#     "registry.example.com": {
-#       "username": "myuser",
-#       "password": "mypassword",
-#       "auth": "bXl1c2VyOm15cGFzc3dvcmQ="
-#     }
-#   }
-# }
+rm /tmp/docker-config.json
 ```
 
 ## Common Issues
 
-| Issue | Cause | Fix |
-|-------|-------|-----|
-| \`unauthorized: authentication required\` | Wrong credentials or expired token | Recreate secret with correct credentials |
-| Secret in wrong namespace | Pod and secret in different namespaces | Create secret in the pod's namespace |
-| \`--docker-password-stdin\` not working | No stdin input | Pipe or redirect: \`echo $PASS \| ...\` |
-| ECR token expired | AWS ECR tokens expire every 12 hours | Use ECR credential helper or CronJob to refresh |
-| imagePullSecrets ignored | Not in pod spec AND not on ServiceAccount | Add to either pod spec or patch SA |
-| Special chars in password | Shell interprets \`$\`, \`!\`, etc. | Use single quotes or \`--docker-password-stdin\` |
+**"ErrImagePull: unauthorized: authentication required"**
+
+Secret exists but not referenced. Add `imagePullSecrets` to the pod spec or patch the ServiceAccount.
+
+**Secret in wrong namespace**
+
+Registry secrets must be in the SAME namespace as the pod. Create the secret in every namespace that needs it, or use a ServiceAccount.
+
+**"--docker-password-stdin" flag not recognized**
+
+kubectl version too old. Update kubectl to 1.20+. Workaround: pipe via `--docker-password=$(cat /path/to/token)`.
+
+**ECR token expires every 12 hours**
+
+AWS ECR tokens are temporary. Use a CronJob or external-secrets-operator to refresh the secret automatically.
 
 ## Best Practices
 
-- **Always use \`--docker-password-stdin\`** — never put passwords in command arguments
-- **Attach to ServiceAccount** — avoids adding \`imagePullSecrets\` to every pod
-- **Use robot/service accounts** — not personal credentials for production
-- **Rotate secrets regularly** — especially for registries with expiring tokens
-- **One secret per registry** — easier to manage and rotate
-- **Namespace-scope secrets** — create in each namespace that needs them
+- **Always `--docker-password-stdin`** — never put passwords in CLI arguments
+- **Attach to ServiceAccount** — automatic for all pods, no per-pod config
+- **One secret per registry** — easier to rotate and audit
+- **Automate rotation** — especially for ECR/GCR tokens that expire
+- **Use external-secrets-operator** — syncs registry creds from Vault/AWS/GCP
 
 ## Key Takeaways
 
-- \`kubectl create secret docker-registry\` creates registry auth secrets
-- \`--docker-password-stdin\` keeps passwords out of shell history
-- Reference in pod \`imagePullSecrets\` or attach to ServiceAccount
-- NGC uses \`$oauthtoken\` as username, API key as password
-- Secrets are namespace-scoped — must exist in the pod's namespace
-- For multiple registries, use \`--from-file=.dockerconfigjson\`
+- `--docker-password-stdin` keeps credentials out of shell history
+- Registry secrets must be in the same namespace as the pod
+- Attach to ServiceAccount for cluster-wide automatic pull auth
+- Create from existing `~/.docker/config.json` for multi-registry setups
+- ECR/GCR tokens expire — automate rotation with CronJobs or external-secrets
