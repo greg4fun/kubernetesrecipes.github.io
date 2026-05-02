@@ -15,8 +15,6 @@ tags:
 relatedRecipes:
   - "kubernetes-persistent-volumes-guide"
   - "troubleshooting-pending-pvc"
-  - "csi-volume-snapshots-kubernetes"
-  - "kubernetes-storageclass-guide"
 ---
 
 > 💡 **Quick Answer:** `PersistentVolumeClaimSpec` defines storage requirements: `accessModes` (ReadWriteOnce/ReadWriteMany/ReadOnlyMany), `resources.requests.storage` (size like 10Gi), `storageClassName` (which provisioner to use), and optionally `volumeMode` (Filesystem or Block), `selector` (bind to specific PV), and `dataSource` (clone or snapshot). Most PVCs only need accessModes + storage size + storageClassName.

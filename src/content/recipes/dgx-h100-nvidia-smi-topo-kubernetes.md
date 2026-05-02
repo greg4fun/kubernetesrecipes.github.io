@@ -16,7 +16,6 @@ tags:
   - "gpu"
 relatedRecipes:
   - "nvidia-smi-kubernetes-monitoring"
-  - "gpu-node-affinity-scheduling-kubernetes"
   - "nvidia-h300-gpu-kubernetes"
   - "nccl-environment-variables-guide"
 ---

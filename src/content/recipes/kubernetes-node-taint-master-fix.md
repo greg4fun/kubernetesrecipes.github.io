@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-pending-pod-troubleshooting"
   - "kubernetes-pod-security-standards"
   - "fix-kubernetes-dns-resolution"
+  - "kubernetes-node-untolerated-taint-master"
 ---
 
 > 💡 **Quick Answer:** Remove or tolerate the node-role.kubernetes.io/master taint on Kubernetes control plane nodes. Schedule workloads on master nodes for single-node clusters.

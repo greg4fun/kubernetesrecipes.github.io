@@ -15,8 +15,6 @@ tags:
   - "microvm"
 relatedRecipes:
   - "gvisor-container-runtime"
-  - "kubernetes-runtimeclass-guide"
-  - "confidential-containers-kubernetes"
   - "pod-security-context"
 ---
 

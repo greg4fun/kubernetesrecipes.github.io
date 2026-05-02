@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-cronjob-patterns-guide"
+  - "kubernetes-terminationgraceperiod"
 ---
 
 > 💡 **Quick Answer:** Implement canary deployments on K8s without service mesh. Native K8s strategy, traffic splitting, and automated rollback.

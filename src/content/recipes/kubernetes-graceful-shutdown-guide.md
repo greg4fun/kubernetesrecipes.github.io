@@ -16,7 +16,6 @@ tags:
 relatedRecipes:
   - "graceful-shutdown"
   - "kubernetes-pod-lifecycle-guide"
-  - "kubernetes-deployment-strategies-guide"
   - "kubernetes-liveness-readiness-startup-probes"
 ---
 

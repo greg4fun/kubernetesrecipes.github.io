@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-labels-best-practices"
 ---
 
 > 💡 **Quick Answer:** ConfigMap best practices for Kubernetes applications. Size limits, binary data, environment variables vs volume mounts, and hot-reload patterns.

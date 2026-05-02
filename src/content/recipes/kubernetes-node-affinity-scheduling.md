@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-custom-scheduler-guide"
   - "kubernetes-cronjob-patterns-guide"
+  - "kubernetes-terminationgraceperiod"
 ---
 
 > 💡 **Quick Answer:** Configure node affinity rules for Kubernetes pod scheduling. Required vs preferred affinity, label selectors, and combining with taints and tolerations.

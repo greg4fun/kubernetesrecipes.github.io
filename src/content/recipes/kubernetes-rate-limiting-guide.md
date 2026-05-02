@@ -17,8 +17,7 @@ tags:
 relatedRecipes:
   - "kubernetes-ingress-guide"
   - "kubernetes-gateway-api-guide"
-  - "istio-service-mesh-mtls-kubernetes"
-  - "kubernetes-networkpolicy-guide"
+  - "nginx-ingress-limit-burst-multiplier"
 ---
 
 > 💡 **Quick Answer:** For NGINX Ingress, add annotations: `nginx.ingress.kubernetes.io/limit-rps: "10"` and `nginx.ingress.kubernetes.io/limit-burst-multiplier: "5"`. For Gateway API with Envoy, use `BackendTrafficPolicy` with `rateLimit`. For Istio, use `EnvoyFilter` with `envoy.filters.http.local_ratelimit`. Application-level rate limiting (Redis + middleware) gives the finest control.

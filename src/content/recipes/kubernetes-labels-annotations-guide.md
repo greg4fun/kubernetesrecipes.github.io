@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-downward-api-guide"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-labels-best-practices"
 ---
 
 > 💡 **Quick Answer:** Understand the difference between Kubernetes labels and annotations. When to use each, recommended labels, label selectors, and annotation patterns.

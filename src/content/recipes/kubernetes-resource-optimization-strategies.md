@@ -16,9 +16,8 @@ tags:
   - "autoscaling"
 relatedRecipes:
   - "kubernetes-resource-optimization"
-  - "kubernetes-cost-management-finops"
   - "horizontal-pod-autoscaler"
-  - "vpa-hpa-coexistence-kubernetes"
+  - "vpa-hack-vpa-up-sh-install-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Kubernetes resource optimization means right-sizing requests and limits to match actual usage. Start by deploying VPA in recommendation mode (`kubectl get vpa -o yaml`), then adjust requests to P95 usage + 20% buffer. Set CPU limits to 2-5x requests (CPU is compressible) and memory limits to 1.2-1.5x requests (memory is not). Use Goldilocks or Kubecost for continuous recommendations.

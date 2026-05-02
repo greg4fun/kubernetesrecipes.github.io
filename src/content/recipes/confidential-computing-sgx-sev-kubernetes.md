@@ -18,6 +18,7 @@ relatedRecipes:
   - "post-quantum-cryptography-kubernetes"
   - "ai-security-platform-kubernetes"
   - "pod-security-context"
+  - "kata-containers-runtimeclass-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Confidential computing protects data while it's being processed (in-use), not just at rest or in transit. Intel SGX creates encrypted enclaves; AMD SEV-SNP encrypts entire VM memory. On Kubernetes, use Kata Containers with \`peer-pods\` for confidential VMs, or SGX device plugins for enclave-based workloads. Remote attestation proves to clients that their code runs in a genuine TEE.

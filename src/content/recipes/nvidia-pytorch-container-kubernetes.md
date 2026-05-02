@@ -18,7 +18,7 @@ relatedRecipes:
   - "multi-gpu-pytorch-ddp-kubernetes"
   - "deepspeed-kubernetes-distributed"
   - "nccl-environment-variables-guide"
-  - "gpu-limits-requests-kubernetes"
+  - "dgx-h100-nvidia-smi-topo-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Use `nvcr.io/nvidia/pytorch:24.07-py3` (or latest monthly tag) for GPU training on Kubernetes. The NVIDIA PyTorch containers include pre-built CUDA, cuDNN, NCCL, and PyTorch — everything needed for single and multi-node GPU training. Request GPU resources (`nvidia.com/gpu: 1`), mount shared storage for datasets, and set NCCL environment variables for multi-node communication.

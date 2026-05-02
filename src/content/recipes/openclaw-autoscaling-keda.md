@@ -19,6 +19,7 @@ relatedRecipes:
   - "keda-event-driven-autoscaling"
   - "horizontal-pod-autoscaler"
   - "openclaw-monitoring-prometheus"
+  - "vpa-hack-vpa-up-sh-install-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Use KEDA ScaledObjects with Prometheus metrics from OpenClaw to auto-scale agent pods based on pending message queue depth or session count.

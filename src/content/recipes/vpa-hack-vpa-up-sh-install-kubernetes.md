@@ -14,7 +14,6 @@ tags:
   - "vertical-pod-autoscaler"
 relatedRecipes:
   - "vertical-pod-autoscaler"
-  - "vpa-hpa-coexistence-kubernetes"
   - "kubernetes-resource-optimization-strategies"
   - "horizontal-pod-autoscaler"
 ---

@@ -16,7 +16,6 @@ relatedRecipes:
   - "kubernetes-rate-limiting-guide"
   - "kubernetes-ingress-guide"
   - "kubernetes-gateway-api-guide"
-  - "webhook-ci-cd-rate-limiting-kubernetes"
 ---
 
 > 💡 **Quick Answer:** `nginx.ingress.kubernetes.io/limit-burst-multiplier` sets the burst bucket size as a multiple of the per-second rate limit. Default is `5`. With `limit-rps: "10"` and `limit-burst-multiplier: "3"`, the burst bucket holds 30 requests. This means a client can send 30 requests instantly, then must stay under 10/s. Set it to `1` for strict rate limiting, `5-10` for APIs with natural traffic spikes.

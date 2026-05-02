@@ -14,7 +14,6 @@ tags:
   - "organization"
   - "selectors"
 relatedRecipes:
-  - "kubernetes-configmaps-secrets-guide"
   - "kubernetes-namespace-template-instant-environments"
   - "kubernetes-rbac-role-clusterrole"
 ---

@@ -14,6 +14,7 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-secrets-management"
   - "oidc-authentication-kubernetes"
+  - "kata-containers-runtimeclass-kubernetes"
 tags:
   - openclaw
   - network-policy

@@ -20,6 +20,7 @@ relatedRecipes:
   - "kubernetes-node-notready-troubleshooting"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-node-untolerated-taint-master"
 ---
 
 > 💡 **Quick Answer:** Troubleshoot Kubernetes pods stuck in Pending state. Insufficient resources, node selector mismatch, PVC binding, taints, and scheduling failures.

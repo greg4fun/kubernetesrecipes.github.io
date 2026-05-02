@@ -16,9 +16,8 @@ tags:
   - "inference"
 relatedRecipes:
   - "nvidia-gpu-operator-troubleshooting"
-  - "gpu-limits-requests-kubernetes"
   - "gpu-feature-discovery-kubernetes"
-  - "gpu-node-affinity-scheduling-kubernetes"
+  - "dgx-h100-nvidia-smi-topo-kubernetes"
 ---
 
 > 💡 **Quick Answer:** The NVIDIA H300 is a rumored/upcoming GPU in the Hopper family, positioned between H200 and Blackwell B200. Currently, H100 (80GB HBM3, 3.35 TB/s) and H200 (141GB HBM3e, 4.8 TB/s) are the production GPUs for Kubernetes AI workloads. Deploy them with GPU Operator + Node Feature Discovery, request via `nvidia.com/gpu: 1`, and use MIG or time-slicing for multi-tenant sharing.

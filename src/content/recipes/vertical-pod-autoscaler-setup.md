@@ -19,6 +19,7 @@ relatedRecipes:
   - "kubernetes-hpa-custom-metrics-prometheus"
   - "kubernetes-hpa-container-resource-metrics"
   - "kubernetes-pod-security-standards"
+  - "vpa-hack-vpa-up-sh-install-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Install and configure VPA on Kubernetes with hack/vpa-up.sh. Recommender, Updater, Admission Controller components and production configuration.

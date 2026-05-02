@@ -16,7 +16,6 @@ tags:
 relatedRecipes:
   - "nvidia-gpu-operator-troubleshooting"
   - "gpu-feature-discovery-kubernetes"
-  - "dcgm-exporter-gpu-monitoring-kubernetes"
   - "prometheus-monitoring-kubernetes-guide"
 ---
 

@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-node-notready-troubleshooting"
   - "gke-oidc-issuer-workload-identity"
+  - "kata-containers-runtimeclass-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Ubuntu 26.04 LTS (Resolute Raccoon) ships **sudo-rs** as the default sudo provider — a full Rust rewrite of the 44-year-old C binary that handles privilege escalation on every Linux node. For Kubernetes clusters, this eliminates an entire class of memory-safety CVEs on the host OS. Combine with APT 3.2 rollback, Kernel 7.0 TDX, and native ROCm for hardened, GPU-ready K8s nodes.

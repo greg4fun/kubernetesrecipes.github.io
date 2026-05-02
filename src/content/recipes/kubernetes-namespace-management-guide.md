@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-resource-quotas-limitranges"
   - "kubernetes-rbac-role-clusterrole"
   - "nfs-tenant-segregation-kubernetes"
+  - "kubernetes-labels-best-practices"
 ---
 
 > 💡 **Quick Answer:** Namespaces partition a cluster into virtual sub-clusters for team isolation, resource quotas, and RBAC scoping. Create with `kubectl create namespace team-a`, then apply ResourceQuotas, LimitRanges, NetworkPolicies, and RoleBindings per namespace. Use namespaces for environments (dev/staging/prod) or teams — not for individual applications.

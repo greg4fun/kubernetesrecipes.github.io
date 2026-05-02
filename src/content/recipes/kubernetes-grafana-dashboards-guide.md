@@ -16,6 +16,7 @@ relatedRecipes:
   - "grafana-dashboard-6417-kubernetes"
   - "kubernetes-pod-resource-monitoring-grafana"
   - "kubernetes-pod-security-standards"
+  - "gpu-operator-node-status-exporter-metrics"
 ---
 
 > 💡 **Quick Answer:** Import and customize Grafana dashboards for Kubernetes monitoring. Dashboard 315, 6417, kube-prometheus-stack, and custom panel creation.
