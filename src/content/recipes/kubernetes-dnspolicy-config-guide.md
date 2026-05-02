@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-coredns-custom-config"
   - "kubernetes-networkpolicy-default-deny"
   - "kubernetes-pod-lifecycle"
+  - "kubernetes-endpoint-slices-discovery"
 ---
 
 > 💡 **Quick Answer:** \`dnsPolicy: ClusterFirst\` (default) routes DNS through CoreDNS for service discovery. Use \`ClusterFirstWithHostNet\` when \`hostNetwork: true\` to keep cluster DNS. Use \`None\` with \`dnsConfig\` for fully custom DNS. Use \`Default\` to inherit node's DNS (skips cluster DNS entirely).

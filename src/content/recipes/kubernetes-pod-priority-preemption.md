@@ -20,6 +20,7 @@ relatedRecipes:
   - "kubernetes-resource-optimization"
   - "karpenter-node-autoscaling"
   - "cluster-autoscaler-setup"
+  - "kubernetes-priority-preemption-guide"
 ---
 
 > 💡 **Quick Answer:** PriorityClass assigns scheduling priority to pods. Higher-priority pods get scheduled first and can preempt (evict) lower-priority pods when resources are scarce. Create PriorityClasses with values 0-1,000,000,000, then set \`priorityClassName\` in pod spec. System-critical pods use values above 1 billion.

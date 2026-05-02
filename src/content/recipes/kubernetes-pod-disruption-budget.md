@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-graceful-shutdown-guide"
   - "cluster-autoscaler"
   - "kubernetes-node-affinity-guide"
+  - "kubernetes-priority-preemption-guide"
 ---
 
 > 💡 **Quick Answer:** `PodDisruptionBudget` prevents too many pods from being evicted simultaneously during voluntary disruptions (node drain, cluster upgrades). Set `minAvailable: 2` (at least 2 pods must stay running) or `maxUnavailable: 1` (at most 1 pod down at a time). Without a PDB, `kubectl drain` can evict all pods at once.

@@ -19,6 +19,7 @@ relatedRecipes:
   - "kubernetes-nfs-provisioner-guide"
   - "kubernetes-multi-tenancy-enterprise"
   - "kubernetes-csi-driver-guide"
+  - "kubernetes-emptydir-hostpath-volumes"
 ---
 
 > 💡 **Quick Answer:** **Access zones** on scale-out NAS (Dell PowerScale/Isilon) partition a single cluster into isolated storage domains — each with its own authentication, exports, share permissions, and network identity (SmartConnect zone). For Kubernetes, create one access zone per tenant/environment, configure a dedicated CSI StorageClass per zone, and use SmartConnect DNS for load-balanced NFS access. This gives multi-tenant storage isolation without separate physical clusters.

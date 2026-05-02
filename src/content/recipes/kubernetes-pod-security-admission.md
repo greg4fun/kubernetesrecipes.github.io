@@ -1,162 +1,203 @@
 ---
-title: "Pod Security Admission (PSA) Guide"
-description: "Enforce Pod Security Standards with built-in admission controller. Configure enforce, audit, and warn modes per namespace without external tools."
-publishDate: "2026-04-21"
+title: "K8s Pod Security Admission Standards"
+description: "Configure Kubernetes Pod Security Admission with enforce, audit, and warn modes. Privileged, baseline, and restricted profiles for namespace-level pod security."
+publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "security"
 difficulty: "intermediate"
-timeToComplete: "12 minutes"
+timeToComplete: "10 minutes"
 kubernetesVersion: "1.28+"
 tags:
-  - pod-security
-  - psa
-  - security-standards
-  - namespace
+  - "pod-security"
+  - "security"
+  - "admission-controller"
+  - "namespaces"
+  - "cka"
 relatedRecipes:
-  - "pod-security-context"
-  - "kubernetes-validating-admission-policy"
-  - "openshift-scc-security-context-constraints"
+  - "kubernetes-rbac-role-rolebinding"
+  - "kubernetes-namespace-guide"
+  - "kubernetes-security-context-guide"
 ---
 
-> 💡 **Quick Answer:** Pod Security Admission (PSA) enforces Pod Security Standards (Privileged, Baseline, Restricted) via namespace labels — no webhooks or external tools required. It replaced PodSecurityPolicy in 1.25.
+> 💡 **Quick Answer:** Label namespaces with `pod-security.kubernetes.io/enforce: restricted` to enforce Pod Security Standards. Three profiles: `privileged` (unrestricted), `baseline` (prevent known escalations), `restricted` (hardened best practices). Three modes: `enforce` (reject), `audit` (log), `warn` (warning). PSA replaced PodSecurityPolicy in K8s 1.25.
 
 ## The Problem
 
-After PodSecurityPolicy removal in 1.25, clusters need a built-in mechanism to prevent privileged containers, host namespace access, and other dangerous pod configurations without installing third-party policy engines.
+Without pod security controls:
+
+- Any pod can run as root
+- Containers can access host namespaces, filesystem, and devices
+- Privilege escalation is trivial
+- No defense-in-depth against container breakout
+
+PodSecurityPolicy (PSP) was removed in K8s 1.25. Pod Security Admission (PSA) is the built-in replacement.
 
 ## The Solution
 
-### Label Namespaces
+### Apply Security Standards via Labels
 
-```yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: production
-  labels:
-    pod-security.kubernetes.io/enforce: restricted
-    pod-security.kubernetes.io/enforce-version: v1.30
-    pod-security.kubernetes.io/audit: restricted
-    pod-security.kubernetes.io/warn: restricted
+```bash
+# Enforce restricted profile on a namespace
+kubectl label namespace production \
+  pod-security.kubernetes.io/enforce=restricted \
+  pod-security.kubernetes.io/enforce-version=latest \
+  pod-security.kubernetes.io/audit=restricted \
+  pod-security.kubernetes.io/warn=restricted
+
+# Baseline for staging (less strict)
+kubectl label namespace staging \
+  pod-security.kubernetes.io/enforce=baseline \
+  pod-security.kubernetes.io/warn=restricted
 ```
 
-### Three Modes
+### Security Profiles
 
 ```yaml
-# Enforce: Block non-compliant pods
-pod-security.kubernetes.io/enforce: baseline
+# PRIVILEGED — no restrictions (kube-system, monitoring)
+# Allows: everything
+# Use for: system components, CNI, CSI, monitoring agents
 
-# Audit: Log violations (allow pod)
-pod-security.kubernetes.io/audit: restricted
+# BASELINE — prevent known privilege escalations
+# Blocks: hostNetwork, hostPID, hostIPC, privileged containers,
+#         hostPath volumes, host ports, adding capabilities
+# Allows: running as root, some volume types
 
-# Warn: Show warning to user (allow pod)
-pod-security.kubernetes.io/warn: restricted
+# RESTRICTED — hardened (production workloads)
+# Blocks: everything in baseline PLUS:
+#         running as root, privilege escalation,
+#         all capabilities except NET_BIND_SERVICE
+# Requires: runAsNonRoot, seccompProfile, drop ALL capabilities
 ```
 
-### Gradual Migration
-
-```yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: staging
-  labels:
-    # Allow everything but warn about violations
-    pod-security.kubernetes.io/enforce: privileged
-    pod-security.kubernetes.io/warn: baseline
-    pod-security.kubernetes.io/audit: baseline
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: production
-  labels:
-    # Strict enforcement
-    pod-security.kubernetes.io/enforce: restricted
-    pod-security.kubernetes.io/audit: restricted
-    pod-security.kubernetes.io/warn: restricted
-```
-
-### Compliant Pod (Restricted Level)
+### Restricted-Compliant Pod
 
 ```yaml
 apiVersion: v1
 kind: Pod
 metadata:
   name: secure-app
-  namespace: production
+  namespace: production    # Has enforce=restricted
 spec:
   securityContext:
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault
   containers:
-    - name: app
-      image: myapp:2.0
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop: ["ALL"]
-        runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
-      resources:
-        limits:
-          memory: 256Mi
+  - name: app
+    image: myapp:v2
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      readOnlyRootFilesystem: true
+      runAsUser: 1000
+      runAsGroup: 1000
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi
 ```
 
-### Dry-Run Before Enforcement
+### Namespace Configuration
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.28
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/audit-version: v1.28
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: v1.28
+
+---
+# System namespace — privileged
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kube-system
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+```
+
+### Dry-Run Before Enforcing
 
 ```bash
-# Check what would be blocked
+# Check what would fail under restricted
 kubectl label --dry-run=server --overwrite ns production \
   pod-security.kubernetes.io/enforce=restricted
 
-# Output shows which existing pods would violate
+# Output shows violations:
+# Warning: existing pods in namespace "production" violate the new
+# PodSecurity enforce level "restricted:latest":
+#   nginx-xxx (must set securityContext.runAsNonRoot, ...)
+
+# Step 1: Start with warn only
+kubectl label ns production pod-security.kubernetes.io/warn=restricted
+
+# Step 2: Fix violations (update pod specs)
+
+# Step 3: Enforce
+kubectl label ns production pod-security.kubernetes.io/enforce=restricted
 ```
 
-```mermaid
-graph TD
-    A[Pod Create Request] --> B{Namespace Labels?}
-    B -->|enforce: restricted| C{Pod Compliant?}
-    C -->|Yes| D[Pod Admitted]
-    C -->|No| E[Pod Rejected 403]
-    B -->|warn: restricted| F{Pod Compliant?}
-    F -->|No| G[Warning Shown + Pod Admitted]
-    B -->|audit: restricted| H{Pod Compliant?}
-    H -->|No| I[Audit Log + Pod Admitted]
+### Exempt Specific Resources
+
+```yaml
+# AdmissionConfiguration (cluster-level, kube-apiserver config)
+apiVersion: apiserver.config.k8s.io/v1
+kind: AdmissionConfiguration
+plugins:
+- name: PodSecurity
+  configuration:
+    apiVersion: pod-security.admission.config.k8s.io/v1
+    kind: PodSecurityConfiguration
+    defaults:
+      enforce: baseline
+      audit: restricted
+      warn: restricted
+    exemptions:
+      usernames:
+      - system:serviceaccount:kube-system:replicaset-controller
+      runtimeClasses:
+      - kata
+      namespaces:
+      - kube-system
+      - monitoring
 ```
 
 ## Common Issues
 
-**Existing pods violating new enforcement**
-PSA only checks at admission time. Existing pods continue running. Use `--dry-run=server` to audit before enforcing.
+**Pod rejected: "violates PodSecurity"**
 
-**System namespaces need privileged**
-```bash
-# kube-system must remain privileged
-kubectl label ns kube-system pod-security.kubernetes.io/enforce=privileged --overwrite
-```
+Pod doesn't meet the namespace's security profile. Check violations with `warn` mode first, then fix securityContext.
 
-**Workloads needing specific capabilities**
-Restricted level drops ALL capabilities. If your app needs `NET_BIND_SERVICE`:
-- Use Baseline level for that namespace, or
-- Use a policy engine (Kyverno/VAP) for fine-grained exceptions
+**System DaemonSets failing in restricted namespace**
+
+System components need `privileged` profile. Use namespace exemptions or keep system workloads in `kube-system`.
+
+**"must set seccompProfile" error**
+
+Restricted profile requires `seccompProfile.type: RuntimeDefault` at pod or container level.
 
 ## Best Practices
 
-- Start with `warn` + `audit` modes to identify violations before enforcing
-- Use `enforce-version` to pin policy version during cluster upgrades
-- Apply `restricted` to all production namespaces
-- Keep `kube-system` and operator namespaces at `privileged`
-- Use the dry-run label approach to audit existing workloads
-- Combine PSA with ValidatingAdmissionPolicy for custom rules beyond the three levels
+- **Start with `warn`/`audit`** before `enforce` — find violations first
+- **`restricted` for all app namespaces** — defense in depth
+- **`privileged` only for `kube-system`** and infrastructure namespaces
+- **Pin enforce-version** — `v1.28` instead of `latest` for predictability
+- **Combine with RBAC** — PSA controls pod specs, RBAC controls who can create them
 
 ## Key Takeaways
 
-- Three levels: Privileged (allow all), Baseline (prevent known escalations), Restricted (hardened)
-- Three modes: enforce (block), audit (log), warn (user warning)
-- Applied via namespace labels — no CRDs or controllers needed
-- Built into every Kubernetes 1.25+ cluster by default
-- Only checks at admission time — doesn't affect already-running pods
-- Pin versions to avoid behavior changes during upgrades
+- Pod Security Admission replaces deprecated PodSecurityPolicy
+- Three profiles (privileged/baseline/restricted) × three modes (enforce/audit/warn)
+- Apply via namespace labels — no CRDs or webhooks needed
+- Restricted profile requires: runAsNonRoot, drop ALL caps, seccomp, no privilege escalation
+- Always dry-run before enforcing to find existing violations

@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-multi-tenancy-enterprise"
   - "kubernetes-rbac-role-rolebinding"
   - "kubernetes-serviceaccount-guide"
+  - "kubernetes-security-context-guide"
 ---
 
 > 💡 **Quick Answer:** RBAC (Role-Based Access Control) uses four objects: `Role` (namespace-scoped permissions), `ClusterRole` (cluster-wide permissions), `RoleBinding` (grants Role to user/group in a namespace), and `ClusterRoleBinding` (grants ClusterRole cluster-wide). Start with built-in ClusterRoles: `view` (read-only), `edit` (read-write), `admin` (full namespace), `cluster-admin` (everything).

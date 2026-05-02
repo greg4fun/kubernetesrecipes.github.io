@@ -17,6 +17,7 @@ relatedRecipes:
   - "confidential-computing-sgx-sev-kubernetes"
   - "kubernetes-oidc-enterprise-sso"
   - "kubernetes-pod-security-admission"
+  - "kubernetes-validating-admission-policy"
 ---
 
 > 💡 **Quick Answer:** Remote attestation proves that a workload runs inside a genuine, unmodified TEE before releasing secrets. Deploy a Key Broker Service (KBS) on Kubernetes, configure attestation policies (allowed firmware versions, image digests), and have TEE workloads present attestation evidence. Only verified workloads receive decryption keys and secrets — even the cluster admin can't intercept them.

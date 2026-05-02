@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-emptydir-hostpath-volumes"
 ---
 
 > 💡 **Quick Answer:** Compare hostPath and PVC for K8s storage. Security risks, node affinity, and when to use each storage type.

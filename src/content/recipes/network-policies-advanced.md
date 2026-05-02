@@ -10,6 +10,7 @@ relatedRecipes:
   - "certificate-expiry-troubleshooting"
   - "kyverno-policy-management"
   - "openshift-custom-ca-registry"
+  - "kubernetes-validating-admission-policy"
 ---
 
 > 💡 **Quick Answer:** Start with **default-deny** policy, then explicitly allow needed traffic. Use `namespaceSelector` for cross-namespace rules, `ipBlock.cidr` for external IPs, and combine `podSelector` + `namespaceSelector` for precise targeting. Always allow DNS egress (`port: 53` to `kube-system`) after default-deny.

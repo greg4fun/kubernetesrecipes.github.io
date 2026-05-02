@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-taints-tolerations-guide"
   - "kubernetes-efk-logging-stack"
   - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-topology-spread-constraints"
 ---
 
 > 💡 **Quick Answer:** A DaemonSet ensures one pod runs on every node (or a subset). Define like a Deployment but with `kind: DaemonSet` and no `replicas`. Common uses: log collectors (Fluentd/Fluent Bit), monitoring agents (node-exporter, DCGM), CNI plugins (Calico, Cilium), and storage daemons (CSI node plugins). Use `nodeSelector` or tolerations to target specific nodes.

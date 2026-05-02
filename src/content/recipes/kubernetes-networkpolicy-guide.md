@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-namespace-guide"
   - "kubernetes-service-mesh-comparison"
   - "dns-policies-configuration"
+  - "kubernetes-endpoint-slices-discovery"
 ---
 
 > 💡 **Quick Answer:** NetworkPolicy controls pod-to-pod traffic at L3/L4. Default: all traffic allowed. Apply a default-deny policy, then whitelist specific flows. Use `podSelector` to target pods, `ingress`/`egress` to define allowed traffic, and `namespaceSelector` for cross-namespace rules. Requires a CNI that supports NetworkPolicy (Calico, Cilium, Weave — NOT default Flannel).
