@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-pod-security-admission"
   - "kubernetes-security-context-guide"
   - "kubernetes-rbac-role-rolebinding"
+  - "kubernetes-falco-runtime-security"
 ---
 
 > 💡 **Quick Answer:** Kyverno enforces policies as Kubernetes resources — no new language to learn. Validate: block pods without labels. Mutate: auto-add resource limits. Generate: create NetworkPolicy for every new namespace. Install: `helm install kyverno kyverno/kyverno -n kyverno --create-namespace`. Policies are YAML `ClusterPolicy` or `Policy` resources — apply with `kubectl apply`.

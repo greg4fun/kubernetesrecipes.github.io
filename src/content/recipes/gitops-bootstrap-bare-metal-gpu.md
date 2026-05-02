@@ -20,6 +20,7 @@ relatedRecipes:
   - "gpu-operator-clusterpolicy-reference"
   - "multi-tenant-gpu-namespace-isolation"
   - "gpu-upgrade-version-matrix"
+  - "kubernetes-argocd-gitops-guide"
 ---
 
 > 💡 **Quick Answer:** Use Ansible for initial bare-metal handshake, then install OpenShift GitOps (ArgoCD) as the single source of truth. A root App-of-Apps pattern manages GPU Operator, Network Operator, SR-IOV, storage classes, and tenant overlays — all from Git.

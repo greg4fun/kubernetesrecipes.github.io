@@ -18,6 +18,7 @@ relatedRecipes:
   - "argocd-app-of-apps-pattern"
   - "platform-engineering-internal-developer-platform-kubernetes"
   - "argocd-app-of-apps-sync-waves"
+  - "kubernetes-argocd-gitops-guide"
 ---
 
 > 💡 **Quick Answer:** **ArgoCD** has a rich UI, Application CRD model, and strong RBAC — best for teams that want a visual GitOps dashboard. **Flux** is controller-based with no UI (BYO Grafana), uses native Kubernetes resources, and excels at multi-tenancy — best for platform teams managing many clusters. Both are CNCF graduated projects; choose based on your team's workflow.

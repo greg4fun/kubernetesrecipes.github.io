@@ -19,6 +19,7 @@ relatedRecipes:
   - "external-secrets-operator"
   - "image-pull-secrets"
   - "kubernetes-serviceaccount-guide"
+  - "kubernetes-external-secrets-guide"
 ---
 
 > 💡 **Quick Answer:** `kubectl create secret generic my-secret --from-literal=password=s3cr3t` creates an Opaque secret. Values are base64-encoded (NOT encrypted) by default. Mount as volume or env var same as ConfigMaps. Enable encryption at rest in `EncryptionConfiguration`. Secret types: `Opaque` (arbitrary data), `kubernetes.io/dockerconfigjson` (registry auth), `kubernetes.io/tls` (cert + key), `kubernetes.io/basic-auth` (username + password).

@@ -1,44 +1,65 @@
 ---
-title: "OpenTelemetry on K8s: Traces, Metrics, Logs"
-description: "Deploy OpenTelemetry Collector on Kubernetes for unified observability. Collect traces, metrics, and logs with auto-instrumentation and export to any backend."
-category: "observability"
-difficulty: "intermediate"
-publishDate: "2026-04-05"
-tags: ["opentelemetry", "otel", "tracing", "metrics", "observability"]
+title: "OpenTelemetry in Kubernetes: Traces and Metrics"
+description: "Deploy OpenTelemetry Collector in Kubernetes for distributed tracing and metrics. Auto-instrumentation, OTLP export, Jaeger integration, and observability pipelines."
+publishDate: "2026-05-02"
 author: "Luca Berton"
+category: "observability"
+difficulty: "advanced"
+timeToComplete: "12 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - "opentelemetry"
+  - "tracing"
+  - "observability"
+  - "metrics"
+  - "monitoring"
 relatedRecipes:
-  - "kubernetes-monitoring-guide"
-  - "kubernetes-logging-elk-stack"
-  - "grafana-kubernetes-dashboards"
-  - "openclaw-monitoring-prometheus"
+  - "kubernetes-prometheus-monitoring-guide"
+  - "kubernetes-service-mesh-istio-guide"
+  - "kubernetes-probes-liveness-readiness"
 ---
 
-> 💡 **Quick Answer:** Deploy OpenTelemetry Collector on Kubernetes for unified observability. Collect traces, metrics, and logs with auto-instrumentation and export to any backend.
+> 💡 **Quick Answer:** Deploy OpenTelemetry Collector as DaemonSet or Deployment: `helm install otel-collector open-telemetry/opentelemetry-collector`. Apps send traces/metrics via OTLP to the collector, which exports to backends (Jaeger, Prometheus, Grafana Tempo, Datadog). Auto-instrumentation: annotate pods with `instrumentation.opentelemetry.io/inject-python: "true"` — no code changes needed.
 
 ## The Problem
 
-Engineers frequently search for this topic but find scattered, incomplete guides. This recipe provides a comprehensive, production-ready reference.
+Microservices observability requires:
+
+- Distributed tracing across services (which service is slow?)
+- Correlating traces, metrics, and logs
+- Vendor-neutral instrumentation (avoid lock-in)
+- Auto-instrumentation without code changes
+- Unified collection pipeline
 
 ## The Solution
 
-### Deploy OpenTelemetry Collector
+### Install OpenTelemetry Operator
 
 ```bash
+# Install cert-manager first (operator dependency)
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.0/cert-manager.yaml
+
+# Install OTel Operator
+kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
+
+# Or via Helm
 helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
-helm install otel-collector open-telemetry/opentelemetry-collector \
-  --namespace observability --create-namespace \
-  --set mode=daemonset \
-  --set config.exporters.otlp.endpoint="jaeger.observability:4317"
+helm install otel-operator open-telemetry/opentelemetry-operator \
+  -n opentelemetry --create-namespace
 ```
 
+### OpenTelemetry Collector
+
 ```yaml
-# Collector configuration
-apiVersion: v1
-kind: ConfigMap
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
 metadata:
-  name: otel-collector-config
-data:
-  config.yaml: |
+  name: otel
+  namespace: observability
+spec:
+  mode: deployment              # deployment, daemonset, sidecar, statefulset
+  
+  config:
     receivers:
       otlp:
         protocols:
@@ -46,95 +67,222 @@ data:
             endpoint: 0.0.0.0:4317
           http:
             endpoint: 0.0.0.0:4318
+      
+      # Scrape Prometheus metrics
       prometheus:
         config:
           scrape_configs:
-            - job_name: 'kubernetes-pods'
-              kubernetes_sd_configs:
-                - role: pod
+          - job_name: 'kubernetes-pods'
+            kubernetes_sd_configs:
+            - role: pod
+    
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1024
+        send_batch_size: 1000
+      
       memory_limiter:
+        check_interval: 1s
         limit_mib: 512
-        spike_limit_mib: 128
+      
+      k8sattributes:
+        extract:
+          metadata:
+          - k8s.pod.name
+          - k8s.namespace.name
+          - k8s.deployment.name
+          - k8s.node.name
+    
     exporters:
-      otlp:
-        endpoint: "jaeger:4317"
+      # Jaeger for traces
+      otlp/jaeger:
+        endpoint: jaeger-collector.observability:4317
         tls:
           insecure: true
+      
+      # Prometheus for metrics
       prometheus:
-        endpoint: "0.0.0.0:8889"
+        endpoint: 0.0.0.0:8889
+      
+      # Grafana Tempo for traces
+      otlp/tempo:
+        endpoint: tempo.observability:4317
+        tls:
+          insecure: true
+      
+      # Loki for logs
+      loki:
+        endpoint: http://loki.observability:3100/loki/api/v1/push
+      
+      debug:
+        verbosity: detailed
+    
     service:
       pipelines:
         traces:
           receivers: [otlp]
-          processors: [memory_limiter, batch]
-          exporters: [otlp]
+          processors: [memory_limiter, k8sattributes, batch]
+          exporters: [otlp/jaeger, otlp/tempo]
         metrics:
           receivers: [otlp, prometheus]
           processors: [memory_limiter, batch]
           exporters: [prometheus]
+        logs:
+          receivers: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [loki]
 ```
 
-### Auto-Instrumentation
+### Auto-Instrumentation (No Code Changes)
 
 ```yaml
-# Auto-instrument Java/Python/Node.js apps — no code changes!
+# Create Instrumentation resource
 apiVersion: opentelemetry.io/v1alpha1
 kind: Instrumentation
 metadata:
   name: auto-instrumentation
+  namespace: production
 spec:
   exporter:
-    endpoint: http://otel-collector:4317
+    endpoint: http://otel-collector.observability:4317
   propagators:
-    - tracecontext
-    - baggage
+  - tracecontext
+  - baggage
+  - b3
   sampler:
     type: parentbased_traceidratio
-    argument: "0.25"      # Sample 25% of traces
-  java:
-    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:latest
+    argument: "0.25"             # Sample 25% of traces
+  
   python:
     image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python:latest
----
-# Annotate deployment to enable
+  java:
+    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:latest
+  nodejs:
+    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs:latest
+  dotnet:
+    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-dotnet:latest
+  go:
+    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-go:latest
+```
+
+```yaml
+# Annotate pods for auto-instrumentation
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app
-  annotations:
-    instrumentation.opentelemetry.io/inject-java: "true"
+  name: my-python-app
+spec:
+  template:
+    metadata:
+      annotations:
+        instrumentation.opentelemetry.io/inject-python: "true"
+    spec:
+      containers:
+      - name: app
+        image: my-python-app:v1
+        env:
+        - name: OTEL_SERVICE_NAME
+          value: my-python-app
+
+---
+# Java app
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-java-app
+spec:
+  template:
+    metadata:
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: "true"
 ```
 
-```mermaid
-graph LR
-    A[App with OTel SDK] -->|OTLP| B[OTel Collector]
-    C[Auto-instrumented app] -->|OTLP| B
-    B -->|Traces| D[Jaeger / Tempo]
-    B -->|Metrics| E[Prometheus]
-    B -->|Logs| F[Loki / Elasticsearch]
+### Manual Instrumentation (Python Example)
+
+```python
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+
+# Setup
+provider = TracerProvider()
+exporter = OTLPSpanExporter(endpoint="http://otel-collector:4317", insecure=True)
+provider.add_span_processor(BatchSpanProcessor(exporter))
+trace.set_tracer_provider(provider)
+tracer = trace.get_tracer(__name__)
+
+# Use in code
+@app.route('/api/orders')
+def get_orders():
+    with tracer.start_as_current_span("get-orders") as span:
+        span.set_attribute("order.count", len(orders))
+        result = db.query_orders()
+        return jsonify(result)
 ```
 
-## Frequently Asked Questions
+### Collector as DaemonSet
 
-### OpenTelemetry vs Prometheus?
+```yaml
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: node-collector
+spec:
+  mode: daemonset
+  hostNetwork: true
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+      hostmetrics:
+        collection_interval: 30s
+        scrapers:
+          cpu: {}
+          memory: {}
+          disk: {}
+          network: {}
+    exporters:
+      otlp:
+        endpoint: central-collector.observability:4317
+    service:
+      pipelines:
+        metrics:
+          receivers: [otlp, hostmetrics]
+          exporters: [otlp]
+        traces:
+          receivers: [otlp]
+          exporters: [otlp]
+```
 
-They're complementary. **Prometheus** is pull-based metrics collection. **OpenTelemetry** is push-based and covers traces + metrics + logs. Use OTel Collector to scrape Prometheus metrics and forward them.
+## Common Issues
 
+**Traces not appearing in backend**
+
+Check collector logs: `kubectl logs deployment/otel-collector`. Verify exporter endpoint and TLS settings.
+
+**Auto-instrumentation not working**
+
+Operator must be installed. Check: annotation spelling, Instrumentation resource exists in pod's namespace.
+
+**High cardinality metrics causing OOM**
+
+Use processors to filter/aggregate. Add `filter` processor to drop unneeded metrics.
 
 ## Best Practices
 
-- Start with the simplest approach that solves your problem
-- Test thoroughly in staging before production
-- Monitor and iterate based on real metrics
-- Document decisions for your team
+- **Auto-instrument first** — no code changes, covers 80% of cases
+- **Use k8sattributes processor** — enriches telemetry with K8s metadata
+- **Sample in production** — 10-25% trace sampling reduces cost
+- **DaemonSet for node metrics** — Deployment for aggregation
+- **Grafana stack** — Tempo (traces) + Prometheus (metrics) + Loki (logs)
 
 ## Key Takeaways
 
-- This is essential Kubernetes operational knowledge
-- Production-readiness requires proper configuration and monitoring
-- Use `kubectl describe` and logs for troubleshooting
-- Automate where possible to reduce human error
+- OpenTelemetry is the vendor-neutral standard for traces, metrics, and logs
+- Collector receives, processes, and exports telemetry to any backend
+- Auto-instrumentation via annotations — no code changes needed
+- k8sattributes processor enriches data with pod/namespace/node info
+- Use sampling in production to control costs while maintaining visibility

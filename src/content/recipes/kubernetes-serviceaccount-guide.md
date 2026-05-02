@@ -20,6 +20,7 @@ relatedRecipes:
   - "kubernetes-secret-types-guide"
   - "kubernetes-security-context-guide"
   - "kubernetes-certificate-management"
+  - "kubernetes-external-secrets-guide"
 ---
 
 > 💡 **Quick Answer:** `kubectl create serviceaccount my-app -n production` creates a ServiceAccount. Assign it to pods with `spec.serviceAccountName: my-app`. Bind RBAC permissions with a RoleBinding. Since K8s 1.24, tokens are projected (short-lived, auto-rotated) — no more auto-created Secrets. Disable token mounting with `automountServiceAccountToken: false` for pods that don't need API access.
