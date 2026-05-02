@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubectl-get-pods-examples"
   - "kubectl-apply-vs-create"
   - "kubernetes-kubectl-wait-scripting"
+  - "kubernetes-kubectl-plugins-guide"
 ---
 
 > 💡 **Quick Answer:** `kubectl explain pod.spec.containers` shows field documentation inline. `kubectl api-resources` lists all available resource types with short names. `kubectl explain deployment --recursive` shows the full structure. Use `explain` during CKA exam instead of memorizing YAML — it's your built-in reference.

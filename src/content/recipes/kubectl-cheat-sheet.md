@@ -21,6 +21,7 @@ relatedRecipes:
   - "kubectl-describe-pod-events"
   - "kubernetes-api-resources-explain"
   - "kubernetes-kubectl-wait-scripting"
+  - "kubernetes-kubectl-plugins-guide"
 ---
 
 > 💡 **Quick Answer:** Essential kubectl commands: `kubectl get pods -A` (all pods), `kubectl describe pod <name>` (details), `kubectl logs <pod>` (logs), `kubectl exec -it <pod> -- sh` (shell), `kubectl apply -f file.yaml` (deploy), `kubectl delete pod <name>` (remove). Set namespace: `kubectl config set-context --current --namespace=prod`.

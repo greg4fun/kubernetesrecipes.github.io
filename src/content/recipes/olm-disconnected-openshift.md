@@ -18,6 +18,7 @@ relatedRecipes:
   - "mirror-registry-disconnected-openshift"
   - "osus-operator-disconnected-openshift"
   - "openshift-upgrade-disconnected-environment"
+  - "kubernetes-operator-pattern-guide"
 ---
 
 > 💡 **Quick Answer:** OLM in disconnected environments requires mirroring Operator catalog index images and their referenced content images to your mirror registry, then creating a `CatalogSource` CR pointing to the mirrored catalog. OLM resolves dependencies and pulls images from the mirror — no internet required. Use `oc-mirror` to automate catalog mirroring and CatalogSource generation.

@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-init-containers-guide"
   - "kubernetes-resource-quotas-limitranges"
+  - "kubernetes-operator-pattern-guide"
 ---
 
 > 💡 **Quick Answer:** A Job runs a pod to completion (exit 0) and tracks success. A CronJob creates Jobs on a schedule (cron syntax). Use `backoffLimit` for retry control, `parallelism` for concurrent execution, `ttlSecondsAfterFinished` for auto-cleanup, and `concurrencyPolicy` to control overlapping CronJob runs.

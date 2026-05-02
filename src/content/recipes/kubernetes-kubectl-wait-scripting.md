@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubectl-apply-vs-create"
   - "kubernetes-rolling-update-strategies"
   - "kubernetes-api-resources-explain"
+  - "kubernetes-kubectl-plugins-guide"
 ---
 
 > 💡 **Quick Answer:** `kubectl wait --for=condition=Ready pod/my-pod --timeout=120s` blocks until the pod is Ready. For deployments: `kubectl rollout status deployment/my-app --timeout=300s`. For jobs: `kubectl wait --for=condition=Complete job/my-job --timeout=600s`. Essential for CI/CD scripts that need to wait for Kubernetes operations to finish.

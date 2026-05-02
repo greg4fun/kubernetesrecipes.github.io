@@ -19,6 +19,7 @@ relatedRecipes:
   - "debug-oom-killed"
   - "kubernetes-projected-volumes-guide"
   - "kubernetes-qos-classes-guide"
+  - "kubernetes-kubeadm-init-guide"
 ---
 
 > 💡 **Quick Answer:** Kubelet config lives at `/var/lib/kubelet/config.yaml`. Key settings: `systemReserved` (CPU/memory for OS), `kubeReserved` (for kubelet/container runtime), `evictionHard` (when to evict pods), `maxPods` (default 110). After changes: `systemctl restart kubelet`. Use `KubeletConfiguration` API object for declarative config.
