@@ -17,6 +17,8 @@ relatedRecipes:
   - "kustomize-vs-helm-comparison"
   - "kubectl-apply-vs-create"
   - "kubernetes-configmap-guide"
+  - "kubernetes-api-resources-explain"
+  - "kubernetes-kubectl-wait-scripting"
 ---
 
 > 💡 **Quick Answer:** Kustomize customizes YAML without templates. Create a `kustomization.yaml` listing resources, then `kubectl apply -k .` to deploy. Use overlays for environment-specific changes: `base/` has common manifests, `overlays/production/` patches replicas, images, and config. Built into kubectl since v1.14 — no extra tools needed.

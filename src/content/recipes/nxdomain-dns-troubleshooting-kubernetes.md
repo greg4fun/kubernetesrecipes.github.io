@@ -15,6 +15,7 @@ tags:
   - "networking"
 relatedRecipes:
   - "kubernetes-coredns-troubleshooting"
+  - "kubernetes-network-debugging-guide"
 ---
 
 > 💡 **Quick Answer:** NXDOMAIN in Kubernetes usually means one of three things: (1) the `ndots:5` default causes short names to search cluster domains before trying the FQDN — append a trailing dot (`api.example.com.`) to bypass; (2) CoreDNS can't reach upstream DNS — check `kube-dns` service and CoreDNS pods; (3) the domain genuinely doesn't exist. Debug with `kubectl exec <pod> -- nslookup api.example.com` and check CoreDNS logs.

@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-probes-liveness-readiness"
   - "kubernetes-pod-disruption-budget"
   - "kubernetes-topology-spread-constraints"
+  - "kubernetes-pod-lifecycle-termination"
 ---
 
 > 💡 **Quick Answer:** Default rolling update: `maxSurge: 25%`, `maxUnavailable: 25%` — updates 25% of pods at a time. For zero-downtime: set `maxSurge: 1, maxUnavailable: 0` (always have full capacity). For fast updates: `maxSurge: 50%, maxUnavailable: 50%`. Rollback: `kubectl rollout undo deployment/my-app`. Always use readiness probes — rolling updates wait for readiness before proceeding.

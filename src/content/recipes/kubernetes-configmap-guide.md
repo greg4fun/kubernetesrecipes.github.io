@@ -21,6 +21,7 @@ relatedRecipes:
   - "kubernetes-resource-quota-limitrange"
   - "kubernetes-projected-volumes-guide"
   - "kubernetes-kubelet-configuration"
+  - "kubernetes-qos-classes-guide"
 ---
 
 > 💡 **Quick Answer:** `kubectl create configmap myconfig --from-file=config.yaml` creates a ConfigMap from a file. Mount it as a volume: `volumes: [{name: config, configMap: {name: myconfig}}]` with `volumeMounts: [{name: config, mountPath: /etc/config}]`. Or inject as env vars: `envFrom: [{configMapRef: {name: myconfig}}]`. ConfigMaps mounted as volumes auto-update (with ~60s delay); env vars don't.

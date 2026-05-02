@@ -19,6 +19,7 @@ relatedRecipes:
   - "kubernetes-resource-optimization-strategies"
   - "vertical-pod-autoscaler"
   - "kubernetes-projected-volumes-guide"
+  - "kubernetes-qos-classes-guide"
 ---
 
 > 💡 **Quick Answer:** `ResourceQuota` limits total resources per namespace: `requests.cpu: "10"` caps total CPU requests at 10 cores. `LimitRange` sets per-container defaults and min/max: `default.cpu: 500m` gives containers 500m CPU limit if unspecified. When ResourceQuota is set, ALL pods must specify resource requests — use LimitRange to provide defaults.

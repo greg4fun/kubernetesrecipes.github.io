@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-graceful-shutdown-guide"
   - "liveness-readiness-probes"
   - "kubectl-apply-vs-create"
+  - "kubernetes-pod-lifecycle-termination"
 ---
 
 > 💡 **Quick Answer:** Kubernetes rolling updates replace pods gradually: `maxSurge: 25%` allows 25% extra pods during update, `maxUnavailable: 25%` allows 25% pods to be unavailable. Default strategy creates new pods before killing old ones. Rollback with `kubectl rollout undo deployment/<name>`. Set `revisionHistoryLimit: 10` to keep rollback history.
