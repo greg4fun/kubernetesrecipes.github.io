@@ -16,6 +16,7 @@ relatedRecipes:
   - "helm-dependencies"
   - "helm-hooks"
   - "helm-templating-sprig"
+  - "helm-install-chart-guide"
 tags:
   - helm
   - charts

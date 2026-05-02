@@ -17,6 +17,7 @@ relatedRecipes:
   - "resource-limits-requests"
   - "networkpolicy-deny-all"
   - "kubernetes-labels-best-practices"
+  - "kubernetes-resource-quota-limitrange"
 ---
 
 > 💡 **Quick Answer:** `kubectl create namespace production` creates a namespace. Use namespaces to isolate teams, environments, or applications. Apply `ResourceQuota` to limit CPU/memory per namespace, `LimitRange` for per-pod defaults, RBAC `RoleBinding` for access control, and `NetworkPolicy` for network isolation. Default namespaces: `default`, `kube-system`, `kube-public`, `kube-node-lease`.

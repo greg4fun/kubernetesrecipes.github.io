@@ -1,227 +1,231 @@
 ---
 title: "kubectl Cheat Sheet: Essential Commands"
-description: "Complete kubectl cheat sheet with essential commands for pods, deployments, services, logs, debugging, and cluster management. Copy-paste ready examples."
+description: "Complete kubectl cheat sheet with essential commands for pods, deployments, services, debugging, and cluster management. Copy-paste ready examples."
+publishDate: "2026-05-02"
+author: "Luca Berton"
 category: "configuration"
 difficulty: "beginner"
-publishDate: "2026-04-03"
-tags: ["kubectl", "cheat-sheet", "commands", "cli", "kubernetes"]
-author: "Luca Berton"
+timeToComplete: "15 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - "kubectl"
+  - "cheat-sheet"
+  - "cka"
+  - "reference"
+  - "commands"
 relatedRecipes:
-  - "kubernetes-port-forwarding-guide"
-  - "kubeconfig-contexts"
-  - "kubernetes-affinity-guide"
-  - "kubernetes-annotations-guide"
+  - "kubectl-run-pod-command"
+  - "kubectl-get-pods-examples"
+  - "kubectl-apply-vs-create"
+  - "kubectl-exec-into-pod"
+  - "kubectl-describe-pod-events"
 ---
 
-> 💡 **Quick Answer:** Complete kubectl cheat sheet with essential commands for pods, deployments, services, logs, debugging, and cluster management. Copy-paste ready examples.
+> 💡 **Quick Answer:** Essential kubectl commands: `kubectl get pods -A` (all pods), `kubectl describe pod <name>` (details), `kubectl logs <pod>` (logs), `kubectl exec -it <pod> -- sh` (shell), `kubectl apply -f file.yaml` (deploy), `kubectl delete pod <name>` (remove). Set namespace: `kubectl config set-context --current --namespace=prod`.
 
 ## The Problem
 
-This is one of the most searched Kubernetes topics. Having a comprehensive, well-structured guide helps both beginners and experienced users quickly find what they need.
+kubectl has hundreds of commands. This cheat sheet covers the ones you'll use daily, organized by task.
 
 ## The Solution
 
-### Pod Operations
+### Context and Configuration
 
 ```bash
-# List pods
-kubectl get pods
-kubectl get pods -A                    # All namespaces
-kubectl get pods -o wide               # Show node + IP
-kubectl get pods -l app=nginx          # Filter by label
+# View current context
+kubectl config current-context
+
+# List all contexts
+kubectl config get-contexts
+
+# Switch context
+kubectl config use-context my-cluster
+
+# Set default namespace
+kubectl config set-context --current --namespace=production
+
+# View kubeconfig
+kubectl config view
+
+# Merge kubeconfigs
+KUBECONFIG=~/.kube/config:~/new-cluster.yaml kubectl config view --merge --flatten > merged.yaml
+```
+
+### Get Resources
+
+```bash
+# Pods
+kubectl get pods                          # Current namespace
+kubectl get pods -A                       # All namespaces
+kubectl get pods -o wide                  # Extra info (node, IP)
+kubectl get pods -l app=nginx             # By label
 kubectl get pods --field-selector status.phase=Running
+kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'
 
-# Describe pod (events + config)
-kubectl describe pod <name>
+# All resource types
+kubectl get all                           # Common resources
+kubectl get deploy,svc,ingress            # Specific types
+kubectl api-resources                     # List all resource types
 
-# Create pod from YAML
-kubectl apply -f pod.yaml
-
-# Delete pod
-kubectl delete pod <name>
-kubectl delete pod <name> --grace-period=0 --force  # Force delete
-
-# Exec into pod
-kubectl exec -it <pod> -- /bin/bash
-kubectl exec -it <pod> -c <container> -- sh
-
-# Port forward
-kubectl port-forward pod/<name> 8080:80
-kubectl port-forward svc/<name> 8080:80
-
-# Copy files
-kubectl cp <pod>:/path/file ./local
-kubectl cp ./local <pod>:/path/file
+# Output formats
+kubectl get pods -o yaml                  # Full YAML
+kubectl get pods -o json                  # Full JSON
+kubectl get pods -o name                  # Just names
+kubectl get pods -o jsonpath='{.items[*].metadata.name}'
+kubectl get pods -o custom-columns=NAME:.metadata.name,NODE:.spec.nodeName
 ```
 
-### Deployment Operations
+### Create Resources
 
 ```bash
-# Create/update deployment
+# From file
 kubectl apply -f deployment.yaml
-kubectl create deployment nginx --image=nginx --replicas=3
+kubectl apply -f manifests/              # Entire directory
+kubectl apply -f https://example.com/manifest.yaml
 
-# Scale
-kubectl scale deployment <name> --replicas=5
+# Imperative
+kubectl create deployment nginx --image=nginx:1.27 --replicas=3
+kubectl create service clusterip nginx --tcp=80:80
+kubectl create configmap myconfig --from-literal=key=value
+kubectl create secret generic mysecret --from-literal=pass=secret
+kubectl create namespace production
+kubectl create job myjob --image=busybox -- echo hello
 
-# Rolling update
-kubectl set image deployment/<name> container=image:tag
-kubectl rollout status deployment/<name>
-kubectl rollout history deployment/<name>
-kubectl rollout undo deployment/<name>
-kubectl rollout undo deployment/<name> --to-revision=2
-
-# Restart deployment (rolling restart)
-kubectl rollout restart deployment/<name>
+# Generate YAML
+kubectl create deployment nginx --image=nginx:1.27 --dry-run=client -o yaml
+kubectl run nginx --image=nginx:1.27 --dry-run=client -o yaml
 ```
 
-### Service & Networking
+### Modify Resources
 
 ```bash
-# Expose deployment
-kubectl expose deployment <name> --port=80 --target-port=8080 --type=ClusterIP
-kubectl expose deployment <name> --type=NodePort
-kubectl expose deployment <name> --type=LoadBalancer
+# Update
+kubectl apply -f updated.yaml
+kubectl set image deployment/nginx nginx=nginx:1.28
+kubectl scale deployment nginx --replicas=5
+kubectl autoscale deployment nginx --min=2 --max=10 --cpu-percent=70
 
-# Get services
-kubectl get svc
-kubectl get endpoints <svc>
+# Edit live
+kubectl edit deployment nginx
+kubectl patch deployment nginx -p '{"spec":{"replicas":3}}'
+kubectl label pod nginx env=prod
+kubectl annotate pod nginx description="web server"
 
-# DNS test
-kubectl run dns-test --rm -it --image=busybox -- nslookup <svc>.<ns>.svc.cluster.local
+# Rollout
+kubectl rollout status deployment/nginx
+kubectl rollout history deployment/nginx
+kubectl rollout undo deployment/nginx
+kubectl rollout restart deployment/nginx
 ```
 
-### Logs & Debugging
+### Delete Resources
+
+```bash
+# By name
+kubectl delete pod nginx
+kubectl delete deployment nginx
+
+# By file
+kubectl delete -f deployment.yaml
+
+# By label
+kubectl delete pods -l app=nginx
+
+# Force delete (stuck pods)
+kubectl delete pod nginx --grace-period=0 --force
+
+# Delete namespace (ALL resources in it!)
+kubectl delete namespace staging
+```
+
+### Debugging
 
 ```bash
 # Logs
-kubectl logs <pod>
-kubectl logs <pod> --previous          # Previous crash
-kubectl logs <pod> -c <container>      # Specific container
-kubectl logs <pod> -f                  # Follow/stream
-kubectl logs <pod> --tail=100          # Last 100 lines
+kubectl logs my-pod
+kubectl logs my-pod -c sidecar           # Specific container
+kubectl logs my-pod --previous            # Previous crash
+kubectl logs my-pod -f                    # Follow/stream
+kubectl logs my-pod --since=1h            # Last hour
 kubectl logs -l app=nginx --all-containers
 
+# Exec
+kubectl exec -it my-pod -- sh
+kubectl exec my-pod -- cat /etc/resolv.conf
+kubectl exec my-pod -c sidecar -- env
+
+# Describe
+kubectl describe pod my-pod
+kubectl describe node worker-1
+kubectl describe svc my-service
+
 # Debug
-kubectl debug <pod> -it --image=nicolaka/netshoot
-kubectl debug node/<node> -it --image=ubuntu
+kubectl debug -it my-pod --image=busybox --target=my-container
+kubectl debug node/worker-1 -it --image=ubuntu
+
+# Port forward
+kubectl port-forward pod/my-pod 8080:80
+kubectl port-forward svc/my-service 8080:80
+
+# Copy files
+kubectl cp my-pod:/app/log.txt ./log.txt
+kubectl cp ./config.yaml my-pod:/etc/config/
+```
+
+### Cluster Info
+
+```bash
+# Cluster state
+kubectl cluster-info
+kubectl get nodes
+kubectl describe node worker-1
+kubectl top nodes                         # CPU/memory usage
+kubectl top pods -A                       # Pod resource usage
 
 # Events
 kubectl get events --sort-by='.lastTimestamp'
-kubectl get events --field-selector type=Warning
+kubectl get events -A --field-selector reason=FailedScheduling
 
-# Resource usage
-kubectl top pods
-kubectl top nodes
-kubectl top pods --sort-by=memory
+# API resources
+kubectl api-resources
+kubectl api-versions
+kubectl explain pod.spec.containers       # Built-in docs
+kubectl explain deployment.spec --recursive
 ```
 
-### Namespace & Context
+### RBAC
 
 ```bash
-# Namespaces
-kubectl get ns
-kubectl create ns <name>
-kubectl config set-context --current --namespace=<name>
-
-# Context
-kubectl config get-contexts
-kubectl config use-context <name>
-kubectl config current-context
+# Check permissions
+kubectl auth can-i create pods
+kubectl auth can-i delete pods --as=jane@example.com
+kubectl auth can-i '*' '*'                # Am I admin?
+kubectl auth can-i --list                 # All my permissions
 ```
 
-### Resource Management
+### Useful Aliases
 
 ```bash
-# Get any resource
-kubectl get <resource>                 # pods, svc, deploy, pvc, cm, secret...
-kubectl get all                        # Common resources
-kubectl api-resources                  # All resource types
+# Add to ~/.bashrc or ~/.zshrc
+alias k=kubectl
+alias kgp='kubectl get pods'
+alias kga='kubectl get all'
+alias kgn='kubectl get nodes'
+alias kd='kubectl describe'
+alias kl='kubectl logs'
+alias kaf='kubectl apply -f'
+alias kdel='kubectl delete'
+alias kex='kubectl exec -it'
 
-# Output formats
-kubectl get pods -o yaml
-kubectl get pods -o json
-kubectl get pods -o jsonpath='{.items[*].metadata.name}'
-kubectl get pods -o custom-columns=NAME:.metadata.name,STATUS:.status.phase
-
-# Labels & annotations
-kubectl label pod <name> env=prod
-kubectl annotate pod <name> description="my app"
-kubectl get pods --show-labels
-
-# Dry run (preview)
-kubectl apply -f file.yaml --dry-run=client
-kubectl apply -f file.yaml --dry-run=server
-
-# Diff before applying
-kubectl diff -f file.yaml
+# Enable autocomplete
+source <(kubectl completion bash)
+complete -F __start_kubectl k
 ```
-
-### Quick Reference Table
-
-| Action | Command |
-|--------|---------|
-| List pods | `kubectl get pods -A` |
-| Describe | `kubectl describe pod <name>` |
-| Logs | `kubectl logs <pod> -f` |
-| Exec | `kubectl exec -it <pod> -- bash` |
-| Scale | `kubectl scale deploy <name> --replicas=N` |
-| Rollout | `kubectl rollout restart deploy/<name>` |
-| Debug | `kubectl debug <pod> -it --image=netshoot` |
-| Port forward | `kubectl port-forward svc/<name> 8080:80` |
-
-```mermaid
-graph TD
-    A[kubectl] --> B[get - List resources]
-    A --> C[describe - Show details]
-    A --> D[apply - Create/update]
-    A --> E[delete - Remove]
-    A --> F[logs - View output]
-    A --> G[exec - Run commands]
-    A --> H[debug - Troubleshoot]
-    A --> I[port-forward - Local access]
-```
-
-## Frequently Asked Questions
-
-### What is kubectl?
-
-kubectl is the command-line tool for interacting with Kubernetes clusters. It communicates with the API server to create, inspect, update, and delete resources.
-
-### How do I install kubectl?
-
-```bash
-# Linux
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-chmod +x kubectl && sudo mv kubectl /usr/local/bin/
-
-# macOS
-brew install kubectl
-
-# Verify
-kubectl version --client
-```
-
-### How do I enable kubectl auto-completion?
-
-```bash
-# bash
-echo 'source <(kubectl completion bash)' >> ~/.bashrc
-echo 'alias k=kubectl' >> ~/.bashrc
-echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
-source ~/.bashrc
-```
-
-## Best Practices
-
-- **Start simple** — use the basic form first, add complexity as needed
-- **Be consistent** — follow naming conventions across your cluster
-- **Document your choices** — add annotations explaining why, not just what
-- **Monitor and iterate** — review configurations regularly
 
 ## Key Takeaways
 
-- This is fundamental Kubernetes knowledge every engineer needs
-- Start with the simplest approach that solves your problem
-- Use `kubectl explain` and `kubectl describe` when unsure
-- Practice in a test cluster before applying to production
+- `get`, `describe`, `logs`, `exec` — the four debugging pillars
+- `apply -f` for declarative, `create` for imperative + YAML generation
+- `-o wide`, `-o yaml`, `-o jsonpath` for different output needs
+- `--dry-run=client -o yaml` generates templates without creating resources
+- Set up aliases and bash completion for productivity

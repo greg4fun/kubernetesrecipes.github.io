@@ -18,6 +18,7 @@ relatedRecipes:
   - "troubleshooting-pending-pvc"
   - "kubernetes-persistentvolumeclaimspec"
   - "etcd-backup-restore"
+  - "kubernetes-etcd-backup-guide"
 ---
 
 > 💡 **Quick Answer:** Create a PVC: `kubectl apply -f` a PersistentVolumeClaim requesting storage size and access mode. With a StorageClass, volumes are provisioned automatically (dynamic provisioning). Access modes: `ReadWriteOnce` (single node), `ReadOnlyMany` (many nodes read), `ReadWriteMany` (many nodes read/write). Reclaim policies: `Delete` (default for dynamic) removes data on PVC deletion, `Retain` keeps it.

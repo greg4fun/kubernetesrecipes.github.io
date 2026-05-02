@@ -17,6 +17,7 @@ relatedRecipes:
   - "argocd-declarative-application-setup"
   - "argocd-multi-cluster-app-of-apps"
   - "argocd-sync-waves-ordering"
+  - "helm-install-chart-guide"
 tags: ["argocd", "gitops", "helm", "app-of-apps", "multi-environment"]
 publishDate: "2026-02-26"
 updatedDate: "2026-02-26"

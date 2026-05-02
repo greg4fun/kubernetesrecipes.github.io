@@ -11,6 +11,7 @@ relatedRecipes:
   - "kubectl-cheat-sheet"
   - "kubernetes-affinity-guide"
   - "kubernetes-annotations-guide"
+  - "kubernetes-port-forwarding-guide"
 ---
 
 > 💡 **Quick Answer:** Upgrade Kubernetes clusters safely with kubeadm. Covers pre-flight checks, control plane upgrade, worker node drain, and rollback procedures.

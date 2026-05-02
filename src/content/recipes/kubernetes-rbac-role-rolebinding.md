@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-secret-types-guide"
   - "pod-security-context"
   - "kubernetes-audit-logging"
+  - "kubernetes-serviceaccount-guide"
 ---
 
 > 💡 **Quick Answer:** RBAC uses four objects: **Role** (namespace permissions), **ClusterRole** (cluster-wide permissions), **RoleBinding** (grants Role to user/group/SA in a namespace), **ClusterRoleBinding** (grants ClusterRole cluster-wide). Create a Role with `rules: [{apiGroups: [""], resources: ["pods"], verbs: ["get", "list"]}]`, then bind it with a RoleBinding to a user or ServiceAccount.

@@ -11,6 +11,7 @@ relatedRecipes:
   - "kubernetes-affinity-guide"
   - "kubernetes-annotations-guide"
   - "kubernetes-api-deprecation-migration"
+  - "kubernetes-port-forwarding-guide"
 ---
 
 > 💡 **Quick Answer:** Understand the Kubernetes pod lifecycle from Pending to Terminated. Covers pod phases, container states, restart policies, graceful shutdown, and preStop hooks.

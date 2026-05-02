@@ -11,6 +11,7 @@ relatedRecipes:
   - "kubectl-cheat-sheet"
   - "kubernetes-affinity-guide"
   - "kubernetes-annotations-guide"
+  - "kubernetes-port-forwarding-guide"
 ---
 
 > 💡 **Quick Answer:** Master Kubernetes labels and selectors for organizing and querying resources. Label conventions, equality selectors, set-based selectors, and field selectors.
