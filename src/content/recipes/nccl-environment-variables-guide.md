@@ -1,6 +1,6 @@
 ---
-title: "NCCL_IB_DISABLE Env Variables Guide"
-description: "NCCL_IB_DISABLE and NCCL_SOCKET_IFNAME environment variables guide. Complete NCCL env var reference for GPU communication tuning on Kubernetes."
+title: "NCCL Environment Variables Reference"
+description: "Complete NCCL environment variables reference for Kubernetes GPU training. NCCL_IB_DISABLE, NCCL_SOCKET_IFNAME, NCCL_DEBUG, and network tuning guide."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "ai"

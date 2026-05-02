@@ -1,7 +1,7 @@
 ---
-title: "NVIDIA PyTorch Container K8s Guide"
-description: "Deploy nvcr.io/nvidia/pytorch containers on Kubernetes. Version selection, CUDA compatibility, multi-GPU training, and NCCL configuration for production."
-publishDate: "2026-04-28"
+title: "NVIDIA PyTorch Container on Kubernetes"
+description: "Deploy nvcr.io/nvidia/pytorch containers on Kubernetes for GPU training. Version selection, CUDA compatibility, multi-node DDP, and NCCL configuration."
+publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "ai"
 difficulty: "intermediate"
@@ -10,102 +10,235 @@ kubernetesVersion: "1.28+"
 tags:
   - "nvidia"
   - "pytorch"
-  - "container"
-  - "nvcr"
+  - "gpu"
   - "training"
+  - "nccl"
+  - "containers"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
-  - "kubernetes-rbac-least-privilege"
-  - "tensorrt-llm-kubernetes-guide"
+  - "multi-gpu-pytorch-ddp-kubernetes"
+  - "deepspeed-kubernetes-distributed"
+  - "nccl-environment-variables-guide"
+  - "gpu-limits-requests-kubernetes"
 ---
 
-> 💡 **Quick Answer:** Deploy nvcr.io/nvidia/pytorch containers on Kubernetes. Version selection, CUDA compatibility, multi-GPU training, and NCCL configuration for production.
+> 💡 **Quick Answer:** Use `nvcr.io/nvidia/pytorch:24.07-py3` (or latest monthly tag) for GPU training on Kubernetes. The NVIDIA PyTorch containers include pre-built CUDA, cuDNN, NCCL, and PyTorch — everything needed for single and multi-node GPU training. Request GPU resources (`nvidia.com/gpu: 1`), mount shared storage for datasets, and set NCCL environment variables for multi-node communication.
 
 ## The Problem
 
-Deploy nvcr. Without proper configuration, teams encounter unexpected behavior, security gaps, or performance issues in production Kubernetes clusters.
+Building PyTorch containers for GPU training is complex:
+
+- CUDA, cuDNN, NCCL version compatibility matrix
+- GPU driver compatibility with container CUDA version
+- Multi-node training requires specific NCCL and network config
+- Building from source takes hours and often fails
 
 ## The Solution
 
-### Prerequisites
+### NVIDIA PyTorch Container Versions
 
 ```bash
-# Verify cluster access
-kubectl cluster-info
-kubectl get nodes -o wide
+# Container naming: nvcr.io/nvidia/pytorch:YY.MM-py3
+# YY.MM = year.month release cycle
+
+# Popular versions:
+# 24.07-py3  → CUDA 12.5, PyTorch 2.4, NCCL 2.22
+# 24.10-py3  → CUDA 12.6, PyTorch 2.5, NCCL 2.23
+# 25.01-py3  → CUDA 12.7, PyTorch 2.6, NCCL 2.25
+# 25.04-py3  → CUDA 12.8, PyTorch 2.7, NCCL 2.26
+# 25.11-py3  → CUDA 13.0, PyTorch 2.8, NCCL 2.28 (latest reference)
+
+# Check available tags
+curl -s "https://nvcr.io/v2/nvidia/pytorch/tags/list" | jq '.tags[-10:]'
 ```
 
-### Configuration
+### Single GPU Training Job
 
 ```yaml
-# NVIDIA PyTorch Container K8s Guide — production configuration
-apiVersion: v1
-kind: ConfigMap
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: nvidia-pytorch-container-kubernetes-config
-  namespace: production
-  labels:
-    app.kubernetes.io/managed-by: kubectl
-data:
-  config.yaml: |
-    enabled: true
-    logLevel: info
+  name: pytorch-training
+spec:
+  template:
+    spec:
+      containers:
+      - name: trainer
+        image: nvcr.io/nvidia/pytorch:24.07-py3
+        command:
+        - python
+        - /workspace/train.py
+        - --epochs=10
+        - --batch-size=64
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+          requests:
+            cpu: "4"
+            memory: 16Gi
+        volumeMounts:
+        - name: dataset
+          mountPath: /data
+        - name: scripts
+          mountPath: /workspace
+      volumes:
+      - name: dataset
+        persistentVolumeClaim:
+          claimName: training-data
+      - name: scripts
+        configMap:
+          name: training-scripts
+      restartPolicy: Never
+  backoffLimit: 2
 ```
 
-### Deployment
+### Multi-GPU Single Node (DataParallel)
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: multi-gpu-training
+spec:
+  template:
+    spec:
+      containers:
+      - name: trainer
+        image: nvcr.io/nvidia/pytorch:24.07-py3
+        command:
+        - torchrun
+        - --nproc_per_node=4
+        - /workspace/train_ddp.py
+        resources:
+          limits:
+            nvidia.com/gpu: 4       # All 4 GPUs on one node
+          requests:
+            cpu: "16"
+            memory: 64Gi
+        env:
+        - name: NCCL_DEBUG
+          value: "INFO"
+        volumeMounts:
+        - name: dataset
+          mountPath: /data
+        - name: shm
+          mountPath: /dev/shm
+      volumes:
+      - name: dataset
+        persistentVolumeClaim:
+          claimName: training-data
+      - name: shm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 16Gi          # Shared memory for NCCL
+      restartPolicy: Never
+```
+
+### Multi-Node DDP Training
+
+```yaml
+apiVersion: kubeflow.org/v1
+kind: PyTorchJob
+metadata:
+  name: distributed-training
+spec:
+  pytorchReplicaSpecs:
+    Master:
+      replicas: 1
+      template:
+        spec:
+          containers:
+          - name: pytorch
+            image: nvcr.io/nvidia/pytorch:24.07-py3
+            command:
+            - torchrun
+            - --nnodes=4
+            - --nproc_per_node=8
+            - --rdzv_backend=c10d
+            - --rdzv_endpoint=$(MASTER_ADDR):29500
+            - /workspace/train_ddp.py
+            resources:
+              limits:
+                nvidia.com/gpu: 8
+            env:
+            - name: NCCL_IB_DISABLE
+              value: "0"           # Enable InfiniBand
+            - name: NCCL_SOCKET_IFNAME
+              value: "eth0"
+            - name: NCCL_DEBUG
+              value: "WARN"
+            volumeMounts:
+            - name: shm
+              mountPath: /dev/shm
+          volumes:
+          - name: shm
+            emptyDir:
+              medium: Memory
+              sizeLimit: 32Gi
+    Worker:
+      replicas: 3
+      template:
+        spec:
+          containers:
+          - name: pytorch
+            image: nvcr.io/nvidia/pytorch:24.07-py3
+            # Same config as Master
+```
+
+### Container Contents Reference
+
+| Component | 24.07-py3 | 25.01-py3 | 25.11-py3 |
+|-----------|-----------|-----------|-----------|
+| CUDA | 12.5 | 12.7 | 13.0 |
+| cuDNN | 9.2 | 9.5 | 9.8 |
+| NCCL | 2.22.3 | 2.25.1 | 2.28.8 |
+| PyTorch | 2.4.0 | 2.6.0 | 2.8.0 |
+| Python | 3.10 | 3.10 | 3.12 |
+| MOFED | 5.4 | 5.4 | 5.4 |
+| GDRCopy | 2.4 | 2.4.1 | 2.5.1 |
+| OS | Ubuntu 22.04 | Ubuntu 22.04 | Ubuntu 24.04 |
+
+### GPU Driver Compatibility
 
 ```bash
-# Apply configuration
-kubectl apply -f config.yaml
+# Check minimum driver version for container CUDA version
+# CUDA 12.5 → Driver ≥ 555.42
+# CUDA 12.6 → Driver ≥ 560.28
+# CUDA 12.7 → Driver ≥ 565.57
+# CUDA 13.0 → Driver ≥ 570.86
 
-# Verify resources
-kubectl get all -n production
+# Check node driver version
+kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}: {.status.nodeInfo.containerRuntimeVersion}{"\n"}{end}'
 
-# Check logs
-kubectl logs -n production -l component=controller --tail=50
-```
-
-### Verification
-
-```bash
-# Confirm deployment
-kubectl get pods -n production -o wide
-kubectl describe pod -n production <pod-name>
-```
-
-```mermaid
-graph TD
-    A[Identify Requirements] --> B[Configure Resources]
-    B --> C[Deploy to Staging]
-    C --> D{Validation Pass?}
-    D -->|Yes| E[Deploy to Production]
-    D -->|No| F[Debug and Fix]
-    F --> C
-    E --> G[Monitor and Alert]
+# Inside pod
+nvidia-smi --query-gpu=driver_version --format=csv,noheader
 ```
 
 ## Common Issues
 
-**Configuration not applying**
+**"CUDA error: no kernel image is available for execution on the device"**
 
-Verify the namespace exists and RBAC allows the operation. Check events with `kubectl get events -n production --sort-by=.metadata.creationTimestamp`.
+GPU architecture mismatch. The container's PyTorch was compiled for specific GPU architectures. H100 needs recent containers (24.01+), older GPUs like V100 are widely supported.
 
-**Unexpected behavior after changes**
+**Shared memory errors (`RuntimeError: DataLoader worker... killed`)**
 
-Review all related resources. Use `kubectl diff -f config.yaml` before applying to preview changes.
+Default `/dev/shm` is 64MB. Mount an emptyDir with `medium: Memory` and `sizeLimit: 16Gi+`.
+
+**NCCL timeout in multi-node**
+
+Network interface selection wrong. Set `NCCL_SOCKET_IFNAME` to your pod network interface (usually `eth0`) and check firewall rules for NCCL ports.
 
 ## Best Practices
 
-- Test all changes in staging before production deployment
-- Version all configuration in Git for audit trail and rollback
-- Monitor key metrics after deployment with Prometheus alerts
-- Document operational procedures and decisions in PR descriptions
-- Automate validation with CI/CD pipeline checks
+- **Pin container version** — use `24.07-py3` not `latest`
+- **Always mount `/dev/shm`** — PyTorch DataLoader needs large shared memory
+- **Match driver version** — check CUDA→driver compatibility matrix
+- **Set `NCCL_DEBUG=INFO`** for initial setup, `WARN` for production
+- **Use Kubeflow PyTorchJob** for multi-node — handles `MASTER_ADDR` and coordination
 
 ## Key Takeaways
 
-- NVIDIA PyTorch Container K8s Guide is essential for production Kubernetes operations
-- Start with safe defaults and tune based on monitoring data
-- Always test in non-production environments first
-- Combine with observability for full visibility into cluster behavior
-- Automate repetitive operations with GitOps and CI/CD pipelines
+- `nvcr.io/nvidia/pytorch:YY.MM-py3` containers include CUDA, cuDNN, NCCL, and PyTorch pre-built
+- Pin versions (e.g., `24.07-py3`) for reproducible training
+- Always mount `/dev/shm` as emptyDir Memory for DataLoader workers
+- Multi-node requires NCCL env vars (NCCL_SOCKET_IFNAME, NCCL_IB_DISABLE)
+- Check GPU driver version compatibility before deploying

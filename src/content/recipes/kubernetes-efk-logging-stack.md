@@ -1,6 +1,6 @@
 ---
-title: "EFK Stack Centralized Logging K8s"
-description: "Deploy the EFK stack for centralized logging on Kubernetes. Elasticsearch, Fluentd, Kibana setup, log parsing, retention, and production cluster tuning."
+title: "EFK Logging System Principles K8s"
+description: "EFK logging system principles for Kubernetes. Elasticsearch, Fluentd, Kibana architecture, log pipeline design, parsing, and retention strategies."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "observability"

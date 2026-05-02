@@ -1,6 +1,6 @@
 ---
-title: "DaemonSet One Pod Per Node K8s Docs"
-description: "Kubernetes DaemonSet runs one pod per node. Node selectors, tolerations, update strategies, and monitoring agent deployment for production clusters."
+title: "K8s DaemonSet: One Pod Per Node Guide"
+description: "Kubernetes DaemonSet runs exactly one pod per node. Node selectors, tolerations, update strategies, and monitoring agent deployment patterns."
 category: "deployments"
 difficulty: "beginner"
 publishDate: "2026-04-03"
