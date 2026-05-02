@@ -17,6 +17,7 @@ relatedRecipes:
   - "kustomize-vs-helm-comparison"
   - "kubernetes-resource-quota-limitrange"
   - "kubernetes-kubelet-configuration"
+  - "kubernetes-kustomize-guide"
 ---
 
 > 💡 **Quick Answer:** `kubectl apply -f file.yaml` is **declarative** — it creates resources if they don't exist and updates them if they do, tracking changes via the `last-applied-configuration` annotation. `kubectl create -f file.yaml` is **imperative** — it creates resources but fails if they already exist. **Use `apply` for GitOps, CI/CD, and production. Use `create` for one-off resources and CKA exam speed.**

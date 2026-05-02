@@ -17,6 +17,7 @@ relatedRecipes:
   - "nvidia-gpu-operator-troubleshooting"
   - "gpu-feature-discovery-kubernetes"
   - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-metrics-server-top"
 ---
 
 > 💡 **Quick Answer:** The GPU Operator node-status-exporter exposes validation metrics at `:9400/metrics`. Key metric: `gpu_operator_node_driver_ready{node="gpu-node-1"} 1` indicates the driver is ready. Monitor `gpu_operator_node_*_ready` for driver, toolkit, device-plugin, and DCGM validation states. Scrape with Prometheus ServiceMonitor and alert on `gpu_operator_node_driver_ready == 0` to catch driver failures.

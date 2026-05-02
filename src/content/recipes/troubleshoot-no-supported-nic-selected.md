@@ -14,6 +14,7 @@ relatedRecipes:
   - "openshift-sriov-vf-creation"
   - "identify-mellanox-nic-models"
   - "check-bonding-and-interface-status"
+  - "kubernetes-imagepullbackoff-troubleshoot"
 tags:
   - "sriov"
   - "troubleshooting"

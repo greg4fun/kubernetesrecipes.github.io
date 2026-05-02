@@ -18,6 +18,7 @@ relatedRecipes:
   - "selinux-ssh-login-failure-troubleshooting"
   - "openshift-cluster-operator-upgrade-debug"
   - "journald-verify-config-kubernetes"
+  - "kubernetes-imagepullbackoff-troubleshoot"
 tags:
   - "catalogsource"
   - "olm"

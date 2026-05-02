@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "kustomize-vs-helm-comparison"
   - "kubernetes-configmap-reload-patterns"
+  - "kubernetes-kustomize-guide"
 ---
 
 > 💡 **Quick Answer:** Use Kustomize overlays for environment-specific configuration (dev/staging/prod), strategic merge patches for targeted YAML modifications, components for reusable cross-cutting concerns (monitoring sidecar, network policies), and replacements (not vars) for cross-resource references.

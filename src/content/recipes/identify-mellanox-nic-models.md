@@ -15,6 +15,7 @@ relatedRecipes:
   - "openshift-sriov-vf-creation"
   - "troubleshoot-no-supported-nic-selected"
   - "check-bonding-and-interface-status"
+  - "kubernetes-imagepullbackoff-troubleshoot"
 tags:
   - "mellanox"
   - "connectx"

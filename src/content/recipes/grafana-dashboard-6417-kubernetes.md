@@ -19,6 +19,7 @@ relatedRecipes:
   - "kubernetes-pod-resource-monitoring-grafana"
   - "grafana-dashboard-6417-node-exporter"
   - "gpu-operator-node-status-exporter-metrics"
+  - "kubernetes-metrics-server-top"
 ---
 
 > 💡 **Quick Answer:** Grafana dashboard 6417 ("Kubernetes Pods") displays real-time CPU, memory, network I/O, and filesystem usage per pod. Import it via Grafana UI → Dashboards → Import → ID `6417` → select your Prometheus data source. Requires `kube-state-metrics` and `node-exporter` running in your cluster.

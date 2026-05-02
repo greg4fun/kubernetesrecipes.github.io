@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-resource-limits-cpu-memory-format"
   - "vertical-pod-autoscaler"
   - "keda-vs-hpa-autoscaling-comparison"
+  - "kubernetes-metrics-server-top"
 ---
 
 > 💡 **Quick Answer:** Metrics Server is a lightweight, in-memory aggregator of resource metrics (CPU/memory) from kubelets. Install with `kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml`. It powers `kubectl top`, HPA, and VPA. For self-managed clusters, you may need `--kubelet-insecure-tls` if kubelet certificates are self-signed.
