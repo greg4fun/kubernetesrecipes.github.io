@@ -17,6 +17,8 @@ relatedRecipes:
   - "kubernetes-pod-security-admission"
   - "kubernetes-rbac-role-rolebinding"
   - "kubernetes-serviceaccount-guide"
+  - "kubernetes-audit-logging-guide"
+  - "kubernetes-certificate-management"
 ---
 
 > 💡 **Quick Answer:** SecurityContext controls pod and container privileges. Minimum hardening: `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, `readOnlyRootFilesystem: true`, `capabilities: {drop: ["ALL"]}`, `seccompProfile: {type: RuntimeDefault}`. Set at pod level for defaults, override per container when needed.

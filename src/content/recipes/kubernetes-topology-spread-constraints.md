@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-taints-tolerations-guide"
   - "kubernetes-pod-disruption-budget"
   - "kubernetes-priority-preemption-guide"
+  - "kubernetes-replicaset-guide"
 ---
 
 > 💡 **Quick Answer:** `topologySpreadConstraints` distributes pods evenly across failure domains. Set `maxSkew: 1` with `topologyKey: topology.kubernetes.io/zone` to spread pods across availability zones. Use `whenUnsatisfiable: DoNotSchedule` (strict) or `ScheduleAnyway` (best-effort). Combine with pod anti-affinity for maximum HA.

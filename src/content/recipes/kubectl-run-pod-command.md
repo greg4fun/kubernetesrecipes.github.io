@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubectl-create-secret-docker-registry"
   - "kubernetes-labels-best-practices"
   - "pod-security-context"
+  - "kubernetes-replicaset-guide"
 ---
 
 > 💡 **Quick Answer:** `kubectl run nginx --image=nginx:1.27 --port=80` creates a pod named nginx. Add `--dry-run=client -o yaml` to generate YAML without creating. For CKA exams: `kubectl run busybox --image=busybox --restart=Never --command -- sleep 3600` creates a non-restarting pod. Use `--env`, `--labels`, `--requests`, `--limits` for inline configuration.
