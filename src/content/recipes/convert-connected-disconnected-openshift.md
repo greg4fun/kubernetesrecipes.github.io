@@ -19,6 +19,7 @@ relatedRecipes:
   - "idms-itms-disconnected-openshift"
   - "olm-disconnected-openshift"
   - "osus-operator-disconnected-openshift"
+  - "disconnected-environments-openshift-guide"
 ---
 
 > 💡 **Quick Answer:** To convert a running connected OpenShift cluster to disconnected: (1) set up a mirror registry, (2) mirror all required images, (3) add mirror registry CA and credentials to the cluster, (4) create IDMS/ICSP resources, (5) verify all workloads still function, (6) disconnect the network, (7) fix the degraded Insights Operator by removing the `cloud.openshift.com` pull secret entry.

@@ -18,6 +18,7 @@ relatedRecipes:
   - "logging-efk-stack"
   - "container-logging-patterns"
   - "opentelemetry-collector"
+  - "kubernetes-logging-fluentbit-guide"
 ---
 
 > 💡 **Quick Answer:** Deploy Fluent Bit as a DaemonSet to collect OpenClaw container logs, parse structured JSON fields, and ship to Elasticsearch for searchable audit trails and debugging.

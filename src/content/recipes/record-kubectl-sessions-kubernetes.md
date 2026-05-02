@@ -11,8 +11,6 @@ tags: ["kubectl", "recording", "audit", "documentation", "terminal", "openshift"
 relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
-  - kubernetes-audit-logging-enterprise
-  - kubectl-cheatsheet
   - kubectl-logs-view-pod-logs
 ---
 

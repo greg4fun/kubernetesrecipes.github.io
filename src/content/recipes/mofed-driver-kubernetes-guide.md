@@ -1,6 +1,6 @@
 ---
 title: "MOFED Driver Kubernetes Guide"
-description: "Install and manage Mellanox OFED drivers in Kubernetes and OpenShift. MOFED container DaemonSet, Network Operator integration, driver versions, troubleshooting, and upgrade procedures."
+description: "Install and manage MOFED drivers in Kubernetes. Network Operator integration, NicClusterPolicy, driver versions, and RDMA troubleshooting."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "networking"
@@ -21,6 +21,9 @@ relatedRecipes:
   - "mlnx-qos-mofed-container-kubernetes"
   - "sriov-device-plugin-pf-flag-kubernetes"
   - "configure-gpudirect-rdma-gpu-operator"
+  - "nmstate-bond-lacp-openshift"
+  - "mofed-driver-operator-build-kubernetes"
+  - "kubernetes-ippool-management-guide"
 ---
 
 > 💡 **Quick Answer:** MOFED (Mellanox OpenFabrics Enterprise Distribution) is the userspace + kernel driver stack for NVIDIA/Mellanox ConnectX NICs, enabling RDMA, RoCE, SR-IOV, and GPUDirect. Deploy it in Kubernetes via the NVIDIA Network Operator's `ofedDriver` component, which runs a privileged DaemonSet that compiles and loads kernel modules on every node. Pin to a specific version (e.g., `24.07-0.7.0.0`) and never use `latest`.

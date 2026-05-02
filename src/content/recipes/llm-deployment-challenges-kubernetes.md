@@ -19,6 +19,7 @@ relatedRecipes:
   - "deploy-multinode-nim-models-kubernetes"
   - "gpu-sharing-mig-timeslicing-kubernetes"
   - "kubernetes-image-pull-optimization"
+  - "continuous-batching-llm-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Tackle the 5 biggest LLM deployment challenges: (1) GPU memory — use quantization (AWQ/GPTQ) to fit larger models, (2) model loading — pre-cache models on PVCs instead of pulling each time, (3) latency — tune `max_batch_size` and `max_tokens`, (4) scaling — autoscale on request queue depth not CPU, (5) multi-node — use tensor parallelism across nodes for models that don't fit on one GPU.

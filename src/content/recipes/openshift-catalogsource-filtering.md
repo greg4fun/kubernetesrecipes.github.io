@@ -16,6 +16,7 @@ relatedRecipes:
   - "openshift-cluster-wide-pull-secret"
   - "kyverno-policy-management"
   - "container-security-scanning"
+  - "edr-flexera-kubernetes-agents"
 tags:
   - "catalogsource"
   - "olm"

@@ -19,6 +19,7 @@ relatedRecipes:
   - "openshift-upgrade-disconnected-environment"
   - "openshift-idms-install-config"
   - "copy-nim-image-internal-quay-registry"
+  - "disconnected-environments-openshift-guide"
 ---
 
 > 💡 **Quick Answer:** The mirror registry for Red Hat OpenShift is a small-scale Quay-based registry included in every OpenShift subscription. Run `./mirror-registry install` on a RHEL host to deploy a local registry on port 8443 — it auto-generates credentials, TLS certificates, and uses local or SQLite storage. Use it to bootstrap disconnected installs before migrating to production-grade Red Hat Quay.

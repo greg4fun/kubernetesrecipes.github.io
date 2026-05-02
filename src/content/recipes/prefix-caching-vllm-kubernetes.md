@@ -16,6 +16,9 @@ relatedRecipes:
   - "vllm-kubernetes-deployment-guide"
   - "vllm-alternatives-llm-inference-k8s"
   - "multi-gpu-llm-inference"
+  - "speculative-decoding-vllm-kubernetes"
+  - "lora-adapter-serving-vllm-kubernetes"
+  - "quantize-llm-awq-gptq-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Enable automatic prefix caching in vLLM on Kubernetes for shared-prompt workloads. KV cache reuse, memory savings, and chatbot latency optimization.

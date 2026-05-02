@@ -12,7 +12,6 @@ relatedRecipes:
   - "openshift-lifecycle-versions"
   - kubernetes-storage-best-practices
   - kubernetes-emptydir-volume
-  - kubernetes-persistent-volumes
   - pod-security-context
 ---
 

@@ -16,6 +16,8 @@ relatedRecipes:
   - "kubernetes-dynamic-resource-allocation-gpu"
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-resource-limits-cpu-memory-format"
+  - "cuda-out-of-memory-kubernetes"
+  - "nvidia-gpu-operator-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** GPU pod failures on Kubernetes typically fall into 5 categories: device plugin not running (no GPUs advertised), driver version mismatch (CUDA error), insufficient GPU resources (Unschedulable), DRA claim pending (no matching device), or container runtime misconfiguration (nvidia runtime not default). Start with `kubectl describe pod` → check Events → verify `kubectl get nodes -o json | jq '.items[].status.capacity'` shows GPUs.

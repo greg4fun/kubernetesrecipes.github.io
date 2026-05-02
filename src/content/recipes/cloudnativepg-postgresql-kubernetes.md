@@ -12,7 +12,6 @@ relatedRecipes:
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-graceful-shutdown-guide"
   - mariadb-scc-openshift-deployment
-  - kubernetes-persistent-volumes
   - kubernetes-storage-best-practices
 ---
 

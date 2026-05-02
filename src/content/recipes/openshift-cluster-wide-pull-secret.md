@@ -17,6 +17,7 @@ relatedRecipes:
   - "image-pull-secrets"
   - "openshift-multi-tenant-certificates"
   - "secrets-management-best-practices"
+  - "openshift-custom-ca-registry"
 tags: ["openshift", "quay", "pull-secret", "security", "container-registry"]
 publishDate: "2026-02-26"
 updatedDate: "2026-02-26"

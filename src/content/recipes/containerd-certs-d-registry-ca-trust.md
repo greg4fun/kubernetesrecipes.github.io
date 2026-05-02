@@ -1,6 +1,6 @@
 ---
 title: "containerd certs.d Registry CA Trust"
-description: "Configure containerd to trust private registry CAs using /etc/containerd/certs.d directory. Set up hosts.toml for custom CA certificates, skip TLS verify, and configure mirror registries."
+description: "Configure containerd to trust private registry CAs using /etc/containerd/certs.d. Set up hosts.toml for custom CA certificates and mirror registries."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "configuration"

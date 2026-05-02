@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "cuda-out-of-memory-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Fix cgroup memory limit and OOM errors in K8s pods. cgroup v2 migration, memory.max, swap settings, and kernel tuning.

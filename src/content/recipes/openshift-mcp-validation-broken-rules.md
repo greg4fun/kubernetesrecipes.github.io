@@ -1,6 +1,6 @@
 ---
 title: "OpenShift MCP Validation Broken Rules"
-description: "Validate MachineConfigPool rules in OpenShift before applying. Detect broken MachineConfigs, degraded MCPs, stuck rollouts, and implement pre-flight validation procedures."
+description: "Validate MachineConfigPool rules before applying in OpenShift. Detect broken MachineConfigs, degraded MCPs, and implement pre-flight checks."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "troubleshooting"
@@ -17,7 +17,10 @@ relatedRecipes:
   - "openshift-machineconfig-mcp-guide"
   - "openshift-upgrade-planning-2026"
   - "openshift-upgrade-disconnected-environment"
-  - "troubleshoot-node-not-ready-kubernetes"
+  - "oc-mirror-troubleshooting-disconnected"
+  - "selinux-ssh-login-failure-troubleshooting"
+  - "openshift-cluster-operator-upgrade-debug"
+  - "journald-verify-config-kubernetes"
 ---
 
 > 💡 **Quick Answer:** A broken MachineConfig (MC) can degrade an entire MachineConfigPool, rendering nodes unbootable or stuck in a render loop. Always validate MCs before applying: check Ignition spec syntax, verify file paths and permissions, dry-run with `oc apply --dry-run=server`, and monitor the MCP rollout. If an MCP is degraded, identify the broken MC with `oc describe mcp`, check the rendered config, and either fix or revert the offending MC.

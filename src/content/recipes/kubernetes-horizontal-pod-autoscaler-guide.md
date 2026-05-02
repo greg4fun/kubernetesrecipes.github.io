@@ -14,10 +14,8 @@ tags:
   - "metrics"
   - "performance"
 relatedRecipes:
-  - "vpa-hpa-coexistence-kubernetes"
   - "keda-event-driven-autoscaling"
   - "kubernetes-resource-quotas-limitranges"
-  - "cluster-autoscaler-kubernetes"
 ---
 
 > 💡 **Quick Answer:** `kubectl autoscale deployment web --cpu-percent=70 --min=2 --max=10` creates an HPA that scales between 2-10 replicas targeting 70% CPU utilization. HPA v2 supports CPU, memory, custom metrics, and multiple metrics simultaneously. Add `behavior` to control scale-up/down speed and prevent flapping.

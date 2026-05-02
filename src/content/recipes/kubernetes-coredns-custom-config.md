@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-horizontal-dns-autoscaling"
   - "kubernetes-pod-security-standards"
   - "kubernetes-ingress-rate-limit-nginx"
+  - "kubernetes-endpoint-slices-service-topology"
 ---
 
 > 💡 **Quick Answer:** Customize CoreDNS on Kubernetes for advanced DNS needs. Forward zones, stub domains, custom records, caching tuning, and DNS debugging.

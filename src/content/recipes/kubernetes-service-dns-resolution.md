@@ -12,7 +12,6 @@ relatedRecipes:
   - "kubernetes-service-types-explained"
   - "kubernetes-ingress-path-routing"
   - kubernetes-dnspolicy-clusterfirstwithhostnet
-  - kubernetes-coredns-customization
   - kubernetes-service-types-clusterip-nodeport-loadbalancer
 ---
 

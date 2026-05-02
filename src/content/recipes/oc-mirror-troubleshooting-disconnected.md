@@ -1,6 +1,6 @@
 ---
 title: "oc-mirror Troubleshooting Disconnected"
-description: "Troubleshoot oc-mirror failures in disconnected OpenShift environments. Fix archive corruption, registry auth errors, disk space issues, v1 vs v2 incompatibilities, and delta mirror failures."
+description: "Troubleshoot oc-mirror failures in disconnected OpenShift. Fix archive corruption, registry auth errors, v1/v2 mismatches, and delta mirror issues."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "troubleshooting"
@@ -19,6 +19,7 @@ relatedRecipes:
   - "openshift-upgrade-disconnected-environment"
   - "mirror-registry-disconnected-openshift"
   - "skopeo-container-image-operations"
+  - "openshift-cluster-operator-upgrade-debug"
 ---
 
 > 💡 **Quick Answer:** Most oc-mirror failures fall into 5 categories: registry authentication (401/403), disk space (archive can be 25+ GB), v1/v2 format mismatch, corrupted archives from interrupted transfers, and ImageSetConfiguration syntax errors. Check `oc mirror` logs with `--log-level debug`, verify registry credentials with `podman login`, and ensure you use the same oc-mirror version on both connected and disconnected sides.

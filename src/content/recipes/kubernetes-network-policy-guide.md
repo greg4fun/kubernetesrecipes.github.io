@@ -14,8 +14,6 @@ tags:
   - "zero-trust"
   - "microsegmentation"
 relatedRecipes:
-  - "calico-network-policy-kubernetes"
-  - "cilium-hubble-network-observability"
   - "kubernetes-namespace-management-guide"
   - "nfs-tenant-segregation-kubernetes"
 ---

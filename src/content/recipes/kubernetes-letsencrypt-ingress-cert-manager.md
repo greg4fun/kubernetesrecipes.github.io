@@ -12,7 +12,6 @@ relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - certmanager-ovh-dns01-wildcard-tls
-  - kubernetes-ingress-configuration
   - gateway-api-httproutes-tls-k3s
 ---
 

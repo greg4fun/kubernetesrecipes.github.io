@@ -18,6 +18,7 @@ relatedRecipes:
   - "rebuild-nim-custom-model-kubernetes"
   - "deploy-multinode-nim-models-kubernetes"
   - "agentic-ai-multiagent-kubernetes"
+  - "lora-adapter-serving-vllm-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Domain-Specific Language Models (DSLMs) are smaller, cheaper, and more accurate than general-purpose LLMs for specialized tasks. Deploy them on Kubernetes using NIM or vLLM for serving, fine-tune with LoRA adapters on a single GPU, and enhance with RAG pipelines for domain knowledge. A 7B domain model often outperforms a 70B general model in its specialty.

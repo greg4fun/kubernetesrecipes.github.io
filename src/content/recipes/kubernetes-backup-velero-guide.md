@@ -14,9 +14,6 @@ tags:
   - "restore"
   - "storage"
 relatedRecipes:
-  - "kubernetes-disaster-recovery-planning"
-  - "csi-volume-snapshots-kubernetes"
-  - "persistent-volume-expansion-kubernetes"
   - "etcd-backup-restore-kubernetes"
 ---
 

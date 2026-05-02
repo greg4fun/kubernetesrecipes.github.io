@@ -1,6 +1,6 @@
 ---
 title: "GenAI-Perf Benchmark LLM Kubernetes"
-description: "Benchmark LLM inference on Kubernetes with GenAI-Perf. Configure --service-kind openai for vLLM, NIM, and TGI endpoints. Measure throughput, latency, time-to-first-token, and inter-token latency."
+description: "Benchmark LLM inference with GenAI-Perf on Kubernetes. Use --service-kind openai for vLLM, NIM, and TGI. Measure TTFT, ITL, and throughput."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "ai"
@@ -15,10 +15,7 @@ tags:
   - "vllm"
   - "inference"
 relatedRecipes:
-  - "deploy-vllm-inference-kubernetes"
   - "nim-model-profiles-selection-kubernetes"
-  - "continuous-batching-llm-inference-kubernetes"
-  - "speculative-decoding-llm-kubernetes"
 ---
 
 > 💡 **Quick Answer:** GenAI-Perf is NVIDIA's tool for benchmarking LLM inference endpoints. Use `--service-kind openai` to test any OpenAI-compatible API (vLLM, NIM, TGI, Ollama). Run: `genai-perf profile --model llama3 --service-kind openai --endpoint-type chat --url http://llm-service:8000 --concurrency 10`. It measures throughput (tokens/s), request latency, time-to-first-token (TTFT), inter-token latency (ITL), and output token throughput.

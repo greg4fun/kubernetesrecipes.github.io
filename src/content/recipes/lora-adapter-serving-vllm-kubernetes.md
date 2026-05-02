@@ -16,6 +16,9 @@ relatedRecipes:
   - "vllm-kubernetes-deployment-guide"
   - "vllm-alternatives-llm-inference-k8s"
   - "multi-gpu-llm-inference"
+  - "speculative-decoding-vllm-kubernetes"
+  - "prefix-caching-vllm-kubernetes"
+  - "quantize-llm-awq-gptq-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Serve multiple LoRA adapters with a single vLLM base model on Kubernetes. Dynamic loading, per-request routing, and multi-tenant fine-tuned models.

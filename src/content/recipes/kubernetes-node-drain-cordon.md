@@ -15,8 +15,6 @@ tags:
   - "operations"
 relatedRecipes:
   - "kubernetes-pod-disruption-budget"
-  - "pod-priority-preemption-kubernetes"
-  - "daemonset-update-strategies-kubernetes"
   - "kubernetes-rolling-update-strategy"
 ---
 

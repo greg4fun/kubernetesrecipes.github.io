@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-topology-spread-advanced"
   - "kubernetes-resource-quotas-limitranges"
+  - "kubernetes-jobs-cronjobs-guide"
 ---
 
 > 💡 **Quick Answer:** Create `PriorityClass` resources with numeric values (higher = more important). Pods with higher priority preempt lower-priority pods when resources are scarce. Use `preemptionPolicy: Never` for batch jobs that should queue without evicting others.

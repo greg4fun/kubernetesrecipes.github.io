@@ -11,8 +11,6 @@ tags: ["service-account", "token", "rbac", "authentication", "security", "tokenr
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
-  - kubernetes-rbac-configuration
-  - kubernetes-secrets-management
   - kubernetes-user-onboarding-offboarding-automation
 ---
 

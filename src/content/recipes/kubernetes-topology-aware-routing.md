@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-karpenter-node-autoscaling"
   - "kubernetes-gateway-api-httproute"
   - "kubernetes-pod-security-standards"
+  - "kubernetes-endpoint-slices-service-topology"
 ---
 
 > 💡 **Quick Answer:** Enable topology-aware routing for cost optimization on Kubernetes. Zone-local traffic, EndpointSlice hints, and reducing cross-zone data transfer costs.

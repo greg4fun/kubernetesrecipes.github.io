@@ -14,10 +14,8 @@ tags:
   - "grafana"
   - "observability"
 relatedRecipes:
-  - "dcgm-exporter-gpu-monitoring-kubernetes"
-  - "kubernetes-audit-logging-enterprise"
-  - "kubernetes-observability-stack"
   - "doca-telemetry-bluefield-kubernetes"
+  - "kubernetes-logging-fluentbit-guide"
 ---
 
 > 💡 **Quick Answer:** Deploy the full monitoring stack with `helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -n monitoring`. This installs Prometheus, Grafana, Alertmanager, node-exporter, and kube-state-metrics with pre-built dashboards and alerting rules. Define custom monitoring with `ServiceMonitor` and `PrometheusRule` CRDs.

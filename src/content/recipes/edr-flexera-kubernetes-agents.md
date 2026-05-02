@@ -1,6 +1,6 @@
 ---
 title: "EDR Flexera Agents Kubernetes Deploy"
-description: "Deploy EDR endpoint detection and Flexera license agents on Kubernetes nodes. DaemonSet patterns for CrowdStrike, Defender, SentinelOne, and Flexera coexistence."
+description: "Deploy EDR and Flexera agents on Kubernetes with DaemonSets. Priority classes, host path access, exclusion paths, and security agent lifecycle."
 publishDate: "2026-04-28"
 author: "Luca Berton"
 category: "security"
@@ -17,7 +17,6 @@ tags:
 relatedRecipes:
   - "flexera-license-management-kubernetes"
   - "rhacs-nfs-tenant-security-kubernetes"
-  - "kubernetes-audit-logging-configuration"
   - "kubernetes-enterprise-capacity-planning"
 ---
 

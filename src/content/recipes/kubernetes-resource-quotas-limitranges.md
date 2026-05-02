@@ -16,8 +16,6 @@ tags:
 relatedRecipes:
   - "nfs-tenant-segregation-kubernetes"
   - "kubernetes-multi-tenancy-enterprise"
-  - "kubernetes-capacity-planning-enterprise"
-  - "vpa-hpa-coexistence-kubernetes"
 ---
 
 > 💡 **Quick Answer:** `ResourceQuota` caps total resources per namespace (e.g., max 16 CPU, 64Gi memory across all pods). `LimitRange` sets defaults and constraints per individual pod/container (e.g., default 256Mi memory, max 4Gi). Use both together — ResourceQuota prevents namespace sprawl, LimitRange prevents runaway individual pods.

@@ -19,8 +19,8 @@ relatedRecipes:
   - "nncp-mtu-jumbo-frames-workers"
   - "nfs-tenant-segregation-kubernetes"
   - "pfc-nmstate-roce-lossless-kubernetes"
-  - "nfs-fio-mount-debugging-kubernetes"
   - "kubernetes-storage-class-guide"
+  - "nmstate-bond-lacp-openshift"
 ---
 
 > 💡 **Quick Answer:** LACP (802.3ad) bonds aggregate multiple physical links into a single logical interface for storage traffic, providing bandwidth aggregation and link failover. Configure LACP bonds on Kubernetes nodes via NNCP/NMState, match with switch-side LACP port-channels, set `xmit_hash_policy: layer3+4` for storage traffic distribution, and use jumbo frames (MTU 9000) end-to-end.

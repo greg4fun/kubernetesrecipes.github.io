@@ -17,7 +17,6 @@ relatedRecipes:
   - "kubernetes-enterprise-capacity-planning"
   - "ai-infrastructure-cost-optimization-kubernetes"
   - "kubernetes-resource-optimization"
-  - "kubernetes-audit-logging-configuration"
 ---
 
 > 💡 **Quick Answer:** Flexera provides software asset management (SAM) and license compliance for Kubernetes environments. Deploy the Flexera inventory agent as a DaemonSet to track software running in containers, map license entitlements to namespaces and clusters, and avoid compliance gaps with GPU software like NVIDIA AI Enterprise, Red Hat OpenShift, and commercial database licenses.

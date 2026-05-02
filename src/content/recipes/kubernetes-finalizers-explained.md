@@ -13,7 +13,6 @@ relatedRecipes:
   - "kubernetes-resource-requests-limits"
   - namespace-stuck-terminating
   - persistent-volume-stuck-terminating
-  - kubernetes-operator-development
 ---
 
 > 💡 **Quick Answer:** Finalizers are strings in `metadata.finalizers[]` that block resource deletion until a controller removes them. When you delete a resource with finalizers, it enters `Terminating` state but isn't removed until all finalizers are cleared. Use `kubectl patch` to remove stuck finalizers.

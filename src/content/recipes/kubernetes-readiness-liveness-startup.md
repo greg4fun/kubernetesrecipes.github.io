@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-readiness-probe-guide"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-liveness-readiness-startup-probes"
 ---
 
 > 💡 **Quick Answer:** Configure Kubernetes health probes correctly. When to use each probe type, common mistakes, and production-ready probe configurations.

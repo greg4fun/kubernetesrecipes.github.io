@@ -16,6 +16,8 @@ relatedRecipes:
   - "kubernetes-job-ttl-cleanup"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-custom-scheduler-guide"
+  - "kubernetes-jobs-cronjobs-guide"
 ---
 
 > 💡 **Quick Answer:** Kubernetes CronJob patterns for production. ConcurrencyPolicy, startingDeadlineSeconds, successfulJobsHistoryLimit, and handling job failures.

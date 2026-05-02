@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-dns-debugging-guide"
   - "kubernetes-debug-container-ephemeral"
   - "kubernetes-networkpolicy-zero-trust"
+  - "nxdomain-dns-troubleshooting-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Deploy `nicolaka/netshoot` as an ephemeral container or debug pod. Use `tcpdump -i eth0 -w capture.pcap` for packet capture, `conntrack -L` for NAT table inspection, and `nslookup svc.namespace.svc.cluster.local` for DNS verification.

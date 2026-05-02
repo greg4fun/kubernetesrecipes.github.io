@@ -13,7 +13,6 @@ relatedRecipes:
   - "kubernetes-graceful-shutdown-guide"
   - kubernetes-rolling-update-strategies
   - kubernetes-deployment-strategies
-  - kubectl-cheatsheet
 ---
 
 > 💡 **Quick Answer:** `kubectl rollout restart deployment/myapp` triggers a zero-downtime rolling restart by adding a `restartedAt` annotation. Pods are replaced one by one using the deployment's `maxSurge`/`maxUnavailable` strategy.

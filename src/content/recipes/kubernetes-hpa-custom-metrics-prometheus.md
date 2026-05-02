@@ -11,9 +11,7 @@ tags: ["hpa", "autoscaling", "prometheus", "custom-metrics", "prometheus-adapter
 relatedRecipes:
   - "kubernetes-hpa-cpu-memory-guide"
   - "kubernetes-cluster-autoscaler-guide"
-  - kubernetes-hpa-custom-metrics
   - horizontal-pod-autoscaler
-  - kubernetes-hpa-memory-cpu
 ---
 
 > 💡 **Quick Answer:** Install `prometheus-adapter`, configure metric rules that map Prometheus queries to the Kubernetes custom metrics API, then reference them in HPA with `type: Pods` or `type: External`. Scale on anything Prometheus can scrape: request rate, queue depth, latency, GPU usage.

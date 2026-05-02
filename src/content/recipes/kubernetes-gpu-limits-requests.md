@@ -16,6 +16,11 @@ relatedRecipes:
   - "nvidia-gpu-operator-install"
   - "kubernetes-gpu-operator-advanced-config"
   - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "cuda-compatibility-kubernetes-guide"
+  - "nvidia-smi-kubernetes-monitoring"
+  - "gpu-feature-discovery-kubernetes"
+  - "multi-gpu-pytorch-ddp-kubernetes"
+  - "nvidia-driver-update-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Configure GPU resource limits and requests in Kubernetes pod specs. nvidia.com/gpu resource, fractional GPUs, MIG slices, and multi-GPU allocation.

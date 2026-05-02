@@ -15,6 +15,9 @@ relatedRecipes:
   - "nvidia-gpu-operator-install"
   - "kubernetes-gpu-operator-advanced-config"
   - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "gpu-feature-discovery-kubernetes"
+  - "multi-gpu-pytorch-ddp-kubernetes"
+  - "nvidia-driver-update-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Run nvidia-smi inside Kubernetes pods for GPU monitoring. Memory usage, temperature, utilization, and automated health checks with liveness probes.

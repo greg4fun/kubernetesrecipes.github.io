@@ -16,6 +16,9 @@ relatedRecipes:
   - "nvidia-gpu-operator-install"
   - "multi-gpu-llm-inference"
   - "kubernetes-ai-inference-optimization"
+  - "speculative-decoding-vllm-kubernetes"
+  - "prefix-caching-vllm-kubernetes"
+  - "continuous-batching-llm-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Deploy AWQ and GPTQ quantized LLMs on Kubernetes. 4-bit inference with vLLM, model conversion, accuracy trade-offs, and GPU memory savings guide.

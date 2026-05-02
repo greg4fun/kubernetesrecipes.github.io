@@ -14,9 +14,7 @@ tags:
   - "routing"
   - "networking"
 relatedRecipes:
-  - "gateway-api-kubernetes-guide"
   - "kubernetes-service-types-explained"
-  - "cert-manager-letsencrypt-kubernetes"
   - "openshift-routes-vs-ingress"
 ---
 

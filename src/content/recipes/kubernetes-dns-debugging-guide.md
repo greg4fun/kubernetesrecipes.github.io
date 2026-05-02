@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "nxdomain-dns-troubleshooting-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Debug Kubernetes DNS issues systematically. CoreDNS troubleshooting, ndots configuration, search domains, and resolving slow DNS lookups.

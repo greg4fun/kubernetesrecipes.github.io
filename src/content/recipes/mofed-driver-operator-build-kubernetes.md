@@ -1,6 +1,6 @@
 ---
 title: "MOFED Driver Operator Build Kubernetes"
-description: "Let the NVIDIA Network Operator build MOFED drivers automatically. DKMS compilation, kernel header detection, custom compile flags, and precompiled vs on-node build strategies."
+description: "Let the NVIDIA Network Operator build MOFED drivers on-node via DKMS. Kernel header detection, compile flags, and DTK integration for OpenShift."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "networking"

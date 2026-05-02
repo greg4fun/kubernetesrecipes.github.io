@@ -15,7 +15,6 @@ tags:
   - "automation"
 relatedRecipes:
   - "kubernetes-init-containers-guide"
-  - "kubernetes-pod-lifecycle-hooks"
   - "kubernetes-resource-quotas-limitranges"
 ---
 

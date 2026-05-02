@@ -1,6 +1,6 @@
 ---
 title: "oc-mirror Plugin Disconnected OpenShift"
-description: "Use oc-mirror v2 to mirror OpenShift releases, Operators, and images to disconnected registries. ImageSetConfiguration, mirror-to-disk, and disk-to-mirror workflows."
+description: "Use oc-mirror to mirror OpenShift content for disconnected installations. ImageSetConfiguration, incremental mirrors, and operator catalog mirroring."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "deployments"
@@ -19,6 +19,7 @@ relatedRecipes:
   - "openshift-upgrade-disconnected-environment"
   - "olm-disconnected-openshift"
   - "idms-itms-disconnected-openshift"
+  - "disconnected-environments-openshift-guide"
 ---
 
 > 💡 **Quick Answer:** oc-mirror v2 (`--v2` flag) mirrors OpenShift releases, Operator catalogs, helm charts, and additional images to disconnected registries using an `ImageSetConfiguration` file. It supports mirror-to-mirror (partially disconnected), mirror-to-disk + disk-to-mirror (fully air-gapped), generates IDMS/ITMS/CatalogSource resources, and uses a cache for incremental mirroring.

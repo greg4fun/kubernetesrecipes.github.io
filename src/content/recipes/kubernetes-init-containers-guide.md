@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Init Containers Guide"
-description: "Use init containers in Kubernetes for pre-start tasks. Database migrations, dependency checks, config generation, and permission setup before main containers start."
+description: "Use Kubernetes init containers for pod startup tasks. Pre-flight checks, dependency waiting, config generation, and database migrations."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "deployments"
@@ -13,10 +13,9 @@ tags:
   - "startup"
   - "patterns"
 relatedRecipes:
-  - "kubernetes-sidecar-containers-guide"
-  - "kubernetes-pod-lifecycle-hooks"
   - "kubernetes-configmap-secrets-management"
-  - "troubleshoot-pod-pending-kubernetes"
+  - "kubernetes-liveness-readiness-startup-probes"
+  - "kubernetes-jobs-cronjobs-guide"
 ---
 
 > 💡 **Quick Answer:** Init containers run before app containers, execute sequentially, and must succeed before the main container starts. Use them for dependency waiting (`wait-for-db`), config file generation, schema migrations, permission setup, and file downloads. Each init container runs to completion before the next one starts.

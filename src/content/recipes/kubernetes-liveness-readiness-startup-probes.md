@@ -14,10 +14,7 @@ tags:
   - "readiness"
   - "startup"
 relatedRecipes:
-  - "kubernetes-readiness-probe-configuration"
-  - "troubleshoot-crashloopbackoff-kubernetes"
   - "kubernetes-rolling-update-strategy"
-  - "kubernetes-pod-lifecycle-hooks"
 ---
 
 > 💡 **Quick Answer:** Three probe types: **Liveness** (restart if dead), **Readiness** (remove from Service if not ready), **Startup** (protect slow-starting containers). Use HTTP GET for web apps, TCP for databases, exec for custom checks. Critical rule: liveness probes should NEVER check external dependencies like databases — that causes cascading restarts.

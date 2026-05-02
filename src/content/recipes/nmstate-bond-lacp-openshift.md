@@ -1,6 +1,6 @@
 ---
 title: "NMState Bond LACP Configuration OpenShift"
-description: "Configure LACP bonding with NMState on OpenShift nodes. NodeNetworkConfigurationPolicy for 802.3ad bonds, storage network bonds, VLAN tagging, and bond monitoring with NMState operator."
+description: "Configure LACP bonding with NMState on OpenShift. NodeNetworkConfigurationPolicy for 802.3ad bonds, VLAN tagging, and storage network bonds."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "networking"
@@ -16,7 +16,6 @@ tags:
   - "storage"
 relatedRecipes:
   - "lacp-storage-switch-kubernetes"
-  - "nmstate-nncp-configuration-openshift"
   - "nfs-tenant-segregation-kubernetes"
   - "configure-gpudirect-rdma-gpu-operator"
 ---

@@ -15,9 +15,7 @@ tags:
   - "rollback"
 relatedRecipes:
   - "kubernetes-rolling-update-strategy"
-  - "canary-deployment-kubernetes"
-  - "helm-rollback-history-kubernetes"
-  - "argocd-progressive-delivery-kubernetes"
+  - "kubernetes-liveness-readiness-startup-probes"
 ---
 
 > 💡 **Quick Answer:** **Rolling Update** (default) — replace pods gradually with zero downtime. **Recreate** — kill all old pods, then start new (brief downtime). **Blue-Green** — run two full environments, switch traffic. **Canary** — route small % of traffic to new version. Use rolling update for most cases, canary for high-risk changes, blue-green for instant rollback needs.

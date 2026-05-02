@@ -1,6 +1,6 @@
 ---
 title: "Cincinnati Graph OpenShift Upgrades"
-description: "Understand the Cincinnati upgrade graph that drives OpenShift version selection. Query graph endpoints, decode channels, blocked edges, conditional updates, and debug missing upgrade paths."
+description: "Understand Cincinnati upgrade graph for OpenShift. Query graph endpoints, decode channels, blocked edges, conditional updates, and debug upgrade paths."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "configuration"

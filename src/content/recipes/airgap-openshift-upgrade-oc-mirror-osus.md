@@ -1,6 +1,6 @@
 ---
 title: "Air-Gap OpenShift Upgrade oc-mirror OSUS"
-description: "Upgrade an air-gapped OpenShift cluster using oc-mirror and OSUS. Mirror release payloads and Cincinnati graph, transfer to disconnected site, configure IDMS, OSUS, and CVO for the upgrade."
+description: "Upgrade air-gapped OpenShift with oc-mirror and OSUS. Mirror release payloads and Cincinnati graph, configure IDMS, and drive CVO upgrades."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "configuration"

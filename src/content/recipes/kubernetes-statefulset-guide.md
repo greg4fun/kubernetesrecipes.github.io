@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes StatefulSet Guide"
-description: "Deploy stateful applications with Kubernetes StatefulSets. Ordered pod management, stable network identities, persistent storage, and headless service configuration."
+description: "Deploy StatefulSets in Kubernetes for stateful workloads. Stable network identity, ordered rollouts, persistent storage, and headless services."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "deployments"

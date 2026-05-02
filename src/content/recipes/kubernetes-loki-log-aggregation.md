@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-log-aggregation-loki"
   - "grafana-kubernetes-dashboards"
   - "kubernetes-logging-elk-stack"
+  - "kubernetes-logging-fluentbit-guide"
 ---
 
 > 💡 **Quick Answer:** Deploy Loki in `SimpleScalable` mode with Promtail DaemonSet for log collection. Use LogQL for querying: `{namespace="production"} |= "error" | json | status >= 500`. Configure 30-day retention with S3/GCS backend storage.

@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-cronjob-patterns-guide"
 ---
 
 > 💡 **Quick Answer:** Configure terminationGracePeriodSeconds for Kubernetes pods. SIGTERM vs SIGKILL timing, connection draining, long-running tasks, and graceful shutdown.

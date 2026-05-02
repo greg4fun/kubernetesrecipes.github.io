@@ -13,7 +13,6 @@ relatedRecipes:
   - "kubernetes-oomkilled-troubleshooting"
   - kubernetes-graceful-shutdown
   - kubernetes-terminationgraceperiodseconds
-  - kubernetes-readiness-probes
   - taint-toleration-scheduling-issues
 ---
 

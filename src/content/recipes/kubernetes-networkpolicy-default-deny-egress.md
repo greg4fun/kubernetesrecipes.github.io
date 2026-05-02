@@ -13,7 +13,6 @@ relatedRecipes:
   - "kubernetes-rbac-least-privilege"
   - kubernetes-networkpolicy-default-deny
   - kubernetes-network-policy-recipes
-  - kubernetes-security-best-practices
 ---
 
 > 💡 **Quick Answer:** Apply a NetworkPolicy with `policyTypes: ["Egress"]` and empty `egress: []` to deny all outbound traffic. Then create additional policies to allow DNS (port 53), specific services, and required external endpoints. Always allow DNS first or nothing works.

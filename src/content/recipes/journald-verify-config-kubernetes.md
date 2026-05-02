@@ -1,6 +1,6 @@
 ---
 title: "Journald Verify Config Kubernetes Nodes"
-description: "Validate journald configuration on Kubernetes nodes with --verify-config. Fix journal corruption, tune storage limits, configure log persistence, and troubleshoot systemd-journald on RHEL and CoreOS."
+description: "Validate journald configuration on Kubernetes nodes. Fix journal corruption, tune storage limits, configure persistence, and troubleshoot systemd-journald."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "troubleshooting"
@@ -15,10 +15,9 @@ tags:
   - "rhel"
   - "openshift"
 relatedRecipes:
-  - "fluent-bit-kubernetes-logging"
   - "openshift-machineconfig-mcp-guide"
-  - "troubleshoot-node-not-ready-kubernetes"
   - "kubernetes-node-drain-cordon"
+  - "selinux-ssh-login-failure-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Run `journalctl --verify` to check journal file integrity, and validate your journald configuration with `systemd-analyze cat-config systemd/journald.conf` then `systemctl restart systemd-journald`. On Kubernetes nodes, journald misconfigurations cause log loss, disk exhaustion, or kubelet log collection failures. Common fix: set `SystemMaxUse=4G`, `MaxRetentionSec=7day`, and `Storage=persistent` in `/etc/systemd/journald.conf`.

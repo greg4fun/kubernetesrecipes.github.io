@@ -1,6 +1,6 @@
 ---
 title: "GKE OIDC Issuer Workload Identity"
-description: "Enable OIDC issuer on GKE clusters with --enable-oidc-issuer. Configure workload identity federation, federate with external IdPs, and use GKE OIDC for cross-cluster authentication."
+description: "Enable OIDC issuer on GKE with --enable-oidc-issuer. Configure workload identity federation for cross-cloud auth and external IdP integration."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "security"
@@ -15,9 +15,7 @@ tags:
   - "google-cloud"
   - "authentication"
 relatedRecipes:
-  - "oidc-sso-kubernetes-enterprise"
   - "kubernetes-rbac-role-clusterrole"
-  - "kubernetes-service-accounts-guide"
 ---
 
 > 💡 **Quick Answer:** Enable the OIDC issuer on GKE with `gcloud container clusters create --enable-oidc-issuer` (or update existing clusters). This exposes a public OIDC discovery endpoint for your cluster's ServiceAccount tokens, enabling workload identity federation — pods authenticate to external services (AWS, Azure, Vault) using Kubernetes ServiceAccount tokens without static credentials.

@@ -13,7 +13,6 @@ relatedRecipes:
   - "kubernetes-resource-requests-limits"
   - configmap-hot-reload-troubleshooting
   - kubernetes-environment-variables
-  - kubernetes-secrets-management
 ---
 
 > 💡 **Quick Answer:** `kubectl create configmap myconfig --from-file=config.yaml` creates a ConfigMap with the file contents as a data key. Use `--from-file=dir/` for entire directories, `--from-env-file` for KEY=VALUE files.

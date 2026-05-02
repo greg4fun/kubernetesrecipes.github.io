@@ -1,6 +1,6 @@
 ---
 title: "SR-IOV Device Plugin PF Flag"
-description: "Configure the SR-IOV Network Device Plugin to expose Physical Functions alongside Virtual Functions in Kubernetes. PF flagging for RDMA, DPDK, and bare-metal networking."
+description: "Configure SR-IOV device plugin PF flag in Kubernetes. Expose physical functions as allocatable resources for exclusive RDMA access."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "networking"
@@ -15,9 +15,7 @@ tags:
   - "gpu"
   - "pf"
 relatedRecipes:
-  - "sriov-rdma-gpu-direct-kubernetes"
   - "nccl-sriov-gds-pytorch-kubernetes"
-  - "gpu-operator-troubleshooting-kubernetes"
   - "kubernetes-taints-tolerations-guide"
 ---
 

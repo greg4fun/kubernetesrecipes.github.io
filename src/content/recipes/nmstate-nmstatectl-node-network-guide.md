@@ -21,6 +21,7 @@ relatedRecipes:
   - "nncp-sriov-macvlan-workers"
   - "pfc-nmstate-roce-lossless-kubernetes"
   - "nncp-rollback-troubleshooting"
+  - "nmstate-operator-install-openshift"
 ---
 
 > 💡 **Quick Answer:** **NMState** is a declarative API for host networking. On the node, use `nmstatectl show` to see current state and `nmstatectl apply` to configure interfaces. In Kubernetes/OpenShift, create a `NodeNetworkConfigurationPolicy` (NNCP) — the kubernetes-nmstate operator translates it to nmstatectl on each matching node. The NNCP reports `Available` (success), `Progressing`, or `Degraded` (failed + auto-rollback).

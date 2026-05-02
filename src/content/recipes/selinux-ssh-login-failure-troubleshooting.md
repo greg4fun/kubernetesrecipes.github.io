@@ -1,6 +1,6 @@
 ---
 title: "SELinux SSH Login Failure Troubleshoot"
-description: "Fix SSH login failures caused by SELinux policy enforcement. Diagnose blocked SSH contexts, restore file labels, fix custom SSH ports, and resolve PAM SELinux denials on RHEL and OpenShift nodes."
+description: "Fix SSH login failures caused by SELinux enforcement. Diagnose AVC denials, restore file labels, fix custom SSH ports, and resolve PAM denials."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "troubleshooting"
@@ -15,10 +15,9 @@ tags:
   - "rhel"
   - "openshift"
 relatedRecipes:
-  - "openshift-scc-security-contexts"
   - "openshift-mcp-validation-broken-rules"
-  - "troubleshoot-node-not-ready-kubernetes"
   - "kubernetes-rbac-role-clusterrole"
+  - "journald-verify-config-kubernetes"
 ---
 
 > 💡 **Quick Answer:** When SELinux is enforcing and SSH login breaks, 99% of the time it's a file context (label) issue. Check `audit.log` for AVC denials: `ausearch -m avc -ts recent | grep ssh`. Fix with `restorecon -Rv /etc/ssh /home /root/.ssh`. Common triggers: moving `authorized_keys` instead of copying (wrong label), custom SSH port without `semanage port`, or a MachineConfig that wrote SSH files with no SELinux context.

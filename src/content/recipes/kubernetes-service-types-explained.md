@@ -15,9 +15,7 @@ tags:
   - "fundamentals"
 relatedRecipes:
   - "kubernetes-ingress-fundamentals"
-  - "gateway-api-kubernetes-guide"
-  - "kubernetes-service-connectivity-troubleshooting"
-  - "calico-network-policy-kubernetes"
+  - "kubernetes-ippool-management-guide"
 ---
 
 > 💡 **Quick Answer:** ClusterIP (internal only, default), NodePort (external via node ports 30000-32767), LoadBalancer (cloud LB provisioning), ExternalName (DNS CNAME alias), Headless (no ClusterIP, direct pod DNS). Use ClusterIP for internal services, LoadBalancer or Ingress for external traffic, and Headless for StatefulSets.

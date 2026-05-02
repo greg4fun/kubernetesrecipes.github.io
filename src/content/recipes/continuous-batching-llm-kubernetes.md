@@ -15,6 +15,7 @@ relatedRecipes:
   - "nvidia-gpu-operator-install"
   - "multi-gpu-llm-inference"
   - "kubernetes-ai-inference-optimization"
+  - "quantize-llm-awq-gptq-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Configure continuous batching for LLM inference on Kubernetes. vLLM and TRT-LLM batch scheduling, max-num-seqs tuning, and throughput optimization.

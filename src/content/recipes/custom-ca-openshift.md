@@ -13,6 +13,7 @@ relatedRecipes:
   - "custom-ca-openshift-kubernetes"
   - "custom-ca-kubernetes"
   - "update-ca-certificates-kubernetes"
+  - "openshift-custom-ca-registry"
 tags:
   - openshift
   - certificates

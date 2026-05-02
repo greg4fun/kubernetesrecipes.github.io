@@ -15,8 +15,6 @@ tags:
   - "control-plane"
 relatedRecipes:
   - "kubernetes-backup-velero-guide"
-  - "kubernetes-disaster-recovery-planning"
-  - "etcd-leader-election-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** For OpenShift: run `cluster-backup.sh /home/core/backup` on a control plane node to snapshot etcd + static pod manifests. For vanilla Kubernetes: use `etcdctl snapshot save /backup/etcd-snapshot.db`. Automate daily with a CronJob or systemd timer. etcd backup is your last-resort recovery — the only way to rebuild a cluster from total control plane loss.

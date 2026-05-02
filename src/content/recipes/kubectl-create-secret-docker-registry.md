@@ -1,6 +1,6 @@
 ---
 title: "kubectl create secret docker-registry"
-description: "Create Kubernetes Docker registry secrets with kubectl create secret docker-registry and --docker-password-stdin. Authenticate to private registries, configure imagePullSecrets, and manage credentials securely."
+description: "Create Kubernetes Docker registry secrets with --docker-password-stdin. Authenticate to private registries and configure imagePullSecrets securely."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "configuration"
@@ -15,10 +15,9 @@ tags:
   - "authentication"
   - "security"
 relatedRecipes:
-  - "kubernetes-configmaps-secrets-guide"
   - "quay-registry-kubernetes-guide"
   - "openshift-idms-itms-mirror-rules"
-  - "image-governance-policy-kubernetes"
+  - "containerd-certs-d-registry-ca-trust"
 ---
 
 > 💡 **Quick Answer:** Use `kubectl create secret docker-registry` with `--docker-password-stdin` to create registry credentials without exposing the password in shell history: `echo $TOKEN | kubectl create secret docker-registry my-registry --docker-server=registry.example.com --docker-username=user --docker-password-stdin`. Then reference it in pods via `imagePullSecrets` or attach it to a ServiceAccount for automatic use.

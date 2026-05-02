@@ -11,7 +11,6 @@ tags: ["node", "status", "kubectl", "troubleshooting", "monitoring"]
 relatedRecipes:
   - "debug-crashloopbackoff"
   - "kubernetes-oomkilled-troubleshooting"
-  - kubernetes-node-not-ready-troubleshooting
   - taint-toleration-scheduling-issues
   - kubectl-logs-view-pod-logs
 ---

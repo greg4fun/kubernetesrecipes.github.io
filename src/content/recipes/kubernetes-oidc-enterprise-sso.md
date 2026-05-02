@@ -18,6 +18,7 @@ relatedRecipes:
   - "service-accounts-rbac"
   - "rbac-permission-denied-troubleshooting"
   - "kubernetes-service-accounts-tokens"
+  - "gke-oidc-issuer-workload-identity"
 ---
 
 > 💡 **Quick Answer:** Configure the kube-apiserver with `--oidc-issuer-url`, `--oidc-client-id`, and `--oidc-groups-claim` flags to authenticate users via your enterprise IdP (Keycloak, Azure AD, Okta). Map IdP groups to Kubernetes ClusterRoleBindings for automated RBAC.

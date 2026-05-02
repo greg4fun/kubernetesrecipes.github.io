@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-hpa-max-replicas-guide"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-horizontal-pod-autoscaler-guide"
 ---
 
 > 💡 **Quick Answer:** Scale Kubernetes workloads on custom Prometheus metrics with HPA. Prometheus Adapter, external metrics, and request-rate-based scaling for web services.

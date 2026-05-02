@@ -14,6 +14,10 @@ relatedRecipes:
   - "openshift-catalogsource-filtering"
   - "debug-crashloopbackoff"
   - "debug-imagepullbackoff"
+  - "oc-mirror-troubleshooting-disconnected"
+  - "selinux-ssh-login-failure-troubleshooting"
+  - "openshift-cluster-operator-upgrade-debug"
+  - "journald-verify-config-kubernetes"
 tags:
   - "catalogsource"
   - "olm"

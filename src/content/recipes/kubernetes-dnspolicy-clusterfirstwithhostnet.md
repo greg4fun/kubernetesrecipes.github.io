@@ -11,8 +11,6 @@ tags: ["dns", "dnspolicy", "hostnetwork", "resolv-conf", "coredns", "networking"
 relatedRecipes:
   - "kubernetes-service-types-explained"
   - "kubernetes-ingress-path-routing"
-  - kubernetes-dns-debugging
-  - kubernetes-coredns-customization
   - kubernetes-network-policy-recipes
 ---
 

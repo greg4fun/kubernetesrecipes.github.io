@@ -16,10 +16,9 @@ tags:
   - "compliance"
 relatedRecipes:
   - "nfs-tenant-segregation-kubernetes"
-  - "rhacs-kubernetes-security-guide"
   - "kubernetes-multi-tenancy-enterprise"
   - "kubernetes-network-policy-guide"
-  - "kubernetes-audit-logging-configuration"
+  - "edr-flexera-kubernetes-agents"
 ---
 
 > 💡 **Quick Answer:** RHACS (Red Hat Advanced Cluster Security / StackRox) enforces NFS tenant isolation through custom policies that detect direct NFS volume mounts, wrong StorageClass usage, missing NetworkPolicy, no_root_squash risks, and privileged containers accessing storage. Deploy policies in Inform mode first, then switch to Enforce to block violations at admission time.

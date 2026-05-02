@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-image-scanning-trivy"
+  - "edr-flexera-kubernetes-agents"
 ---
 
 > 💡 **Quick Answer:** Complete Kubernetes security checklist for 2026. RBAC, network policies, pod security, image scanning, secrets, and compliance hardening steps.

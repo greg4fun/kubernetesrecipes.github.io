@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubeflow-distributed-training"
   - "mpi-operator-kubernetes"
   - "kai-scheduler-gpu-sharing"
+  - "deepspeed-kubernetes-distributed"
 ---
 
 > 💡 **Quick Answer:** Install the LeaderWorkerSet (LWS) Operator and create a `LeaderWorkerSet` CR to deploy groups of pods with leader-worker topology — the leader coordinates training, workers run in lockstep, and gang scheduling ensures all-or-nothing placement.

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Persistent Volumes Guide"
-description: "Configure PersistentVolumes, PersistentVolumeClaims, and StorageClasses in Kubernetes. Dynamic provisioning, access modes, reclaim policies, and volume expansion."
+description: "Manage Kubernetes Persistent Volumes with PV, PVC, and StorageClass. Dynamic provisioning, access modes, reclaim policies, and volume expansion."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "storage"
@@ -14,9 +14,6 @@ tags:
   - "storageclass"
   - "fundamentals"
 relatedRecipes:
-  - "csi-volume-snapshots-kubernetes"
-  - "persistent-volume-expansion-kubernetes"
-  - "hostpath-vs-pvc-kubernetes"
   - "kubernetes-backup-velero-guide"
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "OSUS Direct vs Replicated OpenShift"
-description: "Choose between direct and replicated OSUS graph data modes in OpenShift. Configure UpdateService for connected, disconnected, and hybrid environments with graph data source strategies."
+description: "Choose between direct and replicated OSUS graph data modes in OpenShift. Configure UpdateService for connected and disconnected environments."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "configuration"

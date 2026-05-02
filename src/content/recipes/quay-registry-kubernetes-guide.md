@@ -1,6 +1,6 @@
 ---
 title: "Red Hat Quay Registry Kubernetes"
-description: "Deploy and operate Red Hat Quay as a production container registry for Kubernetes and OpenShift. Quay Operator install, storage backends, mirroring, and geo-replication."
+description: "Deploy and manage Quay container registry on Kubernetes. Mirror policies, robot accounts, security scanning, and integration with OpenShift."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "deployments"

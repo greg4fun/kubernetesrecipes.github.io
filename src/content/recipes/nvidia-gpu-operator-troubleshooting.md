@@ -16,6 +16,7 @@ relatedRecipes:
   - "nvidia-gpu-operator-install"
   - "kubernetes-gpu-operator-advanced-config"
   - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "cuda-out-of-memory-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Fix common NVIDIA GPU Operator issues on Kubernetes. Driver pod crashes, toolkit failures, device plugin not ready, and validation pod errors.

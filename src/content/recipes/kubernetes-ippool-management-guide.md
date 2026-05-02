@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes IPPool Management Guide"
-description: "Configure IP address pools in Kubernetes with Whereabouts, NV-IPAM, MetalLB, and Calico IPPool. Manage secondary network IPs, LoadBalancer IPs, and pod CIDR ranges."
+description: "Configure IP address pools in Kubernetes with Whereabouts, NV-IPAM, MetalLB, and Calico IPPool for secondary networks and LoadBalancer IPs."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "networking"
@@ -18,7 +18,6 @@ relatedRecipes:
   - "create-nv-ipam-ippool"
   - "kubernetes-metallb-bare-metal-lb"
   - "sriov-device-plugin-pf-flag-kubernetes"
-  - "calico-network-policy-kubernetes"
   - "kubernetes-service-types-explained"
 ---
 

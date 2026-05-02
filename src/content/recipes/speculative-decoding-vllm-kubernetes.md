@@ -15,6 +15,8 @@ relatedRecipes:
   - "vllm-kubernetes-deployment-guide"
   - "vllm-alternatives-llm-inference-k8s"
   - "multi-gpu-llm-inference"
+  - "prefix-caching-vllm-kubernetes"
+  - "lora-adapter-serving-vllm-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Enable speculative decoding in vLLM on Kubernetes for 2-3x faster LLM inference. Draft model selection, acceptance rates, and latency optimization.

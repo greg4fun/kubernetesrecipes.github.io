@@ -20,6 +20,7 @@ relatedRecipes:
   - "kubernetes-dynamic-resource-allocation-gpu"
   - "nvidia-dynamo-distributed-inference-kubernetes"
   - "kubernetes-ai-gateway-inference-extension"
+  - "continuous-batching-llm-kubernetes"
 ---
 
 > 💡 **Quick Answer:** The `vllm-ascend` plugin enables vLLM inference on Huawei Ascend NPUs (Atlas 300I, 910B). Deploy using the `quay.io/ascend/vllm-ascend` container image with Ascend device plugin for Kubernetes. Key constraints: Atlas 300I supports only eager mode and float16. Always set `--max-model-len` explicitly on 310P to avoid OOM from the O(n²) attention mask allocation.

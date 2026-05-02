@@ -19,6 +19,7 @@ relatedRecipes:
   - "kubernetes-imagepullbackoff-troubleshooting"
   - "kubernetes-service-accounts-tokens"
   - "kubernetes-secrets-management-guide"
+  - "containerd-certs-d-registry-ca-trust"
 ---
 
 > 💡 **Quick Answer:** Create a docker-registry secret with `kubectl create secret docker-registry myregistry --docker-server=registry.example.com --docker-username=user --docker-password=pass`, then reference it in your pod spec with `imagePullSecrets: [{name: myregistry}]`. For cluster-wide access, attach the secret to the `default` ServiceAccount in each namespace.

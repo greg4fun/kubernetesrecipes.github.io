@@ -16,6 +16,8 @@ relatedRecipes:
   - "nvidia-gpu-operator-install"
   - "kubernetes-gpu-operator-advanced-config"
   - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "nvidia-smi-kubernetes-monitoring"
+  - "gpu-feature-discovery-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Schedule GPU workloads with node affinity and topology on Kubernetes. GPU type selection, multi-GPU locality, and NUMA-aware pod placement.

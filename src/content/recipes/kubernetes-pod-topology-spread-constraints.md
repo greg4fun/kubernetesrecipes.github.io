@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-poddisruptionbudget-guide"
   - "runai-topology-aware-scheduling-kubernetes"
   - "karpenter-node-autoscaling"
+  - "kubernetes-custom-scheduler-guide"
 ---
 
 > 💡 **Quick Answer:** \`topologySpreadConstraints\` ensures pods are evenly distributed across failure domains (zones, nodes, racks). Set \`maxSkew: 1\` with \`topologyKey: topology.kubernetes.io/zone\` to spread pods across availability zones with at most 1 pod difference between zones.

@@ -17,6 +17,7 @@ relatedRecipes:
   - "mpi-operator-kubernetes"
   - "nfsordma-persistent-volume"
   - "gpu-operator-mofed-driver"
+  - "deepspeed-kubernetes-distributed"
 ---
 
 > 💡 **Quick Answer:** Create a PyTorchJob with `elasticPolicy` for fault-tolerant distributed training, mount shared storage for checkpoints, configure NCCL environment variables for RDMA, and use `torch.distributed.run` (torchrun) for elastic launching.

@@ -15,6 +15,7 @@ relatedRecipes:
   - "check-bonding-and-interface-status"
   - "openshift-sriov-vf-creation"
   - "troubleshoot-no-supported-nic-selected"
+  - "mofed-driver-operator-build-kubernetes"
 tags:
   - "nvidia"
   - "network-operator"

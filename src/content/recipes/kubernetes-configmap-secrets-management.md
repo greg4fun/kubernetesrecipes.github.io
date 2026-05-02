@@ -14,9 +14,6 @@ tags:
   - "security"
   - "best-practices"
 relatedRecipes:
-  - "kubernetes-secret-rotation-automation"
-  - "sealed-secrets-bitnami-kubernetes"
-  - "external-secrets-operator-kubernetes"
   - "kubernetes-admission-controllers-guide"
 ---
 

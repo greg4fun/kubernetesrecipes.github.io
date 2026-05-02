@@ -1,6 +1,6 @@
 ---
 title: "OpenShift Cluster Operator Upgrade Debug"
-description: "Debug degraded cluster operators during OpenShift upgrades. Identify stuck operators, decode status conditions, check operator logs, and unblock stalled upgrade rollouts."
+description: "Debug degraded cluster operators during OpenShift upgrades. Identify stuck operators, decode status conditions, and unblock stalled rollouts."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "troubleshooting"
@@ -18,6 +18,7 @@ relatedRecipes:
   - "openshift-upgrade-planning-2026"
   - "cincinnati-graph-openshift-upgrades"
   - "openshift-upgrade-disconnected-environment"
+  - "oc-mirror-troubleshooting-disconnected"
 ---
 
 > 💡 **Quick Answer:** When an OpenShift upgrade stalls, check `oc get co` for operators not showing `True False False` (Available/Degraded/Progressing). Get details with `oc describe co <operator>`, then check the operator's namespace pods and logs. Common blockers: `kube-apiserver` (etcd quorum), `machine-config` (node reboot stuck), `ingress` (router pod scheduling), and `monitoring` (PVC full). The CVO pauses the upgrade until all operators report healthy.

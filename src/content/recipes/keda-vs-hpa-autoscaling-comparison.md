@@ -18,6 +18,7 @@ relatedRecipes:
   - "llm-autoscaling-kubernetes"
   - "kubernetes-pod-priority-preemption"
   - "vertical-pod-autoscaler"
+  - "kubernetes-horizontal-pod-autoscaler-guide"
 ---
 
 > 💡 **Quick Answer:** **HPA** scales on CPU/memory and simple custom metrics via Metrics API. **KEDA** wraps HPA and adds 60+ event sources: Kafka lag, RabbitMQ queue depth, Prometheus queries, cron schedules, Azure/AWS/GCP services, and more. KEDA also scales to zero. Use HPA for CPU/memory-based scaling; use KEDA when you need scale-to-zero or event-driven triggers.

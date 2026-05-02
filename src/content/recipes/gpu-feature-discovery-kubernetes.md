@@ -15,6 +15,10 @@ relatedRecipes:
   - "nvidia-gpu-operator-install"
   - "kubernetes-gpu-operator-advanced-config"
   - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "cuda-compatibility-kubernetes-guide"
+  - "nvidia-smi-kubernetes-monitoring"
+  - "multi-gpu-pytorch-ddp-kubernetes"
+  - "nvidia-driver-update-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Configure NVIDIA GPU Feature Discovery for automatic node labeling on Kubernetes. GPU model, driver version, CUDA, and MIG labels for scheduling.

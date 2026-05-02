@@ -11,9 +11,7 @@ tags: ["secrets", "security", "encryption", "external-secrets", "vault", "best-p
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
-  - kubernetes-secrets-management
   - openclaw-secrets-management
-  - key-rotation-automation-kubernetes
 ---
 
 > 💡 **Quick Answer:** Never store secrets in Git, always enable encryption at rest (`EncryptionConfiguration`), use an external secret manager (Vault, AWS Secrets Manager) via External Secrets Operator, restrict access with RBAC, and rotate secrets automatically with TTLs.

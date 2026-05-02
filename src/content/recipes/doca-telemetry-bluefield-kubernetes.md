@@ -16,11 +16,8 @@ tags:
   - "rdma"
   - "observability"
 relatedRecipes:
-  - "nvidia-doca-perftest-kubernetes"
   - "pfc-nmstate-roce-lossless-kubernetes"
   - "mellanox-roce-dscp-qos-daemonset"
-  - "mlnx-qos-mofed-container-daemonset"
-  - "nccl-sriov-gds-pytorch-configuration"
   - "monitor-nccl-performance-prometheus"
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "NXDOMAIN DNS Troubleshooting Kubernetes"
-description: "Fix NXDOMAIN errors in Kubernetes. Debug CoreDNS resolution failures, ndots configuration, search domain issues, and external DNS lookups returning NXDOMAIN for valid domains."
+description: "Fix NXDOMAIN errors in Kubernetes. Debug CoreDNS failures, ndots configuration, search domain issues, and external DNS lookup problems."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "troubleshooting"
@@ -14,10 +14,6 @@ tags:
   - "troubleshooting"
   - "networking"
 relatedRecipes:
-  - "dns-resolution-troubleshooting-kubernetes"
-  - "coredns-custom-configuration-kubernetes"
-  - "troubleshoot-service-connectivity-kubernetes"
-  - "kubernetes-networkpolicy-guide"
 ---
 
 > 💡 **Quick Answer:** NXDOMAIN in Kubernetes usually means one of three things: (1) the `ndots:5` default causes short names to search cluster domains before trying the FQDN — append a trailing dot (`api.example.com.`) to bypass; (2) CoreDNS can't reach upstream DNS — check `kube-dns` service and CoreDNS pods; (3) the domain genuinely doesn't exist. Debug with `kubectl exec <pod> -- nslookup api.example.com` and check CoreDNS logs.

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes PodDisruptionBudget Guide"
-description: "Configure PodDisruptionBudgets to ensure application availability during node drains, upgrades, and maintenance. minAvailable, maxUnavailable, and eviction policies."
+description: "Configure PodDisruptionBudgets in Kubernetes for safe voluntary disruptions. Protect availability during node drains, upgrades, and maintenance."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "deployments"
@@ -16,8 +16,6 @@ tags:
 relatedRecipes:
   - "kubernetes-rolling-update-strategy"
   - "kubernetes-node-drain-cordon"
-  - "pod-priority-preemption-kubernetes"
-  - "daemonset-update-strategies-kubernetes"
 ---
 
 > 💡 **Quick Answer:** A PodDisruptionBudget (PDB) limits how many pods of a workload can be simultaneously unavailable during voluntary disruptions like node drains and cluster upgrades. Use `minAvailable: 1` to ensure at least one pod always runs, or `maxUnavailable: 1` to allow only one pod down at a time.
