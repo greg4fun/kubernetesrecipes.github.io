@@ -19,6 +19,7 @@ relatedRecipes:
   - "imagepullbackoff-troubleshooting"
   - "debug-oom-killed"
   - "kubectl-exec-into-pod"
+  - "kubernetes-kubectl-debug-guide"
 ---
 
 > 💡 **Quick Answer:** `kubectl describe pod <name>` shows the full pod lifecycle: container states, conditions, events, resource requests, volumes, and node assignment. Scroll to the **Events** section at the bottom for the diagnostic gold — it shows scheduling decisions, image pulls, container starts, probe failures, and OOM kills in chronological order.

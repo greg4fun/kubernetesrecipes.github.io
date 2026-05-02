@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-init-containers-guide"
   - "kubernetes-sidecar-patterns"
   - "service-mesh-sidecar-troubleshooting"
+  - "kubernetes-sidecar-containers-guide"
 ---
 
 > 💡 **Quick Answer:** Native sidecar containers (stable in Kubernetes v1.33) are init containers with `restartPolicy: Always`. They start before regular containers, run alongside them for the pod's lifetime, and shut down after regular containers exit. This fixes long-standing issues with Job completion (istio-proxy blocking), log collection, and startup ordering.

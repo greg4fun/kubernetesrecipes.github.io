@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-deployment-rolling-update"
   - "kubernetes-configmap-guide"
   - "kubernetes-graceful-shutdown-guide"
+  - "kubernetes-sidecar-containers-guide"
 ---
 
 > 💡 **Quick Answer:** Init containers run to completion before main containers start. Define in `spec.initContainers[]` — they execute sequentially. Use cases: wait for a database to be ready (`nslookup db-service`), run database migrations, download config files, or set filesystem permissions. If any init container fails, the pod restarts.

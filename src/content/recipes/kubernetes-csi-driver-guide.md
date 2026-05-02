@@ -1,50 +1,83 @@
 ---
-title: "K8s CSI Drivers: Storage Plugins Explained"
-description: "Understand Container Storage Interface (CSI) drivers in Kubernetes. Install and configure CSI drivers for AWS EBS, Azure Disk, NFS, and Ceph storage backends."
-category: "storage"
-difficulty: "intermediate"
-publishDate: "2026-04-05"
-tags: ["csi", "storage-driver", "ebs", "azure-disk", "nfs"]
+title: "K8s CSI Drivers: Container Storage Guide"
+description: "Install and configure Kubernetes CSI drivers for persistent storage. CSI architecture, StorageClass provisioners, snapshots, and volume expansion patterns."
+publishDate: "2026-05-02"
 author: "Luca Berton"
+category: "storage"
+difficulty: "advanced"
+timeToComplete: "15 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - "csi"
+  - "storage"
+  - "persistent-volumes"
+  - "snapshots"
+  - "drivers"
 relatedRecipes:
-  - "machineconfig-nfs-mount-openshift"
-  - "volume-snapshots"
-  - "csi-drivers-storage"
-  - "velero-backup-disaster-recovery"
+  - "kubernetes-persistent-volume-guide"
+  - "local-persistent-volumes"
+  - "troubleshooting-pending-pvc"
 ---
 
-> 💡 **Quick Answer:** Understand Container Storage Interface (CSI) drivers in Kubernetes. Install and configure CSI drivers for AWS EBS, Azure Disk, NFS, and Ceph storage backends.
+> 💡 **Quick Answer:** CSI (Container Storage Interface) is the standard for Kubernetes storage plugins. Install a CSI driver (e.g., `aws-ebs-csi-driver`, `csi-driver-nfs`), create a StorageClass pointing to the CSI provisioner, then use PVCs as normal. CSI enables dynamic provisioning, snapshots, volume expansion, and cloning — features not available with in-tree drivers.
 
 ## The Problem
 
-Engineers frequently search for this topic but find scattered, incomplete guides. This recipe provides a comprehensive, production-ready reference.
+Kubernetes deprecated in-tree storage plugins (aws-ebs, gce-pd, azure-disk):
+
+- Tied to Kubernetes release cycle
+- Can't update storage driver independently
+- Limited features (no snapshots, no cloning)
+- No standard interface for new storage backends
 
 ## The Solution
 
-### What Is CSI?
+### CSI Architecture
 
-Container Storage Interface (CSI) is the standard for exposing storage systems to Kubernetes. Each storage backend has its own CSI driver.
+```
+┌─────────────────────────────────────────────┐
+│  Kubernetes Control Plane                    │
+│  ┌─────────────────┐  ┌──────────────────┐ │
+│  │ CSI Controller   │  │ External          │ │
+│  │ (Deployment)     │  │ Provisioner       │ │
+│  │ - Provisioner    │  │ Snapshotter       │ │
+│  │ - Attacher       │  │ Resizer           │ │
+│  └─────────────────┘  └──────────────────┘ │
+├─────────────────────────────────────────────┤
+│  Per Node (DaemonSet)                        │
+│  ┌─────────────────┐                        │
+│  │ CSI Node Plugin  │                        │
+│  │ - Mount/Unmount  │                        │
+│  │ - Format volume  │                        │
+│  │ - Node stage     │                        │
+│  └─────────────────┘                        │
+└─────────────────────────────────────────────┘
+```
 
-### Popular CSI Drivers
+### Install CSI Driver (AWS EBS Example)
 
-| Driver | Storage | Install |
-|--------|---------|---------|
-| aws-ebs-csi-driver | AWS EBS volumes | `helm install aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver` |
-| azuredisk-csi-driver | Azure Managed Disks | Included in AKS |
-| csi-driver-nfs | NFS shares | `helm install csi-driver-nfs csi-driver-nfs/csi-driver-nfs` |
-| rook-ceph | Ceph distributed storage | `helm install rook-ceph rook-release/rook-ceph` |
-| longhorn | Lightweight distributed | `helm install longhorn longhorn/longhorn` |
-| local-path-provisioner | Local node storage | `kubectl apply -f rancher/local-path-provisioner` |
+```bash
+# AWS EBS CSI Driver
+helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+helm install aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver \
+  -n kube-system
+
+# Verify
+kubectl get pods -n kube-system -l app.kubernetes.io/name=aws-ebs-csi-driver
+kubectl get csidrivers
+# NAME              ATTACHREQUIRED   PODINFOONMOUNT
+# ebs.csi.aws.com   true            false
+```
 
 ### Install NFS CSI Driver
 
 ```bash
 helm repo add csi-driver-nfs https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
-helm install csi-driver-nfs csi-driver-nfs/csi-driver-nfs --namespace kube-system
-```
+helm install csi-driver-nfs csi-driver-nfs/csi-driver-nfs \
+  -n kube-system
 
-```yaml
-# StorageClass using NFS CSI
+# Create StorageClass for NFS
+cat <<EOF | kubectl apply -f -
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -52,68 +85,146 @@ metadata:
 provisioner: nfs.csi.k8s.io
 parameters:
   server: nfs.example.com
-  share: /exports/k8s
+  share: /exports/kubernetes
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
 mountOptions:
   - nfsvers=4.1
+  - hard
+EOF
 ```
 
-### CSI Volume Snapshots
+### StorageClass with CSI
 
 ```yaml
+# AWS EBS gp3
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-gp3
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3
+  iops: "3000"
+  throughput: "125"
+  encrypted: "true"
+allowVolumeExpansion: true
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+
+---
+# GCP PD CSI
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: pd-ssd
+provisioner: pd.csi.storage.gke.io
+parameters:
+  type: pd-ssd
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+```
+
+### Volume Snapshots
+
+```yaml
+# VolumeSnapshotClass
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: ebs-snapshot-class
+driver: ebs.csi.aws.com
+deletionPolicy: Delete
+
+---
 # Create snapshot
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshot
 metadata:
   name: db-snapshot
 spec:
-  volumeSnapshotClassName: csi-snapclass
+  volumeSnapshotClassName: ebs-snapshot-class
   source:
     persistentVolumeClaimName: postgres-data
+
 ---
 # Restore from snapshot
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-restored
+  name: postgres-data-restored
 spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: ebs-gp3
+  resources:
+    requests:
+      storage: 50Gi
   dataSource:
     name: db-snapshot
     kind: VolumeSnapshot
     apiGroup: snapshot.storage.k8s.io
-  accessModes: [ReadWriteOnce]
+```
+
+### Volume Cloning
+
+```yaml
+# Clone existing PVC (CSI required)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-data-clone
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: ebs-gp3
   resources:
     requests:
       storage: 50Gi
+  dataSource:
+    name: postgres-data          # Source PVC
+    kind: PersistentVolumeClaim
 ```
 
-```mermaid
-graph TD
-    A[PVC request] --> B[StorageClass: provisioner=nfs.csi.k8s.io]
-    B --> C[CSI Driver]
-    C --> D[NFS Server creates share]
-    D --> E[PV created + bound]
-    E --> F[Pod mounts volume]
-```
+### Popular CSI Drivers
 
-## Frequently Asked Questions
+| Driver | Provisioner | Use Case |
+|--------|-----------|----------|
+| AWS EBS | `ebs.csi.aws.com` | Block storage on AWS |
+| GCP PD | `pd.csi.storage.gke.io` | Block storage on GCP |
+| Azure Disk | `disk.csi.azure.com` | Block storage on Azure |
+| NFS | `nfs.csi.k8s.io` | NFS shares (RWX) |
+| Ceph RBD | `rbd.csi.ceph.com` | Ceph block storage |
+| CephFS | `cephfs.csi.ceph.com` | Ceph filesystem (RWX) |
+| Longhorn | `driver.longhorn.io` | Distributed storage |
+| OpenEBS | `cstor.csi.openebs.io` | Container-native storage |
 
-### In-tree vs CSI drivers?
+## Common Issues
 
-In-tree drivers (built into Kubernetes) are deprecated. All new storage integrations use CSI. Existing in-tree drivers are being migrated to CSI.
+**"driver not found" when creating PVC**
 
+CSI driver not installed. Check: `kubectl get csidrivers`. Install the appropriate driver for your storage backend.
+
+**Volume stuck in "Attaching"**
+
+Node-level CSI plugin (DaemonSet) not running. Check: `kubectl get pods -n kube-system -l app=csi-node`.
+
+**Snapshot "not ready"**
+
+VolumeSnapshotClass driver doesn't match PVC's StorageClass provisioner. They must use the same CSI driver.
 
 ## Best Practices
 
-- Start with the simplest approach that solves your problem
-- Test thoroughly in staging before production
-- Monitor and iterate based on real metrics
-- Document decisions for your team
+- **Use CSI drivers over in-tree plugins** — in-tree are deprecated
+- **Enable volume expansion** — `allowVolumeExpansion: true` on StorageClass
+- **WaitForFirstConsumer** — binds volume to pod's node for topology awareness
+- **Regular snapshots** — automated backup via CronJob + VolumeSnapshot
+- **Test restore procedures** — snapshots are useless if restore doesn't work
 
 ## Key Takeaways
 
-- This is essential Kubernetes operational knowledge
-- Production-readiness requires proper configuration and monitoring
-- Use `kubectl describe` and logs for troubleshooting
-- Automate where possible to reduce human error
+- CSI is the standard interface for Kubernetes storage plugins
+- Install CSI driver → create StorageClass → use PVCs as normal
+- CSI enables snapshots, cloning, and expansion not available with in-tree drivers
+- Volume snapshots provide point-in-time backup with CSI
+- `WaitForFirstConsumer` binding mode is essential for topology-aware provisioning

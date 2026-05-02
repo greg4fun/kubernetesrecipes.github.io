@@ -17,6 +17,7 @@ relatedRecipes:
   - "cronjob-concurrency-policy"
   - "kubernetes-init-containers-guide"
   - "kubernetes-deployment-rolling-update"
+  - "kubernetes-sidecar-containers-guide"
 ---
 
 > 💡 **Quick Answer:** A Job runs a pod to completion: `kubectl create job myjob --image=busybox -- echo hello`. A CronJob runs Jobs on a schedule: `schedule: "0 * * * *"` (hourly). Key settings: `backoffLimit: 4` (retries), `completions: 5` (run 5 times), `parallelism: 3` (3 pods at once), `concurrencyPolicy: Forbid` (skip if previous still running).
