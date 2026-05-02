@@ -19,6 +19,7 @@ relatedRecipes:
   - "kubernetes-rolling-update-strategies"
   - "kubernetes-sidecar-containers-guide"
   - "kubernetes-argocd-gitops-guide"
+  - "kubernetes-dapr-microservices-guide"
 ---
 
 > 💡 **Quick Answer:** Pod termination: 1) Pod set to Terminating, 2) preStop hook runs, 3) SIGTERM sent to PID 1, 4) `terminationGracePeriodSeconds` countdown (default 30s), 5) SIGKILL if still running. For graceful shutdown: handle SIGTERM in your app, use preStop hooks for cleanup, set `terminationGracePeriodSeconds` high enough for drain. Endpoints are removed in parallel — add a preStop sleep to avoid in-flight request drops.

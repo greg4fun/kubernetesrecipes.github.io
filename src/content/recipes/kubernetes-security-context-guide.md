@@ -21,6 +21,7 @@ relatedRecipes:
   - "kubernetes-certificate-management"
   - "kubernetes-kyverno-policy-guide"
   - "kubernetes-falco-runtime-security"
+  - "kubernetes-trivy-security-scanning"
 ---
 
 > 💡 **Quick Answer:** SecurityContext controls pod and container privileges. Minimum hardening: `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, `readOnlyRootFilesystem: true`, `capabilities: {drop: ["ALL"]}`, `seccompProfile: {type: RuntimeDefault}`. Set at pod level for defaults, override per container when needed.

@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-pod-security-admission"
   - "kubernetes-serviceaccount-guide"
   - "kubernetes-efk-logging-stack"
+  - "kubernetes-trivy-security-scanning"
 ---
 
 > 💡 **Quick Answer:** Enable audit logging by adding `--audit-policy-file` and `--audit-log-path` to kube-apiserver flags. The audit policy defines what to log at four levels: `None`, `Metadata`, `Request`, `RequestResponse`. Use `Metadata` for most resources, `RequestResponse` for secrets/RBAC changes. Ship logs to your SIEM via webhook or file-based collection.
