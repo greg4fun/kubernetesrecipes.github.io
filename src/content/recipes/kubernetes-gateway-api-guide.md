@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-ingress-guide"
   - "kubernetes-rate-limiting-guide"
   - "nginx-ingress-limit-burst-multiplier"
+  - "kubernetes-ingress-fundamentals"
 ---
 
 > 💡 **Quick Answer:** Gateway API is the successor to Ingress. Install CRDs (`kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml`), deploy a Gateway implementation (Envoy Gateway, Cilium, Istio, or NGINX), create a `Gateway` resource for the listener, and `HTTPRoute` for routing rules. Key advantage: role-based resource model (infra team manages Gateway, app teams manage Routes).

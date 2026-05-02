@@ -27,6 +27,7 @@ relatedRecipes:
   - "kubectl-debugging-commands"
   - "kubectl-plugins-extensions"
   - "stuck-resources-finalizers"
+  - "kubectl-exec-into-pod"
 tags:
   - "bonding"
   - "networking"

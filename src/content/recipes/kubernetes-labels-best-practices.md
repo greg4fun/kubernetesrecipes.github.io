@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-namespace-template-instant-environments"
   - "kubernetes-rbac-role-clusterrole"
+  - "kubernetes-configmap-secrets-management"
 ---
 
 > 💡 **Quick Answer:** Use the standard `app.kubernetes.io/` label prefix: `app.kubernetes.io/name`, `app.kubernetes.io/version`, `app.kubernetes.io/component`, `app.kubernetes.io/part-of`, `app.kubernetes.io/managed-by`. Add custom labels like `team`, `environment`, `cost-center` for operational needs. Never put mutable data in label selectors (they're immutable on Services/Deployments).

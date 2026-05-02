@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-rbac-troubleshooting"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubectl-exec-into-pod"
 ---
 
 > 💡 **Quick Answer:** Troubleshoot and fix OOMKilled errors in Kubernetes. Memory limit tuning, Java heap sizing, memory leak detection, and VPA recommendations.

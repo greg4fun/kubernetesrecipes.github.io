@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubernetes-envfrom-configmapref"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-configmap-secrets-management"
 ---
 
 > 💡 **Quick Answer:** Inject environment variables from ConfigMaps and Secrets in Kubernetes. envFrom, valueFrom, configMapKeyRef, and secretKeyRef patterns.

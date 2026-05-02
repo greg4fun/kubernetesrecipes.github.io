@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-sealed-secrets-management"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-secret-types-guide"
 ---
 
 > 💡 **Quick Answer:** Kubernetes secrets management best practices. Encryption at rest, external secrets operator, rotation, RBAC, and avoiding common security mistakes.

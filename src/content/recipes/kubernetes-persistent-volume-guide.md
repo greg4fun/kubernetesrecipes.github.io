@@ -1,145 +1,211 @@
 ---
-title: "Kubernetes Persistent Volumes and PVCs Guide"
-description: "Create and manage Persistent Volumes and PersistentVolumeClaims in Kubernetes. Covers StorageClasses, dynamic provisioning, access modes, and volume expansion."
-category: "storage"
-difficulty: "beginner"
-publishDate: "2026-04-03"
-tags: ["persistent-volume", "pvc", "storage", "storageclass", "dynamic-provisioning", "kubernetes"]
+title: "K8s PV and PVC: Persistent Storage Guide"
+description: "Create Kubernetes PersistentVolumes and PersistentVolumeClaims. StorageClass, dynamic provisioning, access modes, reclaim policies, and volume expansion."
+publishDate: "2026-05-02"
 author: "Luca Berton"
+category: "storage"
+difficulty: "intermediate"
+timeToComplete: "12 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - "persistent-volumes"
+  - "storage"
+  - "pvc"
+  - "storageclass"
+  - "cka"
 relatedRecipes:
-  - "dynamic-volume-provisioning"
-  - "kubernetes-volume-types"
-  - "longhorn-distributed-storage"
-  - "persistent-volume-resize-troubleshooting"
+  - "local-persistent-volumes"
+  - "troubleshooting-pending-pvc"
+  - "kubernetes-persistentvolumeclaimspec"
+  - "etcd-backup-restore"
 ---
 
-> 💡 **Quick Answer:** Create and manage Persistent Volumes and PersistentVolumeClaims in Kubernetes. Covers StorageClasses, dynamic provisioning, access modes, and volume expansion.
+> 💡 **Quick Answer:** Create a PVC: `kubectl apply -f` a PersistentVolumeClaim requesting storage size and access mode. With a StorageClass, volumes are provisioned automatically (dynamic provisioning). Access modes: `ReadWriteOnce` (single node), `ReadOnlyMany` (many nodes read), `ReadWriteMany` (many nodes read/write). Reclaim policies: `Delete` (default for dynamic) removes data on PVC deletion, `Retain` keeps it.
 
 ## The Problem
 
-This is one of the most searched Kubernetes topics. Having a comprehensive, well-structured guide helps both beginners and experienced users quickly find what they need.
+Container storage is ephemeral — data is lost when pods restart:
+
+- Database pods lose all data on crash
+- Log collectors lose buffered logs
+- File uploads disappear on pod reschedule
+- No persistent state across deployments
 
 ## The Solution
 
-### PersistentVolumeClaim (Dynamic Provisioning)
+### Dynamic Provisioning (Recommended)
 
 ```yaml
-# Most common — let StorageClass handle it
+# 1. StorageClass (usually pre-installed by cloud provider)
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast-ssd
+provisioner: kubernetes.io/aws-ebs    # or pd.csi.storage.gke.io, disk.csi.azure.com
+parameters:
+  type: gp3
+reclaimPolicy: Delete
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+
+---
+# 2. PVC — requests storage
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: postgres-data
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: gp3          # Cloud provider StorageClass
+  - ReadWriteOnce
+  storageClassName: fast-ssd
   resources:
     requests:
       storage: 50Gi
+
 ---
-# Use in a pod
+# 3. Pod using PVC
 apiVersion: v1
 kind: Pod
+metadata:
+  name: postgres
 spec:
   containers:
-    - name: postgres
-      image: postgres:16
-      volumeMounts:
-        - name: data
-          mountPath: /var/lib/postgresql/data
-  volumes:
+  - name: postgres
+    image: postgres:16
+    volumeMounts:
     - name: data
-      persistentVolumeClaim:
-        claimName: postgres-data
+      mountPath: /var/lib/postgresql/data
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: postgres-data
 ```
 
-### StorageClass
+### Static Provisioning
 
 ```yaml
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
+# Admin creates PV manually
+apiVersion: v1
+kind: PersistentVolume
 metadata:
-  name: fast-ssd
-  annotations:
-    storageclass.kubernetes.io/is-default-class: "true"
-provisioner: ebs.csi.aws.com
-parameters:
-  type: gp3
-  iops: "5000"
-  throughput: "250"
-  encrypted: "true"
-reclaimPolicy: Delete      # or Retain
-allowVolumeExpansion: true  # Allow PVC resize
-volumeBindingMode: WaitForFirstConsumer  # Bind when pod is scheduled
+  name: nfs-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: nfs.example.com
+    path: /exports/data
+
+---
+# PVC binds to matching PV
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-data
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: ""    # Empty = no dynamic provisioning
 ```
 
 ### Access Modes
 
 | Mode | Abbreviation | Description |
 |------|-------------|-------------|
-| ReadWriteOnce | RWO | Single node read-write |
+| ReadWriteOnce | RWO | Single node read/write |
 | ReadOnlyMany | ROX | Multiple nodes read-only |
-| ReadWriteMany | RWX | Multiple nodes read-write (NFS, CephFS) |
-| ReadWriteOncePod | RWOP | Single pod read-write (K8s 1.27+) |
-
-### Expand a PVC
+| ReadWriteMany | RWX | Multiple nodes read/write |
+| ReadWriteOncePod | RWOP | Single pod (K8s 1.27+) |
 
 ```bash
-# Edit the PVC size (StorageClass must allow expansion)
+# Check access modes supported by StorageClass
+kubectl get storageclass
+kubectl describe storageclass fast-ssd
+```
+
+### Volume Expansion
+
+```bash
+# Expand PVC (StorageClass must have allowVolumeExpansion: true)
 kubectl patch pvc postgres-data -p '{"spec":{"resources":{"requests":{"storage":"100Gi"}}}}'
 
 # Check status
 kubectl get pvc postgres-data
-# Condition: FileSystemResizePending → resize happens on next pod mount
+# NAME            STATUS   VOLUME   CAPACITY   ACCESS MODES
+# postgres-data   Bound    pv-xxx   100Gi      RWO
+
+# Some CSI drivers require pod restart for filesystem expansion
+kubectl delete pod postgres
 ```
 
-### Static PersistentVolume
+### StatefulSet with VolumeClaimTemplates
 
 ```yaml
-apiVersion: v1
-kind: PersistentVolume
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: nfs-data
+  name: postgres
 spec:
-  capacity:
-    storage: 100Gi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    server: nfs.example.com
-    path: /exports/data
-  persistentVolumeReclaimPolicy: Retain
+  serviceName: postgres
+  replicas: 3
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:          # Auto-creates PVC per replica
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: fast-ssd
+      resources:
+        requests:
+          storage: 50Gi
+# Creates: data-postgres-0, data-postgres-1, data-postgres-2
 ```
 
-```mermaid
-graph TD
-    A[PVC Request: 50Gi RWO] --> B{StorageClass}
-    B -->|Dynamic provisioning| C[Cloud creates disk]
-    C --> D[PV auto-created]
-    D --> E[PVC bound to PV]
-    E --> F[Pod mounts volume]
-```
+## Common Issues
 
-## Frequently Asked Questions
+**PVC stuck in Pending**
 
-### What happens when I delete a PVC?
+No matching PV or StorageClass not configured. Check: `kubectl describe pvc <name>` for events. See [troubleshooting-pending-pvc](/recipes/troubleshooting/troubleshooting-pending-pvc/).
 
-Depends on `reclaimPolicy`: **Delete** removes the underlying storage. **Retain** keeps the data but the PV becomes Released and can't be reused without manual cleanup.
+**Data lost after pod restart**
 
-### PV vs PVC?
+Volume not mounted or using `emptyDir` instead of PVC. Verify: `kubectl describe pod <name> | grep -A5 Volumes`.
 
-**PV** is the actual storage resource. **PVC** is a request for storage. PVCs bind to PVs. With dynamic provisioning, you only create PVCs and the PV is auto-created.
+**"volume is already exclusively attached"**
+
+RWO volume can't attach to multiple nodes. Pod must schedule on same node, or use RWX access mode.
 
 ## Best Practices
 
-- **Start simple** — use the basic form first, add complexity as needed
-- **Be consistent** — follow naming conventions across your cluster
-- **Document your choices** — add annotations explaining why, not just what
-- **Monitor and iterate** — review configurations regularly
+- **Always use dynamic provisioning** — let StorageClass handle PV creation
+- **Set `WaitForFirstConsumer`** — binds volume to pod's node (topology-aware)
+- **Use `Retain` for databases** — don't auto-delete production data
+- **StatefulSet + volumeClaimTemplates** — one PVC per replica automatically
+- **Monitor PVC usage** with `kubelet_volume_stats_used_bytes` Prometheus metric
 
 ## Key Takeaways
 
-- This is fundamental Kubernetes knowledge every engineer needs
-- Start with the simplest approach that solves your problem
-- Use `kubectl explain` and `kubectl describe` when unsure
-- Practice in a test cluster before applying to production
+- PVCs request storage; PVs provide it; StorageClass automates provisioning
+- Dynamic provisioning with StorageClass is the standard approach
+- RWO for databases, RWX for shared filesystems, RWOP for strict single-pod
+- Volume expansion supported with `allowVolumeExpansion: true` in StorageClass
+- StatefulSet `volumeClaimTemplates` create per-replica persistent storage

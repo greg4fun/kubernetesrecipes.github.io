@@ -1,151 +1,215 @@
 ---
-title: "Kubernetes ConfigMap Complete Guide"
-description: "Create and use ConfigMaps in Kubernetes for application configuration. Mount as files, inject as environment variables, and hot-reload without restarting pods."
+title: "K8s ConfigMap: Create and Mount Guide"
+description: "Create Kubernetes ConfigMaps from files, literals, and directories. Mount as volumes or environment variables with hot-reload and immutable ConfigMap patterns."
+publishDate: "2026-05-02"
+author: "Luca Berton"
 category: "configuration"
 difficulty: "beginner"
-publishDate: "2026-04-03"
-tags: ["configmap", "configuration", "environment-variables", "volumes", "kubernetes"]
-author: "Luca Berton"
+timeToComplete: "10 minutes"
+kubernetesVersion: "1.28+"
+tags:
+  - "configmap"
+  - "configuration"
+  - "volumes"
+  - "environment-variables"
+  - "cka"
 relatedRecipes:
-  - "downward-api-metadata"
   - "environment-variables-configmaps"
-  - "kubernetes-environment-variables"
-  - "configmap-hot-reload-troubleshooting"
+  - "downward-api-metadata"
+  - "kubernetes-secrets-management-guide"
+  - "kustomize-vs-helm-comparison"
 ---
 
-> 💡 **Quick Answer:** Create and use ConfigMaps in Kubernetes for application configuration. Mount as files, inject as environment variables, and hot-reload without restarting pods.
+> 💡 **Quick Answer:** `kubectl create configmap myconfig --from-file=config.yaml` creates a ConfigMap from a file. Mount it as a volume: `volumes: [{name: config, configMap: {name: myconfig}}]` with `volumeMounts: [{name: config, mountPath: /etc/config}]`. Or inject as env vars: `envFrom: [{configMapRef: {name: myconfig}}]`. ConfigMaps mounted as volumes auto-update (with ~60s delay); env vars don't.
 
 ## The Problem
 
-This is one of the most searched Kubernetes topics. Having a comprehensive, well-structured guide helps both beginners and experienced users quickly find what they need.
+Hardcoding configuration in container images means:
+
+- Rebuilding images for config changes
+- Different images per environment (dev/staging/prod)
+- Secrets mixed with application config
+- No centralized config management
 
 ## The Solution
 
-### Create a ConfigMap
+### Create ConfigMaps
+
+```bash
+# From literal values
+kubectl create configmap app-config \
+  --from-literal=DB_HOST=postgres \
+  --from-literal=DB_PORT=5432 \
+  --from-literal=LOG_LEVEL=info
+
+# From file
+kubectl create configmap nginx-config \
+  --from-file=nginx.conf
+
+# From directory (each file becomes a key)
+kubectl create configmap app-configs \
+  --from-file=configs/
+
+# From env file
+kubectl create configmap env-config \
+  --from-env-file=.env
+
+# Generate YAML
+kubectl create configmap app-config \
+  --from-literal=DB_HOST=postgres \
+  --dry-run=client -o yaml
+```
+
+### YAML Definition
 
 ```yaml
-# From literal values
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
 data:
-  DATABASE_HOST: "postgres.default.svc"
-  DATABASE_PORT: "5432"
+  # Simple key-value
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
   LOG_LEVEL: "info"
-  app.properties: |
-    server.port=8080
+  
+  # Multi-line config file
+  nginx.conf: |
+    server {
+      listen 80;
+      server_name example.com;
+      location / {
+        proxy_pass http://backend:8080;
+      }
+    }
+  
+  # Properties file
+  application.properties: |
     spring.datasource.url=jdbc:postgresql://postgres:5432/mydb
+    spring.jpa.hibernate.ddl-auto=update
     logging.level.root=INFO
 ```
 
-```bash
-# Create from command line
-kubectl create configmap app-config \
-  --from-literal=DATABASE_HOST=postgres \
-  --from-literal=LOG_LEVEL=info
-
-# Create from file
-kubectl create configmap nginx-config --from-file=nginx.conf
-kubectl create configmap app-config --from-file=config/
-
-# Create from env file
-kubectl create configmap app-config --from-env-file=.env
-```
-
-### Use as Environment Variables
+### Mount as Environment Variables
 
 ```yaml
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
-  name: my-app
-spec:
-  template:
-    spec:
-      containers:
-        - name: app
-          image: my-app:v1
-          # Individual keys
-          env:
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: DATABASE_HOST
-          # All keys at once
-          envFrom:
-            - configMapRef:
-                name: app-config
-```
-
-### Mount as Volume (Files)
-
-```yaml
+  name: app
 spec:
   containers:
-    - name: app
-      volumeMounts:
-        - name: config-volume
-          mountPath: /etc/config
-          readOnly: true
-        # Mount single key as file
-        - name: config-volume
-          mountPath: /etc/app/app.properties
-          subPath: app.properties
-  volumes:
-    - name: config-volume
-      configMap:
+  - name: app
+    image: myapp:v1
+    # All keys as env vars
+    envFrom:
+    - configMapRef:
         name: app-config
+    
+    # Or select specific keys
+    env:
+    - name: DATABASE_HOST     # env var name
+      valueFrom:
+        configMapKeyRef:
+          name: app-config
+          key: DB_HOST         # ConfigMap key
+    - name: DATABASE_PORT
+      valueFrom:
+        configMapKeyRef:
+          name: app-config
+          key: DB_PORT
 ```
 
-### Hot-Reload ConfigMap (No Restart)
+### Mount as Volume
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27
+    volumeMounts:
+    - name: config-volume
+      mountPath: /etc/nginx/conf.d    # Directory mount
+    - name: single-file
+      mountPath: /etc/nginx/nginx.conf
+      subPath: nginx.conf             # Single file (no directory replace)
+  volumes:
+  - name: config-volume
+    configMap:
+      name: nginx-config
+  - name: single-file
+    configMap:
+      name: nginx-config
+      items:
+      - key: nginx.conf
+        path: nginx.conf
+```
+
+### Hot Reload (Volume Mounts)
 
 ```bash
-# Volume-mounted ConfigMaps auto-update (kubelet sync period ~60s)
-# But envFrom does NOT auto-update — requires pod restart
-
-# Force update
+# Update ConfigMap
 kubectl edit configmap app-config
-# Volume mounts refresh automatically within ~1 minute
+# or
+kubectl create configmap app-config --from-file=new-config.yaml \
+  --dry-run=client -o yaml | kubectl apply -f -
 
-# For env vars, restart the deployment
-kubectl rollout restart deployment my-app
+# Volume mounts update automatically (~60-120 seconds)
+# env vars do NOT update — pod restart required
+
+# Watch for config changes in app
+inotifywait -m /etc/config -e modify
 ```
 
-```mermaid
-graph TD
-    A[ConfigMap] --> B{How to consume?}
-    B -->|envFrom / env| C[Environment Variables]
-    B -->|volume mount| D[Files in container]
-    C -->|Update| E[Requires pod restart]
-    D -->|Update| F[Auto-updates in ~60s]
+### Immutable ConfigMaps
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config-v2
+immutable: true    # Cannot be modified after creation
+data:
+  DB_HOST: "postgres"
 ```
 
-## Frequently Asked Questions
+```bash
+# Benefits of immutable:
+# - Prevents accidental changes
+# - Reduces API server watch load
+# - Forces explicit versioning (app-config-v1, v2, v3)
+```
 
-### What is the size limit for ConfigMaps?
+## Common Issues
 
-ConfigMaps are limited to 1MB of data. For larger configurations, use a PersistentVolume or external configuration service.
+**ConfigMap changes not reflected in pods**
 
-### Can I use ConfigMaps for binary data?
+Env vars don't auto-update. Restart pods: `kubectl rollout restart deployment/app`. Volume mounts update with delay.
 
-Use the `binaryData` field for binary content (base64-encoded). For text data, use the `data` field.
+**"subPath" mount doesn't auto-update**
 
-### How do I update a ConfigMap without downtime?
+Known limitation — `subPath` volume mounts don't get ConfigMap updates. Use full directory mount or restart pods.
 
-Volume-mounted ConfigMaps auto-update. For environment variable-based configs, use `kubectl rollout restart deployment` for a zero-downtime rolling restart.
+**ConfigMap too large (>1MB)**
+
+ConfigMaps are limited to 1MB. For larger configs, use a PersistentVolume or init container to fetch config.
 
 ## Best Practices
 
-- **Start simple** — use the basic form first, add complexity as needed
-- **Be consistent** — follow naming conventions across your cluster
-- **Document your choices** — add annotations explaining why, not just what
-- **Monitor and iterate** — review configurations regularly
+- **Separate config from secrets** — ConfigMap for non-sensitive, Secret for sensitive
+- **Use immutable for production** — prevents accidental changes
+- **Version ConfigMaps** — `app-config-v2` instead of editing in-place
+- **Prefer volume mounts** over env vars — supports hot reload
+- **Avoid `subPath`** if you need auto-updates
 
 ## Key Takeaways
 
-- This is fundamental Kubernetes knowledge every engineer needs
-- Start with the simplest approach that solves your problem
-- Use `kubectl explain` and `kubectl describe` when unsure
-- Practice in a test cluster before applying to production
+- ConfigMaps decouple configuration from container images
+- Create from files, literals, directories, or env files
+- Volume mounts auto-update (~60s); environment variables don't
+- Immutable ConfigMaps prevent changes and reduce API server load
+- 1MB size limit — use external storage for larger configurations
