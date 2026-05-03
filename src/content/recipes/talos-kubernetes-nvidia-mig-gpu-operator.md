@@ -31,6 +31,27 @@ Talos Linux provides NVIDIA drivers via system extensions, and nodes show `nvidi
 
 ## The Solution
 
+## Architecture
+
+On Talos, the stack splits cleanly between OS-level and Kubernetes-level:
+
+```text
+Talos Extensions (immutable, OS-level)
+  └─ NVIDIA driver/kernel modules + nvidia-container-toolkit
+
+NVIDIA GPU Operator (Kubernetes-level)
+  ├─ driver: disabled (Talos provides it)
+  ├─ toolkit: disabled (Talos provides it)
+  ├─ device-plugin: enabled
+  ├─ gpu-feature-discovery: enabled
+  ├─ mig-manager: enabled
+  ├─ dcgm-exporter: enabled
+  └─ validator: optional
+```
+
+Talos manages the **immutable driver**, GPU Operator manages the **Kubernetes GPU runtime**, and MIG is **declarative via labels** — no shelling into nodes.
+
+
 ### Step 1: Verify Current NVIDIA State
 
 ```bash
@@ -55,15 +76,15 @@ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia
 helm repo update
 
 # Install GPU Operator with MIG strategy
-helm install gpu-operator nvidia/gpu-operator \
-  --namespace nvidia-gpu-operator \
-  --create-namespace \
+helm upgrade --install gpu-operator nvidia/gpu-operator \
+  -n gpu-operator --create-namespace \
   --set driver.enabled=false \
   --set toolkit.enabled=false \
   --set mig.strategy=mixed \
   --set migManager.enabled=true \
   --set gfd.enabled=true \
-  --set devicePlugin.enabled=true
+  --set devicePlugin.enabled=true \
+  --set dcgmExporter.enabled=true
 ```
 
 Key flags for Talos:
@@ -75,7 +96,7 @@ Key flags for Talos:
 
 ```bash
 # Check all GPU Operator pods are running
-kubectl get pods -n nvidia-gpu-operator
+kubectl get pods -n gpu-operator
 # NAME                                       READY   STATUS
 # gpu-operator-...                            1/1     Running
 # nvidia-device-plugin-daemonset-...          1/1     Running
@@ -102,7 +123,7 @@ kubectl drain worker-gpu-gwc-0 --ignore-daemonsets --delete-emptydir-data
 kubectl label node worker-gpu-gwc-0 nvidia.com/mig.config=all-1g.10gb --overwrite
 
 # Watch mig-manager apply the configuration
-kubectl logs -n nvidia-gpu-operator -l app=nvidia-mig-manager -c nvidia-mig-manager -f
+kubectl logs -n gpu-operator -l app=nvidia-mig-manager -c nvidia-mig-manager -f
 
 # Verify success
 kubectl get node worker-gpu-gwc-0 \
@@ -156,7 +177,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mig-parted-config
-  namespace: nvidia-gpu-operator
+  namespace: gpu-operator
 data:
   config.yaml: |
     version: v1
@@ -193,20 +214,20 @@ machine:
 kubectl describe node worker-gpu-gwc-0 | grep -i 'gpu.product'
 
 # 2. Is GFD running and labeling?
-kubectl logs -n nvidia-gpu-operator -l app=gpu-feature-discovery --tail=50
+kubectl logs -n gpu-operator -l app=gpu-feature-discovery --tail=50
 
 # 3. Is mig-manager deployed?
-kubectl get ds -n nvidia-gpu-operator | grep mig
+kubectl get ds -n gpu-operator | grep mig
 
 # 4. What's the mig-manager doing?
-kubectl logs -n nvidia-gpu-operator -l app=nvidia-mig-manager -c nvidia-mig-manager --tail=200
+kubectl logs -n gpu-operator -l app=nvidia-mig-manager -c nvidia-mig-manager --tail=200
 
 # 5. Are MIG devices advertised?
 kubectl get node worker-gpu-gwc-0 -o json | \
   jq '.status.allocatable | to_entries[] | select(.key | startswith("nvidia.com/mig-"))'
 
 # 6. Device plugin healthy?
-kubectl logs -n nvidia-gpu-operator -l app=nvidia-device-plugin-daemonset --tail=50
+kubectl logs -n gpu-operator -l app=nvidia-device-plugin-daemonset --tail=50
 ```
 
 ## Common Issues
