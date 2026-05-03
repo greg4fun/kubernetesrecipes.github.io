@@ -1,6 +1,6 @@
 ---
 title: "Linkerd: Lightweight K8s Service Mesh"
-description: "Deploy Linkerd service mesh in Kubernetes for mTLS, traffic splitting, retries, and observability. Lighter alternative to Istio with zero-config mTLS and minimal overhead."
+description: "Deploy Linkerd service mesh in Kubernetes for mTLS, traffic splitting, retries, and observability. Lighter alternative to Istio with zero-config mTLS and min..."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "networking"

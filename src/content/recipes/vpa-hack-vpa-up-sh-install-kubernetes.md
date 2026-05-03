@@ -14,7 +14,6 @@ tags:
   - "vertical-pod-autoscaler"
 relatedRecipes:
   - "vertical-pod-autoscaler"
-  - "kubernetes-resource-optimization-strategies"
   - "horizontal-pod-autoscaler"
 ---
 

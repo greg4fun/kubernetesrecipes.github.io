@@ -1,6 +1,6 @@
 ---
 title: "kubeadm init: Bootstrap K8s Cluster"
-description: "Bootstrap a Kubernetes cluster with kubeadm init and join. Control plane setup, worker node joining, pod network installation, and high availability configuration."
+description: "Bootstrap a Kubernetes cluster with kubeadm init and join. Control plane setup, worker node joining, pod network installation."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"

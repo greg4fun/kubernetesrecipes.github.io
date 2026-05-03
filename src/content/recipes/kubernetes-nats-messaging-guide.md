@@ -1,6 +1,6 @@
 ---
 title: "NATS: Lightweight Messaging for Kubernetes"
-description: "Deploy NATS messaging in Kubernetes for pub/sub, request/reply, and JetStream persistent streaming. High-performance alternative to Kafka for cloud-native microservices."
+description: "Deploy NATS messaging in Kubernetes for pub/sub, request/reply, and JetStream persistent streaming. High-performance alternative to Kafka for cloud-native mi..."
 publishDate: "2026-05-03"
 author: "Luca Berton"
 category: "configuration"

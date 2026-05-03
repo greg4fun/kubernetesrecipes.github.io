@@ -9,7 +9,6 @@ relatedRecipes:
   - "update-ca-certificates-kubernetes"
   - "certificate-expiry-troubleshooting"
   - "kyverno-policy-management"
-  - "openshift-custom-ca-registry"
   - "kubernetes-validating-admission-policy"
 ---
 

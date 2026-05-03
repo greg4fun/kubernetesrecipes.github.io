@@ -1,6 +1,6 @@
 ---
 title: "K8s Volumes: emptyDir and hostPath Guide"
-description: "Configure Kubernetes emptyDir and hostPath volumes for temporary storage and host filesystem access. Memory-backed tmpfs, size limits, and security considerations."
+description: "Configure Kubernetes emptyDir and hostPath volumes for temporary storage and host filesystem access. Memory-backed tmpfs, size limits."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "storage"

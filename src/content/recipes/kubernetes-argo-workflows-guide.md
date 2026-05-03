@@ -1,6 +1,6 @@
 ---
 title: "Argo Workflows: K8s-Native Pipeline Engine"
-description: "Run CI/CD pipelines and data workflows with Argo Workflows in Kubernetes. DAG workflows, artifact passing, retry strategies, and cron workflows for batch processing."
+description: "Run CI/CD pipelines and data workflows with Argo Workflows in Kubernetes. DAG workflows, artifact passing, retry strategies."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "deployments"

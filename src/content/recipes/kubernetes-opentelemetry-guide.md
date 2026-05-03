@@ -1,6 +1,6 @@
 ---
 title: "OpenTelemetry in Kubernetes: Traces and Metrics"
-description: "Deploy OpenTelemetry Collector in Kubernetes for distributed tracing and metrics. Auto-instrumentation, OTLP export, Jaeger integration, and observability pipelines."
+description: "Deploy OpenTelemetry Collector in Kubernetes for distributed tracing and metrics. Auto-instrumentation, OTLP export, Jaeger integration."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "observability"

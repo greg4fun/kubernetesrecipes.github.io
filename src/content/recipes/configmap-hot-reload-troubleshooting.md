@@ -7,7 +7,6 @@ publishDate: "2026-04-02"
 tags: ["configmap", "hot-reload", "volumes", "troubleshooting"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-resource-optimization"
   - "kubernetes-admission-controller-list"
 ---
 

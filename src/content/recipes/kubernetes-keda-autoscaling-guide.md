@@ -1,6 +1,6 @@
 ---
 title: "KEDA: Event-Driven Autoscaling for K8s"
-description: "Scale Kubernetes workloads with KEDA based on events from Kafka, RabbitMQ, AWS SQS, Prometheus metrics, and cron schedules. Scale to zero and back automatically."
+description: "Scale Kubernetes workloads with KEDA based on events from Kafka, RabbitMQ, AWS SQS, Prometheus metrics, and cron schedules."
 publishDate: "2026-05-03"
 author: "Luca Berton"
 category: "autoscaling"

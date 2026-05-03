@@ -14,7 +14,6 @@ difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
   - "kubernetes-pod-lifecycle"
-  - "kubernetes-resource-optimization"
   - "argo-workflows-kubernetes"
 ---
 

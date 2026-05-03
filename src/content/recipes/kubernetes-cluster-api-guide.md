@@ -1,6 +1,6 @@
 ---
 title: "Cluster API: Declarative K8s Management"
-description: "Manage Kubernetes cluster lifecycle with Cluster API. Provision, upgrade, and scale clusters declaratively using management clusters and infrastructure providers."
+description: "Manage Kubernetes cluster lifecycle with Cluster API. Provision, upgrade, and scale clusters declaratively using management clusters and infrastructure provi..."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"

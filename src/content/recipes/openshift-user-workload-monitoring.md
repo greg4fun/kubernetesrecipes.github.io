@@ -17,7 +17,6 @@ tags:
   - user-workload
 relatedRecipes:
   - "openclaw-monitoring-prometheus"
-  - "kubernetes-resource-optimization"
 ---
 
 > 💡 **Quick Answer:** Create a ConfigMap in `openshift-monitoring` with `enableUserWorkload: true`, then deploy `ServiceMonitor` resources in your app namespace to scrape custom metrics. OpenShift spins up a dedicated Prometheus stack in `openshift-user-workload-monitoring` automatically.

@@ -7,7 +7,6 @@ publishDate: "2026-04-02"
 tags: ["opentelemetry", "otel", "tracing", "metrics", "observability", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-resource-optimization"
   - "cilium-hubble-observability-guide"
 ---
 

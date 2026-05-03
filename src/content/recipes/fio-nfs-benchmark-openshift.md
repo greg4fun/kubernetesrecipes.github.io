@@ -17,7 +17,6 @@ tags:
   - iops
 relatedRecipes:
   - "machineconfig-nfs-mount-openshift"
-  - "kubernetes-resource-optimization"
 ---
 
 > 💡 **Quick Answer:** Build a custom fio container, deploy parallel pods per NFS endpoint using `hostPath` volumes pointing to node-level NFS mounts, and run 4k/32k/512k random read-write tests. Requires NFS pre-mounted on nodes via MachineConfig — `oc debug` mounts won't persist.

@@ -13,7 +13,6 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "35 minutes"
 relatedRecipes:
-  - "kubernetes-resource-optimization"
   - "kubernetes-cost-optimization-strategies"
   - "kubernetes-goldilocks-vpa-dashboard"
   - "vertical-pod-autoscaler"

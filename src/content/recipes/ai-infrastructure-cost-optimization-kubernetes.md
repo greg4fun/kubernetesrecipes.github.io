@@ -14,7 +14,6 @@ difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "nim-model-profiles-selection-kubernetes"
-  - "kubernetes-resource-optimization"
   - "karpenter-node-autoscaling"
   - "cluster-autoscaler-setup"
 ---

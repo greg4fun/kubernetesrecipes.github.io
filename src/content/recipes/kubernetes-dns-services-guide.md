@@ -1,6 +1,6 @@
 ---
 title: "K8s DNS for Services: Resolution Guide"
-description: "Understand Kubernetes DNS for Services and Pods. Service discovery patterns, FQDN format, headless services, DNS policies, ndots configuration, and CoreDNS tuning."
+description: "Understand Kubernetes DNS for Services and Pods. Service discovery patterns, FQDN format, headless services, DNS policies, ndots configuration."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "networking"

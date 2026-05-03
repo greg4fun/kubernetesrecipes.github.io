@@ -1,6 +1,6 @@
 ---
 title: "Cilium: eBPF-Powered K8s Networking"
-description: "Deploy Cilium CNI in Kubernetes for eBPF-based networking, network policies, service mesh, and observability with Hubble. Replace kube-proxy and iptables with eBPF."
+description: "Deploy Cilium CNI in Kubernetes for eBPF-based networking, network policies, service mesh, and observability with Hubble."
 publishDate: "2026-05-03"
 author: "Luca Berton"
 category: "networking"

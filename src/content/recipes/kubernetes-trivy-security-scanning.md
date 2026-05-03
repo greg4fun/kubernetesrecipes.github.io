@@ -1,6 +1,6 @@
 ---
 title: "Trivy: K8s Security Scanning and SBOM"
-description: "Scan Kubernetes clusters with Trivy for vulnerabilities, misconfigurations, and secrets. Trivy Operator for continuous scanning, SBOM generation, and compliance reports."
+description: "Scan Kubernetes clusters with Trivy for vulnerabilities, misconfigurations, and secrets. Trivy Operator for continuous scanning, SBOM generation."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "security"

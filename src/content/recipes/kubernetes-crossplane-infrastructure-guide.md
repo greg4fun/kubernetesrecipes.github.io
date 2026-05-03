@@ -1,6 +1,6 @@
 ---
 title: "Crossplane: Provision Cloud from Kubernetes"
-description: "Manage cloud infrastructure with Crossplane in Kubernetes. Provision AWS RDS, S3, Azure databases, and GCP resources using Kubernetes manifests and compositions."
+description: "Manage cloud infrastructure with Crossplane in Kubernetes. Provision AWS RDS, S3, Azure databases, and GCP resources using Kubernetes manifests and compositi..."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"

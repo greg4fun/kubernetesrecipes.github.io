@@ -16,7 +16,6 @@ relatedRecipes:
   - "kubernetes-resource-format-syntax"
   - "kubernetes-resource-requests-limits"
   - "resource-limits-requests"
-  - "kubernetes-resource-optimization"
   - "vertical-pod-autoscaler-setup"
   - "kubernetes-oomkilled-troubleshooting"
 ---

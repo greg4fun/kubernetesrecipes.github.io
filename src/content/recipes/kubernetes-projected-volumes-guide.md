@@ -1,6 +1,6 @@
 ---
 title: "K8s Projected Volumes: Combine Sources"
-description: "Configure Kubernetes projected volumes to combine secrets, configmaps, downward API, and service account tokens into a single mount. Token expiration and audience."
+description: "Configure Kubernetes projected volumes to combine secrets, configmaps, downward API, and service account tokens into a single mount."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"

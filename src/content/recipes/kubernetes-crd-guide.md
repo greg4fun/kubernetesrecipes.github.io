@@ -1,6 +1,6 @@
 ---
 title: "K8s Custom Resources: CRD Development"
-description: "Create Kubernetes Custom Resource Definitions with schema validation, additional printer columns, subresources, and conversion webhooks. Extend the Kubernetes API."
+description: "Create Kubernetes Custom Resource Definitions with schema validation, additional printer columns, subresources, and conversion webhooks."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"

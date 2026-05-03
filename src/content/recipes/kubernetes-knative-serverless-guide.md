@@ -1,6 +1,6 @@
 ---
 title: "Knative: Serverless Workloads on Kubernetes"
-description: "Run serverless containers with Knative Serving and Eventing on Kubernetes. Auto-scaling to zero, traffic splitting, revision management, and event-driven architecture."
+description: "Run serverless containers with Knative Serving and Eventing on Kubernetes. Auto-scaling to zero, traffic splitting, revision management."
 publishDate: "2026-05-03"
 author: "Luca Berton"
 category: "deployments"

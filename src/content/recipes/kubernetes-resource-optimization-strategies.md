@@ -15,7 +15,6 @@ tags:
   - "right-sizing"
   - "autoscaling"
 relatedRecipes:
-  - "kubernetes-resource-optimization"
   - "horizontal-pod-autoscaler"
   - "vpa-hack-vpa-up-sh-install-kubernetes"
 ---

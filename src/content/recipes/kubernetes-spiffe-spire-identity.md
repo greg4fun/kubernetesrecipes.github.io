@@ -1,6 +1,6 @@
 ---
 title: "SPIFFE/SPIRE: Workload Identity for K8s"
-description: "Deploy SPIRE for Kubernetes workload identity using SPIFFE standards. Automatic mTLS certificate issuance, cross-cluster identity federation, and zero-trust networking."
+description: "Deploy SPIRE for Kubernetes workload identity using SPIFFE standards. Automatic mTLS certificate issuance, cross-cluster identity federation."
 publishDate: "2026-05-03"
 author: "Luca Berton"
 category: "security"

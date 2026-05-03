@@ -1,6 +1,6 @@
 ---
 title: "Backstage: K8s Developer Portal and Catalog"
-description: "Deploy Backstage developer portal in Kubernetes for service catalog, API docs, software templates, and TechDocs. Centralize microservices discovery and developer self-service."
+description: "Deploy Backstage developer portal in Kubernetes for service catalog, API docs, software templates, and TechDocs."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"

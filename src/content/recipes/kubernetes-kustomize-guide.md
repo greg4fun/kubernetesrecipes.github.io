@@ -1,6 +1,6 @@
 ---
 title: "Kustomize: Customize K8s Manifests"
-description: "Use Kustomize to customize Kubernetes manifests without templates. Overlays, patches, configMapGenerator, secretGenerator, and environment-specific configurations."
+description: "Use Kustomize to customize Kubernetes manifests without templates. Overlays, patches, configMapGenerator, secretGenerator."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"

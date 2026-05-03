@@ -17,7 +17,6 @@ relatedRecipes:
   - "kubernetes-hpa-cpu-memory-guide"
   - "resource-limits-requests"
   - "prometheus-monitoring-kubernetes-guide"
-  - "kubernetes-resource-optimization-strategies"
 ---
 
 > 💡 **Quick Answer:** Install Metrics Server: `kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml`. Then `kubectl top nodes` for node usage and `kubectl top pods` for pod usage. Metrics Server is required for HPA (CPU/memory autoscaling) and `kubectl top`. It scrapes kubelet's `/metrics/resource` endpoint every 15s.

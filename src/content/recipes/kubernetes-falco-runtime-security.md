@@ -1,6 +1,6 @@
 ---
 title: "Falco: K8s Runtime Threat Detection"
-description: "Deploy Falco for Kubernetes runtime security monitoring. Detect suspicious container behavior, privilege escalation, file access, and network anomalies in real-time."
+description: "Deploy Falco for Kubernetes runtime security monitoring. Detect suspicious container behavior, privilege escalation, file access."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "security"

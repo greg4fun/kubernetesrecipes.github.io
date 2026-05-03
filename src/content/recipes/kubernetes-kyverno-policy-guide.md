@@ -1,6 +1,6 @@
 ---
 title: "Kyverno: K8s Policy Engine Without Code"
-description: "Enforce Kubernetes policies with Kyverno. Validate, mutate, and generate resources using YAML policies. Image verification, label enforcement, and best practice policies."
+description: "Enforce Kubernetes policies with Kyverno. Validate, mutate, and generate resources using YAML policies. Image verification, label enforcement."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "security"

@@ -17,7 +17,6 @@ relatedRecipes:
   - "horizontal-pod-autoscaler"
   - "kubernetes-poddisruptionbudget-guide"
   - "debug-scheduling-failures"
-  - "kubernetes-resource-optimization"
   - "karpenter-node-autoscaling"
   - "cluster-autoscaler-setup"
   - "kubernetes-priority-preemption-guide"

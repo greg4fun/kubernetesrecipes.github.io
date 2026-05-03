@@ -1,6 +1,6 @@
 ---
 title: "Istio Service Mesh: Traffic Management"
-description: "Deploy Istio service mesh in Kubernetes for traffic management, mTLS, observability, and canary deployments. VirtualService, DestinationRule, and Gateway configuration."
+description: "Deploy Istio service mesh in Kubernetes for traffic management, mTLS, observability, and canary deployments. VirtualService, DestinationRule."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "networking"

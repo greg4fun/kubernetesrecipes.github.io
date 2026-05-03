@@ -1,6 +1,6 @@
 ---
 title: "Harbor: Private Container Registry on K8s"
-description: "Deploy Harbor container registry in Kubernetes for private image hosting. Vulnerability scanning, image replication, RBAC, Helm chart repository, and OCI artifact storage."
+description: "Deploy Harbor container registry in Kubernetes for private image hosting. Vulnerability scanning, image replication, RBAC, Helm chart repository."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "security"
