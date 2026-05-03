@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-service-mesh-istio-guide"
   - "kubernetes-gateway-api-guide"
   - "kubernetes-networkpolicy-guide"
+  - "kubernetes-cilium-networking-guide"
 ---
 
 > 💡 **Quick Answer:** Linkerd is the lightweight CNCF service mesh — simpler than Istio, ~10MB sidecar, zero-config mTLS. Install: `linkerd install --crds | kubectl apply -f -` then `linkerd install | kubectl apply -f -`. Inject sidecars: `kubectl annotate namespace default linkerd.io/inject=enabled`. Get mTLS, golden metrics (success rate, latency, throughput), retries, and traffic splitting out of the box.
