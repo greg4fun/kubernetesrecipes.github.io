@@ -203,3 +203,87 @@ Readiness: http-get http://:http/-/ready delay=30s timeout=30s
 - Fix: Increase to 2Gi (or reduce `--tsdb.retention` from 183d to 30d)
 - Always update via GitOps/Helm values — ArgoCD will revert manual patches
 - Thanos Receive uses ports 10901 (gRPC), 10902 (HTTP), 19291 (remote-write), 19391 (capnproto)
+
+---
+
+## Additional Issue: Volume Multi-Attach Error
+
+After OOMKill, the StatefulSet may fail to reschedule due to a PVC still attached to the old node:
+
+```text
+Events:
+  Readiness probe failed: HTTP probe failed with statuscode: 503
+
+  Multi-Attach error for volume "csi-vol-4651810364":
+  Volume is already exclusively attached to one node and can't be attached to another
+
+  runai-backend-thanos-receive-0 moved to node sp000731-2
+```
+
+### Root Cause
+
+When a Pod is OOMKilled and Kubernetes reschedules it to a different node, the RWO (ReadWriteOnce) PVC is still attached to the previous node. The volume detach takes time (up to 6 minutes by default).
+
+### Fix
+
+```bash
+# Option 1: Wait for automatic detach (up to 6 minutes)
+oc get events -n runai-backend --field-selector involvedObject.name=runai-backend-thanos-receive-0 -w
+
+# Option 2: Force delete the old VolumeAttachment
+oc get volumeattachment | grep thanos-receive
+oc delete volumeattachment <attachment-name> --force
+
+# Option 3: Delete the Pod to retry on same node
+oc delete pod runai-backend-thanos-receive-0 -n runai-backend
+
+# Option 4: Cordon the target node to force scheduling back to original
+oc adm cordon <new-node>
+oc delete pod runai-backend-thanos-receive-0 -n runai-backend
+oc adm uncordon <new-node>
+```
+
+### Prevention
+
+```yaml
+# Pin StatefulSet to a specific node (or use pod anti-affinity)
+# to avoid cross-node rescheduling with RWO volumes:
+spec:
+  template:
+    spec:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-role.kubernetes.io/infra
+                  operator: Exists
+```
+
+### Event Sequence (What You'll See)
+
+```text
+1. Readiness probe failed: HTTP probe failed with statuscode: 503
+   → Thanos is starting but TSDB replay not complete
+
+2. Add eth0 [10.232.10.175/23] from ovn-kubernetes
+   → New Pod got network assigned
+
+3. Container image "thanos:2.24.38" already present on machine
+   → Image cached, no pull needed
+
+4. Created container: receive
+   → Container created successfully
+
+5. Started container receive
+   → Running but not Ready (TSDB replaying)
+
+6. AttachVolume.Attach succeeded for volume "csi-vol-4651810364"
+   → PVC attached (may take minutes if cross-node)
+
+7. Multi-Attach error for volume "csi-vol-4651810364":
+   Volume is already exclusively attached to one node
+   → RWO conflict when rescheduled to different node
+
+8. runai-backend-thanos-receive-0 moved to node <new-node>
+   → Scheduler moved Pod after volume freed
+```
