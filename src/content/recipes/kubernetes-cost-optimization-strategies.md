@@ -1,175 +1,237 @@
 ---
-title: "Cost Optimization Strategies Kubernetes"
-description: "Reduce Kubernetes cloud costs with right-sizing, spot instances, cluster autoscaler tuning, resource quotas, and idle workload detection."
-publishDate: "2026-04-24"
-author: "Luca Berton"
-category: "configuration"
-difficulty: "intermediate"
-timeToComplete: "15 minutes"
-kubernetesVersion: "1.28+"
+title: "Kubernetes Cost Optimization Strategies"
+description: "Comprehensive cost reduction strategies for Kubernetes clusters: right-sizing, spot instances, autoscaling, idle resource detection, namespace budgets, and GPU cost management."
 tags:
-  - cost-optimization
-  - spot-instances
-  - right-sizing
-  - autoscaling
-  - finops
+  - "cost-optimization"
+  - "finops"
+  - "autoscaling"
+  - "resource-management"
+  - "spot-instances"
+category: "configuration"
+publishDate: "2026-05-06"
+author: "Luca Berton"
+difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-resource-quotas-limitranges"
-  - "kubernetes-admission-controller-list"
+  - "kubernetes-vpa-vertical-pod-autoscaler"
+  - "kubernetes-goldilocks-vpa-dashboard"
+  - "kubernetes-hpa-autoscaling"
+  - "kubernetes-resource-quota-limitrange"
 ---
 
-> 💡 **Quick Answer:** Start with VPA recommendations to right-size requests (30% savings typical), enable cluster autoscaler with `--scale-down-unneeded-time=10m`, use spot/preemptible nodes for batch workloads (60-90% cheaper), and set ResourceQuotas per namespace to prevent sprawl.
+> 💡 **Quick Answer:** Kubernetes cost optimization combines right-sizing (VPA), horizontal scaling (HPA), cluster autoscaling (Karpenter/CA), spot instances for fault-tolerant workloads, idle resource detection, and GPU time-sharing — typically achieving 30-60% cost reduction.
 
 ## The Problem
 
-Kubernetes clusters are typically 30-60% over-provisioned: developers request more resources than needed, nodes sit idle overnight, and no one tracks actual utilization. Cloud bills grow linearly with cluster size, but actual utilization stays flat.
+Kubernetes clusters waste money through:
+
+- Over-provisioned containers (requesting 4x what they use)
+- Always-on nodes for variable workloads
+- Idle GPUs ($10-30/hour doing nothing)
+- No visibility into per-team/per-workload costs
+- Paying on-demand prices for fault-tolerant workloads
 
 ## The Solution
 
-### 1. Right-Size with VPA Recommendations
+### Cost Optimization Framework
 
-```bash
-# Install VPA in recommendation mode
-# Then check recommendations for all deployments
-kubectl get vpa -A -o custom-columns=\
-  'NAMESPACE:.metadata.namespace,NAME:.metadata.name,CONTAINER:.status.recommendation.containerRecommendations[0].containerName,CPU_TARGET:.status.recommendation.containerRecommendations[0].target.cpu,MEM_TARGET:.status.recommendation.containerRecommendations[0].target.memory'
+```text
+Impact    Strategy                        Typical Savings
+──────────────────────────────────────────────────────────
+HIGH      Right-size containers (VPA)      30-50%
+HIGH      Spot/preemptible instances       60-90% per node
+HIGH      GPU time-sharing/MIG             2-7x utilization
+MEDIUM    Cluster autoscaler (scale to 0)  20-40%
+MEDIUM    HPA (scale with demand)          20-30%
+MEDIUM    Namespace resource quotas        Prevent sprawl
+LOW       Pod priority/preemption          5-10%
+LOW       Storage class tiering            10-20%
 ```
 
-Typical findings: services requesting 1 CPU / 1Gi are actually using 50m / 128Mi.
-
-### 2. Cluster Autoscaler Tuning
+### Right-Sizing with VPA
 
 ```yaml
-# Cluster Autoscaler ConfigMap
+# Step 1: Deploy VPA in recommendation mode
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: api-vpa
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-server
+  updatePolicy:
+    updateMode: "Off"
+
+# Step 2: After 1 week, read recommendations
+# kubectl describe vpa api-vpa
+# Target: CPU 150m, Memory 256Mi
+# Current: CPU 1000m, Memory 2Gi
+# Savings: 850m CPU, 1.75Gi memory PER POD
+```
+
+### Spot Instance Node Pools
+
+```yaml
+# Karpenter NodePool for spot instances
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: spot-general
+spec:
+  template:
+    spec:
+      requirements:
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["spot"]
+        - key: node.kubernetes.io/instance-type
+          operator: In
+          values: ["m5.xlarge", "m5a.xlarge", "m6i.xlarge", "m6a.xlarge"]
+      nodeClassRef:
+        name: default
+  disruption:
+    consolidationPolicy: WhenEmpty
+    consolidateAfter: 30s
+  limits:
+    cpu: "100"
+    memory: 400Gi
+---
+# Workloads opt-in to spot via tolerations
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: batch-processor
+spec:
+  template:
+    spec:
+      tolerations:
+        - key: "karpenter.sh/capacity-type"
+          operator: "Equal"
+          value: "spot"
+          effect: "NoSchedule"
+      nodeSelector:
+        karpenter.sh/capacity-type: spot
+```
+
+### GPU Cost Management
+
+```yaml
+# MIG slicing: 1 A100 → 7 workloads
+# Time-slicing: share GPU across Pods
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cluster-autoscaler-config
+  name: gpu-sharing-config
+  namespace: gpu-operator
 data:
-  scale-down-enabled: "true"
-  scale-down-unneeded-time: "10m"
-  scale-down-utilization-threshold: "0.5"
-  skip-nodes-with-local-storage: "false"
-  skip-nodes-with-system-pods: "true"
-  max-graceful-termination-sec: "600"
+  config.yaml: |
+    version: v1
+    sharing:
+      timeSlicing:
+        resources:
+          - name: nvidia.com/gpu
+            replicas: 4    # 4 Pods share each physical GPU
+
+# Result: 8-GPU node serves 32 inference workloads
+# Cost: $30/hr shared across 32 → $0.94/hr per workload
+# vs. $30/hr for 1 dedicated workload
 ```
 
-Key: `scale-down-utilization-threshold: 0.5` — scale down nodes below 50% utilization. Default is 0.5, but many clusters set it too high.
-
-### 3. Spot/Preemptible Node Pools
-
-```yaml
-# Separate node pool for batch workloads
-apiVersion: v1
-kind: Node
-metadata:
-  labels:
-    node.kubernetes.io/instance-type: spot
-    workload-type: batch
-  annotations:
-    cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-```
-
-Use taints + tolerations to direct batch workloads to spot nodes:
-```yaml
-# On spot nodes
-taints:
-  - key: workload-type
-    value: spot
-    effect: NoSchedule
-
-# On batch workload pods
-tolerations:
-  - key: workload-type
-    value: spot
-    effect: NoSchedule
-```
-
-### 4. Idle Workload Detection
+### Idle Resource Detection
 
 ```bash
-# Find pods using <10% of requested CPU
-kubectl top pods -A --sort-by=cpu | awk 'NR>1 {
-  split($3, cpu, "m");
-  if (cpu[1] < 10) print $1, $2, $3, $4
-}'
+# Find Pods using < 10% of their CPU request
+kubectl top pods -A --sort-by=cpu | awk '
+  NR>1 {
+    split($3, cpu, "m");
+    if (cpu[1] < 10) print $1, $2, $3, "← IDLE"
+  }
+'
 
-# Find deployments with 0 traffic (no network I/O)
-kubectl get pods -A -o json | jq -r '
-  .items[] | select(.status.phase=="Running") |
-  "\(.metadata.namespace)/\(.metadata.name)"
-' | while read pod; do
-  RX=$(kubectl exec -n ${pod%/*} ${pod#*/} -- cat /sys/class/net/eth0/statistics/rx_bytes 2>/dev/null || echo 0)
-  echo "$pod: $RX bytes received"
+# Find Deployments with 0 traffic (scale to 0 candidates)
+# Requires Prometheus
+curl -s "http://prometheus:9090/api/v1/query?query=
+  sum(rate(http_requests_total[24h])) by (deployment) == 0"
+
+# Find PVCs with no Pod attached
+kubectl get pvc -A --no-headers | while read ns name _ _ _ _ sc _; do
+  if ! kubectl get pods -n $ns -o json | grep -q $name; then
+    echo "ORPHAN PVC: $ns/$name ($sc)"
+  fi
 done
 ```
 
-### 5. Namespace Cost Allocation
+### Namespace Cost Budgets
 
 ```yaml
-# ResourceQuota with cost awareness
+# ResourceQuota as cost guardrail
 apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: team-budget
   namespace: team-alpha
-  labels:
-    cost-center: "engineering"
 spec:
   hard:
-    requests.cpu: "16"
-    requests.memory: 32Gi
-    requests.nvidia.com/gpu: "4"
+    requests.cpu: "16"       # ~$200/month at on-demand
+    requests.memory: "64Gi"
+    requests.nvidia.com/gpu: "2"  # ~$1500/month
+    persistentvolumeclaims: "20"
+    services.loadbalancers: "2"   # ~$36/month each
 ```
 
-### Cost Savings Summary
+### Scale-to-Zero for Dev/Staging
 
-| Strategy | Typical Savings | Effort |
-|----------|----------------|--------|
-| Right-sizing (VPA) | 20-40% | Low |
-| Cluster autoscaler tuning | 10-20% | Low |
-| Spot instances (batch) | 60-90% per node | Medium |
-| Idle workload cleanup | 5-15% | Low |
-| Namespace quotas | Prevents growth | Medium |
-| Reserved instances (steady state) | 30-40% | Low |
-
-```mermaid
-graph TD
-    AUDIT[Cost Audit] --> RS[Right-Size<br/>VPA recommendations<br/>20-40% savings]
-    AUDIT --> CA[Cluster Autoscaler<br/>Scale down idle nodes<br/>10-20% savings]
-    AUDIT --> SPOT[Spot Instances<br/>Batch workloads<br/>60-90% per node]
-    AUDIT --> IDLE[Kill Idle<br/>Dev environments<br/>5-15% savings]
-    AUDIT --> QUOTA[Quotas<br/>Prevent sprawl<br/>Controls growth]
-    
-    RS --> TOTAL[Total: 30-50%<br/>cost reduction]
-    CA --> TOTAL
-    SPOT --> TOTAL
-    IDLE --> TOTAL
-    QUOTA --> TOTAL
+```yaml
+# KEDA ScaledObject: scale to 0 when no traffic
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: api-scaledobject
+spec:
+  scaleTargetRef:
+    name: staging-api
+  minReplicaCount: 0    # Scale to zero!
+  maxReplicaCount: 5
+  cooldownPeriod: 300
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: http://prometheus.monitoring:9090
+        query: sum(rate(http_requests_total{deployment="staging-api"}[5m]))
+        threshold: "1"
 ```
 
 ## Common Issues
 
-**Cluster autoscaler won't scale down**
+### Spot instance interruption causes downtime
+- **Cause**: Only 1 replica on spot; no graceful handling
+- **Fix**: Run 2+ replicas across multiple instance types; handle SIGTERM
 
-Check: PDBs blocking eviction, pods with local storage, system pods on the node, or pods without owner references.
+### VPA evictions during peak
+- **Cause**: Auto mode evicts to apply new resource values
+- **Fix**: Use Initial mode; or schedule VPA updates during maintenance windows
 
-**Spot instance interruption kills long-running jobs**
-
-Use checkpointing for training jobs. For inference, maintain min replicas on on-demand nodes.
+### GPU idle but can't reclaim
+- **Cause**: Pod holds GPU allocation even when not computing
+- **Fix**: Use Run:ai fractional GPU or time-slicing; set idle timeout
 
 ## Best Practices
 
-- **VPA in `Off` mode first** — get recommendations before changing anything
-- **Right-size before autoscaling** — over-provisioned pods make autoscaler add unnecessary nodes
-- **Spot for batch, on-demand for serving** — separate node pools with taints
-- **Monthly cost reviews** — Kubernetes resource usage drifts over time
-- **Labels for cost allocation** — `cost-center`, `team`, `environment` on all resources
+1. **Right-size first** — biggest bang for least effort (VPA + Goldilocks)
+2. **Spot for stateless** — web servers, batch jobs, CI runners
+3. **On-demand for stateful** — databases, message queues, critical services
+4. **GPU time-sharing** for inference — most LLM inference is bursty
+5. **Scale to zero** in dev/staging — nobody works at 3 AM
+6. **Tag everything** — team labels enable cost attribution
+7. **Review monthly** — workload patterns change; savings drift
 
 ## Key Takeaways
 
-- Right-sizing with VPA recommendations is the highest-impact, lowest-effort optimization
-- Cluster autoscaler needs tuning — default settings are conservative
+- Average K8s cluster wastes 40-60% of resources (over-provisioned)
+- VPA + Goldilocks identifies right-size targets across all workloads
 - Spot instances save 60-90% for fault-tolerant workloads
-- Namespace quotas prevent unchecked resource growth
-- Combine all strategies for 30-50% total cloud cost reduction
+- GPU time-slicing/MIG: share expensive GPUs across multiple workloads
+- Scale-to-zero (KEDA): eliminate cost for idle dev/staging environments
+- ResourceQuotas prevent uncontrolled spending per team/namespace
+- Combined strategy typically achieves 30-60% total cluster cost reduction
