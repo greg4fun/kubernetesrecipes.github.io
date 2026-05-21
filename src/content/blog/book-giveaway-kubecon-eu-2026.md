@@ -1,19 +1,27 @@
 ---
 draft: false
-title: "Kubernetes Recipes Book Giveaway at KubeCon EU 2026"
-snippet: "Giving away copies of Kubernetes Recipes at KubeCon EU 2026 in London. From the talk stage to the hallway track — here's how it went."
+title: "Kubernetes Recipes Book Signing at KubeCon EU 2026"
+snippet: "Book signing at the vCluster booth and giving away copies of Kubernetes Recipes at KubeCon EU 2026 in London. From the talk stage to the hallway track — here's how it went."
 image:
   src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?&fit=crop&w=430&h=240"
   alt: "KubeCon conference"
 publishDate: "2026-04-05 10:00"
 category: "Events"
 author: "Luca Berton"
-tags: [kubecon, book, giveaway, speaking, community]
+tags: [kubecon, book, signing, vcluster, speaking, community]
 ---
 
-## Kubernetes Recipes Book Giveaway at KubeCon EU 2026
+## Kubernetes Recipes Book Signing at KubeCon EU 2026
 
-KubeCon EU 2026 in London was a milestone — not just for presenting **"Lessons Learned Orchestrating Multi-Tenant GPUs on OpenShift AI"**, but for the incredible response to the **Kubernetes Recipes** book giveaway.
+KubeCon EU 2026 in London was a milestone — not just for presenting **"Lessons Learned Orchestrating Multi-Tenant GPUs on OpenShift AI"**, but for the incredible book signing event and community response.
+
+### The Book Signing at vCluster Booth
+
+A huge thank you to the **vCluster** team for organizing the book signing event at their booth! Co-authors **Luca Berton** and **Grzegorz Stencel** signed copies of *Kubernetes Recipes* together, meeting readers face-to-face and discussing everything from GPU orchestration to day-to-day cluster operations.
+
+The vCluster team — especially Diaa Khalil — was magnificent and patient in hosting us. The booth had a constant stream of Kubernetes practitioners stopping by for signed copies and conversations about real-world cluster challenges.
+
+> *"A bit late, but still worth sharing that I had great pleasure of my kubernetes.recipes book signing with my coauthor Luca Berton at KubeCon 2026 at vCluster stand. Thanks to magnificent and patient vCluster team for organising that!"* — Grzegorz Stencel
 
 ### The Talk
 
@@ -28,11 +36,10 @@ Key topics that sparked the most discussion:
 
 ### The Giveaway
 
-After the talk, we gave away signed copies of **Kubernetes Recipes** to attendees:
+Between the talk, the vCluster booth signing, and the hallway track:
 
 - **50+ copies** distributed across the conference
-- Books handed out at the talk, at the booth, and in the hallway track
-- Every copy was signed with a personal note
+- Books signed by both co-authors with personal notes
 - Some copies went to attendees who traveled from Asia and South America — the global reach of the community never ceases to amaze me
 
 ### Hallway Track Highlights
