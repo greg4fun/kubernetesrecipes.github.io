@@ -1,36 +1,39 @@
 ---
 title: "Kubernetes Secrets Management Best Practices"
-description: "Secure Kubernetes secrets: encryption at rest, external secret operators, RBAC, rotation, sealed secrets, and avoiding common anti-patterns in production."
+description: "Manage Kubernetes Secrets securely with best practices. External Secrets Operator, sealed secrets, RBAC restrictions, encryption at rest, secret rotation, and integration with HashiCorp Vault and AWS Secrets Manager."
+tags:
+  - "secrets"
+  - "security"
+  - "external-secrets"
+  - "vault"
+  - "encryption"
 category: "security"
-publishDate: "2026-04-20"
+publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
-timeToComplete: "15 minutes"
-kubernetesVersion: "1.21+"
-tags: ["secrets", "security", "encryption", "external-secrets", "vault", "best-practices"]
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
-  - "kubernetes-rbac-least-privilege"
-  - openclaw-secrets-management
+  - "kubernetes-rbac-role-based-access-control"
+  - "kubernetes-configmap-management"
+  - "kubernetes-security-checklist"
 ---
 
-> 💡 **Quick Answer:** Never store secrets in Git, always enable encryption at rest (`EncryptionConfiguration`), use an external secret manager (Vault, AWS Secrets Manager) via External Secrets Operator, restrict access with RBAC, and rotate secrets automatically with TTLs.
+> 💡 **Quick Answer:** Kubernetes Secrets are base64-encoded (NOT encrypted) by default. For production: 1) Enable encryption at rest (`EncryptionConfiguration`), 2) Use External Secrets Operator to sync from Vault/AWS/GCP, 3) Restrict access with RBAC, 4) Never commit Secrets to Git, 5) Mount as volumes (not env vars) for rotation support. Sealed Secrets allows safe Git storage via asymmetric encryption.
 
 ## The Problem
 
-Default Kubernetes secrets are:
-- Base64 encoded (NOT encrypted) — anyone with etcd access reads them
-- Stored in etcd unencrypted by default
-- Visible to anyone with `get secret` RBAC permission
-- Often committed to Git repos accidentally
-- Never rotated automatically
+- Kubernetes Secrets are only base64-encoded — anyone with RBAC access can decode them
+- Secrets stored in etcd unencrypted by default
+- Can't commit Secrets to Git (GitOps anti-pattern)
+- No built-in secret rotation mechanism
+- Need to sync secrets from external vaults (HashiCorp Vault, AWS SM, GCP SM)
+- `kubectl get secret -o yaml` exposes values to anyone with read access
 
 ## The Solution
 
-### Layer 1: Encryption at Rest
+### Enable Encryption at Rest
 
 ```yaml
-# /etc/kubernetes/encryption-config.yaml
+# /etc/kubernetes/encryption-config.yaml (on control plane)
 apiVersion: apiserver.config.k8s.io/v1
 kind: EncryptionConfiguration
 resources:
@@ -41,72 +44,151 @@ resources:
           keys:
             - name: key1
               secret: <base64-encoded-32-byte-key>
-      - identity: {}  # Fallback for reading old unencrypted secrets
+      - identity: {}    # Fallback for reading unencrypted secrets
 ```
 
 ```bash
 # Generate encryption key
 head -c 32 /dev/urandom | base64
 
-# Add to kube-apiserver flags:
+# Add to kube-apiserver:
 # --encryption-provider-config=/etc/kubernetes/encryption-config.yaml
 
-# Re-encrypt all existing secrets
-kubectl get secrets --all-namespaces -o json | kubectl replace -f -
+# Re-encrypt existing secrets
+kubectl get secrets -A -o json | kubectl replace -f -
 ```
 
-### Layer 2: External Secrets Operator
+### External Secrets Operator (ESO)
 
-```yaml
-# Install ESO
+```bash
+helm repo add external-secrets https://charts.external-secrets.io
 helm install external-secrets external-secrets/external-secrets \
   --namespace external-secrets --create-namespace
+```
 
+```yaml
 # Connect to AWS Secrets Manager
 apiVersion: external-secrets.io/v1beta1
-kind: ClusterSecretStore
+kind: SecretStore
 metadata:
   name: aws-secrets
+  namespace: production
 spec:
   provider:
     aws:
       service: SecretsManager
-      region: us-east-1
+      region: eu-west-1
       auth:
         jwt:
           serviceAccountRef:
             name: external-secrets-sa
-            namespace: external-secrets
 ---
-# Pull secret from AWS into Kubernetes
+# Sync specific secret from AWS
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: database-credentials
+  name: db-credentials
   namespace: production
 spec:
-  refreshInterval: 1h  # Auto-sync every hour
+  refreshInterval: 1h              # Sync every hour
   secretStoreRef:
     name: aws-secrets
-    kind: ClusterSecretStore
+    kind: SecretStore
   target:
-    name: db-credentials
+    name: db-credentials           # K8s Secret name created
     creationPolicy: Owner
   data:
-    - secretKey: username
+    - secretKey: username           # Key in K8s Secret
       remoteRef:
-        key: production/database
-        property: username
+        key: production/database   # AWS SM secret name
+        property: username          # JSON key in AWS secret
     - secretKey: password
       remoteRef:
         key: production/database
         property: password
 ```
 
-### Layer 3: RBAC Restriction
+### External Secrets with HashiCorp Vault
 
 ```yaml
-# Restrict who can read secrets
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: vault-store
+  namespace: production
+spec:
+  provider:
+    vault:
+      server: "https://vault.example.com"
+      path: "secret"
+      version: "v2"
+      auth:
+        kubernetes:
+          mountPath: "kubernetes"
+          role: "production-app"
+          serviceAccountRef:
+            name: vault-auth-sa
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: app-secrets
+  namespace: production
+spec:
+  refreshInterval: 15m
+  secretStoreRef:
+    name: vault-store
+    kind: SecretStore
+  target:
+    name: app-secrets
+  data:
+    - secretKey: API_KEY
+      remoteRef:
+        key: secret/data/production/api
+        property: key
+    - secretKey: DB_PASSWORD
+      remoteRef:
+        key: secret/data/production/database
+        property: password
+```
+
+### Sealed Secrets (GitOps-Safe)
+
+```bash
+# Install controller
+helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+helm install sealed-secrets sealed-secrets/sealed-secrets \
+  --namespace kube-system
+
+# Install kubeseal CLI
+brew install kubeseal
+
+# Seal a secret (safe to commit to Git)
+kubectl create secret generic db-creds \
+  --from-literal=password=supersecret \
+  --dry-run=client -o yaml | \
+  kubeseal --format yaml > sealed-db-creds.yaml
+
+# Apply sealed secret → controller decrypts → creates real Secret
+kubectl apply -f sealed-db-creds.yaml
+```
+
+```yaml
+# sealed-db-creds.yaml (safe for Git)
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: db-creds
+  namespace: production
+spec:
+  encryptedData:
+    password: AgBR7h5Z3...encrypted...base64...
+```
+
+### RBAC: Restrict Secret Access
+
+```yaml
+# Only allow specific ServiceAccount to read secrets
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -115,139 +197,75 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
-    resourceNames: ["app-config"]  # Only specific secrets
+    resourceNames: ["app-secrets", "db-credentials"]  # Specific secrets only
     verbs: ["get"]
 ---
-# Deny listing all secrets (common mistake: giving list permission)
-# Developers should only get specific named secrets, not list all
+# Deny secret listing for most users
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: developer
-  namespace: staging
+  namespace: production
 rules:
   - apiGroups: [""]
-    resources: ["secrets"]
-    verbs: ["get"]
-    resourceNames: ["app-config", "tls-cert"]  # Named only, no list
+    resources: ["pods", "services", "configmaps"]
+    verbs: ["*"]
+  # NO secrets access
 ```
 
-### Layer 4: Sealed Secrets (Git-Safe)
-
-```bash
-# Install Sealed Secrets controller
-helm install sealed-secrets sealed-secrets/sealed-secrets \
-  --namespace kube-system
-
-# Encrypt a secret for Git
-kubectl create secret generic db-creds \
-  --from-literal=password=supersecret \
-  --dry-run=client -o yaml | \
-  kubeseal --controller-name=sealed-secrets \
-  --controller-namespace=kube-system \
-  -o yaml > sealed-db-creds.yaml
-
-# sealed-db-creds.yaml is safe to commit to Git
-# Only the cluster controller can decrypt it
-```
-
-### Layer 5: Automatic Rotation
+### Mount as Volume (Supports Rotation)
 
 ```yaml
-# External Secrets with rotation
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: rotating-api-key
 spec:
-  refreshInterval: 15m  # Check for new version every 15 min
-  secretStoreRef:
-    name: vault-backend
-    kind: ClusterSecretStore
-  target:
-    name: api-key
-  data:
-    - secretKey: key
-      remoteRef:
-        key: secret/data/api-keys/production
-        property: current_key
-```
-
-### Anti-Patterns to Avoid
-
-```yaml
-# ❌ DON'T: Secret values in plain YAML in Git
-apiVersion: v1
-kind: Secret
-metadata:
-  name: db-creds
-data:
-  password: c3VwZXJzZWNyZXQ=  # This is just base64!
-
-# ❌ DON'T: Secrets in environment variables (visible in pod spec)
-env:
-  - name: DB_PASSWORD
-    value: "hardcoded-password"  # Never do this
-
-# ❌ DON'T: Broad RBAC
-rules:
-  - apiGroups: [""]
-    resources: ["secrets"]
-    verbs: ["*"]  # Too permissive
-
-# ✓ DO: Mount as file with restrictive permissions
-volumeMounts:
-  - name: secrets
-    mountPath: /etc/secrets
-    readOnly: true
-volumes:
-  - name: secrets
-    secret:
-      secretName: db-credentials
-      defaultMode: 0400  # Owner read-only
-```
-
-### Architecture
-
-```mermaid
-graph TD
-    A[External Secret Manager] -->|sync| B[External Secrets Operator]
-    B -->|creates/updates| C[Kubernetes Secret]
-    C -->|mounted as file| D[Pod]
-    
-    E[Git Repo] -->|Sealed Secret| F[Sealed Secrets Controller]
-    F -->|decrypts to| C
-    
-    G[etcd] -->|stores| C
-    H[EncryptionConfiguration] -->|encrypts in| G
-    
-    I[RBAC] -->|restricts access to| C
+  containers:
+    - name: app
+      volumeMounts:
+        - name: secrets
+          mountPath: /etc/secrets
+          readOnly: true
+  volumes:
+    - name: secrets
+      secret:
+        secretName: app-secrets
+        # Files updated automatically when Secret changes
+        # (kubelet sync period: ~1 min)
 ```
 
 ## Common Issues
 
-| Issue | Cause | Fix |
-|-------|-------|-----|
-| Secret visible in `kubectl describe pod` | Using `env` instead of volume mount | Mount as file volume |
-| etcd compromise exposes secrets | No encryption at rest | Configure `EncryptionConfiguration` |
-| Secret in Git history | Committed plain Secret YAML | Use Sealed Secrets or ESO |
-| Stale credentials | No rotation | Set `refreshInterval` in ExternalSecret |
-| Developer reads production secrets | Over-permissive RBAC | Use `resourceNames` in Role |
+### Secret not syncing from external store
+- **Cause**: Auth misconfigured; IAM role missing permissions; network can't reach vault
+- **Fix**: Check ExternalSecret status: `kubectl get externalsecret -o yaml`; verify SecretStore connectivity
+
+### "Error creating: secrets is forbidden" after RBAC restriction
+- **Cause**: ServiceAccount lacks create/update permission on secrets
+- **Fix**: Add appropriate RBAC rules; check which SA the pod uses
+
+### Sealed Secret not decrypting
+- **Cause**: Wrong namespace (sealed secrets are namespace-scoped by default); or controller key rotated
+- **Fix**: Re-seal with correct namespace; or use `--scope cluster-wide`
+
+### env vars not updating after secret rotation
+- **Cause**: Env vars from secrets are set at pod creation — not live-updated
+- **Fix**: Use volume mounts (auto-updated by kubelet); or restart pods after rotation
 
 ## Best Practices
 
-1. **Enable encryption at rest** — base64 is encoding, not encryption
-2. **Use External Secrets Operator** — single source of truth outside K8s
-3. **Never commit secrets to Git** — use Sealed Secrets or reference-only manifests
-4. **Mount as files, not env vars** — env vars leak in process listings and crash dumps
-5. **Rotate automatically** — set `refreshInterval` and use short-lived credentials
-6. **Audit secret access** — enable Kubernetes audit logging for secret reads
-7. **Use `defaultMode: 0400`** — restrictive file permissions on mounted secrets
+1. **Never commit plain Secrets to Git** — use Sealed Secrets or External Secrets
+2. **Enable encryption at rest** — protects against etcd compromise
+3. **External Secrets Operator** — single source of truth in Vault/AWS/GCP
+4. **Mount as volumes, not env vars** — supports automatic rotation
+5. **RBAC with `resourceNames`** — restrict to specific secrets, not all
+6. **Rotate secrets regularly** — ESO `refreshInterval` automates this
+7. **Audit secret access** — enable Kubernetes audit logging for secret reads
+8. **Don't log secret values** — ensure apps don't print secrets to stdout
 
 ## Key Takeaways
 
-- Kubernetes secrets are base64, NOT encrypted — encryption at rest is a separate config
-- External Secrets Operator syncs from Vault/AWS/GCP into K8s secrets automatically
-- Sealed Secrets encrypts secrets for safe Git storage — only cluster can decrypt
-- RBAC should restrict to named secrets — never grant `list` on all secrets
-- Mount secrets as files (not env vars) with `defaultMode: 0400` for least privilege
+- K8s Secrets are base64-encoded only — not encrypted by default
+- Enable `EncryptionConfiguration` for at-rest encryption in etcd
+- External Secrets Operator syncs from Vault/AWS/GCP/Azure → K8s Secrets
+- Sealed Secrets: encrypt secrets client-side, safe to commit to Git
+- Volume mounts update automatically; env vars require pod restart
+- RBAC `resourceNames` limits access to specific named secrets
+- `refreshInterval` in ExternalSecret enables automatic rotation
