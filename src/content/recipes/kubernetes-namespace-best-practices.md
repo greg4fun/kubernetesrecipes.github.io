@@ -1,160 +1,201 @@
 ---
-title: "K8s Namespace Best Practices Guide"
-description: "Kubernetes namespace best practices for multi-team environments. Naming conventions, resource quotas, default limits, and namespace lifecycle management."
+title: "Kubernetes Namespace Best Practices"
+description: "Organize Kubernetes clusters with namespace best practices. Separation strategies, resource quotas, network policies, RBAC per namespace, naming conventions, and when to use multiple namespaces vs clusters."
+tags:
+  - "namespaces"
+  - "multi-tenancy"
+  - "resource-quotas"
+  - "organization"
+  - "best-practices"
 category: "configuration"
-difficulty: "beginner"
-publishDate: "2026-04-02"
-tags: ["namespace", "multi-tenancy", "rbac", "resource-quota", "best-practices", "kubernetes"]
+publishDate: "2026-06-01"
 author: "Luca Berton"
+difficulty: "beginner"
 relatedRecipes:
-  - "resource-quotas-namespace"
-  - "rbac-permission-denied-troubleshooting"
-  - "network-policy-debug-connectivity"
+  - "kubernetes-rbac-role-based-access-control"
+  - "kubernetes-resource-management"
+  - "kubernetes-networkpolicy-default-deny-examples"
 ---
 
-> 💡 **Quick Answer:** Design and manage Kubernetes namespaces effectively. Covers naming conventions, resource quotas, RBAC isolation, network policies, and multi-tenancy patterns.
+> 💡 **Quick Answer:** Use namespaces to separate environments (dev/staging/prod), teams, or applications. Apply ResourceQuotas to prevent resource hogging, NetworkPolicies for network isolation, and RBAC Roles for access control per namespace. Don't over-namespace — most clusters need 5-20 namespaces, not hundreds.
 
 ## The Problem
 
-Namespaces are the fundamental unit of multi-tenancy in Kubernetes. Poor namespace design leads to security gaps, resource conflicts, and operational chaos.
+- All resources in `default` namespace — no isolation, hard to manage
+- Teams competing for cluster resources without limits
+- No access control separation between teams/environments
+- Can't apply different policies to different workloads
+- Naming collisions between applications from different teams
 
 ## The Solution
 
-### Namespace Design Patterns
+### Namespace Organization Patterns
 
-```bash
-# Pattern 1: Per-team namespaces
-kubectl create namespace team-frontend
-kubectl create namespace team-backend
-kubectl create namespace team-data
+```text
+Pattern 1: By Environment
+├── dev
+├── staging
+├── production
+└── (system namespaces)
 
-# Pattern 2: Per-environment
-kubectl create namespace staging
-kubectl create namespace production
+Pattern 2: By Team
+├── team-frontend
+├── team-backend
+├── team-data
+├── team-ml
+└── shared-infra
 
-# Pattern 3: Per-application (microservices)
-kubectl create namespace checkout-service
-kubectl create namespace payment-service
+Pattern 3: By Application (Microservices)
+├── app-ecommerce
+├── app-payments
+├── app-notifications
+├── app-analytics
+└── platform
 
-# Recommended: Combination
-# team-frontend-staging, team-frontend-production
+Pattern 4: Combined (Recommended)
+├── production-frontend
+├── production-backend
+├── staging
+├── dev
+├── monitoring
+├── logging
+├── ingress
+└── cert-manager
 ```
 
-### Resource Quotas (Prevent Noisy Neighbors)
+### Create Namespace with Labels
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+  labels:
+    environment: production
+    team: platform
+    kubernetes.io/metadata.name: production    # Auto-label (K8s 1.22+)
+  annotations:
+    owner: "platform-team@example.com"
+    budget: "engineering"
+```
+
+### Resource Quotas
 
 ```yaml
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: team-quota
-  namespace: team-frontend
+  name: production-quota
+  namespace: production
 spec:
   hard:
-    requests.cpu: "10"
-    requests.memory: 20Gi
-    limits.cpu: "20"
-    limits.memory: 40Gi
-    pods: "50"
+    requests.cpu: "20"
+    requests.memory: "40Gi"
+    limits.cpu: "40"
+    limits.memory: "80Gi"
+    pods: "100"
     services: "20"
-    persistentvolumeclaims: "10"
-    requests.storage: 100Gi
+    persistentvolumeclaims: "30"
+    requests.nvidia.com/gpu: "8"
 ---
+# Limit ranges for individual pods
 apiVersion: v1
 kind: LimitRange
 metadata:
   name: default-limits
-  namespace: team-frontend
+  namespace: production
 spec:
   limits:
-    - type: Container
-      default:
-        cpu: 500m
-        memory: 256Mi
+    - default:
+        cpu: "500m"
+        memory: "512Mi"
       defaultRequest:
-        cpu: 100m
-        memory: 128Mi
+        cpu: "100m"
+        memory: "128Mi"
       max:
         cpu: "4"
-        memory: 8Gi
+        memory: "8Gi"
+      min:
+        cpu: "50m"
+        memory: "64Mi"
+      type: Container
 ```
 
-### RBAC Isolation
+### RBAC Per Namespace
 
 ```yaml
-# Team can only access their namespace
+# Team can manage their namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: team-admin
+  namespace: team-frontend
+rules:
+  - apiGroups: ["", "apps", "batch"]
+    resources: ["*"]
+    verbs: ["*"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses", "networkpolicies"]
+    verbs: ["*"]
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: team-frontend-admin
+  name: frontend-team-admin
   namespace: team-frontend
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: team-admin
 subjects:
   - kind: Group
-    name: team-frontend
+    name: "frontend-developers"
     apiGroup: rbac.authorization.k8s.io
-roleRef:
-  kind: ClusterRole
-  name: admin
-  apiGroup: rbac.authorization.k8s.io
 ```
 
-### Network Policy Isolation
+### Namespace vs Cluster: When to Separate
 
-```yaml
-# Default deny all traffic in namespace
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: default-deny
-  namespace: team-frontend
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-    - Egress
----
-# Allow DNS
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-dns
-  namespace: team-frontend
-spec:
-  podSelector: {}
-  policyTypes: ["Egress"]
-  egress:
-    - to:
-        - namespaceSelector: {}
-          podSelector:
-            matchLabels:
-              k8s-app: kube-dns
-      ports:
-        - protocol: UDP
-          port: 53
+```text
+Use Namespaces when:                    Use Separate Clusters when:
+├── Same trust level                    ├── Different trust levels
+├── Shared infrastructure               ├── Compliance isolation required
+├── Resource quotas sufficient           ├── Different K8s versions needed
+├── Network policies provide isolation  ├── Hard multi-tenancy (untrusted)
+├── Same team/org                       ├── Different regions/DCs
+└── Development vs staging              └── Customer-dedicated environments
 ```
 
-```mermaid
-graph TD
-    A[Cluster] --> B[team-frontend namespace]
-    A --> C[team-backend namespace]
-    A --> D[team-data namespace]
-    B --> E[ResourceQuota: 10 CPU, 20Gi RAM]
-    B --> F[NetworkPolicy: deny by default]
-    B --> G[RBAC: team-frontend group only]
-    C --> H[ResourceQuota: 20 CPU, 40Gi RAM]
-    C --> I[NetworkPolicy: deny by default]
-    C --> J[RBAC: team-backend group only]
-```
+## Common Issues
+
+### Can't see resources — "No resources found in default namespace"
+- **Cause**: Resources are in another namespace; forgot `-n` flag
+- **Fix**: Use `kubectl get pods -A` (all namespaces); or set default: `kubectl config set-context --current --namespace=production`
+
+### ResourceQuota blocking deployments
+- **Cause**: Pods don't set resource requests/limits; quota requires them
+- **Fix**: Add requests/limits to all pods; or set LimitRange for defaults
+
+### Cross-namespace service access
+- **Cause**: Services are namespace-scoped; need full DNS name
+- **Fix**: Use `<service>.<namespace>.svc.cluster.local` for cross-namespace access
 
 ## Best Practices
 
-- **Start with observation** — measure before optimizing
-- **Automate** — manual processes don't scale
-- **Iterate** — implement changes gradually and measure impact
-- **Document** — keep runbooks for your team
+1. **Never use `default` for production** — create explicit namespaces
+2. **Apply ResourceQuotas** — prevent one team from consuming all resources
+3. **Set LimitRange defaults** — pods without limits get sensible defaults
+4. **RBAC per namespace** — teams can only access their namespaces
+5. **NetworkPolicy per namespace** — default deny + explicit allows
+6. **Label namespaces** — enables namespace-based NetworkPolicy selectors
+7. **5-20 namespaces is typical** — don't over-namespace (one per microservice is too many)
+8. **Set default namespace in context** — `kubectl config set-context --current --namespace=X`
 
 ## Key Takeaways
 
-- This is a critical capability for production Kubernetes clusters
-- Start with the simplest approach and evolve as needed
-- Monitor and measure the impact of every change
-- Share knowledge across your team with internal documentation
+- Namespaces provide logical isolation: resource quotas, RBAC, network policies
+- Not physical isolation — pods in different namespaces share nodes and network
+- Label namespaces for NetworkPolicy cross-namespace rules
+- ResourceQuota prevents resource hogging; LimitRange sets per-pod defaults
+- Cross-namespace access: `<service>.<namespace>.svc.cluster.local`
+- Typical patterns: by environment, by team, or combined
+- Use separate clusters for hard multi-tenancy or compliance requirements
