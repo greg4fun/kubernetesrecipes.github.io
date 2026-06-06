@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Topology Manager for GPU and NUMA Alignment"
-description: "Configure Kubernetes Topology Manager to align CPU, GPU, and NIC allocations on the same NUMA node. Policies (none, best-effort, restricted, single-numa-node), kubelet configuration, and performance optimization for GPU workloads."
+description: "Configure Kubernetes Topology Manager to align CPU, GPU, and NIC allocations on the same NUMA node. Covers policies, kubelet config, and GPU performance tuning."
 tags:
   - "topology-manager"
   - "numa"
@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "nvidia-gpu-topology-matrix-kubernetes"
   - "nvlink-bridge-architecture-gpu-kubernetes"
-  - "nvidia-gpu-operator-kubernetes"
+  - "nvidia-gpu-operator-setup"
 ---
 
 > 💡 **Quick Answer:** Topology Manager is a kubelet component that coordinates CPU Manager, Device Manager (GPUs), and Memory Manager to allocate resources from the same NUMA node. Set `topologyManagerPolicy: single-numa-node` in kubelet config to ensure GPUs, CPUs, and NICs are all co-located on one NUMA node — critical for GPU workloads where cross-NUMA memory access adds 30-50% latency penalty.

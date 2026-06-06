@@ -1,5 +1,5 @@
 ---
-title: "Install ArgoCD on AlmaLinux"
+title: "Install ArgoCD on AlmaLinux: Step-by-Step"
 description: "Deploy ArgoCD on Kubernetes running on AlmaLinux. GitOps continuous delivery with automated sync, self-healing, and multi-cluster support."
 category: "deployments"
 difficulty: "beginner"

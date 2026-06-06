@@ -1,8 +1,8 @@
 ---
 title: "Tekton Pipelines on Kubernetes"
-description: "Production guide for tekton pipelines on kubernetes. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Build cloud-native CI/CD pipelines with Tekton on Kubernetes. Create reusable Tasks, Pipelines, triggers, and integrate with Git webhooks for automated builds."
 category: "deployments"
-difficulty: "Build cloud-native CI/CD pipelines with Tekton on Kubernetes. Create reusable Tasks, Pipelines, triggers, and integrate with Git webhooks for automated builds."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["tekton", "ci-cd", "pipeline", "cloud-native", "automation"]
 author: "Luca Berton"

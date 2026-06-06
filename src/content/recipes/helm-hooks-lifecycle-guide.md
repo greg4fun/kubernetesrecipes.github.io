@@ -1,5 +1,5 @@
 ---
-title: "Helm Hooks Lifecycle Guide"
+title: "Helm Hooks and Lifecycle Management Guide"
 description: "Master Helm hooks for Kubernetes deployments. Pre-install, post-install, pre-upgrade, hook weights, deletion policies, and database migration patterns."
 publishDate: "2026-04-25"
 author: "Luca Berton"

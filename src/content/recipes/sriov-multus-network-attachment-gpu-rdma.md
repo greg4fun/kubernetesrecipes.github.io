@@ -1,6 +1,6 @@
 ---
 title: "SR-IOV Multus Network Attachment for GPU RDMA Pods"
-description: "Configure Multus CNI NetworkAttachmentDefinition for SR-IOV RDMA in Kubernetes GPU workloads. Covers k8s.v1.cni.cncf.io/networks annotation, IPAM configuration, openshift.io/mellanoxnics resource, and net1 interface verification inside pods."
+description: "Configure Multus CNI NetworkAttachmentDefinition for SR-IOV RDMA in Kubernetes GPU workloads. Covers k8s.v1.cni.cncf.io/networks annotation, IPAM"
 tags:
   - "networking"
   - "sriov"
@@ -12,7 +12,7 @@ publishDate: "2026-06-04"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "openshift-sriov-nvidia-ipam-gpu-fabric"
+  - "openshift-sriov-network-nv-ipam-gpu-fabric"
   - "nvidia-network-operator-rdma-kubernetes"
   - "nccl-network-validator-production-mpijob"
 ---

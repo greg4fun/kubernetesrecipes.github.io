@@ -1,6 +1,6 @@
 ---
 title: "NVLink Bridge Architecture for GPU Kubernetes Nodes"
-description: "Understand NVLink Bridge logical architecture in GPU servers for Kubernetes. Dual-socket PCIe Gen5 topology, NVL4 groups, GPU-NIC-NVMe placement, PCIe switch hierarchy, and implications for NCCL collective operations and workload scheduling."
+description: "Understand NVLink Bridge logical architecture in GPU servers for Kubernetes. Dual-socket PCIe Gen5 topology, NVL4 groups, GPU-NIC-NVMe placement, PCIe switch"
 tags:
   - "nvlink"
   - "gpu-architecture"
@@ -13,8 +13,8 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nvidia-gpu-topology-matrix-kubernetes"
-  - "nccl-pxn-cross-nic-nvlink-kubernetes"
-  - "dual-fabric-mellanox-gpu-ib-storage-ethernet-kubernetes"
+  - "nccl-pxn-cross-nic-nvlink-topology"
+  - "dual-fabric-mellanox-gpu-storage-ethernet-infiniband"
 ---
 
 > 💡 **Quick Answer:** NVLink Bridge connects groups of 4 GPUs (NVL4) with high-bandwidth NVLink for direct GPU-to-GPU communication bypassing PCIe. In a typical 8-GPU dual-socket server: CPU → PCIe Gen5 x16 → PCIe Switch → GPUs + NICs. Each CPU socket owns 4 GPUs + 2 NICs in two NVL4 groups. NVLink provides 900 GB/s (H100) between grouped GPUs vs ~64 GB/s for PCIe Gen5 — making NVLink group sizing critical for distributed training performance.

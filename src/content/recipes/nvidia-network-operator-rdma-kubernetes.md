@@ -1,6 +1,6 @@
 ---
 title: "RDMA Configuration with NVIDIA Network Operator"
-description: "Deploy and configure RDMA for GPU clusters using the NVIDIA Network Operator. NicClusterPolicy setup, MLNX_OFED driver container, shared and SR-IOV RDMA device plugins, secondary networks, and GPUDirect RDMA integration with GPU Operator."
+description: "Deploy and configure RDMA for GPU clusters using the NVIDIA Network Operator. NicClusterPolicy setup, MLNX_OFED driver container, shared and SR-IOV RDMA device"
 tags:
   - "rdma"
   - "nvidia"

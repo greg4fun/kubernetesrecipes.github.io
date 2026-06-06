@@ -1,6 +1,6 @@
 ---
 title: "FSDP Distributed Training on Run:ai"
-description: "Run PyTorch FSDP distributed training workloads on Run:ai with GPU scheduling, event tracking, and GPU memory monitoring. Covers Mistral-class model fine-tuning on multi-GPU nodes."
+description: "Run PyTorch FSDP distributed training workloads on Run:ai with GPU scheduling, event tracking, and GPU memory monitoring. Covers Mistral-class model"
 tags:
   - "runai"
   - "distributed-training"

@@ -1,0 +1,43 @@
+#!/bin/sh
+# Pre-commit hook: validate recipe content before every commit.
+#
+# Gates on (see scripts/verify-content.py):
+#   - schema errors   (would break `astro build`)
+#   - link errors     (broken internal relatedRecipes links)
+# SEO warnings are reported but do not block.
+#
+# Enabled repo-wide via `core.hooksPath` (set by the package.json "prepare"
+# script on install, or manually: git config core.hooksPath scripts/hooks).
+
+set -e
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+# Only run when staged changes touch recipe content or the validator itself.
+if git diff --cached --name-only --diff-filter=ACMR \
+    | grep -Eq '^src/content/recipes/.*\.(md|mdx)$|^scripts/verify-content\.py$'; then
+  :
+else
+  exit 0
+fi
+
+if command -v python3 >/dev/null 2>&1; then
+  PY=python3
+elif command -v python >/dev/null 2>&1; then
+  PY=python
+else
+  echo "pre-commit: python not found; skipping content validation" >&2
+  exit 0
+fi
+
+echo "pre-commit: validating recipe content..."
+if ! "$PY" scripts/verify-content.py --quiet; then
+  echo "" >&2
+  echo "pre-commit: content validation FAILED — commit aborted." >&2
+  echo "Fix the errors above, or inspect with: $PY scripts/verify-content.py" >&2
+  echo "(To bypass for an emergency commit: git commit --no-verify)" >&2
+  exit 1
+fi
+
+exit 0

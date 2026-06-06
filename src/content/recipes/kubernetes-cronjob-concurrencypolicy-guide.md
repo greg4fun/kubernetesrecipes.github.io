@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes CronJob ConcurrencyPolicy Guide"
-description: "Configure Kubernetes CronJob concurrencyPolicy with Allow, Forbid, and Replace options. Control concurrent job execution, prevent overlapping runs, and handle long-running cron workloads."
+description: "Configure Kubernetes CronJob concurrencyPolicy with Allow, Forbid, and Replace options. Control concurrent job execution, prevent overlapping runs, and handle"
 tags:
   - "cronjob"
   - "scheduling"
@@ -12,8 +12,9 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-jobs-batch-processing"
-  - "kubernetes-resource-management"
+  - "kubernetes-cronjob-best-practices"
+  - "kubernetes-job-cronjob-guide"
+  - "kubernetes-cronjob-patterns-guide"
 ---
 
 > 💡 **Quick Answer:** `concurrencyPolicy` controls what happens when a CronJob's next schedule fires while a previous run is still active. `Allow` (default) runs jobs concurrently. `Forbid` skips the new run if previous is still running. `Replace` cancels the running job and starts a new one. Use `Forbid` for most production workloads to prevent resource contention.

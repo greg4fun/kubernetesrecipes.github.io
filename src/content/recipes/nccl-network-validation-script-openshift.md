@@ -1,6 +1,6 @@
 ---
 title: "NCCL Network Validation Script for OpenShift GPU Clusters"
-description: "Build a comprehensive NCCL network validation script for OpenShift GPU clusters with SR-IOV. Configure NCCL_IB_GID_INDEX, NCCL_NET_GDR_LEVEL=SYS, per-rank HCA auto-detection, and troubleshoot bandwidth issues with a systematic checklist."
+description: "Build a comprehensive NCCL network validation script for OpenShift GPU clusters with SR-IOV. Configure NCCL_IB_GID_INDEX, NCCL_NET_GDR_LEVEL=SYS, per-rank HCA"
 tags:
   - "nccl"
   - "openshift"

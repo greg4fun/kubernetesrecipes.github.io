@@ -1,8 +1,8 @@
 ---
 title: "Essential Kubernetes Commands Reference"
-description: "Production guide for essential kubernetes commands reference. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Master the most used Kubernetes commands for daily operations. Complete kubectl reference for pods, deployments, services, debugging, and cluster management."
 category: "configuration"
-difficulty: "Master the most used Kubernetes commands for daily operations. Complete kubectl reference for pods, deployments, services, debugging, and cluster management."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["kubectl", "commands", "reference", "cli", "kubernetes"]
 author: "Luca Berton"

@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes Affinity and Anti-Affinity Guide"
-description: "Production guide for kubernetes affinity and anti-affinity guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Schedule pods with Kubernetes node affinity, pod affinity, and anti-affinity rules. Spread across zones, co-locate related services, and optimize"
 category: "configuration"
-difficulty: "Schedule pods with Kubernetes node affinity, pod affinity, and anti-affinity rules. Spread across zones, co-locate related services, and optimize for performance."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["affinity", "anti-affinity", "scheduling", "topology", "kubernetes"]
 author: "Luca Berton"

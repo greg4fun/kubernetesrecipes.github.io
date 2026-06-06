@@ -1,5 +1,5 @@
 ---
-title: "NFSoRDMA Worker Node Setup"
+title: "NFSoRDMA Worker Node Setup Guide"
 description: "Complete worker node setup for NFS over RDMA including kernel modules, NFS client configuration, PersistentVolume mounts, and RDMA transport verification."
 category: "networking"
 difficulty: "advanced"

@@ -1,5 +1,5 @@
 ---
-title: "K8s Probes: Liveness, Readiness, Startup"
+title: "Kubernetes Liveness and Readiness Probes Guide"
 description: "Configure Kubernetes liveness, readiness, and startup probes for health checks. HTTP, TCP, exec probes, timing parameters, and failure threshold tuning."
 publishDate: "2026-05-02"
 author: "Luca Berton"

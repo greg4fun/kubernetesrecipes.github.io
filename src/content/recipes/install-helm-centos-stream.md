@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on CentOS Stream"
+title: "Install Helm on CentOS Stream Setup Guide"
 description: "Install Helm 3 on CentOS Stream and configure chart repositories. Covers package manager install, script install, and shell completion for CentOS Stream 9."
 category: "helm"
 difficulty: "beginner"

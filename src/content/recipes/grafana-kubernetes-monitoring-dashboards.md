@@ -1,6 +1,6 @@
 ---
 title: "Grafana Kubernetes Monitoring Dashboards Guide"
-description: "Deploy and configure Grafana dashboards for Kubernetes monitoring including dashboard 6417 for pod metrics, dashboard 315 for cluster overview, and custom dashboards with Prometheus data sources."
+description: "Deploy and configure Grafana dashboards for Kubernetes monitoring including dashboard 6417 for pod metrics, dashboard 315 for cluster overview, and custom"
 tags:
   - "grafana"
   - "prometheus"
@@ -12,9 +12,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "prometheus-monitoring-kubernetes"
-  - "kubernetes-observability-stack"
-  - "dcgm-exporter-gpu-metrics-kubernetes"
+  - "prometheus-monitoring-kubernetes-guide"
+  - "opentelemetry-kubernetes-observability"
 ---
 
 > 💡 **Quick Answer:** Grafana dashboard 6417 ("Kubernetes Pods") and dashboard 315 ("Kubernetes Cluster Monitoring") are the most popular community dashboards. Import them via ID in Grafana UI or provision as ConfigMaps with the kube-prometheus-stack Helm chart. Both require a Prometheus data source scraping kube-state-metrics and kubelet/cAdvisor.

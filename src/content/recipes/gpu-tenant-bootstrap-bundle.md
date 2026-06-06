@@ -1,5 +1,5 @@
 ---
-title: "GPU Tenant Bootstrap Bundle"
+title: "GPU Tenant Bootstrap Bundle for Kubernetes"
 description: "Provision GPU tenants with a single Kustomize bundle containing namespace, RBAC, NetworkPolicy, quotas, and HAProxy VIP config."
 publishDate: "2026-02-26"
 author: "Luca Berton"

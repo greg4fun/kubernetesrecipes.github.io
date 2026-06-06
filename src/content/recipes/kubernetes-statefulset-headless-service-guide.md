@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes StatefulSet Headless Service Guide"
-description: "Deploy stateful applications with Kubernetes StatefulSets. Stable network identity, ordered deployment, persistent storage per pod, headless services for DNS, and patterns for databases and distributed systems."
+description: "Deploy stateful applications with Kubernetes StatefulSets. Stable network identity, ordered deployment, persistent storage per pod, headless services"
 tags:
   - "statefulset"
   - "headless-service"
@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "cloudnativepg-postgresql-operator-kubernetes"
-  - "kubernetes-persistent-volumes-claims"
+  - "kubernetes-persistent-volume-claims"
   - "kubernetes-service-types-loadbalancer-guide"
 ---
 

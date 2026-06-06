@@ -1,5 +1,5 @@
 ---
-title: "Multi-Cluster Fleet Mgmt K8s"
+title: "Multi-Cluster Fleet Management on Kubernetes"
 description: "Manage multiple Kubernetes clusters with kubectl contexts, federation, GitOps fleet patterns, and tools like Rancher, ArgoCD, and Cluster API."
 category: "deployments"
 publishDate: "2026-04-20"

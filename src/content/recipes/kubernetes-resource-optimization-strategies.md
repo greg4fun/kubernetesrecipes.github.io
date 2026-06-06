@@ -1,5 +1,5 @@
 ---
-title: "K8s Resource Optimization Strategies"
+title: "Kubernetes Right-Sizing and Cost Optimization"
 description: "Optimize Kubernetes resource allocation with right-sizing, VPA recommendations, bin packing, request-to-limit ratios, and cost reduction best practices."
 publishDate: "2026-05-02"
 author: "Luca Berton"

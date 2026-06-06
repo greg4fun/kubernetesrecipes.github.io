@@ -1,6 +1,6 @@
 ---
 title: "Kubeflow MPIJob Worker SSH Setup for GPU Training"
-description: "Configure SSH daemon in Kubeflow MPIJob worker pods for multi-node GPU training. Covers SSHD setup in containers, host key generation, authorized keys from MPI Operator, security context, and sleep infinity pattern for shell mode workers."
+description: "Configure SSH daemon in Kubeflow MPIJob worker pods for multi-node GPU training. Covers SSHD setup in containers, host key generation, authorized keys from MPI"
 tags:
   - "mpi"
   - "ssh"

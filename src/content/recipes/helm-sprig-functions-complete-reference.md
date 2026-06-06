@@ -1,6 +1,6 @@
 ---
 title: "Helm Sprig Functions Complete Reference"
-description: "Complete reference for Helm Sprig template functions including cat, print, join, tostring, add1, trim, quote, default, and more. Examples and common patterns for Kubernetes Helm charts."
+description: "Complete reference for Helm Sprig template functions including cat, print, join, tostring, add1, trim, quote, default, and more. Examples and common patterns"
 tags:
   - "helm"
   - "sprig"
@@ -12,10 +12,9 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "helm-hooks-kubernetes"
-  - "helm-chart-development-best-practices"
-  - "kustomize-vs-helm-kubernetes"
-  - "helm-regexreplaceall-kubernetes"
+  - "helm-hooks"
+  - "helm-chart-development-guide"
+  - "kustomize-vs-helm-comparison"
 ---
 
 > 💡 **Quick Answer:** Helm uses Sprig template functions for string manipulation, math, and data transformation in charts. The `cat` function concatenates strings with spaces between arguments. Use `print`/`printf` for concatenation without spaces. `join` combines list elements with a separator. `toString` converts values to strings. All Sprig functions are available in `{{ }}` template expressions.

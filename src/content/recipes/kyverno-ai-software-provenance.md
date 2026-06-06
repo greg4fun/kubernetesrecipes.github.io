@@ -1,6 +1,6 @@
 ---
 title: "Kyverno AI Workload Provenance Verification"
-description: "Use Kyverno to verify software and content provenance for AI workloads: SBOM validation, model signing with Sigstore, dataset integrity, and supply chain security for ML pipelines."
+description: "Use Kyverno to verify software and content provenance for AI workloads: SBOM validation, model signing with Sigstore, dataset integrity, and supply chain"
 tags:
   - "kyverno"
   - "supply-chain"

@@ -1,6 +1,6 @@
 ---
 title: "NCCL Topology Dump and Tuning on Kubernetes"
-description: "Use NCCL_TOPO_DUMP_FILE to export and inject GPU topology on Kubernetes for reproducible distributed training performance. Topology XML caching, environment variable tuning, multi-NIC rail optimization, and debugging collective communication across GPU nodes."
+description: "Use NCCL_TOPO_DUMP_FILE to export and inject GPU topology on Kubernetes for reproducible distributed training performance. Topology XML caching, environment"
 tags:
   - "nccl"
   - "gpu"
@@ -13,10 +13,9 @@ publishDate: "2026-05-26"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "nccl-pxn-cross-nic-nvlink-kubernetes"
-  - "debug-distributed-vllm-nccl-verbose-logging"
-  - "dual-fabric-mellanox-gpu-ib-storage-ethernet"
-  - "nvidia-gpu-operator-kubernetes-guide"
+  - "nccl-pxn-cross-nic-nvlink-topology"
+  - "dual-fabric-mellanox-gpu-storage-ethernet-infiniband"
+  - "nvidia-gpu-operator-setup"
 ---
 
 > 💡 **Quick Answer:** `NCCL_TOPO_DUMP_FILE=/path/topology.xml` makes NCCL export its auto-detected GPU/NIC/NVLink/PCIe topology to an XML file on first run, then reuses it on subsequent runs. On Kubernetes, inject a pre-generated topology file via ConfigMap to skip expensive runtime detection, ensure consistent topology across pods, and enable offline tuning of NCCL transport selection.

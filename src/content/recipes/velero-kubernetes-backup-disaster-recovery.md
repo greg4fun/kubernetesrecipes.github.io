@@ -1,6 +1,6 @@
 ---
 title: "Velero Kubernetes Backup and Disaster Recovery"
-description: "Deploy Velero for Kubernetes cluster backup and disaster recovery. Configure scheduled backups, restore namespaces, migrate workloads between clusters, and integrate with S3/GCS/Azure storage backends."
+description: "Deploy Velero for Kubernetes cluster backup and disaster recovery. Configure scheduled backups, restore namespaces, migrate workloads between"
 tags:
   - "velero"
   - "backup"
@@ -12,8 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-persistent-volume-management"
-  - "longhorn-disaster-recovery-kubernetes"
+  - "kubernetes-persistent-volume-guide"
   - "kubernetes-etcd-backup-restore"
 ---
 

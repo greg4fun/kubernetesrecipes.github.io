@@ -21,7 +21,43 @@ This is a critical skill for managing production Kubernetes clusters at scale. W
 
 ## The Solution
 
-Detailed implementation guide with production-ready configurations, best practices, and common pitfalls to avoid.
+Windows and Linux nodes coexist in one cluster. Taint Windows nodes so only Windows workloads land there, then schedule with a node selector plus a matching toleration:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iis
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: iis
+  template:
+    metadata:
+      labels:
+        app: iis
+    spec:
+      nodeSelector:
+        kubernetes.io/os: windows
+      tolerations:
+        - key: "os"
+          operator: "Equal"
+          value: "windows"
+          effect: "NoSchedule"
+      containers:
+        - name: iis
+          image: mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2022
+```
+
+Label and taint the Windows nodes so Linux pods never get scheduled onto them:
+
+```bash
+kubectl taint nodes <win-node> os=windows:NoSchedule
+kubectl label nodes <win-node> kubernetes.io/os=windows
+```
+
+Match the container base image to the node's Windows build (e.g. `ltsc2022`), and note that Windows pods support only a subset of SecurityContext and networking features.
 
 ## Common Issues
 

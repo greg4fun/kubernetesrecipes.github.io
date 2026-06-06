@@ -1,6 +1,6 @@
 ---
 title: "GPU Node Provisioning Kubernetes"
-description: "Automate GPU node provisioning for Kubernetes with Karpenter, Cluster Autoscaler, and cloud-specific node pools."
+description: "Automate GPU node provisioning for Kubernetes with Karpenter, Cluster Autoscaler, and cloud-specific node pools for AI and ML workloads."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "ai"

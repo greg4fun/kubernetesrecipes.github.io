@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes OOMKilled Troubleshooting and Prevention"
-description: "Debug and prevent OOMKilled container terminations in Kubernetes. Understand memory limits, diagnose memory leaks, configure resource requests, and implement memory-efficient workloads."
+description: "Debug and prevent OOMKilled container terminations in Kubernetes. Understand memory limits, diagnose memory leaks, configure resource requests, and implement"
 tags:
   - "oomkilled"
   - "troubleshooting"
@@ -12,9 +12,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-resource-management"
-  - "kubernetes-vertical-pod-autoscaler"
-  - "kubernetes-pod-quality-of-service"
+  - "kubernetes-vpa-vertical-pod-autoscaler"
+  - "kubernetes-qos-classes-guide"
 ---
 
 > 💡 **Quick Answer:** `OOMKilled` (exit code 137) means the container exceeded its memory limit and the kernel OOM-killer terminated it. Fix by: 1) Increasing `resources.limits.memory`, 2) Fixing memory leaks in your application, 3) Using VPA to auto-right-size, or 4) Reducing memory footprint (heap size, cache limits). Check current usage with `kubectl top pod` before adjusting.

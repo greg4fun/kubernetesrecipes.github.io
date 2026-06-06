@@ -1,6 +1,6 @@
 ---
-title: "Disable GPUDirect Storage and Enable IOMMU Passthrough on Kubernetes GPU Nodes"
-description: "Disable GPUDirect Storage (GDS) when not needed and configure IOMMU passthrough mode for GPU and NIC device assignment. Kernel parameters, BIOS settings, VFIO configuration, and impact on GPUDirect RDMA performance."
+title: "Disable GDS and Enable IOMMU Passthrough on K8s GPUs"
+description: "Disable GPUDirect Storage (GDS) when not needed and configure IOMMU passthrough mode for GPU and NIC device assignment. Kernel parameters, BIOS settings, VFIO"
 tags:
   - "iommu"
   - "passthrough"
@@ -13,8 +13,8 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "gpudirect-rdma-setup-verification-kubernetes"
-  - "nvidia-gpu-operator-kubernetes"
-  - "openshift-machineconfig-gpu-workers"
+  - "nvidia-gpu-operator-setup"
+  - "openshift-machineconfig-mcp-guide"
 ---
 
 > 💡 **Quick Answer:** Disable GDS with `CUFILE_ENV_PATH_JSON=/dev/null` or uninstall `nvidia-gds` package when not using direct storage I/O. Enable IOMMU passthrough with kernel parameter `iommu=pt` (or `intel_iommu=on iommu=pt`) — this keeps IOMMU active for device isolation but in passthrough mode for DMA performance, avoiding the IOMMU translation overhead that can reduce GPUDirect RDMA throughput by 10-15%.

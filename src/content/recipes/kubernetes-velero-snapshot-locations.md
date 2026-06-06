@@ -1,5 +1,5 @@
 ---
-title: "Velero Snapshot Locations K8s"
+title: "Velero Snapshot Locations on Kubernetes"
 description: "Configure Velero snapshot locations for Kubernetes backup. Volume snapshots, file system backup, cross-region copies, and backup verification."
 publishDate: "2026-04-25"
 author: "Luca Berton"

@@ -1,8 +1,8 @@
 ---
-title: "PVC Storage Provisioning K8s"
-description: "Production guide for kubernetes pvc and pv complete guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+title: "PVC Storage Provisioning in Kubernetes"
+description: "Create and manage Kubernetes PersistentVolumeClaims and PersistentVolumes. Covers dynamic provisioning, StorageClasses, access modes, volume"
 category: "storage"
-difficulty: "Create and manage Kubernetes PersistentVolumeClaims and PersistentVolumes. Covers dynamic provisioning, StorageClasses, access modes, volume expansion, and reclaim policies."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["pvc", "persistent-volume", "storage", "dynamic-provisioning", "kubernetes"]
 author: "Luca Berton"

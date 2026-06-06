@@ -1,6 +1,6 @@
 ---
 title: "Container Image Security Scanning on Kubernetes"
-description: "Implement container image security scanning in Kubernetes CI/CD pipelines. Trivy, Grype, and admission controllers to prevent vulnerable images from running. Layer-level vulnerability analysis and runtime scanning."
+description: "Implement container image security scanning in Kubernetes CI/CD pipelines. Trivy, Grype, and admission controllers to prevent vulnerable images from running."
 tags:
   - "security"
   - "container-images"
@@ -14,8 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "oci-container-image-internals-kubernetes"
   - "private-container-registry-kubernetes"
-  - "pod-security-standards-kubernetes"
-  - "trivy-vulnerability-scanning-kubernetes"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Scan container images at three points: build time (CI pipeline), admission time (Kyverno/OPA blocking unscanned images), and runtime (periodic rescanning for newly discovered CVEs). Trivy scans each layer independently, maps vulnerabilities to specific packages, and produces SBOM for compliance. Block images with Critical/High CVEs from reaching production.

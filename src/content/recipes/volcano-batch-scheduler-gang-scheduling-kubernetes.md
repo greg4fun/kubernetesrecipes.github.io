@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Volcano Batch Scheduler Gang Scheduling"
-description: "Deploy Volcano batch scheduler for gang scheduling on Kubernetes. Configure minAvailable for all-or-nothing pod group scheduling, queue management, and GPU job scheduling for distributed training workloads."
+description: "Deploy Volcano batch scheduler for gang scheduling on Kubernetes. Configure minAvailable for all-or-nothing pod group scheduling, queue management, and GPU job"
 tags:
   - "volcano"
   - "gang-scheduling"
@@ -13,7 +13,6 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "kubernetes-gpu-distributed-training"
   - "kueue-job-queuing-kubernetes"
   - "nccl-rccl-networking-performance-kubernetes"
 ---

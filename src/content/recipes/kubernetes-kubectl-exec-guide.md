@@ -1,5 +1,5 @@
 ---
-title: "kubectl exec Into Pods Guide"
+title: "kubectl exec Into Pods: Complete Guide"
 description: "Use kubectl exec to debug running pods. Interactive shells, non-interactive commands, multi-container pods, and ephemeral debug containers."
 publishDate: "2026-04-25"
 author: "Luca Berton"

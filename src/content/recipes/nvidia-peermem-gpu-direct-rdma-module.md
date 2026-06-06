@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA PeerMem for GPU-Direct RDMA"
-description: "Install and configure nvidia_peermem kernel module to enable GPU-Direct RDMA between NVIDIA GPUs and Mellanox RDMA NICs. Covers module loading, verification, OpenShift and Talos setup, and troubleshooting peermem registration failures."
+description: "Install and configure nvidia_peermem kernel module to enable GPU-Direct RDMA between NVIDIA GPUs and Mellanox RDMA NICs. Covers module"
 tags:
   - "nvidia-peermem"
   - "gpu-direct"

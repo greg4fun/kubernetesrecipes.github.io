@@ -1,5 +1,5 @@
 ---
-title: "NVIDIA H300 GPU on Kubernetes"
+title: "NVIDIA H300 GPU Setup on Kubernetes"
 description: "Deploy NVIDIA H300 GPUs on Kubernetes. H300 vs H100 vs H200 specs comparison, memory bandwidth, GPU Operator setup, and AI inference optimization."
 publishDate: "2026-05-02"
 author: "Luca Berton"

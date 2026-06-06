@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Service Types LoadBalancer ClusterIP NodePort"
-description: "Understand Kubernetes Service types: ClusterIP, NodePort, LoadBalancer, and ExternalName. When to use each type, configuration examples, and traffic routing for internal and external access."
+description: "Understand Kubernetes Service types: ClusterIP, NodePort, LoadBalancer, and ExternalName. When to use each type, configuration examples, and traffic routing"
 tags:
   - "services"
   - "networking"
@@ -12,9 +12,9 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-ingress-nginx-configuration"
-  - "kubernetes-gateway-api-inference-extension"
-  - "kubernetes-service-dns"
+  - "kubernetes-ingress-nginx-guide"
+  - "kubernetes-ai-gateway-inference-extension"
+  - "kubernetes-service-dns-discovery"
 ---
 
 > 💡 **Quick Answer:** `ClusterIP` (default) — internal access only via cluster DNS. `NodePort` — exposes on each node's IP at a static port (30000-32767). `LoadBalancer` — provisions external cloud load balancer. `ExternalName` — CNAME alias to external DNS. Use ClusterIP for service-to-service; LoadBalancer or Ingress for external traffic.

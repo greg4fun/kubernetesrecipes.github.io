@@ -1,8 +1,8 @@
 ---
 title: "Zero-Downtime Deployment in Kubernetes"
-description: "Production guide for zero-downtime deployment in kubernetes. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Achieve zero-downtime deployments in Kubernetes. Covers readiness probes, PDBs, preStop hooks, rolling update tuning, and connection draining best practices."
 category: "deployments"
-difficulty: "Achieve zero-downtime deployments in Kubernetes. Covers readiness probes, PDBs, preStop hooks, rolling update tuning, and connection draining best practices."
+difficulty: "intermediate"
 publishDate: "2026-04-05"
 tags: ["zero-downtime", "rolling-update", "graceful-shutdown", "readiness", "kubernetes"]
 author: "Luca Berton"

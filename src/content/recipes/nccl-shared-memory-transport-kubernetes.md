@@ -1,6 +1,6 @@
 ---
 title: "Shared Memory Transport for NCCL Intra-Node GPU"
-description: "Configure NCCL shared memory (SHM) transport for intra-node GPU communication on Kubernetes. Covers /dev/shm sizing with emptyDir, NCCL_SHM_DISABLE, NCCL_COLLNET_ENABLE, and interaction with NVLink and PCIe peer-to-peer paths."
+description: "Configure NCCL shared memory (SHM) transport for intra-node GPU communication on Kubernetes. Covers /dev/shm sizing with emptyDir and NVLink/PCIe P2P paths."
 tags:
   - "nccl"
   - "gpu"
@@ -14,7 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "nccl-network-validator-production-mpijob"
   - "nccl-gdr-level-tuning-pix-pxb-phb-sys"
-  - "kubernetes-emptydir-volumes"
+  - "kubernetes-emptydir-volume"
 ---
 
 > 💡 **Quick Answer:** Mount a 16Gi Memory-backed `emptyDir` at `/dev/shm` for NCCL shared memory transport. Keep `NCCL_SHM_DISABLE=0` (enabled) for intra-node GPU communication when NVLink is unavailable. NCCL uses SHM as a CPU-mediated fallback between GPUs on the same node that lack direct P2P paths.

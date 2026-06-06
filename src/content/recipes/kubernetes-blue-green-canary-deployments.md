@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Blue-Green and Canary Deployment Strategies"
-description: "Implement blue-green and canary deployment strategies on Kubernetes. Zero-downtime releases using Service label switching, traffic splitting, progressive rollouts with Argo Rollouts, and instant rollback techniques."
+description: "Implement blue-green and canary deployment strategies on Kubernetes. Zero-downtime releases using Service label switching, traffic splitting, progressive"
 tags:
   - "blue-green"
   - "canary"
@@ -14,7 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-rolling-update-strategies"
   - "kubernetes-graceful-shutdown-pod-termination"
-  - "kubernetes-gitops-argocd"
+  - "argocd-gitops-deployment"
 ---
 
 > 💡 **Quick Answer:** **Blue-Green**: run two identical environments (blue=current, green=new), switch traffic instantly by updating the Service selector. **Canary**: gradually shift traffic (5%→25%→50%→100%) to the new version while monitoring errors. Use native K8s Services for simple blue-green, or Argo Rollouts for automated canary with analysis and auto-rollback.

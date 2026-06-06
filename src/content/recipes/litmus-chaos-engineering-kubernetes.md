@@ -1,6 +1,6 @@
 ---
 title: "LitmusChaos Engineering on Kubernetes"
-description: "Deploy LitmusChaos for resilience testing on Kubernetes. Covers ChaosEngine, ChaosExperiment, ChaosResult CRDs, built-in experiments, GameDay planning, Litmus vs Chaos Mesh comparison, and SteadyState hypothesis validation."
+description: "Deploy LitmusChaos for resilience testing on Kubernetes. Covers ChaosEngine, ChaosExperiment, ChaosResult CRDs, built-in experiments, GameDay planning, Litmus"
 tags:
   - "chaos-engineering"
   - "litmus"

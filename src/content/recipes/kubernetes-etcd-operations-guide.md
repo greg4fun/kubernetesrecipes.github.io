@@ -21,7 +21,33 @@ This is a critical skill for managing production Kubernetes clusters at scale. W
 
 ## The Solution
 
-Detailed implementation guide with production-ready configurations, best practices, and common pitfalls to avoid.
+etcd is the single source of truth for cluster state, so snapshot it on a schedule and keep copies off-node. Take and verify a snapshot with `etcdctl`:
+
+```bash
+ETCDCTL_API=3 etcdctl snapshot save /backup/etcd-$(date +%F).db \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key
+
+# Verify the snapshot is consistent
+etcdutl snapshot status /backup/etcd-$(date +%F).db --write-out=table
+```
+
+Compact old revisions and defragment to reclaim disk after large deletes, then check member health:
+
+```bash
+# Defragment every member, then confirm the cluster is healthy
+etcdctl defrag --cluster \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key
+
+etcdctl endpoint status --cluster -w table
+```
+
+To restore, stop the API server, run `etcdutl snapshot restore` into a fresh data directory, and point the etcd static pod at it before restarting the control plane.
 
 ## Common Issues
 

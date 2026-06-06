@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes Service Accounts Guide"
-description: "Production guide for kubernetes service accounts guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Create and manage Kubernetes service accounts for pod identity. Covers RBAC binding, token projection, workload identity, and least-privilege access"
 category: "security"
-difficulty: "Create and manage Kubernetes service accounts for pod identity. Covers RBAC binding, token projection, workload identity, and least-privilege access for applications."
+difficulty: "intermediate"
 publishDate: "2026-04-05"
 tags: ["service-account", "rbac", "tokens", "workload-identity", "security"]
 author: "Luca Berton"

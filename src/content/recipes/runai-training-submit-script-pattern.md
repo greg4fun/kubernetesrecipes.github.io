@@ -1,6 +1,6 @@
 ---
 title: "Run:ai Training Job Submit Script Pattern"
-description: "Production pattern for submitting Run:ai training jobs via shell scripts with GPU fractional allocation, NFS mounts, custom Python environments, and private PyPI registries."
+description: "Production pattern for submitting Run:ai training jobs via shell scripts with GPU fractional allocation, NFS mounts, custom Python environments, and private"
 tags:
   - "runai"
   - "training"

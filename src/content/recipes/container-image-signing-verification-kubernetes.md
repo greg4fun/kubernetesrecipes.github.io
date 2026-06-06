@@ -1,6 +1,6 @@
 ---
 title: "Container Image Signing and Verification on Kubernetes"
-description: "Sign container images with Sigstore cosign and verify signatures at admission time with Kyverno or Connaisseur. Supply chain security for Kubernetes with keyless signing, transparency logs, and SLSA provenance attestations."
+description: "Sign container images with Sigstore cosign and verify signatures at admission time with Kyverno or Connaisseur. Supply chain security for Kubernetes"
 tags:
   - "cosign"
   - "sigstore"
@@ -15,7 +15,7 @@ relatedRecipes:
   - "oci-container-image-internals-kubernetes"
   - "container-image-security-scanning-kubernetes"
   - "private-container-registry-kubernetes"
-  - "kyverno-policy-management-kubernetes"
+  - "kyverno-policy-management"
 ---
 
 > 💡 **Quick Answer:** Sign images with `cosign sign` (keyless via OIDC or with KMS keys), then enforce signature verification at admission time using Kyverno `verifyImages` policies. This ensures only images from your CI pipeline run in production — preventing supply chain attacks, unauthorized modifications, and unvetted third-party images.

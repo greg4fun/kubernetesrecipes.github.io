@@ -1,6 +1,6 @@
 ---
 title: "Fix Pod cgroup Memory Errors K8s"
-description: "Fix cgroup memory limit and OOM errors in K8s pods. cgroup v2 migration, memory.max, swap settings, and kernel tuning."
+description: "Fix cgroup memory limit and OOM errors in Kubernetes pods. Covers cgroup v2 migration, memory.max, swap settings, and kernel tuning for stable workloads."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "troubleshooting"

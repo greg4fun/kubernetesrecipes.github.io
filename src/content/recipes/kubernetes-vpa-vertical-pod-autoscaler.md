@@ -1,6 +1,6 @@
 ---
 title: "Vertical Pod Autoscaler (VPA) Guide"
-description: "Configure Kubernetes Vertical Pod Autoscaler to automatically right-size container CPU and memory requests based on actual usage. Covers modes, recommendations, and production patterns."
+description: "Configure Kubernetes Vertical Pod Autoscaler to automatically right-size container CPU and memory requests based on actual usage. Covers"
 tags:
   - "vpa"
   - "autoscaling"
@@ -12,7 +12,7 @@ publishDate: "2026-05-06"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-hpa-autoscaling"
+  - "kubernetes-horizontal-pod-autoscaler-v2"
   - "kubernetes-resource-quota-limitrange"
   - "kubernetes-goldilocks-vpa-dashboard"
 ---

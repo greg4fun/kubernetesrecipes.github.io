@@ -1,5 +1,5 @@
 ---
-title: "DaemonSet Update Strategies"
+title: "Kubernetes DaemonSet Update Strategies"
 description: "Configure DaemonSet rolling updates with maxUnavailable and maxSurge. Understand OnDelete vs RollingUpdate strategies for node-level workloads."
 publishDate: "2026-04-21"
 author: "Luca Berton"

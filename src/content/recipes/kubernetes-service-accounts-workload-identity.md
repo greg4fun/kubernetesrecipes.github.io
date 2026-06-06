@@ -1,6 +1,6 @@
 ---
 title: "Service Accounts and Workload Identity"
-description: "Configure Kubernetes service accounts with cloud workload identity for AWS IRSA, GCP Workload Identity, and Azure AD."
+description: "Configure Kubernetes service accounts with cloud workload identity for AWS IRSA, GCP Workload Identity, and Azure AD pod federation."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "security"

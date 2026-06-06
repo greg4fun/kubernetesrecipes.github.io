@@ -1,6 +1,6 @@
 ---
 title: "Run:ai Workload Controllers on OpenShift"
-description: "Understand Run:ai cluster-level workload controllers on OpenShift including workload-controller, workload-overseer, workload-exporter, status-updater, and shared-objects-controller."
+description: "Understand Run:ai cluster-level workload controllers on OpenShift: workload-controller, workload-overseer, workload-exporter, and status-updater components."
 tags:
   - "runai"
   - "openshift"

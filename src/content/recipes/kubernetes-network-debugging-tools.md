@@ -1,6 +1,6 @@
 ---
 title: "Network Debugging Tools Kubernetes"
-description: "Debug Kubernetes networking with tcpdump, netshoot, iptables tracing, conntrack inspection, and DNS resolution testing."
+description: "Debug Kubernetes networking with tcpdump, netshoot, iptables tracing, conntrack inspection, and DNS resolution testing techniques."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "troubleshooting"

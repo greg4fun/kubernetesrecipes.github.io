@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on Fedora"
+title: "Install Helm on Fedora: Setup Guide"
 description: "Install Helm 3 on Fedora and configure chart repositories. Covers package manager install, script install, and shell completion for Fedora 39/40."
 category: "helm"
 difficulty: "beginner"

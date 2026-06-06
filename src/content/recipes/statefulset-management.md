@@ -1,5 +1,5 @@
 ---
-title: "How to Manage StatefulSets"
+title: "How to Manage Kubernetes StatefulSets"
 description: "Deploy stateful applications with StatefulSets. Configure stable network identities, persistent storage, ordered deployment, and graceful scaling."
 category: "deployments"
 difficulty: "intermediate"

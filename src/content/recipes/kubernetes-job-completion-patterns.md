@@ -1,6 +1,6 @@
 ---
 title: "Job Completion Patterns Kubernetes"
-description: "Configure Kubernetes Jobs with indexed completions, work queues, parallel processing, backoff limits, and TTL cleanup."
+description: "Configure Kubernetes Jobs with indexed completions, work queues, parallel processing, backoff limits, and TTL cleanup for batch workloads."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "deployments"

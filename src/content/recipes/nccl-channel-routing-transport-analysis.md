@@ -1,6 +1,6 @@
 ---
 title: "NCCL Channel Routing and Transport Path Analysis"
-description: "Interpret NCCL channel logs to understand GPU communication paths on Kubernetes. Decode P2P/CUMEM, SHM/direct, NET/IB/GDRDMA transport selection, channel-to-rank mapping, proxy progress threads, and RMA plugin assignment for multi-node training."
+description: "Interpret NCCL channel logs to understand GPU communication paths on Kubernetes. Decode P2P/CUMEM, SHM/direct, NET/IB/GDRDMA transport"
 tags:
   - "nccl"
   - "debugging"
@@ -13,7 +13,6 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nccl-all-reduce-perf-benchmark-multi-node"
-  - "debug-distributed-vllm-nccl-verbose-logging-kubernetes"
   - "nvidia-gpu-topology-matrix-kubernetes"
 ---
 

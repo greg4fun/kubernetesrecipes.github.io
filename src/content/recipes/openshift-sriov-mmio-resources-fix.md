@@ -1,6 +1,6 @@
 ---
 title: "Fix SR-IOV 'Not Enough MMIO Resources' Error"
-description: "Resolve the mlx5_core 'not enough MMIO resources for SR-IOV' error on OpenShift nodes with Mellanox ConnectX NICs. Covers BIOS settings, PCIe BAR allocation, gradual VF enablement, and node-by-node troubleshooting."
+description: "Resolve the mlx5_core 'not enough MMIO resources for SR-IOV' error on OpenShift nodes with Mellanox ConnectX NICs. Covers BIOS settings, PCIe BAR"
 tags:
   - "sriov"
   - "mmio"
@@ -13,8 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "openshift-sriov-rdma-infiniband-device-plugin"
-  - "openshift-sriov-network-operator"
-  - "openshift-machine-config-operator"
+  - "openshift-machineconfig-mcp-guide"
   - "nvidia-gpu-operator-setup"
 ---
 

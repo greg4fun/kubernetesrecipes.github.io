@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes Ingress Complete Guide"
-description: "Production guide for kubernetes ingress complete guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Configure Kubernetes Ingress for HTTP routing, TLS termination, and path-based routing. Covers NGINX Ingress Controller, cert-manager, and Ingress vs Gateway"
 category: "networking"
-difficulty: "Configure Kubernetes Ingress for HTTP routing, TLS termination, and path-based routing. Covers NGINX Ingress Controller, cert-manager, and Ingress vs Gateway API."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["ingress", "nginx-ingress", "tls", "routing", "load-balancing"]
 author: "Luca Berton"

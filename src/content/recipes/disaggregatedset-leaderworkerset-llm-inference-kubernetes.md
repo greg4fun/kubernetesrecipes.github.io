@@ -1,6 +1,6 @@
 ---
 title: "DisaggregatedSet for Multi-Role LLM Inference"
-description: "Deploy disaggregated LLM inference on Kubernetes with DisaggregatedSet and LeaderWorkerSet. Separate prefill and decode phases across GPU pools with coordinated N-dimensional rolling updates, automatic service orchestration, and unified lifecycle management."
+description: "Deploy disaggregated LLM inference on Kubernetes with DisaggregatedSet and LeaderWorkerSet. Separate prefill and decode phases across GPU pools"
 tags:
   - "leaderworkerset"
   - "disaggregated-inference"
@@ -13,10 +13,10 @@ publishDate: "2026-05-26"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "runai-distributed-inference-vllm-nccl-kubernetes"
-  - "vllm-distributed-inference-kubernetes"
-  - "kubernetes-leaderworkerset-multi-host-inference"
-  - "nvidia-nim-multinode-helm-deployment"
+  - "runai-distributed-inference-vllm-nccl"
+  - "distributed-inference-kubernetes"
+  - "lws-multi-node-distributed-inference"
+  - "nim-multinode-deployment-helm-kubernetes"
 ---
 
 > 💡 **Quick Answer:** DisaggregatedSet (DS) is a CRD in the LeaderWorkerSet (LWS) project that orchestrates multiple LeaderWorkerSets as a single unit for disaggregated LLM inference. It manages separate roles (e.g., prefill on high-compute GPUs, decode on memory-optimized GPUs) with coordinated rolling updates, automatic headless service creation per role/revision, and unified failure handling — solving the operational complexity of manually coordinating multi-role inference deployments.

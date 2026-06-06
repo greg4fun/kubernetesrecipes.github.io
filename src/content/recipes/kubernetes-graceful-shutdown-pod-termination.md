@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Graceful Shutdown and Pod Termination"
-description: "Implement graceful shutdown for Kubernetes pods. Configure terminationGracePeriodSeconds, preStop hooks, SIGTERM handling, connection draining, and zero-downtime deployments during rolling updates."
+description: "Implement graceful shutdown for Kubernetes pods. Configure terminationGracePeriodSeconds, preStop hooks, SIGTERM handling, connection"
 tags:
   - "graceful-shutdown"
   - "pod-lifecycle"
@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-rolling-update-strategies"
-  - "kubernetes-health-probes-liveness-readiness"
+  - "kubernetes-probes-liveness-readiness"
   - "kubernetes-pod-disruption-budget"
 ---
 

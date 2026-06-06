@@ -1,6 +1,6 @@
 ---
 title: "VT-x vs VT-d vs SR-IOV Explained"
-description: "Understand the difference between CPU virtualization (VT-x/SVM), I/O virtualization (VT-d/AMD-Vi/IOMMU), and SR-IOV. Which to enable or disable for GPU clusters, containers, and bare-metal AI workloads."
+description: "Understand the difference between CPU virtualization (VT-x/SVM), I/O virtualization (VT-d/AMD-Vi/IOMMU), and SR-IOV. Which to enable or disable for GPU"
 tags:
   - "virtualization"
   - "iommu"

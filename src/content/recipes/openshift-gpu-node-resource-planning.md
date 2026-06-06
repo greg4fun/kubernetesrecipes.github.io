@@ -1,6 +1,6 @@
 ---
 title: "OpenShift GPU Node Resource Planning"
-description: "Plan CPU, memory, and overhead budgets for GPU nodes running NVIDIA GPU Operator, Network Operator, Run:ai, and OpenShift infrastructure Pods. Understand what consumes resources before your AI workloads even start."
+description: "Plan CPU, memory, and overhead budgets for GPU nodes running NVIDIA GPU Operator, Network Operator, Run:ai, and OpenShift infrastructure Pods. Understand what"
 tags:
   - "openshift"
   - "gpu"

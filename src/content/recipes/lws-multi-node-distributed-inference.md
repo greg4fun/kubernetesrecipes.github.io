@@ -1,6 +1,6 @@
 ---
 title: "LeaderWorkerSet Multi-Node Inference on K8s"
-description: "Deploy multi-node distributed inference using LeaderWorkerSet (LWS) operator on Kubernetes. Covers vLLM pipeline parallelism across nodes for 405B+ parameter models."
+description: "Deploy multi-node distributed inference using LeaderWorkerSet (LWS) operator on Kubernetes. Covers vLLM pipeline parallelism across nodes for 405B+ parameter"
 tags:
   - "inference"
   - "distributed"

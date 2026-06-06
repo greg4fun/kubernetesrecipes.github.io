@@ -21,7 +21,59 @@ This is a critical skill for managing production Kubernetes clusters at scale. W
 
 ## The Solution
 
-Detailed implementation guide with production-ready configurations, best practices, and common pitfalls to avoid.
+StatefulSets give pods stable network identities and per-pod storage — essential for databases and quorum systems. Pair a StatefulSet with a headless Service for stable DNS and use `volumeClaimTemplates` for per-pod volumes:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  clusterIP: None          # headless: gives each pod its own DNS record
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: postgres
+  replicas: 3
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 20Gi
+```
+
+Pods get stable names (`postgres-0`, `postgres-1`) and DNS (`postgres-0.postgres`). Scaling preserves identity and storage:
+
+```bash
+kubectl scale statefulset postgres --replicas=5
+kubectl get pvc -l app=postgres
+```
 
 ## Common Issues
 

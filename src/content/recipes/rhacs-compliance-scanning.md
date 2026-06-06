@@ -1,5 +1,5 @@
 ---
-title: "RHACS Compliance Scanning"
+title: "RHACS Compliance Scanning in OpenShift"
 description: "Run CIS, NIST, PCI DSS, and HIPAA compliance scans with Red Hat Advanced Cluster Security and automate reporting for audits."
 publishDate: "2026-02-26"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
-title: "NCCL All-Reduce Performance Benchmarking on Multi-Node GPU Clusters"
-description: "Run and interpret NCCL all_reduce_perf benchmarks on multi-node Kubernetes GPU clusters. Understand bus bandwidth results, expected throughput for H200 NVL with RoCE RDMA, tuning for peak collective performance, and identifying bottlenecks."
+title: "NCCL All-Reduce Benchmarking on Multi-Node GPUs"
+description: "Run and interpret NCCL all_reduce_perf benchmarks on multi-node Kubernetes GPU clusters. Understand bus bandwidth results, expected throughput for H200 NVL"
 tags:
   - "nccl"
   - "benchmarking"
@@ -14,7 +14,6 @@ difficulty: "advanced"
 relatedRecipes:
   - "nccl-topology-dump-tuning-kubernetes"
   - "nvlink-bridge-architecture-gpu-kubernetes"
-  - "debug-distributed-vllm-nccl-verbose-logging-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Run `all_reduce_perf` from nccl-tests across nodes to measure collective communication bandwidth. On 2-node H200 NVL (8 GPUs/node, 4x ConnectX-7 RoCE), expect ~35 GB/s peak bus bandwidth for large messages (≥1GB) and ~13-18 GB/s average across all sizes. Results below 30 GB/s at large sizes indicate network misconfiguration, missing GDRDMA, or NIC-GPU topology mismatch.

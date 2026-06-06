@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes Rolling Update Strategy Guide"
-description: "Production guide for kubernetes rolling update strategy guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Configure Kubernetes rolling update strategy for zero-downtime deployments. Tune maxSurge, maxUnavailable, minReadySeconds, and rollback procedures."
 category: "deployments"
-difficulty: "Configure Kubernetes rolling update strategy for zero-downtime deployments. Tune maxSurge, maxUnavailable, minReadySeconds, and rollback procedures."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["rolling-update", "deployment-strategy", "zero-downtime", "rollback", "kubernetes"]
 author: "Luca Berton"

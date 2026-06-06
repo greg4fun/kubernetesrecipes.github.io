@@ -1,5 +1,5 @@
 ---
-title: "Helm Values Override Patterns"
+title: "Helm Values Override Patterns Explained"
 description: "Master Helm values override patterns. CLI flags, multiple files, JSON values, and precedence rules for complex deployments."
 publishDate: "2026-04-25"
 author: "Luca Berton"

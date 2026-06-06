@@ -1,6 +1,6 @@
 ---
 title: "NCCL Network Validation Troubleshooting Checklist"
-description: "Complete troubleshooting checklist for NCCL multi-node GPU bandwidth validation. Covers SR-IOV VF allocation, /dev/infiniband visibility, RoCE GID index, MTU, PFC/ECN, GPUDirect RDMA, NCCL_SOCKET_IFNAME, PCIe/NUMA locality, and per-rank HCA selection verification."
+description: "Complete troubleshooting checklist for NCCL multi-node GPU bandwidth validation. Covers SR-IOV VF allocation, /dev/infiniband visibility, RoCE GID"
 tags:
   - "nccl"
   - "troubleshooting"

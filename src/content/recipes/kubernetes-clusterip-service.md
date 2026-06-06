@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes ClusterIP Service Explained"
-description: "Production guide for kubernetes clusterip service explained. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Understand Kubernetes ClusterIP services for internal communication. How kube-proxy routes traffic, DNS resolution, and when ClusterIP is the right service"
 category: "networking"
-difficulty: "Understand Kubernetes ClusterIP services for internal communication. How kube-proxy routes traffic, DNS resolution, and when ClusterIP is the right service type."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["clusterip", "service", "internal", "dns", "networking"]
 author: "Luca Berton"

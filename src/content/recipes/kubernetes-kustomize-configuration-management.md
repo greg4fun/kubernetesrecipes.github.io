@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Kustomize Configuration Management"
-description: "Manage Kubernetes configurations with Kustomize. Build overlays for multiple environments, patch resources, generate ConfigMaps and Secrets, and integrate with GitOps workflows without templating."
+description: "Manage Kubernetes configurations with Kustomize. Build overlays for multiple environments, patch resources, generate ConfigMaps and Secrets, and integrate"
 tags:
   - "kustomize"
   - "configuration"
@@ -12,9 +12,9 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kustomize-vs-helm-kubernetes"
-  - "kubernetes-gitops-argocd"
-  - "kubernetes-configmap-management"
+  - "kustomize-vs-helm-comparison"
+  - "argocd-gitops-deployment"
+  - "kubernetes-configmap-secrets-management"
 ---
 
 > 💡 **Quick Answer:** Kustomize customizes Kubernetes YAML without templates. Define a base configuration, then create overlays (dev/staging/prod) that patch specific fields. Built into `kubectl`: use `kubectl apply -k ./overlays/production/`. Key features: strategic merge patches, JSON patches, ConfigMap/Secret generators, name prefixes/suffixes, and common labels.

@@ -1,5 +1,5 @@
 ---
-title: "MIG GPU Partitioning with DRA"
+title: "MIG GPU Partitioning with DRA on Kubernetes"
 description: "Dynamically partition NVIDIA A100 and H100 GPUs using Multi-Instance GPU (MIG) technology with Dynamic Resource Allocation for flexible workload isolation"
 category: "configuration"
 difficulty: "advanced"

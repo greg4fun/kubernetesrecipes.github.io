@@ -1,8 +1,8 @@
 ---
 title: "Blue-Green Deployment in Kubernetes"
-description: "Production guide for blue-green deployment in kubernetes. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Implement blue-green deployments in Kubernetes for instant rollback. Covers Service selector switching, Argo Rollouts blue-green, and comparison with canary"
 category: "deployments"
-difficulty: "Implement blue-green deployments in Kubernetes for instant rollback. Covers Service selector switching, Argo Rollouts blue-green, and comparison with canary strategy."
+difficulty: "intermediate"
 publishDate: "2026-04-05"
 tags: ["blue-green", "deployment-strategy", "zero-downtime", "rollback", "kubernetes"]
 author: "Luca Berton"

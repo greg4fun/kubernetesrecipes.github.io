@@ -12,7 +12,7 @@ publishDate: "2026-05-06"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-pod-disruption-budgets"
+  - "kubernetes-pod-disruption-budget"
 ---
 
 > 💡 **Quick Answer:** A PDB tells Kubernetes "never disrupt more than N Pods at once" during voluntary operations (node drain, upgrade, autoscaler scale-down). Use `minAvailable` or `maxUnavailable` to guarantee minimum replicas stay running.

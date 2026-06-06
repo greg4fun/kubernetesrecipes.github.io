@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes AI Infrastructure Scaling"
-description: "Scale AI inference infrastructure on Kubernetes from 10K to 100K requests per second. Covers latency optimization, horizontal scaling, caching layers, and handling 400M to 6B daily requests."
+description: "Scale AI inference infrastructure on Kubernetes from 10K to 100K requests per second. Covers latency optimization, horizontal scaling, caching"
 tags:
   - "ai-infrastructure"
   - "scaling"
@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nim-multinode-deployment-helm-kubernetes"
-  - "kubernetes-hpa-autoscaling"
+  - "kubernetes-horizontal-pod-autoscaler-v2"
   - "kyverno-llm-inference-guardrails"
   - "kubernetes-cost-optimization-strategies"
 ---

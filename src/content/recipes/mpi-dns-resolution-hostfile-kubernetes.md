@@ -1,6 +1,6 @@
 ---
 title: "MPI DNS Resolution and Hostfile for Kubernetes GPU Jobs"
-description: "Troubleshoot MPI hostfile DNS resolution in Kubeflow MPIJob on Kubernetes. Covers headless Service creation, subdomain configuration, DNS wait loops, FQDN rewriting, and resolv.conf debugging for multi-node GPU training."
+description: "Troubleshoot MPI hostfile DNS resolution in Kubeflow MPIJob on Kubernetes. Covers headless Service creation, subdomain configuration, DNS wait loops, FQDN"
 tags:
   - "mpi"
   - "dns"

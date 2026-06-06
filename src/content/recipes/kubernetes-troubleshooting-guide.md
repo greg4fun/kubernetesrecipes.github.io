@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes Troubleshooting Flowchart"
-description: "Production guide for kubernetes troubleshooting flowchart. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Systematic Kubernetes troubleshooting guide with flowcharts. Debug pods, services, networking, storage, and node issues step by step with kubectl commands."
 category: "troubleshooting"
-difficulty: "Systematic Kubernetes troubleshooting guide with flowcharts. Debug pods, services, networking, storage, and node issues step by step with kubectl commands."
+difficulty: "intermediate"
 publishDate: "2026-04-05"
 tags: ["troubleshooting", "debugging", "flowchart", "kubectl", "kubernetes"]
 author: "Luca Berton"

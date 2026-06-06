@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Namespace Best Practices"
-description: "Organize Kubernetes clusters with namespace best practices. Separation strategies, resource quotas, network policies, RBAC per namespace, naming conventions, and when to use multiple namespaces vs clusters."
+description: "Organize Kubernetes clusters with namespace best practices. Separation strategies, resource quotas, network policies, RBAC per namespace, naming"
 tags:
   - "namespaces"
   - "multi-tenancy"
@@ -12,8 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-rbac-role-based-access-control"
-  - "kubernetes-resource-management"
+  - "kubernetes-rbac-role-clusterrole"
   - "kubernetes-networkpolicy-default-deny-examples"
 ---
 

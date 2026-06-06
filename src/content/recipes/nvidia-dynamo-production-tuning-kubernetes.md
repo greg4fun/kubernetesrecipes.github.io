@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA Dynamo Production Tuning on Kubernetes"
-description: "Tune NVIDIA Dynamo for production LLM inference: prefill/decode pool sizing, KV cache transfer optimization, NCCL backend selection, SLA-driven autoscaling thresholds, and monitoring disaggregated serving pipelines on Kubernetes."
+description: "Tune NVIDIA Dynamo for production LLM inference: prefill/decode pool sizing, KV cache transfer optimization, NCCL backend selection, SLA-driven autoscaling"
 tags:
   - "nvidia-dynamo"
   - "inference-optimization"

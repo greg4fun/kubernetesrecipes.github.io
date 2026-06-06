@@ -1,6 +1,6 @@
 ---
 title: "Run:ai Distributed Inference with SR-IOV RDMA"
-description: "Deploy distributed vLLM inference on Run:ai using SR-IOV RDMA for NCCL inter-node communication. Covers extended-resource for Mellanox VFs, network annotation for Multus, NCCL_SOCKET_IFNAME binding, and the upgrade from Ethernet to RDMA."
+description: "Deploy distributed vLLM inference on Run:ai using SR-IOV RDMA for NCCL inter-node communication. Covers extended-resource for Mellanox VFs, network annotation"
 tags:
   - "runai"
   - "sriov"

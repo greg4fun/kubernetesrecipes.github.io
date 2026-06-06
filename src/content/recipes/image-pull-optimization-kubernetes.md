@@ -1,6 +1,6 @@
 ---
 title: "Image Pull Optimization for Kubernetes"
-description: "Optimize container image pull performance in Kubernetes. Layer caching, pre-pulling with DaemonSets, image streaming, lazy pulling with stargz/nydus, registry mirrors, and reducing cold start times for large AI/ML images."
+description: "Optimize container image pull performance in Kubernetes. Layer caching, pre-pulling with DaemonSets, image streaming, lazy pulling with stargz/nydus, registry"
 tags:
   - "container-images"
   - "performance"
@@ -15,7 +15,7 @@ relatedRecipes:
   - "oci-container-image-internals-kubernetes"
   - "private-container-registry-kubernetes"
   - "multi-architecture-container-images-kubernetes"
-  - "kubernetes-node-autoscaling-karpenter"
+  - "karpenter-node-autoscaling"
 ---
 
 > 💡 **Quick Answer:** Large images (especially AI/ML at 10-50GB) cause slow cold starts. Optimize with: layer caching (shared base images), pre-pulling via DaemonSets, lazy pulling (stargz/nydus — container starts before full download), registry mirrors for reduced latency, and image streaming (SOCI/nydus snapshotter). For GPU workloads, pre-pull model images to nodes during off-peak hours.

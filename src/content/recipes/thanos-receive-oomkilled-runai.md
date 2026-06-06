@@ -1,6 +1,6 @@
 ---
 title: "Fix Thanos Receive OOMKilled in Run:ai"
-description: "Troubleshoot and fix Thanos Receive OOMKilled (exit code 137) with 143+ restarts in Run:ai backend on OpenShift. Covers memory tuning, TSDB retention, and replication settings."
+description: "Troubleshoot and fix Thanos Receive OOMKilled (exit code 137) with 143+ restarts in Run:ai backend on OpenShift. Covers memory tuning, TSDB"
 tags:
   - "thanos"
   - "runai"

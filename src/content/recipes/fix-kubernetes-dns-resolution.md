@@ -1,5 +1,5 @@
 ---
-title: "Fix DNS Resolution Issues K8s"
+title: "Fix DNS Resolution Issues in Kubernetes"
 description: "Troubleshoot Kubernetes DNS resolution failures. ndots, search domains, CoreDNS CrashLoop, and pod-level DNS debugging steps."
 publishDate: "2026-04-25"
 author: "Luca Berton"

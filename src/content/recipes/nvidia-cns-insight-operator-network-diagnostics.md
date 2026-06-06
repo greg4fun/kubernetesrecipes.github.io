@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA CNS with Insight Operator for Network Diagnostics"
-description: "Deploy NVIDIA Cloud-Native Stack (CNS) with the Insight Operator and NVIDIA Insight tools for deep GPU fabric diagnostics. Collect NIC firmware health, link quality, topology discovery, and cable diagnostics across Kubernetes GPU clusters."
+description: "Deploy NVIDIA Cloud-Native Stack (CNS) with the Insight Operator and NVIDIA Insight tools for deep GPU fabric diagnostics. Collect NIC firmware health, link"
 tags:
   - "nvidia"
   - "cns"
@@ -14,9 +14,9 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nvidia-doca-telemetry-network-monitoring-kubernetes"
-  - "nvidia-network-operator-kubernetes"
-  - "dcgm-exporter-gpu-metrics-prometheus"
-  - "enable-pfc-mellanox-connectx-rdma"
+  - "nvidia-network-operator-rdma-kubernetes"
+  - "nvidia-dcgm-exporter-monitoring"
+  - "pfc-mellanox-connectx-configuration"
 ---
 
 > 💡 **Quick Answer:** NVIDIA Cloud-Native Stack (CNS) bundles the GPU Operator, Network Operator, and Insight tools into a validated deployment. The Insight Operator adds deep NIC/switch diagnostics — firmware health checks, link quality monitoring, cable testing, and topology discovery — beyond what standard telemetry provides.

@@ -1,5 +1,5 @@
 ---
-title: "Helm Hook Delete Policy Guide"
+title: "Helm Hook Delete Policy Explained"
 description: "Configure Helm hook delete policies: before-hook-creation, hook-succeeded, hook-failed. Control Job cleanup after install, upgrade, and test hooks."
 category: "helm"
 publishDate: "2026-04-20"

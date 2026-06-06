@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Init Containers Patterns and Examples"
-description: "Use Kubernetes init containers for pod initialization. Wait for dependencies, clone Git repos, setup configuration, database migrations, certificate fetching, and permission fixing before the main container starts."
+description: "Use Kubernetes init containers for pod initialization. Wait for dependencies, clone Git repos, setup configuration, database migrations, certificate"
 tags:
   - "init-containers"
   - "pod-lifecycle"
@@ -12,8 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-pod-configuration"
-  - "kubernetes-health-probes-liveness-readiness"
+  - "kubernetes-probes-liveness-readiness"
   - "kubernetes-graceful-shutdown-pod-termination"
 ---
 

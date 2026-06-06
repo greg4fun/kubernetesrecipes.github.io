@@ -1,6 +1,6 @@
 ---
 title: "Red Hat AI Studio on OpenShift"
-description: "Deploy Red Hat AI Studio on OpenShift for end-to-end LLM development. Model catalog, InstructLab fine-tuning, experiment tracking, model evaluation, and one-click serving with NVIDIA NIM and vLLM on GPU clusters."
+description: "Deploy Red Hat AI Studio on OpenShift for end-to-end LLM development. Model catalog, InstructLab fine-tuning, experiment tracking, model"
 tags:
   - "red-hat"
   - "openshift"
@@ -13,8 +13,6 @@ publishDate: "2026-05-22"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "openshift-ai-rhods-setup"
-  - "instructlab-fine-tuning-openshift"
   - "vllm-openai-container-kubernetes"
   - "nvidia-gpu-operator-setup"
 ---

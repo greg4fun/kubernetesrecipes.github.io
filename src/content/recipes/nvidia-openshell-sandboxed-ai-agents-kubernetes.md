@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA OpenShell Sandboxed AI Agent Runtime on Kubernetes"
-description: "Deploy NVIDIA OpenShell on Kubernetes for safe, private autonomous AI agent execution. Declarative YAML network policies, sandboxed containers with proxy-enforced access control, and Helm-based deployment for multi-agent workloads."
+description: "Deploy NVIDIA OpenShell on Kubernetes for safe, private autonomous AI agent execution. Declarative YAML network policies, sandboxed containers"
 tags:
   - "nvidia"
   - "openshell"
@@ -14,8 +14,8 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "poolside-ai-foundation-models-kubernetes"
-  - "kubernetes-network-policies-guide"
-  - "pod-security-standards-kubernetes"
+  - "kubernetes-network-policy-guide"
+  - "pod-security-standards"
   - "tabnine-enterprise-self-hosted-kubernetes"
 ---
 

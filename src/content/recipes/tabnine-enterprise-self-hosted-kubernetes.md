@@ -1,6 +1,6 @@
 ---
 title: "Tabnine AI Code Assistant Self-Hosted on Kubernetes"
-description: "Deploy Tabnine Enterprise self-hosted on Kubernetes for private AI code completion and chat. On-prem model serving, multi-model support (Tabnine Protected, Claude, GPT, Gemini, Llama), IDE integration, and zero data retention for regulated environments."
+description: "Deploy Tabnine Enterprise self-hosted on Kubernetes for private AI code completion and chat. On-prem model serving, multi-model support (Tabnine"
 tags:
   - "tabnine"
   - "code-assistant"
@@ -16,7 +16,7 @@ relatedRecipes:
   - "poolside-ai-foundation-models-kubernetes"
   - "vllm-openai-container-kubernetes"
   - "red-hat-ai-studio-openshift-model-development"
-  - "kubernetes-network-policies-guide"
+  - "kubernetes-network-policy-guide"
 ---
 
 > 💡 **Quick Answer:** Tabnine Enterprise can be self-hosted on Kubernetes for private AI code completion. It supports both Tabnine's proprietary protected models (trained on permissive-license code only) and third-party models (Claude, GPT, Gemini, Llama). Deploy the inference server on GPU nodes, connect IDE extensions to your internal endpoint, and maintain zero data retention.

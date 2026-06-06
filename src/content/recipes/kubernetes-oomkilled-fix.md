@@ -1,5 +1,5 @@
 ---
-title: "Fix OOMKilled in Kubernetes Pods"
+title: "Debug and Fix OOMKilled Errors in Kubernetes"
 description: "Debug and fix OOMKilled errors in Kubernetes. Find memory leaks, set correct limits, use VPA for right-sizing, and prevent container OOM kills."
 category: "troubleshooting"
 difficulty: "beginner"

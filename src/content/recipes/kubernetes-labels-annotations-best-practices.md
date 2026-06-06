@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Labels and Annotations Best Practices"
-description: "Implement Kubernetes labels and annotations following best practices. Recommended label keys, organizational conventions, selectors, annotations vs labels differences, and naming standards for production clusters."
+description: "Implement Kubernetes labels and annotations following best practices. Recommended label keys, organizational conventions, selectors, annotations vs labels"
 tags:
   - "labels"
   - "annotations"
@@ -12,7 +12,6 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-resource-management"
   - "kubernetes-namespace-best-practices"
 ---
 

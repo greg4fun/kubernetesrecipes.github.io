@@ -1,6 +1,6 @@
 ---
 title: "Run:ai Distributed Inference with vLLM and NCCL"
-description: "Deploy distributed LLM inference on Run:ai with vLLM tensor parallelism across multiple workers. Covers multi-node GPU splitting, NCCL configuration, PVC model loading, and security hardening with non-root execution."
+description: "Deploy distributed LLM inference on Run:ai with vLLM tensor parallelism across multiple workers. Covers multi-node GPU splitting, NCCL configuration, PVC model"
 tags:
   - "runai"
   - "vllm"

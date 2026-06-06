@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes EFK Stack Centralized Logging"
-description: "Deploy the EFK stack (Elasticsearch, Fluentd, Kibana) on Kubernetes for centralized log collection, processing, and visualization. DaemonSet log collection, index management, and production tuning."
+description: "Deploy the EFK stack (Elasticsearch, Fluentd, Kibana) on Kubernetes for centralized log collection, processing, and visualization. DaemonSet log"
 tags:
   - "efk"
   - "elasticsearch"
@@ -12,8 +12,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-observability-stack"
-  - "prometheus-monitoring-kubernetes"
+  - "opentelemetry-kubernetes-observability"
+  - "prometheus-monitoring-kubernetes-guide"
   - "kubernetes-audit-logging-configuration"
 ---
 

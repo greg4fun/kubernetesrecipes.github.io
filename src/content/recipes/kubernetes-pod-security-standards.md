@@ -1,5 +1,5 @@
 ---
-title: "Pod Security Standards Guide"
+title: "Kubernetes Pod Security Standards Guide"
 description: "Implement Pod Security Standards with Pod Security Admission. Privileged, baseline, and restricted profiles, namespace labels."
 publishDate: "2026-04-24"
 author: "Luca Berton"

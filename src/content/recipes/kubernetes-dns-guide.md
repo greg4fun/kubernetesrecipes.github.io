@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes DNS and CoreDNS Guide"
-description: "Production guide for kubernetes dns and coredns guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Understand Kubernetes DNS resolution with CoreDNS. Debug DNS issues, configure custom DNS, and optimize DNS performance for large clusters."
 category: "networking"
-difficulty: "Understand Kubernetes DNS resolution with CoreDNS. Debug DNS issues, configure custom DNS, and optimize DNS performance for large clusters."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["dns", "coredns", "service-discovery", "networking", "resolution"]
 author: "Luca Berton"

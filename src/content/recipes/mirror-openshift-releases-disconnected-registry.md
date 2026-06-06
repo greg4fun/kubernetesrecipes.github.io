@@ -1,6 +1,6 @@
 ---
 title: "Mirror OpenShift Releases to Disconnected Registry"
-description: "Mirror OCP release images to an air-gapped internal Quay registry using oc adm release mirror. Auth file setup, proxy configuration, ImageDigestMirrorSet, and complete disconnected update workflow."
+description: "Mirror OCP release images to an air-gapped Quay registry using oc adm release mirror. Auth setup, proxy config, ImageDigestMirrorSet, and disconnected updates."
 tags:
   - "openshift"
   - "disconnected"
@@ -13,8 +13,8 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "openshift-cluster-update-process-explained"
-  - "container-private-registry-kubernetes"
-  - "openshift-lifecycle-management"
+  - "private-container-registry-kubernetes"
+  - "openshift-lifecycle-versions"
 ---
 
 > 💡 **Quick Answer:** Use `oc adm release mirror` from a bastion host with access to both the internet (or proxy) and your internal registry. First create auth credentials with `podman login` to both registries, merge into a single auth file, then mirror. For fully air-gapped environments, use `oc mirror` with disk-to-disk transfer.

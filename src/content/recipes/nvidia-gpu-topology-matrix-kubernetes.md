@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA GPU Topology Matrix Interpretation on Kubernetes"
-description: "Read and interpret nvidia-smi topo and nvidia-device-plugin topology matrices on Kubernetes GPU nodes. Understand X, NV, SYS, NODE, PIX, PXB, PHB connection types, NUMA affinity, and NIC-to-GPU locality for optimal workload placement."
+description: "Read and interpret nvidia-smi topo and nvidia-device-plugin topology matrices on Kubernetes GPU nodes. Understand X, NV, SYS, NODE, PIX, PXB, PHB connection"
 tags:
   - "nvidia"
   - "gpu-topology"
@@ -13,8 +13,8 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nccl-topology-dump-tuning-kubernetes"
-  - "nvidia-gpu-operator-kubernetes"
-  - "nccl-pxn-cross-nic-nvlink-kubernetes"
+  - "nvidia-gpu-operator-setup"
+  - "nccl-pxn-cross-nic-nvlink-topology"
 ---
 
 > 💡 **Quick Answer:** The GPU topology matrix (from `nvidia-smi topo -m` or nvidia-device-plugin logs) shows interconnect types between every GPU, NIC, and NVMe device. **NV#** = NVLink (fastest), **PIX** = same PCIe switch, **PHB** = same PCIe Host Bridge (CPU), **SYS** = crosses CPU socket (QPI/UPI), **NODE** = same NUMA node but different PCIe bridges. Use this matrix to ensure GPUs communicating via NCCL share NVLink, and NICs are co-located with their assigned GPUs.

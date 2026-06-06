@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA Nsight Operator for GPU Profiling on Kubernetes"
-description: "Deploy NVIDIA Nsight Systems and Nsight Compute on Kubernetes for GPU workload profiling. Capture kernel traces, memory bandwidth, SM occupancy, and NCCL communication timelines for distributed training and inference optimization."
+description: "Deploy NVIDIA Nsight Systems and Nsight Compute on Kubernetes for GPU workload profiling. Capture kernel traces, memory bandwidth, SM occupancy, and NCCL"
 tags:
   - "nvidia"
   - "nsight"
@@ -13,10 +13,10 @@ publishDate: "2026-05-22"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "dcgm-exporter-gpu-metrics-prometheus"
+  - "nvidia-dcgm-exporter-monitoring"
   - "nvidia-doca-telemetry-network-monitoring-kubernetes"
   - "nvidia-cns-insight-operator-network-diagnostics"
-  - "nccl-pxn-cross-nic-nvlink"
+  - "nccl-pxn-cross-nic-nvlink-topology"
 ---
 
 > 💡 **Quick Answer:** NVIDIA Nsight Systems profiles GPU timelines (kernels, memory, NCCL comms) and Nsight Compute provides per-kernel metrics (occupancy, memory throughput, warp stalls). On Kubernetes, run profiling as sidecar containers or one-shot Jobs with `CAP_SYS_ADMIN` + access to `/dev/nvidia*`. Export `.nsys-rep` and `.ncu-rep` files for analysis.

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes gVisor and Kata Containers RuntimeClass"
-description: "Deploy sandboxed container runtimes on Kubernetes using RuntimeClass with gVisor (runsc) and Kata Containers. Isolate untrusted workloads with kernel-level and VM-level sandboxing for enhanced security."
+description: "Deploy sandboxed container runtimes on Kubernetes using RuntimeClass with gVisor (runsc) and Kata Containers. Isolate untrusted workloads with kernel-level"
 tags:
   - "gvisor"
   - "kata-containers"
@@ -14,8 +14,8 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-pod-security-standards"
-  - "kubernetes-security-checklist"
-  - "crun-vs-runc-container-runtimes"
+  - "kubernetes-security-checklist-2026"
+  - "crun-vs-runc-container-runtime"
 ---
 
 > 💡 **Quick Answer:** RuntimeClass lets you run specific pods with sandboxed runtimes instead of the default runc. gVisor (runsc) interposes a user-space kernel between the container and host — no direct syscalls. Kata Containers runs each pod in a lightweight VM. Create a RuntimeClass, configure containerd with the handler, then set `runtimeClassName` in your pod spec.

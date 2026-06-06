@@ -21,7 +21,40 @@ This is a critical skill for managing production Kubernetes clusters at scale. W
 
 ## The Solution
 
-Detailed implementation guide with production-ready configurations, best practices, and common pitfalls to avoid.
+Modern Kubernetes issues short-lived, audience-bound tokens via projected volumes instead of long-lived Secret tokens. Mount a bound token that a pod presents to an external API:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+spec:
+  serviceAccountName: app-sa
+  containers:
+    - name: app
+      image: myorg/app:1.0
+      volumeMounts:
+        - name: api-token
+          mountPath: /var/run/secrets/tokens
+  volumes:
+    - name: api-token
+      projected:
+        sources:
+          - serviceAccountToken:
+              path: api-token
+              expirationSeconds: 3600
+              audience: vault
+```
+
+Create the service account and grant least-privilege RBAC:
+
+```bash
+kubectl create serviceaccount app-sa
+kubectl create rolebinding app-sa-ro \
+  --clusterrole=view --serviceaccount=default:app-sa
+```
+
+Avoid the legacy auto-generated Secret tokens; prefer TokenRequest/projected tokens and OIDC federation for cloud workload identity.
 
 ## Common Issues
 

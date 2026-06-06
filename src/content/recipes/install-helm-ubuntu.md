@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on Ubuntu"
+title: "Install Helm on Ubuntu: Setup Guide"
 description: "Install Helm 3 on Ubuntu and configure chart repositories. Covers package manager install, script install, and shell completion for Ubuntu 22.04/24.04."
 category: "helm"
 difficulty: "beginner"

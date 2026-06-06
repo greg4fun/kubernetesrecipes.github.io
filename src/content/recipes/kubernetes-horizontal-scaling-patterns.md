@@ -1,6 +1,6 @@
 ---
 title: "K8s Horizontal Scaling: Manual and Auto"
-description: "Scale Kubernetes workloads horizontally with kubectl scale, HPA, and KEDA. Replica management, scaling strategies."
+description: "Scale Kubernetes workloads horizontally with kubectl scale, HPA, and KEDA. Covers replica management and event-driven scaling strategies."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "autoscaling"

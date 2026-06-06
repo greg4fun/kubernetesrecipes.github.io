@@ -1,6 +1,6 @@
 ---
 title: "Velero: K8s Backup and Disaster Recovery"
-description: "Back up and restore Kubernetes clusters with Velero. Schedule backups, restore namespaces, migrate between clusters."
+description: "Back up and restore Kubernetes clusters with Velero. Schedule backups, restore namespaces, and migrate workloads between clusters."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "storage"

@@ -1,6 +1,6 @@
 ---
 title: "InfiniBand Subnet Manager OpenSM on Kubernetes"
-description: "Deploy and manage InfiniBand Subnet Manager (OpenSM) on Kubernetes for GPU cluster fabric management. Covers SM architecture, UFM integration, partition keys, QoS, and troubleshooting IB fabric issues."
+description: "Deploy and manage InfiniBand Subnet Manager (OpenSM) on Kubernetes for GPU cluster fabric management. Covers SM architecture, UFM integration, partition"
 tags:
   - "infiniband"
   - "opensm"

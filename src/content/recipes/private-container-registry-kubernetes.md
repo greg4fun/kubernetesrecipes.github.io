@@ -1,6 +1,6 @@
 ---
 title: "Private Container Registry on Kubernetes"
-description: "Deploy a private OCI container registry on Kubernetes with persistent storage, TLS, authentication, garbage collection, and high availability. Self-hosted alternative to Docker Hub with full control over image distribution."
+description: "Deploy a private OCI container registry on Kubernetes with persistent storage, TLS, authentication, garbage collection, and high availability. Self-hosted"
 tags:
   - "registry"
   - "oci"
@@ -13,9 +13,8 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "oci-container-image-internals-kubernetes"
-  - "kubernetes-image-pull-secrets"
-  - "kubernetes-tls-certificates-cert-manager"
-  - "harbor-container-registry-kubernetes"
+  - "kubernetes-imagepullsecrets-guide"
+  - "kubernetes-certificate-management"
 ---
 
 > 💡 **Quick Answer:** Deploy the CNCF Distribution registry (the reference OCI registry implementation) on Kubernetes with a Deployment, PVC for blob storage, TLS via cert-manager, htpasswd authentication, and a CronJob for garbage collection. This gives you a self-hosted registry for air-gapped clusters or when you need full control over image distribution.

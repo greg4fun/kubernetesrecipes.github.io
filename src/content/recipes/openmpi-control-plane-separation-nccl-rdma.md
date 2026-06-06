@@ -1,6 +1,6 @@
 ---
 title: "OpenMPI Control Plane Separation for NCCL RDMA"
-description: "Configure OpenMPI to use eth0 for MPI control traffic while NCCL uses net1 SR-IOV for data. Covers btl_tcp_if_include, pml, routed direct, plm_rsh_agent SSH options, and UCC/HCOLL disabling for clean NCCL-only collectives."
+description: "Configure OpenMPI to use eth0 for MPI control traffic while NCCL uses net1 SR-IOV for data. Covers btl_tcp_if_include, pml, routed direct, plm_rsh_agent SSH"
 tags:
   - "mpi"
   - "nccl"

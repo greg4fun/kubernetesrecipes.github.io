@@ -1,6 +1,6 @@
 ---
 title: "NCCL PXN Cross-NIC Communication via NVLink"
-description: "Configure NCCL PXN (PCIe cross-NIC via NVLink) for multi-node GPU training where not every GPU has a direct RDMA NIC. Covers topology detection, NCCL_CROSS_NIC, PXN path selection, and bandwidth optimization."
+description: "Configure NCCL PXN (PCIe cross-NIC via NVLink) for multi-node GPU training where not every GPU has a direct RDMA NIC. Covers topology"
 tags:
   - "nccl"
   - "pxn"

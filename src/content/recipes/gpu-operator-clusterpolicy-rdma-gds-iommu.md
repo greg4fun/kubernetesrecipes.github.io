@@ -1,6 +1,6 @@
 ---
 title: "GPU Operator ClusterPolicy RDMA and GDS Configuration"
-description: "Configure NVIDIA GPU Operator ClusterPolicy to disable RDMA and enable GPUDirect Storage (GDS). Control nvidia-peermem, nvidia-fs modules, driver settings, and IOMMU integration for different GPU cluster topologies."
+description: "Configure NVIDIA GPU Operator ClusterPolicy to disable RDMA and enable GPUDirect Storage (GDS). Control nvidia-peermem, nvidia-fs modules, driver"
 tags:
   - "gpu-operator"
   - "rdma"

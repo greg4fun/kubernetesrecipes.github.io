@@ -1,5 +1,5 @@
 ---
-title: "K8s API Versions Explained"
+title: "Kubernetes API Versions Explained"
 description: "Understand K8s API versions: alpha, beta, stable. API deprecation policy, migration strategy, and kubectl api-versions usage."
 publishDate: "2026-04-25"
 author: "Luca Berton"

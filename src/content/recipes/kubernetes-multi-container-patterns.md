@@ -1,5 +1,5 @@
 ---
-title: "Multi-Container Pod Patterns"
+title: "Multi-Container Pod Patterns in Kubernetes"
 description: "Implement sidecar, ambassador, and adapter patterns in Kubernetes pods. Share volumes and network namespace between containers for modular architectures."
 publishDate: "2026-04-21"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "GPU Tenant SLO Observability"
+title: "GPU Tenant SLO Observability on Kubernetes"
 description: "Define and monitor GPU tenant SLOs for queue time, inference latency, GPU utilization, and job completion rate with Prometheus alerting."
 publishDate: "2026-02-26"
 author: "Luca Berton"

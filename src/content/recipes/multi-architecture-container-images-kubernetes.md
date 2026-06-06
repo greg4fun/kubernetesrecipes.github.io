@@ -1,6 +1,6 @@
 ---
 title: "Multi-Architecture Container Images for Kubernetes"
-description: "Build and deploy multi-architecture container images for mixed Kubernetes clusters. Docker buildx, manifest lists, image indexes, platform-aware scheduling, and cross-compilation strategies for amd64 and arm64."
+description: "Build and deploy multi-architecture container images for mixed Kubernetes clusters. Docker buildx, manifest lists, image indexes, platform-aware"
 tags:
   - "multi-arch"
   - "container-images"

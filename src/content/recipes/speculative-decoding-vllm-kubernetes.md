@@ -1,5 +1,5 @@
 ---
-title: "Speculative Decoding vLLM K8s"
+title: "Speculative Decoding with vLLM on Kubernetes"
 description: "Enable speculative decoding in vLLM on Kubernetes for 2-3x faster LLM inference. Draft model selection, acceptance rates, and latency optimization."
 publishDate: "2026-04-28"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes EnvFrom ConfigMap Environment Variables"
-description: "Inject all ConfigMap keys as environment variables using envFrom in Kubernetes pods. Configure configMapRef, secretRef, prefix options, and selective key injection with configMapKeyRef."
+description: "Inject all ConfigMap keys as environment variables using envFrom in Kubernetes pods. Configure configMapRef, secretRef, prefix options, and selective key"
 tags:
   - "configmap"
   - "environment-variables"
@@ -12,9 +12,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-configmap-management"
-  - "kubernetes-secrets-management"
-  - "kubernetes-pod-configuration"
+  - "kubernetes-configmap-secrets-management"
+  - "kubernetes-secrets-management-guide"
 ---
 
 > 💡 **Quick Answer:** `envFrom` injects ALL keys from a ConfigMap (or Secret) as environment variables in one declaration. Use `envFrom[].configMapRef.name` to inject an entire ConfigMap, or `env[].valueFrom.configMapKeyRef` for individual keys. Keys become env var names; values become env var values.

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Kind Local Development Cluster"
-description: "Create local Kubernetes clusters with kind (Kubernetes in Docker). Multi-node clusters, ingress setup, local registry, port mapping, volume mounts, and CI/CD integration for development and testing."
+description: "Create local Kubernetes clusters with kind (Kubernetes in Docker). Multi-node clusters, ingress setup, local registry, port mapping, volume mounts, and CI/CD"
 tags:
   - "kind"
   - "local-development"
@@ -12,9 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-minikube-local-cluster"
-  - "kubernetes-k3s-lightweight-cluster"
-  - "kubernetes-development-workflow"
+  - "kubernetes-local-development"
 ---
 
 > 💡 **Quick Answer:** kind (Kubernetes IN Docker) runs K8s clusters using Docker containers as nodes. Install with `go install sigs.k8s.io/kind@latest` or `brew install kind`. Create a cluster: `kind create cluster`. Multi-node, ingress, local registries, and CI/CD — all configured via a YAML config file. Clusters start in ~30 seconds.

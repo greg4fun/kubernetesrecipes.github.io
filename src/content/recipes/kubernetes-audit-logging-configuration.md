@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Audit Logging Configuration"
-description: "Configure Kubernetes audit logging to track API requests. Define audit policies, capture who did what and when, send logs to backends like Elasticsearch, and detect unauthorized access patterns."
+description: "Configure Kubernetes audit logging to track API requests. Define audit policies, capture who did what and when, send logs to backends like"
 tags:
   - "audit-logging"
   - "security"
@@ -12,7 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "kubernetes-rbac-role-based-access-control"
+  - "kubernetes-rbac-role-clusterrole"
   - "kubernetes-secrets-management-best-practices"
   - "kubernetes-efk-stack-centralized-logging"
 ---

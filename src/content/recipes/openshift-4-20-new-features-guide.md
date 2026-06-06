@@ -1,6 +1,6 @@
 ---
 title: "OpenShift 4.20: New Features and Upgrade Guide"
-description: "OpenShift 4.20 (EUS) new features, K8s 1.33 alignment, upgrade path from 4.18, and what administrators need to know."
+description: "OpenShift 4.20 (EUS) new features, Kubernetes 1.33 alignment, the upgrade path from 4.18, and what administrators need to know before upgrading."
 publishDate: "2026-04-16"
 author: "Luca Berton"
 category: "deployments"

@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Rate Limiting Guide"
+title: "Kubernetes Rate Limiting with NGINX and Istio"
 description: "Implement Kubernetes rate limiting for API protection. Ingress NGINX annotations, Istio rate limits, Kong plugins, and per-service rate limiting patterns."
 category: "networking"
 difficulty: "intermediate"

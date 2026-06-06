@@ -1,5 +1,5 @@
 ---
-title: "Helm OCI Registry for Charts"
+title: "Helm OCI Registry for Charts Explained"
 description: "Store and manage Helm charts in OCI-compliant registries like GHCR, ECR, ACR, and Quay. Push, pull, and version charts using standard container registries."
 publishDate: "2026-04-20"
 author: "Luca Berton"

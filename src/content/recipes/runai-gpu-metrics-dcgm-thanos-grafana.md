@@ -1,6 +1,6 @@
 ---
 title: "Run:ai GPU Metrics Pipeline with DCGM and Thanos"
-description: "End-to-end GPU metrics pipeline on Run:ai: DCGM exporter collects GPU utilization, Prometheus scrapes, remote-writes to Thanos Receive, and Grafana dashboards display per-workload GPU usage."
+description: "End-to-end GPU metrics pipeline on Run:ai: DCGM exporter collects GPU utilization, Prometheus scrapes, remote-writes to Thanos Receive, and Grafana dashboards"
 tags:
   - "runai"
   - "dcgm"

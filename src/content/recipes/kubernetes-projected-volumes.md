@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Projected Volumes"
+title: "Kubernetes Projected Volumes Explained"
 description: "Combine Secrets, ConfigMaps, Downward API, and ServiceAccount tokens into a single projected volume mount for cleaner pod configuration."
 publishDate: "2026-04-21"
 author: "Luca Berton"

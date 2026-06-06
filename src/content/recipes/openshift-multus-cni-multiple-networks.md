@@ -1,6 +1,6 @@
 ---
 title: "OpenShift Multus CNI Multiple Network Interfaces"
-description: "Attach multiple network interfaces to Pods using Multus CNI on OpenShift. Covers NetworkAttachmentDefinitions, SR-IOV, macvlan, IPVLAN, traffic separation for GPU fabric, storage, and management networks."
+description: "Attach multiple network interfaces to Pods using Multus CNI on OpenShift. Covers NetworkAttachmentDefinitions, SR-IOV, macvlan, IPVLAN, traffic separation"
 tags:
   - "multus"
   - "cni"

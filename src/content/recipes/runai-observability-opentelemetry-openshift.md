@@ -1,6 +1,6 @@
 ---
 title: "Run:ai Observability with OpenTelemetry"
-description: "Configure Run:ai observability on OpenShift with OpenTelemetry Collector, Prometheus receivers, metrics enrichment, OAuth2 export, and GPU metric collection via node exporter."
+description: "Configure Run:ai observability on OpenShift with OpenTelemetry Collector, Prometheus receivers, metrics enrichment, OAuth2 export, and GPU metric collection"
 tags:
   - "runai"
   - "opentelemetry"

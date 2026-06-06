@@ -1,6 +1,6 @@
 ---
 title: "Kyverno Drift Prevention for GitOps"
-description: "Prevent configuration drift in GitOps workflows using Kyverno: block manual kubectl edits, enforce ArgoCD/Flux ownership, and detect out-of-band changes to critical resources."
+description: "Prevent configuration drift in GitOps workflows using Kyverno: block manual kubectl edits, enforce ArgoCD/Flux ownership, and detect out-of-band changes"
 tags:
   - "kyverno"
   - "gitops"

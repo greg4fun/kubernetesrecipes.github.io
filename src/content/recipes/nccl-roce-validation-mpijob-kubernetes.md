@@ -1,6 +1,6 @@
 ---
 title: "NCCL RoCE Validation with Kubeflow MPIJob on Kubernetes"
-description: "Run NCCL all_reduce_perf validation tests using Kubeflow MPIJob on GPU clusters. Configure MPI launcher and workers, NCCL environment variables, test single-node NVLink vs multi-node RoCE, interpret results, and troubleshoot RDMA device missing errors."
+description: "Run NCCL all_reduce_perf validation tests using Kubeflow MPIJob on GPU clusters. Configure MPI launcher and workers, NCCL environment variables, test"
 tags:
   - "nccl"
   - "mpi"

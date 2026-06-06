@@ -1,6 +1,6 @@
 ---
 title: "emptyDir Volumes: Sharing, Lifecycle, and Memory-Backed"
-description: "Master emptyDir volumes for CKA/CKAD exam prep. Share data between containers, understand volume lifecycle across restarts vs Pod deletion, and configure memory-backed ephemeral storage with medium: Memory."
+description: "Master emptyDir volumes for CKA/CKAD exam prep. Share data between containers, understand volume lifecycle across restarts vs Pod deletion, and configure"
 tags:
   - "emptydir"
   - "volumes"
@@ -15,7 +15,7 @@ relatedRecipes:
   - "kubernetes-emptydir-hostpath-volumes"
   - "kubernetes-persistent-volume"
   - "pvc-storageclass-examples"
-  - "init-containers-kubernetes"
+  - "init-containers"
 ---
 
 > 💡 **Quick Answer:** `emptyDir` creates a fresh empty directory when a Pod starts. It's shared across all containers in the Pod, survives container restarts, but is **deleted permanently when the Pod is removed from the node**. Use `medium: Memory` for RAM-backed tmpfs when you need ultra-fast ephemeral storage.

@@ -1,5 +1,5 @@
 ---
-title: "Gateway API gRPC Routes"
+title: "Gateway API gRPC Routes on Kubernetes"
 description: "Configure Kubernetes Gateway API GRPCRoute for gRPC traffic routing. Service-level matching, header-based routing, and traffic splitting for gRPC services."
 publishDate: "2026-04-20"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
 title: "Run:ai GPU Scheduling with Kubeflow MPIJob"
-description: "Integrate Run:ai GPU scheduler with Kubeflow MPIJob for multi-node NCCL workloads. Covers Run:ai project namespaces, GPU quota annotations, pod group scheduling, cleanPodPolicy, and GPU memory tracking for distributed training on OpenShift."
+description: "Integrate Run:ai GPU scheduler with Kubeflow MPIJob for multi-node NCCL workloads. Covers Run:ai project namespaces, GPU quota annotations, pod group"
 tags:
   - "gpu"
   - "scheduling"
@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "nccl-network-validator-production-mpijob"
   - "runai-distributed-inference-vllm-nccl"
-  - "volcano-gang-scheduling-kubernetes"
+  - "volcano-batch-scheduling-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Run:ai automatically manages GPU scheduling for Kubeflow MPIJob workloads. Deploy MPIJobs into Run:ai project namespaces (e.g., `my-project`). Run:ai adds tracking annotations (`runai-current-allocated-gpus`, `runai-used-nodes`) and enforces per-project GPU quotas. Use `cleanPodPolicy: None` and `backoffLimit: 0` for validation jobs to preserve logs and prevent retry loops.

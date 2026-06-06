@@ -1,6 +1,6 @@
 ---
 title: "PScale NFS and SMB Storage Benchmarking"
-description: "Benchmark NFS and SMB storage performance on Kubernetes using fio clients in Pods. Covers multi-client parallel testing, bandwidth measurement, and IOPS profiling."
+description: "Benchmark NFS and SMB storage performance on Kubernetes using fio clients in Pods. Covers multi-client parallel testing, bandwidth measurement, and IOPS"
 tags:
   - "benchmarking"
   - "storage"

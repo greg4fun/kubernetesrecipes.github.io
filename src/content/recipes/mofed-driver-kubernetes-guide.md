@@ -1,5 +1,5 @@
 ---
-title: "MOFED Driver Kubernetes Guide"
+title: "MOFED Driver for Kubernetes: Setup Guide"
 description: "Install and manage MOFED drivers in Kubernetes. Network Operator integration, NicClusterPolicy, driver versions, and RDMA troubleshooting."
 publishDate: "2026-04-29"
 author: "Luca Berton"

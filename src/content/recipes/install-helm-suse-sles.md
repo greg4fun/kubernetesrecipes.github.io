@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on SUSE SLES"
+title: "Install Helm on SUSE SLES: Setup Guide"
 description: "Install Helm 3 on SUSE SLES and configure chart repositories. Covers package manager install, script install, and shell completion for SLES 15."
 category: "helm"
 difficulty: "beginner"

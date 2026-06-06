@@ -1,5 +1,5 @@
 ---
-title: "Debug MCP Degraded Nodes"
+title: "Debug Degraded MachineConfigPool Nodes"
 description: "Fix nodes stuck Degraded after MachineConfig updates. Check MCD logs, on-disk validation, and recovery for degraded workers."
 publishDate: "2026-03-19"
 author: "Luca Berton"

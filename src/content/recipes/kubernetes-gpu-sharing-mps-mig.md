@@ -21,7 +21,34 @@ This is a critical skill for managing production Kubernetes clusters at scale. W
 
 ## The Solution
 
-Detailed implementation guide with production-ready configurations, best practices, and common pitfalls to avoid.
+NVIDIA GPUs can be shared three ways: time-slicing (software, no isolation), MPS (concurrent contexts), and MIG (hardware partitions with memory/compute isolation). Enable time-slicing through the GPU Operator's device-plugin ConfigMap:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: time-slicing-config
+  namespace: gpu-operator
+data:
+  any: |-
+    version: v1
+    sharing:
+      timeSlicing:
+        resources:
+          - name: nvidia.com/gpu
+            replicas: 4   # advertise each physical GPU as 4 schedulable units
+```
+
+For hardware isolation, enable a MIG profile on the node and request a slice by its resource name:
+
+```yaml
+# Node configured with nvidia.com/mig.config=all-1g.10gb
+resources:
+  limits:
+    nvidia.com/mig-1g.10gb: 1
+```
+
+Use MIG for multi-tenant inference where isolation matters; use time-slicing to pack many low-utilization pods onto a single GPU.
 
 ## Common Issues
 

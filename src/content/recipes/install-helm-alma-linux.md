@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on AlmaLinux"
+title: "Install Helm on AlmaLinux: Setup Guide"
 description: "Install Helm 3 on AlmaLinux and configure chart repositories. Covers package manager install, script install, and shell completion for AlmaLinux 8/9."
 category: "helm"
 difficulty: "beginner"

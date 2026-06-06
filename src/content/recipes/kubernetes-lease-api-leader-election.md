@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Lease API Leader Election Guide"
-description: "Implement leader election using the Kubernetes Lease API in coordination.k8s.io. Configure lease-based leader election for controllers, operators, and distributed applications with practical examples."
+description: "Implement leader election with the Kubernetes Lease API (coordination.k8s.io). Configure lease-based election for controllers, operators, and distributed apps."
 tags:
   - "leases"
   - "leader-election"
@@ -12,9 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-operator-development-guide"
-  - "kubernetes-controller-runtime-patterns"
-  - "kubernetes-high-availability-deployments"
+  - "kubernetes-operator-sdk-guide"
 ---
 
 > 💡 **Quick Answer:** Kubernetes Leases (`coordination.k8s.io/v1`) provide leader election by having candidates race to acquire/renew a Lease object. Only the holder (leader) performs work; others stand by. Use `client-go/tools/leaderelection` or controller-runtime's built-in leader election. The `kube-node-lease` namespace uses Leases for node heartbeats.

@@ -1,6 +1,6 @@
 ---
 title: "Debug Distributed vLLM Inference with NCCL Verbose Logging"
-description: "Debug distributed vLLM inference using NCCL_DEBUG=INFO and NCCL_DEBUG_SUBSYS=ALL. Covers air-gapped deployment with TRANSFORMERS_OFFLINE, interpreting NCCL transport selection, diagnosing connection failures, and tensor parallelism issues."
+description: "Debug distributed vLLM inference using NCCL_DEBUG=INFO and NCCL_DEBUG_SUBSYS=ALL. Covers air-gapped deployment with TRANSFORMERS_OFFLINE, interpreting NCCL"
 tags:
   - "vllm"
   - "nccl"

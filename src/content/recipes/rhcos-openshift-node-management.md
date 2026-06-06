@@ -1,5 +1,5 @@
 ---
-title: "RHCOS for OpenShift Nodes"
+title: "RHCOS Node Management for OpenShift"
 description: "Understand and manage Red Hat Enterprise Linux CoreOS (RHCOS) for OpenShift nodes including MachineConfig, ignition, OS updates, and node customization."
 publishDate: "2026-02-26"
 author: "Luca Berton"

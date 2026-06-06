@@ -1,6 +1,6 @@
 ---
 title: "NCCL RoCE Validation MPIJob Complete Reference"
-description: "Complete nccl-roce-validation.yaml MPIJob reference for OpenShift GPU clusters. Full launcher environment variables, OpenMPI control plane settings, NCCL tuning parameters, DNS resolution, IB device tree connection, and validation workflow with troubleshooting checklist."
+description: "Complete nccl-roce-validation.yaml MPIJob reference for OpenShift GPU clusters. Full launcher environment variables, OpenMPI control plane settings, NCCL"
 tags:
   - "nccl"
   - "mpi"

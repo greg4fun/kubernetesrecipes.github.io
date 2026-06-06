@@ -1,6 +1,6 @@
 ---
 title: "Kyverno ISO 27001 Compliance Policies"
-description: "Implement ISO 27001 and BSI IT-Grundschutz security controls in Kubernetes using Kyverno policies: access control, cryptography, operations security, and audit logging enforcement."
+description: "Implement ISO 27001 and BSI IT-Grundschutz security controls in Kubernetes using Kyverno policies: access control, cryptography, operations security, and audit"
 tags:
   - "kyverno"
   - "compliance"

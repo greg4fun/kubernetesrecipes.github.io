@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Pod Priority and Preemption"
-description: "Configure pod priority and preemption in Kubernetes for critical workloads. PriorityClass definitions, preemption behavior, protecting system pods, and scheduling strategies for mixed-priority clusters."
+description: "Configure pod priority and preemption in Kubernetes for critical workloads. PriorityClass definitions, preemption behavior, protecting system"
 tags:
   - "priority"
   - "preemption"
@@ -12,9 +12,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-resource-management"
   - "kubernetes-pod-disruption-budget"
-  - "kubernetes-node-affinity-taints-tolerations"
+  - "kubernetes-taint-toleration"
 ---
 
 > 💡 **Quick Answer:** PriorityClass assigns a numeric priority (0-1000000000) to pods. Higher-priority pods get scheduled first and can preempt (evict) lower-priority pods when the cluster is full. Create PriorityClasses for your workload tiers (critical/high/normal/low), then reference them in pod specs with `priorityClassName`. System-critical pods use priority > 1000000000.

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes HPA Custom Metrics Prometheus Adapter"
-description: "Configure Kubernetes Horizontal Pod Autoscaler with custom Prometheus metrics via the Prometheus Adapter. Scale on request latency, queue depth, GPU utilization, and business metrics beyond CPU and memory."
+description: "Configure Kubernetes Horizontal Pod Autoscaler with custom Prometheus metrics via the Prometheus Adapter. Scale on request latency, queue depth, GPU"
 tags:
   - "hpa"
   - "autoscaling"
@@ -13,8 +13,8 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "kubernetes-vertical-pod-autoscaler-vpa"
-  - "prometheus-monitoring-kubernetes"
-  - "kubernetes-hpa-horizontal-pod-autoscaler"
+  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-horizontal-pod-autoscaler-v2"
 ---
 
 > 💡 **Quick Answer:** The Prometheus Adapter exposes Prometheus metrics as Kubernetes custom metrics API, enabling HPA to scale on any metric. Install the adapter with Helm, configure metric rules to map PromQL queries to the `custom.metrics.k8s.io` API, then reference metrics in your HPA spec with `type: Pods` or `type: Object`.

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Rate Limiting with Gateway API"
-description: "Implement rate limiting for Kubernetes services using Gateway API, Istio, Kong, NGINX, and Envoy. Protect APIs from abuse with per-service, per-client, and global rate limit policies."
+description: "Implement rate limiting for Kubernetes services using Gateway API, Istio, Kong, NGINX, and Envoy. Protect APIs from abuse"
 tags:
   - "rate-limiting"
   - "gateway-api"
@@ -12,9 +12,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-gateway-api-inference-extension"
-  - "kubernetes-ingress-nginx-configuration"
-  - "istio-ambient-mesh-kubernetes"
+  - "kubernetes-ai-gateway-inference-extension"
+  - "kubernetes-ingress-nginx-guide"
 ---
 
 > 💡 **Quick Answer:** Rate limiting in Kubernetes protects services from traffic spikes and abuse. Implement at the ingress/gateway layer using Gateway API `BackendTrafficPolicy`, NGINX annotations (`limit-rps`), Istio `EnvoyFilter`, or Kong `RateLimiting` plugin. For CI/CD webhooks, use a global rate limit service (Envoy ratelimit) with Redis backend.

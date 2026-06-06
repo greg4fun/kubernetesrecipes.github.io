@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes for AI Search and Discoverability"
-description: "Deploy AI-searchable services on Kubernetes: llms.txt implementation, RAG-optimized APIs, structured data for AI chatbots, and infrastructure patterns for the AI-as-search era where 48% of Gen Z use AI to research products."
+description: "Deploy AI-searchable services on Kubernetes: llms.txt implementation, RAG-optimized APIs, structured data for AI chatbots, and infrastructure patterns"
 tags:
   - "ai-search"
   - "llms-txt"
@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-ai-infrastructure-scaling"
-  - "kubernetes-ingress-configuration"
+  - "kubernetes-ingress-nginx-guide"
   - "nim-multinode-deployment-helm-kubernetes"
   - "kubernetes-configmap-guide"
 ---

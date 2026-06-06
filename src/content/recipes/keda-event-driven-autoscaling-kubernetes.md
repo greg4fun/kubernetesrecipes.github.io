@@ -1,6 +1,6 @@
 ---
 title: "KEDA Event-Driven Autoscaling on Kubernetes"
-description: "Deploy KEDA for event-driven autoscaling on Kubernetes. Scale deployments to zero based on queue depth, HTTP requests, cron schedules, Prometheus metrics, and external event sources like Kafka and RabbitMQ."
+description: "Deploy KEDA for event-driven autoscaling on Kubernetes. Scale deployments to zero based on queue depth, HTTP requests, cron schedules, Prometheus"
 tags:
   - "keda"
   - "autoscaling"

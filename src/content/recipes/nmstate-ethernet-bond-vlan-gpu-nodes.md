@@ -1,6 +1,6 @@
 ---
 title: "NMState Network Config for GPU Worker Nodes"
-description: "Declaratively configure Ethernet bonding, VLANs, MTU, and static routes on GPU worker nodes using NMState on OpenShift. Covers bonding modes, LACP for storage, jumbo frames for RDMA, and NodeNetworkConfigurationPolicy CRDs."
+description: "Declaratively configure Ethernet bonding, VLANs, MTU, and static routes on GPU worker nodes using NMState on OpenShift. Covers bonding modes, LACP"
 tags:
   - "nmstate"
   - "bonding"
@@ -15,7 +15,7 @@ relatedRecipes:
   - "openshift-multus-cni-multiple-networks"
   - "dual-fabric-mellanox-gpu-storage-ethernet-infiniband"
   - "roce-pfc-ecn-lossless-ethernet-gpu"
-  - "openshift-machineconfig-kernel-gpu"
+  - "openshift-machineconfig-mcp-guide"
 ---
 
 > 💡 **Quick Answer:** NMState (`NodeNetworkConfigurationPolicy`) declaratively manages host networking on OpenShift nodes — bonding, VLANs, MTU, static routes — without SSH. For GPU nodes, use it to configure jumbo frames (MTU 9000) on RDMA interfaces, bonding for storage networks, and VLAN tags for traffic isolation.

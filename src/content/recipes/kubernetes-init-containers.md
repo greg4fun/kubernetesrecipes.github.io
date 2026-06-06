@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes Init Containers Guide"
-description: "Production guide for kubernetes init containers guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Use Kubernetes init containers to run setup tasks before your main application starts. Covers database migrations, config generation, dependency"
 category: "configuration"
-difficulty: "Use Kubernetes init containers to run setup tasks before your main application starts. Covers database migrations, config generation, dependency checks, and ordering."
+difficulty: "intermediate"
 publishDate: "2026-04-05"
 tags: ["init-containers", "startup", "migrations", "dependencies", "kubernetes"]
 author: "Luca Berton"

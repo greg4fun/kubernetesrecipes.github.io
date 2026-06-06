@@ -1,6 +1,6 @@
 ---
 title: "RoCE PFC and ECN Lossless Ethernet for GPU Clusters"
-description: "Configure RoCE v2 with Priority Flow Control (PFC) and ECN for lossless Ethernet RDMA on GPU clusters. Covers DSCP mapping, switch configuration, NIC tuning, and diagnosing RoCE performance issues when InfiniBand is not available."
+description: "Configure RoCE v2 with Priority Flow Control (PFC) and ECN for lossless Ethernet RDMA on GPU clusters. Covers DSCP mapping, switch configuration, NIC"
 tags:
   - "roce"
   - "pfc"

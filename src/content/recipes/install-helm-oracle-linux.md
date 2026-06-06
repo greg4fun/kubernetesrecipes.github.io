@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on Oracle Linux"
+title: "Install Helm on Oracle Linux: Setup Guide"
 description: "Install Helm 3 on Oracle Linux and configure chart repositories. Covers package manager install, script install, and shell completion for Oracle Linux 8/9."
 category: "helm"
 difficulty: "beginner"

@@ -1,6 +1,6 @@
 ---
 title: "Kyverno LLM Inference Cost and Security Guardrails"
-description: "Implement policy-as-code guardrails for LLM inference workloads with Kyverno: GPU quota enforcement, model size limits, cost controls, prompt injection prevention, and rate limiting at admission time."
+description: "Implement policy-as-code guardrails for LLM inference workloads with Kyverno: GPU quota enforcement, model size limits, cost controls, prompt injection"
 tags:
   - "kyverno"
   - "llm"

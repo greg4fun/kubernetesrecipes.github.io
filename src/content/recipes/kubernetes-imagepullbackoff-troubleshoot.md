@@ -1,5 +1,5 @@
 ---
-title: "Fix ImagePullBackOff in Kubernetes"
+title: "Troubleshoot ImagePullBackOff and ErrImagePull"
 description: "Troubleshoot Kubernetes ImagePullBackOff and ErrImagePull errors. Private registry auth, image pull secrets, tag verification, and network connectivity fixes."
 publishDate: "2026-05-02"
 author: "Luca Berton"

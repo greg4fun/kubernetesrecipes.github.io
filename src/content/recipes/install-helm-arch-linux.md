@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on Arch Linux"
+title: "Install Helm on Arch Linux: Setup Guide"
 description: "Install Helm 3 on Arch Linux and configure chart repositories. Covers package manager install, script install, and shell completion for Arch Linux rolling."
 category: "helm"
 difficulty: "beginner"

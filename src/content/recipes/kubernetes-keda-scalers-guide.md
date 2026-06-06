@@ -1,6 +1,6 @@
 ---
-title: "KEDA Scalers Guide Kubernetes"
-description: "Configure KEDA scalers for event-driven autoscaling on K8s. Kafka, RabbitMQ, Prometheus, and cron trigger patterns."
+title: "KEDA Scalers Guide for Kubernetes"
+description: "Configure KEDA scalers for event-driven autoscaling on Kubernetes. Covers Kafka, RabbitMQ, Prometheus, and cron trigger configuration."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "autoscaling"

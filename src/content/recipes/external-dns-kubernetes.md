@@ -1,8 +1,8 @@
 ---
-title: "External DNS for Kubernetes"
-description: "Production guide for external dns for kubernetes. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+title: "External DNS for Kubernetes: Setup Guide"
+description: "Automate DNS record management with ExternalDNS for Kubernetes. Sync Service and Ingress hostnames to Route53, CloudFlare, Google Cloud DNS, and 30+ providers."
 category: "networking"
-difficulty: "Automate DNS record management with ExternalDNS for Kubernetes. Sync Service and Ingress hostnames to Route53, CloudFlare, Google Cloud DNS, and 30+ providers."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["external-dns", "dns", "route53", "cloudflare", "automation"]
 author: "Luca Berton"

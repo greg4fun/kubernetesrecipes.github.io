@@ -1,6 +1,6 @@
 ---
 title: "Kyverno ReBAC Multi-Tenant RBAC Automation"
-description: "Implement Relationship-Based Access Control (ReBAC) with Kyverno to automate multi-tenant RBAC at scale: dynamic RoleBindings, namespace isolation, and hierarchical tenant structures."
+description: "Implement Relationship-Based Access Control (ReBAC) with Kyverno to automate multi-tenant RBAC at scale: dynamic RoleBindings, namespace"
 tags:
   - "kyverno"
   - "rbac"

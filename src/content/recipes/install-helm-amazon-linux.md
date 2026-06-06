@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on Amazon Linux"
+title: "Install Helm on Amazon Linux: Setup Guide"
 description: "Install Helm on Amazon Linux 2023 and AL2. Three install methods, chart repository setup, shell completion, and troubleshooting for Amazon Linux environments."
 category: "helm"
 difficulty: "beginner"

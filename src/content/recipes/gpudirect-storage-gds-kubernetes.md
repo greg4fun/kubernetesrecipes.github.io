@@ -1,6 +1,6 @@
 ---
 title: "GPUDirect Storage on Kubernetes"
-description: "Configure NVIDIA GPUDirect Storage (GDS) for direct data path between NVMe/NFS storage and GPU memory bypassing CPU. Covers Magnum IO, cuFile API, GDS driver setup on OpenShift and Talos, and benchmarking with gdsio."
+description: "Configure NVIDIA GPUDirect Storage (GDS) for direct data path between NVMe/NFS storage and GPU memory bypassing CPU. Covers Magnum IO, cuFile API, GDS driver"
 tags:
   - "gpudirect"
   - "storage"

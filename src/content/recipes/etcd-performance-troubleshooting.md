@@ -1,5 +1,5 @@
 ---
-title: "Debug etcd Performance Issues"
+title: "Debug etcd Performance Issues in Kubernetes"
 description: "Diagnose slow etcd causing API latency and leader election storms. Check disk IOPS, compaction, defrag, and network latency."
 publishDate: "2026-03-19"
 author: "Luca Berton"

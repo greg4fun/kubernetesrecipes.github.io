@@ -1,6 +1,6 @@
 ---
 title: "OCI Container Image Internals on Kubernetes"
-description: "Understand OCI container image internals: layers as tar archive diffs, image configuration JSON, content-addressable storage with SHA-256, multi-platform image indexes, and how Kubernetes container runtimes pull and unpack images."
+description: "Understand OCI container image internals: layers as tar archive diffs, image configuration JSON, content-addressable storage with SHA-256, multi-platform image"
 tags:
   - "oci"
   - "container-images"
@@ -12,10 +12,9 @@ publishDate: "2026-05-22"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-private-container-registry"
-  - "kubernetes-image-pull-secrets"
-  - "pod-security-standards-kubernetes"
-  - "container-runtime-troubleshooting-kubernetes"
+  - "private-container-registry-kubernetes"
+  - "kubernetes-imagepullsecrets-guide"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** An OCI container image is a content-addressable bundle: filesystem layers (compressed tar diffs), an image configuration JSON (platform, env, cmd, user), and a manifest tying them together via SHA-256 digests. On Kubernetes, containerd/CRI-O pulls manifests, downloads layers in parallel, unpacks them into an overlay filesystem, and applies the config as container runtime settings.

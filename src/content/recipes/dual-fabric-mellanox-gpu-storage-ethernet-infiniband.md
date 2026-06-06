@@ -1,6 +1,6 @@
 ---
 title: "Dual-Fabric Mellanox: GPU InfiniBand + Storage Ethernet"
-description: "Design and configure dual-fabric network architecture with separate Mellanox NICs for GPU communication (InfiniBand) and storage traffic (Ethernet). Covers fabric separation, SR-IOV policies per fabric, NCCL binding, and NFS/RoCE coexistence."
+description: "Design and configure dual-fabric network architecture with separate Mellanox NICs for GPU communication (InfiniBand) and storage traffic (Ethernet). Covers"
 tags:
   - "infiniband"
   - "ethernet"
@@ -15,7 +15,7 @@ relatedRecipes:
   - "nccl-pxn-cross-nic-nvlink-topology"
   - "openshift-sriov-rdma-infiniband-device-plugin"
   - "iommu-bios-kernel-nccl-gpu-direct"
-  - "kubernetes-nfs-persistent-volumes"
+  - "kubernetes-nfs-provisioner-guide"
 ---
 
 > 💡 **Quick Answer:** GPU clusters use separate physical fabrics: InfiniBand NICs for GPU-to-GPU NCCL traffic (highest bandwidth, lowest latency) and Ethernet NICs for storage (NFS/Ceph), management, and Pod networking. Never mix GPU RDMA and storage on the same fabric — congestion on one kills the other.

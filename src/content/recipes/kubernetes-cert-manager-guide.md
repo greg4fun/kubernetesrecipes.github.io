@@ -1,6 +1,6 @@
 ---
 title: "cert-manager: Automated TLS Certificates"
-description: "Automate TLS certificate management with cert-manager in Kubernetes. Let's Encrypt integration, Issuer configuration, wildcard certificates, and automatic renewal."
+description: "Automate TLS certificate management with cert-manager in Kubernetes. Let's Encrypt integration, Issuer configuration, wildcard certificates, and automatic"
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "security"

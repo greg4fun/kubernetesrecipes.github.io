@@ -1,6 +1,6 @@
 ---
 title: "External Secrets Operator on OpenShift"
-description: "Manage Kubernetes secrets from external vaults using External Secrets Operator on OpenShift. Covers ExternalSecret CRD, SecretStore configuration, and GitOps integration with ArgoCD."
+description: "Manage Kubernetes secrets from external vaults using External Secrets Operator on OpenShift. Covers ExternalSecret CRD, SecretStore configuration, and GitOps"
 tags:
   - "secrets"
   - "security"

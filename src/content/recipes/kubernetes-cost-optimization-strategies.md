@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Cost Optimization Strategies"
-description: "Comprehensive cost reduction strategies for Kubernetes clusters: right-sizing, spot instances, autoscaling, idle resource detection, namespace budgets, and GPU cost management."
+description: "Comprehensive cost reduction strategies for Kubernetes clusters: right-sizing, spot instances, autoscaling, idle resource detection, namespace budgets, and GPU"
 tags:
   - "cost-optimization"
   - "finops"
@@ -14,7 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-vpa-vertical-pod-autoscaler"
   - "kubernetes-goldilocks-vpa-dashboard"
-  - "kubernetes-hpa-autoscaling"
+  - "kubernetes-horizontal-pod-autoscaler-v2"
   - "kubernetes-resource-quota-limitrange"
 ---
 

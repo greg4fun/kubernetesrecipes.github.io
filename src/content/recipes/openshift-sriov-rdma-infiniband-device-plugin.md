@@ -1,6 +1,6 @@
 ---
 title: "OpenShift SR-IOV RDMA InfiniBand Device Plugin"
-description: "Configure and troubleshoot SR-IOV Network Operator with Mellanox ConnectX RDMA InfiniBand devices on OpenShift. Covers SriovNetworkNodePolicy, device allocation, uverbs/rdma_cm paths, and the 'no devices in device pool' error."
+description: "Configure and troubleshoot SR-IOV Network Operator with Mellanox ConnectX RDMA InfiniBand devices on OpenShift. Covers SriovNetworkNodePolicy, device"
 tags:
   - "sriov"
   - "rdma"
@@ -12,10 +12,9 @@ publishDate: "2026-05-07"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "openshift-sriov-network-operator"
   - "nvidia-gpu-operator-setup"
   - "kubernetes-ai-infrastructure-scaling"
-  - "openshift-machine-config-operator"
+  - "openshift-machineconfig-mcp-guide"
 ---
 
 > 💡 **Quick Answer:** The SR-IOV Network Operator on OpenShift manages Mellanox ConnectX RDMA/InfiniBand devices via `SriovNetworkNodePolicy`. When the device plugin logs "no devices in device pool, skipping creating resource server for mellanoxnics," it means the policy's selector doesn't match available VFs — verify PCI addresses, numVfs, and node labels.

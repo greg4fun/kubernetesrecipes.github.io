@@ -1,6 +1,6 @@
 ---
 title: "Poolside AI Foundation Models on Kubernetes"
-description: "Deploy Poolside AI foundation models for enterprise software agents on Kubernetes. On-prem and VPC deployment, multi-agent orchestration, sandboxed execution, developer surface integration, and air-gapped operation for regulated environments."
+description: "Deploy Poolside AI foundation models for enterprise software agents on Kubernetes. On-prem and VPC deployment, multi-agent orchestration, sandboxed"
 tags:
   - "poolside"
   - "foundation-models"
@@ -14,9 +14,9 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "vllm-openai-container-kubernetes"
-  - "nvidia-nim-multi-node-deployment"
+  - "nim-multinode-deployment-helm-kubernetes"
   - "red-hat-ai-studio-openshift-model-development"
-  - "kubernetes-network-policies-guide"
+  - "kubernetes-network-policy-guide"
 ---
 
 > 💡 **Quick Answer:** Poolside AI builds foundation models optimized for long-horizon software engineering tasks — code generation, multi-agent orchestration, and tool use in sandboxed environments. Deploy on-prem or in your VPC on Kubernetes with strict data boundaries, RBAC for both humans and agents, and air-gap support for defense/regulated use cases.

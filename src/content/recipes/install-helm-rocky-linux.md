@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on Rocky Linux"
+title: "Install Helm on Rocky Linux: Setup Guide"
 description: "Install Helm 3 on Rocky Linux and configure chart repositories. Covers package manager install, script install, and shell completion for Rocky Linux 8/9."
 category: "helm"
 difficulty: "beginner"

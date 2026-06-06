@@ -1,6 +1,6 @@
 ---
 title: "NCCL Environment Variables Complete Reference"
-description: "Complete reference for NCCL environment variables on Kubernetes. Configure network transport, InfiniBand, GPUDirect RDMA, socket tuning, debugging, and algorithm selection for distributed GPU workloads."
+description: "Complete reference for NCCL environment variables on Kubernetes. Configure network transport, InfiniBand, GPUDirect RDMA, socket"
 tags:
   - "nccl"
   - "gpu"
@@ -15,8 +15,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "nccl-rccl-networking-performance-kubernetes"
   - "nccl-topology-dump-tuning-kubernetes"
-  - "nccl-pxn-cross-nic-nvlink-kubernetes"
-  - "debug-distributed-vllm-nccl-verbose-logging"
+  - "nccl-pxn-cross-nic-nvlink-topology"
   - "gpudirect-storage-gds-kubernetes"
 ---
 

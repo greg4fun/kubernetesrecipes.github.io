@@ -1,6 +1,6 @@
 ---
-title: "StorageClass Guide Kubernetes"
-description: "Configure StorageClasses for dynamic provisioning on K8s. Reclaim policies, binding modes, and cloud provider examples."
+title: "Kubernetes StorageClass Complete Guide"
+description: "Configure StorageClasses for dynamic provisioning on Kubernetes. Covers reclaim policies, volume binding modes, and cloud provider examples."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "storage"

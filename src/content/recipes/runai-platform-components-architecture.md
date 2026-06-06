@@ -1,6 +1,6 @@
 ---
 title: "Run:ai Platform Backend Components"
-description: "Overview of Run:ai backend StatefulSets and components on OpenShift: Thanos receive/query, Keycloak, NATS, Redis, PostgreSQL, workload controllers, and their resource requirements."
+description: "Overview of Run:ai backend StatefulSets and components on OpenShift: Thanos receive/query, Keycloak, NATS, Redis, PostgreSQL, workload controllers, and their"
 tags:
   - "runai"
   - "architecture"

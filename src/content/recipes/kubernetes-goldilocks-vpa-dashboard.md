@@ -1,6 +1,6 @@
 ---
 title: "Goldilocks VPA Dashboard for Resource Optimization"
-description: "Deploy Goldilocks to visualize VPA recommendations across all workloads and identify over-provisioned or under-provisioned containers with actionable right-sizing guidance."
+description: "Deploy Goldilocks to visualize VPA recommendations across all workloads and identify over-provisioned or under-provisioned containers with actionable"
 tags:
   - "goldilocks"
   - "vpa"
@@ -14,7 +14,7 @@ difficulty: "beginner"
 relatedRecipes:
   - "kubernetes-vpa-vertical-pod-autoscaler"
   - "kubernetes-resource-quota-limitrange"
-  - "kubernetes-hpa-autoscaling"
+  - "kubernetes-horizontal-pod-autoscaler-v2"
 ---
 
 > 💡 **Quick Answer:** Goldilocks creates VPA objects for every Deployment in labeled namespaces and provides a dashboard showing "just right" resource recommendations — identifying which containers are over-provisioned (wasting money) or under-provisioned (risking OOM).

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Finalizers Explained and Troubleshooting"
-description: "Understand Kubernetes finalizers for resource cleanup. How finalizers block deletion, common stuck resource scenarios, manual removal techniques, and implementing custom finalizers in controllers."
+description: "Understand Kubernetes finalizers for resource cleanup. How finalizers block deletion, common stuck resource scenarios, manual removal"
 tags:
   - "finalizers"
   - "resource-lifecycle"
@@ -12,8 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-resource-management"
-  - "kubernetes-operator-development-guide"
+  - "kubernetes-operator-sdk-guide"
   - "kubernetes-namespace-best-practices"
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "Run:ai Backend Architecture on OpenShift"
-description: "Understand the full Run:ai backend deployment on OpenShift with 40+ microservices including Keycloak, PostgreSQL, NATS, Thanos, Traefik, and workload management components."
+description: "Understand the full Run:ai backend deployment on OpenShift with 40+ microservices including Keycloak, PostgreSQL, NATS, Thanos, Traefik, and workload"
 tags:
   - "runai"
   - "openshift"

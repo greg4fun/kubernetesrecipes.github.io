@@ -1,6 +1,6 @@
 ---
 title: "NCCL GPUDirect RDMA Level Tuning PIX PXB PHB SYS"
-description: "Tune NCCL_NET_GDR_LEVEL for optimal GPUDirect RDMA performance on Kubernetes. Compare PIX, PXB, PHB, and SYS distance thresholds with PCIe topology. Benchmark methodology for SR-IOV multi-node GPU clusters."
+description: "Tune NCCL_NET_GDR_LEVEL for optimal GPUDirect RDMA performance on Kubernetes. Compare PIX, PXB, PHB, and SYS distance thresholds with PCIe topology. Benchmark"
 tags:
   - "nccl"
   - "rdma"

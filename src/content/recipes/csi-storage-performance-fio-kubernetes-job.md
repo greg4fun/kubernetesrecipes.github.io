@@ -1,6 +1,6 @@
 ---
 title: "Validate CSI Storage Performance with FIO Kubernetes Job"
-description: "Benchmark CSI storage performance using FIO inside a Kubernetes Job. Create a PVC backed by a CSI StorageClass, run sequential/random read/write tests, interpret IOPS, throughput, and latency results for storage class comparison."
+description: "Benchmark CSI storage performance using FIO inside a Kubernetes Job. Create a PVC backed by a CSI StorageClass, run sequential/random read/write"
 tags:
   - "fio"
   - "csi"

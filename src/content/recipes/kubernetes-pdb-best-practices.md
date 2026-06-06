@@ -1,5 +1,5 @@
 ---
-title: "PDB Best Practices Kubernetes"
+title: "Pod Disruption Budget Best Practices"
 description: "Configure PodDisruptionBudgets for high availability on Kubernetes. minAvailable vs maxUnavailable, voluntary disruptions, and upgrade coordination."
 publishDate: "2026-04-25"
 author: "Luca Berton"

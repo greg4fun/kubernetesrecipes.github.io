@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Linkerd Service Mesh mTLS Guide"
-description: "Deploy Linkerd service mesh on Kubernetes for automatic mTLS, traffic observability, and reliability features. Zero-config encryption, per-route metrics, retries, and traffic splitting without application changes."
+description: "Deploy Linkerd service mesh on Kubernetes for automatic mTLS, traffic observability, and reliability features. Zero-config encryption, per-route"
 tags:
   - "linkerd"
   - "service-mesh"
@@ -12,9 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "istio-ambient-mesh-kubernetes"
-  - "kubernetes-network-policies"
-  - "kubernetes-mutual-tls-certificates"
+  - "kubernetes-network-policy-guide"
 ---
 
 > 💡 **Quick Answer:** Linkerd provides automatic mutual TLS (mTLS) between all meshed pods with zero application changes. Install the control plane (`linkerd install`), inject the sidecar proxy (`linkerd inject`), and all pod-to-pod communication is encrypted and authenticated. Get per-route golden metrics (success rate, latency, throughput) via the Linkerd dashboard or Prometheus.

@@ -1,5 +1,5 @@
 ---
-title: "Install ArgoCD on Debian"
+title: "Install ArgoCD on Debian: Step-by-Step Guide"
 description: "Deploy ArgoCD on Kubernetes running on Debian. GitOps continuous delivery with automated sync, self-healing, and multi-cluster support."
 category: "deployments"
 difficulty: "beginner"

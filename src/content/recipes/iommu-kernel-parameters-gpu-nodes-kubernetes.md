@@ -1,6 +1,6 @@
 ---
 title: "IOMMU Kernel Parameters for Kubernetes GPU Nodes"
-description: "Configure IOMMU kernel parameters for optimal GPU and RDMA performance on Kubernetes. Compare intel_iommu, amd_iommu, and iommu settings, passthrough vs off vs strict modes, and impact on SR-IOV, VFIO, and GPUDirect RDMA workloads."
+description: "Configure IOMMU kernel parameters for optimal GPU and RDMA performance on Kubernetes. Compare intel_iommu, amd_iommu, and iommu settings, passthrough vs off vs"
 tags:
   - "iommu"
   - "kernel"
@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "disable-gds-enable-iommu-passthrough-kubernetes"
   - "gpudirect-rdma-setup-verification-kubernetes"
-  - "sriov-vf-container-mapping-lifecycle-kubernetes"
+  - "sriov-vf-container-mapping-lifecycle"
 ---
 
 > 💡 **Quick Answer:** For GPU/RDMA nodes use `iommu=pt` (passthrough) — IOMMU hardware enabled for device isolation but DMA bypasses translation tables (native speed). For environments where you need the generic IOMMU layer without vendor-specific drivers: `intel_iommu=off amd_iommu=off iommu=on` activates the generic IOMMU subsystem only. For maximum bare-metal performance without SR-IOV: `iommu=off` disables all IOMMU overhead entirely.

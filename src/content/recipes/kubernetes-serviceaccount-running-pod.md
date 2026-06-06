@@ -1,6 +1,6 @@
 ---
 title: "ServiceAccount for Running Pods"
-description: "Configure Kubernetes ServiceAccounts for Pods: token mounting, RBAC permissions, workload identity, automountServiceAccountToken control, and least-privilege patterns for production workloads."
+description: "Configure Kubernetes ServiceAccounts for Pods: token mounting, RBAC permissions, workload identity, automountServiceAccountToken control, and least-privilege"
 tags:
   - "serviceaccount"
   - "rbac"

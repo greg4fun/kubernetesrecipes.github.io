@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Taints and Tolerations Node Scheduling"
-description: "Control pod scheduling with Kubernetes taints and tolerations. Dedicate nodes to specific workloads, prevent scheduling on control-plane nodes, implement GPU node isolation, and manage node maintenance."
+description: "Control pod scheduling with Kubernetes taints and tolerations. Dedicate nodes to specific workloads, prevent scheduling on control-plane nodes, implement GPU"
 tags:
   - "taints"
   - "tolerations"
@@ -12,9 +12,9 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-node-affinity-taints-tolerations"
+  - "kubernetes-taint-toleration"
   - "kubernetes-pod-priority-preemption-scheduling"
-  - "nvidia-gpu-operator-kubernetes"
+  - "nvidia-gpu-operator-setup"
 ---
 
 > 💡 **Quick Answer:** Taints on nodes repel pods; tolerations on pods allow them to schedule on tainted nodes. Taint a node: `kubectl taint nodes gpu-node nvidia.com/gpu=present:NoSchedule`. Only pods with a matching toleration will schedule there. Three effects: `NoSchedule` (hard), `PreferNoSchedule` (soft), `NoExecute` (evict existing pods too).

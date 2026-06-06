@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA GPU Operator GitOps on OpenShift"
-description: "Deploy NVIDIA GPU Operator on OpenShift via GitOps with ArgoCD. Covers ClusterPolicy configuration, DCGM exporter, drain settings, tolerations, and rolling upgrade strategy."
+description: "Deploy NVIDIA GPU Operator on OpenShift via GitOps with ArgoCD. Covers ClusterPolicy configuration, DCGM exporter, drain settings, tolerations, and rolling"
 tags:
   - "nvidia"
   - "gpu-operator"

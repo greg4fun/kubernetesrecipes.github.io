@@ -1,6 +1,6 @@
 ---
 title: "OpenShift SR-IOV Network with NVIDIA IPAM for GPU Fabric"
-description: "Configure SriovNetwork resources on OpenShift with nv-ipam for GPU fabric IP allocation. SR-IOV Network Operator setup, Mellanox NIC resource targeting, IPAM pool configuration, and network attachment for GPU pods with GPUDirect RDMA."
+description: "Configure SriovNetwork resources on OpenShift with nv-ipam for GPU fabric IP allocation. SR-IOV Network Operator setup, Mellanox NIC resource targeting, IPAM"
 tags:
   - "sriov"
   - "openshift"
@@ -12,8 +12,7 @@ publishDate: "2026-06-04"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "nvidia-ipam-nv-ipam-gpu-fabric-kubernetes"
-  - "sriov-vf-container-mapping-lifecycle-kubernetes"
+  - "sriov-vf-container-mapping-lifecycle"
   - "nvidia-gpu-topology-matrix-kubernetes"
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes DaemonSet One Pod Per Node Guide"
-description: "Deploy DaemonSets on Kubernetes to run exactly one pod per node. Configure tolerations, node selectors, affinity rules, and resource management for system-level workloads like logging, monitoring, and networking."
+description: "Deploy DaemonSets on Kubernetes to run exactly one pod per node. Configure tolerations, node selectors, affinity rules, and resource management"
 tags:
   - "daemonset"
   - "scheduling"
@@ -12,8 +12,7 @@ author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
   - "kubernetes-node-affinity-scheduling"
-  - "kubernetes-tolerations-taints"
-  - "kubernetes-resource-management"
+  - "kubernetes-taint-toleration"
 ---
 
 > 💡 **Quick Answer:** A DaemonSet ensures exactly one pod runs on every (or selected) node in the cluster. Kubernetes automatically schedules a pod on each node that matches the DaemonSet's node selector and tolerations. Use DaemonSets for node-level agents: log collectors, monitoring exporters, network plugins, storage drivers, and GPU device plugins.

@@ -1,6 +1,6 @@
 ---
 title: "Kyverno CEL Policy Model Migration"
-description: "Migrate Kyverno policies from YAML-based rules to CEL expressions for type-safe, performant validation. Covers CEL syntax, migration patterns, and comparison with traditional Kyverno rules."
+description: "Migrate Kyverno policies from YAML-based rules to CEL expressions for type-safe, performant validation. Covers CEL syntax, migration patterns, and comparison"
 tags:
   - "kyverno"
   - "cel"

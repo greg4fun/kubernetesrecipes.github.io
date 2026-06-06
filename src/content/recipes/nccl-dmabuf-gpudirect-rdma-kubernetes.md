@@ -1,6 +1,6 @@
 ---
 title: "NCCL DMABUF Enable for GPUDirect RDMA on Kubernetes"
-description: "Enable NCCL DMA-BUF support for GPUDirect RDMA in Kubernetes GPU clusters. Covers NCCL_DMABUF_ENABLE=1, kernel requirements, nvidia-peermem vs dmabuf, GPU Operator configuration, and verification via NCCL debug logs."
+description: "Enable NCCL DMA-BUF support for GPUDirect RDMA in Kubernetes GPU clusters. Covers NCCL_DMABUF_ENABLE=1, kernel requirements, nvidia-peermem vs dmabuf, GPU"
 tags:
   - "nccl"
   - "rdma"

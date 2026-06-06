@@ -1,6 +1,6 @@
 ---
 title: "Crossplane Kubernetes Infrastructure Management"
-description: "Manage cloud infrastructure as Kubernetes resources with Crossplane. Provision AWS, GCP, and Azure resources using custom resource definitions, compositions, and claims from within your cluster."
+description: "Manage cloud infrastructure as Kubernetes resources with Crossplane. Provision AWS, GCP, and Azure resources using custom resource"
 tags:
   - "crossplane"
   - "infrastructure-as-code"
@@ -12,9 +12,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-gitops-argocd"
-  - "terraform-kubernetes-provider"
-  - "kustomize-vs-helm-kubernetes"
+  - "argocd-gitops-deployment"
+  - "kustomize-vs-helm-comparison"
 ---
 
 > 💡 **Quick Answer:** Crossplane extends Kubernetes with CRDs for cloud resources (RDS, S3, VPCs, etc.). Install Crossplane + a Provider (AWS/GCP/Azure), define Compositions for your infrastructure patterns, then teams claim resources with simple CRs — just like requesting a PVC. GitOps-friendly: `kubectl get managed` shows all cloud resources.

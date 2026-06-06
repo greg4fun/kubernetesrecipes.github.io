@@ -1,6 +1,6 @@
 ---
 title: "Production NCCL Network Validator for Kubeflow MPIJob"
-description: "Deploy a production-ready NCCL network validation framework using Kubeflow MPIJob on OpenShift. Complete validate_network.sh script with single-node, mpi-job, and shell modes. Includes SSH daemon setup, DNS resolution, hostfile rewriting, RDMA diagnostics, and Run:ai integration."
+description: "Deploy a production-ready NCCL network validation framework using Kubeflow MPIJob on OpenShift. Complete validate_network.sh script"
 tags:
   - "nccl"
   - "mpi"

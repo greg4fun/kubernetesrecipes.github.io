@@ -1,6 +1,6 @@
 ---
 title: "SR-IOV VF to Container Mapping and Lifecycle"
-description: "How SR-IOV Virtual Functions are mapped to containers in Kubernetes. Covers VF allocation flow, link state management (VFs are down when unassigned), device plugin scheduling, and network namespace binding."
+description: "How SR-IOV Virtual Functions are mapped to containers in Kubernetes. Covers VF allocation flow, link state management (VFs are down when unassigned), device"
 tags:
   - "sriov"
   - "virtual-function"

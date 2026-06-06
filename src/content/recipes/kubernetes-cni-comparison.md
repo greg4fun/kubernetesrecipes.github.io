@@ -21,7 +21,36 @@ This is a critical skill for managing production Kubernetes clusters at scale. W
 
 ## The Solution
 
-Detailed implementation guide with production-ready configurations, best practices, and common pitfalls to avoid.
+Choose a CNI by requirement: Cilium (eBPF) for performance, L7 policy, and observability; Calico for mature policy and BGP; Flannel for a simple overlay; Multus to attach multiple interfaces (common for GPU/RDMA workloads).
+
+| Plugin | Data plane | Network policy | Best for |
+| --- | --- | --- | --- |
+| Cilium | eBPF | L3–L7 | Performance, observability, policy |
+| Calico | iptables/eBPF | L3–L4 | BGP, large clusters |
+| Flannel | VXLAN | none | Simple overlays |
+| Multus | meta-plugin | delegates | Multiple NICs, SR-IOV |
+
+Install Cilium with Helm and validate the data plane:
+
+```bash
+helm install cilium cilium/cilium --namespace kube-system \
+  --set kubeProxyReplacement=true
+
+cilium status --wait
+cilium connectivity test
+```
+
+Whichever CNI you pick, start with a default-deny policy and open traffic explicitly:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+spec:
+  podSelector: {}
+  policyTypes: ["Ingress"]
+```
 
 ## Common Issues
 

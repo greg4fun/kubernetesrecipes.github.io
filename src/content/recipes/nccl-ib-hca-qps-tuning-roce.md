@@ -1,6 +1,6 @@
 ---
 title: "NCCL IB HCA Selection and QPS Tuning for RoCE"
-description: "Configure NCCL_IB_HCA, NCCL_IB_GID_INDEX, NCCL_IB_QPS_PER_CONNECTION, and NCCL_IB_SPLIT_DATA_ON_QPS for optimal RoCE performance on Kubernetes GPU clusters. Covers wildcard HCA filtering, GID index selection, and queue pair scaling."
+description: "Configure NCCL_IB_HCA, NCCL_IB_GID_INDEX, NCCL_IB_QPS_PER_CONNECTION, and NCCL_IB_SPLIT_DATA_ON_QPS for optimal RoCE performance on Kubernetes GPU clusters."
 tags:
   - "nccl"
   - "rdma"

@@ -1,5 +1,5 @@
 ---
-title: "Install ArgoCD on Rocky Linux"
+title: "Install ArgoCD on Rocky Linux Step-by-Step"
 description: "Deploy ArgoCD on Kubernetes running on Rocky Linux. GitOps continuous delivery with automated sync, self-healing, and multi-cluster support."
 category: "deployments"
 difficulty: "beginner"

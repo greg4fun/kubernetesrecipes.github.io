@@ -8,7 +8,9 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "verify": "python3 scripts/verify-content.py",
+    "prepare": "git config core.hooksPath scripts/hooks || true"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.9",

@@ -1,5 +1,5 @@
 ---
-title: "Helm Chart Dependencies Guide"
+title: "Helm Chart Dependencies: Complete Guide"
 description: "Manage Helm chart dependencies and subcharts. Condition flags, tags, import-values, alias patterns, and dependency update workflow for K8s."
 publishDate: "2026-04-25"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes NetworkPolicy Default Deny Examples"
-description: "Implement default deny network policies in Kubernetes for zero-trust pod networking. Block all ingress and egress by default, then allow only required traffic with explicit NetworkPolicy rules."
+title: "Default Deny NetworkPolicy: Zero-Trust Examples"
+description: "Implement default deny network policies in Kubernetes for zero-trust pod networking. Block all ingress and egress by default, then allow only required traffic"
 tags:
   - "networkpolicy"
   - "security"
@@ -12,9 +12,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-network-policies"
-  - "cilium-network-policies-kubernetes"
-  - "kubernetes-security-checklist"
+  - "kubernetes-network-policy-guide"
+  - "kubernetes-security-checklist-2026"
 ---
 
 > 💡 **Quick Answer:** Apply a default deny NetworkPolicy to block all ingress and egress traffic in a namespace, then create allow policies for specific required flows. Without any NetworkPolicy, all pods can communicate freely. A single empty-selector `{}` policy with no `ingress`/`egress` rules denies all traffic matching that direction.

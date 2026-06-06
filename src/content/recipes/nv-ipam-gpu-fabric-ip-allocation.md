@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA IPAM for GPU Fabric IP Address Allocation"
-description: "Configure nv-ipam (NVIDIA IPAM) to assign IP addresses on GPU fabric SR-IOV networks in Kubernetes. Covers IPPool CRDs, per-node allocation, InfiniBand IPoIB addressing, and integration with SR-IOV Network Operator."
+description: "Configure nv-ipam (NVIDIA IPAM) to assign IP addresses on GPU fabric SR-IOV networks in Kubernetes. Covers IPPool CRDs, per-node allocation, InfiniBand IPoIB"
 tags:
   - "nv-ipam"
   - "ipam"

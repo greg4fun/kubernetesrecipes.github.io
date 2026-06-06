@@ -1,5 +1,5 @@
 ---
-title: "OpenShift ACS for Kubernetes"
+title: "OpenShift ACS Security for Kubernetes"
 description: "Deploy and configure Red Hat Advanced Cluster Security (ACS/RHACS) for vulnerability scanning, compliance, network policies, and runtime threat detection."
 publishDate: "2026-02-26"
 author: "Luca Berton"

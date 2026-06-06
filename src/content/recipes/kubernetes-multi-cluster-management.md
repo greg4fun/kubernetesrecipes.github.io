@@ -21,7 +21,39 @@ This is a critical skill for managing production Kubernetes clusters at scale. W
 
 ## The Solution
 
-Detailed implementation guide with production-ready configurations, best practices, and common pitfalls to avoid.
+Manage fleets declaratively: register clusters once, then let an ArgoCD ApplicationSet fan a single app out to every cluster. The cluster generator targets all registered clusters automatically:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: guestbook
+  namespace: argocd
+spec:
+  generators:
+    - clusters: {}          # every cluster registered in Argo CD
+  template:
+    metadata:
+      name: 'guestbook-{{name}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/org/fleet.git
+        targetRevision: main
+        path: apps/guestbook
+      destination:
+        server: '{{server}}'
+        namespace: guestbook
+```
+
+Register a cluster with the Argo CD CLI:
+
+```bash
+argocd cluster add prod-eu --name prod-eu
+argocd cluster list
+```
+
+For cross-cluster service connectivity, layer a mesh (Istio multi-primary, Cilium Cluster Mesh, or Skupper) on top of this GitOps foundation.
 
 ## Common Issues
 

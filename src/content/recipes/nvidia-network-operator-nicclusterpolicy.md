@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA Network Operator NicClusterPolicy"
-description: "Deploy NVIDIA Network Operator on OpenShift with NicClusterPolicy for DOCA telemetry, NIC feature discovery, RDMA IPAM, and OFED drivers. GitOps-managed via ArgoCD."
+description: "Deploy NVIDIA Network Operator on OpenShift with NicClusterPolicy for DOCA telemetry, NIC feature discovery, RDMA IPAM, and OFED drivers. GitOps-managed"
 tags:
   - "nvidia"
   - "network-operator"

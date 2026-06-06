@@ -1,5 +1,5 @@
 ---
-title: "HPA Tutorial Kubernetes Guide"
+title: "HPA Tutorial for Kubernetes Beginners"
 description: "Step-by-step HPA tutorial for Kubernetes. Create, monitor, and tune Horizontal Pod Autoscalers with kubectl commands and YAML examples."
 publishDate: "2026-04-25"
 author: "Luca Berton"

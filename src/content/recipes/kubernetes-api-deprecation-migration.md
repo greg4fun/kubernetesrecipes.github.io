@@ -21,7 +21,27 @@ This is a critical skill for managing production Kubernetes clusters at scale. W
 
 ## The Solution
 
-Detailed implementation guide with production-ready configurations, best practices, and common pitfalls to avoid.
+Before any upgrade, scan both live objects and source manifests for APIs removed in the target version. `pluto` detects deprecated and removed `apiVersions`:
+
+```bash
+# Scan live cluster objects against a target Kubernetes version
+pluto detect-all-in-cluster --target-versions k8s=v1.33
+
+# Scan Helm releases and raw manifests in your repo
+pluto detect-helm --target-versions k8s=v1.33
+pluto detect-files -d ./manifests --target-versions k8s=v1.33
+```
+
+Convert an out-of-date manifest to a supported `apiVersion` with `kubectl convert`:
+
+```bash
+# Example: Ingress networking.k8s.io/v1beta1 -> v1
+kubectl convert -f old-ingress.yaml \
+  --output-version networking.k8s.io/v1 > new-ingress.yaml
+kubectl apply -f new-ingress.yaml
+```
+
+Always fix the source of truth (Helm charts, Kustomize bases, GitOps repos) — not just the live object — so the deprecated API does not reappear on the next reconcile.
 
 ## Common Issues
 

@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Graceful Shutdown Guide"
+title: "Kubernetes preStop Hooks for Graceful Shutdown"
 description: "Configure preStop hooks and terminationGracePeriodSeconds for zero-downtime pod termination. Handle SIGTERM correctly in your applications."
 publishDate: "2026-04-21"
 author: "Luca Berton"

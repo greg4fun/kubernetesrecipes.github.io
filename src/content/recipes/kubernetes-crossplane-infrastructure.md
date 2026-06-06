@@ -1,6 +1,6 @@
 ---
 title: "Crossplane Infrastructure as Code"
-description: "Manage cloud infrastructure from Kubernetes with Crossplane. Composite Resources, Compositions, provider configuration."
+description: "Manage cloud infrastructure from Kubernetes with Crossplane. Covers Composite Resources, Compositions, and provider configuration for AWS and GCP."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

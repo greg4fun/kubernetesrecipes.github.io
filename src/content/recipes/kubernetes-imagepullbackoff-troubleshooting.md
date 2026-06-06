@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes ImagePullBackOff Troubleshooting Guide"
-description: "Debug and fix ImagePullBackOff and ErrImagePull errors in Kubernetes. Resolve authentication failures, registry connectivity, image not found, TLS certificate errors, and rate limiting issues."
+description: "Debug and fix ImagePullBackOff and ErrImagePull errors in Kubernetes. Resolve authentication failures, registry connectivity, image not found, TLS certificate"
 tags:
   - "imagepullbackoff"
   - "troubleshooting"
@@ -12,8 +12,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-private-container-registry"
-  - "kubernetes-image-pull-secrets"
+  - "private-container-registry-kubernetes"
+  - "kubernetes-imagepullsecrets-guide"
   - "container-image-security-scanning-kubernetes"
 ---
 

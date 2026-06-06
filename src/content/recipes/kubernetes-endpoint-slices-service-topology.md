@@ -1,6 +1,6 @@
 ---
 title: "EndpointSlices and Service Topology"
-description: "Understand EndpointSlices for scalable service discovery in Kubernetes. Topology-aware routing, traffic localization."
+description: "Understand EndpointSlices for scalable service discovery in Kubernetes. Covers topology-aware routing and traffic localization for large clusters."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "networking"

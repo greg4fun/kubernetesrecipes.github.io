@@ -1,6 +1,6 @@
 ---
 title: "OpenShift Support Lifecycle and Version Matrix"
-description: "OpenShift Container Platform support lifecycle, version EOL dates, Kubernetes version mapping, upgrade paths, and Extended Update Support (EUS). Plan upgrades with the Red Hat lifecycle calendar."
+description: "OpenShift Container Platform support lifecycle, version EOL dates, Kubernetes version mapping, upgrade paths, and Extended Update Support (EUS). Plan upgrades"
 tags:
   - "openshift"
   - "lifecycle"
@@ -13,8 +13,8 @@ author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
   - "openshift-cluster-update-process-explained"
-  - "kubernetes-deprecated-api-migration-guide"
-  - "openshift-mirror-releases-disconnected-registry"
+  - "kubernetes-api-deprecation-migration"
+  - "mirror-openshift-releases-disconnected-registry"
 ---
 
 > 💡 **Quick Answer:** OpenShift versions receive ~18 months of full support from GA. EUS (Extended Update Support) releases (even minor versions: 4.12, 4.14, 4.16, 4.18) get extended to ~24 months. Each OCP version maps to a specific Kubernetes version (e.g., OCP 4.16 = K8s 1.29, OCP 4.17 = K8s 1.30). Upgrade only between adjacent minor versions unless using EUS-to-EUS.

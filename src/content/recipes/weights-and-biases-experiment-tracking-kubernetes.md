@@ -1,6 +1,6 @@
 ---
 title: "Weights and Biases Experiment Tracking on Kubernetes"
-description: "Deploy Weights & Biases (W&B) on Kubernetes for ML experiment tracking, model registry, and hyperparameter sweeps. Self-hosted W&B Server, agent-based sweeps, artifact management, and integration with distributed training jobs."
+description: "Deploy Weights & Biases (W&B) on Kubernetes for ML experiment tracking, model registry, and hyperparameter sweeps. Self-hosted W&B Server, agent-based"
 tags:
   - "wandb"
   - "mlops"
@@ -12,9 +12,6 @@ publishDate: "2026-05-31"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "mlflow-kubernetes-model-registry"
-  - "kubeflow-pipelines-kubernetes"
-  - "kubernetes-gpu-distributed-training"
   - "nccl-rccl-networking-performance-kubernetes"
 ---
 

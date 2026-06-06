@@ -1,5 +1,5 @@
 ---
-title: "Hugo nginx Static Site on k3s"
+title: "Hugo nginx Static Site on a k3s Cluster"
 description: "Deploy a Hugo static site with nginx on k3s. Multi-stage build, Brotli compression, security headers, and automated redeployment on git push via Gitea Actions."
 category: "deployments"
 publishDate: "2026-04-20"

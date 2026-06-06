@@ -1,5 +1,5 @@
 ---
-title: "Fix Service Not Reachable K8s"
+title: "Fix Service Not Reachable in Kubernetes"
 description: "Debug Kubernetes Service connectivity issues. Endpoint selection, kube-proxy rules, DNS resolution, and NetworkPolicy blocks."
 publishDate: "2026-04-25"
 author: "Luca Berton"

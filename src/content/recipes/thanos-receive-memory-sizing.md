@@ -1,6 +1,6 @@
 ---
 title: "Thanos Receive Memory Sizing Guide"
-description: "Calculate correct memory limits for Thanos Receive based on WAL segments, active series, retention, and ingestion rate. Prevent OOMKill crash loops in production."
+description: "Calculate correct memory limits for Thanos Receive based on WAL segments, active series, retention, and ingestion rate. Prevent OOMKill crash loops"
 tags:
   - "thanos"
   - "memory"

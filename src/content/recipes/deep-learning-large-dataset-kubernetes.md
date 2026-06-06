@@ -1,6 +1,6 @@
 ---
 title: "Deep Learning with Large Datasets on K8s"
-description: "Optimize deep learning training with large datasets on Kubernetes. Covers data loading, caching strategies, parallel prefetch, and storage architecture for multi-TB datasets."
+description: "Optimize deep learning training with large datasets on Kubernetes. Covers data loading, caching strategies, parallel prefetch, and storage architecture"
 tags:
   - "training"
   - "datasets"

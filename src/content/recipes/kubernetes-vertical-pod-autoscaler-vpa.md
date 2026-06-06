@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Vertical Pod Autoscaler VPA Guide"
-description: "Deploy and configure the Vertical Pod Autoscaler (VPA) on Kubernetes. Auto-adjust CPU and memory requests based on actual usage, right-size workloads, and eliminate OOMKilled events from undersized limits."
+description: "Deploy and configure the Vertical Pod Autoscaler (VPA) on Kubernetes. Auto-adjust CPU and memory requests based on actual usage, right-size"
 tags:
   - "vpa"
   - "autoscaling"
@@ -12,9 +12,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-hpa-horizontal-pod-autoscaler"
+  - "kubernetes-horizontal-pod-autoscaler-v2"
   - "kubernetes-oomkilled-troubleshooting-prevention"
-  - "kubernetes-resource-management"
 ---
 
 > 💡 **Quick Answer:** The Vertical Pod Autoscaler (VPA) automatically adjusts pod CPU and memory requests/limits based on historical usage. Install with `./hack/vpa-up.sh` from the autoscaler repo, create a VPA resource targeting your Deployment, and set `updateMode: "Auto"` for automatic adjustment or `"Off"` for recommendations only.

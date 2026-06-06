@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Ephemeral Containers for Debugging"
-description: "Debug running pods with Kubernetes ephemeral containers. Attach debug containers without restarting pods, troubleshoot distroless images, inspect network traffic, and use kubectl debug for live diagnosis."
+description: "Debug running pods with Kubernetes ephemeral containers. Attach debug containers without restarting pods, troubleshoot distroless images, inspect network"
 tags:
   - "ephemeral-containers"
   - "debugging"
@@ -12,9 +12,9 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-pod-troubleshooting-guide"
+  - "kubernetes-troubleshooting-guide"
   - "kubernetes-init-containers-patterns-examples"
-  - "kubernetes-exec-into-pods"
+  - "kubernetes-exec-into-pod"
 ---
 
 > 💡 **Quick Answer:** `kubectl debug -it <pod> --image=busybox --target=<container>` attaches an ephemeral container to a running pod for debugging. No restart needed. The debug container shares the pod's network namespace (and optionally process namespace) so you can inspect traffic, run diagnostic tools, and debug distroless/minimal images that lack shells.

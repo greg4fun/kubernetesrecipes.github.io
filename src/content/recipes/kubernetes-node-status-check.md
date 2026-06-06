@@ -1,5 +1,5 @@
 ---
-title: "Check Kubernetes Node Status"
+title: "Check Kubernetes Node Status with kubectl"
 description: "Check and troubleshoot Kubernetes node status with kubectl. Node conditions (Ready, MemoryPressure, DiskPressure), NotReady debugging, and capacity monitoring."
 category: "troubleshooting"
 publishDate: "2026-04-20"

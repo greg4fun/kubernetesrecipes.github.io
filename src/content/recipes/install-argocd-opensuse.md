@@ -1,5 +1,5 @@
 ---
-title: "Install ArgoCD on openSUSE"
+title: "Install ArgoCD on openSUSE: Step-by-Step"
 description: "Deploy ArgoCD on Kubernetes running on openSUSE. GitOps continuous delivery with automated sync, self-healing, and multi-cluster support."
 category: "deployments"
 difficulty: "beginner"

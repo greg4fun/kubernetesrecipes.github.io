@@ -1,6 +1,6 @@
 ---
 title: "API Priority and Fairness K8s Guide"
-description: "Configure Kubernetes API Priority and Fairness for API server protection. FlowSchemas, PriorityLevelConfigurations."
+description: "Configure Kubernetes API Priority and Fairness to protect the API server. Covers FlowSchemas, PriorityLevelConfigurations, and request concurrency tuning."
 publishDate: "2026-04-24"
 author: "Luca Berton"
 category: "configuration"

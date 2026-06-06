@@ -1,6 +1,6 @@
 ---
 title: "OpenShift Routes vs Ingress Guide"
-description: "Compare OpenShift Routes and Kubernetes Ingress. Edge, passthrough, re-encrypt TLS termination, and when to use each."
+description: "Compare OpenShift Routes and Kubernetes Ingress. Covers edge, passthrough, and re-encrypt TLS termination, and when to use each option."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "networking"

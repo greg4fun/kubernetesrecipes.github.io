@@ -1,5 +1,5 @@
 ---
-title: "Install ArgoCD on RHEL"
+title: "Install ArgoCD on RHEL: Step-by-Step Guide"
 description: "Deploy ArgoCD on Kubernetes running on RHEL. GitOps continuous delivery with automated sync, self-healing, and multi-cluster support."
 category: "deployments"
 difficulty: "beginner"

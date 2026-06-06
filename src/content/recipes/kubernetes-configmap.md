@@ -1,8 +1,8 @@
 ---
-title: "ConfigMap Patterns Kubernetes"
-description: "Production guide for kubernetes configmap complete guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+title: "ConfigMap Patterns in Kubernetes"
+description: "Create and use Kubernetes ConfigMaps for application configuration. Mount as files, inject as environment variables, and manage config updates without"
 category: "configuration"
-difficulty: "Create and use Kubernetes ConfigMaps for application configuration. Mount as files, inject as environment variables, and manage config updates without redeploying."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["configmap", "configuration", "environment-variables", "volumes", "kubernetes"]
 author: "Luca Berton"

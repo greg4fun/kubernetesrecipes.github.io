@@ -1,5 +1,5 @@
 ---
-title: "Grafana Dashboard 6417 Kubernetes Pods"
+title: "Grafana Dashboard 6417: Node Exporter Setup"
 description: "Import Grafana Dashboard 6417 for Kubernetes pod monitoring. Node Exporter Full setup with Prometheus, CPU, memory, disk, and network metrics."
 publishDate: "2026-04-12"
 author: "Luca Berton"

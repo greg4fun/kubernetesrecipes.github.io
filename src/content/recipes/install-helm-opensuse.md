@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on openSUSE"
+title: "Install Helm on openSUSE: Setup Guide"
 description: "Install Helm 3 on openSUSE with package manager or script. Configure chart repos and shell completion for openSUSE Leap 15 / Tumbleweed."
 category: "helm"
 difficulty: "beginner"

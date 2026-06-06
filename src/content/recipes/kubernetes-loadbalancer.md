@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes LoadBalancer Service Guide"
-description: "Production guide for kubernetes loadbalancer service guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Expose Kubernetes services with LoadBalancer type for production traffic. Covers cloud providers, MetalLB for bare-metal, health checks, and cost optimization."
 category: "networking"
-difficulty: "Expose Kubernetes services with LoadBalancer type for production traffic. Covers cloud providers, MetalLB for bare-metal, health checks, and cost optimization."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["loadbalancer", "service", "external-access", "metallb", "cloud"]
 author: "Luca Berton"

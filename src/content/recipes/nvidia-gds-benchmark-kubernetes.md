@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA GPUDirect Storage Benchmark on K8s"
-description: "Benchmark NVIDIA GPUDirect Storage (GDS) on Kubernetes for direct NVMe-to-GPU data transfers. Covers gdsio, gds_stats, performance validation, and comparison with traditional I/O."
+description: "Benchmark NVIDIA GPUDirect Storage (GDS) on Kubernetes for direct NVMe-to-GPU data transfers. Covers gdsio, gds_stats, performance validation, and comparison"
 tags:
   - "benchmarking"
   - "nvidia"

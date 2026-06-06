@@ -1,6 +1,6 @@
 ---
 title: "Kyverno Webhook Topology and Admission Latency"
-description: "Optimize Kyverno webhook topology for minimal admission latency: webhook configuration tuning, failure policies, timeout settings, and lessons from migrating to Kyverno at scale."
+description: "Optimize Kyverno webhook topology for minimal admission latency: webhook configuration tuning, failure policies, timeout settings, and lessons from migrating"
 tags:
   - "kyverno"
   - "webhook"

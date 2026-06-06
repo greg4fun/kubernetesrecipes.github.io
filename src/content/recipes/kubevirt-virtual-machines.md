@@ -1,8 +1,8 @@
 ---
 title: "KubeVirt: Run VMs on Kubernetes"
-description: "Production guide for kubevirt: run vms on kubernetes. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Run virtual machines alongside containers on Kubernetes with KubeVirt. Covers VM creation, live migration, GPU passthrough, and VM-to-container networking."
 category: "deployments"
-difficulty: "Run virtual machines alongside containers on Kubernetes with KubeVirt. Covers VM creation, live migration, GPU passthrough, and VM-to-container networking."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["kubevirt", "virtual-machines", "vm", "migration", "hybrid"]
 author: "Luca Berton"

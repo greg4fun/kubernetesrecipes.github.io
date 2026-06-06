@@ -1,5 +1,5 @@
 ---
-title: "Install Kubernetes on RHEL"
+title: "Install Kubernetes on RHEL: Setup Guide"
 description: "Step-by-step guide to install Kubernetes on RHEL with kubeadm. Covers containerd, kubeadm init, CNI setup, and worker node joining for RHEL 8/9."
 category: "deployments"
 difficulty: "beginner"

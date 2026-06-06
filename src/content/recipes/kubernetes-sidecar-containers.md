@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes Sidecar Containers Pattern"
-description: "Production guide for kubernetes sidecar containers pattern. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+description: "Implement the sidecar pattern in Kubernetes for logging, proxying, syncing, and monitoring alongside your main application container. Covers native K8s 1.28+"
 category: "configuration"
-difficulty: "Implement the sidecar pattern in Kubernetes for logging, proxying, syncing, and monitoring alongside your main application container. Covers native K8s 1.28+ sidecars."
+difficulty: "intermediate"
 publishDate: "2026-04-05"
 tags: ["sidecar", "multi-container", "logging", "proxy", "kubernetes"]
 author: "Luca Berton"

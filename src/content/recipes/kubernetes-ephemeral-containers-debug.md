@@ -1,6 +1,6 @@
 ---
 title: "Ephemeral Containers for Live Debugging"
-description: "Use kubectl debug with ephemeral containers to troubleshoot running Pods without restarting them. Attach debugging tools to distroless containers, inspect network, and trace processes."
+description: "Use kubectl debug with ephemeral containers to troubleshoot running Pods without restarting them. Attach debugging tools to distroless containers, inspect"
 tags:
   - "ephemeral-containers"
   - "debugging"

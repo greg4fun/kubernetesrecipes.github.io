@@ -1,6 +1,6 @@
 ---
 title: "GPUDirect RDMA Setup and Verification on Kubernetes"
-description: "Enable and verify GPUDirect RDMA for GPU-to-NIC direct data transfer on Kubernetes. Install nvidia-peermem, configure DMA-BUF, verify RDMA paths, troubleshoot GDRDMA failures, and optimize for NCCL multi-node training."
+description: "Enable and verify GPUDirect RDMA for GPU-to-NIC direct data transfer on Kubernetes. Install nvidia-peermem, configure DMA-BUF, verify RDMA paths, troubleshoot"
 tags:
   - "gpudirect"
   - "rdma"

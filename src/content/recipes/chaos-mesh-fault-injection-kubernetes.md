@@ -1,6 +1,6 @@
 ---
 title: "Chaos Mesh Fault Injection on Kubernetes"
-description: "Deploy Chaos Mesh for chaos engineering on Kubernetes. Covers PodChaos, NetworkChaos, IOChaos, StressChaos experiments, scheduling, RBAC scoping, and integrating chaos tests into CI/CD pipelines."
+description: "Deploy Chaos Mesh for chaos engineering on Kubernetes. Covers PodChaos, NetworkChaos, IOChaos, StressChaos experiments, scheduling, RBAC"
 tags:
   - "chaos-engineering"
   - "chaos-mesh"

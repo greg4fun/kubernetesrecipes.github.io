@@ -21,7 +21,54 @@ This is a critical skill for managing production Kubernetes clusters at scale. W
 
 ## The Solution
 
-Detailed implementation guide with production-ready configurations, best practices, and common pitfalls to avoid.
+Admission controllers intercept API requests after authentication and before persistence. Prefer a policy engine over hand-written webhooks for most rules. This Kyverno policy enforces a required `team` label on every Pod:
+
+```yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-team-label
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: check-team-label
+      match:
+        any:
+          - resources:
+              kinds: ["Pod"]
+      validate:
+        message: "Every Pod must set a 'team' label."
+        pattern:
+          metadata:
+            labels:
+              team: "?*"
+```
+
+For lower-level control, register a webhook with `failurePolicy: Fail` so requests are rejected when the webhook is unavailable (fail-closed):
+
+```yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: pod-policy
+webhooks:
+  - name: pods.example.com
+    failurePolicy: Fail
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    rules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+    clientConfig:
+      service:
+        name: pod-policy-webhook
+        namespace: policy-system
+        path: /validate
+```
+
+Use mutating webhooks to inject defaults (sidecars, labels) and validating webhooks to reject non-compliant objects.
 
 ## Common Issues
 

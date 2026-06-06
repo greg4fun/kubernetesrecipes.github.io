@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes startupProbe Guide"
+title: "Kubernetes startupProbe Configuration Guide"
 description: "Configure startupProbe for slow-starting containers to prevent premature kills. Understand interaction with liveness and readiness probes."
 publishDate: "2026-04-21"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Multi-Container Pod Patterns Sidecar Ambassador Adapter"
-description: "Implement multi-container pod patterns in Kubernetes: sidecar for logging and proxying, ambassador for outbound connections, adapter for format transformation, and init containers for initialization."
+title: "Kubernetes Multi-Container Pod Patterns"
+description: "Implement multi-container pod patterns in Kubernetes: sidecar for logging and proxying, ambassador for outbound connections, adapter for format"
 tags:
   - "sidecar"
   - "ambassador"
@@ -13,7 +13,6 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-init-containers-patterns-examples"
-  - "kubernetes-pod-configuration"
   - "linkerd-service-mesh-mtls-kubernetes"
 ---
 

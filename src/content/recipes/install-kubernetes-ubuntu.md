@@ -1,5 +1,5 @@
 ---
-title: "Install Kubernetes on Ubuntu"
+title: "Install Kubernetes on Ubuntu: Setup Guide"
 description: "Step-by-step guide to install Kubernetes on Ubuntu with kubeadm. Covers containerd, kubeadm init, CNI setup, and worker node joining for Ubuntu 22.04/24.04."
 category: "deployments"
 difficulty: "beginner"

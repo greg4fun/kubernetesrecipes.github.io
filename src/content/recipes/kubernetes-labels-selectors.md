@@ -1,8 +1,8 @@
 ---
-title: "Labels Selectors Matching K8s"
-description: "Production guide for kubernetes labels and selectors guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+title: "Kubernetes Labels and Selectors Explained"
+description: "Use Kubernetes labels and selectors to organize and query resources. Covers label conventions, selector types, recommended labels, and label-based operations."
 category: "configuration"
-difficulty: "Use Kubernetes labels and selectors to organize and query resources. Covers label conventions, selector types, recommended labels, and label-based operations."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["labels", "selectors", "organization", "filtering", "kubernetes"]
 author: "Luca Berton"

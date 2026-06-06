@@ -1,6 +1,6 @@
 ---
 title: "IOMMU BIOS and Kernel Config for NCCL GPU-Direct"
-description: "Configure IOMMU at BIOS and kernel level to enable NCCL GPU-Direct RDMA on Kubernetes. Covers Intel VT-d, AMD-Vi, kernel parameters, passthrough mode, and verification for multi-GPU distributed training."
+description: "Configure IOMMU at BIOS and kernel level to enable NCCL GPU-Direct RDMA on Kubernetes. Covers Intel VT-d, AMD-Vi, kernel parameters, passthrough"
 tags:
   - "iommu"
   - "nccl"

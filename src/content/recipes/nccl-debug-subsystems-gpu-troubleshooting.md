@@ -1,6 +1,6 @@
 ---
 title: "NCCL Debug Subsystems for GPU Network Troubleshooting"
-description: "Configure NCCL_DEBUG and NCCL_DEBUG_SUBSYS for targeted logging during multi-node GPU training. Covers INIT, NET, GRAPH subsystems, log interpretation, and production vs debug configurations for Kubernetes MPIJob workloads."
+description: "Configure NCCL_DEBUG and NCCL_DEBUG_SUBSYS for targeted logging during multi-node GPU training. Covers INIT, NET, GRAPH subsystems, log"
 tags:
   - "nccl"
   - "troubleshooting"
@@ -14,7 +14,6 @@ difficulty: "intermediate"
 relatedRecipes:
   - "nccl-network-validation-troubleshooting-checklist"
   - "nccl-network-validator-production-mpijob"
-  - "debug-distributed-vllm-nccl-verbose"
 ---
 
 > 💡 **Quick Answer:** Set `NCCL_DEBUG=INFO` with `NCCL_DEBUG_SUBSYS=INIT,NET,GRAPH` for targeted debugging without flooding logs. INIT shows device discovery and topology, NET shows network transport selection and RDMA setup, GRAPH shows channel/ring topology decisions. For production, use `NCCL_DEBUG=WARN` to minimize log volume.

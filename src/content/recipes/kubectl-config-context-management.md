@@ -1,6 +1,6 @@
 ---
 title: "kubectl Config: Manage Contexts and Clusters"
-description: "Manage kubectl contexts with kubectl config commands. Switch clusters, delete contexts, rename, merge kubeconfigs."
+description: "Manage kubectl contexts with kubectl config commands. Switch clusters, delete contexts, rename entries, and merge multiple kubeconfig files safely."
 publishDate: "2026-04-15"
 author: "Luca Berton"
 category: "configuration"

@@ -1,5 +1,5 @@
 ---
-title: "Install Kubernetes on Debian"
+title: "Install Kubernetes on Debian: Setup Guide"
 description: "Step-by-step guide to install Kubernetes on Debian with kubeadm. Covers containerd, kubeadm init, CNI setup, and worker node joining for Debian 11/12."
 category: "deployments"
 difficulty: "beginner"

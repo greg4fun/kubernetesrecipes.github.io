@@ -1,5 +1,5 @@
 ---
-title: "OpenShift OAuth Proxy Sidecar"
+title: "OpenShift OAuth Proxy Sidecar Guide"
 description: "Protect K8s services with OpenShift OAuth proxy sidecar. Authentication, RBAC delegation, and SSO for internal dashboards."
 publishDate: "2026-04-25"
 author: "Luca Berton"

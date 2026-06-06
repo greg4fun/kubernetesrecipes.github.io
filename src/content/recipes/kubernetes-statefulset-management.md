@@ -1,5 +1,5 @@
 ---
-title: "StatefulSet Guide Kubernetes"
+title: "Kubernetes StatefulSet Management Guide"
 description: "Manage stateful applications on Kubernetes with StatefulSets. Ordered deployment, stable network identity, persistent storage."
 publishDate: "2026-04-24"
 author: "Luca Berton"

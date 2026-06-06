@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on Debian"
+title: "Install Helm on Debian: Setup Guide"
 description: "Install Helm 3 on Debian and configure chart repositories. Covers package manager install, script install, and shell completion for Debian 11/12."
 category: "helm"
 difficulty: "beginner"

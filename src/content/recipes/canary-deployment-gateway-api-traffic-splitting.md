@@ -1,6 +1,6 @@
 ---
 title: "Canary Deployment with Gateway API Traffic Splitting"
-description: "Implement canary deployments using Kubernetes Gateway API HTTPRoute traffic splitting. Gradually shift traffic from stable to canary version with weight-based routing, header-based overrides, and automated rollback patterns."
+description: "Implement canary deployments using Kubernetes Gateway API HTTPRoute traffic splitting. Gradually shift traffic from stable to canary version with weight-based"
 tags:
   - "gateway-api"
   - "canary"
@@ -15,7 +15,6 @@ relatedRecipes:
   - "kubernetes-gateway-api-guide"
   - "kubernetes-readiness-probe-guide"
   - "kubernetes-hpa-custom-metrics-guide"
-  - "argocd-rollouts-canary-blue-green"
 ---
 
 > 💡 **Quick Answer:** Use `HTTPRoute` with `backendRefs` weights to split traffic between stable (weight: 90) and canary (weight: 10) Services. Gradually increase canary weight as confidence grows. Add header-based routing to let developers test canary directly before public exposure.

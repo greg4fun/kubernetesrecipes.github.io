@@ -1,5 +1,5 @@
 ---
-title: "SR-IOV Device Plugin PF Flag"
+title: "SR-IOV Device Plugin PF Flag on Kubernetes"
 description: "Configure SR-IOV device plugin PF flag in Kubernetes. Expose physical functions as allocatable resources for exclusive RDMA access."
 publishDate: "2026-04-29"
 author: "Luca Berton"

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Secrets Management Best Practices"
-description: "Manage Kubernetes Secrets securely with best practices. External Secrets Operator, sealed secrets, RBAC restrictions, encryption at rest, secret rotation, and integration with HashiCorp Vault and AWS Secrets Manager."
+description: "Manage Kubernetes Secrets securely with best practices. External Secrets Operator, sealed secrets, RBAC restrictions, encryption at rest, secret"
 tags:
   - "secrets"
   - "security"
@@ -12,9 +12,9 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-rbac-role-based-access-control"
-  - "kubernetes-configmap-management"
-  - "kubernetes-security-checklist"
+  - "kubernetes-rbac-role-clusterrole"
+  - "kubernetes-configmap-secrets-management"
+  - "kubernetes-security-checklist-2026"
 ---
 
 > 💡 **Quick Answer:** Kubernetes Secrets are base64-encoded (NOT encrypted) by default. For production: 1) Enable encryption at rest (`EncryptionConfiguration`), 2) Use External Secrets Operator to sync from Vault/AWS/GCP, 3) Restrict access with RBAC, 4) Never commit Secrets to Git, 5) Mount as volumes (not env vars) for rotation support. Sealed Secrets allows safe Git storage via asymmetric encryption.

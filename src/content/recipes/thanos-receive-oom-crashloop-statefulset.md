@@ -1,6 +1,6 @@
 ---
 title: "Thanos Receive OOMKilled CrashLoopBackOff"
-description: "Debug and fix Thanos Receive StatefulSet OOMKilled CrashLoopBackOff caused by WAL replay exceeding memory limits. Covers ArgoCD conflict resolution, liveness probe tuning, and memory sizing."
+description: "Debug and fix Thanos Receive StatefulSet OOMKilled CrashLoopBackOff caused by WAL replay exceeding memory limits. Covers ArgoCD conflict resolution, liveness"
 tags:
   - "thanos"
   - "oom"

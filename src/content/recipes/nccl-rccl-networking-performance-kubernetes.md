@@ -1,6 +1,6 @@
 ---
 title: "NCCL and RCCL Networking Performance on Kubernetes"
-description: "Optimize NCCL (NVIDIA) and RCCL (AMD) collective communication performance on Kubernetes GPU clusters. Network transport selection, bandwidth tuning, latency optimization, InfiniBand vs RoCE configuration, and benchmarking with nccl-tests."
+description: "Optimize NCCL (NVIDIA) and RCCL (AMD) collective communication performance on Kubernetes GPU clusters. Network transport selection, bandwidth tuning, latency"
 tags:
   - "nccl"
   - "rccl"
@@ -15,9 +15,8 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nccl-topology-dump-tuning-kubernetes"
-  - "nccl-pxn-cross-nic-nvlink-kubernetes"
-  - "debug-distributed-vllm-nccl-verbose-logging"
-  - "dual-fabric-mellanox-gpu-ib-storage-ethernet"
+  - "nccl-pxn-cross-nic-nvlink-topology"
+  - "dual-fabric-mellanox-gpu-storage-ethernet-infiniband"
   - "gpudirect-storage-gds-kubernetes"
 ---
 

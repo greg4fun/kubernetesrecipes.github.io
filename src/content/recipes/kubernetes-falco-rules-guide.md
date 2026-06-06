@@ -1,5 +1,5 @@
 ---
-title: "Falco Rules Kubernetes Guide"
+title: "Falco Rules for Kubernetes: Complete Guide"
 description: "Write custom Falco rules for K8s runtime security. Syscall detection, container escape alerts, and cryptomining detection."
 publishDate: "2026-04-25"
 author: "Luca Berton"

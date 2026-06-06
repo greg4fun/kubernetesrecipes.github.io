@@ -1,5 +1,5 @@
 ---
-title: "GPUDirect RDMA via DMA-BUF"
+title: "GPUDirect RDMA via DMA-BUF on Kubernetes"
 description: "Configure GPUDirect RDMA using DMA-BUF kernel subsystem for zero-copy GPU-to-GPU transfers over InfiniBand and RoCE networks."
 publishDate: "2026-02-26"
 author: "Luca Berton"

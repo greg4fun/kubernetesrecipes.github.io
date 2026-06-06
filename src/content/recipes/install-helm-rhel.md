@@ -1,5 +1,5 @@
 ---
-title: "Install Helm on RHEL"
+title: "Install Helm on RHEL: Complete Setup Guide"
 description: "Install Helm 3 on RHEL and configure chart repositories. Covers package manager install, script install, and shell completion for RHEL 8/9."
 category: "helm"
 difficulty: "beginner"

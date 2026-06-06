@@ -1,5 +1,5 @@
 ---
-title: "Install ArgoCD on Arch Linux"
+title: "Install ArgoCD on Arch Linux: Step-by-Step"
 description: "Deploy ArgoCD on Kubernetes running on Arch Linux. GitOps continuous delivery with automated sync, self-healing, and multi-cluster support."
 category: "deployments"
 difficulty: "beginner"

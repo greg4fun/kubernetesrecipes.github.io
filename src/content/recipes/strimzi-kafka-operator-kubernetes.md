@@ -1,6 +1,6 @@
 ---
 title: "Strimzi Kafka Operator on Kubernetes"
-description: "Deploy Apache Kafka on Kubernetes with Strimzi operator. Covers Kafka CR, KafkaTopic, KafkaUser, KafkaConnect, KafkaBridge, rack awareness, storage sizing, monitoring with JMX, and production hardening."
+description: "Deploy Apache Kafka on Kubernetes with Strimzi operator. Covers Kafka CR, KafkaTopic, KafkaUser, KafkaConnect, KafkaBridge, rack awareness, storage"
 tags:
   - "strimzi"
   - "kafka"

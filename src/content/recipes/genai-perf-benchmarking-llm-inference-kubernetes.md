@@ -1,6 +1,6 @@
 ---
 title: "GenAI-Perf Benchmarking LLM Inference on Kubernetes"
-description: "Benchmark LLM inference performance with NVIDIA GenAI-Perf on Kubernetes. Profile vLLM, TensorRT-LLM, and Triton endpoints with concurrency sweeps, token throughput metrics, and latency percentiles."
+description: "Benchmark LLM inference performance with NVIDIA GenAI-Perf on Kubernetes. Profile vLLM, TensorRT-LLM, and Triton endpoints with concurrency sweeps, token"
 tags:
   - "genai-perf"
   - "benchmarking"
@@ -13,9 +13,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "vllm-distributed-inference-kubernetes"
-  - "tensorrt-llm-kubernetes-deployment"
-  - "nvidia-nim-kubernetes-deployment"
+  - "distributed-inference-kubernetes"
+  - "tensorrt-llm-kubernetes-guide"
 ---
 
 > 💡 **Quick Answer:** GenAI-Perf is NVIDIA's benchmarking tool for LLM inference endpoints. Run `genai-perf profile -m <model> --service-kind openai --endpoint-type chat` against vLLM/NIM/Triton services. It measures time-to-first-token (TTFT), inter-token latency (ITL), output token throughput, and request latency at configurable concurrency levels.

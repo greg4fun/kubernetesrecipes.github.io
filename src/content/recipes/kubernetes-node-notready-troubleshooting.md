@@ -1,5 +1,5 @@
 ---
-title: "Fix Node NotReady Kubernetes"
+title: "Fix Node NotReady Status in Kubernetes"
 description: "Troubleshoot Kubernetes nodes in NotReady state. Kubelet issues, disk pressure, network problems, certificate expiration, and recovery procedures."
 publishDate: "2026-04-25"
 author: "Luca Berton"

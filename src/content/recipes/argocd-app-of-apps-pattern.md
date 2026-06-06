@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "ArgoCD App of Apps Pattern"
+title: "ArgoCD App of Apps Pattern Explained"
 description: "Implement the ArgoCD App of Apps pattern to manage multiple applications from a parent Application for cluster bootstrapping."
 category: "deployments"
 difficulty: "intermediate"

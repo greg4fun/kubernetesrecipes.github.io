@@ -1,5 +1,5 @@
 ---
-title: "Install Kubernetes on Fedora"
+title: "Install Kubernetes on Fedora: Setup Guide"
 description: "Step-by-step guide to install Kubernetes on Fedora with kubeadm. Covers containerd, kubeadm init, CNI setup, and worker node joining for Fedora 39/40."
 category: "deployments"
 difficulty: "beginner"

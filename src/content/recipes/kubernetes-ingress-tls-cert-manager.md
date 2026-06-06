@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Ingress TLS Certificate with cert-manager"
-description: "Automate TLS certificate management on Kubernetes with cert-manager. Let's Encrypt integration, ClusterIssuer configuration, automatic renewal, wildcard certificates, and troubleshooting certificate issuance failures."
+description: "Automate TLS certificate management on Kubernetes with cert-manager. Let's Encrypt integration, ClusterIssuer configuration, automatic renewal, wildcard"
 tags:
   - "cert-manager"
   - "tls"
@@ -12,7 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-ingress-nginx-configuration"
+  - "kubernetes-ingress-nginx-guide"
   - "kubernetes-gateway-api-httproute"
   - "kubernetes-secrets-management-best-practices"
 ---

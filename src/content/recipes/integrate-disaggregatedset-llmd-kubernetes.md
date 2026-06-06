@@ -1,6 +1,6 @@
 ---
 title: "Integrate DisaggregatedSet with llm-d on Kubernetes"
-description: "Deploy disaggregated LLM inference using DisaggregatedSet and llm-d on Kubernetes. Install LWS then DS controller, model prefill/decode roles, wire llm-d routing via label selectors, and coordinate rolling updates across roles."
+description: "Deploy disaggregated LLM inference using DisaggregatedSet and llm-d on Kubernetes. Install LWS then DS controller, model prefill/decode roles, wire llm-d"
 tags:
   - "leaderworkerset"
   - "disaggregated-inference"
@@ -14,9 +14,9 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "disaggregatedset-leaderworkerset-llm-inference-kubernetes"
-  - "runai-distributed-inference-vllm-nccl-kubernetes"
-  - "vllm-distributed-inference-kubernetes"
-  - "kubernetes-gateway-api-inference-extension"
+  - "runai-distributed-inference-vllm-nccl"
+  - "distributed-inference-kubernetes"
+  - "kubernetes-ai-gateway-inference-extension"
 ---
 
 > 💡 **Quick Answer:** DisaggregatedSet is the workload-orchestration layer underneath llm-d's serving/routing stack. Install LWS first, then the DisaggregatedSet controller from `disaggregatedset/config/default`. Replace manually managed prefill/decode LeaderWorkerSets with a single DisaggregatedSet CR, then point llm-d routing to the auto-created per-role Services using label selectors (`disaggregatedset.x-k8s.io/role: prefill|decode`).

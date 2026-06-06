@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA DOCA Telemetry for Network Monitoring on Kubernetes"
-description: "Deploy NVIDIA DOCA Telemetry Service (DTS) to collect real-time network metrics from BlueField DPUs and ConnectX NICs. Export RoCE counters, port errors, congestion signals, and traffic stats to Prometheus for GPU fabric observability."
+description: "Deploy NVIDIA DOCA Telemetry Service (DTS) to collect real-time network metrics from BlueField DPUs and ConnectX NICs. Export RoCE counters, port"
 tags:
   - "nvidia"
   - "doca"
@@ -14,10 +14,10 @@ publishDate: "2026-05-22"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "nvidia-doca-perftest-rdma-benchmarking"
-  - "enable-pfc-mellanox-connectx-rdma"
-  - "nccl-pxn-cross-nic-nvlink"
-  - "dcgm-exporter-gpu-metrics-prometheus"
+  - "doca-perftest-rdma-benchmark-kubernetes"
+  - "pfc-mellanox-connectx-configuration"
+  - "nccl-pxn-cross-nic-nvlink-topology"
+  - "nvidia-dcgm-exporter-monitoring"
 ---
 
 > 💡 **Quick Answer:** NVIDIA DOCA Telemetry Service (DTS) runs on BlueField DPUs or host systems with ConnectX NICs to collect hardware-level network counters (port stats, RoCE metrics, congestion events, error rates) and exports them to Prometheus. Deploy as a DaemonSet on GPU worker nodes for full fabric observability.

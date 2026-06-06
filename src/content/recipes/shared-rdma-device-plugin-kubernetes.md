@@ -1,6 +1,6 @@
 ---
 title: "Shared RDMA Device Plugin for Kubernetes GPU Pods"
-description: "Configure the RDMA shared device plugin to allow multiple pods to share RDMA-capable NICs on Kubernetes. K8s-rdma-shared-dev-plugin setup, resource allocation, multi-tenant GPU clusters, and combining with SR-IOV for GPUDirect RDMA workloads."
+description: "Configure the RDMA shared device plugin to allow multiple pods to share RDMA-capable NICs on Kubernetes. K8s-rdma-shared-dev-plugin setup, resource"
 tags:
   - "rdma"
   - "device-plugin"

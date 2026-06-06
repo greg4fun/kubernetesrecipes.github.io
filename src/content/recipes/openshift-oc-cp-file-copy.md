@@ -1,6 +1,6 @@
 ---
 title: "OpenShift oc cp File Copy Guide"
-description: "Use oc cp to copy files and directories between local machine and Pods. Covers tar-based transfer, container selection, large file handling, and comparison with oc rsync."
+description: "Use oc cp to copy files and directories between local machine and Pods. Covers tar-based transfer, container selection, large file handling, and comparison"
 tags:
   - "openshift"
   - "oc-cp"
@@ -14,7 +14,6 @@ difficulty: "beginner"
 relatedRecipes:
   - "openshift-oc-rsync-file-transfer"
   - "kubernetes-persistent-volumes-guide"
-  - "openshift-pod-troubleshooting"
   - "kubernetes-ephemeral-containers-debug"
 ---
 

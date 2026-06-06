@@ -1,6 +1,6 @@
 ---
 title: "NCCL GPUDirect RDMA Distance Levels and PIX vs SYS"
-description: "Understand NCCL GPU Direct RDMA distance-based enablement. When PIX mode disables GDRDMA for distant GPU-HCA pairs (distance 9 > 4) and when SYS mode enables it regardless. Decode NCCL INFO logs showing distance checks, read modes, and transport selection."
+description: "Understand NCCL GPU Direct RDMA distance-based enablement. When PIX mode disables GDRDMA for distant GPU-HCA pairs (distance 9 > 4) and when SYS mode enables"
 tags:
   - "nccl"
   - "gpudirect"

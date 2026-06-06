@@ -1,6 +1,6 @@
 ---
 title: "OpenShift Cluster Update Process Explained"
-description: "Complete guide to OpenShift Container Platform cluster updates. CVO workflow, Runlevels, Machine Config Operator node updates, update channels (fast/stable/EUS/candidate), conditional updates, duration estimation, and troubleshooting."
+description: "Complete guide to OpenShift Container Platform cluster updates. CVO workflow, Runlevels, Machine Config Operator node updates, update channels"
 tags:
   - "openshift"
   - "cluster-update"
@@ -12,9 +12,9 @@ publishDate: "2026-05-22"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "openshift-mcp-update-failure-troubleshooting"
-  - "openshift-machine-config-operator-guide"
-  - "openshift-lifecycle-management"
+  - "mcp-blocked-stale-update"
+  - "openshift-machineconfig-mcp-guide"
+  - "openshift-lifecycle-versions"
   - "kubernetes-cluster-upgrade-guide"
 ---
 

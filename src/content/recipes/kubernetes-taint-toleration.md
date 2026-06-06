@@ -1,8 +1,8 @@
 ---
-title: "Taint Toleration K8s Patterns"
-description: "Production guide for kubernetes taints and tolerations guide. Step-by-step YAML examples, common issues, and best practices for K8s clusters."
+title: "Taints and Tolerations in Kubernetes"
+description: "Control pod scheduling with Kubernetes taints and tolerations. Dedicate nodes for specific workloads, prevent scheduling on control plane nodes, and handle GPU"
 category: "configuration"
-difficulty: "Control pod scheduling with Kubernetes taints and tolerations. Dedicate nodes for specific workloads, prevent scheduling on control plane nodes, and handle GPU nodes."
+difficulty: "intermediate"
 publishDate: "2026-04-07"
 tags: ["taints", "tolerations", "scheduling", "node-affinity", "kubernetes"]
 author: "Luca Berton"

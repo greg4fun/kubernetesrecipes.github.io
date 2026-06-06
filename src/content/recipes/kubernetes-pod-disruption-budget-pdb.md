@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Pod Disruption Budget PDB Guide"
-description: "Protect application availability with Kubernetes PodDisruptionBudgets. Configure minAvailable and maxUnavailable for voluntary disruptions like node drains, cluster upgrades, and autoscaler scale-downs."
+description: "Protect application availability with Kubernetes PodDisruptionBudgets. Configure minAvailable and maxUnavailable for voluntary disruptions like node"
 tags:
   - "pdb"
   - "high-availability"

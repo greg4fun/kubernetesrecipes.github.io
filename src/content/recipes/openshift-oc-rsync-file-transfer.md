@@ -1,6 +1,6 @@
 ---
 title: "OpenShift oc rsync File Transfer"
-description: "Use oc rsync to copy files between local machine and Pods in OpenShift. Covers upload, download, live sync, filtering, and common patterns for debugging and data migration."
+description: "Use oc rsync to copy files between local machine and Pods in OpenShift. Covers upload, download, live sync, filtering, and common patterns for debugging"
 tags:
   - "openshift"
   - "oc-rsync"
@@ -12,9 +12,7 @@ publishDate: "2026-05-06"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "openshift-cli-essentials"
   - "kubernetes-persistent-volumes-guide"
-  - "openshift-pod-troubleshooting"
   - "kubernetes-init-containers-guide"
 ---
 

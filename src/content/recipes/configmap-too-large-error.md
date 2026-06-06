@@ -1,5 +1,5 @@
 ---
-title: "Fix ConfigMap Too Large Error"
+title: "Fix the Kubernetes ConfigMap Too Large Error"
 description: "Resolve the 1MB ConfigMap size limit error. Split configs, use Secrets for binary data, mount volumes, or use external stores."
 publishDate: "2026-03-19"
 author: "Luca Berton"

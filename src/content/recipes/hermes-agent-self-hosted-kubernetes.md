@@ -1,6 +1,6 @@
 ---
 title: "Hermes Agent Self-Hosted AI on Kubernetes"
-description: "Deploy Hermes Agent (Nous Research) on Kubernetes as a persistent self-hosted AI agent with memory, automated skill creation, multi-platform messaging, scheduled automations, and parallel sub-agents. MIT licensed, zero telemetry."
+description: "Deploy Hermes Agent (Nous Research) on Kubernetes as a persistent self-hosted AI agent with memory, automated skill creation, multi-platform"
 tags:
   - "hermes"
   - "ai-agent"
@@ -16,7 +16,7 @@ relatedRecipes:
   - "nvidia-openshell-sandboxed-ai-agents-kubernetes"
   - "poolside-ai-foundation-models-kubernetes"
   - "vllm-openai-container-kubernetes"
-  - "kubernetes-cronjob-guide"
+  - "kubernetes-job-cronjob-guide"
 ---
 
 > 💡 **Quick Answer:** Hermes Agent (by Nous Research, MIT license) is a persistent self-hosted AI agent that learns over time, creates its own skills, connects to 5+ chat platforms (Telegram, Discord, Slack, WhatsApp, Signal), runs scheduled automations, and spawns parallel sub-agents. Deploy on Kubernetes with local vLLM or OpenRouter for model inference, persistent storage for memory, and container hardening for security.

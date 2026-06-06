@@ -1,5 +1,5 @@
 ---
-title: "HPAv2 Multiple Metrics Guide"
+title: "HPA v2 Multiple Metrics Scaling Guide"
 description: "Configure HorizontalPodAutoscaler v2 with CPU, memory, custom, and external metrics. Control scaling behavior with stabilization windows."
 publishDate: "2026-04-21"
 author: "Luca Berton"

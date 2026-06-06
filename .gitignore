@@ -23,3 +23,7 @@ pnpm-debug.log*
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Python cache (from scripts/)
+__pycache__/
+*.pyc

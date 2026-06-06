@@ -1,5 +1,5 @@
 ---
-title: "Debug Pod Eviction Reasons"
+title: "Debug Kubernetes Pod Eviction Reasons"
 description: "Investigate why pods were evicted from Kubernetes nodes. Check node pressure conditions, resource limits, priority classes, and preemption events."
 publishDate: "2026-03-19"
 author: "Luca Berton"
