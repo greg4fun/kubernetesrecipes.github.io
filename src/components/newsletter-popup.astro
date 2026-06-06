@@ -111,6 +111,14 @@
   var STORAGE_KEY = 'k8s_newsletter_dismissed';
   var DISMISS_DAYS = 30;
 
+  // Don't auto-open on recipe browse/listing pages. These rely on client-side
+  // pagination and filtering; a fixed full-screen modal (z-index 9999) would
+  // overlay the pager and swallow clicks, making pagination appear broken.
+  // Matches: /recipes (hub) and /recipes/<category> listings — but NOT
+  // /recipes/<category>/<slug> article pages, where the popup still shows.
+  var path = location.pathname.replace(/\/+$/g, '');
+  if (path === '/recipes' || /^\/recipes\/[^/]+$/.test(path)) return;
+
   // Don't show if dismissed recently
   var dismissed = localStorage.getItem(STORAGE_KEY);
   if (dismissed) {
