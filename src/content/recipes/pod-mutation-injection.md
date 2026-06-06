@@ -4,6 +4,7 @@ description: "Automatically inject configurations into pods using admission cont
 category: "configuration"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["admission-controller", "mutation", "injection", "configuration", "automation"]
 relatedRecipes:
   - "kubernetes-api-aggregation"

@@ -4,6 +4,7 @@ description: "Extend Kubernetes API with Custom Resource Definitions. Define cus
 category: "configuration"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "pod-mutation-injection"
   - "kubernetes-lease-objects"

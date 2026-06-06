@@ -4,6 +4,7 @@ description: "Implement sidecar containers for logging, monitoring, proxying, an
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["sidecar", "patterns", "containers", "logging", "proxy"]
 relatedRecipes:
   - "argocd-shadow-update-detection"

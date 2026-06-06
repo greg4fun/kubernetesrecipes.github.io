@@ -4,6 +4,7 @@ description: "Enable and configure Kubernetes API audit logging. Track who did w
 category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["audit", "logging", "security", "compliance", "api-server"]
 relatedRecipes:
   - "rhacs-multi-cluster-management"

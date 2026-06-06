@@ -51,7 +51,9 @@ VALID_CATEGORIES = {
     "troubleshooting", "autoscaling", "configuration", "helm", "ai",
 }
 VALID_DIFFICULTY = {"beginner", "intermediate", "advanced"}
-REQUIRED_FIELDS = ("title", "description", "category", "tags", "publishDate")
+# Mirror the fields required by CI (.github/workflows/astro.yaml validate job)
+# plus `tags` (which the Astro schema requires with no default).
+REQUIRED_FIELDS = ("title", "description", "category", "tags", "publishDate", "author")
 
 DESC_MIN, DESC_MAX = 120, 160
 TITLE_MIN, TITLE_MAX = 30, 60

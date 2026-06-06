@@ -4,6 +4,7 @@ description: "Diagnose and troubleshoot node problems in Kubernetes clusters. Id
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "debug-crashloopbackoff"
   - "debug-oom-killed"

@@ -4,6 +4,7 @@ description: "Set up Grafana dashboard 6417 for Kubernetes pod monitoring. Impor
 category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["grafana", "monitoring", "dashboards", "prometheus", "visualization"]
 relatedRecipes:
   - "alertmanager-configuration"

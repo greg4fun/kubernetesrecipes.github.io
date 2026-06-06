@@ -4,6 +4,7 @@ description: "Implement Kubernetes rate limiting for API protection. Ingress NGI
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["rate-limiting", "ingress", "api-gateway", "traffic-management", "security"]
 relatedRecipes:
   - "nncp-dns-routes-workers"

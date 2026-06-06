@@ -4,6 +4,7 @@ description: "Best practices for managing secrets in Kubernetes. Learn encryptio
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["secrets", "security", "encryption", "best-practices", "management"]
 relatedRecipes:
   - "custom-ca-openshift"

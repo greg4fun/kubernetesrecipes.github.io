@@ -4,6 +4,7 @@ description: "Deploy Elasticsearch, Fluentd, and Kibana for centralized Kubernet
 category: "observability"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["logging", "elasticsearch", "fluentd", "kibana", "efk", "observability"]
 relatedRecipes:
   - "openclaw-liveness-readiness-probes"

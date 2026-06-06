@@ -4,6 +4,7 @@ description: "Master Helm Sprig functions: cat, print, toString, add1, join, and
 category: "helm"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["helm", "templating", "sprig", "functions", "charts"]
 relatedRecipes:
   - "openclaw-helm-chart-chromium"

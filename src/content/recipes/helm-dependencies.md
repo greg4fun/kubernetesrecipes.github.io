@@ -4,6 +4,7 @@ description: "Learn to manage Helm chart dependencies effectively. Configure sub
 category: "helm"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "helm-templating-sprig"
   - "helm-chart-dependencies-guide"

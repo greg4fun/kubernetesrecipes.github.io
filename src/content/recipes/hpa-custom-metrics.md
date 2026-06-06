@@ -4,6 +4,7 @@ description: "Configure Kubernetes HPA with custom and external metrics. Scale p
 category: "autoscaling"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "vertical-pod-autoscaler"
   - "debug-oom-killed"

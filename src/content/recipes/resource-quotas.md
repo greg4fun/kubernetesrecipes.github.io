@@ -4,6 +4,7 @@ description: "Limit resource consumption per namespace with ResourceQuotas. Cont
 category: "configuration"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["resource-quota", "limits", "multi-tenancy", "capacity", "governance"]
 relatedRecipes:
   - "machineconfig-registries-conf"

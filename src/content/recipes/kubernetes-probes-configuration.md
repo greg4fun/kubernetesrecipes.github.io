@@ -4,6 +4,7 @@ description: "Configure Kubernetes probes for reliable apps. Complete guide to l
 category: "deployments"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["probes", "health-checks", "liveness", "readiness", "startup"]
 relatedRecipes:
   - "liveness-readiness-probes"

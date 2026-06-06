@@ -4,6 +4,7 @@ description: "Create and restore volume snapshots for persistent data backup. Le
 category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["snapshots", "backup", "storage", "pvc", "disaster-recovery"]
 relatedRecipes:
   - "kubernetes-rook-ceph-guide"

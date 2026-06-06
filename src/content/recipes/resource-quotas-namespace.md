@@ -4,6 +4,7 @@ description: "Implement resource quotas to limit CPU, memory, and object counts 
 category: "configuration"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["resourcequota", "limits", "namespaces", "governance", "multitenancy"]
 relatedRecipes:
   - "pod-mutation-injection"

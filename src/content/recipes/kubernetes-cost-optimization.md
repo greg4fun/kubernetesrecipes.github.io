@@ -4,6 +4,7 @@ description: "Reduce cloud costs in Kubernetes clusters. Right-size resources, u
 category: "configuration"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "vertical-pod-autoscaler"
   - "debug-oom-killed"

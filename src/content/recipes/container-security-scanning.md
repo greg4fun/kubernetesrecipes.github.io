@@ -4,6 +4,7 @@ description: "Scan container images for vulnerabilities before deployment. Integ
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "service-accounts-rbac"
   - "kubernetes-falco-rules-guide"

@@ -4,6 +4,7 @@ description: "Set pod priorities to ensure critical workloads get scheduled firs
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["priority", "preemption", "scheduling", "resources", "workloads"]
 relatedRecipes:
   - "flux-gitops-continuous-delivery"

@@ -4,6 +4,7 @@ description: "Monitor cluster activity through Kubernetes events. Capture, filte
 category: "observability"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["events", "monitoring", "troubleshooting", "observability", "alerts"]
 relatedRecipes:
   - "openshift-user-workload-monitoring"

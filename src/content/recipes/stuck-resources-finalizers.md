@@ -4,6 +4,7 @@ description: "Fix Kubernetes resources stuck in Terminating state by managing fi
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["finalizers", "deletion", "cleanup", "stuck-resources", "terminating"]
 relatedRecipes:
   - "kubernetes-network-troubleshooting"

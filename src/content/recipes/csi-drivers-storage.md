@@ -4,6 +4,7 @@ description: "Install and configure Container Storage Interface (CSI) drivers fo
 category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "local-persistent-volumes"
   - "statefulset-mysql"

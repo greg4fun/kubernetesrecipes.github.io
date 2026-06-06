@@ -4,6 +4,7 @@ description: "Master kubectl debugging commands to troubleshoot Kubernetes issue
 category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["kubectl", "debugging", "troubleshooting", "cli", "diagnostics"]
 relatedRecipes:
   - "api-server-timeout-troubleshooting"

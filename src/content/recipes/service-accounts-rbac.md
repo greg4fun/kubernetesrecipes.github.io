@@ -4,6 +4,7 @@ description: "Secure your Kubernetes workloads with service accounts and role-ba
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["rbac", "service-accounts", "security", "authorization", "least-privilege"]
 relatedRecipes:
   - "pod-security-context"

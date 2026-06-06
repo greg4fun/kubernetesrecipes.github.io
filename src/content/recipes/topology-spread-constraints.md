@@ -4,6 +4,7 @@ description: "Distribute pods across nodes, zones, and regions using topology sp
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["topology", "scheduling", "availability", "zones", "spread"]
 relatedRecipes:
   - "rollout-stuck-troubleshooting"

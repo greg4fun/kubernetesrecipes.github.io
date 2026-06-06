@@ -4,6 +4,7 @@ description: "Manage application configuration with environment variables and Co
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["configmap", "environment-variables", "configuration", "settings", "twelve-factor"]
 relatedRecipes:
   - "machineconfig-annotation-inspection"

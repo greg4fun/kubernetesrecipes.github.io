@@ -4,6 +4,7 @@ description: "Organize and manage Kubernetes resources with labels and annotatio
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["labels", "annotations", "organization", "selectors", "metadata"]
 relatedRecipes:
   - "helm-sprig-cat-function"

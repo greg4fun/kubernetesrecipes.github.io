@@ -4,6 +4,7 @@ description: "Manage resource cleanup with Kubernetes finalizers. Implement cust
 category: "configuration"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["finalizers", "cleanup", "deletion", "controllers", "garbage-collection"]
 relatedRecipes:
   - "kubeconfig-contexts"

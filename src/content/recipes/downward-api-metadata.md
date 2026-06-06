@@ -4,6 +4,7 @@ description: "Use Kubernetes Downward API to expose pod metadata to containers. 
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "environment-variables-configmaps"
   - "kubernetes-job-parallelism-completions"

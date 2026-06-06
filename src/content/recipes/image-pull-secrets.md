@@ -4,6 +4,7 @@ description: "Pull container images from private registries using image pull sec
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["image-pull-secrets", "registries", "docker", "authentication", "containers"]
 relatedRecipes:
   - "mcp-maxunavailable-configuration"

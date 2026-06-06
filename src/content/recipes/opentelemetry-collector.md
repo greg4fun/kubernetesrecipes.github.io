@@ -4,6 +4,7 @@ description: "Deploy OpenTelemetry Collector for unified metrics, traces, and lo
 category: "observability"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["opentelemetry", "otel", "metrics", "observability", "collector"]
 relatedRecipes:
   - "openclaw-logging-efk"

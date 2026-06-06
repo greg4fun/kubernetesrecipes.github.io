@@ -4,6 +4,7 @@ description: "Control pod scheduling with taints and tolerations. Dedicate nodes
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["taints", "tolerations", "scheduling", "node-affinity", "workload-isolation"]
 relatedRecipes:
   - "liveness-readiness-probes"

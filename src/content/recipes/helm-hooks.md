@@ -4,6 +4,7 @@ description: "Master Helm hooks for pre-install, post-install, pre-upgrade, and 
 category: "helm"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["helm", "hooks", "lifecycle", "migrations", "automation"]
 relatedRecipes:
   - "openclaw-helm-chart-chromium"

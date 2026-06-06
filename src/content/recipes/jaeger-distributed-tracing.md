@@ -4,6 +4,7 @@ description: "Deploy Jaeger for distributed tracing in Kubernetes. Trace request
 category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["jaeger", "tracing", "observability", "opentelemetry", "debugging"]
 relatedRecipes:
   - "monitor-nccl-performance-prometheus"

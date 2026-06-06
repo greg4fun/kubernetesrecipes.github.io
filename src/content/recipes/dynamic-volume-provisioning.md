@@ -4,6 +4,7 @@ description: "Set up dynamic volume provisioning in Kubernetes with StorageClass
 category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "csi-drivers-storage"
   - "local-persistent-volumes"

@@ -4,6 +4,7 @@ description: "Implement distributed coordination with Kubernetes Leases. Configu
 category: "deployments"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["leases", "leader-election", "coordination", "high-availability", "distributed"]
 relatedRecipes:
   - "liveness-readiness-probes"

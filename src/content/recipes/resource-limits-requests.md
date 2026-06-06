@@ -4,6 +4,7 @@ description: "Configure Kubernetes container resource limits and requests. CPU 2
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "vertical-pod-autoscaler"
   - "debug-oom-killed"

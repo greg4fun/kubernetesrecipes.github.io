@@ -4,6 +4,7 @@ description: "Understand and configure Kubernetes DNS with CoreDNS. Customize DN
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["dns", "coredns", "networking", "service-discovery", "resolution"]
 relatedRecipes:
   - "nncp-vlan-tagging-workers"

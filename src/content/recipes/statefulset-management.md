@@ -4,6 +4,7 @@ description: "Deploy stateful applications with StatefulSets. Configure stable n
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["statefulset", "stateful", "storage", "databases", "persistence"]
 relatedRecipes:
   - "blue-green-deployment"

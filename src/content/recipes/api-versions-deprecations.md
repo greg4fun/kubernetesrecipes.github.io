@@ -4,6 +4,7 @@ description: "Handle Kubernetes API version changes and deprecations. Migrate re
 category: "configuration"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "configmap-secrets-management"
   - "doca-driver-openshift-dtk"

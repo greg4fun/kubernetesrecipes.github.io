@@ -4,6 +4,7 @@ description: "Configure Pod Disruption Budgets (PDB) for high availability durin
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["pdb", "disruption", "availability", "maintenance", "reliability"]
 relatedRecipes:
   - "air-gapped-image-import-openshift"

@@ -4,6 +4,7 @@ description: "Configure Kubernetes secrets encryption at rest using external KMS
 category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["encryption", "kms", "secrets", "security", "etcd"]
 relatedRecipes:
   - "update-ca-certificates-kubernetes"

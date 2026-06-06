@@ -4,6 +4,7 @@ description: "Implement leader election and distributed coordination with Kubern
 category: "configuration"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["lease", "leader-election", "coordination", "high-availability", "distributed-systems"]
 relatedRecipes:
   - "machineconfig-chrony-ntp"

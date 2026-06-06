@@ -4,6 +4,7 @@ description: "Configure TLS termination for Kubernetes Ingress using cert-manage
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["tls", "ssl", "certificates", "ingress", "letsencrypt", "cert-manager"]
 relatedRecipes:
   - "sriov-vf-ai-workloads"

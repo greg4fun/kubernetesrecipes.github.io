@@ -4,6 +4,7 @@ description: "Secure pod-to-pod communication with Kubernetes Network Policies. 
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["network-policies", "security", "networking", "zero-trust", "isolation"]
 relatedRecipes:
   - "sriov-nicclusterpolicy-vfs"

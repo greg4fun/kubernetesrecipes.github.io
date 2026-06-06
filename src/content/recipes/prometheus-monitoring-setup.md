@@ -4,6 +4,7 @@ description: "Set up Prometheus monitoring for Kubernetes clusters. Configure sc
 category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["prometheus", "monitoring", "metrics", "grafana", "alerting"]
 relatedRecipes:
   - "kubernetes-opentelemetry-auto-instrumentation"

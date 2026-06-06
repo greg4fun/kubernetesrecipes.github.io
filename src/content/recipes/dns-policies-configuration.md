@@ -4,6 +4,7 @@ description: "Control pod DNS resolution with DNS policies and configs. Configur
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["dns", "networking", "coredns", "resolution", "configuration"]
 relatedRecipes:
   - "openclaw-ingress-tls-kubernetes"

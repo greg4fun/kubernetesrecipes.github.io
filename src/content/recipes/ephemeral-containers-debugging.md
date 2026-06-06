@@ -4,6 +4,7 @@ description: "Debug running pods with ephemeral containers using kubectl debug. 
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["debugging", "ephemeral", "kubectl", "troubleshooting", "containers"]
 relatedRecipes:
   - "fix-nvidia-peermem-not-detected"

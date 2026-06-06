@@ -4,6 +4,7 @@ description: "Enforce security standards with Pod Security Admission. Configure 
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["pod-security", "psa", "security", "policies", "hardening"]
 relatedRecipes:
   - "pod-security-standards"

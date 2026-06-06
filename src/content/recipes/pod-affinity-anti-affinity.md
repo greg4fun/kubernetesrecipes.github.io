@@ -4,6 +4,7 @@ description: "Control pod placement using affinity and anti-affinity rules. Co-l
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["affinity", "scheduling", "placement", "high-availability", "topology"]
 relatedRecipes:
   - "openclaw-kind-local-development"

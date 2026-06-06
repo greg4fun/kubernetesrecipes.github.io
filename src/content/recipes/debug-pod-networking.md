@@ -4,6 +4,7 @@ description: "Diagnose and fix Kubernetes networking problems. Troubleshoot conn
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["networking", "debugging", "troubleshooting", "connectivity", "dns"]
 relatedRecipes:
   - "openshift-mcd-logs-debugging"

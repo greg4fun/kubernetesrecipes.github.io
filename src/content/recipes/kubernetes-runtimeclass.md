@@ -4,6 +4,7 @@ description: "Configure different container runtimes for workloads. Use gVisor, 
 category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["runtimeclass", "gvisor", "kata", "containers", "isolation"]
 relatedRecipes:
   - "openclaw-security-hardening-pod"

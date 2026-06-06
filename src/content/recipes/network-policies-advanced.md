@@ -4,6 +4,7 @@ description: "Master advanced Kubernetes NetworkPolicies for fine-grained traffi
 category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["networkpolicy", "security", "networking", "isolation", "zero-trust"]
 relatedRecipes:
   - "update-ca-certificates-kubernetes"

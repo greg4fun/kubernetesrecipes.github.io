@@ -4,6 +4,7 @@ description: "Deploy Jaeger for distributed tracing in Kubernetes. Learn to inst
 category: "observability"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "opentelemetry-collector"
   - "logging-efk-stack"

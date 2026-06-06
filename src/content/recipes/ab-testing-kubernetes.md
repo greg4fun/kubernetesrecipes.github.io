@@ -4,6 +4,7 @@ description: "Route traffic between application versions for A/B testing. Use se
 category: "deployments"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "restore-scaled-deployments-after-drain"
   - "record-kubectl-sessions-kubernetes"

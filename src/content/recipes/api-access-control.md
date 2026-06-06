@@ -4,6 +4,7 @@ description: "Set up secure API server access with authentication and authorizat
 category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "container-security-scanning"
   - "gvisor-container-runtime"

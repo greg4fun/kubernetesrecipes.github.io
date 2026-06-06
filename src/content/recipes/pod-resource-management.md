@@ -4,6 +4,7 @@ description: "Set CPU and memory requests and limits effectively. Understand QoS
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["resources", "cpu", "memory", "limits", "requests", "qos"]
 relatedRecipes:
   - "dra-tpu-allocation"

@@ -4,6 +4,7 @@ description: "Learn to implement canary deployments in Kubernetes for gradual ro
 category: "deployments"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["canary", "deployments", "rollout", "traffic-splitting", "release"]
 relatedRecipes:
   - "openclaw-kubernetes-deployment"

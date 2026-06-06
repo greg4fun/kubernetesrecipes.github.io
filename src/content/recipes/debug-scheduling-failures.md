@@ -4,6 +4,7 @@ description: "Fix pods stuck in Pending from scheduling failures. Diagnose resou
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["scheduling", "pending", "troubleshooting", "resources", "affinity"]
 relatedRecipes:
   - "taint-toleration-scheduling-issues"

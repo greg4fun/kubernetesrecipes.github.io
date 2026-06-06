@@ -4,6 +4,7 @@ description: "Enhance kubectl with custom plugins using Krew package manager. Di
 category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["kubectl", "krew", "plugins", "cli", "productivity"]
 relatedRecipes:
   - "persistent-volume-stuck-terminating"

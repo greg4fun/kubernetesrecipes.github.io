@@ -4,6 +4,7 @@ description: "Fix OOMKilled errors in Kubernetes pods (exit code 137). Debug mem
 category: "troubleshooting"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "debug-crashloopbackoff"
   - "debug-imagepullbackoff"

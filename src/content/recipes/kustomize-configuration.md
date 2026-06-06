@@ -4,6 +4,7 @@ description: "Manage Kubernetes configurations with Kustomize overlays. Customiz
 category: "configuration"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["kustomize", "configuration", "overlays", "environments", "gitops"]
 relatedRecipes:
   - "kubernetes-finalizers"

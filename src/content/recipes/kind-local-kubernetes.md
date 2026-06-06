@@ -4,6 +4,7 @@ description: "Create local Kubernetes clusters using kind (Kubernetes in Docker)
 category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["kind", "local-development", "docker", "testing", "development"]
 relatedRecipes:
   - "taint-toleration-scheduling-issues"

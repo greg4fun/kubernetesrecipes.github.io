@@ -4,6 +4,7 @@ description: "Configure logging for Kubernetes applications. Implement sidecar l
 category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "alertmanager-setup"
   - "jaeger-distributed-tracing"

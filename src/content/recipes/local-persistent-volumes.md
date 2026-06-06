@@ -4,6 +4,7 @@ description: "Use local persistent volumes for high-performance storage with nod
 category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "csi-drivers-storage"
   - "kubernetes-hostpath-vs-pvc"

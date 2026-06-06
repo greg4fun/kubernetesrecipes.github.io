@@ -4,6 +4,7 @@ description: "Sync secrets from external providers like AWS Secrets Manager, Has
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["secrets", "external-secrets", "vault", "aws", "security"]
 relatedRecipes:
   - "admission-webhooks"

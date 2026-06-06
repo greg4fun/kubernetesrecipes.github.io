@@ -4,6 +4,7 @@ description: "Deploy Istio service mesh for traffic management, security, and ob
 category: "networking"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["istio", "service-mesh", "traffic", "mtls", "networking"]
 relatedRecipes:
   - "nfsordma-troubleshooting-performance"

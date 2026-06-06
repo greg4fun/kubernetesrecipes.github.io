@@ -4,6 +4,7 @@ description: "Ensure zero-downtime deployments with proper graceful shutdown. Ha
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["graceful-shutdown", "zero-downtime", "SIGTERM", "termination", "connections"]
 relatedRecipes:
   - "blue-green-deployment"

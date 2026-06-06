@@ -4,6 +4,7 @@ description: "Understand and manage EndpointSlices for scalable service discover
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["endpointslices", "services", "networking", "discovery", "scalability"]
 relatedRecipes:
   - "ingress-routing"

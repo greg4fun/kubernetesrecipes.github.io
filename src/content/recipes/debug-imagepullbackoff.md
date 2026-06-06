@@ -4,6 +4,7 @@ description: "Troubleshoot Kubernetes ImagePullBackOff and ErrImagePull errors. 
 category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "kind-local-kubernetes"
   - "debug-crashloopbackoff"

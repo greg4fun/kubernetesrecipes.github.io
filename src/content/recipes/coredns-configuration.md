@@ -4,6 +4,7 @@ description: "Customize CoreDNS configuration for your cluster. Add custom DNS e
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "ingress-tls-certificates"
   - "dns-policies-configuration"

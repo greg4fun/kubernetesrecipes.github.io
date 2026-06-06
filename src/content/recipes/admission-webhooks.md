@@ -4,6 +4,7 @@ description: "Build validating and mutating admission webhooks to enforce polici
 category: "security"
 difficulty: "advanced"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 relatedRecipes:
   - "rhacs-multi-cluster-management"
   - "openclaw-rbac-multi-tenant"

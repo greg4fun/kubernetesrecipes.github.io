@@ -4,6 +4,7 @@ description: "Switch between multiple clusters efficiently. Configure kubeconfig
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["kubeconfig", "contexts", "clusters", "kubectl", "multi-cluster"]
 relatedRecipes:
   - "kubernetes-lease-objects"

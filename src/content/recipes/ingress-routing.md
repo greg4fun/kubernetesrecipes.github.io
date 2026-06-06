@@ -4,6 +4,7 @@ description: "Configure advanced routing rules with Kubernetes Ingress. Implemen
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["ingress", "routing", "traffic", "nginx", "load-balancing"]
 relatedRecipes:
   - "create-nv-ipam-ippool"

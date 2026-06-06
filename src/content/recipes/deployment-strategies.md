@@ -4,6 +4,7 @@ description: "Deploy applications with zero downtime using blue-green and canary
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["blue-green", "canary", "deployment", "zero-downtime", "traffic"]
 relatedRecipes:
   - "openclaw-webhook-automation-kubernetes"

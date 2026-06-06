@@ -4,6 +4,7 @@ description: "Distribute pods evenly across failure domains using topology sprea
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["topology", "scheduling", "high-availability", "zones", "distribution"]
 relatedRecipes:
   - "flux-gitops-continuous-delivery"

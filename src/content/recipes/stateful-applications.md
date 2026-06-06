@@ -4,6 +4,7 @@ description: "Run stateful workloads on Kubernetes with StatefulSets. Manage sta
 category: "storage"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["statefulset", "databases", "persistence", "storage", "stateful"]
 relatedRecipes:
   - "s3-model-storage-permissions"

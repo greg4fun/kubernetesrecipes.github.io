@@ -4,6 +4,7 @@ description: "Execute custom actions during pod startup and shutdown with lifecy
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["lifecycle", "hooks", "preStop", "postStart", "graceful-shutdown"]
 relatedRecipes:
   - "cnpg-scaling-upgrades"

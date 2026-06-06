@@ -4,6 +4,7 @@ description: "Protect application availability during voluntary disruptions. Con
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
+author: "Luca Berton"
 tags: ["pdb", "availability", "disruption", "maintenance", "upgrades"]
 relatedRecipes:
   - "cnpg-postgresql-operator"
