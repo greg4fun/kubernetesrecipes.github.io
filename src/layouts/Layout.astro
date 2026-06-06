@@ -319,8 +319,9 @@ const howToStructuredData = isRecipePage ? {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.clarity.ms https://luca-berton.kit.com https://f.convertkit.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://luca-berton.kit.com; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://www.clarity.ms https://luca-berton.kit.com https://f.convertkit.com; frame-src https://luca-berton.kit.com https://www.youtube.com; object-src 'none'; base-uri 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://*.clarity.ms https://luca-berton.kit.com https://f.convertkit.com https://app.convertkit.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://luca-berton.kit.com; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.clarity.ms https://luca-berton.kit.com https://f.convertkit.com https://app.convertkit.com; frame-src https://luca-berton.kit.com https://www.youtube.com; object-src 'none'; base-uri 'self';" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
