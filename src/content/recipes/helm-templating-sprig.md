@@ -7,9 +7,12 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["helm", "templating", "sprig", "functions", "charts"]
 relatedRecipes:
-  - "openclaw-helm-chart-chromium"
-  - "helm-before-hook-creation"
-  - "argocd-app-of-apps-helm-values"
+  - "helm-sprig-functions-complete-reference"
+  - "helm-sprig-cat-function"
+  - "helm-sprig-join-function"
+  - "helm-sprig-tostring-function"
+  - "helm-sprig-print-quote-default-functions"
+  - "helm-sprig-add1-trim-merge-functions"
 ---
 
 > 💡 **Quick Answer:** Use **Sprig functions** in Helm templates: `{{ .Values.name | lower | replace " " "-" }}` for string manipulation, `{{ if .Values.enabled }}` for conditionals, `{{ range .Values.items }}` for loops, and `{{ default "value" .Values.x }}` for defaults. Access built-in objects: `.Release`, `.Chart`, `.Values`.

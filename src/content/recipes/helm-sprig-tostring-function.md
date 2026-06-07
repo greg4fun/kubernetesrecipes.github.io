@@ -14,6 +14,7 @@ tags:
   - type-conversion
   - templates
 relatedRecipes:
+  - "helm-templating-sprig"
   - "helm-sprig-cat-function"
   - "helm-sprig-join-function"
   - "helm-hooks-lifecycle"

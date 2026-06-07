@@ -14,6 +14,7 @@ tags:
   - list-functions
   - templates
 relatedRecipes:
+  - "helm-templating-sprig"
   - "helm-sprig-cat-function"
   - "helm-sprig-tostring-function"
   - "helm-hooks-lifecycle"

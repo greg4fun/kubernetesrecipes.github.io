@@ -13,6 +13,9 @@ tags:
   - "high-availability"
   - "controller"
 relatedRecipes:
+  - "kubernetes-leases"
+  - "kubernetes-lease-objects"
+  - "kubernetes-lease-api-leader-election"
   - "kubernetes-multicluster-management"
   - "kubernetes-rbac-least-privilege"
 ---

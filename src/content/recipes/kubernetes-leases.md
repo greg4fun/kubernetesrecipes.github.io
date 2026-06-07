@@ -7,6 +7,9 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["leases", "leader-election", "coordination", "high-availability", "distributed"]
 relatedRecipes:
+  - "kubernetes-lease-objects"
+  - "kubernetes-lease-api-leader-election"
+  - "kubernetes-lease-leader-election"
   - "liveness-readiness-probes"
   - "openclaw-kubernetes-deployment"
   - "pod-disruption-budget-config"

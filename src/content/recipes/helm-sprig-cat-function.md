@@ -14,6 +14,7 @@ tags:
   - string-functions
   - templates
 relatedRecipes:
+  - "helm-templating-sprig"
   - "helm-sprig-tostring-function"
   - "helm-sprig-join-function"
   - "helm-hooks-lifecycle"

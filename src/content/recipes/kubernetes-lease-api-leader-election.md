@@ -12,6 +12,9 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
+  - "kubernetes-leases"
+  - "kubernetes-lease-objects"
+  - "kubernetes-lease-leader-election"
   - "kubernetes-operator-sdk-guide"
 ---
 

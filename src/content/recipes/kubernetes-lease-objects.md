@@ -7,6 +7,9 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["lease", "leader-election", "coordination", "high-availability", "distributed-systems"]
 relatedRecipes:
+  - "kubernetes-leases"
+  - "kubernetes-lease-api-leader-election"
+  - "kubernetes-lease-leader-election"
   - "machineconfig-chrony-ntp"
   - "openclaw-node-pairing-kubernetes"
   - "kubeconfig-contexts"
