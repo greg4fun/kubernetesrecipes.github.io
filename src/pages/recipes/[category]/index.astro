@@ -95,12 +95,43 @@ const recipes = allRecipes
 // Difficulty breakdown
 const diffCounts = { beginner: 0, intermediate: 0, advanced: 0 };
 recipes.forEach((r: any) => { if (r.data.difficulty) diffCounts[r.data.difficulty]++; });
+
+// ============================================
+// STRUCTURED DATA — CollectionPage + ItemList
+// Signals to search engines that this hub is a curated collection of how-to
+// guides on one topic, helping it rank for the category head term and appear
+// richer in results. Cap the ItemList to keep page weight reasonable on large
+// categories (BreadcrumbList is already emitted globally by Layout).
+// ============================================
+const SITE = "https://kubernetes.recipes";
+const collectionUrl = `${SITE}/recipes/${category}/`;
+const collectionStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": `${collectionUrl}#collection`,
+  "name": `${meta.name} Recipes for Kubernetes`,
+  "description": meta.description,
+  "url": collectionUrl,
+  "isPartOf": { "@type": "WebSite", "@id": `${SITE}#website` },
+  "about": { "@type": "Thing", "name": `Kubernetes ${meta.name}` },
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": recipes.length,
+    "itemListElement": recipes.slice(0, 30).map((r: any, i: number) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "url": `${SITE}/recipes/${category}/${r.slug}/`,
+      "name": r.data.title,
+    })),
+  },
+};
 ---
 
 <Layout
   title={`${meta.icon} ${meta.name} Recipes - Kubernetes Production Patterns`}
   description={meta.description}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(collectionStructuredData)} />
   <main class="category-page">
     <section class="cat-hero">
       <nav class="breadcrumb">

@@ -50,12 +50,38 @@ const recipesData = recipes.map((r: any) => ({
   publishDate: r.data.publishDate,
   timeToComplete: r.data.timeToComplete || "",
 }));
+
+// ============================================
+// STRUCTURED DATA — CollectionPage listing the category hubs
+// Marks the top-level recipe index as a curated collection, aiding rich results
+// and topical authority. (BreadcrumbList is emitted globally by Layout.)
+// ============================================
+const collectionStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": "https://kubernetes.recipes/recipes/#collection",
+  "name": "All Kubernetes Recipes",
+  "description": `Browse ${recipes.length} production-ready Kubernetes recipes across ${categories.length} categories.`,
+  "url": "https://kubernetes.recipes/recipes/",
+  "isPartOf": { "@type": "WebSite", "@id": "https://kubernetes.recipes#website" },
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": categories.length,
+    "itemListElement": categories.map((c, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "url": `https://kubernetes.recipes/recipes/${c.id}/`,
+      "name": `${c.name} (${catCounts[c.id] || 0} recipes)`,
+    })),
+  },
+};
 ---
 
 <Layout
   title="All Kubernetes Recipes — Browse by Category"
-  description="Browse 400+ Kubernetes recipes. Search by category, difficulty, or topic — from AI/GPU workloads to networking, security, and more."
+  description={`Browse ${recipes.length} Kubernetes recipes. Search by category, difficulty, or topic — from AI/GPU workloads to networking, security, and more.`}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(collectionStructuredData)} />
   <main class="recipes-hub">
     <!-- Hero Search -->
     <section class="hub-hero">
