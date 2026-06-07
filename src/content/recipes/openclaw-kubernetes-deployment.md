@@ -20,6 +20,8 @@ relatedRecipes:
   - "openclaw-multi-agent-kubernetes"
   - "openclaw-ha-kubernetes"
   - "openclaw-discord-bot-kubernetes"
+  - "openclaw-operator-kubernetes"
+  - "openclaw-node-pairing-kubernetes"
 tags:
   - openclaw
   - ai-gateway

@@ -13,6 +13,7 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-telegram-bot-kubernetes"
   - "openclaw-signal-kubernetes"
+  - "openclaw-node-pairing-kubernetes"
 tags:
   - openclaw
   - whatsapp

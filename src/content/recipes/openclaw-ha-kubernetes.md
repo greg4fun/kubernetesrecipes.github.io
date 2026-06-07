@@ -15,6 +15,7 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-monitoring-prometheus"
   - "pod-disruption-budgets"
+  - "openclaw-operator-kubernetes"
 tags:
   - openclaw
   - high-availability

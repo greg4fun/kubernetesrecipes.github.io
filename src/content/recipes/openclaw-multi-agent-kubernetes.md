@@ -15,6 +15,9 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-discord-bot-kubernetes"
   - "openclaw-workspace-gitops"
+  - "openclaw-operator-kubernetes"
+  - "openclaw-multi-model-providers-kubernetes"
+  - "openclaw-multi-agent-team-kubernetes"
 tags:
   - openclaw
   - multi-agent

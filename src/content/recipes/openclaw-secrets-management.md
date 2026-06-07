@@ -15,6 +15,8 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "external-secrets-operator"
   - "oidc-authentication-kubernetes"
+  - "openclaw-rbac-multi-tenant"
+  - "openclaw-multi-model-providers-kubernetes"
 tags:
   - openclaw
   - secrets

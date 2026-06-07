@@ -12,6 +12,7 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-ha-kubernetes"
   - "velero-backup-disaster-recovery"
+  - "openclaw-persistent-storage"
 tags:
   - openclaw
   - backup
