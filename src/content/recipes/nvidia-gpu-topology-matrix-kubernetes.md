@@ -15,6 +15,7 @@ relatedRecipes:
   - "nccl-topology-dump-tuning-kubernetes"
   - "nvidia-gpu-operator-setup"
   - "nccl-pxn-cross-nic-nvlink-topology"
+  - "kubernetes-topology-manager-gpu-numa"
 ---
 
 > 💡 **Quick Answer:** The GPU topology matrix (from `nvidia-smi topo -m` or nvidia-device-plugin logs) shows interconnect types between every GPU, NIC, and NVMe device. **NV#** = NVLink (fastest), **PIX** = same PCIe switch, **PHB** = same PCIe Host Bridge (CPU), **SYS** = crosses CPU socket (QPI/UPI), **NODE** = same NUMA node but different PCIe bridges. Use this matrix to ensure GPUs communicating via NCCL share NVLink, and NICs are co-located with their assigned GPUs.

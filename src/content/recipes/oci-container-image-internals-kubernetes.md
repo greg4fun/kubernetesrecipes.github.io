@@ -15,6 +15,7 @@ relatedRecipes:
   - "private-container-registry-kubernetes"
   - "kubernetes-imagepullsecrets-guide"
   - "pod-security-standards"
+  - "image-pull-optimization-kubernetes"
 ---
 
 > 💡 **Quick Answer:** An OCI container image is a content-addressable bundle: filesystem layers (compressed tar diffs), an image configuration JSON (platform, env, cmd, user), and a manifest tying them together via SHA-256 digests. On Kubernetes, containerd/CRI-O pulls manifests, downloads layers in parallel, unpacks them into an overlay filesystem, and applies the config as container runtime settings.

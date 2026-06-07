@@ -15,6 +15,8 @@ relatedRecipes:
   - "nccl-all-reduce-perf-benchmark-multi-node"
   - "nccl-network-validator-production-mpijob"
   - "nccl-gpudirect-rdma-distance-pix-sys"
+  - "nccl-dmabuf-gpudirect-rdma-kubernetes"
+  - "nccl-ib-hca-qps-tuning-roce"
 ---
 
 > 💡 **Quick Answer:** `NCCL_NET_GDR_LEVEL` controls the maximum PCIe distance at which NCCL enables GPUDirect RDMA (GPU memory → NIC without CPU copy). Values from most restrictive to least: `LOC` (same device) → `PIX` (same PCIe switch) → `PXB` (same root complex) → `PHB` (same NUMA/host bridge) → `SYS` (any distance, crosses sockets). Start with `PHB` for safety, test `SYS` for maximum bandwidth, fall back to `PXB` if you see errors.

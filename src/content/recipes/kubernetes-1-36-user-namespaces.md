@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-pod-security-admission"
   - "kubernetes-security-context-guide"
   - "kubernetes-container-runtime-guide"
+  - "kubernetes-1-36-gitrepo-removal"
 ---
 
 > 💡 **Quick Answer:** Kubernetes 1.36 graduates **User Namespaces to GA**. Containers run as root inside the Pod but map to unprivileged UIDs on the host, preventing container breakout from gaining host root access.

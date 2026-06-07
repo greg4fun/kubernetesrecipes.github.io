@@ -16,6 +16,8 @@ relatedRecipes:
   - "kubernetes-crd-development-guide"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
+  - "kubernetes-finalizers-explained-troubleshooting"
+  - "kubernetes-lease-api-leader-election"
 ---
 
 > 💡 **Quick Answer:** Build Kubernetes operators with Operator SDK. Controller reconciliation, custom resources, status subresource, leader election, and testing patterns.

@@ -14,6 +14,7 @@ difficulty: "beginner"
 relatedRecipes:
   - "kubernetes-persistent-volumes-guide"
   - "kubernetes-init-containers-guide"
+  - "openshift-oc-cp-file-copy"
 ---
 
 > 💡 **Quick Answer:** `oc rsync` copies files/directories between your local filesystem and a running Pod, using either rsync (if available in the container) or tar as a fallback — no need to rebuild images or mount volumes for quick file transfers.

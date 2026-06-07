@@ -16,6 +16,7 @@ relatedRecipes:
   - "openshift-machineconfig-mcp-guide"
   - "openshift-lifecycle-versions"
   - "kubernetes-cluster-upgrade-guide"
+  - "openshift-support-lifecycle-version-matrix"
 ---
 
 > 💡 **Quick Answer:** OpenShift updates are orchestrated by the Cluster Version Operator (CVO), which applies release manifests in ordered Runlevels. The CVO updates all control plane Operators first (60-120 min), then the Machine Config Operator (MCO) rolls out OS and config changes to nodes one-by-one (5+ min per node). Use `oc adm upgrade` to check available versions and `oc adm upgrade --to=<version>` to initiate.

@@ -11,6 +11,7 @@ relatedRecipes:
   - "backstage-kubernetes-developer-portal"
   - "cluster-api-infrastructure-as-code"
   - "deployment-vs-statefulset"
+  - "kubernetes-kind-local-development-cluster"
 ---
 
 > 💡 **Quick Answer:** Set up local Kubernetes clusters for development with Minikube, Kind, and k3d. Covers installation, configuration, local registries, and hot-reload workflows.

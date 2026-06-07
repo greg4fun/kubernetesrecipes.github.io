@@ -14,6 +14,7 @@ tags:
 relatedRecipes:
   - "kubernetes-resource-limits-requests"
   - "kubernetes-canary-deployment-guide"
+  - "kubernetes-cronjob-concurrencypolicy-guide"
 ---
 
 > 💡 **Quick Answer:** Set `concurrencyPolicy: Forbid` to prevent overlapping runs, `startingDeadlineSeconds: 200` to handle missed schedules, `successfulJobsHistoryLimit: 3`, and always define resource requests/limits on job pods.

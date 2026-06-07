@@ -18,6 +18,8 @@ relatedRecipes:
   - "resource-limits-requests"
   - "vertical-pod-autoscaler-setup"
   - "kubernetes-oomkilled-troubleshooting"
+  - "kubernetes-1-36-l3-cache-topology-cpu-manager"
+  - "kubernetes-1-36-pod-level-resources"
 ---
 
 > 💡 **Quick Answer:** CPU is specified in millicores (\`200m\` = 0.2 CPU, \`500m\` = 0.5 CPU, \`1\` = 1 full core). Memory is specified in bytes with suffixes (\`256Mi\` = 256 MiB, \`1Gi\` = 1 GiB). Set both \`requests\` (scheduling guarantee) and \`limits\` (hard cap) for every container.

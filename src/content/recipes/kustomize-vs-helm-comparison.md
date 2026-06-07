@@ -15,6 +15,8 @@ tags:
 relatedRecipes:
   - "kubernetes-kustomize-advanced-patterns"
   - "helm-chart-basics"
+  - "crossplane-kubernetes-infrastructure-management"
+  - "kubernetes-kustomize-configuration-management"
 ---
 
 > 💡 **Quick Answer:** Use **Helm** when you need parameterized templates, versioned packages, or are distributing charts to other teams. Use **Kustomize** when you need overlay-based patching with no templating language, or when managing internal configurations. Use **both together** — Helm for third-party charts, Kustomize for overlays.

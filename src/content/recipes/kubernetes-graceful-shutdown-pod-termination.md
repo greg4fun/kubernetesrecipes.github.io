@@ -15,6 +15,7 @@ relatedRecipes:
   - "kubernetes-rolling-update-strategies"
   - "kubernetes-probes-liveness-readiness"
   - "kubernetes-pod-disruption-budget"
+  - "kubernetes-pod-disruption-budget-pdb"
 ---
 
 > 💡 **Quick Answer:** When Kubernetes terminates a pod, it sends SIGTERM to PID 1, waits up to `terminationGracePeriodSeconds` (default 30s), then sends SIGKILL. For zero-downtime: 1) Handle SIGTERM in your app (stop accepting, drain connections), 2) Add a `preStop` hook with a short sleep (5-10s) to allow endpoint removal propagation, 3) Set grace period longer than your drain time.

@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-admission-webhooks-guide"
   - "kubernetes-api-resources-explain"
   - "kubernetes-rbac-role-rolebinding"
+  - "kubernetes-1-36-declarative-validation"
 ---
 
 > 💡 **Quick Answer:** `CustomResourceDefinition` extends the Kubernetes API with your own resource types. Define a CRD with `kubectl apply`, then create instances with `kubectl apply`. CRDs support schema validation, status subresource, additional printer columns, and versioning. Use CRDs + controllers for the operator pattern — automated management of complex applications.

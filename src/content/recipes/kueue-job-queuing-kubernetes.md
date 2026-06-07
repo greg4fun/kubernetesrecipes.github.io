@@ -17,6 +17,7 @@ relatedRecipes:
   - "ai-resource-allocation-optimization-kubernetes"
   - "kubernetes-resource-quotas-limitranges"
   - "volcano-batch-scheduling-kubernetes"
+  - "volcano-batch-scheduler-gang-scheduling-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Install Kueue and create `ClusterQueues` with GPU quotas per team. Teams submit jobs to `LocalQueues` — Kueue admits jobs when resources are available and queues the rest. Cohort-based borrowing lets idle GPUs be used by other teams automatically.

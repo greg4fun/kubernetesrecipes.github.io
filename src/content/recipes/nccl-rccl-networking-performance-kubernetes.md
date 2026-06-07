@@ -18,6 +18,8 @@ relatedRecipes:
   - "nccl-pxn-cross-nic-nvlink-topology"
   - "dual-fabric-mellanox-gpu-storage-ethernet-infiniband"
   - "gpudirect-storage-gds-kubernetes"
+  - "nccl-environment-variables-reference-kubernetes"
+  - "weights-and-biases-experiment-tracking-kubernetes"
 ---
 
 > 💡 **Quick Answer:** NCCL (NVIDIA) and RCCL (AMD) are the collective communication libraries for distributed GPU workloads. Peak networking performance requires: GPUDirect RDMA for zero-copy GPU-to-GPU transfers over InfiniBand/RoCE, correct NIC-to-GPU affinity (same PCIe/NUMA), tuned socket threads for TCP fallback, and rail-optimized topology matching. Benchmark with `all_reduce_perf` — target >90% of theoretical link bandwidth.

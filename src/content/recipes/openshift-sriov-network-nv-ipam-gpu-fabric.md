@@ -14,6 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "sriov-vf-container-mapping-lifecycle"
   - "nvidia-gpu-topology-matrix-kubernetes"
+  - "sriov-multus-network-attachment-gpu-rdma"
 ---
 
 > 💡 **Quick Answer:** Create a `SriovNetwork` CR in the `openshift-sriov-network-operator` namespace to define a GPU fabric network that uses `nv-ipam` for IP allocation. The CR specifies the SR-IOV resource name (Mellanox NICs), IPAM configuration with pool name, and target namespace. The operator automatically generates a `NetworkAttachmentDefinition` that pods reference via `k8s.v1.cni.cncf.io/networks` annotation.

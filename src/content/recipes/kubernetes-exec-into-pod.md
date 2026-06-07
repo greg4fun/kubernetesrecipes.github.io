@@ -11,6 +11,7 @@ relatedRecipes:
   - "kubernetes-debugging-toolkit"
   - "coredns-troubleshooting"
   - "debug-imagepullbackoff"
+  - "kubernetes-1-36-spdy-to-websockets"
 ---
 
 > 💡 **Quick Answer:** Use kubectl exec to run commands inside Kubernetes pods. Covers interactive sessions, multi-container pods, and ephemeral container debugging.

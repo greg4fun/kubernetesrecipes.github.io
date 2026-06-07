@@ -15,6 +15,7 @@ relatedRecipes:
   - "nvidia-gpu-operator-setup"
   - "kubernetes-ai-infrastructure-scaling"
   - "openshift-machineconfig-mcp-guide"
+  - "virtualization-vt-x-vs-vt-d-vs-sriov"
 ---
 
 > 💡 **Quick Answer:** The SR-IOV Network Operator on OpenShift manages Mellanox ConnectX RDMA/InfiniBand devices via `SriovNetworkNodePolicy`. When the device plugin logs "no devices in device pool, skipping creating resource server for mellanoxnics," it means the policy's selector doesn't match available VFs — verify PCI addresses, numVfs, and node labels.

@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-network-policy-guide"
   - "pod-security-standards"
   - "tabnine-enterprise-self-hosted-kubernetes"
+  - "hermes-agent-self-hosted-kubernetes"
 ---
 
 > 💡 **Quick Answer:** NVIDIA OpenShell is a safe, private runtime for autonomous AI agents. It provides sandboxed execution environments governed by declarative YAML policies that prevent unauthorized file access, data exfiltration, and uncontrolled network activity. Deploy on Kubernetes via Helm chart with proxy-enforced HTTP-level access control per sandbox.

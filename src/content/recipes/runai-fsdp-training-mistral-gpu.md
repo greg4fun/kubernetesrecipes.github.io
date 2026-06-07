@@ -16,6 +16,7 @@ relatedRecipes:
   - "runai-workload-controllers-openshift"
   - "nvidia-gpu-operator-gitops-openshift"
   - "openshift-gpu-node-resource-planning"
+  - "runai-training-submit-script-pattern"
 ---
 
 > 💡 **Quick Answer:** Submit PyTorch FSDP (Fully Sharded Data Parallel) training jobs through Run:ai to automatically schedule multi-GPU workloads with preemption, fairness queuing, and real-time GPU utilization monitoring. Run:ai handles container lifecycle, GPU allocation, and metrics collection.

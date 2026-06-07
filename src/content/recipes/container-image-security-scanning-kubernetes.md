@@ -15,6 +15,7 @@ relatedRecipes:
   - "oci-container-image-internals-kubernetes"
   - "private-container-registry-kubernetes"
   - "pod-security-standards"
+  - "container-image-signing-verification-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Scan container images at three points: build time (CI pipeline), admission time (Kyverno/OPA blocking unscanned images), and runtime (periodic rescanning for newly discovered CVEs). Trivy scans each layer independently, maps vulnerabilities to specific packages, and produces SBOM for compliance. Block images with Critical/High CVEs from reaching production.

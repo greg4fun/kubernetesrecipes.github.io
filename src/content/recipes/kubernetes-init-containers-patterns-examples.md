@@ -14,6 +14,7 @@ difficulty: "beginner"
 relatedRecipes:
   - "kubernetes-probes-liveness-readiness"
   - "kubernetes-graceful-shutdown-pod-termination"
+  - "kubernetes-multi-container-pod-patterns"
 ---
 
 > 💡 **Quick Answer:** Init containers run before app containers, executing sequentially to completion. Use them to: wait for dependencies (`nslookup` until service resolves), run database migrations, clone code, fetch secrets, or fix file permissions. They share volumes with app containers but have separate images and resource limits.

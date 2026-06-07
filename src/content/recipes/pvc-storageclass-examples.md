@@ -11,6 +11,7 @@ prerequisites:
 relatedRecipes:
   - "troubleshooting-pending-pvc"
   - "csi-snapshot-restore-guide"
+  - "csi-storage-performance-fio-kubernetes-job"
 tags:
   - storage
   - pvc

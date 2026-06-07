@@ -14,6 +14,7 @@ difficulty: "beginner"
 relatedRecipes:
   - "kubernetes-rbac-role-clusterrole"
   - "kubernetes-networkpolicy-default-deny-examples"
+  - "kubernetes-labels-annotations-best-practices"
 ---
 
 > 💡 **Quick Answer:** Use namespaces to separate environments (dev/staging/prod), teams, or applications. Apply ResourceQuotas to prevent resource hogging, NetworkPolicies for network isolation, and RBAC Roles for access control per namespace. Don't over-namespace — most clusters need 5-20 namespaces, not hundreds.

@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-horizontal-pod-autoscaler-v2"
   - "kyverno-llm-inference-guardrails"
   - "kubernetes-cost-optimization-strategies"
+  - "kubernetes-ai-search-discoverability"
 ---
 
 > 💡 **Quick Answer:** Next-generation AI infrastructure connects models to reality with fresh data, shrinks latency from 4s to sub-second, scales from 400M to 6B daily requests (10K→100K req/s), and evolves dynamically with changing use cases — all powered by Kubernetes orchestration patterns.

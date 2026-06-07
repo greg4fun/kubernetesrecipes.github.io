@@ -18,6 +18,7 @@ relatedRecipes:
   - "kubectl-exec-into-pod"
   - "kubectl-describe-pod-events"
   - "debug-pod-networking"
+  - "kubernetes-1-36-statusz-flagz"
 ---
 
 > 💡 **Quick Answer:** `kubectl debug -it my-pod --image=busybox --target=my-container` attaches an ephemeral debug container that shares the target container's process namespace. For distroless images where `exec` fails, this is the only way to debug. `kubectl debug node/worker-1 -it --image=ubuntu` creates a pod with host access for node debugging. `kubectl debug my-pod -it --copy-to=debug-pod --share-processes` creates a debuggable copy.

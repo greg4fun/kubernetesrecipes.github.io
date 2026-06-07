@@ -16,6 +16,7 @@ relatedRecipes:
   - "openshift-sriov-rdma-infiniband-device-plugin"
   - "iommu-bios-kernel-nccl-gpu-direct"
   - "kubernetes-nfs-provisioner-guide"
+  - "infiniband-subnet-manager-opensm-kubernetes"
 ---
 
 > 💡 **Quick Answer:** GPU clusters use separate physical fabrics: InfiniBand NICs for GPU-to-GPU NCCL traffic (highest bandwidth, lowest latency) and Ethernet NICs for storage (NFS/Ceph), management, and Pod networking. Never mix GPU RDMA and storage on the same fabric — congestion on one kills the other.

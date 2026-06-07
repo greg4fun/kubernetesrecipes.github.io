@@ -16,6 +16,7 @@ relatedRecipes:
   - "kyverno-rebac-multi-tenant-rbac"
   - "kyverno-drift-prevention-gitops"
   - "kyverno-llm-inference-guardrails"
+  - "kyverno-webhook-admission-latency"
 ---
 
 > 💡 **Quick Answer:** Kyverno now supports CEL (Common Expression Language) as a policy expression engine alongside traditional YAML overlays, enabling type-safe, compile-time validated policies with better performance and alignment with Kubernetes ValidatingAdmissionPolicy.

@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-1-36-gang-scheduling"
   - "kubernetes-1-36-topology-aware-scheduling"
   - "validate-gpu-topology-nccl"
+  - "deep-learning-large-dataset-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Multi-node training on Kubernetes uses PyTorch DDP/FSDP or DeepSpeed with `torchrun`/MPI, scheduled via gang scheduling. Each node runs a worker with 8 GPUs communicating via NCCL over NVLink (intra-node) and RDMA/InfiniBand (inter-node).

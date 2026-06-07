@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-service-mesh-istio-guide"
   - "kubernetes-linkerd-service-mesh-guide"
   - "kubernetes-sidecar-containers-guide"
+  - "kubernetes-nats-messaging-guide"
 ---
 
 > 💡 **Quick Answer:** Dapr provides microservice building blocks (service invocation, state, pub/sub, secrets) via a sidecar. Install: `helm install dapr dapr/dapr -n dapr-system --create-namespace`. Annotate pods: `dapr.io/enabled: "true"`. Your app calls `localhost:3500` for Dapr APIs — language-agnostic. State stored in Redis/PostgreSQL, pub/sub via Redis/Kafka/RabbitMQ — switch backends without code changes.

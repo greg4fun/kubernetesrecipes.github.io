@@ -15,6 +15,8 @@ relatedRecipes:
   - "cluster-autoscaler"
   - "hpa-custom-metrics"
   - "keda-event-driven-autoscaling"
+  - "kubernetes-resource-optimization"
+  - "kubernetes-resource-optimization-strategies"
 tags:
   - hpa
   - autoscaling

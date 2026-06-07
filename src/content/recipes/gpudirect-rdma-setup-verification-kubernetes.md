@@ -15,6 +15,7 @@ relatedRecipes:
   - "nccl-all-reduce-perf-benchmark-multi-node"
   - "nccl-channel-routing-transport-analysis"
   - "nvidia-gpu-topology-matrix-kubernetes"
+  - "gpu-operator-clusterpolicy-rdma-gds-iommu"
 ---
 
 > 💡 **Quick Answer:** GPUDirect RDMA allows the NIC to read/write GPU memory directly without CPU involvement, reducing latency by ~50% and increasing bandwidth by 30-50% for inter-node GPU communication. Enable with: `modprobe nvidia-peermem`, verify with `cat /sys/module/nvidia_peermem/version`, and confirm in NCCL logs by checking for `/GDRDMA` suffix on NET/IB channels.

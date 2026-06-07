@@ -16,6 +16,7 @@ relatedRecipes:
   - "dual-fabric-mellanox-gpu-storage-ethernet-infiniband"
   - "nim-multinode-deployment-helm-kubernetes"
   - "iommu-bios-kernel-nccl-gpu-direct"
+  - "runai-distributed-inference-sriov-rdma"
 ---
 
 > 💡 **Quick Answer:** Run:ai's `inference distributed submit` deploys vLLM across multiple GPU workers with tensor parallelism. For a 119B parameter model needing 4 GPUs total: use 2 workers × 2 GPUs each with `--tensor-parallel-size 2`. NCCL handles inter-GPU communication — disable InfiniBand (`NCCL_IB_DISABLE=1`) when using Ethernet-only clusters.

@@ -16,6 +16,7 @@ relatedRecipes:
   - "runai-backend-architecture-openshift"
   - "openshift-gpu-node-resource-planning"
   - "thanos-receive-oom-crashloop-statefulset"
+  - "runai-gpu-metrics-dcgm-thanos-grafana"
 ---
 
 > 💡 **Quick Answer:** Run:ai backend deploys ~15 StatefulSets/Deployments in the `runai-backend` namespace covering GPU scheduling, metrics (Thanos), auth (Keycloak), messaging (NATS), storage (PostgreSQL/Redis), and workload management. Managed via ArgoCD with Helm values in a GitOps repo.

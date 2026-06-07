@@ -15,6 +15,7 @@ relatedRecipes:
   - "nccl-network-validator-production-mpijob"
   - "nccl-gdr-level-tuning-pix-pxb-phb-sys"
   - "nccl-all-reduce-perf-benchmark-multi-node"
+  - "nccl-debug-subsystems-gpu-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** When NCCL all_reduce_perf shows lower-than-expected busbw, systematically check: (1) SR-IOV VF allocation, (2) /dev/infiniband visibility, (3) RoCE GID index, (4) MTU jumbo frames, (5) PFC/ECN flow control, (6) GPUDirect RDMA level, (7) NCCL_SOCKET_IFNAME, (8) PCIe/NUMA locality, (9) per-rank HCA selection. Expected: ~120-160 GB/s for 2×4 GPU RoCE, ~35 GB/s for 2×2 GPU single-VF.

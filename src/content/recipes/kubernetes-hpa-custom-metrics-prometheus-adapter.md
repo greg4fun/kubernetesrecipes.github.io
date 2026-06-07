@@ -15,6 +15,7 @@ relatedRecipes:
   - "kubernetes-vertical-pod-autoscaler-vpa"
   - "prometheus-monitoring-kubernetes-guide"
   - "kubernetes-horizontal-pod-autoscaler-v2"
+  - "keda-event-driven-autoscaling-kubernetes"
 ---
 
 > 💡 **Quick Answer:** The Prometheus Adapter exposes Prometheus metrics as Kubernetes custom metrics API, enabling HPA to scale on any metric. Install the adapter with Helm, configure metric rules to map PromQL queries to the `custom.metrics.k8s.io` API, then reference metrics in your HPA spec with `type: Pods` or `type: Object`.

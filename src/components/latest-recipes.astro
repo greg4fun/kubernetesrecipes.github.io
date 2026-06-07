@@ -1,0 +1,91 @@
+---
+/**
+ * Latest Recipes (homepage module)
+ *
+ * Surfaces the newest recipes plus category entry points directly from the
+ * homepage — the site's highest-authority page. This funnels crawl equity to
+ * fresh recipe pages (previously the homepage linked to zero recipes), aiding
+ * discovery, indexation, and freshness signals.
+ */
+import { getCollection } from "astro:content";
+
+const CATEGORY_META: Record<string, { label: string; icon: string }> = {
+  ai: { label: "AI & GPU", icon: "🤖" },
+  networking: { label: "Networking", icon: "🌐" },
+  security: { label: "Security", icon: "🔒" },
+  deployments: { label: "Deployments", icon: "🚀" },
+  storage: { label: "Storage", icon: "💾" },
+  observability: { label: "Observability", icon: "📊" },
+  autoscaling: { label: "Autoscaling", icon: "⚡" },
+  configuration: { label: "Configuration", icon: "⚙️" },
+  helm: { label: "Helm", icon: "🎯" },
+  troubleshooting: { label: "Troubleshooting", icon: "🔧" },
+};
+
+const all = (await getCollection("recipes")).filter((r: any) => !r.data.draft);
+
+const latest = [...all]
+  .sort((a: any, b: any) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
+  .slice(0, 12);
+
+// Category list with live counts, ordered by size.
+const counts: Record<string, number> = {};
+all.forEach((r: any) => { counts[r.data.category] = (counts[r.data.category] || 0) + 1; });
+const categories = Object.keys(CATEGORY_META)
+  .filter((c) => counts[c])
+  .sort((a, b) => counts[b] - counts[a]);
+---
+
+<section class="mt-24 max-w-6xl mx-auto px-4 md:px-0">
+  <div class="text-center">
+    <h2 class="text-4xl md:text-5xl font-bold tracking-tight">Latest Kubernetes Recipes</h2>
+    <p class="text-slate-500 mt-3 text-lg">
+      {all.length} production-ready recipes — fresh patterns for deployments, networking, security, AI/GPU, and more.
+    </p>
+  </div>
+
+  <!-- Category entry points -->
+  <div class="flex flex-wrap justify-center gap-2 mt-8">
+    {categories.map((c) => (
+      <a
+        href={`/recipes/${c}/`}
+        class="inline-flex items-center gap-2 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-full px-4 py-2 text-sm font-medium text-slate-700 transition-colors"
+      >
+        <span>{CATEGORY_META[c].icon}</span>
+        {CATEGORY_META[c].label}
+        <span class="text-slate-400">{counts[c]}</span>
+      </a>
+    ))}
+  </div>
+
+  <!-- Newest recipes -->
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
+    {latest.map((recipe: any) => (
+      <a
+        href={`/recipes/${recipe.data.category}/${recipe.slug}/`}
+        class="group block p-5 bg-white rounded-xl border border-slate-200 hover:border-blue-300 hover:shadow-lg transition-all"
+      >
+        <span class="text-xs text-slate-500 uppercase tracking-wider">
+          {CATEGORY_META[recipe.data.category]?.icon} {CATEGORY_META[recipe.data.category]?.label || recipe.data.category}
+        </span>
+        <h3 class="font-semibold text-slate-800 group-hover:text-blue-600 transition-colors line-clamp-2 mt-1">
+          {recipe.data.title}
+        </h3>
+        <p class="text-sm text-slate-500 mt-2 line-clamp-2">{recipe.data.description}</p>
+        {recipe.data.difficulty && (
+          <span class="inline-block mt-3 text-xs text-slate-400 capitalize">{recipe.data.difficulty}</span>
+        )}
+      </a>
+    ))}
+  </div>
+
+  <div class="mt-10 text-center">
+    <a
+      href="/recipes/"
+      class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors"
+    >
+      Browse all {all.length} recipes
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>

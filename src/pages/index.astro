@@ -8,6 +8,7 @@ import SaveTheDate from "@components/save-the-date.astro";
 import BookDescription from "@components/book-description.astro";
 import AboutAuthors from "@components/about-authors.astro";
 import Recommendations from "@components/recommendations.astro";
+import LatestRecipes from "@components/latest-recipes.astro";
 import Carousel from "@components/carousel.astro";
 import VideoSection from "@components/video-section.astro";
 import CoursesSection from "@components/courses-section.astro";
@@ -56,6 +57,9 @@ const bookLd = JSON.stringify({
   <script type="application/ld+json" set:html={bookLd} />
   <Container>
     <Hero />
+  </Container>
+  <Container>
+    <LatestRecipes />
   </Container>
   <Container>
     <VideoSection 

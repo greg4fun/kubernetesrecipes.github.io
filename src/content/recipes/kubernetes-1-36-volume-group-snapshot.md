@@ -15,6 +15,7 @@ relatedRecipes:
   - "kubernetes-velero-backup-guide"
   - "kubernetes-persistent-volume-guide"
   - "kubernetes-1-36-oci-volume-source"
+  - "kubernetes-1-36-csi-differential-snapshots"
 ---
 
 > 💡 **Quick Answer:** VolumeGroupSnapshot graduates to **GA in Kubernetes 1.36**. Take crash-consistent snapshots of multiple PersistentVolumes atomically — essential for databases, stateful apps, and disaster recovery.

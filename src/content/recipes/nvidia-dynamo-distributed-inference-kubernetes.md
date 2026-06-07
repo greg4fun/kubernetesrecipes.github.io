@@ -17,6 +17,7 @@ relatedRecipes:
   - "nim-model-profiles-selection-kubernetes"
   - "deploy-multinode-nim-models-kubernetes"
   - "nvidia-gpu-operator-setup"
+  - "nvidia-dynamo-production-tuning-kubernetes"
 ---
 
 > 💡 **Quick Answer:** NVIDIA Dynamo is the open-source successor to Triton Inference Server. It orchestrates multi-node LLM inference with disaggregated prefill/decode, KV-aware routing, and SLA-driven autoscaling. Deploy on Kubernetes using the Grove operator and DynamoGraphDeploymentRequest CRD for zero-config model serving.

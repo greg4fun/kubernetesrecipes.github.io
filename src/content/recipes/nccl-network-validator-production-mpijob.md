@@ -15,6 +15,9 @@ relatedRecipes:
   - "nccl-gpudirect-rdma-distance-pix-sys"
   - "nccl-network-validation-script-openshift"
   - "nccl-roce-validation-mpijob-complete-reference"
+  - "mpi-dns-resolution-hostfile-kubernetes"
+  - "nccl-shared-memory-transport-kubernetes"
+  - "runai-gpu-scheduling-kubeflow-mpijob"
 ---
 
 > 💡 **Quick Answer:** Build a production NCCL network validation framework with three modes: `single-node` (NVLink test, expect ~700-800 GB/s busbw on 2 GPUs), `mpi-job` (multi-node RoCE test, expect ~120-160 GB/s busbw across 2 nodes), and `shell` (interactive debugging with SSHD). The script handles DNS resolution, hostfile rewriting, RDMA diagnostics, OpenMPI control plane separation, and produces a clear "Validation complete. Read the busbw column." output with a troubleshooting checklist.

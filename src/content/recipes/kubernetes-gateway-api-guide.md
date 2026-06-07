@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-ingress-nginx-guide"
   - "kubernetes-service-mesh-istio-guide"
   - "kubernetes-cert-manager-guide"
+  - "kubernetes-1-36-externalips-deprecation"
 ---
 
 > 💡 **Quick Answer:** Gateway API is the official successor to Ingress. Install CRDs: `kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/standard-install.yaml`. Create a `Gateway` (infra team), then `HTTPRoute` (app teams). Supports traffic splitting, header matching, URL rewriting, and cross-namespace routing. Works with Envoy Gateway, Istio, Cilium, NGINX, Traefik.

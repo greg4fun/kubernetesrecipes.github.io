@@ -21,6 +21,7 @@ relatedRecipes:
   - "gpudirect-rdma-dma-buf"
   - "nvidia-h200-gpu-kubernetes"
   - "genai-perf-benchmark-llm"
+  - "genai-perf-benchmarking-llm-inference-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Use tensor parallelism (TP) to split model layers across GPUs within a node (NVLink), and pipeline parallelism (PP) to split layer groups across nodes (InfiniBand/RoCE). vLLM: set `--tensor-parallel-size 8 --pipeline-parallel-size 2` for 16-GPU inference across 2 nodes.

@@ -16,6 +16,7 @@ relatedRecipes:
   - "openshift-sriov-rdma-infiniband-device-plugin"
   - "sriov-vf-container-mapping-lifecycle"
   - "nv-ipam-gpu-fabric-ip-allocation"
+  - "nmstate-ethernet-bond-vlan-gpu-nodes"
 ---
 
 > 💡 **Quick Answer:** Multus CNI is a meta-plugin that attaches multiple network interfaces to Kubernetes Pods. On OpenShift it's installed by default. Define additional networks via `NetworkAttachmentDefinition` CRDs, then reference them in Pod annotations to get `net1`, `net2`, etc. alongside the default `eth0`.

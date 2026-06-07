@@ -17,6 +17,7 @@ relatedRecipes:
   - "distributed-inference-kubernetes"
   - "lws-multi-node-distributed-inference"
   - "nim-multinode-deployment-helm-kubernetes"
+  - "integrate-disaggregatedset-llmd-kubernetes"
 ---
 
 > 💡 **Quick Answer:** DisaggregatedSet (DS) is a CRD in the LeaderWorkerSet (LWS) project that orchestrates multiple LeaderWorkerSets as a single unit for disaggregated LLM inference. It manages separate roles (e.g., prefill on high-compute GPUs, decode on memory-optimized GPUs) with coordinated rolling updates, automatic headless service creation per role/revision, and unified failure handling — solving the operational complexity of manually coordinating multi-role inference deployments.

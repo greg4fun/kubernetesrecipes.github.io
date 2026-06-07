@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-opentelemetry-collector"
   - "nvidia-gpu-operator-setup"
   - "kubernetes-prometheus-monitoring-guide"
+  - "thanos-receive-memory-sizing"
 ---
 
 > 💡 **Quick Answer:** Run:ai deploys an OpenTelemetry Collector (via Helm chart `otelcollector-0.142.1`) that scrapes Prometheus metrics from diagnostics endpoints, enriches them with customer/cluster labels, filters to `runai_*` metrics, and exports via OTLP/HTTP with OAuth2 authentication to a central telemetry backend.

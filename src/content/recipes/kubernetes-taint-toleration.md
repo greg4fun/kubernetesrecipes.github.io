@@ -11,6 +11,7 @@ relatedRecipes:
   - "kubernetes-health-checks"
   - "kubernetes-canary-deployment"
   - "kubernetes-headless-service"
+  - "kubernetes-taints-tolerations-node-scheduling"
 ---
 
 > 💡 **Quick Answer:** configuration

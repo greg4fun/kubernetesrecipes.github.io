@@ -15,6 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-pod-security-standards"
+  - "canary-deployment-gateway-api-traffic-splitting"
 ---
 
 > 💡 **Quick Answer:** Configure readiness probes correctly on Kubernetes. HTTP, TCP, exec probes, failure threshold tuning, and why readiness probes should never check databases.

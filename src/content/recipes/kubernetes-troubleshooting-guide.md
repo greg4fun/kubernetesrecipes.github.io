@@ -9,6 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-namespace-guide"
   - "fix-etcd-leader-election-timeout"
+  - "kubernetes-ephemeral-containers-debugging"
 ---
 
 > 💡 **Quick Answer:** troubleshooting

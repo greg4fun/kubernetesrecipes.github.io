@@ -15,6 +15,7 @@ relatedRecipes:
   - "strimzi-kafka-operator-kubernetes"
   - "velero-kubernetes-backup-disaster-recovery"
   - "kubernetes-persistent-volume-claims"
+  - "kubernetes-statefulset-headless-service-guide"
 ---
 
 > 💡 **Quick Answer:** CloudNativePG is a CNCF-graduated PostgreSQL operator that manages the full lifecycle: provisioning, HA with automatic failover, continuous backup to object storage (S3/GCS/Azure), point-in-time recovery (PITR), rolling updates, and connection pooling via PgBouncer. Define a `Cluster` resource with 3 instances and CloudNativePG handles replication, failover, and backups automatically.

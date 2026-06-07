@@ -15,6 +15,7 @@ tags:
   - "best-practices"
 relatedRecipes:
   - "kubernetes-admission-controllers-guide"
+  - "kubernetes-envfrom-configmap-environment-variables"
 ---
 
 > 💡 **Quick Answer:** ConfigMaps store non-sensitive configuration (env vars, config files), Secrets store sensitive data (passwords, TLS certs, tokens) — both base64-encoded but Secrets get additional RBAC, audit logging, and optional encryption at rest. Mount as volumes for config files or inject as environment variables.

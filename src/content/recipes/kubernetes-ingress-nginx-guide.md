@@ -17,6 +17,7 @@ relatedRecipes:
   - "kubernetes-gateway-api-guide"
   - "kubernetes-service-types-explained"
   - "nginx-ingress-limit-burst-multiplier"
+  - "kubernetes-rate-limiting-gateway-api"
 ---
 
 > 💡 **Quick Answer:** Install NGINX Ingress Controller, then create an Ingress resource with `ingressClassName: nginx`. Route by path: `path: /api` → backend service, or by host: `host: api.example.com`. Add TLS with a Secret containing cert+key and `tls: [{hosts: [api.example.com], secretName: tls-secret}]`. Use annotations for rate limiting, redirects, CORS, and custom NGINX config.
