@@ -71,6 +71,8 @@ gitops/
 
 ### Step 1: Ansible Initial Bootstrap
 
+New to the `kubernetes.core` Ansible modules used here? [Ansible & Kubernetes — Automate K8s with Playbooks](https://www.ansiblebyexample.com/articles/ansible-kubernetes-k8s-automation-playbook-guide) walks through them with copy-paste examples.
+
 ```yaml
 # ansible/bootstrap-gitops.yaml
 - name: Bootstrap OpenShift GitOps
