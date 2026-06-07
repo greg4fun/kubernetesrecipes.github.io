@@ -27,3 +27,8 @@ Thumbs.db
 # Python cache (from scripts/)
 __pycache__/
 *.pyc
+
+# GSC export (private traffic data — keep local, never commit to a public repo)
+reports/gsc/
+reports/*Performance-on-Search*.zip
+reports/*Performance-on-Search*/
