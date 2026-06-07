@@ -15,7 +15,7 @@ export interface Props {
 
 const { currentSlug, category, relatedSlugs = [], allRecipes } = Astro.props;
 
-// Category display names
+// Category display names + icons
 const categoryNames: Record<string, string> = {
   networking: "Networking",
   storage: "Storage",
@@ -28,50 +28,64 @@ const categoryNames: Record<string, string> = {
   helm: "Helm",
   ai: "AI & ML",
 };
+const categoryIcons: Record<string, string> = {
+  networking: "🌐", storage: "💾", deployments: "🚀", security: "🔒",
+  observability: "📊", autoscaling: "⚡", troubleshooting: "🔧",
+  configuration: "⚙️", helm: "🎯", ai: "🤖",
+};
 
-// Get explicitly related recipes first
-const explicitlyRelated = relatedSlugs
-  .map(slug => allRecipes.find(r => r.slug === slug))
-  .filter(Boolean);
+// Tags of the current recipe (for shared-tag, cross-category relevance).
+const currentRecipe = allRecipes.find(r => r.slug === currentSlug);
+const currentTags: string[] = currentRecipe?.data?.tags || [];
 
-// Get more from same category if needed
-const sameCategoryRecipes = allRecipes
-  .filter(r => 
-    r.data.category === category && 
-    r.slug !== currentSlug &&
-    !relatedSlugs.includes(r.slug)
-  )
-  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
-
-// Combine: up to 2 explicitly related + fill remaining from same category
-const nextRecipes = [
-  ...explicitlyRelated.slice(0, 2),
-  ...sameCategoryRecipes.slice(0, Math.max(0, 3 - explicitlyRelated.length))
-].slice(0, 3);
-
-// Suggested progression (for "learning path" feel)
+// Hand-curated learning paths (optional "next step" feel where defined).
 const suggestedProgression: Record<string, string[]> = {
-  // Deployments cluster
   "rolling-update-deployment": ["blue-green-deployment", "canary-deployments"],
   "blue-green-deployment": ["canary-deployments", "argocd-gitops-deployment"],
   "canary-deployments": ["argocd-gitops-deployment", "flux-gitops-continuous-delivery"],
   "jobs-cronjobs": ["horizontal-pod-autoscaler", "pod-disruption-budgets"],
-  
-  // Security cluster
   "rbac-service-accounts": ["pod-security-standards", "network-policies"],
   "pod-security-standards": ["secrets-management-best-practices", "network-policies-advanced"],
-  
-  // Observability cluster  
   "prometheus-monitoring-setup": ["grafana-kubernetes-dashboards", "alertmanager-setup"],
   "grafana-kubernetes-dashboards": ["alertmanager-setup", "distributed-tracing-jaeger"],
 };
 
-const progression = suggestedProgression[currentSlug] || [];
-const progressionRecipes = progression
-  .map(slug => allRecipes.find(r => r.slug === slug))
-  .filter(Boolean);
+const MAX = 6;
+const bySlug = (slug: string) => allRecipes.find(r => r.slug === slug);
 
-const displayRecipes = progressionRecipes.length > 0 ? progressionRecipes : nextRecipes;
+// Build a deduped, relevance-ordered set of internal links. Deeper internal
+// linking spreads crawl equity and improves discovery/ranking across the whole
+// catalog (every recipe page now links out to up to 6 related recipes instead
+// of 3) — a single-component lever applied site-wide.
+const seen = new Set<string>([currentSlug]);
+const ordered: any[] = [];
+const push = (r: any) => {
+  if (r && !seen.has(r.slug)) { seen.add(r.slug); ordered.push(r); }
+};
+
+// 1. Curated learning path, 2. explicit relatedRecipes (topical, hand-picked).
+(suggestedProgression[currentSlug] || []).map(bySlug).forEach(push);
+relatedSlugs.map(bySlug).forEach(push);
+
+// 3. Shared-tag matches in OTHER categories (topical cross-links, scored by
+//    number of overlapping tags).
+if (currentTags.length) {
+  const tagSet = new Set(currentTags);
+  allRecipes
+    .filter(r => r.slug !== currentSlug && r.data.category !== category)
+    .map(r => ({ r, score: (r.data.tags || []).filter((t: string) => tagSet.has(t)).length }))
+    .filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score || b.r.data.publishDate.valueOf() - a.r.data.publishDate.valueOf())
+    .forEach(x => push(x.r));
+}
+
+// 4. Fill from the same category (recent first).
+allRecipes
+  .filter(r => r.data.category === category && r.slug !== currentSlug)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .forEach(push);
+
+const displayRecipes = ordered.slice(0, MAX);
 ---
 
 {displayRecipes.length > 0 && (
@@ -81,14 +95,14 @@ const displayRecipes = progressionRecipes.length > 0 ? progressionRecipes : next
     </h2>
     
     <div class="grid md:grid-cols-3 gap-4">
-      {displayRecipes.map((recipe, index) => (
+      {displayRecipes.map((recipe) => (
         <a 
           href={`/recipes/${recipe.data.category}/${recipe.slug}/`}
           class="group block p-4 bg-slate-50 rounded-lg hover:bg-blue-50 hover:border-blue-200 border border-transparent transition-all"
         >
           <div class="flex items-start gap-3">
             <span class="text-2xl opacity-50 group-hover:opacity-100 transition-opacity">
-              {index === 0 ? "1️⃣" : index === 1 ? "2️⃣" : "3️⃣"}
+              {categoryIcons[recipe.data.category] || "📄"}
             </span>
             <div class="flex-1 min-w-0">
               <span class="text-xs text-slate-500 uppercase tracking-wider">

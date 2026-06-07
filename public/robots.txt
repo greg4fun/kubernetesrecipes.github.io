@@ -79,6 +79,9 @@ Crawl-delay: 2
 # ============================================
 Sitemap: https://kubernetes.recipes/sitemap-index.xml
 
+# RSS feed (latest recipes)
+# https://kubernetes.recipes/rss.xml
+
 # ============================================
 # Canonical Host
 # ============================================
