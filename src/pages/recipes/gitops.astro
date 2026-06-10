@@ -1,23 +1,15 @@
 ---
-const localPath = "/recipes/deployments/argocd-gitops-deployment/";
+const to = "/recipes/deployments/argocd-gitops-deployment/";
 ---
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CCC31PP3QS"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag("js", new Date());
-    gtag("config", "G-CCC31PP3QS");
-  </script>
-  <title>Redirecting...</title>
-  <meta name="robots" content="noindex, follow" />
-  <link rel="canonical" href={`https://kubernetes.recipes${localPath}`} />
-  <meta http-equiv="refresh" content={`0; url=${localPath}`} />
-  <script is:inline define:vars={{ localPath }}>window.location.replace(localPath);</script>
-</head>
-<body><p>Redirecting to <a href={localPath}>ArgoCD GitOps Deployment</a>...</p></body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <link rel="canonical" href={`https://kubernetes.recipes${to}`} />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <script is:inline define:vars={{ to }}>window.location.replace(to);</script>
+  </head>
+  <body><p>This page has moved to <a href={to}>{to}</a>.</p></body>
 </html>
+

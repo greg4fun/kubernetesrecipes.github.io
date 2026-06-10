@@ -5,26 +5,29 @@ import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 
 
-// Redirect pages to exclude from sitemap (these are client-side redirects, not real content)
-// These pages exist in src/pages/recipes/[category]/*.astro as redirect stubs
-const redirectPages = [
-  "blue-green-deployments",
-  "prometheus-monitoring", 
-  "argocd-gitops",
-  "kubernetes-resource-optimization",
-  "custom-ca-registry",
-  "flux-gitops",
-  "kubernetes-jobs-cronjobs",
-  "keda-event-autoscaling",
-  "container-logging",
-  "downward-api",
-  "kyverno-policies",
-  "velero-backup-restore",
-  "container-image-scanning",
-  "kubernetes-jobs-cronjobs",
-  "deploy-mistral-vllm-kubernetes",
-  "gitops",
-];
+// Redirect stub pages to exclude from the sitemap. These exist as thin
+// meta-refresh redirect pages in src/pages/recipes/**; they must not appear in
+// the sitemap (they are not real content). Matched by EXACT path to avoid
+// accidentally excluding real destination pages with overlapping slugs
+// (e.g. /recipes/autoscaling/kubernetes-resource-optimization/).
+const redirectStubPaths = new Set([
+  "/recipes/gitops/",
+  "/recipes/configuration/argocd-gitops/",
+  "/recipes/configuration/flux-gitops/",
+  "/recipes/configuration/downward-api/",
+  "/recipes/configuration/kubernetes-jobs-cronjobs/",
+  "/recipes/configuration/kubernetes-resource-optimization/",
+  "/recipes/autoscaling/keda-event-autoscaling/",
+  "/recipes/observability/container-logging/",
+  "/recipes/observability/prometheus-monitoring/",
+  "/recipes/storage/velero-backup-restore/",
+  "/recipes/security/container-image-scanning/",
+  "/recipes/security/kyverno-policies/",
+  "/recipes/troubleshooting/custom-ca-registry/",
+  "/recipes/deployments/blue-green-deployments/",
+  "/recipes/deployments/kubernetes-jobs-cronjobs/",
+  "/recipes/storage/s3-model-storage-permissions/deploy-mistral-vllm-kubernetes/",
+]);
 
 // https://astro.build/config
 export default defineConfig({
@@ -47,11 +50,10 @@ export default defineConfig({
         "https://kubernetes.recipes/contact/",
       ],
       filter(page) {
-                // Exclude redirect stub pages
-        for (const redirect of redirectPages) {
-          if (page.includes(`/recipes/`) && page.includes(`/${redirect}/`)) {
-            return false;
-          }
+        const url = new URL(page);
+        // Exclude redirect stub pages (exact path match)
+        if (redirectStubPaths.has(url.pathname)) {
+          return false;
         }
         // Exclude demo/template pages (blog posts, pricing)
         if (page.includes("/blog/") || page.includes("/pricing/")) {
@@ -59,7 +61,6 @@ export default defineConfig({
         }
         // Exclude non-trailing-slash duplicates (customPages without slash already
         // generated trailing-slash versions via Astro, so drop bare versions)
-        const url = new URL(page);
         if (url.pathname !== "/" && !url.pathname.endsWith("/")) {
           return false;
         }

@@ -4,41 +4,37 @@
 
 # ============================================
 # MAIN CRAWLERS - Full access
+# Note: do NOT block /_astro/ — Google needs the fingerprinted CSS/JS to
+# render pages. Do NOT block query strings (/*?*) — they serve the same static
+# page and are already de-duplicated via rel=canonical; blocking them only
+# generates "Blocked by robots.txt" noise in Search Console.
 # ============================================
 User-agent: Googlebot
 Allow: /
 Disallow: /api/
-Disallow: /_astro/
-Disallow: /*?*
 Crawl-delay: 0
 
 User-agent: Googlebot-Image
 Allow: /
-Disallow: /_astro/
 
 User-agent: Bingbot
 Allow: /
 Disallow: /api/
-Disallow: /_astro/
-Disallow: /*?*
 Crawl-delay: 1
 
 User-agent: Slurp
 Allow: /
 Disallow: /api/
-Disallow: /_astro/
 Crawl-delay: 1
 
 User-agent: DuckDuckBot
 Allow: /
 Disallow: /api/
-Disallow: /_astro/
 Crawl-delay: 1
 
 User-agent: Applebot
 Allow: /
 Disallow: /api/
-Disallow: /_astro/
 
 # ============================================
 # AI CRAWLERS - Full access for training
@@ -71,8 +67,11 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /_astro/
-Disallow: /*?*
 Crawl-delay: 2
+
+# Gated lead magnet — keep out of search indexes on every host.
+# (GitHub Pages cannot send the X-Robots-Tag header in public/_headers.)
+Disallow: /KubernetesRecipes-sample.pdf
 
 # ============================================
 # Sitemaps
