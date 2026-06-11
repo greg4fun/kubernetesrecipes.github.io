@@ -42,6 +42,11 @@
 # Container Security Scanning - Consolidate
 /recipes/security/container-image-scanning/    /recipes/security/container-security-scanning/    301
 
+# Category moves (recipe relocated to a different category)
+/recipes/configuration/openshift-idms-install-config/    /recipes/deployments/openshift-idms-install-config/    301
+/recipes/security/quay-robot-account-kubernetes/    /recipes/deployments/quay-robot-account-kubernetes/    301
+/recipes/security/network-policies/    /recipes/networking/network-policies/    301
+
 # =============================================================================
 # OLD URL PATTERNS (if any existed before migration)
 # =============================================================================

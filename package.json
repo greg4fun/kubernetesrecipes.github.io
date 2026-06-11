@@ -7,12 +7,13 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "postbuild": "python3 scripts/verify-sitemap.py",
+    "postbuild": "python3 scripts/verify-sitemap.py && python3 scripts/verify-gsc.py",
     "preview": "astro preview",
     "astro": "astro",
     "verify": "python3 scripts/verify-content.py",
     "verify:links": "python3 scripts/verify-links.py",
     "verify:sitemap": "python3 scripts/verify-sitemap.py",
+    "verify:gsc": "python3 scripts/verify-gsc.py",
     "prepare": "git config core.hooksPath scripts/hooks || true"
   },
   "dependencies": {

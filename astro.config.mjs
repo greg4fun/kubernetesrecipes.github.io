@@ -27,6 +27,9 @@ const redirectStubPaths = new Set([
   "/recipes/deployments/blue-green-deployments/",
   "/recipes/deployments/kubernetes-jobs-cronjobs/",
   "/recipes/storage/s3-model-storage-permissions/deploy-mistral-vllm-kubernetes/",
+  "/recipes/configuration/openshift-idms-install-config/",
+  "/recipes/security/quay-robot-account-kubernetes/",
+  "/recipes/security/network-policies/",
 ]);
 
 // https://astro.build/config
