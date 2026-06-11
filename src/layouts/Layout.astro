@@ -48,6 +48,12 @@ const pathname = Astro.url.pathname === '/'
   : Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonicalURL = `${siteUrl}${pathname}`;
 
+// Recipe detail pages emit their own richer Article + Breadcrumb JSON-LD
+// (see src/pages/recipes/[category]/[slug].astro), so the layout must not
+// duplicate those blocks for them.
+const isRecipeDetailPage = pathname.includes('/recipes/')
+  && pathname.split('/').filter(Boolean).length >= 3;
+
 const { 
   title, 
   description = "Kubernetes Recipe Book is a curated collection of Kubernetes recipes to simplify container orchestration and cluster management.",
@@ -74,7 +80,7 @@ const lastModified = modifiedDate || publishDate || new Date();
 // ============================================
 // STRUCTURED DATA - Article/TechArticle Schema
 // ============================================
-const articleStructuredData = type === "article" ? {
+const articleStructuredData = (type === "article" && !isRecipeDetailPage) ? {
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "@id": `${canonicalURL}#article`,
@@ -237,7 +243,7 @@ const breadcrumbItems = pathSegments.map((segment, index) => {
   };
 });
 
-const breadcrumbStructuredData = pathSegments.length > 0 ? {
+const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage) ? {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
@@ -252,66 +258,9 @@ const breadcrumbStructuredData = pathSegments.length > 0 ? {
 } : null;
 
 // FAQ Schema removed — Google deprecated FAQPage rich results for programmatic content (Aug 2023)
-const isRecipePage = pathname.includes('/recipes/') && pathSegments.length >= 3;
-
-// HowTo Schema for recipe pages - Enhanced for better SEO
-const howToStructuredData = isRecipePage ? {
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  "name": title,
-  "description": description,
-  "image": resolvedImageWithDomain,
-  "totalTime": `PT${readingTime}M`,
-  "estimatedCost": {
-    "@type": "MonetaryAmount",
-    "currency": "USD",
-    "value": "0"
-  },
-  "supply": [
-    {
-      "@type": "HowToSupply",
-      "name": "YAML configuration files"
-    },
-    {
-      "@type": "HowToSupply", 
-      "name": "Container images"
-    }
-  ],
-  "tool": [
-    {
-      "@type": "HowToTool",
-      "name": "kubectl CLI"
-    },
-    {
-      "@type": "HowToTool",
-      "name": "Kubernetes cluster (v1.28+)"
-    },
-    {
-      "@type": "HowToTool",
-      "name": "Terminal/Shell access"
-    }
-  ],
-  "step": [
-    {
-      "@type": "HowToStep",
-      "position": 1,
-      "name": "Prerequisites Check",
-      "text": "Ensure you have a running Kubernetes cluster and kubectl configured to access it."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 2,
-      "name": "Apply Configuration",
-      "text": "Copy the YAML configuration from this recipe and apply it using kubectl apply -f."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 3,
-      "name": "Verify Deployment",
-      "text": "Verify the resources are created correctly using kubectl get and kubectl describe commands."
-    }
-  ]
-} : null;
+// HowTo Schema removed — Google deprecated HowTo rich results (Sept 2023); the
+// generic boilerplate was identical across every recipe and added no value.
+// Recipe detail pages provide their own TechArticle + BreadcrumbList JSON-LD.
 ---
 
 <!doctype html>
@@ -437,9 +386,6 @@ const howToStructuredData = isRecipePage ? {
     )}
     {breadcrumbStructuredData && (
       <script type="application/ld+json" set:html={JSON.stringify(breadcrumbStructuredData)} />
-    )}
-    {howToStructuredData && (
-      <script type="application/ld+json" set:html={JSON.stringify(howToStructuredData)} />
     )}
     <!-- Mermaid Diagrams — lazy loaded only when diagrams exist -->
     <script type="module">
