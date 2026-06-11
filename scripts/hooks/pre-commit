@@ -1,9 +1,10 @@
 #!/bin/sh
 # Pre-commit hook: validate recipe content before every commit.
 #
-# Gates on (see scripts/verify-content.py):
-#   - schema errors   (would break `astro build`)
-#   - link errors     (broken internal relatedRecipes links)
+# Gates on:
+#   - schema errors   (would break `astro build`)     -> verify-content.py
+#   - link errors     (broken relatedRecipes + body links that 404)
+#                                                      -> verify-links.py
 # SEO warnings are reported but do not block.
 #
 # Enabled repo-wide via `core.hooksPath` (set by the package.json "prepare"
@@ -14,9 +15,9 @@ set -e
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
 
-# Only run when staged changes touch recipe content or the validator itself.
+# Only run when staged changes touch recipe content or the validators themselves.
 if git diff --cached --name-only --diff-filter=ACMR \
-    | grep -Eq '^src/content/recipes/.*\.(md|mdx)$|^scripts/verify-content\.py$'; then
+    | grep -Eq '^src/content/recipes/.*\.(md|mdx)$|^scripts/verify-(content|links)\.py$'; then
   :
 else
   exit 0
@@ -36,6 +37,16 @@ if ! "$PY" scripts/verify-content.py --quiet; then
   echo "" >&2
   echo "pre-commit: content validation FAILED — commit aborted." >&2
   echo "Fix the errors above, or inspect with: $PY scripts/verify-content.py" >&2
+  echo "(To bypass for an emergency commit: git commit --no-verify)" >&2
+  exit 1
+fi
+
+echo "pre-commit: checking internal links (related + body links)..."
+if ! "$PY" scripts/verify-links.py >/dev/null; then
+  echo "" >&2
+  echo "pre-commit: link check FAILED — commit aborted." >&2
+  echo "Broken relatedRecipes or body links (would 404). Inspect with:" >&2
+  echo "  $PY scripts/verify-links.py" >&2
   echo "(To bypass for an emergency commit: git commit --no-verify)" >&2
   exit 1
 fi

@@ -12,9 +12,9 @@ publishDate: "2026-06-08"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "kubernetes-nfs-persistent-volumes"
-  - "kubernetes-storage-class-configuration"
-  - "openshift-persistent-storage-nfs"
+  - "kubernetes-nfs-provisioner-guide"
+  - "kubernetes-storage-class-guide"
+  - "machineconfig-nfs-mount-openshift"
 ---
 
 > 💡 **Quick Answer:** Dell PowerScale (Isilon) uses a hierarchy of Groupnet → Subnet → Pool to organize network access to NFS exports. For Kubernetes AI clusters, create separate SmartConnect pools per environment (dev, staging, production) within a shared NFS subnet. Each pool gets a dedicated IP range and DNS name, enabling per-namespace PersistentVolume isolation without separate physical clusters.

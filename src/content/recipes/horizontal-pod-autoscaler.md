@@ -430,7 +430,7 @@ Common reasons: Metrics Server not installed (run `kubectl top pods` to verify),
 
 Yes, but with constraints. Use [VPA](/recipes/autoscaling/vertical-pod-autoscaler/) for memory right-sizing and HPA for CPU horizontal scaling. Don't let both control the same metric.
 
-See also: [VPA Setup](/recipes/autoscaling/vertical-pod-autoscaler/), [KEDA Event-Driven Autoscaling](/recipes/autoscaling/keda-event-driven-autoscaling/), [Cost Optimization](/recipes/autoscaling/kubernetes-cost-optimization-strategies/)
+See also: [VPA Setup](/recipes/autoscaling/vertical-pod-autoscaler/), [KEDA Event-Driven Autoscaling](/recipes/autoscaling/keda-event-driven-autoscaling/), [Cost Optimization](/recipes/configuration/kubernetes-cost-optimization-strategies/)
 
 ## Frequently Asked Questions
 
