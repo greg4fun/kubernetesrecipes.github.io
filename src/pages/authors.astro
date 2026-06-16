@@ -7,12 +7,77 @@ import { Picture } from "astro:assets";
 import luca from "assets/luca.webp";
 import grzegorz from "assets/grzegorz.jpg";
 import nikhil from "assets/nikhil.jpg";
+
+const SITE = "https://kubernetes.recipes";
+const authorsUrl = `${SITE}/authors/`;
+
+// ============================================
+// STRUCTURED DATA — ProfilePage + Person entities
+// Exposes the people behind the content so search engines and AI assistants can
+// attribute authorship and surface author knowledge-panel / E-E-A-T signals.
+// ============================================
+const profileStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": `${authorsUrl}#profilepage`,
+  "url": authorsUrl,
+  "name": "About the Authors",
+  "isPartOf": { "@type": "WebSite", "@id": `${SITE}#website` },
+  "about": [
+    {
+      "@type": "Person",
+      "@id": `${SITE}/authors#luca-berton`,
+      "name": "Luca Berton",
+      "jobTitle": "IT Infrastructure Expert",
+      "description": "IT Infrastructure Expert with over 15 years of experience, specializing in Infrastructure Hardening and Automation. Author of Ansible for VMware by Examples and Ansible for Kubernetes by Examples, and creator of the Ansible Pilot project.",
+      "image": new URL(luca.src, SITE).toString(),
+      "url": "https://lucaberton.com/",
+      "knowsAbout": ["Kubernetes", "Ansible", "Infrastructure Automation", "Linux", "Container Orchestration"],
+      "sameAs": [
+        "https://lucaberton.com/",
+        "https://www.copypastelearn.com/",
+        "https://www.linkedin.com/in/lucaberton",
+        "https://github.com/lucab85"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE}/authors#grzegorz-stencel`,
+      "name": "Grzegorz Stencel",
+      "jobTitle": "Staff Engineer",
+      "worksFor": { "@type": "Organization", "name": "JPMorgan Chase" },
+      "description": "Versatile technologist and Staff Engineer at JPMorgan Chase with 17 years of experience as a Linux admin. CKAD-certified, with expertise in Networks, Cyber Security, and Programming.",
+      "image": new URL(grzegorz.src, SITE).toString(),
+      "url": "https://stencel.io/",
+      "knowsAbout": ["Kubernetes", "Cyber Security", "Networks", "Linux", "Robotics"],
+      "sameAs": [
+        "https://stencel.io/",
+        "https://www.linkedin.com/in/gregstencel"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE}/authors#nikhil-kumar`,
+      "name": "Nikhil Kumar",
+      "jobTitle": "Software Engineer",
+      "worksFor": { "@type": "Organization", "name": "HPE" },
+      "description": "Seasoned software engineer at HPE specializing in Kubernetes, AI, DevOps, and MLOps. Red Hat Certified Engineer (EX294) and Red Hat Certified OpenShift Administrator (EX280), and technical reviewer for books on Kubernetes, DevOps, Cloud, and MLOps.",
+      "image": new URL(nikhil.src, SITE).toString(),
+      "url": "https://www.linkedin.com/in/kumar-nikhil811/",
+      "knowsAbout": ["Kubernetes", "AI", "DevOps", "MLOps", "OpenShift"],
+      "sameAs": [
+        "https://www.linkedin.com/in/kumar-nikhil811/"
+      ]
+    }
+  ]
+};
 ---
 
 <Layout 
   title="About the Authors" 
   description="Meet Luca Berton and Grzegorz Stencel, the Kubernetes experts behind Kubernetes Recipes with decades of experience in container orchestration."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(profileStructuredData)} />
   <Container>
     <Sectionhead>
       <Fragment slot="title">About the Authors</Fragment>

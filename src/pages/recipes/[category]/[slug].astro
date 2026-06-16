@@ -53,13 +53,33 @@ const wordCount = recipe.body?.split(/\s+/).length || 1000;
 const readingTime = Math.max(5, Math.ceil(wordCount / 200));
 const articleUrl = `https://kubernetes.recipes/recipes/${recipe.data.category}/${recipe.slug}/`;
 
-// JSON-LD structured data for rich snippets and AI citations
+// Article image — Google's Article rich results require an image; fall back to
+// the site-wide OpenGraph card when a recipe has no dedicated featured image.
+const articleImage = recipe.data.image?.src
+  ? new URL(recipe.data.image.src, "https://kubernetes.recipes").toString()
+  : "https://kubernetes.recipes/opengraph.jpg";
+
+const proficiencyLevel =
+  recipe.data.difficulty === "beginner" ? "Beginner"
+  : recipe.data.difficulty === "intermediate" ? "Intermediate"
+  : "Expert";
+
+// JSON-LD structured data for rich snippets and AI citations.
+// Dual-typed as TechArticle + LearningResource: the article typing drives
+// Google rich results, while the learning-resource typing exposes the recipe's
+// educational metadata (level, dependencies, what it teaches) for AI assistants.
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "TechArticle",
+  "@type": ["TechArticle", "LearningResource"],
   "headline": recipe.data.title,
   "description": recipe.data.description,
   "url": articleUrl,
+  "image": {
+    "@type": "ImageObject",
+    "url": articleImage,
+    "width": 1200,
+    "height": 630
+  },
   "datePublished": recipe.data.publishDate.toISOString(),
   "dateModified": (recipe.data.updatedDate || recipe.data.publishDate).toISOString(),
   "author": {
@@ -86,7 +106,19 @@ const jsonLd = {
   "articleSection": categoryName,
   "wordCount": wordCount,
   "timeRequired": `PT${readingTime}M`,
-  "proficiencyLevel": recipe.data.difficulty === "beginner" ? "Beginner" : recipe.data.difficulty === "intermediate" ? "Intermediate" : "Expert",
+  "proficiencyLevel": proficiencyLevel,
+  // LearningResource metadata
+  "learningResourceType": "How-to guide",
+  "educationalLevel": proficiencyLevel,
+  "teaches": recipe.data.title,
+  "educationalUse": "self-study",
+  "interactivityType": "expositive",
+  "isAccessibleForFree": true,
+  "inLanguage": "en-US",
+  ...(recipe.data.prerequisites?.length
+    ? { "competencyRequired": recipe.data.prerequisites.join("; ") }
+    : {}),
+  "softwareRequirements": `Kubernetes ${recipe.data.kubernetesVersion}`,
   "about": {
     "@type": "Thing",
     "name": "Kubernetes",
