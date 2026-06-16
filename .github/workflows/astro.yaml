@@ -24,25 +24,11 @@ jobs:
       - name: Verify internal links
         run: python3 scripts/verify-links.py
 
-      - name: Check meta descriptions (110-160 chars)
-        run: |
-          ERRORS=0
-          for f in src/content/recipes/*.md; do
-            DESC=$(grep '^description:' "$f" | head -1 | sed 's/^description: *"//;s/"$//')
-            LEN=${#DESC}
-            if [ "$LEN" -lt 110 ] && [ "$LEN" -gt 0 ]; then
-              echo "⚠️  Too short ($LEN): $(basename "$f")"
-              ERRORS=$((ERRORS + 1))
-            elif [ "$LEN" -gt 160 ]; then
-              echo "❌ Too long ($LEN): $(basename "$f")"
-              ERRORS=$((ERRORS + 1))
-            fi
-          done
-          echo "Meta description issues: $ERRORS"
-          # Warn but don't fail — some may be intentional
-          if [ "$ERRORS" -gt 10 ]; then
-            echo "::warning::$ERRORS meta descriptions outside 110-160 char range"
-          fi
+      - name: Validate recipe content (schema, links, meta descriptions)
+        # Gates on schema errors, broken internal links, and SEO-critical
+        # issues — including over-long meta descriptions (audit: "Meta
+        # description too long"). Same validator used by the pre-commit hook.
+        run: python3 scripts/verify-content.py
 
       - name: Check for missing required frontmatter
         run: |

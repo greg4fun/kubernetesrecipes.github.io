@@ -18,13 +18,17 @@ Checks
     - duplicate relatedRecipes entry
 
   WARNINGS (quality / SEO)
-    - meta description not 120-160 chars
+    - meta description shorter than 120 chars
     - templated/generic meta description
     - duplicate meta description across pages
     - title length not 30-60 chars
     - duplicate title across pages
     - orphan recipe (0 incoming relatedRecipes)
     - low body word count (< 300)
+
+  SEO ERRORS (gate the build — flagged by the site audit)
+    - meta description longer than 160 chars ("Meta description too long":
+      Google truncates these in SERP snippets)
 
 Usage
   python3 scripts/verify-content.py                      # full report
@@ -149,6 +153,7 @@ def main() -> int:
 
     schema_errors: list[str] = []   # break `astro build`
     link_errors: list[str] = []     # broken internal links / duplicate titles
+    seo_errors: list[str] = []      # SEO-critical (audit-flagged), gate the build
     warnings: list[str] = []        # SEO quality
     incoming: dict[str, set[str]] = defaultdict(set)
     desc_by_text: dict[str, list[str]] = defaultdict(list)
@@ -222,7 +227,11 @@ def main() -> int:
             desc_by_text[desc].append(slug)
             if GENERIC_DESC_RE.match(desc):
                 warnings.append(f"{slug}: generic/templated meta description")
-            elif not (DESC_MIN <= len(desc) <= DESC_MAX):
+            elif len(desc) > DESC_MAX:
+                # "Meta description too long" (site audit): Google truncates
+                # these in SERP snippets. Gate the build so it can't regress.
+                seo_errors.append(f"{slug}: description too long ({len(desc)} chars, max {DESC_MAX})")
+            elif len(desc) < DESC_MIN:
                 warnings.append(f"{slug}: description length {len(desc)} (target {DESC_MIN}-{DESC_MAX})")
 
         prose_words = count_prose_words(body)
@@ -262,6 +271,12 @@ def main() -> int:
         for e in sorted(link_errors):
             print(f"  x {e}")
 
+    if seo_errors:
+        print(f"\nSEO ERRORS — audit-flagged, these gate the build ({len(seo_errors)})")
+        print("-" * 40)
+        for e in sorted(seo_errors):
+            print(f"  x {e}")
+
     if schema_errors:
         print(f"\nSCHEMA ERRORS — these break `astro build` ({len(schema_errors)})")
         print("-" * 40)
@@ -273,19 +288,23 @@ def main() -> int:
 
     print("\n" + "=" * 64)
     print(f"  SUMMARY: {len(schema_errors)} schema error(s), "
-          f"{len(link_errors)} link error(s), {len(warnings)} warning(s)")
+          f"{len(link_errors)} link error(s), {len(seo_errors)} SEO error(s), "
+          f"{len(warnings)} warning(s)")
     print("=" * 64)
 
     # Schema errors always fail (build would break). Link errors fail unless
-    # --quiet-links is set. Warnings fail only under --strict.
+    # --allow-link-errors is set. SEO errors (audit-flagged, e.g. over-long meta
+    # descriptions) always fail. Warnings fail only under --strict.
     fail_links = bool(link_errors) and "--allow-link-errors" not in sys.argv
-    failed = bool(schema_errors) or fail_links or (STRICT and bool(warnings))
+    failed = bool(schema_errors) or fail_links or bool(seo_errors) or (STRICT and bool(warnings))
     if failed:
         reasons = []
         if schema_errors:
             reasons.append(f"{len(schema_errors)} schema error(s)")
         if fail_links:
             reasons.append(f"{len(link_errors)} link error(s)")
+        if seo_errors:
+            reasons.append(f"{len(seo_errors)} SEO error(s)")
         if STRICT and warnings:
             reasons.append(f"{len(warnings)} warning(s)")
         print(f"\nFAILED — {', '.join(reasons)}")

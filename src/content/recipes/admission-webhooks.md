@@ -29,7 +29,6 @@ relatedRecipes:
   - "kustomize-configuration"
   - "kubernetes-probes-configuration"
   - "kubernetes-leases"
-  - "kubernetes-lease-objects"
   - "kubernetes-labels-annotations"
   - "kubernetes-finalizers"
   - "kubernetes-endpointslices"

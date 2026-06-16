@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
   - "pod-mutation-injection"
-  - "kubernetes-lease-objects"
+  - "kubernetes-leases"
   - "kubernetes-finalizers"
   - "kubeconfig-contexts"
   - "kubernetes-api-aggregation"

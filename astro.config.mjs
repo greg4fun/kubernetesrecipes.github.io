@@ -30,6 +30,9 @@ const redirectStubPaths = new Set([
   "/recipes/configuration/openshift-idms-install-config/",
   "/recipes/security/quay-robot-account-kubernetes/",
   "/recipes/security/network-policies/",
+  "/recipes/configuration/kubernetes-lease-objects/",
+  "/recipes/configuration/kubernetes-lease-api-leader-election/",
+  "/recipes/configuration/kubernetes-lease-leader-election/",
 ]);
 
 // https://astro.build/config

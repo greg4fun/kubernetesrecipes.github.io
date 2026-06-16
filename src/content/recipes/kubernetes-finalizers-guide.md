@@ -13,7 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "10 minutes"
 relatedRecipes:
-  - "kubernetes-lease-leader-election"
+  - "kubernetes-leases"
   - "kubernetes-pod-lifecycle"
 ---
 

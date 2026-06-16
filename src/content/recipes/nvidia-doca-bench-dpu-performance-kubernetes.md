@@ -1,6 +1,6 @@
 ---
 title: "NVIDIA DOCA Bench for DPU Performance Testing on Kubernetes"
-description: "Use NVIDIA DOCA Bench to benchmark BlueField DPU accelerators in Kubernetes GPU clusters. Covers throughput and latency modes, pipeline configuration, multi-core scaling, RDMA benchmarks, compression offload, and DPU-accelerated networking validation for AI infrastructure."
+description: "Benchmark NVIDIA BlueField DPU accelerators in Kubernetes with DOCA Bench: throughput/latency modes, RDMA, compression offload, and multi-core scaling."
 tags:
   - "networking"
   - "performance"
@@ -12,7 +12,6 @@ publishDate: "2026-06-15"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "nvidia-doca-telemetry-network-monitoring"
   - "nccl-all-reduce-perf-benchmark-multi-node"
   - "nvidia-network-operator-rdma-kubernetes"
 ---

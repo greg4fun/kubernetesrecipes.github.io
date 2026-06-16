@@ -14,7 +14,7 @@ relatedRecipes:
   - "pod-resource-management"
   - "pod-mutation-injection"
   - "kustomize-configuration"
-  - "kubernetes-lease-objects"
+  - "kubernetes-leases"
   - "kubernetes-labels-annotations"
   - "kubernetes-finalizers"
   - "kubernetes-cost-optimization"

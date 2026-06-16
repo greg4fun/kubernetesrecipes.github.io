@@ -1,6 +1,6 @@
 ---
 title: "ib_write_bw RDMA Bandwidth Testing on Kubernetes GPU Nodes"
-description: "Use ib_write_bw from perftest suite to validate RDMA write bandwidth on Kubernetes GPU nodes with SR-IOV. Covers device selection with -d mlx5_X, GID index for RoCE, multi-connection scaling, bidirectional tests, and expected bandwidth for ConnectX-7 400G NICs."
+description: "Validate RDMA write bandwidth on Kubernetes GPU nodes with ib_write_bw and SR-IOV. Device selection, RoCE GID index, and ConnectX-7 400G expectations."
 tags:
   - "networking"
   - "rdma"

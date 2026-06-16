@@ -13,7 +13,7 @@ tags:
   - "garbage-collection"
   - "lifecycle"
 relatedRecipes:
-  - "kubernetes-lease-leader-election"
+  - "kubernetes-leases"
   - "kubernetes-admission-webhooks-guide"
 ---
 

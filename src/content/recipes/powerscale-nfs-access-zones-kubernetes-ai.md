@@ -1,6 +1,6 @@
 ---
 title: "Dell PowerScale NFS Access Zones for Kubernetes AI Storage"
-description: "Configure Dell PowerScale (Isilon) access zones and SmartConnect pools for Kubernetes AI workloads. Covers groupnet/subnet/pool hierarchy, NFS export isolation per environment, and IP pool sizing for GPU training cluster storage."
+description: "Configure Dell PowerScale (Isilon) access zones and SmartConnect pools for Kubernetes AI storage with per-environment NFS isolation and IP pool sizing."
 tags:
   - "storage"
   - "nfs"

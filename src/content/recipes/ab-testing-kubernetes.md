@@ -37,7 +37,6 @@ relatedRecipes:
   - "node-taints-tolerations"
   - "logging-efk-stack"
   - "kustomize-configuration"
-  - "kubernetes-lease-objects"
   - "kubernetes-labels-annotations"
   - "kubernetes-finalizers"
   - "kubernetes-endpointslices"

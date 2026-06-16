@@ -26,7 +26,7 @@ relatedRecipes:
   - "kubernetes-finalizers"
   - "jobs-cronjobs"
   - "kubernetes-labels-annotations"
-  - "kubernetes-lease-objects"
+  - "kubernetes-leases"
   - "namespace-management"
   - "pod-mutation-injection"
   - "pod-resource-management"

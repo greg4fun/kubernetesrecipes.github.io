@@ -1,6 +1,6 @@
 ---
 title: "H200 NVL 8-GPU Topology Bandwidth Tiers for Kubernetes"
-description: "Understand the three bandwidth tiers in 8× H200 NVL dual-socket GPU nodes: NVLink intra-domain (~337 GB/s), PCIe Gen5+UPI cross-domain (~50 GB/s), and RoCE inter-node (~35 GB/s). Plan NCCL topology-aware scheduling and NUMA placement for optimal distributed training performance."
+description: "Map the three bandwidth tiers of 8× H200 NVL GPU nodes—NVLink (~337 GB/s), PCIe+UPI (~50 GB/s), RoCE (~35 GB/s)—for NCCL topology-aware NUMA scheduling."
 tags:
   - "gpu"
   - "nccl"

@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["kubeconfig", "contexts", "clusters", "kubectl", "multi-cluster"]
 relatedRecipes:
-  - "kubernetes-lease-objects"
+  - "kubernetes-leases"
   - "mcp-worker-infra-separation"
   - "mofed-doca-driver-building-openshift"
 ---

@@ -18,7 +18,7 @@ relatedRecipes:
   - "resource-limits-requests"
   - "pod-resource-management"
   - "pod-mutation-injection"
-  - "kubernetes-lease-objects"
+  - "kubernetes-leases"
   - "kubernetes-labels-annotations"
   - "kubernetes-finalizers"
   - "kubernetes-cost-optimization"
