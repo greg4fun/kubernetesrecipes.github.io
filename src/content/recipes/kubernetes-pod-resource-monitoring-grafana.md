@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-tempo-tracing-guide"
   - "kubernetes-grafana-dashboards-guide"
   - "grafana-kubernetes-dashboards"
-  - "grafana-dashboard-6417-node-exporter"
+  - "grafana-dashboard-6417-kubernetes"
   - "prometheus-monitoring-setup"
   - "kubernetes-resource-limits-cpu-memory-format"
   - "kubernetes-cost-monitoring-kubecost"

@@ -42,6 +42,9 @@
 # OpenShift Lifecycle - Consolidate thin templated guide into canonical
 /recipes/configuration/openshift-lifecycle-versions-guide/    /recipes/configuration/openshift-lifecycle-versions/    301
 
+# Grafana Dashboard 6417 - Consolidate factually-incorrect node-exporter page (6417 is "Kubernetes Cluster", not Node Exporter Full which is 1860)
+/recipes/observability/grafana-dashboard-6417-node-exporter/    /recipes/observability/grafana-dashboard-6417-kubernetes/    301
+
 # Container Security Scanning - Consolidate
 /recipes/security/container-image-scanning/    /recipes/security/container-security-scanning/    301
 

@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-grafana-dashboards-guide"
   - "prometheus-monitoring-kubernetes-guide"
   - "kubernetes-pod-resource-monitoring-grafana"
-  - "grafana-dashboard-6417-node-exporter"
+  - "grafana-kubernetes-dashboards"
   - "gpu-operator-node-status-exporter-metrics"
   - "kubernetes-metrics-server-top"
 ---

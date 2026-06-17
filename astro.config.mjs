@@ -34,6 +34,7 @@ const redirectStubPaths = new Set([
   "/recipes/configuration/kubernetes-lease-api-leader-election/",
   "/recipes/configuration/kubernetes-lease-leader-election/",
   "/recipes/configuration/openshift-lifecycle-versions-guide/",
+  "/recipes/observability/grafana-dashboard-6417-node-exporter/",
 ]);
 
 // https://astro.build/config
