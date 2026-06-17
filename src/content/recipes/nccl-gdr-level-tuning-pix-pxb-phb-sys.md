@@ -1,6 +1,6 @@
 ---
-title: "NCCL GPUDirect RDMA Level Tuning PIX PXB PHB SYS"
-description: "Tune NCCL_NET_GDR_LEVEL for optimal GPUDirect RDMA performance on Kubernetes. Compare PIX, PXB, PHB, and SYS distance thresholds with PCIe topology. Benchmark"
+title: "NCCL_NET_GDR_LEVEL Environment Variable Guide"
+description: "NCCL_NET_GDR_LEVEL environment variable explained: compare PIX, PXB, PHB, and SYS GPUDirect RDMA distance thresholds and pick the fastest safe level."
 tags:
   - "nccl"
   - "rdma"
