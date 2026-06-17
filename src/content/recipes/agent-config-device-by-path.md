@@ -1,5 +1,5 @@
 ---
-title: "Configure SR-IOV agent-config.yaml Device b..."
+title: "Configure SR-IOV agent-config.yaml Device by Path"
 description: "Use agent-config.yaml to select network devices by PCI path for SR-IOV VF creation, ensuring deterministic NIC targeting across OpenShift nodes."
 category: "networking"
 difficulty: "intermediate"

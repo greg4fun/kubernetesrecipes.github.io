@@ -1,5 +1,5 @@
 ---
-title: "Configure Container Registries via MachineC..."
+title: "Configure Container Registries via MachineConfig"
 description: "Set up mirror registries and blocked registries on OpenShift nodes using MachineConfig to control CRI-O image pull on RHCOS."
 publishDate: "2026-03-19"
 author: "Luca Berton"

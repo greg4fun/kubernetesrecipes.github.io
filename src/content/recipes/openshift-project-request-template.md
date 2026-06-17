@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "OpenShift Project Request Template Pull Sec..."
+title: "OpenShift Project Request Template Pull Secret"
 description: "Configure an OpenShift Project Request Template so every new namespace automatically gets a ServiceAccount with imagePullSecrets for your private Quay registry."
 category: "configuration"
 difficulty: "intermediate"

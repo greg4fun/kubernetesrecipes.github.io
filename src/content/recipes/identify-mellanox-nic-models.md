@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "Identify Mellanox Interface Models from Lin..."
+title: "Identify Mellanox NIC Models from Linux"
 description: "Map interface names to PCI addresses and Mellanox model generations to build accurate SR-IOV policies and GPU networking configurations on Kubernetes."
 category: "troubleshooting"
 difficulty: "intermediate"

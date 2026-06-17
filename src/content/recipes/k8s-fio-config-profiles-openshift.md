@@ -1,5 +1,5 @@
 ---
-title: "OpenShift Storage Benchmark fio Config Prof..."
+title: "OpenShift Storage Benchmark fio Config Profiles"
 description: "Benchmark OpenShift and Kubernetes storage using fio with reusable YAML config profiles for random and sequential read/write I/O patterns."
 category: "storage"
 difficulty: "intermediate"

@@ -1,5 +1,5 @@
 ---
-title: "Fix NVIDIA NIM TensorRT-LLM Initialization ..."
+title: "Fix NVIDIA NIM TensorRT-LLM Initialization Errors"
 description: "Diagnose and fix common NIM TensorRT-LLM executor failures including DecoderState mismatch, version incompatibilities, and engine build errors."
 category: "troubleshooting"
 difficulty: "advanced"

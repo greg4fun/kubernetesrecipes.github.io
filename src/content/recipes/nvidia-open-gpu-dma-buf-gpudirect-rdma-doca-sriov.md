@@ -1,5 +1,5 @@
 ---
-title: "NVIDIA Open GPU + GPUDirect RDMA + DOCA-OFE..."
+title: "NVIDIA Open GPU GPUDirect RDMA with DOCA-OFED"
 description: "Deploy NVIDIA AI networking on Kubernetes: Open GPU driver with DMA-BUF, GPUDirect RDMA, DOCA-OFED, and SR-IOV VF isolation."
 publishDate: "2026-03-19"
 author: "Luca Berton"

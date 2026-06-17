@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "Validate SR-IOV Operator Health Across Mult..."
+title: "Validate SR-IOV Operator Health Across Nodes"
 description: "Run a full checklist to confirm SR-IOV discovery, VF creation, scheduler resources, and pod attachment on multiple nodes."
 category: "troubleshooting"
 difficulty: "intermediate"

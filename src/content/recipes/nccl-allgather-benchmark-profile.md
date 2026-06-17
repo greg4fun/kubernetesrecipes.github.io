@@ -1,5 +1,5 @@
 ---
-title: "Run NCCL AllGather Benchmarks Model Paralle..."
+title: "Run NCCL AllGather Benchmarks for Model Parallel"
 description: "Use all-gather NCCL tests to evaluate GPU communication behavior and throughput for tensor-parallel and model-parallel distributed AI workloads on Kubernetes."
 category: "ai"
 difficulty: "intermediate"

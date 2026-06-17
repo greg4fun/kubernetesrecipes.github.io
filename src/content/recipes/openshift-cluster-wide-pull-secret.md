@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "OpenShift Cluster-Wide Pull Secret Robot Ac..."
+title: "OpenShift Cluster-Wide Pull Secret Setup"
 description: "Replace admin credentials in the OpenShift cluster-wide pull secret with a Quay robot account for secure, auditable container image pulls across all namespaces."
 category: "security"
 difficulty: "intermediate"

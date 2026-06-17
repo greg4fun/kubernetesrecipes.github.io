@@ -1,5 +1,5 @@
 ---
-title: "Node Drain Blocked by hostNetwork Port Conf..."
+title: "Node Drain Blocked by hostNetwork Port Conflict"
 description: "Debug and fix OpenShift node drains that fail because hostNetwork pods cannot schedule replacements due to port exhaustion across the cluster."
 publishDate: "2026-03-19"
 author: "Luca Berton"

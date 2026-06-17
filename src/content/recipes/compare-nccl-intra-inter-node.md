@@ -1,5 +1,5 @@
 ---
-title: "Compare NCCL Intra-Node vs Inter-Node Perfo..."
+title: "Compare NCCL Intra-Node vs Inter-Node Speed"
 description: "Build a repeatable comparison between local and cross-node NCCL throughput to validate GPU cluster interconnect scaling and identify bottlenecks early."
 category: "ai"
 difficulty: "intermediate"

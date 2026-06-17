@@ -1,5 +1,5 @@
 ---
-title: "Hierarchical Queues & Resource Fairness KAI..."
+title: "KAI Scheduler Hierarchical Queues & Fairness"
 description: "Configure hierarchical queues in KAI Scheduler for multi-tenant GPU clusters with quotas, limits, and Dominant Resource Fairness (DRF)"
 category: "ai"
 difficulty: "intermediate"

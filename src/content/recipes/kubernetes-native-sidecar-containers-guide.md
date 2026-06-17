@@ -1,5 +1,5 @@
 ---
-title: "Native Sidecar Containers in K8s: Complete ..."
+title: "Native Sidecar Containers in Kubernetes Guide"
 description: "Use native sidecar containers in Kubernetes v1.33+. InitContainer restartPolicy Always, lifecycle ordering, logging sidecars, service mesh."
 publishDate: "2026-04-12"
 author: "Luca Berton"

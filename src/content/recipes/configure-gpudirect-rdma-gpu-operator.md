@@ -1,5 +1,5 @@
 ---
-title: "Configure GPUDirect RDMA the NVIDIA GPU Ope..."
+title: "Configure GPUDirect RDMA with NVIDIA GPU Operator"
 description: "Set up GPUDirect RDMA on Kubernetes using the NVIDIA GPU Operator with either DMA-BUF or legacy nvidia-peermem, including Network Operator integration."
 category: "networking"
 difficulty: "advanced"

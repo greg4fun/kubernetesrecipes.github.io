@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "Enable NIC Feature Discovery in NVIDIA Netw..."
+title: "Enable NIC Feature Discovery on Kubernetes"
 description: "Enable NIC Feature Discovery through NicClusterPolicy and verify the node labels required by SR-IOV and RDMA GPU networking workflows on Kubernetes."
 category: "networking"
 difficulty: "intermediate"
