@@ -39,6 +39,9 @@
 # Velero Backup - Consolidate
 /recipes/storage/velero-backup-restore/    /recipes/storage/velero-backup-disaster-recovery/    301
 
+# OpenShift Lifecycle - Consolidate thin templated guide into canonical
+/recipes/configuration/openshift-lifecycle-versions-guide/    /recipes/configuration/openshift-lifecycle-versions/    301
+
 # Container Security Scanning - Consolidate
 /recipes/security/container-image-scanning/    /recipes/security/container-security-scanning/    301
 

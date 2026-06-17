@@ -33,6 +33,7 @@ const redirectStubPaths = new Set([
   "/recipes/configuration/kubernetes-lease-objects/",
   "/recipes/configuration/kubernetes-lease-api-leader-election/",
   "/recipes/configuration/kubernetes-lease-leader-election/",
+  "/recipes/configuration/openshift-lifecycle-versions-guide/",
 ]);
 
 // https://astro.build/config
