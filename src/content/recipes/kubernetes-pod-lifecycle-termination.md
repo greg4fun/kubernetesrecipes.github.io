@@ -1,6 +1,6 @@
 ---
 title: "K8s Pod Lifecycle and Graceful Shutdown"
-description: "Understand Kubernetes pod lifecycle phases, termination sequence, preStop hooks, SIGTERM handling, and terminationGracePeriodSeconds for zero-downtime shutdo..."
+description: "Understand Kubernetes pod lifecycle phases, termination sequence, preStop hooks, SIGTERM handling, and terminationGracePeriodSeconds for graceful shutdown."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "deployments"

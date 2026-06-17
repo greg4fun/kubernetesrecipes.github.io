@@ -1,6 +1,6 @@
 ---
 title: "Dapr: Microservice Building Blocks on K8s"
-description: "Deploy Dapr in Kubernetes for service invocation, state management, pub/sub messaging, and secrets. Sidecar architecture that works with any language or fram..."
+description: "Deploy Dapr in Kubernetes for service invocation, state management, pub/sub messaging, and secrets using a language-agnostic sidecar architecture."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "deployments"
