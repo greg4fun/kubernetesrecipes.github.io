@@ -1,6 +1,6 @@
 ---
 title: "Helm Sprig Functions: cat, print, toString"
-description: "Master Helm Sprig functions: cat, print, toString, add1, join, and quote. String manipulation, conditionals, and advanced templating patterns."
+description: "Helm Sprig function reference with copy-paste examples and output: cat, print, toString, add1, quote, join, default, and regexReplaceAll explained."
 category: "helm"
 difficulty: "advanced"
 publishDate: "2026-01-22"
@@ -23,6 +23,77 @@ relatedRecipes:
 
 
 Helm uses Go templates with Sprig functions for powerful chart templating. Master these patterns to create flexible, reusable charts.
+
+## Sprig Function Quick Reference
+
+The most-used Helm Sprig functions, with exact input and rendered output:
+
+| Function | What it does | Example | Output |
+|----------|--------------|---------|--------|
+| `cat` | Joins values with a **single space** | `{{ cat "Hello" "World" }}` | `Hello World` |
+| `print` | Concatenates with **no separator** (strings) | `{{ print "Hello" "World" }}` | `HelloWorld` |
+| `printf` | Go-style formatted string | `{{ printf "%s-%s" "a" "b" }}` | `a-b` |
+| `toString` | Converts any value to a string | `{{ toString 42 }}` | `42` |
+| `quote` | Wraps a value in double quotes | `{{ quote "hello" }}` | `"hello"` |
+| `squote` | Wraps a value in single quotes | `{{ squote "hello" }}` | `'hello'` |
+| `add1` | Increments an integer by 1 | `{{ add1 9 }}` | `10` |
+| `join` | Joins a **list** with a separator | `{{ list "a" "b" "c" | join "," }}` | `a,b,c` |
+| `default` | Falls back when value is empty | `{{ default "nginx" .Values.image }}` | `nginx` |
+| `regexReplaceAll` | Regex search-and-replace | `{{ regexReplaceAll "[^a-z]" "abc123" "-" }}` | `abc---` |
+
+### `cat` — join with spaces
+
+`cat` concatenates all arguments into one **space-separated** string. It is handy for assembling command lines or labels.
+
+```yaml
+# {{ cat "nginx" "-c" "/etc/nginx.conf" }}  =>  nginx -c /etc/nginx.conf
+data:
+  command: {{ cat "nginx" "-c" .Values.configPath | quote }}
+```
+
+### `print` / `printf` — concatenate and format
+
+`print` joins arguments with **no separator** between strings (it mirrors Go's `fmt.Sprint`). Use `printf` when you need a format string.
+
+```yaml
+# print  => HelloWorld     printf => web-prod
+data:
+  greeting: {{ print "Hello" "World" | quote }}
+  fullname: {{ printf "%s-%s" .Values.app .Values.env | quote }}
+```
+
+### `toString` — force a string
+
+`toString` converts numbers, booleans, or other types into a string — essential because Kubernetes env-var and annotation values **must** be strings.
+
+```yaml
+env:
+  - name: PORT
+    value: {{ .Values.port | toString | quote }}      # 8080  -> "8080"
+  - name: DEBUG
+    value: {{ .Values.debug | toString | quote }}     # true  -> "true"
+```
+
+### `add1` — increment an integer
+
+`add1 n` returns `n + 1`. Useful for 1-based indexes inside `range` loops.
+
+```yaml
+# StatefulSet replica labels, 1-based
+{{- range $i, $host := .Values.hosts }}
+replica-{{ add1 $i }}: {{ $host | quote }}
+{{- end }}
+```
+
+### `quote` and `join` — the everyday pair
+
+```yaml
+# quote wraps in " " ; join collapses a list into one string
+labels: {{ .Values.tags | join "," | quote }}   # [a b c] -> "a,b,c"
+name:   {{ .Values.appName | quote }}            # myapp    -> "myapp"
+```
+
+> 💡 Looking for the full catalog? See the [complete Sprig function reference](/recipes/helm/helm-sprig-functions-complete-reference/) for every string, list, math, and date helper.
 
 ## String Functions
 
