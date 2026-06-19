@@ -1,6 +1,6 @@
 ---
-title: "K8s DaemonSet: Run Pod on Every Node"
-description: "Deploy Kubernetes DaemonSets to run one pod per node. Log collectors, monitoring agents, node-level networking, tolerations, and update strategies."
+title: "Kubernetes DaemonSet: One Pod Per Node Guide"
+description: "Kubernetes DaemonSet runs one pod on each node. Official-style docs for log collectors, monitoring agents, tolerations, control-plane nodes, and updates."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "deployments"
@@ -101,6 +101,27 @@ spec:
                 operator: In
                 values: ["worker", "gpu"]
 ```
+
+### Run on Every Node Including Control Plane
+
+By default, control-plane (master) nodes are tainted, so a DaemonSet skips them. To run one pod on **every** node — control plane included — tolerate the control-plane taints:
+
+```yaml
+spec:
+  template:
+    spec:
+      tolerations:
+        # Run on control-plane / master nodes too
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+        - name: fluentd
+          image: fluent/fluentd:v1.16
+```
+
+> To tolerate **all** taints (truly one pod per node, no exceptions), use a single blanket toleration: `tolerations: [{operator: "Exists"}]`.
 
 ### Update Strategy
 
@@ -221,6 +242,28 @@ Set resource `requests` and `limits`. Use `PriorityClass` to ensure DaemonSet po
 - **RollingUpdate with `maxUnavailable: 1`** — safe default for production
 - **Use `hostPath` volumes sparingly** — security risk, prefer CSI drivers
 - **Set `priorityClassName: system-node-critical`** for essential DaemonSets
+
+## FAQ
+
+### How do I make Kubernetes run one pod per node?
+
+Use a DaemonSet. Kubernetes automatically schedules exactly one copy of the pod on each node that matches the DaemonSet's `nodeSelector`/tolerations — and adds or removes pods as nodes join or leave. You do not set `replicas`; the node count determines the pod count.
+
+### What is the Kubernetes object that runs a copy of a pod on every node?
+
+The **DaemonSet** (`apps/v1`). A DaemonSet ensures all (or a selected subset of) nodes run a copy of a pod. This is the official mechanism for node-level agents such as log collectors, monitoring exporters, CNI plugins, and CSI storage drivers.
+
+### Does a DaemonSet run on every node including control-plane nodes?
+
+Not by default — control-plane nodes are tainted, so DaemonSet pods skip them. Add tolerations for `node-role.kubernetes.io/control-plane` (and the legacy `master` key), or use `tolerations: [{operator: "Exists"}]` to run on every node with no exceptions.
+
+### How do I run a DaemonSet on only some nodes?
+
+Add a `nodeSelector` (e.g. `nvidia.com/gpu.present: "true"`) or `nodeAffinity` to the pod template. The DaemonSet then places one pod only on nodes matching those rules — useful for GPU device plugins or storage daemons that belong on specific hardware.
+
+### Why does DESIRED show fewer pods than my node count?
+
+A `nodeSelector`, affinity rule, or missing toleration is excluding nodes. Run `kubectl describe daemonset <name>` to see why pods aren't scheduled, and confirm the DaemonSet tolerates any taints on the missing nodes.
 
 ## Key Takeaways
 

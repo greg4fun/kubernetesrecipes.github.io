@@ -19,7 +19,7 @@ relatedRecipes:
   - "kubernetes-custom-scheduler-guide"
   - "kubernetes-cronjob-patterns-guide"
   - "kubernetes-terminationgraceperiod"
-  - "kubernetes-daemonset-one-pod-per-node"
+  - "kubernetes-daemonset-guide"
 ---
 
 > 💡 **Quick Answer:** Configure node affinity rules for Kubernetes pod scheduling. Required vs preferred affinity, label selectors, and combining with taints and tolerations.
