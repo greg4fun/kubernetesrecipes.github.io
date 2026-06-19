@@ -48,6 +48,10 @@
 # DaemonSet - Consolidate one-pod-per-node into the ranking daemonset-guide page (same intent)
 /recipes/deployments/kubernetes-daemonset-one-pod-per-node/    /recipes/deployments/kubernetes-daemonset-guide/    301
 
+# Volcano - Consolidate two duplicate gang-scheduling pages into the ranking ai-batch-processing-volcano page
+/recipes/ai/volcano-batch-scheduling-kubernetes/    /recipes/ai/ai-batch-processing-volcano/    301
+/recipes/ai/volcano-batch-scheduler-gang-scheduling-kubernetes/    /recipes/ai/ai-batch-processing-volcano/    301
+
 # Container Security Scanning - Consolidate
 /recipes/security/container-image-scanning/    /recipes/security/container-security-scanning/    301
 

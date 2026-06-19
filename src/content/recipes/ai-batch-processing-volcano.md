@@ -271,6 +271,92 @@ spec:
                   nvidia.com/gpu: 4
 ```
 
+## Gang Scheduling Without a Volcano Job (PodGroup)
+
+You don't have to use a Volcano `Job` to get gang scheduling. A `PodGroup` lets standard Kubernetes Jobs, Deployments, or StatefulSets co-schedule all-or-nothing — set `schedulerName: volcano` and annotate the pods with the group name:
+
+```yaml
+# PodGroup defines the gang constraint
+apiVersion: scheduling.volcano.sh/v1beta1
+kind: PodGroup
+metadata:
+  name: training-group
+  namespace: ml-workloads
+spec:
+  minMember: 4              # Minimum pods that must co-schedule
+  queue: gpu-queue
+  priorityClassName: high-priority
+  minResources:
+    nvidia.com/gpu: "32"    # Total resources the group needs
+---
+# Standard Job referencing the PodGroup
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: training-worker
+  namespace: ml-workloads
+spec:
+  parallelism: 4
+  completions: 4
+  template:
+    metadata:
+      annotations:
+        scheduling.volcano.sh/group-name: training-group
+    spec:
+      schedulerName: volcano
+      containers:
+        - name: worker
+          image: registry.example.com/training:v1
+          resources:
+            limits:
+              nvidia.com/gpu: "8"
+      restartPolicy: Never
+```
+
+## Job Lifecycle Policies (Retries & Fault Tolerance)
+
+Volcano Jobs react to pod events with declarative policies — restart the whole gang on eviction, re-queue on lost sync, or restart a task on specific exit codes (e.g. `137` OOMKilled):
+
+```yaml
+apiVersion: batch.volcano.sh/v1alpha1
+kind: Job
+metadata:
+  name: resilient-training
+spec:
+  minAvailable: 3           # Can tolerate 1 failure (3 of 4)
+  maxRetry: 3               # Retry up to 3 times
+  ttlSecondsAfterFinished: 3600
+  schedulerName: volcano
+  queue: gpu-queue
+  policies:
+    - event: PodEvicted
+      action: RestartJob     # Restart all tasks
+    - event: PodFailed
+      action: RestartJob
+    - event: TaskCompleted
+      action: CompleteJob    # Finish when tasks complete
+    - event: OutOfSync
+      action: EnqueueJob     # Re-queue if sync lost
+  tasks:
+    - replicas: 4
+      name: worker
+      policies:
+        - event: TaskFailed
+          action: RestartJob
+          exitCodes:
+            - 137    # OOMKilled → restart
+            - 143    # SIGTERM → restart
+      template:
+        spec:
+          containers:
+            - name: trainer
+              image: registry.example.com/trainer:v1
+              resources:
+                limits:
+                  nvidia.com/gpu: "8"
+          restartPolicy: OnFailure
+```
+
 ## Common Issues
 
 ### Issue 1: Gang scheduling deadlock
@@ -306,6 +392,48 @@ kubectl get pods -n ml-training -o jsonpath='{.items[*].spec.schedulerName}'
 4. **Configure preemption policies** — Production jobs should preempt dev experiments
 5. **Use ttlSecondsAfterFinished** — Auto-cleanup completed jobs to free resources
 6. **Monitor queue utilization** — Track GPU hours per queue for chargeback
+
+## FAQ
+
+### What does `minAvailable` do in a Volcano job?
+
+`minAvailable` is the gang-scheduling threshold: the number of pods (tasks) that must be schedulable together before Volcano starts any of them. With `minAvailable: 4`, a 4-GPU training job either gets all 4 pods placed at once or stays Pending — preventing the "half the workers running, holding GPUs, deadlocked" failure mode.
+
+### How do I write a `batch.volcano.sh/v1alpha1` Job with `minAvailable`?
+
+Use `apiVersion: batch.volcano.sh/v1alpha1`, `kind: Job`, set `schedulerName: volcano`, a `queue`, and `minAvailable`, then define `tasks` with `replicas`:
+
+```yaml
+apiVersion: batch.volcano.sh/v1alpha1
+kind: Job
+metadata:
+  name: tf-training
+spec:
+  minAvailable: 4
+  schedulerName: volcano
+  queue: gpu-queue
+  tasks:
+    - replicas: 4
+      name: worker
+      template:
+        spec:
+          schedulerName: volcano
+          containers:
+            - name: trainer
+              image: registry.example.com/trainer:v1
+              resources:
+                limits:
+                  nvidia.com/gpu: "8"
+          restartPolicy: OnFailure
+```
+
+### What is gang scheduling in Kubernetes?
+
+Gang scheduling is all-or-nothing pod placement: a group of pods is scheduled together or not at all. Kubernetes' default scheduler places pods one by one, which can deadlock distributed training (some workers run and hold GPUs while others wait). Volcano (or a `PodGroup`) adds gang scheduling so the whole job starts atomically.
+
+### Do I need a Volcano Job to use gang scheduling?
+
+No. A `PodGroup` (`scheduling.volcano.sh/v1beta1`) with `minMember` lets standard Kubernetes Jobs, Deployments, and StatefulSets gang-schedule — just set `schedulerName: volcano` and annotate pods with `scheduling.volcano.sh/group-name`. The Volcano `Job` type is a convenience wrapper that adds tasks, queues, and lifecycle policies.
 
 ## Key Takeaways
 

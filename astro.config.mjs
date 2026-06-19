@@ -36,6 +36,8 @@ const redirectStubPaths = new Set([
   "/recipes/configuration/openshift-lifecycle-versions-guide/",
   "/recipes/observability/grafana-dashboard-6417-node-exporter/",
   "/recipes/deployments/kubernetes-daemonset-one-pod-per-node/",
+  "/recipes/ai/volcano-batch-scheduling-kubernetes/",
+  "/recipes/ai/volcano-batch-scheduler-gang-scheduling-kubernetes/",
 ]);
 
 // https://astro.build/config
