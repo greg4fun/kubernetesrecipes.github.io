@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Resource Limits CPU Memory Format"
-description: "Kubernetes container resource limits and requests syntax. CPU units (200m, 500m, 1), memory units (256Mi, 1Gi), QoS classes, and YAML format examples."
+title: "Resource Limits: cpu 200m memory 256Mi Format"
+description: "Kubernetes resource limits cpu 200m memory 256Mi format and syntax. What 200m, 500m, 256Mi, 1Gi mean, requests vs limits, Mi vs M, YAML examples."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "configuration"
@@ -241,6 +241,38 @@ kubectl get pod <pod-name> -o jsonpath='{.status.qosClass}'
 - **Allow CPU bursting** — CPU limits > requests lets pods burst during spikes
 - **Use VPA for right-sizing** — let Vertical Pod Autoscaler recommend values
 - **Quote numeric values** — \`cpu: "1"\` not \`cpu: 1\` to avoid YAML type issues
+
+## FAQ
+
+### What is the format for `cpu: 200m memory: 256Mi`?
+
+It is the standard Kubernetes resource format. `cpu: "200m"` requests 0.2 of a CPU core (200 millicores) and `memory: "256Mi"` requests 256 mebibytes (268,435,456 bytes). Both go under `resources.requests` and/or `resources.limits`:
+
+```yaml
+resources:
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
+```
+
+### What is the syntax for `cpu 500m memory 256Mi`?
+
+`cpu: "500m"` = 0.5 CPU core; `memory: "256Mi"` = 256 MiB. A common production pattern is `requests` of `cpu: "200m"` / `memory: "256Mi"` with `limits` of `cpu: "500m"` / `memory: "256Mi"` — letting CPU burst while capping memory.
+
+### Is `200m` CPU the same as `0.2`?
+
+Yes. `200m` (200 millicores) and `0.2` are identical. Kubernetes recommends the `m` suffix for clarity — `200m` is unambiguous, whereas `0.2` can be mistaken for a typo.
+
+### Is `256Mi` the same as `256M`?
+
+No. `256Mi` = 256 × 1024² = 268,435,456 bytes (binary). `256M` = 256 × 1000² = 256,000,000 bytes (decimal). `256M` is ~4.6% smaller and is a frequent cause of unexpected `OOMKilled`. Always use `Mi`/`Gi`.
+
+### Do `cpu 250m memory 128Mi` and `cpu 200m memory 256Mi` use the same format?
+
+Yes — only the values change. `250m` = 0.25 core, `128Mi` = 128 MiB; `200m` = 0.2 core, `256Mi` = 256 MiB. The YAML keys (`cpu`, `memory`) and structure (`requests`/`limits`) are identical for every value.
 
 ## Key Takeaways
 
