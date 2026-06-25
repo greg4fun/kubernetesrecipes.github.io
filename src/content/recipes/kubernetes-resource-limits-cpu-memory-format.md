@@ -1,6 +1,6 @@
 ---
-title: "Resource Limits: cpu 200m memory 256Mi Format"
-description: "Kubernetes resource limits cpu 200m memory 256Mi format and syntax. What 200m, 500m, 256Mi, 1Gi mean, requests vs limits, Mi vs M, YAML examples."
+title: "Kubernetes CPU 200m Memory 256Mi: Limits Format"
+description: "Use Kubernetes container resources limits with cpu 200m and memory 256Mi. Copy YAML syntax, convert millicores and Mi/Gi, and avoid Mi vs M mistakes."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "configuration"
@@ -22,11 +22,13 @@ relatedRecipes:
   - "kubernetes-1-36-pod-level-resources"
 ---
 
-> 💡 **Quick Answer:** CPU is specified in millicores (\`200m\` = 0.2 CPU, \`500m\` = 0.5 CPU, \`1\` = 1 full core). Memory is specified in bytes with suffixes (\`256Mi\` = 256 MiB, \`1Gi\` = 1 GiB). Set both \`requests\` (scheduling guarantee) and \`limits\` (hard cap) for every container.
+> 💡 **Quick Answer:** Use `cpu: "200m"` and `memory: "256Mi"` under `resources.requests` or `resources.limits`. `200m` means 200 millicores, or 0.2 CPU core. `256Mi` means 256 MiB, or 268,435,456 bytes. Quote CPU and memory values in YAML for consistency.
 
 ## The Problem
 
-Kubernetes resource specifications use specific unit formats that are easy to get wrong. Common mistakes include confusing \`Mi\` with \`M\`, using wrong CPU units, or not understanding the difference between requests and limits — leading to OOMKilled pods, CPU throttling, or wasted cluster resources.
+Kubernetes resource specifications use compact unit formats that are easy to misread. Search queries like `container resources limits cpu 200m memory 256mi` are asking for three things: the exact YAML structure, what the CPU value means, and whether `256Mi` is the right memory suffix.
+
+Common mistakes include putting CPU and memory outside the `resources` block, confusing `Mi` with `M`, or setting limits without understanding requests. Those mistakes lead to OOMKilled pods, CPU throttling, Pending pods, or wasted cluster capacity.
 
 ```mermaid
 flowchart TB
@@ -47,6 +49,27 @@ flowchart TB
 ```
 
 ## The Solution
+
+### Copy-Paste Format for `cpu 200m memory 256Mi`
+
+Use this structure inside each container:
+
+```yaml
+resources:
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
+```
+
+| Field | Example | Meaning |
+|-------|---------|---------|
+| `requests.cpu` | `"200m"` | Reserve 0.2 CPU core for scheduling |
+| `requests.memory` | `"256Mi"` | Reserve 256 MiB for scheduling |
+| `limits.cpu` | `"500m"` | Throttle above 0.5 CPU core |
+| `limits.memory` | `"256Mi"` | Kill/restart if the container exceeds 256 MiB |
 
 ### Resource Specification Syntax
 
