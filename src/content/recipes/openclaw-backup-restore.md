@@ -55,6 +55,34 @@ Automated backups via VolumeSnapshots or S3 CronJobs, with tested restore proced
 └── channels/            # WhatsApp/Signal session keys (CRITICAL)
 ```
 
+## Backup & Restore Commands (CLI)
+
+OpenClaw has **no dedicated `openclaw backup` / `openclaw restore` subcommand** — all state is plain files under `~/.openclaw/`, so you back up and restore with standard `tar`/`kubectl cp`. Run these against the directory the Gateway uses inside the pod.
+
+```bash
+# --- BACKUP: archive the whole OpenClaw state directory ---
+# Inside the pod (or a node with the PVC mounted at ~/.openclaw):
+tar czf openclaw-backup-$(date +%Y%m%d).tar.gz -C ~/.openclaw .
+
+# From your laptop, pull state straight out of the running pod:
+kubectl cp openclaw/openclaw-gateway-0:/root/.openclaw ./openclaw-backup
+
+# Config-only backup (just openclaw.json):
+kubectl cp openclaw/openclaw-gateway-0:/root/.openclaw/openclaw.json ./openclaw.json
+```
+
+```bash
+# --- RESTORE: push state back, then restart the Gateway ---
+kubectl scale deploy/openclaw-gateway -n openclaw --replicas=0
+kubectl cp ./openclaw-backup openclaw/openclaw-gateway-0:/root/.openclaw
+kubectl scale deploy/openclaw-gateway -n openclaw --replicas=1
+
+# Verify the Gateway came back up with restored sessions:
+kubectl exec -n openclaw deploy/openclaw-gateway -- openclaw gateway status
+```
+
+> **Why no native command?** OpenClaw stores everything as files (`openclaw.json`, `agents/`, `channels/`, `workspace/`). That means any file-level tool — `tar`, `kubectl cp`, VolumeSnapshots, or Velero — *is* the backup tool. The sections below automate exactly that on Kubernetes.
+
 ## Method 1: VolumeSnapshot CronJob
 
 ```yaml
@@ -164,6 +192,30 @@ kubectl exec -n openclaw deploy/openclaw-gateway -- openclaw status
 3. **Retain 7 days of backups** — Enough to recover from gradual corruption
 4. **Encrypt backups** — Use S3 server-side encryption or client-side GPG
 5. **Alert on backup failures** — Monitor the CronJob for failed runs
+
+## FAQ
+
+### What is the OpenClaw backup command?
+
+There is no built-in `openclaw backup` command. Because OpenClaw keeps all state as files under `~/.openclaw/`, you back up with standard tools: `tar czf openclaw-backup.tar.gz -C ~/.openclaw .`, or on Kubernetes a VolumeSnapshot / Velero backup of the PVC. The same applies to restore — `tar xzf` or `kubectl cp` the files back, then restart the Gateway.
+
+### How do I back up and restore the OpenClaw config?
+
+The config is a single file: `~/.openclaw/openclaw.json`. Copy it out with `kubectl cp openclaw/openclaw-gateway-0:/root/.openclaw/openclaw.json ./openclaw.json` and restore by copying it back. Note the config alone does **not** include channel sessions or conversation history — back up the whole `~/.openclaw/` directory for a full recovery.
+
+### What does `~/.openclaw/openclaw.json` contain?
+
+It holds the Gateway configuration: the agent model (`agent.model`), channel allowlists (`channels.whatsapp.allowFrom`), routing, and security settings. It does **not** contain session keys or history — those live in `~/.openclaw/channels/` and `~/.openclaw/agents/`, which is why a full backup must cover the entire directory.
+
+### Can I restore an OpenClaw backup to a different cluster or phone?
+
+You can restore the files to any cluster, but **WhatsApp/Signal channel sessions are tied to the paired phone number** and cannot be moved to a different number. After restoring to a new environment you may need to re-pair those channels with `openclaw pairing approve <channel> <code>`.
+
+### Where is the OpenClaw state directory inside the pod?
+
+It is the Gateway user's home: typically `/root/.openclaw` (or `~/.openclaw`). Mount your backup PVC there and point `kubectl cp` / `tar` at that path. Confirm the exact location with `kubectl exec -n openclaw deploy/openclaw-gateway -- printenv HOME`.
+
+For deeper state handling, see [OpenClaw PVC state management](/recipes/storage/openclaw-pvc-state-management/) and [OpenClaw secrets management](/recipes/security/openclaw-secrets-management/).
 
 ## Key Takeaways
 

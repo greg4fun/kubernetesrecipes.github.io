@@ -17,6 +17,7 @@ relatedRecipes:
   - "selinux-scc-gpu-operator-openshift"
   - "kubernetes-rbac-guide"
   - "kubernetes-multi-tenancy"
+  - "cve-2026-43284-dirtyfrag-openshift"
 ---
 
 > 💡 **Quick Answer:** Security Context Constraints (SCC) are OpenShift's mechanism to control what pods can do — run as root, use host network, mount volumes, escalate privileges. Default SCCs range from `restricted-v2` (most secure) to `privileged` (full access). Assign SCCs via `oc adm policy add-scc-to-user <scc> -z <service-account>`. Pods automatically use the most restrictive SCC that satisfies their requirements.
