@@ -14,7 +14,7 @@ tags:
   - "registry"
   - "cka"
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "image-pull-secrets"
   - "kubernetes-serviceaccount-guide"
   - "containerd-certs-d-registry-ca-trust"

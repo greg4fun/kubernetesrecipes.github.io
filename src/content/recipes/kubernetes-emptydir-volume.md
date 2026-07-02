@@ -8,7 +8,7 @@ tags: ["emptydir", "volumes", "temporary-storage", "tmpfs", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-volume-types"
-  - "csi-drivers-storage"
+  - "kubernetes-csi-driver-guide"
   - "kubernetes-persistent-volume-guide"
   - "longhorn-distributed-storage"
 ---

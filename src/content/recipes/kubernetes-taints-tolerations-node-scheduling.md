@@ -14,7 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-taint-toleration"
   - "kubernetes-pod-priority-preemption-scheduling"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
 ---
 
 > 💡 **Quick Answer:** Taints on nodes repel pods; tolerations on pods allow them to schedule on tainted nodes. Taint a node: `kubectl taint nodes gpu-node nvidia.com/gpu=present:NoSchedule`. Only pods with a matching toleration will schedule there. Three effects: `NoSchedule` (hard), `PreferNoSchedule` (soft), `NoExecute` (evict existing pods too).

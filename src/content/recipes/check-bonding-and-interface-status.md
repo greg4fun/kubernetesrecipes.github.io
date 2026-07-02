@@ -25,7 +25,7 @@ relatedRecipes:
   - "imagepullbackoff-troubleshooting"
   - "kind-local-kubernetes"
   - "kubectl-debugging-commands"
-  - "kubectl-plugins-extensions"
+  - "kubernetes-kubectl-plugins-guide"
   - "stuck-resources-finalizers"
   - "kubectl-exec-into-pod"
   - "kubernetes-kubectl-debug-guide"

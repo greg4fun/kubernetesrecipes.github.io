@@ -13,7 +13,7 @@ prerequisites:
 relatedRecipes:
   - "liveness-readiness-probes"
   - "etcd-backup-restore"
-  - "pod-disruption-budgets"
+  - "pod-disruption-budget-config"
   - "rolling-update-deployment"
 tags:
   - upgrade

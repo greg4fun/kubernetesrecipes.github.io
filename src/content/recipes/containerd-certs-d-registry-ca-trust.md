@@ -14,7 +14,7 @@ tags:
   - "certificates"
   - "security"
 relatedRecipes:
-  - "custom-ca-openshift-kubernetes"
+  - "custom-ca-kubernetes"
   - "kubectl-create-secret-docker-registry"
   - "quay-registry-kubernetes-guide"
   - "openshift-idms-itms-mirror-rules"

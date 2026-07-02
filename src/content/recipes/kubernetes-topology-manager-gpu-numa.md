@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "nvidia-gpu-topology-matrix-kubernetes"
   - "nvlink-bridge-architecture-gpu-kubernetes"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
 ---
 
 > 💡 **Quick Answer:** Topology Manager is a kubelet component that coordinates CPU Manager, Device Manager (GPUs), and Memory Manager to allocate resources from the same NUMA node. Set `topologyManagerPolicy: single-numa-node` in kubelet config to ensure GPUs, CPUs, and NICs are all co-located on one NUMA node — critical for GPU workloads where cross-NUMA memory access adds 30-50% latency penalty.

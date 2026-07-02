@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "pvc-storageclass-examples"
-  - "csi-drivers-storage"
+  - "kubernetes-csi-driver-guide"
   - "kubernetes-persistent-volume"
   - "emptydir-volume-sharing-lifecycle-memory-backed"
 ---

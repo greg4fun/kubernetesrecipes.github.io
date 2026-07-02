@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-imagepullbackoff-troubleshoot"
   - "kubernetes-kubectl-debug-guide"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "kubernetes-secret-types-guide"
 ---
 

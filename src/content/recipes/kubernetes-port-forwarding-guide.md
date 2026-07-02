@@ -8,7 +8,7 @@ tags: ["port-forward", "kubectl", "debugging", "local-access", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "kubectl-cheat-sheet"
-  - "kubeconfig-contexts"
+  - "kubectl-config-context-management"
   - "kubernetes-affinity-guide"
   - "kubernetes-annotations-guide"
 ---

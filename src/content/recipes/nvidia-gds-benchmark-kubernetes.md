@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "fio-pscale-nfs-smb-benchmark-kubernetes"
   - "gds-nvme-nfs-rdma"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "distributed-multi-gpu-inference-kubernetes"
 ---
 

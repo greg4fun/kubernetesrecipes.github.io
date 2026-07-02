@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "openshift-sriov-rdma-infiniband-device-plugin"
   - "openshift-sriov-mmio-resources-fix"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "kubernetes-ai-infrastructure-scaling"
 ---
 

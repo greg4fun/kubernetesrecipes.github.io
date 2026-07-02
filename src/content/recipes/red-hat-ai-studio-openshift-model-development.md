@@ -14,7 +14,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "vllm-openai-container-kubernetes"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
 ---
 
 > 💡 **Quick Answer:** Red Hat AI Studio is an integrated development environment on OpenShift for building, fine-tuning, evaluating, and serving LLMs. It combines a model catalog (Granite, Llama, Mistral), InstructLab-based fine-tuning pipelines, experiment tracking, and one-click deployment to NVIDIA NIM or vLLM serving runtimes — all with enterprise RBAC and air-gap support.

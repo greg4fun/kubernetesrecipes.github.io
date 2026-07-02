@@ -9,10 +9,10 @@ prerequisites:
   - "A running Kubernetes cluster"
   - "kubectl configured to access your cluster"
 relatedRecipes:
-  - "kubectl-plugins-extensions"
+  - "kubernetes-kubectl-plugins-guide"
   - "kubectl-debugging-commands"
   - "verify-ovn-underlay-interface"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "service-loadbalancer-nodeport"
   - "kubernetes-network-troubleshooting"
   - "debug-imagepullbackoff"

@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "openshift-nvidia-mig-reconfiguration"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "kubernetes-1-36-dra-gpu-management"
   - "gpu-node-affinity-scheduling"
 ---

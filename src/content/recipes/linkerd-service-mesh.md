@@ -10,9 +10,9 @@ prerequisites:
   - "kubectl configured with cluster-admin privileges"
   - "Helm 3 installed"
 relatedRecipes:
-  - "istio-service-mesh"
+  - "kubernetes-service-mesh-istio-guide"
   - "network-policies"
-  - "distributed-tracing-jaeger"
+  - "jaeger-distributed-tracing"
   - "istio-traffic-management"
   - "kubernetes-gateway-api"
 tags:

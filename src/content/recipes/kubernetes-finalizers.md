@@ -7,9 +7,9 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["finalizers", "cleanup", "deletion", "controllers", "garbage-collection"]
 relatedRecipes:
-  - "kubeconfig-contexts"
+  - "kubectl-config-context-management"
   - "itms-registries-conf-machineconfig"
-  - "resource-quotas-namespace"
+  - "resource-quotas"
 ---
 
 > 💡 **Quick Answer:** Finalizers block resource deletion until cleanup completes. Controllers add finalizers, perform cleanup when deletion requested, then remove finalizer to allow deletion. To unstick a resource: `kubectl patch <resource> -p '{"metadata":{"finalizers":[]}}' --type=merge` (use cautiously—may orphan dependent resources).

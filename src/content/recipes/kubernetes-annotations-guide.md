@@ -7,7 +7,7 @@ publishDate: "2026-04-03"
 tags: ["annotations", "metadata", "ingress", "automation", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-labels-annotations"
+  - "kubernetes-labels-annotations-best-practices"
   - "downward-api-metadata"
   - "kubectl-cheat-sheet"
 ---

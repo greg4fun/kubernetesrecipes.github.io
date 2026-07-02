@@ -12,7 +12,7 @@ tags:
   - "autoscaling"
   - "scale-to-zero"
 relatedRecipes:
-  - "keda-event-driven-autoscaling"
+  - "kubernetes-keda-autoscaling-guide"
   - "argocd-declarative-application-setup"
   - "haproxy-keepalived-multi-tenant-gpu"
   - "triton-autoscaling-gpu-metrics"

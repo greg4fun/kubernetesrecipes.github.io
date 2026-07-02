@@ -16,7 +16,7 @@ relatedRecipes:
   - "nim-support-matrix-gpu-compatibility"
   - "nim-model-profiles-selection-kubernetes"
   - "deploy-llama2-70b-kubernetes"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "deploy-multinode-nim-models-kubernetes"
 ---
 

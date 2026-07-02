@@ -12,7 +12,7 @@ prerequisites:
   - "oc CLI configured"
 relatedRecipes:
   - "openshift-cluster-wide-pull-secret"
-  - "cert-manager-certificates"
+  - "kubernetes-cert-manager-guide"
   - "update-ca-certificates-kubernetes"
   - "openshift-multi-tenant-certificates"
 tags: ["openshift", "certificates", "tls", "container-registry", "security"]

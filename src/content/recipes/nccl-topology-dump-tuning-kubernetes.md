@@ -15,7 +15,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "nccl-pxn-cross-nic-nvlink-topology"
   - "dual-fabric-mellanox-gpu-storage-ethernet-infiniband"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
 ---
 
 > 💡 **Quick Answer:** `NCCL_TOPO_DUMP_FILE=/path/topology.xml` makes NCCL export its auto-detected GPU/NIC/NVLink/PCIe topology to an XML file on first run, then reuses it on subsequent runs. On Kubernetes, inject a pre-generated topology file via ConfigMap to skip expensive runtime detection, ensure consistent topology across pods, and enable offline tuning of NCCL transport selection.

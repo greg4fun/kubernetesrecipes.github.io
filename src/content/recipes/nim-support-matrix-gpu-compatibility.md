@@ -16,7 +16,7 @@ relatedRecipes:
   - "nim-model-profiles-selection-kubernetes"
   - "nim-multinode-deployment-helm-kubernetes"
   - "rebuild-nim-custom-model-kubernetes"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "deploy-multinode-nim-models-kubernetes"
 ---
 

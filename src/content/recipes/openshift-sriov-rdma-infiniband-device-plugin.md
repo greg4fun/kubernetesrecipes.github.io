@@ -12,7 +12,7 @@ publishDate: "2026-05-07"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "kubernetes-ai-infrastructure-scaling"
   - "openshift-machineconfig-mcp-guide"
   - "virtualization-vt-x-vs-vt-d-vs-sriov"

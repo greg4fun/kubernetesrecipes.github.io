@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "distributed-multi-gpu-inference-kubernetes"
   - "runai-distributed-training-openshift"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "deploy-mistral-vllm-kubernetes"
 ---
 

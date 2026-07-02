@@ -17,7 +17,7 @@ relatedRecipes:
   - "airgapped-openshift-quay-mirror"
   - "quay-robot-account-kubernetes"
   - "podman-tls-x509-corporate-proxy"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
 ---
 
 > 💡 **Quick Answer:** Use `podman pull` from `nvcr.io`, retag for your internal Quay, then `podman push`. For API token endpoints, ensure your JSON has no escaped backslashes inside single quotes and use the correct field capitalization (`GrantType` not `grantType`).

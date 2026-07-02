@@ -12,7 +12,7 @@ publishDate: "2026-05-03"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "kubernetes-1-36-dra-gpu-management"
   - "nvidia-smi-kubernetes-monitoring"
   - "gpu-node-affinity-scheduling"

@@ -14,7 +14,7 @@ difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
   - "confidential-computing-kubernetes"
-  - "kubernetes-runtimeclass"
+  - "kubernetes-gvisor-kata-containers-runtimeclass"
   - "post-quantum-cryptography-kubernetes"
   - "ai-security-platform-kubernetes"
   - "pod-security-context"

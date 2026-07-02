@@ -13,7 +13,7 @@ prerequisites:
 relatedRecipes:
   - "openshift-tenant-secret-rotation"
   - "openshift-deploy-new-certificate-per-tenant"
-  - "cert-manager-certificates"
+  - "kubernetes-cert-manager-guide"
 tags: ["openshift", "multi-tenant", "ingress", "tls", "certificates", "security"]
 publishDate: "2026-02-16"
 updatedDate: "2026-02-16"

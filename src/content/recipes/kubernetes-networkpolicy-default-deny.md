@@ -14,7 +14,7 @@ difficulty: "intermediate"
 timeToComplete: "15 minutes"
 relatedRecipes:
   - "network-policies"
-  - "istio-service-mesh"
+  - "kubernetes-service-mesh-istio-guide"
 ---
 
 > 💡 **Quick Answer:** By default, Kubernetes allows ALL traffic between pods. Apply a default-deny NetworkPolicy to block everything, then add allow rules for specific traffic. This is the foundation of zero-trust networking in Kubernetes.

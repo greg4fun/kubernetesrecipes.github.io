@@ -14,7 +14,7 @@ difficulty: "advanced"
 timeToComplete: "40 minutes"
 relatedRecipes:
   - "kubernetes-cosign-image-verification"
-  - "container-security-scanning"
+  - "container-image-security-scanning-kubernetes"
   - "openshift-catalogsource-filtering"
   - "kyverno-policy-management"
   - "copy-nim-image-internal-quay-registry"

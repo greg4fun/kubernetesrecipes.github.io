@@ -10,7 +10,7 @@ prerequisites:
   - "kubectl configured with appropriate permissions"
   - "Basic understanding of CronJobs"
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "liveness-readiness-probes"
   - "jobs-cronjobs"
   - "pod-priority-preemption-scheduling"

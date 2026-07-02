@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "install-helm-amazon-linux"
   - "helm-sprig-cat-function"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "prometheus-monitoring-setup"
   - "grafana-kubernetes-dashboards"
   - "alertmanager-setup"

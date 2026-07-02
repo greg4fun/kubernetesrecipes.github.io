@@ -17,7 +17,7 @@ relatedRecipes:
   - "openshift-idms-install-config"
   - "openshift-itms-image-tag-mirror"
   - "quay-robot-account-kubernetes"
-  - "container-security-scanning"
+  - "container-image-security-scanning-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Create a BuildConfig with `strategy.type: Docker` and `output.to: ImageStreamTag`, then trigger builds from Git webhooks or `oc start-build`. ImageStreams track tags and auto-trigger Deployments on new builds.

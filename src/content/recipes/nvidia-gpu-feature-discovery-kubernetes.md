@@ -15,7 +15,7 @@ relatedRecipes:
   - "talos-kubernetes-nvidia-mig-gpu-operator"
   - "openshift-nvidia-mig-reconfiguration"
   - "gpu-node-affinity-scheduling"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
 ---
 
 > 💡 **Quick Answer:** GPU Feature Discovery (GFD) is an NVIDIA DaemonSet that reads GPU hardware info via NVML and **auto-labels Kubernetes nodes** with GPU model, count, MIG capability, CUDA version, and driver info. Essential for GPU-aware scheduling and MIG management.

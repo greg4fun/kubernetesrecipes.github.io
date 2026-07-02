@@ -81,3 +81,28 @@
 # /recipes/network/       /recipes/networking/     301
 # /recipes/monitor/       /recipes/observability/  301
 # /recipes/debug/         /recipes/troubleshooting/ 301
+
+# Duplicate-content consolidation (SEO audit 2026-07-02) — 22 near-duplicate
+# pages retired in favor of their stronger, already-indexed sibling
+/recipes/security/cert-manager-certificates/    /recipes/security/kubernetes-cert-manager-guide/    301
+/recipes/security/container-security-scanning/    /recipes/security/container-image-security-scanning-kubernetes/    301
+/recipes/storage/csi-drivers-storage/    /recipes/storage/kubernetes-csi-driver-guide/    301
+/recipes/security/custom-ca-openshift-kubernetes/    /recipes/security/custom-ca-kubernetes/    301
+/recipes/troubleshooting/debug-crashloopbackoff/    /recipes/troubleshooting/crashloopbackoff-troubleshooting/    301
+/recipes/observability/distributed-tracing-jaeger/    /recipes/observability/jaeger-distributed-tracing/    301
+/recipes/networking/istio-service-mesh/    /recipes/networking/kubernetes-service-mesh-istio-guide/    301
+/recipes/autoscaling/keda-event-driven-autoscaling/    /recipes/autoscaling/kubernetes-keda-autoscaling-guide/    301
+/recipes/configuration/kubeconfig-contexts/    /recipes/configuration/kubectl-config-context-management/    301
+/recipes/troubleshooting/kubectl-plugins-extensions/    /recipes/configuration/kubernetes-kubectl-plugins-guide/    301
+/recipes/configuration/kubernetes-backup-restore/    /recipes/storage/kubernetes-velero-backup-restore/    301
+/recipes/configuration/kubernetes-cronjob-concurrencypolicy/    /recipes/configuration/kubernetes-cronjob-concurrencypolicy-guide/    301
+/recipes/troubleshooting/kubernetes-debug-container-ephemeral/    /recipes/troubleshooting/kubernetes-debug-pods/    301
+/recipes/configuration/kubernetes-labels-annotations/    /recipes/configuration/kubernetes-labels-annotations-best-practices/    301
+/recipes/troubleshooting/kubernetes-node-taint-master-fix/    /recipes/troubleshooting/kubernetes-node-untolerated-taint-master/    301
+/recipes/security/kubernetes-runtimeclass/    /recipes/security/kubernetes-gvisor-kata-containers-runtimeclass/    301
+/recipes/configuration/kustomize-configuration/    /recipes/configuration/kubernetes-kustomize-configuration-management/    301
+/recipes/ai/nvidia-gpu-operator-setup/    /recipes/ai/nvidia-gpu-operator-gitops-openshift/    301
+/recipes/deployments/pod-disruption-budgets/    /recipes/deployments/pod-disruption-budget-config/    301
+/recipes/deployments/pod-priority-preemption/    /recipes/configuration/kubernetes-pod-priority-preemption-scheduling/    301
+/recipes/observability/prometheus-metrics-setup/    /recipes/observability/prometheus-monitoring-kubernetes-guide/    301
+/recipes/configuration/resource-quotas-namespace/    /recipes/configuration/resource-quotas/    301

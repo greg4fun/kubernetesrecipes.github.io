@@ -10,7 +10,6 @@ prerequisites:
   - "oc CLI configured"
   - "Custom CA certificate in PEM format"
 relatedRecipes:
-  - "custom-ca-openshift-kubernetes"
   - "custom-ca-kubernetes"
   - "update-ca-certificates-kubernetes"
 tags:

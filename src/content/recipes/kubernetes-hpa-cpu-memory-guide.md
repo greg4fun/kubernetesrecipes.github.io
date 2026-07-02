@@ -17,7 +17,7 @@ relatedRecipes:
   - "horizontal-pod-autoscaler"
   - "hpa-custom-metrics"
   - "vertical-pod-autoscaler"
-  - "keda-event-driven-autoscaling"
+  - "kubernetes-keda-autoscaling-guide"
 ---
 
 > 💡 **Quick Answer:** `kubectl autoscale deployment web --cpu-percent=70 --min=2 --max=10` creates an HPA that scales between 2-10 replicas targeting 70% CPU utilization. Pods MUST have CPU `requests` set — HPA calculates utilization as `current_usage / request`. Formula: `desiredReplicas = ceil(currentReplicas × (currentMetric / targetMetric))`.

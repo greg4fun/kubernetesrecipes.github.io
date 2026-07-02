@@ -14,7 +14,7 @@ tags:
   - cleanup
   - troubleshooting
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "persistent-volume-stuck-terminating"
   - "fix-kubernetes-certificate-errors"
 ---

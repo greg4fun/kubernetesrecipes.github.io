@@ -10,7 +10,7 @@ prerequisites:
   - "nccl-tests binaries available"
   - "kubectl or oc CLI access"
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "validate-gpu-topology-nccl"
   - "debug-nccl-timeouts-kubernetes"
   - "run-nccl-tests-kubernetes"

@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "machineconfig-nfs-mount-openshift"
   - "volume-snapshots"
-  - "csi-drivers-storage"
+  - "kubernetes-csi-driver-guide"
   - "velero-backup-disaster-recovery"
 ---
 

@@ -6,7 +6,7 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "debug-oom-killed"
   - "imagepullbackoff-troubleshooting"
   - "debug-imagepullbackoff"

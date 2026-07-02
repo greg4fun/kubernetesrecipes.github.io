@@ -31,7 +31,7 @@ relatedRecipes:
   - "kubernetes-leases"
   - "kubernetes-gateway-api"
   - "kubernetes-api-aggregation"
-  - "cert-manager-certificates"
+  - "kubernetes-cert-manager-guide"
   - "openshift-sriov-vf-creation"
   - "configure-sriovnetwork-nv-ipam"
   - "identify-mellanox-nic-models"

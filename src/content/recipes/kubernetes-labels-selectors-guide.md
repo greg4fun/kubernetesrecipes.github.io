@@ -7,7 +7,7 @@ publishDate: "2026-04-03"
 tags: ["labels", "selectors", "organization", "filtering", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-labels-annotations"
+  - "kubernetes-labels-annotations-best-practices"
   - "kubectl-cheat-sheet"
   - "kubernetes-affinity-guide"
   - "kubernetes-annotations-guide"

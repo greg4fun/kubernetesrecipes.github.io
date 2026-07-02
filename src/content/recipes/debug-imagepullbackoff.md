@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
   - "kind-local-kubernetes"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "imagepullbackoff-troubleshooting"
   - "ephemeral-containers-debugging"
   - "debug-oom-killed"

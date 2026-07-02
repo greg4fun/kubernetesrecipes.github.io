@@ -10,9 +10,9 @@ prerequisites:
   - "Knowledge of Kubernetes RuntimeClass"
   - "Linux kernel and syscall concepts"
 relatedRecipes:
-  - "kubernetes-runtimeclass"
+  - "kubernetes-gvisor-kata-containers-runtimeclass"
   - "pod-security-standards"
-  - "container-security-scanning"
+  - "container-image-security-scanning-kubernetes"
 tags:
   - gvisor
   - container-runtime

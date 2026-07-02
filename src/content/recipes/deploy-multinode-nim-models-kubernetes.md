@@ -14,7 +14,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "45 minutes"
 relatedRecipes:
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "nvidia-open-gpu-dma-buf-gpudirect-rdma-doca-sriov"
   - "gpu-clusterpolicy-gds-enable"
   - "copy-nim-image-internal-quay-registry"

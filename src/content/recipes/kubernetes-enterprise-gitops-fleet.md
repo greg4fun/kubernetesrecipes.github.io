@@ -17,7 +17,7 @@ relatedRecipes:
   - "argocd-gitops"
   - "flux-gitops"
   - "kubernetes-ci-cd-pipeline"
-  - "kustomize-configuration"
+  - "kubernetes-kustomize-configuration-management"
 ---
 
 > 💡 **Quick Answer:** Use ArgoCD ApplicationSets with generators (Git, cluster, matrix) to declaratively manage applications across hundreds of clusters from a single Git repo. Combine with Kustomize overlays for environment-specific configuration and progressive rollouts.

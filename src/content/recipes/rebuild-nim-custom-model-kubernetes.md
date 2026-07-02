@@ -18,7 +18,7 @@ relatedRecipes:
   - "nim-multinode-deployment-helm-kubernetes"
   - "deploy-multinode-nim-models-kubernetes"
   - "copy-nim-image-internal-quay-registry"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
 ---
 
 > 💡 **Quick Answer:** Use model-free NIM (`nvcr.io/nim/nim-llm`) with `NIM_MODEL_PATH` pointing to your custom model on HuggingFace, S3, NGC, or a local directory. NIM auto-generates a manifest at startup, selects an optimal profile, and serves your model via OpenAI-compatible API. One container image serves any vLLM-supported architecture.

@@ -8,7 +8,7 @@ tags: ["crun", "runc", "openshift", "container-runtime", "seccomp", "gpu", "trou
 author: "Luca Berton"
 relatedRecipes:
   - "fio-libaio-seccomp-crun-openshift"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "openshift-debug-mount-limitation"
 ---
 

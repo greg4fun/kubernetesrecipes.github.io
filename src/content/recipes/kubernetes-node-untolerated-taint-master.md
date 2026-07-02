@@ -15,7 +15,6 @@ tags:
   - "troubleshooting"
 relatedRecipes:
   - "kubernetes-taints-tolerations-guide"
-  - "kubernetes-node-taint-master-fix"
   - "kubernetes-taint-toleration-guide"
   - "debug-scheduling-failures"
 ---

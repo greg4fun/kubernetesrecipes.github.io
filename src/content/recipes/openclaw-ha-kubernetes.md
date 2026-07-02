@@ -14,7 +14,7 @@ relatedRecipes:
   - "openclaw-custom-docker-image"
   - "openclaw-kubernetes-deployment"
   - "openclaw-monitoring-prometheus"
-  - "pod-disruption-budgets"
+  - "pod-disruption-budget-config"
   - "openclaw-operator-kubernetes"
 tags:
   - openclaw

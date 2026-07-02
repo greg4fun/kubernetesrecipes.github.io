@@ -15,7 +15,7 @@ relatedRecipes:
   - "cnpg-postgresql-operator"
   - "cnpg-disaster-recovery"
   - "velero-backup-disaster-recovery"
-  - "pod-disruption-budgets"
+  - "pod-disruption-budget-config"
   - "horizontal-pod-autoscaler"
 ---
 

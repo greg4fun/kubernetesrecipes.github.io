@@ -16,7 +16,7 @@ relatedRecipes:
   - "liveness-readiness-probes"
   - "kubernetes-rolling-update-zero-downtime"
   - "kubernetes-init-containers-guide"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "kubernetes-pod-lifecycle"
 ---
 

@@ -13,7 +13,7 @@ prerequisites:
   - "Mellanox ConnectX NICs installed"
 relatedRecipes:
   - "install-helm-amazon-linux"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "configure-gpudirect-rdma-gpu-operator"
   - "switch-gpudirect-rdma-dma-buf"
   - "configure-sriovnetwork-nv-ipam"

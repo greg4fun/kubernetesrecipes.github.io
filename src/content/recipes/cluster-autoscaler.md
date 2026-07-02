@@ -13,7 +13,7 @@ relatedRecipes:
   - "horizontal-pod-autoscaler"
   - "vertical-pod-autoscaler"
   - "hpa-custom-metrics"
-  - "keda-event-driven-autoscaling"
+  - "kubernetes-keda-autoscaling-guide"
 tags:
   - autoscaling
   - cluster-autoscaler

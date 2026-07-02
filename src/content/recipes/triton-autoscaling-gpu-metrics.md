@@ -14,7 +14,7 @@ relatedRecipes:
   - "triton-vllm-kubernetes"
   - "triton-multi-model-serving"
   - "triton-tensorrt-vllm-comparison"
-  - "keda-event-driven-autoscaling"
+  - "kubernetes-keda-autoscaling-guide"
 tags:
   - triton
   - autoscaling

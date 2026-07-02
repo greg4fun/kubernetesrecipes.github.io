@@ -15,7 +15,7 @@ relatedRecipes:
   - "iommu-bios-kernel-nccl-gpu-direct"
   - "openshift-sriov-rdma-infiniband-device-plugin"
   - "openshift-sriov-mmio-resources-fix"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
 ---
 
 > 💡 **Quick Answer:** For bare-metal GPU clusters running only AI training (no VMs, no multi-tenant isolation), the simplest path is: disable VT-d/AMD-Vi entirely in BIOS. If you need SR-IOV (which requires IOMMU), then use `pcie_acs_override=downstream,multifunction` in kernel args to allow GPU-Direct P2P across PCIe switches.

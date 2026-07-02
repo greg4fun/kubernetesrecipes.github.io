@@ -15,7 +15,7 @@ relatedRecipes:
   - "openshift-cluster-wide-pull-secret"
   - "custom-ca-openshift"
   - "quay-robot-account-kubernetes"
-  - "container-security-scanning"
+  - "container-image-security-scanning-kubernetes"
 tags:
   - openshift
   - idms

@@ -8,7 +8,7 @@ tags: ["volumes", "emptydir", "hostpath", "pvc", "nfs", "csi", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-emptydir-volume"
-  - "csi-drivers-storage"
+  - "kubernetes-csi-driver-guide"
   - "kubernetes-persistent-volume-guide"
   - "dynamic-volume-provisioning"
 ---

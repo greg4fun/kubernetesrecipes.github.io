@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "rbac-service-accounts"
   - "api-access-control"
-  - "kubeconfig-contexts"
+  - "kubectl-config-context-management"
   - "kyverno-policy-management"
   - "pod-security-context"
 tags:

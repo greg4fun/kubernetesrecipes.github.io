@@ -9,7 +9,7 @@ tags: ["finalizers", "deletion", "cleanup", "stuck-resources", "terminating"]
 relatedRecipes:
   - "kubernetes-network-troubleshooting"
   - "debug-node-issues"
-  - "kubectl-plugins-extensions"
+  - "kubernetes-kubectl-plugins-guide"
 ---
 
 > 💡 **Quick Answer:** Resources stuck in **Terminating** usually have finalizers blocking deletion. Remove finalizers to force delete: `kubectl patch <resource> <name> -p '{"metadata":{"finalizers":null}}' --type=merge`. Finalizers exist for a reason—investigate why cleanup failed before removing.

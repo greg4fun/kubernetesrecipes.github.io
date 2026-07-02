@@ -8,7 +8,7 @@ author: "Luca Berton"
 tags: ["resources", "cpu", "memory", "limits", "requests", "qos"]
 relatedRecipes:
   - "dra-tpu-allocation"
-  - "resource-quotas-namespace"
+  - "resource-quotas"
   - "tune-nccl-env-rdma-ethernet"
 ---
 

@@ -13,7 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "10 minutes"
 relatedRecipes:
-  - "kubernetes-cronjob-concurrencypolicy"
+  - "kubernetes-cronjob-concurrencypolicy-guide"
   - "argo-workflows-kubernetes"
   - "kubernetes-pod-lifecycle"
   - "kubernetes-pod-priority-preemption"

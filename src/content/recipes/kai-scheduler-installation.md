@@ -14,7 +14,7 @@ relatedRecipes:
   - "install-helm-amazon-linux"
   - "helm-sprig-cat-function"
   - "openshift-lifecycle-versions"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "kai-scheduler-queues"
   - "kai-scheduler-podgroups"
 tags:

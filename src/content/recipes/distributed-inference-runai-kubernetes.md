@@ -15,7 +15,7 @@ difficulty: "advanced"
 timeToComplete: "40 minutes"
 relatedRecipes:
   - "deploy-multinode-nim-models-kubernetes"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "kai-scheduler-podgroups"
   - "copy-nim-image-internal-quay-registry"
   - "openshift-serverless-knativeserving"

@@ -14,7 +14,7 @@ tags:
   - router
   - troubleshooting
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "node-drain-hostnetwork-ports"
   - "mcp-drain-pdb-workaround"
   - "pdb-allowed-disruptions-zero"

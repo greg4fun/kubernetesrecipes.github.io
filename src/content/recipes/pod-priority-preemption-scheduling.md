@@ -10,7 +10,7 @@ prerequisites:
   - "kubectl configured with cluster-admin privileges"
   - "Understanding of Kubernetes scheduling concepts"
 relatedRecipes:
-  - "pod-disruption-budgets"
+  - "pod-disruption-budget-config"
   - "resource-quotas"
   - "node-taints-tolerations"
   - "cronjob-concurrency-policy"

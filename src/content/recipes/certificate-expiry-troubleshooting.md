@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["certificates", "tls", "expiry", "kubeadm", "troubleshooting"]
 author: "Luca Berton"
 relatedRecipes:
-  - "cert-manager-certificates"
+  - "kubernetes-cert-manager-guide"
   - "kubelet-not-ready-troubleshooting"
 ---
 

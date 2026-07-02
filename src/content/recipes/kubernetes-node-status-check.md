@@ -9,7 +9,7 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["node", "status", "kubectl", "troubleshooting", "monitoring"]
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "kubernetes-oomkilled-troubleshooting"
   - taint-toleration-scheduling-issues
   - kubectl-logs-view-pod-logs

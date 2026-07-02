@@ -13,7 +13,7 @@ relatedRecipes:
   - "node-problem-detector"
   - "monitor-nccl-performance-prometheus"
   - "gpu-tenant-monitoring-chargeback"
-  - "prometheus-metrics-setup"
+  - "prometheus-monitoring-kubernetes-guide"
   - "alertmanager-setup"
   - "container-logging-patterns"
   - "grafana-kubernetes-dashboards"

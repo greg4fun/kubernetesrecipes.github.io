@@ -18,7 +18,7 @@ tags:
 relatedRecipes:
   - "deploy-multinode-nim-models-kubernetes"
   - "nim-model-profiles-selection-kubernetes"
-  - "custom-ca-openshift-kubernetes"
+  - "custom-ca-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Deploy KnativeServing with `enable-scale-to-zero: "true"`, enable all GPU-relevant pod spec features (affinity, tolerations, nodeSelector, securityContext, PVCs), configure Kourier as the ingress class, and set a `domainTemplate` for predictable inference endpoint URLs.

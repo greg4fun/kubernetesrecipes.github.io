@@ -15,7 +15,7 @@ relatedRecipes:
   - "openshift-catalogsource-custom-operator"
   - "openshift-cluster-wide-pull-secret"
   - "kyverno-policy-management"
-  - "container-security-scanning"
+  - "container-image-security-scanning-kubernetes"
   - "edr-flexera-kubernetes-agents"
 tags:
   - "catalogsource"

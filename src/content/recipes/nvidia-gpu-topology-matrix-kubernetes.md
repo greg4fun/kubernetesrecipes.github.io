@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nccl-topology-dump-tuning-kubernetes"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "nccl-pxn-cross-nic-nvlink-topology"
   - "kubernetes-topology-manager-gpu-numa"
 ---

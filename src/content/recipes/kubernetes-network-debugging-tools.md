@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-kubectl-exec-guide"
   - "kubernetes-dns-debugging-guide"
-  - "kubernetes-debug-container-ephemeral"
+  - "kubernetes-debug-pods"
   - "kubernetes-networkpolicy-zero-trust"
   - "nxdomain-dns-troubleshooting-kubernetes"
   - "kubernetes-coredns-troubleshooting"

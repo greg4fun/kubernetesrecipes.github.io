@@ -14,7 +14,7 @@ tags:
   - nodes
   - troubleshooting
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "debug-pod-eviction-reasons"
   - "openshift-node-cordon-uncordon"
 ---

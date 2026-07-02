@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "gpudirect-rdma-setup-verification-kubernetes"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "openshift-machineconfig-mcp-guide"
 ---
 

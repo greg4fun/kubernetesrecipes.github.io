@@ -18,7 +18,7 @@ relatedRecipes:
   - "kubernetes-kustomization-yaml-guide"
   - "pod-affinity-anti-affinity"
   - "taints-tolerations"
-  - "pod-priority-preemption"
+  - "kubernetes-pod-priority-preemption-scheduling"
 tags:
   - scheduler
   - scheduling-profiles

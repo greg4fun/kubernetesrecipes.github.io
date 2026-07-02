@@ -8,8 +8,8 @@ tags: ["nfd", "node-feature-discovery", "operator", "gpu", "hardware", "openshif
 author: "Luca Berton"
 relatedRecipes:
   - "install-helm-amazon-linux"
-  - "debug-crashloopbackoff"
-  - "nvidia-gpu-operator-setup"
+  - "crashloopbackoff-troubleshooting"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "gpu-operator-clusterpolicy-reference"
   - "openshift-crun-runc-runtime-differences"
 ---

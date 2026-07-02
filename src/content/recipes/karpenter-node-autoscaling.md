@@ -11,7 +11,7 @@ relatedRecipes:
   - "horizontal-pod-autoscaler"
   - "cluster-autoscaler"
   - "kubernetes-cost-optimization-strategies"
-  - "keda-event-driven-autoscaling"
+  - "kubernetes-keda-autoscaling-guide"
 ---
 
 > 💡 **Quick Answer:** Replace Cluster Autoscaler with Karpenter for faster, smarter node provisioning. Right-sized instances, spot fallback, consolidation, and GPU-aware scaling.

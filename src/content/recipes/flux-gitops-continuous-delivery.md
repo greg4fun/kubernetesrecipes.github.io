@@ -13,7 +13,7 @@ relatedRecipes:
   - "automate-nccl-preflight-ci"
   - "argocd-gitops"
   - "helm-chart-creation"
-  - "kustomize-configuration"
+  - "kubernetes-kustomize-configuration-management"
   - "argocd-gitops-deployment"
 tags:
   - gitops

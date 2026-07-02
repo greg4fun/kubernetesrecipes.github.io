@@ -17,7 +17,7 @@ tags:
 relatedRecipes:
   - "openshift-machineconfig-mcp-guide"
   - "openshift-scc-security-context-constraints"
-  - "custom-ca-openshift-kubernetes"
+  - "custom-ca-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Set `spec.disableAllDefaultSources: true` on the `OperatorHub` CR named `cluster` to disable all default catalog sources in an air-gapped OpenShift cluster. For selective disabling, use `spec.sources[]` with `disabled: true` per source.

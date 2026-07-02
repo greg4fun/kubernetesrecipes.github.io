@@ -6,7 +6,7 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
-  - "csi-drivers-storage"
+  - "kubernetes-csi-driver-guide"
   - "kubernetes-hostpath-vs-pvc"
 tags: ["local-storage", "persistent-volumes", "ssd", "performance", "storage"]
 ---

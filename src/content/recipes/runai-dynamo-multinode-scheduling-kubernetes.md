@@ -17,7 +17,7 @@ relatedRecipes:
   - "runai-nim-distributed-inference-tutorial"
   - "distributed-inference-runai-kubernetes"
   - "nim-multinode-deployment-helm-kubernetes"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
 ---
 
 > 💡 **Quick Answer:** NVIDIA Run:ai v2.23 integrates with Dynamo for gang scheduling (all-or-nothing pod launches) and topology-aware placement (co-locate prefill/decode workers in the same zone/rack). Annotate workloads with `kai.scheduler/topology-preferred-placement` and `kai.scheduler/topology` — Run:ai handles the rest automatically.

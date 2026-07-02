@@ -13,7 +13,7 @@ tags:
   - "rollback"
 relatedRecipes:
   - "kubernetes-argo-rollouts-guide"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "liveness-readiness-probes"
   - "gpu-upgrade-version-matrix"
   - "gpu-operator-clusterpolicy-reference"

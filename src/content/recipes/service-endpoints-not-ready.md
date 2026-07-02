@@ -14,7 +14,7 @@ tags:
   - networking
   - troubleshooting
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "network-policy-debug-connectivity"
   - "fix-kubernetes-certificate-errors"
 ---

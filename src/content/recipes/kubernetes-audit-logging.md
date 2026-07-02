@@ -8,7 +8,7 @@ author: "Luca Berton"
 tags: ["audit", "logging", "security", "compliance", "api-server"]
 relatedRecipes:
   - "rhacs-multi-cluster-management"
-  - "kubernetes-runtimeclass"
+  - "kubernetes-gvisor-kata-containers-runtimeclass"
   - "openclaw-networkpolicy-security"
 ---
 

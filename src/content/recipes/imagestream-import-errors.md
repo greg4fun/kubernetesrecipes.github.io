@@ -14,7 +14,7 @@ tags:
   - registry
   - troubleshooting
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "openshift-buildconfig-imagestream"
   - "openshift-idms-install-config"
   - "itms-external-registry-mapping"

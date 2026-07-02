@@ -14,7 +14,7 @@ tags:
   - "metrics"
   - "performance"
 relatedRecipes:
-  - "keda-event-driven-autoscaling"
+  - "kubernetes-keda-autoscaling-guide"
   - "kubernetes-resource-quotas-limitranges"
   - "kubernetes-horizontal-scaling-patterns"
 ---

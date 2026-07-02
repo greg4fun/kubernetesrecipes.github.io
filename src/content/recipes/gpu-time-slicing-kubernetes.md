@@ -15,7 +15,7 @@ tags:
   - kubernetes
   - cost-optimization
 relatedRecipes:
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "kai-scheduler-gpu-sharing"
   - "gpu-operator-clusterpolicy-reference"
   - "kubernetes-cost-optimization"

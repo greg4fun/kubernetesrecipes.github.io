@@ -13,7 +13,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "15 minutes"
 relatedRecipes:
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "cilium-clustermesh-multicluster"
 ---
 

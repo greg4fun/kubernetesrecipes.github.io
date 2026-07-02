@@ -16,7 +16,7 @@ tags:
   - rhcos
 relatedRecipes:
   - "openshift-lifecycle-versions"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "machineconfig-kernel-parameters"
   - "machineconfig-chrony-ntp"
   - "fio-nfs-benchmark-openshift"

@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-etcd-performance-tuning"
   - "kubernetes-container-runtime-comparison"
-  - "kubernetes-runtimeclass"
+  - "kubernetes-gvisor-kata-containers-runtimeclass"
 ---
 
 > 💡 **Quick Answer:** Use crun for faster container startup (50% faster cold start) and lower memory usage (10x less RSS). Use runc for maximum compatibility and when running on cgroup v1. Both are OCI-compliant — switching is a one-line config change in containerd or CRI-O.

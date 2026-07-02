@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["jobs", "cronjob", "backoff", "retry", "troubleshooting"]
 author: "Luca Berton"
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "cronjob-concurrency-policy"
   - "fix-kubernetes-certificate-errors"
 ---

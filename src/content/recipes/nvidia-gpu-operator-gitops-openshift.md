@@ -12,7 +12,6 @@ publishDate: "2026-05-05"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "nvidia-gpu-operator-setup"
   - "runai-observability-opentelemetry-openshift"
   - "openshift-nvidia-mig-reconfiguration"
   - "nvidia-gpu-feature-discovery-kubernetes"

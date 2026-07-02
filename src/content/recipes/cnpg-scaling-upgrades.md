@@ -14,7 +14,7 @@ tags:
 relatedRecipes:
   - "cnpg-postgresql-operator"
   - "cnpg-disaster-recovery"
-  - "pod-disruption-budgets"
+  - "pod-disruption-budget-config"
   - "deployment-strategies"
   - "horizontal-pod-autoscaler"
 ---

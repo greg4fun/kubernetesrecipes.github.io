@@ -14,7 +14,7 @@ relatedRecipes:
   - "llm-autoscaling-kubernetes"
   - "cluster-autoscaler"
   - "hpa-custom-metrics"
-  - "keda-event-driven-autoscaling"
+  - "kubernetes-keda-autoscaling-guide"
   - "kubernetes-resource-optimization"
   - "kubernetes-resource-optimization-strategies"
 tags:

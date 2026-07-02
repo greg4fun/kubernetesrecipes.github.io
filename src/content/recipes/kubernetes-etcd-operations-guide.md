@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["etcd", "backup", "restore", "disaster-recovery", "maintenance", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-backup-restore"
+  - "kubernetes-velero-backup-restore"
   - "kubernetes-disaster-recovery-plan"
   - "clusterpolicy-mofed-upgrade"
   - "kubectl-cheat-sheet"

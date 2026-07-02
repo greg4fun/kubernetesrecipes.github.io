@@ -14,7 +14,7 @@ tags:
   - resource-management
 relatedRecipes:
   - "kubernetes-resource-requests-limits"
-  - "resource-quotas-namespace"
+  - "resource-quotas"
   - "kubernetes-resource-limits-cpu-memory-format"
 ---
 

@@ -15,13 +15,13 @@ tags:
   - "scanning"
 relatedRecipes:
   - "install-helm-amazon-linux"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "openshift-acs-kubernetes"
   - "rhacs-custom-security-policies"
   - "openshift-buildconfig-imagestream"
   - "openshift-buildconfig-quay"
   - "argocd-declarative-application-setup"
-  - "container-security-scanning"
+  - "container-image-security-scanning-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Use `roxctl image check` to validate images against RHACS deploy-time policies and `roxctl image scan` for vulnerability reports in any CI/CD pipeline. Create an API token with `Continuous Integration` role, then add roxctl steps to Jenkins, GitLab CI, GitHub Actions, or Tekton pipelines.

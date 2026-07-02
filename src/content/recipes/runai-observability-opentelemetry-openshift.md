@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "runai-distributed-training-openshift"
   - "kubernetes-opentelemetry-collector"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "kubernetes-prometheus-monitoring-guide"
   - "thanos-receive-memory-sizing"
 ---

@@ -8,7 +8,6 @@ author: "Luca Berton"
 tags: ["jaeger", "tracing", "observability", "opentelemetry", "debugging"]
 relatedRecipes:
   - "monitor-nccl-performance-prometheus"
-  - "distributed-tracing-jaeger"
   - "alertmanager-setup"
 ---
 

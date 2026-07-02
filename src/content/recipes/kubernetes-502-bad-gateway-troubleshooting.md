@@ -14,7 +14,7 @@ tags:
   - "nginx"
 relatedRecipes:
   - "kubernetes-ingress-tls-cert-manager"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Check three things: (1) backend pods are Running and Ready (`kubectl get pods`), (2) Service selector matches pod labels (`kubectl get endpoints`), (3) Ingress backend service name and port are correct. 90% of 502s are caused by empty endpoints — the Service has no matching pods.

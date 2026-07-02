@@ -16,7 +16,7 @@ relatedRecipes:
   - "cilium-service-mesh-kubernetes"
   - "kubernetes-networkpolicy-default-deny"
   - "kubernetes-service-mesh-comparison"
-  - "distributed-tracing-jaeger"
+  - "jaeger-distributed-tracing"
   - "grafana-kubernetes-dashboards"
 ---
 

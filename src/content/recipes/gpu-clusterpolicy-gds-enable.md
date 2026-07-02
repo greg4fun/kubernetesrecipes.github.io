@@ -16,7 +16,7 @@ tags:
   - ai
 relatedRecipes:
   - "gpu-operator-gds-module"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "gpu-operator-clusterpolicy-reference"
   - "gds-nvme-nfs-rdma"
 ---

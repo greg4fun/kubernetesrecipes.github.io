@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-deployment-rolling-update"
   - "kubernetes-endpoint-slices-discovery"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "kubernetes-graceful-shutdown-guide"
 ---
 

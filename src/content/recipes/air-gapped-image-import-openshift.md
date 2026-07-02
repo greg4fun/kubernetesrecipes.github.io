@@ -8,7 +8,7 @@ tags: ["air-gapped", "disconnected", "podman", "registry", "openshift", "image-i
 author: "Luca Berton"
 relatedRecipes:
   - "podman-tls-x509-corporate-proxy"
-  - "custom-ca-openshift-kubernetes"
+  - "custom-ca-kubernetes"
 ---
 
 > 💡 **Quick Answer:** When your OpenShift cluster can't reach external registries (DNS blocked, TLS intercepted, air-gapped), use `podman save` on an internet-connected machine to create a tarball, transfer it to the internal network, `podman load` it, then `podman push` to your internal registry. Nodes pull from there.

@@ -15,7 +15,7 @@ tags:
   - "runtime"
 relatedRecipes:
   - "networkpolicy-deny-default-gpu"
-  - "container-security-scanning"
+  - "container-image-security-scanning-kubernetes"
   - "multi-tenant-gpu-namespace-isolation"
   - "resourcequota-limitrange-gpu"
 ---

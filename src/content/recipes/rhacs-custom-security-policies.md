@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-opa-gatekeeper-policies"
   - "kubernetes-rbac-audit-guide"
   - "openshift-acs-kubernetes"
-  - "container-security-scanning"
+  - "container-image-security-scanning-kubernetes"
   - "networkpolicy-deny-default-gpu"
   - "multi-tenant-gpu-namespace-isolation"
 ---

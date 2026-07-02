@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "openshift-sriov-rdma-infiniband-device-plugin"
   - "openshift-machineconfig-mcp-guide"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
 ---
 
 > 💡 **Quick Answer:** The kernel error `not enough MMIO resources for SR-IOV` (`pci_enable_sriov failed: -12 / ENOMEM`) means the node's BIOS doesn't allocate enough PCIe MMIO/BAR address space for Virtual Functions. Fix by enabling "Above 4G Decoding" and increasing MMIO allocation in BIOS, then cold reboot.

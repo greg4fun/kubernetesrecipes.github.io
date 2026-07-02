@@ -13,7 +13,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "nim-model-profiles-selection-kubernetes"
   - "rebuild-nim-custom-model-kubernetes"
   - "deploy-multinode-nim-models-kubernetes"

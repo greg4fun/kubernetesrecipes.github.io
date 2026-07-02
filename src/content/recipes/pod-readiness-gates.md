@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "istio-traffic-management"
   - "liveness-readiness-probes"
-  - "pod-disruption-budgets"
+  - "pod-disruption-budget-config"
   - "rolling-update-deployment"
 tags:
   - readiness-gates

@@ -10,7 +10,7 @@ prerequisites:
   - "kubectl access to read pod logs"
   - "Basic understanding of TensorRT-LLM"
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "deploy-mistral-nvidia-nim"
   - "deploy-mistral-vllm-kubernetes"
   - "test-llm-inference-endpoints"

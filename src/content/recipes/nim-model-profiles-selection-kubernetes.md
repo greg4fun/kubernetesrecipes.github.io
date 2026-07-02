@@ -14,7 +14,7 @@ difficulty: "intermediate"
 timeToComplete: "25 minutes"
 relatedRecipes:
   - "deploy-multinode-nim-models-kubernetes"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "runai-nim-distributed-inference-tutorial"
   - "copy-nim-image-internal-quay-registry"
 ---

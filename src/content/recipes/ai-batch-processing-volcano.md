@@ -13,7 +13,7 @@ relatedRecipes:
   - "install-helm-amazon-linux"
   - "helm-sprig-cat-function"
   - "openshift-lifecycle-versions"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "distributed-inference-kubernetes"
   - "dell-poweredge-xe7740-gpu-setup"
   - "aiperf-multi-model-benchmark"

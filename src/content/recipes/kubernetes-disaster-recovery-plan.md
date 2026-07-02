@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["disaster-recovery", "backup", "velero", "etcd", "rto-rpo", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-backup-restore"
+  - "kubernetes-velero-backup-restore"
   - "kubernetes-etcd-operations-guide"
   - "kubectl-cheat-sheet"
   - "kubernetes-affinity-guide"

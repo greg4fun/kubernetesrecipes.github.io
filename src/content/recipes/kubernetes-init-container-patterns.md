@@ -14,7 +14,7 @@ tags:
   - migration
 relatedRecipes:
   - "kubernetes-multi-container-patterns"
-  - "custom-ca-openshift-kubernetes"
+  - "custom-ca-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Init containers run sequentially before app containers start. Use them for: waiting on dependencies (`wait-for-db`), running database migrations, fetching certificates/configs, and setting file permissions on shared volumes.

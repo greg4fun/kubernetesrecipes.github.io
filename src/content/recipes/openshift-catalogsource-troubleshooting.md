@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "openshift-catalogsource-custom-operator"
   - "openshift-catalogsource-filtering"
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "debug-imagepullbackoff"
   - "oc-mirror-troubleshooting-disconnected"
   - "selinux-ssh-login-failure-troubleshooting"

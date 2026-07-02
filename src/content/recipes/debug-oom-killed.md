@@ -6,7 +6,7 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "debug-imagepullbackoff"
 tags: ["oomkilled", "oom", "memory", "troubleshooting", "debugging", "resources", "exit-code-137", "memory-limits"]
 ---

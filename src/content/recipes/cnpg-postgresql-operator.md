@@ -14,7 +14,7 @@ tags:
 relatedRecipes:
   - "velero-backup-disaster-recovery"
   - "horizontal-pod-autoscaler"
-  - "pod-disruption-budgets"
+  - "pod-disruption-budget-config"
   - "openclaw-persistent-storage"
 ---
 

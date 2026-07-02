@@ -17,7 +17,7 @@ relatedRecipes:
   - "distributed-inference-runai-kubernetes"
   - "deploy-multinode-nim-models-kubernetes"
   - "copy-nim-image-internal-quay-registry"
-  - "nvidia-gpu-operator-setup"
+  - "nvidia-gpu-operator-gitops-openshift"
   - "nvidia-open-gpu-dma-buf-gpudirect-rdma-doca-sriov"
   - "kai-scheduler-podgroups"
 ---

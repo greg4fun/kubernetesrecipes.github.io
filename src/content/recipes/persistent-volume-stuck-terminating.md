@@ -14,7 +14,7 @@ tags:
   - finalizer
   - storage
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "namespace-stuck-terminating"
   - "openclaw-pvc-state-management"
 ---

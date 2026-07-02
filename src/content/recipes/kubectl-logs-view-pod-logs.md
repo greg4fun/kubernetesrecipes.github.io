@@ -9,7 +9,7 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["kubectl", "logs", "debugging", "troubleshooting", "observability"]
 relatedRecipes:
-  - "debug-crashloopbackoff"
+  - "crashloopbackoff-troubleshooting"
   - "kubernetes-oomkilled-troubleshooting"
   - kubernetes-exec-into-pod
   - kubectl-cp-copy-files-pods
