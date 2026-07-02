@@ -19,6 +19,7 @@ relatedRecipes:
   - "speculative-decoding-vllm-kubernetes"
   - "prefix-caching-vllm-kubernetes"
   - "quantize-llm-awq-gptq-kubernetes"
+  - "mistral-fsdp-lora-accelerate-config"
 ---
 
 > 💡 **Quick Answer:** Serve multiple LoRA adapters with a single vLLM base model on Kubernetes. Dynamic loading, per-request routing, and multi-tenant fine-tuned models.
