@@ -15,7 +15,7 @@ timeToComplete: "20 minutes"
 relatedRecipes:
   - "kubernetes-cert-expiration-management"
   - "cilium-service-mesh-kubernetes"
-  - "istio-traffic-management"
+  - "kubernetes-istio-traffic-management"
   - "confidential-computing-kubernetes"
 ---
 

@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-monitoring-prometheus"
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "openclaw-ha-kubernetes"
 ---
 

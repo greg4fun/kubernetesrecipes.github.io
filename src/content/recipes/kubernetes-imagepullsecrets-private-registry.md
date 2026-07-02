@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubectl-create-secret-docker-registry"
   - "kubernetes-imagepullsecrets-guide"
   - "kubernetes-docker-registry-secret"
-  - "kubernetes-imagepullbackoff-troubleshooting"
+  - "imagepullbackoff-troubleshooting"
   - "kubernetes-service-accounts-tokens"
   - "kubernetes-secrets-management-guide"
   - "containerd-certs-d-registry-ca-trust"

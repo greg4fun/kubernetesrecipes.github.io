@@ -213,6 +213,33 @@ grep '"verb":"delete"' /var/log/kubernetes/audit.log | \
   jq '{user: .user.username, resource: .objectRef.resource, name: .objectRef.name}'
 ```
 
+### Aggregate Analysis and Runtime Detection
+
+Single-event greps find one thing; aggregation surfaces patterns you weren't specifically looking for:
+
+```bash
+# Most active users/verbs/resources — a sudden spike is worth investigating
+cat audit.log | jq -r '.user.username' | sort | uniq -c | sort -rn
+cat audit.log | jq -r '.verb' | sort | uniq -c | sort -rn
+
+# Repeated auth failures from one source — brute force / credential stuffing signal
+cat audit.log | jq 'select(.responseStatus.code == 401)' | jq -r '.sourceIPs[0]' | sort | uniq -c | sort -rn
+
+# Access at unusual hours (adjust the timestamp prefix to your off-hours window)
+cat audit.log | jq 'select(.stageTimestamp | startswith("2026-05-02T03"))'
+```
+
+For real-time detection instead of after-the-fact log analysis, Falco watches the same events as they happen:
+
+```yaml
+# falco-rules.yaml
+- rule: Detect kubectl exec
+  desc: Detect kubectl exec commands
+  condition: spawned_process and container and proc.name in (kubectl) and proc.cmdline contains "exec"
+  output: "kubectl exec detected (user=%user.name command=%proc.cmdline)"
+  priority: WARNING
+```
+
 ## Common Issues
 
 **kube-apiserver won't start after adding audit flags**

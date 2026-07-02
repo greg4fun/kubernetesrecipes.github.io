@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["statefulset", "stateful", "storage", "databases", "persistence"]
 relatedRecipes:
-  - "blue-green-deployment"
+  - "kubernetes-blue-green-deployment"
   - "argocd-presync-postsync-hooks"
   - "pod-topology-constraints"
 ---

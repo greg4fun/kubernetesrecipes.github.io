@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-kustomize-overlays"
-  - "argocd-gitops-deployment"
+  - "argocd-gitops"
   - "argocd-declarative-application-setup"
 ---
 

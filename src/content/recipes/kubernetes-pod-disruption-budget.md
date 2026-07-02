@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-deployment-rolling-update"
   - "kubernetes-graceful-shutdown-guide"
-  - "cluster-autoscaler"
+  - "cluster-autoscaler-setup"
   - "kubernetes-node-affinity-guide"
   - "kubernetes-priority-preemption-guide"
 ---

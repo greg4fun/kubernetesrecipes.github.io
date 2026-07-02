@@ -15,7 +15,7 @@ tags:
   - "cka"
 relatedRecipes:
   - "kubernetes-graceful-shutdown-guide"
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "kubectl-apply-vs-create"
   - "kubernetes-pod-lifecycle-termination"
 ---

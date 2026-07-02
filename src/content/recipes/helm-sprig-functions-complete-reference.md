@@ -12,7 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "helm-hooks"
+  - "helm-hooks-lifecycle-guide"
   - "helm-chart-development-guide"
   - "kustomize-vs-helm-comparison"
 ---

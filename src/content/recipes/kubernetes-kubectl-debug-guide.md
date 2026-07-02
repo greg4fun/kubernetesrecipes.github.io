@@ -14,7 +14,7 @@ tags:
   - "troubleshooting"
   - "cka"
 relatedRecipes:
-  - "ephemeral-containers-debugging"
+  - "kubernetes-debug-pods"
   - "kubectl-exec-into-pod"
   - "kubectl-describe-pod-events"
   - "debug-pod-networking"

@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "confidential-computing-kubernetes"
   - "kubernetes-admission-controllers-guide"
-  - "kubernetes-audit-logging"
+  - "kubernetes-audit-logging-guide"
   - "kubernetes-multi-tenancy"
 ---
 

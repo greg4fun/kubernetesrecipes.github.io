@@ -9,7 +9,7 @@ tags: ["lifecycle", "hooks", "preStop", "postStart", "graceful-shutdown"]
 relatedRecipes:
   - "cnpg-scaling-upgrades"
   - "argocd-declarative-application-setup"
-  - "kubernetes-probes-configuration"
+  - "kubernetes-readiness-liveness-startup"
 ---
 
 > 💡 **Quick Answer:** Two hooks: **postStart** (runs after container starts, parallel to entrypoint) and **preStop** (runs before SIGTERM on shutdown). Use `exec.command` or `httpGet`. PreStop is critical for graceful shutdown—drain connections before termination.

@@ -133,6 +133,55 @@ ETCDCTL_API=3 etcdctl snapshot restore /backup/etcd-snapshot.db \
 # Restart kubelet
 ```
 
+### Verify a Backup Is Actually Restorable
+
+Don't trust a backup you haven't test-restored — a 0-byte or truncated snapshot still "succeeds" silently in some failure modes:
+
+```bash
+#!/bin/bash
+# verify-etcd-backup.sh <snapshot-file>
+SNAPSHOT=$1
+TEMP_DIR=$(mktemp -d)
+
+ETCDCTL_API=3 etcdctl snapshot status "$SNAPSHOT" --write-out=table
+
+ETCDCTL_API=3 etcdctl snapshot restore "$SNAPSHOT" \
+  --data-dir="${TEMP_DIR}/etcd" \
+  --name=test-restore \
+  --initial-cluster=test-restore=http://localhost:2380 \
+  --initial-cluster-token=test-token \
+  --initial-advertise-peer-urls=http://localhost:2380
+
+if [ $? -eq 0 ]; then
+  echo "✓ Snapshot is valid and restorable"
+else
+  echo "✗ Snapshot verification failed"
+fi
+rm -rf "$TEMP_DIR"
+```
+
+### Alert on etcd Health Before It Becomes a DR Event
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: etcd-alerts
+  namespace: monitoring
+spec:
+  groups:
+    - name: etcd
+      rules:
+        - alert: EtcdNoLeader
+          expr: etcd_server_has_leader == 0
+          for: 1m
+          labels: {severity: critical}
+        - alert: EtcdDatabaseQuotaLow
+          expr: (etcd_mvcc_db_total_size_in_bytes / etcd_server_quota_backend_bytes) * 100 > 80
+          for: 5m
+          labels: {severity: warning}
+```
+
 ## Common Issues
 
 **Backup file is 0 bytes**

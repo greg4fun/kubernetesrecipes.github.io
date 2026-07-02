@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-csi-driver-guide"
-  - "local-persistent-volumes"
+  - "kubernetes-local-persistent-volumes"
   - "statefulset-mysql"
 tags: ["storage", "pv", "pvc", "storageclass", "provisioning"]
 ---

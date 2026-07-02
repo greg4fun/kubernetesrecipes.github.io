@@ -12,7 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "argocd-gitops-deployment"
+  - "argocd-gitops"
   - "kustomize-vs-helm-comparison"
 ---
 
@@ -227,6 +227,47 @@ kubectl get databases -A
 # Debug resource
 kubectl describe instance.rds.aws my-app-database
 ```
+
+### Multi-Cloud Compositions
+
+The same XRD can back Compositions for different providers — teams request a `Database` claim without knowing (or caring) which cloud it lands on:
+
+```yaml
+# GCP Composition for the same XDatabase XRD used above
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: database-gcp
+  labels:
+    provider: gcp
+spec:
+  compositeTypeRef:
+    apiVersion: platform.example.com/v1alpha1
+    kind: XDatabase
+  resources:
+    - name: cloudsql-instance
+      base:
+        apiVersion: sql.gcp.upbound.io/v1beta1
+        kind: DatabaseInstance
+        spec:
+          forProvider:
+            region: us-central1
+            databaseVersion: POSTGRES_15
+            settings:
+              - tier: db-f1-micro
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.size
+          toFieldPath: spec.forProvider.settings[0].tier
+          transforms:
+            - type: map
+              map:
+                small: db-f1-micro
+                medium: db-n1-standard-2
+                large: db-n1-standard-8
+```
+
+Select which cloud a claim lands on with `compositionSelector` label matching (`provider: aws` vs `provider: gcp`), or leave it unset and let Crossplane pick any matching Composition.
 
 ## Common Issues
 

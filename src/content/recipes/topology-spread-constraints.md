@@ -12,7 +12,7 @@ relatedRecipes:
   - "mutagen-kubernetes-file-sync"
   - "multi-cluster-management-kubernetes"
   - "kubevirt-virtual-machines"
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "quay-robot-account-kubernetes"
   - "argocd-multi-cluster-app-of-apps"
   - "argocd-sync-waves-ordering"

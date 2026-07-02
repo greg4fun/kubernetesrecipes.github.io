@@ -10,7 +10,7 @@ prerequisites:
   - "kubectl configured to access your cluster"
   - "Basic understanding of Deployments"
 relatedRecipes:
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "horizontal-pod-autoscaler"
 tags:
   - deployment

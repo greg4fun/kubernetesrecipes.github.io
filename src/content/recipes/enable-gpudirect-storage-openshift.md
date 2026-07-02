@@ -25,7 +25,7 @@ relatedRecipes:
   - "troubleshoot-nvidia-fs-module-conflict"
   - "kubernetes-csi-driver-guide"
   - "selinux-scc-gpu-operator-openshift"
-  - "local-persistent-volumes"
+  - "kubernetes-local-persistent-volumes"
   - "statefulset-mysql"
 tags:
   - nvidia

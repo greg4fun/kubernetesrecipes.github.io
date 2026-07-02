@@ -14,7 +14,7 @@ difficulty: "advanced"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "agentic-ai-multiagent-kubernetes"
-  - "argocd-gitops-deployment"
+  - "argocd-gitops"
   - "kubernetes-ephemeral-containers-debug"
 ---
 

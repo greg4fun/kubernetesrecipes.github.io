@@ -13,7 +13,7 @@ prerequisites:
 relatedRecipes:
   - "preemptive-cybersecurity-kubernetes"
   - "custom-ca-kubernetes"
-  - "etcd-backup-restore"
+  - "etcd-backup-restore-kubernetes"
 tags:
   - certificates
   - ca

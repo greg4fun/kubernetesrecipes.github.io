@@ -15,8 +15,8 @@ timeToComplete: "25 minutes"
 relatedRecipes:
   - "kubernetes-network-observability-cilium-hubble"
   - "kubernetes-cni-comparison-guide"
-  - "linkerd-service-mesh"
-  - "istio-traffic-management"
+  - "linkerd-service-mesh-mtls-kubernetes"
+  - "kubernetes-istio-traffic-management"
   - "kubernetes-networkpolicy-default-deny"
   - "kubernetes-gateway-api"
 ---

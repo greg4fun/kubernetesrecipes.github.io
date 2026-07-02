@@ -14,7 +14,6 @@ relatedRecipes:
   - "argocd-gitops"
   - "helm-chart-creation"
   - "kubernetes-kustomize-configuration-management"
-  - "argocd-gitops-deployment"
 tags:
   - gitops
   - flux

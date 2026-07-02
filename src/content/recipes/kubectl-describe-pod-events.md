@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubectl-get-pods-examples"
   - "debug-scheduling-failures"
   - "imagepullbackoff-troubleshooting"
-  - "debug-oom-killed"
+  - "kubernetes-oomkilled-troubleshooting"
   - "kubectl-exec-into-pod"
   - "kubernetes-kubectl-debug-guide"
 ---

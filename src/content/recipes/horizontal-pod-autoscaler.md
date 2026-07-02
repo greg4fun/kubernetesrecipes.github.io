@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "vertical-pod-autoscaler"
   - "llm-autoscaling-kubernetes"
-  - "cluster-autoscaler"
+  - "cluster-autoscaler-setup"
   - "hpa-custom-metrics"
   - "kubernetes-keda-autoscaling-guide"
   - "kubernetes-resource-optimization"

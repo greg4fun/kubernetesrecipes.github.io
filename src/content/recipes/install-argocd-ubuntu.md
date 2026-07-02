@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["argocd", "gitops", "installation", "ubuntu", "continuous-delivery"]
 author: "Luca Berton"
 relatedRecipes:
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "install-kubernetes-ubuntu"
   - "install-helm-ubuntu"
   - "argocd-sync-waves-ordering"

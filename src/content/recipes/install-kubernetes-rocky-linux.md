@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["kubernetes", "installation", "rocky-linux", "kubeadm", "containerd"]
 author: "Luca Berton"
 relatedRecipes:
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "install-helm-rocky-linux"
   - "install-argocd-rocky-linux"
   - "kubernetes-debugging-toolkit"

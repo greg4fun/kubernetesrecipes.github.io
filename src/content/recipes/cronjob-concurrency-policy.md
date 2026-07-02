@@ -11,7 +11,7 @@ prerequisites:
   - "Basic understanding of CronJobs"
 relatedRecipes:
   - "crashloopbackoff-troubleshooting"
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "jobs-cronjobs"
   - "pod-priority-preemption-scheduling"
 tags:

@@ -15,7 +15,7 @@ relatedRecipes:
   - "kubernetes-emptydir-hostpath-volumes"
   - "kubernetes-persistent-volume"
   - "pvc-storageclass-examples"
-  - "init-containers"
+  - "kubernetes-init-containers"
 ---
 
 > 💡 **Quick Answer:** `emptyDir` creates a fresh empty directory when a Pod starts. It's shared across all containers in the Pod, survives container restarts, but is **deleted permanently when the Pod is removed from the node**. Use `medium: Memory` for RAM-backed tmpfs when you need ultra-fast ephemeral storage.

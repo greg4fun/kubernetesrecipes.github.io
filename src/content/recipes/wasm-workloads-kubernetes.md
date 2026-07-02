@@ -15,7 +15,7 @@ relatedRecipes:
   - "cloudnativepg-postgresql-kubernetes"
   - "build-kubernetes-operator-docker-testing"
   - "openshift-crun-runc-runtime-differences"
-  - "cluster-autoscaler"
+  - "cluster-autoscaler-setup"
 ---
 
 > 💡 **Quick Answer:** Deploy WASM workloads on Kubernetes using SpinKube and containerd-shim. Sub-millisecond cold starts, polyglot runtimes, and sandboxed edge computing.

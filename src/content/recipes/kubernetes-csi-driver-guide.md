@@ -15,7 +15,7 @@ tags:
   - "drivers"
 relatedRecipes:
   - "kubernetes-persistent-volume-guide"
-  - "local-persistent-volumes"
+  - "kubernetes-local-persistent-volumes"
   - "troubleshooting-pending-pvc"
 ---
 

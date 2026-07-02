@@ -14,7 +14,7 @@ difficulty: "advanced"
 timeToComplete: "30 minutes"
 relatedRecipes:
   - "cluster-api-infrastructure-as-code"
-  - "argocd-gitops-deployment"
+  - "argocd-gitops"
   - "flux-gitops-continuous-delivery"
 ---
 

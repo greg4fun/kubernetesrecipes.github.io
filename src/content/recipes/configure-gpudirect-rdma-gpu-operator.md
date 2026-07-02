@@ -36,7 +36,7 @@ relatedRecipes:
   - "coredns-configuration"
   - "custom-dns-configuration"
   - "dns-policies-configuration"
-  - "istio-traffic-management"
+  - "kubernetes-istio-traffic-management"
   - "kubernetes-dns-configuration"
 tags:
   - nvidia

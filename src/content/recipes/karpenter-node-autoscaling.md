@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "vertical-pod-autoscaler"
   - "horizontal-pod-autoscaler"
-  - "cluster-autoscaler"
+  - "cluster-autoscaler-setup"
   - "kubernetes-cost-optimization-strategies"
   - "kubernetes-keda-autoscaling-guide"
 ---

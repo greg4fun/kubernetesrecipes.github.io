@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["leases", "leader-election", "coordination", "high-availability", "distributed"]
 relatedRecipes:
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "openclaw-kubernetes-deployment"
   - "pod-disruption-budget-config"
   - "openclaw-telegram-bot-kubernetes"

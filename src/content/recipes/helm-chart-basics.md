@@ -13,8 +13,8 @@ relatedRecipes:
   - "rolling-update-deployment"
   - "openclaw-signal-kubernetes"
   - "helm-chart-repositories"
-  - "helm-dependencies"
-  - "helm-hooks"
+  - "helm-chart-dependencies-guide"
+  - "helm-hooks-lifecycle-guide"
   - "helm-templating-sprig"
   - "helm-install-chart-guide"
 tags:

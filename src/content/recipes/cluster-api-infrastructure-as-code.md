@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["cluster-api", "capi", "infrastructure", "multi-cloud", "lifecycle", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "argocd-sync-waves-ordering"
 ---
 

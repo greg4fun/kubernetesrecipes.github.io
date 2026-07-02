@@ -15,7 +15,7 @@ tags:
   - "cka"
 relatedRecipes:
   - "environment-variables-configmaps"
-  - "downward-api-metadata"
+  - "kubernetes-downward-api-guide"
   - "kubernetes-secrets-management-guide"
   - "kustomize-vs-helm-comparison"
   - "kubernetes-resource-quota-limitrange"

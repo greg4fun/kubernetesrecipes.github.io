@@ -14,7 +14,7 @@ tags:
   - "cka"
   - "pods"
 relatedRecipes:
-  - "ephemeral-containers-debugging"
+  - "kubernetes-debug-pods"
   - "kubectl-describe-pod-events"
   - "kubectl-get-pods-examples"
   - "kubernetes-kubectl-debug-guide"

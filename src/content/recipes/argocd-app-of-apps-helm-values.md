@@ -11,8 +11,8 @@ prerequisites:
   - "Helm chart repository"
 relatedRecipes:
   - "helm-templating-sprig"
-  - "helm-hooks"
-  - "helm-dependencies"
+  - "helm-hooks-lifecycle-guide"
+  - "helm-chart-dependencies-guide"
   - "argocd-app-of-apps-pattern"
   - "argocd-declarative-application-setup"
   - "argocd-multi-cluster-app-of-apps"

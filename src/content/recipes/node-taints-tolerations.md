@@ -8,7 +8,7 @@ author: "Luca Berton"
 tags: ["taints", "tolerations", "scheduling", "dedicated-nodes", "workloads"]
 relatedRecipes:
   - "machineconfig-chrony-ntp"
-  - "downward-api-metadata"
+  - "kubernetes-downward-api-guide"
   - "machineconfig-annotation-inspection"
 ---
 

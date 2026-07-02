@@ -15,7 +15,7 @@ relatedRecipes:
   - "deploy-mistral-vllm-kubernetes"
   - "deploy-mistral-nvidia-nim"
   - "nvidia-gpu-operator-install"
-  - "cluster-autoscaler"
+  - "cluster-autoscaler-setup"
   - "llm-serving-frameworks-compared"
 tags:
   - autoscaling

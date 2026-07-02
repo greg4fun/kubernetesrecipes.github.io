@@ -14,7 +14,7 @@ relatedRecipes:
   - "deploy-mistral-vllm-kubernetes"
   - "deploy-mistral-nvidia-nim"
   - "nvidia-gpu-operator-install"
-  - "kai-scheduler-topology-aware"
+  - "kubernetes-1-36-topology-aware-scheduling"
   - "llm-autoscaling-kubernetes"
 tags:
   - multi-gpu

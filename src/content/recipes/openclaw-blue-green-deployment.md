@@ -12,10 +12,10 @@ tags:
   - "deployment-strategy"
   - "rollback"
 relatedRecipes:
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "openclaw-ha-kubernetes"
   - "openclaw-kubernetes-deployment"
-  - "blue-green-deployment"
+  - "kubernetes-blue-green-deployment"
   - "deployment-strategies"
   - "canary-deployments"
 ---

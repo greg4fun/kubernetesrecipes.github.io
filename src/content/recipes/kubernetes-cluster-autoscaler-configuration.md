@@ -12,7 +12,6 @@ relatedRecipes:
   - "kubernetes-hpa-cpu-memory-guide"
   - "kubernetes-cluster-autoscaler-guide"
   - cluster-autoscaler-setup
-  - cluster-autoscaler
   - kubernetes-hpa-custom-metrics-prometheus
 ---
 

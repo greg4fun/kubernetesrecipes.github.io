@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-workspace-gitops"
-  - "argocd-gitops-deployment"
+  - "argocd-gitops"
   - "openclaw-ha-kubernetes"
 ---
 

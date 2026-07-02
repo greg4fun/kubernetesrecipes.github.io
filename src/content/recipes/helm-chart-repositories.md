@@ -6,7 +6,7 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
-  - "helm-dependencies"
+  - "helm-chart-dependencies-guide"
   - "helm-chart-basics"
   - "helm-templating-sprig"
 tags: ["helm", "repository", "charts", "packaging", "distribution"]

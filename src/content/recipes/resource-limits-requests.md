@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
   - "vertical-pod-autoscaler"
-  - "debug-oom-killed"
+  - "kubernetes-oomkilled-troubleshooting"
   - "horizontal-pod-autoscaler"
 tags: ["resources", "limits", "requests", "qos", "capacity-planning"]
 ---

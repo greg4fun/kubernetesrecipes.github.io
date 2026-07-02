@@ -13,7 +13,7 @@ tags:
 difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "kubernetes-rolling-update-zero-downtime"
   - "kubernetes-init-containers-guide"
   - "crashloopbackoff-troubleshooting"

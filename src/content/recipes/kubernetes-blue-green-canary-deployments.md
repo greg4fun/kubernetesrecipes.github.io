@@ -14,7 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-rolling-update-strategies"
   - "kubernetes-graceful-shutdown-pod-termination"
-  - "argocd-gitops-deployment"
+  - "argocd-gitops"
 ---
 
 > 💡 **Quick Answer:** **Blue-Green**: run two identical environments (blue=current, green=new), switch traffic instantly by updating the Service selector. **Canary**: gradually shift traffic (5%→25%→50%→100%) to the new version while monitoring errors. Use native K8s Services for simple blue-green, or Argo Rollouts for automated canary with analysis and auto-rollback.

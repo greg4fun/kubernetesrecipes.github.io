@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-kubeadm-upgrade-guide"
   - "kubernetes-resource-quota-limitrange"
-  - "debug-oom-killed"
+  - "kubernetes-oomkilled-troubleshooting"
   - "kubernetes-projected-volumes-guide"
   - "kubernetes-qos-classes-guide"
   - "kubernetes-kubeadm-init-guide"

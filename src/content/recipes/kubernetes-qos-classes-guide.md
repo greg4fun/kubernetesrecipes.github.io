@@ -17,7 +17,7 @@ relatedRecipes:
   - "resource-limits-requests"
   - "kubernetes-resource-quota-limitrange"
   - "kubernetes-priority-preemption-guide"
-  - "debug-oom-killed"
+  - "kubernetes-oomkilled-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Kubernetes assigns QoS classes based on resource specs: **Guaranteed** (requests == limits for ALL containers), **Burstable** (at least one request or limit set), **BestEffort** (no requests or limits). Under memory pressure, eviction order: BestEffort first → Burstable → Guaranteed last. Always set requests=limits for critical workloads to get Guaranteed QoS.

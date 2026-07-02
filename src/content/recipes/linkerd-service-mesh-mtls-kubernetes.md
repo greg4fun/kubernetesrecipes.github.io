@@ -148,6 +148,87 @@ linkerd viz routes deployment/api-server -n production
 linkerd viz top deployment/api-server -n production
 ```
 
+### Authorization Policies (Zero-Trust Beyond Encryption)
+
+mTLS encrypts and authenticates connections, but doesn't by itself restrict *which* services can talk to which — that's what `Server`/`ServerAuthorization` add:
+
+```yaml
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
+metadata:
+  name: backend-server
+  namespace: production
+spec:
+  podSelector: {matchLabels: {app: backend}}
+  port: 8080
+  proxyProtocol: HTTP/1
+---
+apiVersion: policy.linkerd.io/v1beta1
+kind: ServerAuthorization
+metadata:
+  name: frontend-to-backend
+  namespace: production
+spec:
+  server: {name: backend-server}
+  client:
+    meshTLS:
+      serviceAccounts: [{name: frontend, namespace: production}]
+```
+
+```yaml
+# Deny-by-default: nothing can reach backend-server unless explicitly authorized above
+apiVersion: policy.linkerd.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: deny-all
+  namespace: production
+spec:
+  targetRef: {group: policy.linkerd.io, kind: Server, name: backend-server}
+  requiredAuthenticationRefs: []
+```
+
+### Production Hardening
+
+```bash
+# HA control plane — multiple replicas, PDB, strict webhook failure policy
+linkerd install --ha | kubectl apply -f -
+```
+
+```yaml
+# Per-deployment proxy resource tuning and protocol-detection bypass
+metadata:
+  annotations:
+    config.linkerd.io/proxy-cpu-request: "200m"
+    config.linkerd.io/proxy-memory-limit: "256Mi"
+    config.linkerd.io/skip-outbound-ports: "3306,6379"   # databases, Redis — not HTTP
+```
+
+### Multi-Cluster (Federating Two Meshes)
+
+```bash
+# On the target cluster
+linkerd multicluster install | kubectl apply -f -
+# On the source cluster
+linkerd multicluster link --cluster-name target | kubectl apply -f -
+linkerd multicluster check
+```
+
+```yaml
+# Label a Service for export to linked clusters
+metadata:
+  labels: {mirror.linkerd.io/exported: "true"}
+```
+
+### Linkerd vs Istio
+
+| | Linkerd | Istio |
+|---|---------|-------|
+| Proxy resource usage | Very light (~10MB) | Heavier (~50MB) |
+| mTLS | Automatic, on by default | Configurable |
+| Traffic management | Basic (SMI TrafficSplit) | Advanced (VirtualService/DestinationRule) |
+| Learning curve | Low | High |
+| Best fit | mTLS + observability with minimal ops overhead | Fine-grained traffic control, fault injection, multi-protocol |
+
 ## Common Issues
 
 ### Sidecar not injected — pods running without proxy

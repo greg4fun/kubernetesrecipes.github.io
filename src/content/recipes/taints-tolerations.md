@@ -7,9 +7,9 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["taints", "tolerations", "scheduling", "node-affinity", "workload-isolation"]
 relatedRecipes:
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "pod-affinity-anti-affinity"
-  - "blue-green-deployment"
+  - "kubernetes-blue-green-deployment"
   - "openshift-idms-install-config"
 ---
 

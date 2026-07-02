@@ -16,7 +16,7 @@ relatedRecipes:
   - "pod-lifecycle-hooks"
   - "pod-disruption-budget-config"
   - "multi-container-pod-patterns"
-  - "kubernetes-probes-configuration"
+  - "kubernetes-readiness-liveness-startup"
   - "kubernetes-leases"
   - "deployment-strategies"
   - "argocd-sync-waves-crd-operators"

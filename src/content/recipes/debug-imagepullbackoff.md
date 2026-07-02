@@ -9,8 +9,8 @@ relatedRecipes:
   - "kind-local-kubernetes"
   - "crashloopbackoff-troubleshooting"
   - "imagepullbackoff-troubleshooting"
-  - "ephemeral-containers-debugging"
-  - "debug-oom-killed"
+  - "kubernetes-debug-pods"
+  - "kubernetes-oomkilled-troubleshooting"
   - "debug-scheduling-failures"
 tags: ["imagepull", "troubleshooting", "registry", "authentication", "debugging"]
 ---

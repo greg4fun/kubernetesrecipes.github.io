@@ -12,7 +12,7 @@ relatedRecipes:
   - "helm-values-override-patterns"
   - "helm-rollback-history-guide"
   - helm-hooks-lifecycle
-  - helm-hooks
+  - helm-hooks-lifecycle-guide
   - helm-sprig-cat-function
 ---
 

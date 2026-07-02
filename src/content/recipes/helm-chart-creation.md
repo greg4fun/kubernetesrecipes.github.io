@@ -6,10 +6,10 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
-  - "helm-hooks"
+  - "helm-hooks-lifecycle-guide"
   - "helm-chart-basics"
   - "helm-chart-repositories"
-  - "helm-dependencies"
+  - "helm-chart-dependencies-guide"
   - "helm-templating-sprig"
 tags: ["helm", "charts", "packaging", "templates", "deployment"]
 ---

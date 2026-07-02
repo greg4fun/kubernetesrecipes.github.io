@@ -12,7 +12,7 @@ relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
   - kubernetes-helm-vs-kustomize
-  - argocd-gitops-deployment
+  - argocd-gitops
   - kubernetes-configmap-from-file
 ---
 

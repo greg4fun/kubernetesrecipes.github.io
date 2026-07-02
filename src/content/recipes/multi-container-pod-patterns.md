@@ -11,7 +11,7 @@ prerequisites:
   - "Basic understanding of Pod specifications"
 relatedRecipes:
   - "sidecar-containers"
-  - "init-containers"
+  - "kubernetes-init-containers"
   - "container-logging-patterns"
 tags:
   - multi-container

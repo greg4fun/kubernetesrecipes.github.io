@@ -8,7 +8,7 @@ tags: ["etcd", "performance", "api-server", "latency", "troubleshooting", "kuber
 author: "Luca Berton"
 relatedRecipes:
   - "etcd-performance-troubleshooting"
-  - "etcd-backup-restore"
+  - "etcd-backup-restore-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Slow `kubectl` responses and API server timeouts are often caused by etcd disk latency. etcd requires <10ms fsync latency for stable operation. Check with `etcdctl endpoint status` and monitor `etcd_disk_wal_fsync_duration_seconds`. Fix: use fast SSDs, run compaction, defragment, or reduce object count.

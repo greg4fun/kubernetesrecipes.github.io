@@ -8,7 +8,7 @@ tags: ["oomkilled", "memory", "out-of-memory", "troubleshooting", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "oom-killed-troubleshooting"
-  - "debug-oom-killed"
+  - "kubernetes-oomkilled-troubleshooting"
   - "coredns-troubleshooting"
   - "crashloopbackoff-troubleshooting"
 ---

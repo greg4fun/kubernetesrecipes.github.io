@@ -14,7 +14,6 @@ tags:
   - "sigterm"
   - "preStop"
 relatedRecipes:
-  - "graceful-shutdown"
   - "kubernetes-pod-lifecycle-guide"
   - "kubernetes-liveness-readiness-startup-probes"
 ---
@@ -154,6 +153,59 @@ spec:
           command: ["sleep", "5"]
     # App must handle SIGTERM and drain within 295s
 ```
+
+**Python (raw signal handling, outside a WSGI server):**
+```python
+import signal, sys
+
+shutdown_flag = False
+
+def sigterm_handler(signum, frame):
+    global shutdown_flag
+    shutdown_flag = True   # let in-flight requests finish, fail readiness, then exit
+    sys.exit(0)
+
+signal.signal(signal.SIGTERM, sigterm_handler)
+```
+
+### Draining Patterns Beyond HTTP
+
+Not every workload is a simple HTTP server — these need their own drain signal instead of (or in addition to) SIGTERM:
+
+```yaml
+# Queue worker: stop pulling new jobs, wait for in-flight jobs to finish
+lifecycle:
+  preStop:
+    exec:
+      command:
+        - /bin/sh
+        - -c
+        - |
+          curl -X POST localhost:8080/admin/drain
+          while curl -s localhost:8080/admin/jobs | grep -q '"active":true'; do
+            sleep 5
+          done
+```
+
+```yaml
+# WebSocket server: stop accepting connections, send close frames,
+# wait for clients to actually disconnect before the grace period expires
+lifecycle:
+  preStop:
+    exec:
+      command:
+        - /bin/sh
+        - -c
+        - |
+          curl -X POST localhost:8080/admin/stop-accept
+          curl -X POST localhost:8080/admin/graceful-close
+          for i in $(seq 1 18); do
+            [ "$(curl -s localhost:8080/admin/connections)" -eq 0 ] && exit 0
+            sleep 5
+          done
+```
+
+WebSocket and queue-worker drains need a much larger `terminationGracePeriodSeconds` (90–120s) than a typical HTTP server (30–60s) — clients take longer to notice a close frame than an HTTP request takes to complete.
 
 ### Verify Graceful Shutdown
 

@@ -14,7 +14,7 @@ tags:
   - "cka"
   - "administration"
 relatedRecipes:
-  - "etcd-backup-restore"
+  - "etcd-backup-restore-kubernetes"
   - "kubernetes-persistent-volume-guide"
   - "kubernetes-secret-types-guide"
 ---

@@ -13,11 +13,11 @@ relatedRecipes:
   - "kubernetes-troubleshooting-guide"
 ---
 
-> 💡 **Quick Answer:** configuration
+> 💡 **Quick Answer:** Start every debug session with `kubectl get pods` (status), `kubectl describe pod <name>` (events/errors), `kubectl logs <pod> [-c container] [--previous]` (why it crashed), and `kubectl exec -it <pod> -- sh` (shell access). For everything else — deployments, networking, storage, RBAC — this reference below.
 
 ## The Problem
 
-This is one of the most searched Kubernetes topics with thousands of monthly searches. A comprehensive, production-ready guide prevents hours of trial and error.
+Kubernetes troubleshooting means knowing which of dozens of `kubectl` subcommands surfaces the information you actually need — the wrong one (or the wrong flag) sends you searching instead of debugging.
 
 ## The Solution
 
@@ -143,6 +143,56 @@ kubectl api-resources                # List all resource types
 kubectl explain pod.spec.containers  # Documentation
 ```
 
+### Debug with Ephemeral Containers
+
+```bash
+kubectl debug -it my-pod --image=busybox --target=my-container   # shares process namespace
+kubectl debug -it my-pod --image=nicolaka/netshoot                # network debugging tools
+kubectl debug node/my-node -it --image=busybox                    # debug a node directly
+```
+
+### Service, Ingress, and Storage Debugging
+
+```bash
+# Service DNS and connectivity
+kubectl get endpoints my-service
+kubectl run tmp --image=nicolaka/netshoot --rm -it -- \
+  sh -c "curl http://my-service:8080; nslookup my-service"
+
+# Ingress
+kubectl describe ingress my-ingress
+kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller
+
+# PersistentVolumeClaims
+kubectl describe pvc my-pvc
+kubectl exec my-pod -- df -h
+kubectl exec my-pod -- mount | grep my-volume
+```
+
+### RBAC Debugging
+
+```bash
+kubectl auth can-i get pods
+kubectl auth can-i get pods --as=system:serviceaccount:default:my-sa
+kubectl auth can-i --list --as=system:serviceaccount:default:my-sa
+```
+
+### Useful One-Liners
+
+```bash
+# All pods not Running/Succeeded, across every namespace
+kubectl get pods -A --field-selector=status.phase!=Running,status.phase!=Succeeded
+
+# Every image currently running in the cluster
+kubectl get pods -A -o jsonpath='{range .items[*]}{.spec.containers[*].image}{"\n"}{end}' | sort -u
+
+# Pods sorted by restart count — find what's flapping
+kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'
+
+# Force-delete a pod stuck in Terminating
+kubectl delete pod my-pod --grace-period=0 --force
+```
+
 ```mermaid
 graph TD
     A[kubectl] --> B[get - list resources]
@@ -166,14 +216,16 @@ graph TD
 
 ## Best Practices
 
-- Start with the simplest configuration that solves your problem
-- Test in staging before production
-- Use `kubectl describe` and events for troubleshooting
-- Document team conventions for consistency
+- **`describe` before `logs`** — events (ImagePullBackOff, FailedScheduling, OOMKilled) often explain the problem before you need a single log line
+- **`--previous` on logs is easy to forget** — after a crash-restart, plain `kubectl logs` shows the *new* container's (empty) logs, not the crash
+- **Use `--field-selector`/`-l` to filter at the server**, not `grep` on the client — cheaper on large clusters and works with `-w`/watch
+- **`kubectl auth can-i --as=<sa>`** to debug RBAC as a specific ServiceAccount instead of guessing from the Role/RoleBinding YAML
+- **Force-delete (`--grace-period=0 --force`) is a last resort** — it skips graceful termination, so reach for it only on pods genuinely stuck Terminating
 
 ## Key Takeaways
 
-- This is fundamental Kubernetes operational knowledge
-- Follow established conventions and recommended labels
-- Monitor and iterate based on real production behavior
-- Automate repetitive tasks to reduce human error
+- `get` → `describe` → `logs` → `exec` is the standard debugging funnel, in that order
+- `kubectl debug` (ephemeral containers) is the modern way to attach debugging tools to a pod or node without restarting it
+- RBAC issues are fastest to confirm with `kubectl auth can-i --as=<serviceaccount>`, not by re-reading RoleBindings
+- One-liners built on `--field-selector` and `jsonpath`/`custom-columns` turn ad-hoc `grep`-on-`get` into fast, reusable queries
+- `kubectl explain <resource>.<field>` is built-in field-level API documentation — faster than searching docs for an obscure spec field

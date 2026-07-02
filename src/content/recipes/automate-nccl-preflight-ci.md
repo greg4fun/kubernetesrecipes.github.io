@@ -10,12 +10,12 @@ prerequisites:
   - "GPU test namespace and quotas"
   - "Reusable NCCL test manifests"
 relatedRecipes:
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "nccl-allgather-benchmark-profile"
   - "run-nccl-tests-kubernetes"
   - "monitor-nccl-performance-prometheus"
   - "run-nccl-tests-mpijob-kubernetes"
-  - "argocd-gitops-deployment"
+  - "argocd-gitops"
   - "flux-gitops-continuous-delivery"
 tags:
   - nccl

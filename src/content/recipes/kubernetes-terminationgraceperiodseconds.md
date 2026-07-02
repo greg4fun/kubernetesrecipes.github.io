@@ -12,7 +12,7 @@ relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
   - kubernetes-graceful-shutdown
-  - graceful-shutdown
+  - kubernetes-graceful-shutdown-guide
   - kubectl-rollout-restart-deployment
 ---
 

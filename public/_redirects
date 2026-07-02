@@ -106,3 +106,26 @@
 /recipes/deployments/pod-priority-preemption/    /recipes/configuration/kubernetes-pod-priority-preemption-scheduling/    301
 /recipes/observability/prometheus-metrics-setup/    /recipes/observability/prometheus-monitoring-kubernetes-guide/    301
 /recipes/configuration/resource-quotas-namespace/    /recipes/configuration/resource-quotas/    301
+
+# Duplicate-content consolidation batch 2 (SEO audit 2026-07-02) — merge-then-redirect
+/recipes/deployments/argocd-gitops-deployment/    /recipes/deployments/argocd-gitops/    301
+/recipes/deployments/blue-green-deployment/    /recipes/deployments/kubernetes-blue-green-deployment/    301
+/recipes/autoscaling/cluster-autoscaler/    /recipes/autoscaling/cluster-autoscaler-setup/    301
+/recipes/configuration/crossplane-infrastructure-management/    /recipes/configuration/crossplane-kubernetes-infrastructure-management/    301
+/recipes/troubleshooting/debug-oom-killed/    /recipes/troubleshooting/kubernetes-oomkilled-troubleshooting/    301
+/recipes/configuration/downward-api-metadata/    /recipes/configuration/kubernetes-downward-api-guide/    301
+/recipes/troubleshooting/ephemeral-containers-debugging/    /recipes/troubleshooting/kubernetes-debug-pods/    301
+/recipes/storage/etcd-backup-restore/    /recipes/storage/etcd-backup-restore-kubernetes/    301
+/recipes/deployments/graceful-shutdown/    /recipes/deployments/kubernetes-graceful-shutdown-guide/    301
+/recipes/helm/helm-dependencies/    /recipes/helm/helm-chart-dependencies-guide/    301
+/recipes/helm/helm-hooks/    /recipes/helm/helm-hooks-lifecycle-guide/    301
+/recipes/deployments/init-containers/    /recipes/configuration/kubernetes-init-containers/    301
+/recipes/networking/istio-traffic-management/    /recipes/networking/kubernetes-istio-traffic-management/    301
+/recipes/ai/kai-scheduler-topology-aware/    /recipes/ai/kubernetes-1-36-topology-aware-scheduling/    301
+/recipes/troubleshooting/kubectl-debugging-commands/    /recipes/configuration/kubernetes-commands/    301
+/recipes/security/kubernetes-audit-logging/    /recipes/security/kubernetes-audit-logging-guide/    301
+/recipes/troubleshooting/kubernetes-imagepullbackoff-troubleshooting/    /recipes/troubleshooting/imagepullbackoff-troubleshooting/    301
+/recipes/deployments/kubernetes-probes-configuration/    /recipes/deployments/kubernetes-readiness-liveness-startup/    301
+/recipes/networking/linkerd-service-mesh/    /recipes/networking/linkerd-service-mesh-mtls-kubernetes/    301
+/recipes/deployments/liveness-readiness-probes/    /recipes/deployments/kubernetes-readiness-probe-guide/    301
+/recipes/storage/local-persistent-volumes/    /recipes/storage/kubernetes-local-persistent-volumes/    301

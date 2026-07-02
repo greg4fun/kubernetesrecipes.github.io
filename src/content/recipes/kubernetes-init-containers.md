@@ -11,11 +11,11 @@ relatedRecipes:
   - "kubernetes-namespace-guide"
 ---
 
-> 💡 **Quick Answer:** configuration
+> 💡 **Quick Answer:** Init containers run sequentially before the main container(s), each must exit 0 before the next starts, and if any fails the pod restarts per its `restartPolicy`. Define them under `spec.initContainers[]`; they share the pod's volumes with the main containers. Use them to wait for a dependency, run a migration, fetch config, or fix file permissions — anything that must finish before the app starts.
 
 ## The Problem
 
-This is a fundamental Kubernetes topic that engineers search for frequently. A comprehensive reference with production-ready examples saves hours of trial and error.
+Your application needs certain conditions met before it can start: a database must be reachable, a config file needs to be generated or downloaded, file permissions need fixing, or a schema migration must run — none of which belong inside the app's own startup code.
 
 ## The Solution
 
@@ -94,6 +94,51 @@ graph LR
     A -->|Failure| E[Pod restarts]
 ```
 
+### More Use Cases: Permissions, Git Clone, Certificates
+
+```yaml
+# Fix volume ownership before a non-root main container starts
+initContainers:
+  - name: fix-permissions
+    image: busybox:1.36
+    command: ['sh', '-c', 'chown -R 1000:1000 /data']
+    securityContext: {runAsUser: 0}
+    volumeMounts: [{name: data, mountPath: /data}]
+```
+
+```yaml
+# Clone a repo into a shared emptyDir for the main container to serve/read
+initContainers:
+  - name: git-clone
+    image: alpine/git:2.40.1
+    command: ["git", "clone", "--depth=1", "https://github.com/myorg/myrepo.git", "/data"]
+    volumeMounts: [{name: repo, mountPath: /data}]
+```
+
+```yaml
+# Generate a self-signed cert before the app needs TLS
+initContainers:
+  - name: generate-certs
+    image: alpine:3.19
+    command:
+      - sh
+      - -c
+      - |
+        apk add --no-cache openssl
+        openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+          -keyout /certs/tls.key -out /certs/tls.crt -subj "/CN=myapp.default.svc"
+    volumeMounts: [{name: certs, mountPath: /certs}]
+```
+
+### Debugging Init Containers
+
+```bash
+kubectl get pod myapp -o jsonpath='{.status.initContainerStatuses}'
+kubectl logs myapp -c wait-for-db              # a specific init container's logs
+kubectl logs myapp -c wait-for-db --previous   # if it crashed and restarted
+kubectl describe pod myapp                     # look for the "Init Containers" section
+```
+
 ## Frequently Asked Questions
 
 ### Init containers vs startup probes?
@@ -106,14 +151,16 @@ Yes — init containers have the same access to volumes, secrets, configmaps, an
 
 ## Best Practices
 
-- Start with the simplest configuration that meets your needs
-- Test changes in staging before production
-- Use `kubectl describe` and events for troubleshooting
-- Document your decisions for the team
+- **Set resource requests/limits on every init container** — they still consume scheduling capacity even though they don't run concurrently with the app
+- **Use minimal images** (`busybox`, `curlimages/curl`) over general-purpose ones (`ubuntu`) — smaller pull time, smaller attack surface
+- **Add a timeout to wait-loops** (`timeout 60 sh -c '...'`) so a permanently-unreachable dependency fails fast instead of hanging the pod indefinitely
+- **`set -e` in multi-step shell scripts** so a failed step stops the init container instead of silently continuing
+- **Debug with `kubectl logs -c <init-container-name>`**, not `kubectl logs` alone — the default only shows the main container
 
 ## Key Takeaways
 
-- This is essential Kubernetes knowledge for production operations
-- Follow the principle of least privilege and minimal configuration
-- Monitor and iterate based on real-world behavior
-- Automation reduces human error and improves consistency
+- Init containers run sequentially, each must exit 0, and share the pod's volumes with the main containers
+- Common uses: wait-for-dependency loops, migrations, config/cert fetching, permission fixes, git clone
+- A failed init container restarts the whole pod per its `restartPolicy` — it doesn't just retry that one container in place
+- Init containers can use a completely different image than the main container — pull in tools you don't want in your production image
+- `kubectl describe pod` and `kubectl logs -c <name>` are the two commands for diagnosing a stuck init container

@@ -11,7 +11,7 @@ prerequisites:
   - "Knowledge of Kubernetes resource types"
 relatedRecipes:
   - "kubernetes-rook-ceph-storage"
-  - "etcd-backup-restore"
+  - "etcd-backup-restore-kubernetes"
   - "volume-snapshots"
 tags:
   - velero

@@ -8,8 +8,8 @@ author: "Luca Berton"
 tags: ["affinity", "scheduling", "placement", "high-availability", "topology"]
 relatedRecipes:
   - "openclaw-kind-local-development"
-  - "argocd-gitops-deployment"
-  - "graceful-shutdown"
+  - "argocd-gitops"
+  - "kubernetes-graceful-shutdown-guide"
 ---
 
 > **💡 Quick Answer:** Anti-affinity spreads pods: use `podAntiAffinity` with `topologyKey: kubernetes.io/hostname` to ensure one pod per node. Affinity co-locates pods: use `podAffinity` to schedule near related workloads. Types: `requiredDuringScheduling` (hard rule, pod stays Pending if unsatisfied) vs `preferredDuringScheduling` (soft rule, best effort). For zone spreading, use `topologyKey: topology.kubernetes.io/zone`.

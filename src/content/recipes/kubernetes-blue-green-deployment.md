@@ -12,11 +12,11 @@ relatedRecipes:
   - "kubernetes-sidecar-containers"
 ---
 
-> 💡 **Quick Answer:** deployments
+> 💡 **Quick Answer:** Run two identical environments — blue (current) and green (new) — behind one Service. Switch traffic instantly by patching the Service selector: `kubectl patch svc web -p '{"spec":{"selector":{"version":"green"}}}'`. Rollback is the same command in reverse. Costs 2x resources while both run.
 
 ## The Problem
 
-This is a fundamental Kubernetes topic that engineers search for frequently. A comprehensive reference with production-ready examples saves hours of trial and error.
+You want to deploy a new version with the ability to instantly switch back to the old version if something goes wrong — without the slow, gradual exposure of a rolling update.
 
 ## The Solution
 
@@ -95,6 +95,42 @@ kubectl patch svc web -p '{"spec":{"selector":{"version":"blue"}}}'
 kubectl delete deployment web-blue
 ```
 
+### Full Walkthrough: Test Before Switching, Then Roll Back or Clean Up
+
+```bash
+# 1. Deploy green alongside the running blue version
+kubectl apply -f web-green.yaml
+kubectl rollout status deployment/web-green
+
+# 2. Test green directly before it takes production traffic —
+#    create a throwaway Service pointed only at green
+kubectl expose deployment web-green --name=web-test --port=80 --target-port=8080
+kubectl run test-pod --rm -it --image=curlimages/curl -- curl http://web-test/health
+kubectl delete service web-test
+
+# 3. Switch production traffic: blue → green
+kubectl patch svc web -p '{"spec":{"selector":{"version":"green"}}}'
+kubectl describe service web | grep Selector   # confirm the switch
+
+# 4. Instant rollback if something's wrong: green → blue
+kubectl patch svc web -p '{"spec":{"selector":{"version":"blue"}}}'
+
+# 5. Once confident, remove the old version
+kubectl delete deployment web-blue
+```
+
+Automate the switch/rollback with a small script so it's a single, auditable command instead of hand-typed patches:
+
+```bash
+#!/bin/bash
+# blue-green-switch.sh <service> <blue|green>
+SERVICE_NAME=${1:-web}
+TARGET_VERSION=${2:-green}
+kubectl patch service "$SERVICE_NAME" -p "{\"spec\":{\"selector\":{\"version\":\"$TARGET_VERSION\"}}}"
+kubectl get endpoints "$SERVICE_NAME"
+kubectl get service "$SERVICE_NAME" -o jsonpath='{.spec.selector}'
+```
+
 ### Blue-Green vs Canary vs Rolling
 
 | Strategy | Rollback Speed | Resource Cost | Risk |
@@ -120,14 +156,16 @@ graph TD
 
 ## Best Practices
 
-- Start with the simplest configuration that meets your needs
-- Test changes in staging before production
-- Use `kubectl describe` and events for troubleshooting
-- Document your decisions for the team
+- **Keep both environments identical** — same resource requests/limits, ConfigMaps, Secrets, and env vars, so the only difference is the image version
+- **Always test green before switching** — verify readiness and run smoke tests against it directly, not through the production Service
+- **Watch pods and logs after switching** — `kubectl get pods -l app=web -w` and `kubectl logs -l version=green --tail=100` catch problems the switch itself won't surface
+- **Plan for database migrations separately** — blue-green swaps traffic instantly, but schema changes usually can't be rolled back as cleanly as the Service selector
+- **Automate the switch** — a script removes typos from a high-stakes `kubectl patch` command
 
 ## Key Takeaways
 
-- This is essential Kubernetes knowledge for production operations
-- Follow the principle of least privilege and minimal configuration
-- Monitor and iterate based on real-world behavior
-- Automation reduces human error and improves consistency
+- Blue-green gives instant rollback: switching back is the same `kubectl patch` command in reverse
+- Requires 2x resources temporarily — both versions run at full replica count during the cutover
+- Test the green environment directly (port-forward or a throwaway Service) before it takes production traffic
+- Database migrations need their own handling — they don't roll back with the Service selector
+- More complex and resource-hungry than rolling updates, but avoids serving mixed versions during the rollout

@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["helm", "chart-development", "templates", "packaging", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "helm-hooks"
+  - "helm-hooks-lifecycle-guide"
   - "helm-before-hook-creation"
   - "helm-upgrade-failed-troubleshooting"
 ---

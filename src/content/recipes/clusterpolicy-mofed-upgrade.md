@@ -11,7 +11,7 @@ prerequisites:
   - "ClusterPolicy configured"
   - "Multiple GPU nodes for rolling upgrades"
 relatedRecipes:
-  - "crossplane-infrastructure-management"
+  - "crossplane-kubernetes-infrastructure-management"
   - "scheduler-configuration-tuning"
   - "resource-quotas"
   - "resource-limits-requests"

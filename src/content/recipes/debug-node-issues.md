@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
   - "crashloopbackoff-troubleshooting"
-  - "debug-oom-killed"
+  - "kubernetes-oomkilled-troubleshooting"
   - "imagepullbackoff-troubleshooting"
   - "debug-imagepullbackoff"
 tags: ["nodes", "debugging", "troubleshooting", "kubelet", "resources"]

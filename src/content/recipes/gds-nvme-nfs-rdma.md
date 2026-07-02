@@ -16,7 +16,7 @@ relatedRecipes:
   - "gpu-operator-mofed-driver"
   - "enable-gpudirect-storage-openshift"
   - "s3-model-storage-permissions"
-  - "local-persistent-volumes"
+  - "kubernetes-local-persistent-volumes"
 tags: ["nvidia", "gds", "nvme", "nfs", "rdma", "storage", "performance"]
 publishDate: "2026-02-26"
 updatedDate: "2026-02-26"

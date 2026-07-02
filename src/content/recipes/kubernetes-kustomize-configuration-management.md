@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "kustomize-vs-helm-comparison"
-  - "argocd-gitops-deployment"
+  - "argocd-gitops"
   - "kubernetes-configmap-secrets-management"
 ---
 

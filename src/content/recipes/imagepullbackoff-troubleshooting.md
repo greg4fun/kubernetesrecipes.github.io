@@ -85,6 +85,47 @@ Fix: authenticate to Docker Hub or use a registry mirror.
 
 See the [Custom CA Registry](/recipes/security/custom-ca-openshift-kubernetes/) recipe.
 
+**"dial tcp: lookup ... no such host" — DNS resolution failure:**
+```bash
+# Test from a node and from a pod
+nslookup registry.example.com
+kubectl run dns-test --rm -it --image=busybox -- nslookup registry.example.com
+```
+
+**"dial tcp ...: connect: connection refused/timeout" — network path blocked:**
+```bash
+# Test connectivity from a node directly
+curl -v https://registry.example.com/v2/
+# If a proxy is required, set HTTP_PROXY/HTTPS_PROXY in the containerd config
+```
+
+**Only failing on some nodes:**
+
+Pull secrets and per-node containerd CA trust are per-node state — a secret created after some nodes already cached credentials, or a CA cert only copied to some nodes, produces exactly this pattern. Check `/etc/containerd/certs.d/<registry>/` matches across every node.
+
+### Verify a Pull Secret Actually Works
+
+```bash
+# Test the pull manually from a node using the same credentials
+crictl pull --creds "user:pass" registry.example.com/app:v1
+
+# Decode the secret to confirm its contents are what you expect
+kubectl get secret my-registry -n my-namespace -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d | jq .
+```
+
+### Force a Re-Pull
+
+```bash
+# Delete the pod to reset the exponential backoff timer immediately
+kubectl delete pod myapp-7b9f5c6d4-x2k8j
+
+# Or force every restart to re-pull instead of using a cached image
+spec:
+  containers:
+    - name: myapp
+      imagePullPolicy: Always
+```
+
 ```mermaid
 graph TD
     A[ImagePullBackOff] --> B{describe pod events}

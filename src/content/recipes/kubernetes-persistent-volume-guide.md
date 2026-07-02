@@ -14,10 +14,10 @@ tags:
   - "storageclass"
   - "cka"
 relatedRecipes:
-  - "local-persistent-volumes"
+  - "kubernetes-local-persistent-volumes"
   - "troubleshooting-pending-pvc"
   - "kubernetes-persistentvolumeclaimspec"
-  - "etcd-backup-restore"
+  - "etcd-backup-restore-kubernetes"
   - "kubernetes-etcd-backup-guide"
   - "kubernetes-emptydir-hostpath-volumes"
 ---

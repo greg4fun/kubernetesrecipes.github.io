@@ -15,7 +15,7 @@ tags:
   - "cka"
 relatedRecipes:
   - "helm-templating-sprig"
-  - "helm-hooks"
+  - "helm-hooks-lifecycle-guide"
   - "kustomize-vs-helm-comparison"
 ---
 

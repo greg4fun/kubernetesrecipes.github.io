@@ -10,15 +10,15 @@ prerequisites:
   - "kubectl configured to access your cluster"
 relatedRecipes:
   - "kubernetes-kubectl-plugins-guide"
-  - "kubectl-debugging-commands"
+  - "kubernetes-commands"
   - "verify-ovn-underlay-interface"
   - "crashloopbackoff-troubleshooting"
   - "service-loadbalancer-nodeport"
   - "kubernetes-network-troubleshooting"
   - "debug-imagepullbackoff"
-  - "debug-oom-killed"
+  - "kubernetes-oomkilled-troubleshooting"
   - "debug-scheduling-failures"
-  - "ephemeral-containers-debugging"
+  - "kubernetes-debug-pods"
   - "imagepullbackoff-troubleshooting"
   - "kind-local-kubernetes"
 tags:

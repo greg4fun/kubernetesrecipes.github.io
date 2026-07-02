@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["helm", "upgrade", "rollback", "failed", "troubleshooting"]
 author: "Luca Berton"
 relatedRecipes:
-  - "helm-hooks"
+  - "helm-hooks-lifecycle-guide"
   - "helm-before-hook-creation"
   - "helm-chart-dependencies-guide"
 ---

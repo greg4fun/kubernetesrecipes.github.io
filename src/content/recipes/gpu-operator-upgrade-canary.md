@@ -14,7 +14,7 @@ tags:
 relatedRecipes:
   - "kubernetes-argo-rollouts-guide"
   - "crashloopbackoff-troubleshooting"
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "gpu-upgrade-version-matrix"
   - "gpu-operator-clusterpolicy-reference"
   - "open-kernel-modules-dma-buf"

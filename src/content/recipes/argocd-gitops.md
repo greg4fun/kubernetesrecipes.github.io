@@ -5,11 +5,11 @@ category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 relatedRecipes:
-  - "liveness-readiness-probes"
+  - "kubernetes-readiness-probe-guide"
   - "ab-testing-kubernetes"
-  - "graceful-shutdown"
+  - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-leases"
-  - "kubernetes-probes-configuration"
+  - "kubernetes-readiness-liveness-startup"
   - "multi-container-pod-patterns"
   - "pod-disruption-budget-config"
   - "pod-lifecycle-hooks"
@@ -205,6 +205,224 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync  # Run before sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: smoke-test
+  annotations:
+    argocd.argoproj.io/hook: PostSync  # Run after sync succeeds
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: test
+          image: my-app:latest
+          command: ["./smoke-test.sh"]
+      restartPolicy: Never
+```
+
+Additional useful sync options beyond `CreateNamespace=true`:
+
+```yaml
+spec:
+  syncPolicy:
+    syncOptions:
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+      - RespectIgnoreDifferences=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+```
+
+## App of Apps Pattern
+
+Manage a fleet of Applications by having a root Application point at a directory of other Application manifests:
+
+```yaml
+# apps/root-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/myorg/my-app-manifests
+    targetRevision: main
+    path: apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
+
+```yaml
+# apps/my-app.yaml (child Application managed by root-app)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/myorg/my-app-manifests
+    targetRevision: main
+    path: manifests/my-app
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: production
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
+
+## Multi-Cluster Management
+
+Register an external cluster so Argo CD can deploy to it:
+
+```bash
+# Add cluster via CLI
+argocd cluster add <context-name> --name production-cluster
+
+# Or via Secret
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: production-cluster
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: cluster
+type: Opaque
+stringData:
+  name: production-cluster
+  server: https://production.k8s.example.com
+  config: |
+    {
+      "bearerToken": "<service-account-token>",
+      "tlsClientConfig": {
+        "insecure": false,
+        "caData": "<base64-ca-cert>"
+      }
+    }
+EOF
+```
+
+Fan an Application out to every registered cluster with the `clusters` generator:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: multi-cluster-app
+  namespace: argocd
+spec:
+  generators:
+    - clusters: {}  # All registered clusters
+  template:
+    metadata:
+      name: 'my-app-{{name}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/myorg/my-app-manifests
+        path: k8s/overlays/production
+        targetRevision: main
+      destination:
+        server: '{{server}}'
+        namespace: production
+```
+
+## Projects and RBAC
+
+Scope which repos, clusters, and resource kinds an Application can use with an `AppProject`, and control who can sync it:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: production
+  namespace: argocd
+spec:
+  description: Production applications
+  sourceRepos:
+    - https://github.com/myorg/my-app-manifests
+  destinations:
+    - namespace: production
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  roles:
+    - name: developer
+      description: Developer access
+      policies:
+        - p, proj:production:developer, applications, get, production/*, allow
+        - p, proj:production:developer, applications, sync, production/*, allow
+      groups:
+        - developers
+```
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+data:
+  policy.default: role:readonly
+  policy.csv: |
+    p, role:admin, applications, *, */*, allow
+    p, role:developer, applications, sync, */*, allow
+    g, admins, role:admin
+    g, developers, role:developer
+```
+
+## Monitoring and Notifications
+
+Send Slack alerts on sync status changes with the Argo CD notifications controller:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-notifications-cm
+  namespace: argocd
+data:
+  service.slack: |
+    token: $slack-token
+  template.app-sync-status: |
+    message: |
+      Application {{.app.metadata.name}} sync status: {{.app.status.sync.status}}
+      Health: {{.app.status.health.status}}
+  trigger.on-health-degraded: |
+    - when: app.status.health.status == 'Degraded'
+      send: [app-sync-status]
+```
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: deployments
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: deployments
 ```
 
 ## CLI Commands

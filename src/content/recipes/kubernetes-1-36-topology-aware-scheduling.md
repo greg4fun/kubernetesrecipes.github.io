@@ -155,6 +155,31 @@ kubectl get nodes -l nvidia.com/gpu-fabric=nvswitch-domain-1 \
 # 10x improvement in collective communication!
 ```
 
+### Alternative Available Today: KAI Scheduler
+
+Kubernetes 1.36's native `TopologyPolicy` is new; if you're not yet on 1.36 or want topology awareness now, NVIDIA's KAI Scheduler provides the same capability via its own PodGroup CRD:
+
+```bash
+helm upgrade -i kai-scheduler oci://ghcr.io/nvidia/kai-scheduler/kai-scheduler \
+  -n kai-scheduler --version v0.12.10 \
+  --set topologyAwareScheduling.enabled=true \
+  --set topologyAwareScheduling.nvlinkAware=true
+```
+
+```yaml
+apiVersion: scheduling.run.ai/v2
+kind: PodGroup
+metadata:
+  name: ddp-training-tas
+spec:
+  minMember: 4
+  queue: training
+  topologyPolicy:
+    scope: nvlink-domain   # pack all pods onto GPUs sharing NVLink
+```
+
+KAI reads the same kind of topology signal — NVLink domain, NVSwitch presence, rack — from node labels, and supports the same scope levels (`gpu`, `nvlink-domain`, `node`, `rack`, `zone`). It's a good fit for disaggregated serving pipelines too: pin a prefill worker and a decode worker to the same node via `scope: node` so they share fast local interconnect instead of crossing the network.
+
 ## Common Issues
 
 ### Pods stuck in Pending with topology constraints
