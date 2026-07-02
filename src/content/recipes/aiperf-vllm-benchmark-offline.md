@@ -213,6 +213,56 @@ graph LR
     VLLM -->|usage.completion_tokens| AIPERF
 ```
 
+### Podman: Run the Official Container Image (No Python Setup)
+
+Instead of a `.venv` with `pip install aiperf`, run NVIDIA's official AIPerf container directly with `podman` — useful from a bastion host or CI runner where you don't want to manage a Python environment:
+
+```bash
+#!/bin/bash
+RUN_DATE="$(date +%Y%m%d_%H%M%S)"
+ARTIFACT_DIR="$PWD/artifacts/$RUN_DATE"
+mkdir -p "$ARTIFACT_DIR/logs"
+chmod -R 777 "$ARTIFACT_DIR"   # container UID rarely matches your host UID
+
+export MODEL="my-model"
+export URL="https://my-model-route.apps.example.com"
+export ENDPOINT="/v1/chat/completions"
+export API_KEY="${TOKEN:-}"
+export CONCURRENCY=1
+export WARMUP_REQUEST_COUNT=5
+export REQUEST_COUNT=3000
+
+podman run --rm -it \
+    --entrypoint aiperf \
+    -v "$PWD/dummy_tokenizer:/tokenizer:ro,Z" \
+    -v "$ARTIFACT_DIR:/artifacts:Z" \
+    -e AIPERF_HTTP_SSL_VERIFY=False \
+    nvcr.io/nvidia/ai-dynamo/aiperf:0.7.0 \
+    profile \
+    --tokenizer /tokenizer \
+    --model "$MODEL" --url "$URL" \
+    --endpoint "$ENDPOINT" \
+    --api-key "$API_KEY" \
+    --endpoint-type chat \
+    --num-prompts 50 \
+    --random-seed 123 \
+    --synthetic-input-tokens-mean 200 \
+    --synthetic-input-tokens-stddev 200 \
+    --output-tokens-mean 200 \
+    --output-tokens-stddev 200 \
+    --streaming \
+    --artifact-dir "/artifacts" \
+    --concurrency "$CONCURRENCY" \
+    --warmup-request-count "$WARMUP_REQUEST_COUNT" \
+    --request-count "$REQUEST_COUNT"
+```
+
+Three gotchas specific to the containerized/podman path that don't come up with a local `pip install`:
+
+- **`:Z` SELinux label on every volume mount** — on RHEL/Fedora hosts with SELinux enforcing, `podman run -v host:container` fails to read/write without `:Z` (or `:z` for shared mounts) relabeling the host path for container access.
+- **`chmod -R 777` on the artifact directory** — the container's AIPerf process runs as a UID that rarely matches your host user; without opening permissions first, AIPerf fails partway through with a permission-denied error writing results, *after* the benchmark has already run.
+- **`AIPERF_HTTP_SSL_VERIFY=False`** — for internal Routes signed by a private/self-signed CA that you don't want to inject as a trust bundle into the container, this environment variable skips TLS verification entirely. It's a coarser hammer than mounting `SSL_CERT_FILE`/`REQUESTS_CA_BUNDLE` (see below) — prefer the CA bundle approach outside of quick ad-hoc runs, since disabling verification also blinds you to a genuinely wrong or expired certificate.
+
 ## Common Issues
 
 **`tokenizer not found` error in air-gapped environment**
