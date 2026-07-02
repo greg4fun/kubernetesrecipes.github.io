@@ -219,6 +219,58 @@ kubectl exec my-pod -- cat /proc/1/status | grep Seccomp
 # Seccomp:  2  (filter mode)
 ```
 
+### Custom Seccomp, SELinux, and AppArmor
+
+`RuntimeDefault` seccomp covers most cases; a custom profile is a tighter allowlist for workloads where you know exactly which syscalls are needed:
+
+```yaml
+securityContext:
+  seccompProfile:
+    type: Localhost
+    localhostProfile: profiles/custom-profile.json   # relative to the kubelet's seccomp root
+```
+
+```json
+{
+  "defaultAction": "SCMP_ACT_ERRNO",
+  "architectures": ["SCMP_ARCH_X86_64"],
+  "syscalls": [{"names": ["accept4", "bind", "close", "connect", "read", "write"], "action": "SCMP_ACT_ALLOW"}]
+}
+```
+
+```yaml
+# SELinux (RHEL/OpenShift nodes)
+securityContext:
+  seLinuxOptions: {level: "s0:c123,c456", type: "container_t"}
+```
+
+```yaml
+# AppArmor
+metadata:
+  annotations: {container.apparmor.security.beta.kubernetes.io/app: runtime/default}
+```
+
+### Fixing an Image That Doesn't Support Non-Root
+
+Not every base image works under `runAsNonRoot` out of the box — directories the process needs to write to may be owned by root:
+
+```dockerfile
+FROM nginx:1.25
+RUN chown -R 1000:1000 /var/cache/nginx /var/run /var/log/nginx
+USER 1000
+```
+
+If you can't rebuild the image, fix ownership at pod startup instead with a root initContainer:
+
+```yaml
+initContainers:
+  - name: fix-permissions
+    image: busybox:1.36
+    command: ["sh", "-c", "chown -R 1000:1000 /data"]
+    securityContext: {runAsUser: 0}   # needs root to chown, main container still runs non-root
+    volumeMounts: [{name: data, mountPath: /data}]
+```
+
 ## Common Issues
 
 **Container fails with "permission denied"**

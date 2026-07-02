@@ -11,9 +11,9 @@ tags: ["cert-manager", "ovh", "dns-01", "tls", "lets-encrypt", "wildcard", "k3s"
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
-  - kairos-k3s-hetzner-immutable-bootstrap
-  - cilium-ebpf-gateway-api-hubble-k3s
-  - gateway-api-httproutes-tls-k3s
+  - "kairos-k3s-hetzner-immutable-bootstrap"
+  - "cilium-ebpf-gateway-api-hubble-k3s"
+  - "gateway-api-httproutes-tls-k3s"
 ---
 
 > 💡 **Quick Answer:** cert-manager with OVH DNS-01 solver automates wildcard TLS certificates (`*.example.com`) from Let's Encrypt. DNS-01 challenges work without exposing port 80, perfect for private clusters.

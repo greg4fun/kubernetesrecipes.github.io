@@ -15,7 +15,7 @@ tags:
   - "cka"
 relatedRecipes:
   - "kubernetes-rbac-role-rolebinding"
-  - "oidc-authentication-kubernetes"
+  - "kubernetes-oidc-authentication-guide"
   - "image-pull-secrets"
   - "kubernetes-secret-types-guide"
   - "kubernetes-security-context-guide"

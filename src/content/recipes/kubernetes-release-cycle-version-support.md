@@ -11,9 +11,9 @@ tags: ["release-cycle", "versioning", "upgrade", "support", "lifecycle"]
 relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
-  - kubernetes-openshift-upgrade-overview
-  - kubernetes-openshift-major-minor-upgrade
-  - openshift-lifecycle-support-versions
+  - "kubernetes-openshift-upgrade-overview"
+  - "kubernetes-openshift-major-minor-upgrade"
+  - "openshift-lifecycle-support-versions"
 ---
 
 > 💡 **Quick Answer:** Kubernetes releases 3 minor versions per year (~every 4 months). Each version is supported for **14 months** (12 months standard + 2 months maintenance). You can skip at most one minor version during upgrades (e.g., 1.29 → 1.31, but not 1.29 → 1.32).

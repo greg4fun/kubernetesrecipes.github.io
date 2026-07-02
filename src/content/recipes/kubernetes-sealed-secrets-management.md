@@ -110,6 +110,58 @@ graph LR
     CTRL -->|Decrypt with<br/>cluster private key| SECRET[Regular Secret<br/>available to pods]
 ```
 
+### Backing Up the Sealing Key for Disaster Recovery
+
+The controller's private key is the only thing that can decrypt every SealedSecret you've ever committed — losing it without a backup means re-sealing every secret in Git from scratch:
+
+```bash
+# Backup — store this in a vault, NEVER in Git
+kubectl get secret -n kube-system -l sealedsecrets.bitnami.com/sealed-secrets-key -o yaml > sealed-secrets-master-key.yaml
+```
+
+```bash
+# Restore on a new/recovered cluster — apply the key BEFORE installing the controller
+kubectl apply -f sealed-secrets-master-key.yaml
+helm install sealed-secrets sealed-secrets/sealed-secrets --namespace kube-system
+```
+
+The same export/apply works for sharing one key across multiple clusters, though per-environment keys (a separate public key per cluster) are usually the safer default — a leaked staging key then can't decrypt production secrets.
+
+### GitOps Integration
+
+```yaml
+# ArgoCD: point an Application at the directory of SealedSecret manifests
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: {name: production-secrets, namespace: argocd}
+spec:
+  project: default
+  source: {repoURL: https://github.com/myorg/k8s-configs, targetRevision: main, path: sealed-secrets/production}
+  destination: {server: https://kubernetes.default.svc, namespace: production}
+  syncPolicy: {automated: {prune: true, selfHeal: true}}
+```
+
+Organize sealed secrets per environment so ArgoCD/Flux syncs the right set to the right cluster:
+
+```text
+k8s-configs/
+├── sealed-secrets/
+│   ├── production/
+│   ├── staging/
+│   └── development/
+```
+
+A pre-commit hook catches the one mistake that defeats the whole point — committing a plain `Secret` instead of the sealed version:
+
+```bash
+#!/bin/bash
+# .git/hooks/pre-commit
+if git diff --cached --name-only | xargs grep -l "kind: Secret" 2>/dev/null | grep -v "SealedSecret"; then
+  echo "ERROR: Plain Kubernetes Secret detected! Seal it before committing."
+  exit 1
+fi
+```
+
 ## Common Issues
 
 **"cannot fetch certificate" error**

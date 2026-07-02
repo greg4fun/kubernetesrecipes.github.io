@@ -11,9 +11,9 @@ tags: ["502", "bad-gateway", "ingress", "troubleshooting", "nginx", "load-balanc
 relatedRecipes:
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-oomkilled-troubleshooting"
-  - kubernetes-graceful-shutdown
-  - kubernetes-terminationgraceperiodseconds
-  - taint-toleration-scheduling-issues
+  - "kubernetes-graceful-shutdown"
+  - "kubernetes-terminationgraceperiodseconds"
+  - "taint-toleration-scheduling-issues"
 ---
 
 > 💡 **Quick Answer:** 502 Bad Gateway in Kubernetes usually means the ingress/load balancer forwarded a request to a pod that isn't ready (during deploy) or has terminated. Fix with proper readiness probes, preStop hooks with `sleep 5`, and matching upstream timeouts.

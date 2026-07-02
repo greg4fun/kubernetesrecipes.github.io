@@ -13,7 +13,7 @@ tags:
   - "installation"
   - "vertical-pod-autoscaler"
 relatedRecipes:
-  - "vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "horizontal-pod-autoscaler"
 ---
 

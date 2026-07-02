@@ -18,8 +18,7 @@ relatedRecipes:
   - "container-logging-patterns"
   - "grafana-kubernetes-dashboards"
   - "logging-efk-stack"
-  - "opentelemetry-collector"
-  - "prometheus-monitoring-setup"
+  - "kubernetes-opentelemetry-collector"
   - "jaeger-distributed-tracing"
 tags:
   - alertmanager

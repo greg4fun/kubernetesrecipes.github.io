@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubectl-create-secret-docker-registry"
   - "kubernetes-labels-best-practices"
-  - "pod-security-context"
+  - "kubernetes-security-context-guide"
   - "kubernetes-replicaset-guide"
 ---
 

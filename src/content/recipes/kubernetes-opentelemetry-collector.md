@@ -121,6 +121,58 @@ graph TD
     LOKI_N --> GRAFANA
 ```
 
+### Without the Operator: Raw DaemonSet + Gateway Tier
+
+If you're not using the OpenTelemetry Operator, deploy the collector directly and split it into two tiers: a lightweight DaemonSet per node for collection, and a centralized Gateway Deployment for heavier processing like tail sampling:
+
+```yaml
+# Gateway: fewer, larger replicas doing aggregation/sampling before export
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: otel-gateway, namespace: monitoring}
+spec:
+  replicas: 3
+  selector: {matchLabels: {app: otel-gateway}}
+  template:
+    metadata: {labels: {app: otel-gateway}}
+    spec:
+      containers:
+        - name: collector
+          image: otel/opentelemetry-collector-contrib:0.92.0
+          args: ["--config=/etc/otel/config.yaml"]
+          resources: {limits: {memory: 2Gi, cpu: "2"}}
+          volumeMounts: [{name: config, mountPath: /etc/otel}]
+      volumes: [{name: config, configMap: {name: otel-gateway-config}}]
+```
+
+Tail sampling needs to see a whole trace before deciding whether to keep it, so it belongs on the Gateway tier (which sees traffic from all nodes), not the per-node DaemonSet:
+
+```yaml
+processors:
+  tail_sampling:
+    decision_wait: 10s
+    num_traces: 100000
+    policies:
+      - {name: errors, type: status_code, status_code: {status_codes: [ERROR]}}
+      - {name: slow-traces, type: latency, latency: {threshold_ms: 1000}}
+      - {name: probabilistic, type: probabilistic, probabilistic: {sampling_percentage: 10}}
+```
+
+The DaemonSet needs RBAC to read pod/node metadata for the `k8sattributes` processor:
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: otel-collector}
+rules:
+  - apiGroups: [""]
+    resources: [events, namespaces, nodes, pods, services, endpoints]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: [replicasets, deployments, daemonsets, statefulsets]
+    verbs: ["get", "list", "watch"]
+```
+
 ## Common Issues
 
 **Collector OOMKilled**: Set `memory_limiter` processor with `limit_mib` lower than the container's memory limit. The limiter drops data before OOM.

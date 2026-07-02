@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["rbac", "service-accounts", "security", "authorization", "least-privilege"]
 relatedRecipes:
-  - "pod-security-context"
+  - "kubernetes-security-context-guide"
   - "workload-identity-cloud-access"
   - "networkpolicy-deny-default-gpu"
 ---

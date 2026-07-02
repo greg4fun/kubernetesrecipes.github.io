@@ -199,6 +199,71 @@ spec:
   - port: 6379
 ```
 
+### Kong Plugin (API-Key-Based Limits)
+
+If you're already running Kong as your ingress controller, rate limiting is a plugin attached to the Ingress rather than a separate Envoy config:
+
+```yaml
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata: {name: rate-limit-by-key}
+spec:
+  plugin: rate-limiting
+  config:
+    second: 10
+    policy: redis                 # shared state across replicas — see Common Issues below
+    redis_host: redis.default.svc.cluster.local
+    limit_by: header
+    header_name: X-API-Key         # per-API-key instead of per-IP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+  annotations: {konghq.com/plugins: rate-limit-by-key}
+spec:
+  ingressClassName: kong
+  rules: [{host: api.example.com, http: {paths: [{path: /, pathType: Prefix, backend: {service: {name: api-service, port: {number: 80}}}}]}}]
+```
+
+### Standalone Envoy Rate Limit Service (Multi-Tier by Descriptor)
+
+For rules more complex than a single per-route limit — different limits per path, per user, and per subscription tier simultaneously — Envoy's own ratelimit service reads a descriptor config instead of embedding rules in the filter itself:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: rate-limit-config}
+data:
+  config.yaml: |
+    domain: production
+    descriptors:
+      - {key: path, value: /api/v1/users, rate_limit: {unit: second, requests_per_unit: 10}}
+      - {key: api_tier, value: free, rate_limit: {unit: hour, requests_per_unit: 100}}
+      - {key: api_tier, value: premium, rate_limit: {unit: hour, requests_per_unit: 10000}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ratelimit}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: ratelimit}}
+  template:
+    metadata: {labels: {app: ratelimit}}
+    spec:
+      containers:
+        - name: ratelimit
+          image: envoyproxy/ratelimit:v1.4.0
+          env:
+            - {name: RUNTIME_ROOT, value: /data}
+            - {name: RUNTIME_SUBDIRECTORY, value: ratelimit}
+            - {name: REDIS_URL, value: "redis:6379"}
+          volumeMounts: [{name: config, mountPath: /data/ratelimit/config}]
+      volumes: [{name: config, configMap: {name: rate-limit-config}}]
+```
+
+Reference this from the Istio `EnvoyFilter` above by swapping `local_ratelimit` for `envoy.filters.http.ratelimit` pointed at this service's gRPC port (8081) — the local filter enforces per-instance limits, this one enforces global limits shared across all instances via Redis.
+
 ### Rate Limit Comparison
 
 | Method | Scope | Granularity | State | Best For |

@@ -9,7 +9,7 @@ relatedRecipes:
   - "alertmanager-setup"
   - "jaeger-distributed-tracing"
   - "logging-efk-stack"
-  - "opentelemetry-collector"
+  - "kubernetes-opentelemetry-collector"
 tags: ["logging", "observability", "sidecar", "fluentd", "stdout"]
 ---
 

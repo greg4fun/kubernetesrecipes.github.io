@@ -11,8 +11,8 @@ prerequisites:
   - "SSH access to nodes (for node-level approaches)"
 relatedRecipes:
   - "service-accounts-rbac"
-  - "sealed-secrets-gitops"
-  - "oidc-authentication-kubernetes"
+  - "kubernetes-sealed-secrets-management"
+  - "kubernetes-oidc-authentication-guide"
   - "custom-ca-openshift"
   - "update-ca-certificates-kubernetes"
 tags:

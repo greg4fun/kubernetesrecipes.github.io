@@ -176,6 +176,41 @@ plugins:
       - monitoring
 ```
 
+### Applying Different Profiles Across Many Namespaces
+
+```bash
+#!/bin/bash
+# apply-psa-policies.sh — tier namespaces by trust level
+for ns in production api-prod data-prod; do
+  kubectl label namespace "$ns" --overwrite \
+    pod-security.kubernetes.io/enforce=restricted \
+    pod-security.kubernetes.io/warn=restricted \
+    pod-security.kubernetes.io/audit=restricted
+done
+for ns in development staging; do
+  kubectl label namespace "$ns" --overwrite \
+    pod-security.kubernetes.io/enforce=baseline \
+    pod-security.kubernetes.io/warn=restricted
+done
+for ns in kube-system monitoring logging; do
+  kubectl label namespace "$ns" --overwrite pod-security.kubernetes.io/enforce=privileged
+done
+```
+
+```bash
+# Audit what's currently applied everywhere
+kubectl get namespaces -L pod-security.kubernetes.io/enforce,pod-security.kubernetes.io/warn,pod-security.kubernetes.io/audit
+```
+
+### Common Violations, Fixed
+
+| Violation | Fix |
+|-----------|-----|
+| Container runs as root by default | Add `securityContext.runAsNonRoot: true` + `runAsUser: 1000` |
+| No `allowPrivilegeEscalation` set (defaults to allowed) | Set `allowPrivilegeEscalation: false` explicitly |
+| Missing seccomp profile | Add `seccompProfile: {type: RuntimeDefault}` |
+| Capabilities not dropped | Add `capabilities: {drop: ["ALL"]}` |
+
 ## Common Issues
 
 **Pod rejected: "violates PodSecurity"**

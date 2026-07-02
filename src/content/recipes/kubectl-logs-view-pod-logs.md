@@ -11,10 +11,10 @@ tags: ["kubectl", "logs", "debugging", "troubleshooting", "observability"]
 relatedRecipes:
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-oomkilled-troubleshooting"
-  - kubernetes-exec-into-pod
-  - kubectl-cp-copy-files-pods
-  - kubernetes-logging-elk-stack
-  - container-logging-patterns
+  - "kubernetes-exec-into-pod"
+  - "kubectl-cp-copy-files-pods"
+  - "kubernetes-logging-elk-stack"
+  - "container-logging-patterns"
 ---
 
 > 💡 **Quick Answer:** `kubectl logs <pod>` shows container stdout/stderr. Use `-f` to stream, `--previous` for crashed container logs, `-c` for multi-container pods, and `-l app=myapp` for all pods matching a label.

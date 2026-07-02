@@ -15,7 +15,7 @@ relatedRecipes:
   - "kubernetes-pod-priority-preemption-scheduling"
   - "pod-lifecycle-hooks"
   - "pod-disruption-budget-config"
-  - "multi-container-pod-patterns"
+  - "kubernetes-multi-container-pod-patterns"
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-leases"
   - "deployment-strategies"

@@ -11,10 +11,10 @@ tags: ["cilium", "ebpf", "gateway-api", "hubble", "k3s", "cni", "observability"]
 relatedRecipes:
   - "kubernetes-service-types-explained"
   - "kubernetes-ingress-path-routing"
-  - kairos-k3s-hetzner-immutable-bootstrap
-  - certmanager-ovh-dns01-wildcard-tls
-  - gateway-api-httproutes-tls-k3s
-  - kubernetes-gateway-api
+  - "kairos-k3s-hetzner-immutable-bootstrap"
+  - "certmanager-ovh-dns01-wildcard-tls"
+  - "gateway-api-httproutes-tls-k3s"
+  - "kubernetes-gateway-api"
 ---
 
 > 💡 **Quick Answer:** Cilium replaces kube-proxy with eBPF for faster networking, natively implements Gateway API (no separate ingress controller needed), and includes Hubble for real-time network flow observability — all in one CNI.

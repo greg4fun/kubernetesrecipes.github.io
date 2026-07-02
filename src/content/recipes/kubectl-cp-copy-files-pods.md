@@ -11,7 +11,7 @@ tags: ["kubectl", "cp", "copy", "files", "debugging", "troubleshooting"]
 relatedRecipes:
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-oomkilled-troubleshooting"
-  - kubernetes-exec-into-pod
+  - "kubernetes-exec-into-pod"
 ---
 
 > 💡 **Quick Answer:** `kubectl cp <pod>:/path /local/path` copies files from pod to local. `kubectl cp /local/path <pod>:/path` copies local to pod. Requires `tar` binary in the container.

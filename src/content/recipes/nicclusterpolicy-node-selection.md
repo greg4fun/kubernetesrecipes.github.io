@@ -13,7 +13,7 @@ prerequisites:
 relatedRecipes:
   - "gpu-operator-mofed-driver"
   - "sriov-nicclusterpolicy-vfs"
-  - "node-taints-tolerations"
+  - "kubernetes-taint-toleration-guide"
   - "scheduler-configuration-tuning"
 tags: ["nvidia", "mofed", "node-selection", "networking", "configuration"]
 publishDate: "2026-02-26"

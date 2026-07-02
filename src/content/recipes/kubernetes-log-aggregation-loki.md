@@ -17,7 +17,7 @@ relatedRecipes:
   - "grafana-kubernetes-dashboards"
   - "container-logging-patterns"
   - "kubernetes-opentelemetry-guide"
-  - "prometheus-monitoring-setup"
+  - "prometheus-monitoring-kubernetes-guide"
 ---
 
 > 💡 **Quick Answer:** Grafana Loki is a log aggregation system that indexes log metadata (labels) instead of full text, making it much cheaper than Elasticsearch. Install with `helm install loki grafana/loki-stack`, then query logs in Grafana using LogQL. Promtail/Alloy collects logs from every pod and ships them to Loki with Kubernetes labels.

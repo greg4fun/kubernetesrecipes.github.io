@@ -212,6 +212,49 @@ graph TD
     style AM fill:#4CAF50,color:white
 ```
 
+### Instrument Your Application
+
+Prometheus scrapes `/metrics`, but your app has to expose it — client libraries handle the counter/histogram bookkeeping:
+
+```python
+from prometheus_client import Counter, Histogram, generate_latest
+from flask import Flask, Response
+
+app = Flask(__name__)
+REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint', 'status'])
+REQUEST_LATENCY = Histogram('http_request_duration_seconds', 'HTTP request latency', ['method', 'endpoint'])
+
+@app.route('/api/data')
+def get_data():
+    with REQUEST_LATENCY.labels('GET', '/api/data').time():
+        result = process_data()
+    REQUEST_COUNT.labels('GET', '/api/data', '200').inc()
+    return result
+
+@app.route('/metrics')
+def metrics():
+    return Response(generate_latest(), mimetype='text/plain')
+```
+
+### Recording Rules (Pre-Compute Expensive Queries)
+
+A dashboard re-running a heavy aggregation on every page load is slow — a recording rule computes it once on a schedule instead:
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata: {name: recording-rules, namespace: monitoring}
+spec:
+  groups:
+    - name: aggregations
+      interval: 30s
+      rules:
+        - record: job:http_requests_total:rate5m
+          expr: sum(rate(http_requests_total[5m])) by (job)
+        - record: job:http_request_duration_seconds:p99
+          expr: histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (job, le))
+```
+
 ## Common Issues
 
 **ServiceMonitor not picked up by Prometheus**

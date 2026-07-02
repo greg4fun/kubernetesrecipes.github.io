@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-namespace-guide"
   - "kubernetes-secret-types-guide"
-  - "pod-security-context"
+  - "kubernetes-security-context-guide"
   - "kubernetes-audit-logging-guide"
   - "kubernetes-serviceaccount-guide"
 ---

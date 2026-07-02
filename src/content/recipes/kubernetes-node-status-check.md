@@ -11,8 +11,8 @@ tags: ["node", "status", "kubectl", "troubleshooting", "monitoring"]
 relatedRecipes:
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-oomkilled-troubleshooting"
-  - taint-toleration-scheduling-issues
-  - kubectl-logs-view-pod-logs
+  - "taint-toleration-scheduling-issues"
+  - "kubectl-logs-view-pod-logs"
 ---
 
 > 💡 **Quick Answer:** `kubectl get nodes` shows node status. `kubectl describe node <name>` shows detailed conditions (Ready, MemoryPressure, DiskPressure, PIDPressure). A healthy node shows `Ready=True` for all conditions.

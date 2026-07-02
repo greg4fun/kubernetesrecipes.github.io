@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-keda-autoscaling-guide"
   - "llm-autoscaling-kubernetes"
   - "kubernetes-pod-priority-preemption"
-  - "vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "kubernetes-horizontal-pod-autoscaler-guide"
   - "kubernetes-horizontal-scaling-patterns"
 ---

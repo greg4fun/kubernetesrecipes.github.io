@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "horizontal-pod-autoscaler"
   - "hpa-custom-metrics"
-  - "vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "kubernetes-keda-autoscaling-guide"
 ---
 

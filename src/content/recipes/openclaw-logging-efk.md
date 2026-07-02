@@ -17,7 +17,7 @@ relatedRecipes:
   - "openclaw-ha-kubernetes"
   - "logging-efk-stack"
   - "container-logging-patterns"
-  - "opentelemetry-collector"
+  - "kubernetes-opentelemetry-collector"
   - "kubernetes-logging-fluentbit-guide"
 ---
 

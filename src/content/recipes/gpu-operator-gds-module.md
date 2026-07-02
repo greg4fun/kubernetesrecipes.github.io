@@ -15,7 +15,7 @@ relatedRecipes:
   - "gpu-operator-mofed-driver"
   - "enable-gpudirect-storage-openshift"
   - "configure-gpudirect-rdma-gpu-operator"
-  - "switch-gpudirect-rdma-dma-buf"
+  - "nvidia-peermem-gpudirect-rdma-k8s"
 tags: ["nvidia", "gpu-operator", "gds", "gpudirect-storage", "storage", "performance"]
 publishDate: "2026-02-26"
 updatedDate: "2026-02-26"

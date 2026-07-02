@@ -11,9 +11,9 @@ tags: ["multi-cluster", "federation", "fleet", "gitops", "management"]
 relatedRecipes:
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-graceful-shutdown-guide"
-  - argocd-multi-cluster-app-of-apps
-  - kubectl-config-context-management
-  - kubernetes-multi-cluster-management
+  - "argocd-multi-cluster-app-of-apps"
+  - "kubectl-config-context-management"
+  - "kubernetes-multi-cluster-management"
 ---
 
 > 💡 **Quick Answer:** Manage multiple K8s clusters by: 1) `kubectl` contexts for manual switching, 2) ArgoCD ApplicationSets for GitOps fleet deployment, 3) Cluster API for lifecycle management, or 4) Rancher/OpenShift ACM for full platform management.

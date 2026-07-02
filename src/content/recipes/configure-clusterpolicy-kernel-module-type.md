@@ -11,7 +11,7 @@ prerequisites:
 relatedRecipes:
   - "resource-quotas"
   - "resource-limits-requests"
-  - "pod-resource-management"
+  - "kubernetes-pod-resource-monitoring-grafana"
   - "pod-mutation-injection"
   - "kubernetes-kustomize-configuration-management"
   - "kubernetes-leases"
@@ -20,7 +20,7 @@ relatedRecipes:
   - "kubernetes-cost-optimization"
   - "kubectl-config-context-management"
   - "tune-nccl-env-rdma-ethernet"
-  - "switch-gpudirect-rdma-dma-buf"
+  - "nvidia-peermem-gpudirect-rdma-k8s"
   - "enable-gpudirect-storage-openshift"
   - "switch-proprietary-to-open-kernel-modules"
   - "api-versions-deprecations"

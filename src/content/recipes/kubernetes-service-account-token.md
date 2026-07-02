@@ -11,7 +11,7 @@ tags: ["service-account", "token", "rbac", "authentication", "security", "tokenr
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
-  - kubernetes-user-onboarding-offboarding-automation
+  - "kubernetes-user-onboarding-offboarding-automation"
 ---
 
 > 💡 **Quick Answer:** Since Kubernetes 1.24, service account tokens are no longer auto-created as Secrets. Use `kubectl create token <sa>` for short-lived tokens or projected volumes for pod authentication. Long-lived tokens require explicit Secret creation.

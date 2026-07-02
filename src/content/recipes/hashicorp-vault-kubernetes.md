@@ -13,11 +13,11 @@ prerequisites:
 relatedRecipes:
   - "openclaw-secrets-management"
   - "external-secrets-operator"
-  - "sealed-secrets-gitops"
+  - "kubernetes-sealed-secrets-management"
   - "secrets-management-best-practices"
   - "kyverno-policy-management"
-  - "oidc-authentication-kubernetes"
-  - "pod-security-context"
+  - "kubernetes-oidc-authentication-guide"
+  - "kubernetes-security-context-guide"
   - "selinux-scc-gpu-operator-openshift"
 tags:
   - vault

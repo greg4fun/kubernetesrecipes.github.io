@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "resource-limits-requests"
   - "kubernetes-namespace-guide"
-  - "vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "kubernetes-projected-volumes-guide"
   - "kubernetes-qos-classes-guide"
 ---

@@ -8,7 +8,7 @@ author: "Luca Berton"
 tags: ["blue-green", "canary", "deployment", "zero-downtime", "traffic"]
 relatedRecipes:
   - "openclaw-webhook-automation-kubernetes"
-  - "pod-priority-preemption-scheduling"
+  - "kubernetes-pod-priority-preemption-scheduling"
   - "openclaw-signal-kubernetes"
 ---
 

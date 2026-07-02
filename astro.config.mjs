@@ -81,6 +81,22 @@ const redirectStubPaths = new Set([
   "/recipes/networking/linkerd-service-mesh/",
   "/recipes/deployments/liveness-readiness-probes/",
   "/recipes/storage/local-persistent-volumes/",
+  "/recipes/configuration/pod-resource-management/",
+  "/recipes/security/pod-security-admission/",
+  "/recipes/security/pod-security-context/",
+  "/recipes/observability/prometheus-monitoring-setup/",
+  "/recipes/networking/rate-limiting-kubernetes/",
+  "/recipes/configuration/resource-requests-limits/",
+  "/recipes/security/sealed-secrets-gitops/",
+  "/recipes/networking/switch-gpudirect-rdma-dma-buf/",
+  "/recipes/autoscaling/vertical-pod-autoscaler/",
+  "/recipes/deployments/multi-container-pod-patterns/",
+  "/recipes/configuration/node-taints-tolerations/",
+  "/recipes/deployments/taints-tolerations/",
+  "/recipes/security/oidc-authentication-kubernetes/",
+  "/recipes/observability/opentelemetry-collector/",
+  "/recipes/deployments/pod-affinity-anti-affinity/",
+  "/recipes/deployments/pod-priority-preemption-scheduling/",
 ]);
 
 // https://astro.build/config

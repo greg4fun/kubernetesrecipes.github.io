@@ -11,8 +11,8 @@ tags: ["cloudnativepg", "postgresql", "database", "operator", "backup", "high-av
 relatedRecipes:
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-graceful-shutdown-guide"
-  - mariadb-scc-openshift-deployment
-  - kubernetes-storage-best-practices
+  - "mariadb-scc-openshift-deployment"
+  - "kubernetes-storage-best-practices"
 ---
 
 > 💡 **Quick Answer:** CloudNativePG is a Kubernetes operator that manages PostgreSQL clusters natively. Define a `Cluster` CRD with instances, storage, and backup config — the operator handles replication, failover, and WAL archiving automatically.

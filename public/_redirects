@@ -129,3 +129,21 @@
 /recipes/networking/linkerd-service-mesh/    /recipes/networking/linkerd-service-mesh-mtls-kubernetes/    301
 /recipes/deployments/liveness-readiness-probes/    /recipes/deployments/kubernetes-readiness-probe-guide/    301
 /recipes/storage/local-persistent-volumes/    /recipes/storage/kubernetes-local-persistent-volumes/    301
+
+# Duplicate-content consolidation batch 3 (SEO audit 2026-07-02) — merge-then-redirect
+/recipes/configuration/pod-resource-management/    /recipes/observability/kubernetes-pod-resource-monitoring-grafana/    301
+/recipes/security/pod-security-admission/    /recipes/security/kubernetes-pod-security-admission/    301
+/recipes/security/pod-security-context/    /recipes/security/kubernetes-security-context-guide/    301
+/recipes/observability/prometheus-monitoring-setup/    /recipes/observability/prometheus-monitoring-kubernetes-guide/    301
+/recipes/networking/rate-limiting-kubernetes/    /recipes/networking/kubernetes-rate-limiting-guide/    301
+/recipes/configuration/resource-requests-limits/    /recipes/configuration/kubernetes-resource-requests-limits/    301
+/recipes/security/sealed-secrets-gitops/    /recipes/security/kubernetes-sealed-secrets-management/    301
+/recipes/networking/switch-gpudirect-rdma-dma-buf/    /recipes/ai/nvidia-peermem-gpudirect-rdma-k8s/    301
+/recipes/autoscaling/vertical-pod-autoscaler/    /recipes/autoscaling/kubernetes-vertical-pod-autoscaler-vpa/    301
+/recipes/deployments/multi-container-pod-patterns/    /recipes/deployments/kubernetes-multi-container-pod-patterns/    301
+/recipes/configuration/node-taints-tolerations/    /recipes/configuration/kubernetes-taint-toleration-guide/    301
+/recipes/deployments/taints-tolerations/    /recipes/configuration/kubernetes-taint-toleration-guide/    301
+/recipes/security/oidc-authentication-kubernetes/    /recipes/security/kubernetes-oidc-authentication-guide/    301
+/recipes/observability/opentelemetry-collector/    /recipes/observability/kubernetes-opentelemetry-collector/    301
+/recipes/deployments/pod-affinity-anti-affinity/    /recipes/deployments/kubernetes-pod-affinity-antiaffinity/    301
+/recipes/deployments/pod-priority-preemption-scheduling/    /recipes/configuration/kubernetes-pod-priority-preemption-scheduling/    301

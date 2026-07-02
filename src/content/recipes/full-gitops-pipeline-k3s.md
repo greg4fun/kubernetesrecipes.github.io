@@ -11,10 +11,10 @@ tags: ["gitops", "argocd", "octopus-deploy", "gitea", "ci-cd", "pipeline", "k3s"
 relatedRecipes:
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-graceful-shutdown-guide"
-  - gitea-actions-runner-quay-push
-  - octopus-deploy-kubernetes-agent
-  - hugo-nginx-static-site-k3s
-  - kairos-k3s-hetzner-immutable-bootstrap
+  - "gitea-actions-runner-quay-push"
+  - "octopus-deploy-kubernetes-agent"
+  - "hugo-nginx-static-site-k3s"
+  - "kairos-k3s-hetzner-immutable-bootstrap"
 ---
 
 > 💡 **Quick Answer:** The complete pipeline: `git push` → Gitea Actions builds + pushes to quay.io → Octopus Deploy creates release → deploys to ephemeral preview → manual review → promotes to production → ArgoCD syncs desired state to cluster. Full audit trail, zero manual deployments.

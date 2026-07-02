@@ -6,7 +6,7 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
-  - "vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "kubernetes-oomkilled-troubleshooting"
   - "horizontal-pod-autoscaler"
 tags: ["cost", "optimization", "resources", "finops", "efficiency"]

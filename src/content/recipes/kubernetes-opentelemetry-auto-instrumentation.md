@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "helm-sprig-cat-function"
   - "opentelemetry-kubernetes-observability"
-  - "opentelemetry-collector"
+  - "kubernetes-opentelemetry-collector"
   - "kubernetes-golden-signals-sli-slo"
 ---
 

@@ -11,9 +11,9 @@ tags: ["downward-api", "environment-variables", "metadata", "fieldref", "pod-inf
 relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
-  - kubernetes-environment-variables
-  - kubernetes-configmap-from-file
-  - kubernetes-service-account-token
+  - "kubernetes-environment-variables"
+  - "kubernetes-configmap-from-file"
+  - "kubernetes-service-account-token"
 ---
 
 > 💡 **Quick Answer:** The Downward API exposes pod/container metadata via environment variables (`fieldRef`) or volume files. Use `fieldRef` for pod name, namespace, node name, labels, and annotations. Use `resourceFieldRef` for CPU/memory requests and limits.

@@ -11,8 +11,8 @@ tags: ["mutagen", "file-sync", "development", "hot-reload", "remote-development"
 relatedRecipes:
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-graceful-shutdown-guide"
-  - kubectl-cp-copy-files-pods
-  - kubernetes-exec-into-pod
+  - "kubectl-cp-copy-files-pods"
+  - "kubernetes-exec-into-pod"
 ---
 
 > 💡 **Quick Answer:** Mutagen syncs files in real-time between your local filesystem and a Kubernetes pod using `kubernetes://namespace/pod/container` URLs. Unlike `kubectl cp`, Mutagen watches for changes and syncs bidirectionally — enabling local-IDE + remote-cluster development.

@@ -10,9 +10,9 @@ kubernetesVersion: "1.21+"
 tags: ["hostpath", "volumes", "storage", "daemonset", "security", "local-storage"]
 relatedRecipes:
   - "openshift-lifecycle-versions"
-  - kubernetes-storage-best-practices
-  - kubernetes-emptydir-volume
-  - pod-security-context
+  - "kubernetes-storage-best-practices"
+  - "kubernetes-emptydir-volume"
+  - "kubernetes-security-context-guide"
 ---
 
 > 💡 **Quick Answer:** `hostPath` mounts a file or directory from the host node's filesystem into a pod. Use only for DaemonSets (log collectors, monitoring agents) — never for regular workloads. Prefer `local` PersistentVolumes or CSI drivers for production storage.

@@ -12,7 +12,7 @@ prerequisites:
   - "SR-IOV resource available on worker nodes"
 relatedRecipes:
   - "ingress-tls-certificates"
-  - "rate-limiting-kubernetes"
+  - "kubernetes-rate-limiting-guide"
   - "create-nv-ipam-ippool"
   - "troubleshoot-nv-ipam-pool-not-found"
   - "openshift-sriov-vf-creation"

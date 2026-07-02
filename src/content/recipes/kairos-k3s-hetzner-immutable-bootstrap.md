@@ -11,10 +11,10 @@ tags: ["kairos", "k3s", "hetzner", "immutable", "cloud-init", "single-node"]
 relatedRecipes:
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-graceful-shutdown-guide"
-  - cilium-ebpf-gateway-api-hubble-k3s
-  - certmanager-ovh-dns01-wildcard-tls
-  - gateway-api-httproutes-tls-k3s
-  - gitea-postgresql-valkey-k3s
+  - "cilium-ebpf-gateway-api-hubble-k3s"
+  - "certmanager-ovh-dns01-wildcard-tls"
+  - "gateway-api-httproutes-tls-k3s"
+  - "gitea-postgresql-valkey-k3s"
 ---
 
 > 💡 **Quick Answer:** Kairos turns any Linux distro into an immutable, A/B-upgradeable OS for Kubernetes. Combined with k3s on a Hetzner CPX42 (8 vCPU / 16 GB), you get a production-capable single-node cluster for ~€15/month.

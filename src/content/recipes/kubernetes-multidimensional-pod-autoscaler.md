@@ -15,7 +15,7 @@ tags:
   - gke
 relatedRecipes:
   - "horizontal-pod-autoscaler"
-  - "vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
 ---
 
 > 💡 **Quick Answer:** MPA (Multidimensional Pod Autoscaler) scales replicas AND adjusts resource requests simultaneously. It solves the classic "HPA or VPA but not both" problem. On GKE, use `MultidimPodAutoscaler` CRD. On vanilla K8s, combine HPA (for replicas) with VPA in `Off` mode (for recommendations) and apply recommendations via CI/CD.

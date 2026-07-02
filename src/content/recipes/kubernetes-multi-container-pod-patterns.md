@@ -256,6 +256,33 @@ All patterns share:
 - Independent images and resource limits
 ```
 
+### Shared Volume and localhost Communication
+
+Every pattern above relies on the same two primitives — a shared `emptyDir` for file-based handoff, and `localhost` for network calls between containers in the pod:
+
+```yaml
+spec:
+  containers:
+    - name: producer
+      image: busybox:1.36
+      command: ["sh", "-c", "while true; do date >> /shared/data.txt; sleep 10; done"]
+      volumeMounts: [{name: shared-data, mountPath: /shared}]
+    - name: consumer
+      image: busybox:1.36
+      command: ["sh", "-c", "tail -F /shared/data.txt"]
+      volumeMounts: [{name: shared-data, mountPath: /shared, readOnly: true}]
+  volumes:
+    - name: shared-data
+      emptyDir: {}
+```
+
+```bash
+# Verify all containers are running, and inspect a specific one
+kubectl get pod app-with-log-sidecar -o jsonpath='{.status.containerStatuses[*].name}'
+kubectl logs app-with-log-sidecar -c log-shipper
+kubectl exec app-with-log-sidecar -c main-app -- cat /var/log/app/access.log
+```
+
 ## Common Issues
 
 ### Sidecar starting after main container (race condition)

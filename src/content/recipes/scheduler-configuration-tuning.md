@@ -16,8 +16,8 @@ relatedRecipes:
   - "kubernetes-labels-selectors-guide"
   - "kubernetes-kustomize-overlays-guide"
   - "kubernetes-kustomization-yaml-guide"
-  - "pod-affinity-anti-affinity"
-  - "taints-tolerations"
+  - "kubernetes-pod-affinity-antiaffinity"
+  - "kubernetes-taint-toleration-guide"
   - "kubernetes-pod-priority-preemption-scheduling"
 tags:
   - scheduler

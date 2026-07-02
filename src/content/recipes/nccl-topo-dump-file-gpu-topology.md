@@ -11,9 +11,9 @@ tags: ["nccl", "topology", "gpu", "nvlink", "debugging", "multi-gpu"]
 relatedRecipes:
   - "vllm-kubernetes-deployment-guide"
   - "nvidia-gpu-time-slicing-mig"
-  - verify-nccl-rdma-traffic-debug
-  - run-nccl-tests-kubernetes
-  - inter-node-tensor-parallelism-kubernetes
+  - "verify-nccl-rdma-traffic-debug"
+  - "run-nccl-tests-kubernetes"
+  - "inter-node-tensor-parallelism-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Set `NCCL_TOPO_DUMP_FILE=/tmp/nccl_topo.xml` to export the GPU/network topology graph that NCCL discovers. Analyze it to verify NVLink connectivity, PCIe affinity, InfiniBand paths, and identify suboptimal GPU communication routes.

@@ -11,7 +11,7 @@ tags: ["dns", "dnspolicy", "hostnetwork", "resolv-conf", "coredns", "networking"
 relatedRecipes:
   - "kubernetes-service-types-explained"
   - "kubernetes-ingress-path-routing"
-  - kubernetes-network-policy-recipes
+  - "kubernetes-network-policy-recipes"
 ---
 
 > 💡 **Quick Answer:** Use `dnsPolicy: ClusterFirstWithHostNet` when your pod uses `hostNetwork: true` but still needs to resolve cluster services (e.g., `myservice.namespace.svc.cluster.local`). Without it, hostNetwork pods use the node's `/etc/resolv.conf` and can't find cluster DNS.

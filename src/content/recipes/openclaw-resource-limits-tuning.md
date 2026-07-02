@@ -18,7 +18,7 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-ha-kubernetes"
   - "resource-limits-requests"
-  - "vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
 ---
 
 > 💡 **Quick Answer:** Start with 512Mi/250m requests, 2Gi/1 CPU limits for the gateway. Add 1-2Gi for Chromium sidecar. Use VPA to right-size after a week of real usage data. The init container needs minimal resources (64Mi/100m limits).

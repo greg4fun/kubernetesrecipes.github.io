@@ -179,6 +179,56 @@ best-effort         │ 1 (Never)   │ None     │ Dev experiments, spot-like
 ────────────────────┴─────────────┴──────────┴──────────────────────────
 ```
 
+### Combine with PDBs and Per-Tier Resource Quotas
+
+Priority alone doesn't guarantee a workload can't be starved of resources at the namespace level — pair it with a PDB (so preemption can't drop a service below its minimum) and per-tier quotas (so low-priority workloads can't hoard capacity that would otherwise cushion preemption):
+
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata: {name: postgres-pdb, namespace: production}
+spec:
+  minAvailable: 1
+  selector: {matchLabels: {app: postgres}}
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata: {name: low-priority-quota, namespace: production}
+spec:
+  hard: {pods: "50", requests.cpu: "10", requests.memory: "20Gi"}
+  scopeSelector:
+    matchExpressions:
+      - {scopeName: PriorityClass, operator: In, values: ["batch-low", "best-effort"]}
+```
+
+### Verification and Monitoring
+
+```bash
+# Which priority class is each pod actually using?
+kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.name}: {.spec.priorityClassName}{"\n"}{end}'
+
+# Pods with no explicit priorityClassName (relying on globalDefault)
+kubectl get pods -A -o json | jq -r '.items[] | select(.spec.priorityClassName == null) | "\(.metadata.namespace)/\(.metadata.name)"'
+
+# Watch preemption as it happens
+kubectl get events -A -w --field-selector reason=Preempted
+```
+
+```yaml
+# Alert if preemption rate spikes — usually means the cluster is undersized, not that priority is misconfigured
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata: {name: priority-alerts}
+spec:
+  groups:
+    - name: pod-priority
+      rules:
+        - alert: HighPreemptionRate
+          expr: increase(scheduler_preemption_attempts_total[1h]) > 10
+          for: 5m
+          labels: {severity: warning}
+```
+
 ## Common Issues
 
 ### Critical pod not preempting lower-priority pods

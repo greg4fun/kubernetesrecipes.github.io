@@ -15,7 +15,7 @@ tags:
   - "microvm"
 relatedRecipes:
   - "gvisor-container-runtime"
-  - "pod-security-context"
+  - "kubernetes-security-context-guide"
   - "kubernetes-rbac-role-rolebinding"
 ---
 

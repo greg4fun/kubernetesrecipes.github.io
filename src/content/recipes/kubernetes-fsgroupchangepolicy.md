@@ -14,7 +14,7 @@ difficulty: "intermediate"
 timeToComplete: "10 minutes"
 relatedRecipes:
   - "kubernetes-fsgroupchangepolicy-guide"
-  - "pod-security-context"
+  - "kubernetes-security-context-guide"
   - "kubernetes-pod-lifecycle"
 ---
 

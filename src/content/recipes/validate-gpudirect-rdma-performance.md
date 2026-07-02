@@ -18,7 +18,7 @@ relatedRecipes:
   - "kubernetes-dnspolicy-clusterfirstwithhostnet"
   - "nfsordma-troubleshooting-performance"
   - "configure-gpudirect-rdma-gpu-operator"
-  - "switch-gpudirect-rdma-dma-buf"
+  - "nvidia-peermem-gpudirect-rdma-k8s"
   - "compare-nccl-intra-inter-node"
 tags:
   - nvidia

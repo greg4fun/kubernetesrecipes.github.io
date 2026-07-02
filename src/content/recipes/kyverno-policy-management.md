@@ -12,8 +12,8 @@ prerequisites:
 relatedRecipes:
   - "admission-webhooks"
   - "pod-security-standards"
-  - "oidc-authentication-kubernetes"
-  - "pod-security-context"
+  - "kubernetes-oidc-authentication-guide"
+  - "kubernetes-security-context-guide"
   - "selinux-scc-gpu-operator-openshift"
 tags:
   - kyverno

@@ -15,7 +15,7 @@ tags:
   - "cka"
 relatedRecipes:
   - "kubernetes-kubeadm-upgrade-guide"
-  - "oidc-authentication-kubernetes"
+  - "kubernetes-oidc-authentication-guide"
 ---
 
 > 💡 **Quick Answer:** Check certificate expiration: `kubeadm certs check-expiration`. Renew all: `kubeadm certs renew all`. Certificates auto-renew during `kubeadm upgrade`. Default expiration: 1 year (CA: 10 years). After renewal, restart control plane components: `crictl` or move static pod manifests.

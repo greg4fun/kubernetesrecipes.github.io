@@ -18,7 +18,7 @@ relatedRecipes:
   - "kubernetes-grafana-dashboards-guide"
   - "grafana-kubernetes-dashboards"
   - "grafana-dashboard-6417-kubernetes"
-  - "prometheus-monitoring-setup"
+  - "prometheus-monitoring-kubernetes-guide"
   - "kubernetes-resource-limits-cpu-memory-format"
   - "kubernetes-cost-monitoring-kubecost"
 ---
@@ -190,6 +190,53 @@ curl -X POST http://grafana:3000/api/dashboards/import \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $GRAFANA_TOKEN" \
   -d '{"dashboard": {"id": 15759}, "overwrite": true, "inputs": [{"name": "DS_PROMETHEUS", "value": "Prometheus"}]}'
+```
+
+### The Fundamentals Behind the Metrics: Requests, Limits, and QoS
+
+The dashboards above visualize usage against requests/limits — here's what those actually configure. `requests` drive scheduling (a pod won't land on a node that lacks the requested capacity); `limits` cap usage — CPU is throttled past its limit, memory triggers an OOMKill:
+
+```yaml
+resources:
+  requests: {cpu: "250m", memory: "256Mi"}   # scheduling guarantee
+  limits: {cpu: "1", memory: "512Mi"}         # hard ceiling
+```
+
+Kubernetes derives a QoS class from how requests/limits compare, and uses it to decide eviction order under node pressure:
+
+```text
+Guaranteed — requests == limits for every container       → evicted last
+Burstable  — requests set, limits higher (or unset)        → evicted after BestEffort
+BestEffort — no requests or limits set at all               → evicted first
+```
+
+```bash
+kubectl get pod <pod> -o jsonpath='{.status.qosClass}'
+```
+
+### Namespace-Wide Defaults and Caps
+
+Rather than set resources on every pod spec, `LimitRange` fills in defaults and enforces min/max per container; `ResourceQuota` caps the namespace's total consumption:
+
+```yaml
+apiVersion: v1
+kind: LimitRange
+metadata: {name: default-limits, namespace: development}
+spec:
+  limits:
+    - type: Container
+      default: {cpu: "500m", memory: "256Mi"}        # applied if a pod sets none
+      defaultRequest: {cpu: "100m", memory: "128Mi"}
+      min: {cpu: "50m", memory: "64Mi"}
+      max: {cpu: "2", memory: "2Gi"}
+```
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata: {name: compute-quota, namespace: development}
+spec:
+  hard: {requests.cpu: "10", requests.memory: "20Gi", limits.cpu: "20", limits.memory: "40Gi", pods: "50"}
 ```
 
 ## Common Issues

@@ -158,6 +158,17 @@ spec:
         mode: "Off"    # Don't touch init containers
 ```
 
+### Goldilocks: A Dashboard for VPA Recommendations
+
+Reading `kubectl describe vpa` for every deployment doesn't scale — Goldilocks runs a VPA in recommendation mode for every workload in labeled namespaces and shows them all in one UI:
+
+```bash
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm install goldilocks fairwinds-stable/goldilocks --namespace goldilocks --create-namespace
+
+kubectl label namespace production goldilocks.fairwinds.com/enabled=true
+```
+
 ## Common Issues
 
 ### VPA evicting pods too frequently

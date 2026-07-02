@@ -15,7 +15,7 @@ relatedRecipes:
   - "install-helm-amazon-linux"
   - "crashloopbackoff-troubleshooting"
   - "configure-gpudirect-rdma-gpu-operator"
-  - "switch-gpudirect-rdma-dma-buf"
+  - "nvidia-peermem-gpudirect-rdma-k8s"
   - "configure-sriovnetwork-nv-ipam"
   - "agent-config-device-by-path"
   - "selinux-scc-gpu-operator-openshift"

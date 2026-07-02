@@ -14,7 +14,7 @@ difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "alertmanager-configuration"
-  - "prometheus-monitoring-setup"
+  - "prometheus-monitoring-kubernetes-guide"
   - "kubernetes-alerting-best-practices"
   - "kubernetes-golden-signals-sli-slo"
   - "kubernetes-monitoring-guide"

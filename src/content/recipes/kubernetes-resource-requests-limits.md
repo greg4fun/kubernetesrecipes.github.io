@@ -7,7 +7,7 @@ publishDate: "2026-04-03"
 tags: ["resources", "requests", "limits", "cpu", "memory", "qos", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "pod-resource-management"
+  - "kubernetes-pod-resource-monitoring-grafana"
   - "resource-limits-requests"
   - "kubectl-cheat-sheet"
   - "kubernetes-affinity-guide"
@@ -17,7 +17,7 @@ relatedRecipes:
 
 ## The Problem
 
-This is one of the most searched Kubernetes topics. Having a comprehensive, well-structured guide helps both beginners and experienced users quickly find what they need.
+Pods get OOMKilled, throttled, or stuck Pending because requests and limits are missing, mismatched, or copy-pasted without matching the workload's actual usage.
 
 ## The Solution
 
@@ -96,6 +96,63 @@ graph TD
     D -->|Memory exceeded| F[OOMKilled - restarted]
 ```
 
+### Common Mistakes
+
+```yaml
+# Memory limit below request — rejected by the API server, not just bad practice
+resources:
+  requests: {memory: "512Mi"}
+  limits: {memory: "256Mi"}    # INVALID: must be >= request
+```
+
+```yaml
+# No limits at all — this container can consume the entire node's remaining capacity
+resources:
+  requests: {memory: "128Mi", cpu: "100m"}
+  # limits omitted
+```
+
+Requests set far above actual usage waste cluster capacity just as much as missing limits risk instability — both show up in a `kubectl top pods` vs. requests comparison.
+
+### Namespace-Level Defaults and Caps
+
+Don't rely on every team remembering to set resources correctly — `LimitRange` fills in defaults and enforces bounds, `ResourceQuota` caps the namespace total:
+
+```yaml
+apiVersion: v1
+kind: LimitRange
+metadata: {name: default-limits, namespace: production}
+spec:
+  limits:
+    - type: Container
+      default: {memory: "256Mi", cpu: "500m"}
+      defaultRequest: {memory: "128Mi", cpu: "100m"}
+      min: {memory: "64Mi", cpu: "50m"}
+      max: {memory: "2Gi", cpu: "2"}
+```
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata: {name: compute-quota, namespace: production}
+spec:
+  hard: {requests.cpu: "10", requests.memory: "20Gi", limits.cpu: "20", limits.memory: "40Gi", pods: "50"}
+```
+
+### Troubleshooting
+
+```bash
+# OOMKilled — check for the event, then raise the memory limit or fix the leak
+kubectl describe pod myapp | grep -i oom
+kubectl get events --field-selector reason=OOMKilled
+
+# Pending — insufficient node capacity for the requested resources
+kubectl describe pod myapp | grep -i insufficient
+
+# CPU throttling — read the cgroup stats directly
+kubectl exec myapp -- cat /sys/fs/cgroup/cpu.stat
+```
+
 ## Frequently Asked Questions
 
 ### Should I always set limits?
@@ -108,14 +165,16 @@ Start with requests based on actual usage (check `kubectl top pods`). Set memory
 
 ## Best Practices
 
-- **Start simple** — use the basic form first, add complexity as needed
-- **Be consistent** — follow naming conventions across your cluster
-- **Document your choices** — add annotations explaining why, not just what
-- **Monitor and iterate** — review configurations regularly
+- **Always set memory limits** — an unbounded container can starve every other pod on the node
+- **CPU limits are debatable** — throttling can cause latency spikes; some teams set CPU requests only
+- **Use `LimitRange` for namespace defaults** so a forgotten resource block doesn't default to BestEffort
+- **Right-size from real data** — `kubectl top pods` or VPA recommendations, not guesses
+- **Re-check after workload changes** — a code change that alters memory/CPU profile makes old limits stale
 
 ## Key Takeaways
 
-- This is fundamental Kubernetes knowledge every engineer needs
-- Start with the simplest approach that solves your problem
-- Use `kubectl explain` and `kubectl describe` when unsure
-- Practice in a test cluster before applying to production
+- Requests drive scheduling; limits are enforced at runtime — CPU throttles, memory OOMKills
+- Memory limit must be ≥ request or the pod spec is rejected outright
+- `LimitRange` sets namespace defaults/bounds; `ResourceQuota` caps the namespace total
+- QoS class (Guaranteed/Burstable/BestEffort) is derived automatically and determines eviction order
+- Diagnose OOMKilled with `kubectl describe`/events, Pending with insufficient-resource events, throttling via cgroup `cpu.stat`

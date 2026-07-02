@@ -11,7 +11,7 @@ tags: ["kubectl", "recording", "audit", "documentation", "terminal", "openshift"
 relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
-  - kubectl-logs-view-pod-logs
+  - "kubectl-logs-view-pod-logs"
 ---
 
 > 💡 **Quick Answer:** Use `asciinema rec` to record kubectl terminal sessions as shareable replays. For server-side audit, enable Kubernetes audit logging. For automated documentation, pipe commands through `script` or use `kubectl` with `--v=6` for full API request logging.

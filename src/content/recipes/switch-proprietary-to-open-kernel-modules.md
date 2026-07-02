@@ -19,7 +19,7 @@ relatedRecipes:
   - "selinux-scc-gpu-operator-openshift"
   - "configure-clusterpolicy-kernel-module-type"
   - "enable-gpudirect-storage-openshift"
-  - "switch-gpudirect-rdma-dma-buf"
+  - "nvidia-peermem-gpudirect-rdma-k8s"
 tags:
   - nvidia
   - gpu-operator

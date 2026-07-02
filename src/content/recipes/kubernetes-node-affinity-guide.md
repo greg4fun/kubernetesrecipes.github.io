@@ -14,7 +14,7 @@ tags:
   - "topology"
   - "cka"
 relatedRecipes:
-  - "node-taints-tolerations"
+  - "kubernetes-taint-toleration-guide"
   - "debug-scheduling-failures"
   - "kubernetes-node-untolerated-taint-master"
   - "kubernetes-topology-spread-constraints"

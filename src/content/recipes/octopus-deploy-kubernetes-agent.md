@@ -11,10 +11,10 @@ tags: ["octopus-deploy", "mssql", "release-management", "k3s", "ci-cd", "preview
 relatedRecipes:
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-graceful-shutdown-guide"
-  - gitea-actions-runner-quay-push
-  - full-gitops-pipeline-k3s
-  - hugo-nginx-static-site-k3s
-  - kairos-k3s-hetzner-immutable-bootstrap
+  - "gitea-actions-runner-quay-push"
+  - "full-gitops-pipeline-k3s"
+  - "hugo-nginx-static-site-k3s"
+  - "kairos-k3s-hetzner-immutable-bootstrap"
 ---
 
 > 💡 **Quick Answer:** Octopus Deploy 2025.4 handles release orchestration — creating releases from CI artifacts, deploying to ephemeral preview environments for review, and promoting to production via ArgoCD sync. The K8s agent model eliminates inbound firewall rules.

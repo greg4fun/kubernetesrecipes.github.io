@@ -10,7 +10,7 @@ relatedRecipes:
   - "install-helm-amazon-linux"
   - "helm-sprig-cat-function"
   - "crashloopbackoff-troubleshooting"
-  - "prometheus-monitoring-setup"
+  - "prometheus-monitoring-kubernetes-guide"
   - "grafana-kubernetes-dashboards"
   - "alertmanager-setup"
 ---

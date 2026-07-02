@@ -13,7 +13,7 @@ relatedRecipes:
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-readiness-probe-guide"
   - "jobs-cronjobs"
-  - "pod-priority-preemption-scheduling"
+  - "kubernetes-pod-priority-preemption-scheduling"
 tags:
   - cronjob
   - concurrency

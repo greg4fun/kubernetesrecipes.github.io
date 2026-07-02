@@ -11,10 +11,10 @@ tags: ["gateway-api", "httproute", "tls", "cilium", "k3s", "ingress"]
 relatedRecipes:
   - "kubernetes-service-types-explained"
   - "kubernetes-ingress-path-routing"
-  - cilium-ebpf-gateway-api-hubble-k3s
-  - certmanager-ovh-dns01-wildcard-tls
-  - kairos-k3s-hetzner-immutable-bootstrap
-  - gitea-postgresql-valkey-k3s
+  - "cilium-ebpf-gateway-api-hubble-k3s"
+  - "certmanager-ovh-dns01-wildcard-tls"
+  - "kairos-k3s-hetzner-immutable-bootstrap"
+  - "gitea-postgresql-valkey-k3s"
 ---
 
 > 💡 **Quick Answer:** Gateway API HTTPRoutes replace Ingress resources with explicit, type-safe routing. Combined with Cilium's native implementation, you get TLS termination, HTTP→HTTPS redirects, and path-based routing without any external ingress controller.

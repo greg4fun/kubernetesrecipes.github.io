@@ -101,6 +101,45 @@ graph TD
     ANTI[podAntiAffinity:<br/>replicas on different nodes] --> APP1 & APP2 & APP3
 ```
 
+### Node Affinity (Placement by Node Properties, Not Other Pods)
+
+Pod affinity/anti-affinity places pods relative to *other pods*; node affinity places them relative to *node labels* — use it for hardware requirements like GPU type:
+
+```yaml
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - {key: gpu-type, operator: In, values: [nvidia-a100, nvidia-v100]}
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 80
+        preference:
+          matchExpressions: [{key: gpu-type, operator: In, values: [nvidia-a100]}]
+```
+
+### Cross-Namespace Affinity
+
+By default, `podAffinity`/`podAntiAffinity` only match pods in the *same* namespace as the pod being scheduled. Use `namespaceSelector` to match across namespaces (e.g., a monitoring agent that should co-locate with any production workload, regardless of which namespace it's in):
+
+```yaml
+affinity:
+  podAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector: {matchLabels: {tier: backend}}
+        topologyKey: kubernetes.io/hostname
+        namespaceSelector: {matchLabels: {environment: production}}
+```
+
+### Reference: Topology Keys
+
+```text
+kubernetes.io/hostname              — per node
+topology.kubernetes.io/zone         — per availability zone
+topology.kubernetes.io/region       — per region
+node.kubernetes.io/instance-type    — per instance type
+```
+
 ## Common Issues
 
 **Pods stuck Pending with hard anti-affinity**

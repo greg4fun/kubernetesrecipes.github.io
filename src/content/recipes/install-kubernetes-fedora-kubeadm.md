@@ -11,8 +11,8 @@ tags: ["fedora", "kubeadm", "install", "containerd", "linux"]
 relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
-  - kubernetes-release-cycle-version-support
-  - kind-local-kubernetes
+  - "kubernetes-release-cycle-version-support"
+  - "kind-local-kubernetes"
 ---
 
 > 💡 **Quick Answer:** On Fedora: disable swap, enable kernel modules (br_netfilter, overlay), install containerd, add Kubernetes yum repo, install kubeadm/kubelet/kubectl, then run `kubeadm init`. Fedora uses dnf and has SELinux enabled by default.

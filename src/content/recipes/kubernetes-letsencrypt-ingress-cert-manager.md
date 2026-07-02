@@ -11,8 +11,8 @@ tags: ["cert-manager", "letsencrypt", "tls", "ingress", "certificates", "securit
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
-  - certmanager-ovh-dns01-wildcard-tls
-  - gateway-api-httproutes-tls-k3s
+  - "certmanager-ovh-dns01-wildcard-tls"
+  - "gateway-api-httproutes-tls-k3s"
 ---
 
 > 💡 **Quick Answer:** Install cert-manager, create a `ClusterIssuer` with Let's Encrypt, annotate your Ingress with `cert-manager.io/cluster-issuer`, and cert-manager automatically provisions and renews TLS certificates.

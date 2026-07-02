@@ -11,8 +11,8 @@ tags: ["cluster-autoscaler", "autoscaling", "node-scaling", "eks", "gke", "aks"]
 relatedRecipes:
   - "kubernetes-hpa-cpu-memory-guide"
   - "kubernetes-cluster-autoscaler-guide"
-  - cluster-autoscaler-setup
-  - kubernetes-hpa-custom-metrics-prometheus
+  - "cluster-autoscaler-setup"
+  - "kubernetes-hpa-custom-metrics-prometheus"
 ---
 
 > 💡 **Quick Answer:** Cluster Autoscaler adds nodes when pods are Pending (unschedulable) and removes underutilized nodes after `scale-down-delay-after-add` (default 10m). Configure with `--scale-down-utilization-threshold=0.5`, `--scale-down-unneeded-time=10m`, and node group min/max sizes.

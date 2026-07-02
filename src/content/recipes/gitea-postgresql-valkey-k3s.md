@@ -11,10 +11,10 @@ tags: ["gitea", "postgresql", "valkey", "redis", "k3s", "git", "ci-cd"]
 relatedRecipes:
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-graceful-shutdown-guide"
-  - kairos-k3s-hetzner-immutable-bootstrap
-  - gateway-api-httproutes-tls-k3s
-  - gitea-actions-runner-quay-push
-  - octopus-deploy-kubernetes-agent
+  - "kairos-k3s-hetzner-immutable-bootstrap"
+  - "gateway-api-httproutes-tls-k3s"
+  - "gitea-actions-runner-quay-push"
+  - "octopus-deploy-kubernetes-agent"
 ---
 
 > 💡 **Quick Answer:** Gitea is a lightweight, self-hosted Git forge (GitHub alternative) that runs on <512MB RAM. With PostgreSQL for persistence and Valkey for caching/queues, you get a full-featured Git platform including Actions CI on a single k3s node.

@@ -10,9 +10,9 @@ prerequisites:
   - "kubectl configured to access your cluster"
 relatedRecipes:
   - "configmap-secrets-management"
-  - "resource-requests-limits"
+  - "kubernetes-resource-requests-limits"
   - "cronjob-concurrency-policy"
-  - "pod-priority-preemption-scheduling"
+  - "kubernetes-pod-priority-preemption-scheduling"
 tags:
   - jobs
   - cronjobs

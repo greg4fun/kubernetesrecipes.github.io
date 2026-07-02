@@ -11,8 +11,8 @@ tags: ["dns", "service", "coredns", "networking", "service-discovery"]
 relatedRecipes:
   - "kubernetes-service-types-explained"
   - "kubernetes-ingress-path-routing"
-  - kubernetes-dnspolicy-clusterfirstwithhostnet
-  - kubernetes-service-types-clusterip-nodeport-loadbalancer
+  - "kubernetes-dnspolicy-clusterfirstwithhostnet"
+  - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
 ---
 
 > 💡 **Quick Answer:** Every Kubernetes Service gets a DNS name: `<service>.<namespace>.svc.cluster.local`. Within the same namespace, just use `<service>`. Cross-namespace: `<service>.<namespace>`. Headless services resolve to pod IPs directly.

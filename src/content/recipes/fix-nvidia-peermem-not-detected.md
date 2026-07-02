@@ -10,7 +10,7 @@ prerequisites:
   - "Mellanox ConnectX NIC present"
   - "MLNX_OFED or DOCA-OFED drivers installed"
 relatedRecipes:
-  - "switch-gpudirect-rdma-dma-buf"
+  - "nvidia-peermem-gpudirect-rdma-k8s"
   - "configure-clusterpolicy-kernel-module-type"
   - "enable-gpudirect-storage-openshift"
 tags:

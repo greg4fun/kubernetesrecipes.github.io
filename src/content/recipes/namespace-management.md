@@ -10,7 +10,7 @@ prerequisites:
   - "kubectl configured with admin privileges"
 relatedRecipes:
   - "rbac-service-accounts"
-  - "resource-requests-limits"
+  - "kubernetes-resource-requests-limits"
 tags:
   - namespaces
   - multi-tenancy

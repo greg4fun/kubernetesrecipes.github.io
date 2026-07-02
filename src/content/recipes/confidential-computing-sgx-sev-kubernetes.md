@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-gvisor-kata-containers-runtimeclass"
   - "post-quantum-cryptography-kubernetes"
   - "ai-security-platform-kubernetes"
-  - "pod-security-context"
+  - "kubernetes-security-context-guide"
   - "kata-containers-runtimeclass-kubernetes"
   - "kubernetes-secret-types-guide"
   - "kubernetes-rbac-role-rolebinding"

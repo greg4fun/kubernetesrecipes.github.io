@@ -11,9 +11,9 @@ tags: ["helm", "hooks", "delete-policy", "jobs", "lifecycle"]
 relatedRecipes:
   - "helm-values-override-patterns"
   - "helm-rollback-history-guide"
-  - helm-hooks-lifecycle
-  - helm-hooks-lifecycle-guide
-  - helm-sprig-cat-function
+  - "helm-hooks-lifecycle"
+  - "helm-hooks-lifecycle-guide"
+  - "helm-sprig-cat-function"
 ---
 
 > 💡 **Quick Answer:** Set `"helm.sh/hook-delete-policy"` annotation to control when hook resources are deleted: `before-hook-creation` (delete previous before running new), `hook-succeeded` (delete after success), `hook-failed` (delete after failure). Default: hooks are never deleted automatically.

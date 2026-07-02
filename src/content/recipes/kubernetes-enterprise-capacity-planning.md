@@ -15,8 +15,8 @@ timeToComplete: "35 minutes"
 relatedRecipes:
   - "kubernetes-cost-optimization-strategies"
   - "kubernetes-goldilocks-vpa-dashboard"
-  - "vertical-pod-autoscaler"
-  - "pod-resource-management"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
+  - "kubernetes-pod-resource-monitoring-grafana"
 ---
 
 > 💡 **Quick Answer:** Use Prometheus metrics + VPA recommendations + Goldilocks to analyze actual resource usage. Calculate cluster capacity as: `(node count × node resources) - system overhead - headroom buffer (20-30%)`. Plan for peak + growth rate over 6-12 months.

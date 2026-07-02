@@ -6,7 +6,7 @@ difficulty: "beginner"
 publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
-  - "vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "kubernetes-oomkilled-troubleshooting"
   - "horizontal-pod-autoscaler"
 tags: ["resources", "limits", "requests", "qos", "capacity-planning"]

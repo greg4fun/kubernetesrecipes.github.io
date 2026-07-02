@@ -10,7 +10,7 @@ prerequisites:
   - "kubectl configured to access your cluster"
   - "A Deployment to scale"
 relatedRecipes:
-  - "vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "llm-autoscaling-kubernetes"
   - "cluster-autoscaler-setup"
   - "hpa-custom-metrics"

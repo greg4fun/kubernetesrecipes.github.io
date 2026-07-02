@@ -7,7 +7,6 @@ publishDate: "2026-04-03"
 tags: ["taints", "tolerations", "scheduling", "node-selection", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "node-taints-tolerations"
   - "kubernetes-affinity-guide"
   - "kubectl-cheat-sheet"
   - "kubernetes-annotations-guide"
@@ -92,6 +91,61 @@ graph TD
     B -->|No| D[Scheduled normally]
     E[Pod with matching toleration] -->|Tries to schedule| B
     B -->|Yes, but tolerated| D
+```
+
+### Built-in Node Condition Taints
+
+Kubernetes automatically applies these when a node has a problem — no manual `kubectl taint` needed:
+
+```text
+node.kubernetes.io/not-ready              node.kubernetes.io/memory-pressure
+node.kubernetes.io/unreachable            node.kubernetes.io/disk-pressure
+node.kubernetes.io/network-unavailable    node.kubernetes.io/pid-pressure
+node.kubernetes.io/unschedulable
+```
+
+Critical pods that must ride out a brief node blip (rather than reschedule immediately) tolerate these explicitly with a bounded `tolerationSeconds`:
+
+```yaml
+tolerations:
+  - {key: "node.kubernetes.io/not-ready", operator: "Exists", effect: "NoExecute", tolerationSeconds: 300}
+  - {key: "node.kubernetes.io/unreachable", operator: "Exists", effect: "NoExecute", tolerationSeconds: 300}
+```
+
+### Graceful Node Maintenance Script
+
+Taint first (stop new pods, let tolerant pods migrate on their own schedule), then drain what's left:
+
+```bash
+#!/bin/bash
+NODE=$1
+kubectl taint nodes "$NODE" maintenance=true:NoSchedule
+sleep 60   # let pods with tolerationSeconds migrate gracefully first
+kubectl drain "$NODE" --ignore-daemonsets --delete-emptydir-data
+# ... perform maintenance ...
+kubectl uncordon "$NODE"
+kubectl taint nodes "$NODE" maintenance=true:NoSchedule-
+```
+
+### Multi-Tenant Team Isolation
+
+The same taint+toleration+nodeSelector combination used for GPU nodes works for dedicating nodes to a specific team:
+
+```bash
+kubectl taint nodes team-a-node-1 team=team-a:NoSchedule
+```
+
+```yaml
+spec:
+  tolerations: [{key: "team", operator: "Equal", value: "team-a", effect: "NoSchedule"}]
+  nodeSelector: {team: team-a}
+```
+
+### Auditing Taints Across the Cluster
+
+```bash
+kubectl get nodes -o custom-columns='NAME:.metadata.name,TAINTS:.spec.taints[*].key'
+kubectl get nodes -o json | jq '.items[] | select(.spec.taints == null) | .metadata.name'   # untainted nodes
 ```
 
 ## Frequently Asked Questions

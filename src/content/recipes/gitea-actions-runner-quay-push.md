@@ -11,10 +11,10 @@ tags: ["gitea", "actions", "ci-cd", "kaniko", "quay", "container-build", "k3s"]
 relatedRecipes:
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-graceful-shutdown-guide"
-  - gitea-postgresql-valkey-k3s
-  - octopus-deploy-kubernetes-agent
-  - full-gitops-pipeline-k3s
-  - copy-nim-image-internal-quay-registry
+  - "gitea-postgresql-valkey-k3s"
+  - "octopus-deploy-kubernetes-agent"
+  - "full-gitops-pipeline-k3s"
+  - "copy-nim-image-internal-quay-registry"
 ---
 
 > 💡 **Quick Answer:** Gitea Actions runners execute GitHub Actions-compatible workflows natively. Deploy a Kubernetes-based runner with Kaniko for rootless image builds, pushing directly to quay.io without Docker-in-Docker.

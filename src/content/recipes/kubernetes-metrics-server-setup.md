@@ -13,10 +13,10 @@ tags:
 difficulty: "beginner"
 timeToComplete: "15 minutes"
 relatedRecipes:
-  - "prometheus-monitoring-setup"
+  - "prometheus-monitoring-kubernetes-guide"
   - "horizontal-pod-autoscaler"
   - "kubernetes-resource-limits-cpu-memory-format"
-  - "vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "keda-vs-hpa-autoscaling-comparison"
   - "kubernetes-metrics-server-top"
 ---

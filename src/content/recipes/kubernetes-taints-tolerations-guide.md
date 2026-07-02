@@ -14,7 +14,7 @@ tags:
   - "nodes"
   - "cka"
 relatedRecipes:
-  - "node-taints-tolerations"
+  - "kubernetes-taint-toleration-guide"
   - "kubernetes-node-affinity-guide"
   - "kubernetes-node-untolerated-taint-master"
   - "debug-scheduling-failures"

@@ -11,9 +11,9 @@ tags: ["priority", "priorityclass", "scheduling", "preemption", "resource-manage
 relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
-  - priorityclasses-gpu-workloads
-  - taint-toleration-scheduling-issues
-  - kubernetes-resource-limits-cpu-memory-format
+  - "priorityclasses-gpu-workloads"
+  - "taint-toleration-scheduling-issues"
+  - "kubernetes-resource-limits-cpu-memory-format"
 ---
 
 > 💡 **Quick Answer:** "Missing pod priority" means your pod has no `priorityClassName` set — it gets priority 0 (lowest). Create a `PriorityClass` and reference it in your pod spec. Higher priority pods preempt lower ones when resources are scarce.

@@ -10,10 +10,10 @@ kubernetesVersion: "1.31+"
 tags: ["hugo", "nginx", "static-site", "k3s", "deployment", "brotli"]
 relatedRecipes:
   - "crashloopbackoff-troubleshooting"
-  - gateway-api-httproutes-tls-k3s
-  - gitea-actions-runner-quay-push
-  - full-gitops-pipeline-k3s
-  - kairos-k3s-hetzner-immutable-bootstrap
+  - "gateway-api-httproutes-tls-k3s"
+  - "gitea-actions-runner-quay-push"
+  - "full-gitops-pipeline-k3s"
+  - "kairos-k3s-hetzner-immutable-bootstrap"
 ---
 
 > 💡 **Quick Answer:** Build Hugo sites in CI, serve with nginx in a minimal container (<15MB). Brotli pre-compression + aggressive caching delivers sub-100ms TTFB for static content.

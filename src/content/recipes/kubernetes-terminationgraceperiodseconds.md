@@ -11,9 +11,9 @@ tags: ["termination", "graceful-shutdown", "sigterm", "prestop", "pod-lifecycle"
 relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
-  - kubernetes-graceful-shutdown
-  - kubernetes-graceful-shutdown-guide
-  - kubectl-rollout-restart-deployment
+  - "kubernetes-graceful-shutdown"
+  - "kubernetes-graceful-shutdown-guide"
+  - "kubectl-rollout-restart-deployment"
 ---
 
 > 💡 **Quick Answer:** `terminationGracePeriodSeconds` defaults to **30 seconds**. When a pod is deleted, Kubernetes sends SIGTERM, waits this duration for graceful shutdown, then sends SIGKILL. Set higher for slow-draining apps (databases, message queues).

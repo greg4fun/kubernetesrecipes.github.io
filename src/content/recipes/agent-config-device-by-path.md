@@ -25,7 +25,7 @@ relatedRecipes:
   - "pod-topology-constraints"
   - "pod-lifecycle-hooks"
   - "pod-disruption-budget-config"
-  - "multi-container-pod-patterns"
+  - "kubernetes-multi-container-pod-patterns"
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-network-troubleshooting"
   - "kubernetes-leases"
@@ -42,7 +42,7 @@ relatedRecipes:
   - "dns-policies-configuration"
   - "kubernetes-dns-configuration"
   - "kubernetes-endpointslices"
-  - "rate-limiting-kubernetes"
+  - "kubernetes-rate-limiting-guide"
 tags:
   - sr-iov
   - networking

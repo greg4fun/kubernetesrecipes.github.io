@@ -13,7 +13,7 @@ tags:
   - "messaging"
 relatedRecipes:
   - "kubernetes-keda-event-driven-autoscaling"
-  - "vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "openclaw-ha-kubernetes"
   - "openclaw-multi-agent-kubernetes"
   - "kubernetes-keda-autoscaling-guide"

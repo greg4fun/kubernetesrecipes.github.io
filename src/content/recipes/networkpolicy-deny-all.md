@@ -10,8 +10,8 @@ prerequisites:
   - "kubectl configured to access your cluster"
 relatedRecipes:
   - "workload-identity-cloud-access"
-  - "pod-security-context"
-  - "oidc-authentication-kubernetes"
+  - "kubernetes-security-context-guide"
+  - "kubernetes-oidc-authentication-guide"
   - "nginx-ingress-tls-cert-manager"
 tags:
   - networkpolicy

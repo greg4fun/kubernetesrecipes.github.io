@@ -11,9 +11,9 @@ tags: ["kustomize", "kustomization", "configuration", "overlays", "gitops"]
 relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
-  - kubernetes-helm-vs-kustomize
-  - argocd-gitops
-  - kubernetes-configmap-from-file
+  - "kubernetes-helm-vs-kustomize"
+  - "argocd-gitops"
+  - "kubernetes-configmap-from-file"
 ---
 
 > 💡 **Quick Answer:** `kustomization.yaml` is the manifest file for Kustomize — it declares which resources to include, patches to apply, and generators to run. Use `kubectl apply -k ./` to deploy. Overlays extend a base for different environments without duplicating YAML.

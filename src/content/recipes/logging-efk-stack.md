@@ -8,8 +8,8 @@ author: "Luca Berton"
 tags: ["logging", "elasticsearch", "fluentd", "kibana", "efk", "observability"]
 relatedRecipes:
   - "openclaw-liveness-readiness-probes"
-  - "prometheus-monitoring-setup"
-  - "opentelemetry-collector"
+  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-opentelemetry-collector"
 ---
 
 > 💡 **Quick Answer:** Deploy EFK stack: **Elasticsearch** (storage), **Fluentd** DaemonSet (collector on each node), **Kibana** (visualization). Fluentd reads `/var/log/containers/*.log`, parses and enriches with Kubernetes metadata, sends to Elasticsearch. Access Kibana to search and visualize logs.

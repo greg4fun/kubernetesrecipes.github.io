@@ -11,7 +11,7 @@ tags: ["liveness", "probes", "health-check", "best-practices", "reliability"]
 relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
-  - fix-502-bad-gateway-kubernetes
+  - "fix-502-bad-gateway-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Liveness probes should check ONLY if the process is alive and responsive — never external dependencies (databases, APIs). Use `/healthz` with minimal logic. If the liveness probe fails, kubelet kills the container — cascading failures happen when probes check shared dependencies.
