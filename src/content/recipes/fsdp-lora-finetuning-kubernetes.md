@@ -17,6 +17,7 @@ relatedRecipes:
   - "distributed-multi-gpu-inference-kubernetes"
   - "kubernetes-1-36-topology-aware-scheduling"
   - "mistral-fsdp-lora-accelerate-config"
+  - "ray-data-pytorch-cpu-thread-oversubscription"
 ---
 
 > 💡 **Quick Answer:** Use PyTorch FSDP (Fully Sharded Data Parallel) with LoRA/PEFT to fine-tune 11B+ parameter models across multiple GPUs with minimal memory. Key: `fsdp_cpu_ram_efficient_loading` (only rank 0 loads weights), `fsdp_use_orig_params` (required for LoRA), and `FULL_STATE_DICT` for inference-ready checkpoints.

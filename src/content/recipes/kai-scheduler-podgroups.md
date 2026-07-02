@@ -13,6 +13,7 @@ relatedRecipes:
   - "kai-scheduler-installation"
   - "kai-scheduler-queues"
   - "vllm-alternatives-llm-inference-k8s"
+  - "ray-data-pytorch-cpu-thread-oversubscription"
 tags:
   - kai-scheduler
   - nvidia

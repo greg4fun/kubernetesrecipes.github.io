@@ -19,6 +19,7 @@ relatedRecipes:
   - "verify-nccl-rdma-traffic-debug"
   - "openshift-machineconfig-mcp-guide"
   - "inter-node-tensor-parallelism-kubernetes"
+  - "ray-data-pytorch-cpu-thread-oversubscription"
 ---
 
 > 💡 **Quick Answer:** RetinaNet training on GPU clusters requires `memlock unlimited` for RDMA memory registration. On OpenShift/CRI-O nodes, drop a custom ulimits config at `/etc/crio/crio.conf.d/99-ulimits.conf` via MachineConfig, then run distributed training with PyTorch DDP or torchrun.

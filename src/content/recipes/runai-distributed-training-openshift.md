@@ -16,6 +16,7 @@ relatedRecipes:
   - "fsdp-lora-finetuning-kubernetes"
   - "kubernetes-1-36-gang-scheduling"
   - "validate-gpu-topology-nccl"
+  - "ray-data-pytorch-cpu-thread-oversubscription"
 ---
 
 > 💡 **Quick Answer:** Run:ai provides a CLI (`runai training pytorch submit`) to launch distributed PyTorch jobs on OpenShift with automatic rank assignment, RDMA networking, and GPU scheduling. It handles `MASTER_ADDR`, `MASTER_PORT`, and `RANK` injection automatically.
