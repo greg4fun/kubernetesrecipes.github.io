@@ -15,6 +15,7 @@ relatedRecipes:
   - "nccl-network-validator-production-mpijob"
   - "runai-distributed-inference-vllm-nccl"
   - "ai-batch-processing-volcano"
+  - "itms-idms-ai-platform-disconnected-mirror"
 ---
 
 > 💡 **Quick Answer:** Run:ai automatically manages GPU scheduling for Kubeflow MPIJob workloads. Deploy MPIJobs into Run:ai project namespaces (e.g., `my-project`). Run:ai adds tracking annotations (`runai-current-allocated-gpus`, `runai-used-nodes`) and enforces per-project GPU quotas. Use `cleanPodPolicy: None` and `backoffLimit: 0` for validation jobs to preserve logs and prevent retry loops.

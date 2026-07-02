@@ -20,6 +20,7 @@ relatedRecipes:
   - "openshift-cluster-wide-pull-secret"
   - "airgapped-openshift-quay-mirror"
   - "quay-robot-account-kubernetes"
+  - "itms-idms-ai-platform-disconnected-mirror"
 tags:
   - openshift
   - itms

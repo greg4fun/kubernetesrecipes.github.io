@@ -17,6 +17,7 @@ relatedRecipes:
   - "data-sovereignty-geopatriation-kubernetes"
   - "copy-nim-image-internal-quay-registry"
   - "kubernetes-etcd-backup-restore"
+  - "itms-idms-ai-platform-disconnected-mirror"
 ---
 
 > 💡 **Quick Answer:** Air-gapped Kubernetes runs completely disconnected from the internet — required for government, defense, and critical infrastructure. Install with pre-packaged binaries (kubeadm bundle or RKE2), mirror all images to a local registry (Harbor), use oc-mirror/skopeo for image sync, and run GitOps against internal Git servers. Sovereign = you control the entire stack, no external dependencies.

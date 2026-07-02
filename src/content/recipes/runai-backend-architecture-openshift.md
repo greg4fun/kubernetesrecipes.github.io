@@ -16,6 +16,7 @@ relatedRecipes:
   - "runai-distributed-training-openshift"
   - "nvidia-gpu-operator-gitops-openshift"
   - "openshift-gpu-node-resource-planning"
+  - "itms-idms-ai-platform-disconnected-mirror"
 ---
 
 > 💡 **Quick Answer:** Run:ai backend on OpenShift deploys 40+ Pods in the `runai-backend` namespace including Keycloak (auth), PostgreSQL HA (4 replicas), NATS (3 replicas), Thanos (metrics), Traefik (routing), Grafana, and specialized services for workloads, scheduling, notifications, and policy enforcement.

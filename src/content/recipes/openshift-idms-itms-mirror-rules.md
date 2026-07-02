@@ -21,6 +21,7 @@ relatedRecipes:
   - "oc-mirror-disconnected-openshift"
   - "quay-registry-kubernetes-guide"
   - "containerd-certs-d-registry-ca-trust"
+  - "itms-idms-ai-platform-disconnected-mirror"
 ---
 
 > 💡 **Quick Answer:** ImageDigestMirrorSet (IDMS) and ImageTagMirrorSet (ITMS) are the OpenShift 4.13+ replacements for the deprecated ImageContentSourcePolicy (ICSP). IDMS rewrites image pulls by digest (`@sha256:...`) to your mirror registry; ITMS rewrites tag-based pulls (`:latest`). Set `mirrorSourcePolicy: NeverContactSource` for strict air-gap or `AllowContactingSource` for hybrid environments where the mirror is preferred but upstream is a fallback.

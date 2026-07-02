@@ -16,6 +16,7 @@ relatedRecipes:
   - "runai-backend-architecture-openshift"
   - "kubernetes-serviceaccount-guide"
   - "openshift-oauth-proxy-guide"
+  - "openshift-oidc-claims-mapping-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Run:ai uses Keycloak for SSO authentication, supporting OIDC/SAML with corporate IdPs. The login page at `https://runai.apps.example.com` redirects to Keycloak, which handles user federation (LDAP/AD), role mapping (admin/researcher/viewer), and token issuance.

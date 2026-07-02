@@ -16,6 +16,7 @@ tags:
 relatedRecipes:
   - "fix-certificate-expiration-cluster"
   - "openshift-acs-kubernetes"
+  - "openshift-oidc-claims-mapping-troubleshooting"
 ---
 > 💡 **Quick Answer:** Check OAuth server pods: `oc get pods -n openshift-authentication`. If they're healthy, check identity provider config: `oc get oauth cluster -o yaml`. For expired tokens: `oc login` again. For LDAP/OIDC: verify connectivity to the external identity provider.
 

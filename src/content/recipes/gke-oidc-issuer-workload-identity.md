@@ -16,6 +16,7 @@ tags:
   - "authentication"
 relatedRecipes:
   - "kubernetes-rbac-role-clusterrole"
+  - "openshift-oidc-claims-mapping-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Enable the OIDC issuer on GKE with `gcloud container clusters create --enable-oidc-issuer` (or update existing clusters). This exposes a public OIDC discovery endpoint for your cluster's ServiceAccount tokens, enabling workload identity federation — pods authenticate to external services (AWS, Azure, Vault) using Kubernetes ServiceAccount tokens without static credentials.

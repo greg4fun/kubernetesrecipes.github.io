@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "gke-oidc-issuer-workload-identity"
+  - "openshift-oidc-claims-mapping-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Configure OpenID Connect authentication for Kubernetes API server. Keycloak, Dex, Google OIDC, kubelogin plugin, and RBAC integration for SSO.

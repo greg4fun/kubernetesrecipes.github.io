@@ -16,6 +16,7 @@ relatedRecipes:
   - "kubernetes-serviceaccount-guide"
   - "openshift-scc-security-context-constraints"
   - "kyverno-rebac-multi-tenant-rbac"
+  - "openshift-oidc-claims-mapping-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** OpenShift user accounts are managed through Identity Providers (LDAP, HTPasswd, OIDC, GitHub) configured in the OAuth CR. Users authenticate via IdP, get mapped to OpenShift User objects, and receive permissions through RoleBindings to ClusterRoles.
