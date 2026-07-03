@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "kubernetes-rook-ceph-storage"
   - "etcd-backup-restore-kubernetes"
-  - "volume-snapshots"
+  - "kubernetes-csi-snapshots-restore"
 tags:
   - velero
   - backup

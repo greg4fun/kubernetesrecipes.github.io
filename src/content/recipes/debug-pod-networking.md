@@ -8,7 +8,7 @@ author: "Luca Berton"
 tags: ["networking", "debugging", "troubleshooting", "connectivity", "dns"]
 relatedRecipes:
   - "openshift-mcd-logs-debugging"
-  - "debug-dns-issues"
+  - "dns-resolution-failure-pods"
   - "webhook-timeout-admission-errors"
 ---
 

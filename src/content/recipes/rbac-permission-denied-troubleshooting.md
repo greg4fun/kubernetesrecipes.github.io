@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["rbac", "forbidden", "permissions", "serviceaccount", "troubleshooting"]
 author: "Luca Berton"
 relatedRecipes:
-  - "admission-webhooks"
+  - "kubernetes-admission-webhooks-guide"
   - "kubernetes-security-posture-hardening"
 ---
 

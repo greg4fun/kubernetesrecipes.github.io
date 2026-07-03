@@ -8,7 +8,7 @@ tags: ["istio", "envoy", "sidecar", "service-mesh", "troubleshooting", "kubernet
 author: "Luca Berton"
 relatedRecipes:
   - "network-policy-debug-connectivity"
-  - "ingress-routing"
+  - "kubernetes-ingress-complete-guide"
   - "webhook-timeout-admission-errors"
 ---
 

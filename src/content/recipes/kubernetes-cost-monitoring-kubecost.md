@@ -10,7 +10,7 @@ relatedRecipes:
   - "kubernetes-monitoring-guide"
   - "kubernetes-opentelemetry-guide"
   - "kubernetes-logging-elk-stack"
-  - "grafana-kubernetes-dashboards"
+  - "kubernetes-pod-resource-monitoring-grafana"
 ---
 
 > 💡 **Quick Answer:** Monitor and optimize Kubernetes costs with Kubecost. Track per-namespace and per-deployment spend with cloud billing integration and savings tips.

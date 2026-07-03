@@ -29,6 +29,23 @@ relatedRecipes:
 
 ## The Solution
 
+### Install NGINX Ingress Controller
+
+cert-manager needs an Ingress controller to serve the HTTP-01 challenge, so install NGINX Ingress first if it isn't already running:
+
+```bash
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+helm install ingress-nginx ingress-nginx/ingress-nginx \
+  --namespace ingress-nginx \
+  --create-namespace \
+  --set controller.publishService.enabled=true
+
+kubectl get pods -n ingress-nginx
+kubectl get svc -n ingress-nginx    # note the external IP — point DNS at it
+```
+
 ### Install cert-manager
 
 ```bash

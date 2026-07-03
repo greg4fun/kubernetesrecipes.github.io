@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-persistent-volume-guide"
   - "kubernetes-local-persistent-volumes"
-  - "troubleshooting-pending-pvc"
+  - "pvc-pending-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** CSI (Container Storage Interface) is the standard for Kubernetes storage plugins. Install a CSI driver (e.g., `aws-ebs-csi-driver`, `csi-driver-nfs`), create a StorageClass pointing to the CSI provisioner, then use PVCs as normal. CSI enables dynamic provisioning, snapshots, volume expansion, and cloning — features not available with in-tree drivers.

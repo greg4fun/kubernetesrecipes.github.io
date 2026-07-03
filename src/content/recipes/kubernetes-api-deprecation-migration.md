@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-velero-backup-restore"
   - "kubernetes-cluster-upgrade-guide"
-  - "api-versions-deprecations"
+  - "kubernetes-api-versions-explained"
   - "kubectl-cheat-sheet"
 ---
 

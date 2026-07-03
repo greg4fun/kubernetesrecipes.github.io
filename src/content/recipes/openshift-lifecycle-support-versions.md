@@ -13,7 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "15 minutes"
 relatedRecipes:
-  - "api-versions-deprecations"
+  - "kubernetes-api-versions-explained"
   - "openshift-catalogsource-troubleshooting"
   - "gpu-upgrade-version-matrix"
 ---

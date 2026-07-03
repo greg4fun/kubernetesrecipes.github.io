@@ -13,7 +13,7 @@ relatedRecipes:
   - "run-nccl-tests-mpijob-kubernetes"
   - "run-nccl-tests-kubernetes"
   - "automate-nccl-preflight-ci"
-  - "nccl-allreduce-benchmark-profile"
+  - "nccl-test-benchmark-kubernetes"
 tags:
   - nccl
   - prometheus

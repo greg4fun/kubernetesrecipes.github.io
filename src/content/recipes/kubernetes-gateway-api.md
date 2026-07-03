@@ -11,7 +11,7 @@ prerequisites:
   - "A Gateway API implementation (NGINX, Envoy, Istio, etc.)"
 relatedRecipes:
   - "pod-readiness-gates"
-  - "ingress-routing"
+  - "kubernetes-ingress-complete-guide"
   - "ingress-tls-certificates"
   - "canary-deployments"
   - "kubernetes-istio-traffic-management"

@@ -10,7 +10,7 @@ relatedRecipes:
   - "helm-secrets-sops-management"
   - "helm-chart-development-guide"
   - "argocd-app-of-apps-helm-values"
-  - "helm-chart-creation"
+  - "helm-chart-basics"
   - "helm-chart-repositories"
 ---
 

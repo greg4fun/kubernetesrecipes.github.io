@@ -15,7 +15,7 @@ tags:
   - "logql"
 relatedRecipes:
   - "kubernetes-log-aggregation-loki"
-  - "grafana-kubernetes-dashboards"
+  - "kubernetes-pod-resource-monitoring-grafana"
   - "kubernetes-logging-elk-stack"
   - "kubernetes-logging-fluentbit-guide"
 ---

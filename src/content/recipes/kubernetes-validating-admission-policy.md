@@ -13,7 +13,7 @@ tags:
   - policy
   - validation
 relatedRecipes:
-  - "kyverno-policy-management"
+  - "kubernetes-kyverno-policy-guide"
   - "kubernetes-pod-security-admission"
 ---
 

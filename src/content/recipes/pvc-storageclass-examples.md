@@ -9,7 +9,7 @@ prerequisites:
   - "A Kubernetes cluster with a storage provisioner"
   - "kubectl configured to access your cluster"
 relatedRecipes:
-  - "troubleshooting-pending-pvc"
+  - "pvc-pending-troubleshooting"
   - "csi-snapshot-restore-guide"
   - "csi-storage-performance-fio-kubernetes-job"
 tags:

@@ -245,6 +245,80 @@ API Request → Authentication → Authorization
 # Add CLUSTER_NAME, REGION from webhook config
 ```
 
+### Complete Deployable Webhook Server
+
+The snippets above show handler logic; here's the full server, TLS setup, and deployment needed to actually run one:
+
+```go
+// main.go — full server, not just the handler
+func main() {
+    http.HandleFunc("/validate", validateHandler)
+    http.HandleFunc("/mutate", mutateHandler)
+    http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) })
+    http.ListenAndServeTLS(":8443", "/certs/tls.crt", "/certs/tls.key", nil)
+}
+```
+
+```bash
+# Self-signed cert with the exact SANs the API server will check against
+SERVICE_NAME=webhook-service
+NAMESPACE=webhook-system
+openssl genrsa -out ca.key 2048
+openssl req -x509 -new -nodes -key ca.key -days 365 -out ca.crt -subj "/CN=Admission Webhook CA"
+
+cat > server.conf << EOF
+[req]
+req_extensions = v3_req
+distinguished_name = req_distinguished_name
+[req_distinguished_name]
+[v3_req]
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = ${SERVICE_NAME}.${NAMESPACE}.svc
+DNS.2 = ${SERVICE_NAME}.${NAMESPACE}.svc.cluster.local
+EOF
+
+openssl genrsa -out server.key 2048
+openssl req -new -key server.key -out server.csr -subj "/CN=${SERVICE_NAME}.${NAMESPACE}.svc" -config server.conf
+openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 365 -extensions v3_req -extfile server.conf
+
+kubectl create secret tls webhook-tls --cert=server.crt --key=server.key -n "$NAMESPACE"
+cat ca.crt | base64 | tr -d '\n'   # → paste into caBundle
+```
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: admission-webhook, namespace: webhook-system}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: admission-webhook}}
+  template:
+    metadata: {labels: {app: admission-webhook}}
+    spec:
+      containers:
+        - name: webhook
+          image: myregistry/admission-webhook:v1
+          ports: [{containerPort: 8443}]
+          volumeMounts: [{name: tls-certs, mountPath: /certs, readOnly: true}]
+          readinessProbe: {httpGet: {path: /health, port: 8443, scheme: HTTPS}}
+      volumes: [{name: tls-certs, secret: {secretName: webhook-tls}}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: webhook-service, namespace: webhook-system}
+spec:
+  selector: {app: admission-webhook}
+  ports: [{port: 443, targetPort: 8443}]
+```
+
+```bash
+# Test: should be rejected (no label), then accepted (with label)
+kubectl run test-pod --image=nginx
+kubectl run test-pod --image=nginx --labels="app=test,team=platform"
+kubectl logs -n webhook-system -l app=admission-webhook
+```
+
 ## Common Issues
 
 **"connection refused" from webhook**

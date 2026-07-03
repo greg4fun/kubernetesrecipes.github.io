@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-cost-optimization-strategies"
   - "openclaw-resource-limits-tuning"
-  - "hpa-custom-metrics"
+  - "kubernetes-hpa-prometheus-adapter"
   - "horizontal-pod-autoscaler"
 ---
 

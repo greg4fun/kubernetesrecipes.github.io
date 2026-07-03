@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "multi-tenant-gpu-namespace-isolation"
   - "kubernetes-pod-security-standards"
-  - "fix-kubernetes-dns-resolution"
+  - "dns-resolution-failure-pods"
 ---
 
 > 💡 **Quick Answer:** Fix Kubernetes namespaces stuck in Terminating state. Finalizer removal, API resource cleanup, and force deletion of stuck namespaces.

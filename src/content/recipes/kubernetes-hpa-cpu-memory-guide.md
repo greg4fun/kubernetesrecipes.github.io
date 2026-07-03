@@ -15,7 +15,7 @@ tags:
   - "cka"
 relatedRecipes:
   - "horizontal-pod-autoscaler"
-  - "hpa-custom-metrics"
+  - "kubernetes-hpa-prometheus-adapter"
   - "kubernetes-vertical-pod-autoscaler-vpa"
   - "kubernetes-keda-autoscaling-guide"
 ---

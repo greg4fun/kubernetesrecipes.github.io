@@ -9,7 +9,7 @@ prerequisites:
   - "A running Kubernetes cluster"
   - "kubectl configured to access your cluster"
 relatedRecipes:
-  - "nginx-ingress-tls-cert-manager"
+  - "kubernetes-ingress-tls-cert-manager"
   - "networkpolicy-deny-all"
   - "openshift-routes-vs-ingress"
 tags:

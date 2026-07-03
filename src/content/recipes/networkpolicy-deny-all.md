@@ -12,7 +12,7 @@ relatedRecipes:
   - "workload-identity-cloud-access"
   - "kubernetes-security-context-guide"
   - "kubernetes-oidc-authentication-guide"
-  - "nginx-ingress-tls-cert-manager"
+  - "kubernetes-ingress-tls-cert-manager"
 tags:
   - networkpolicy
   - security

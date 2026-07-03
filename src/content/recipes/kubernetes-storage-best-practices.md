@@ -8,7 +8,7 @@ tags: ["storage", "best-practices", "production", "performance", "backup"]
 author: "Luca Berton"
 relatedRecipes:
   - "machineconfig-nfs-mount-openshift"
-  - "volume-snapshots"
+  - "kubernetes-csi-snapshots-restore"
   - "kubernetes-csi-driver-guide"
   - "velero-backup-disaster-recovery"
 ---

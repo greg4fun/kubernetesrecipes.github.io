@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-csi-driver-development"
   - "kubernetes-local-persistent-volumes"
   - "kubernetes-persistent-volume-expansion"
-  - "troubleshooting-pending-pvc"
+  - "pvc-pending-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Create StorageClasses with `reclaimPolicy: Retain` for databases (preserves data on PVC deletion), `allowVolumeExpansion: true` for growing volumes, and `volumeBindingMode: WaitForFirstConsumer` for topology-aware scheduling. Use `Retain` for production, `Delete` for dev.

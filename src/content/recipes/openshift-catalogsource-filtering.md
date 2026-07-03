@@ -14,7 +14,7 @@ relatedRecipes:
   - "kubernetes-security-checklist-2026"
   - "openshift-catalogsource-custom-operator"
   - "openshift-cluster-wide-pull-secret"
-  - "kyverno-policy-management"
+  - "kubernetes-kyverno-policy-guide"
   - "container-image-security-scanning-kubernetes"
   - "edr-flexera-kubernetes-agents"
 tags:

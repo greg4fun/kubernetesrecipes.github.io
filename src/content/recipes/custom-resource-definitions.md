@@ -14,7 +14,7 @@ relatedRecipes:
   - "kubernetes-labels-annotations-best-practices"
   - "kubernetes-cost-optimization"
   - "environment-variables-configmaps"
-  - "api-versions-deprecations"
+  - "kubernetes-api-versions-explained"
 tags: ["crd", "custom-resources", "api", "extensions", "operators"]
 ---
 

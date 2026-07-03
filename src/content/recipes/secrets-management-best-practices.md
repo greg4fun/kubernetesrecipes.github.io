@@ -8,7 +8,7 @@ author: "Luca Berton"
 tags: ["secrets", "security", "encryption", "best-practices", "management"]
 relatedRecipes:
   - "custom-ca-openshift"
-  - "admission-webhooks"
+  - "kubernetes-admission-webhooks-guide"
   - "kubernetes-gvisor-kata-containers-runtimeclass"
 ---
 

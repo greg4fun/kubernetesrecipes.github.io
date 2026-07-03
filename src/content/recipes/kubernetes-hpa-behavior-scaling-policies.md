@@ -14,7 +14,7 @@ tags:
   - stabilization
 relatedRecipes:
   - "horizontal-pod-autoscaler"
-  - "hpa-custom-metrics"
+  - "kubernetes-hpa-prometheus-adapter"
   - "kubernetes-custom-metrics-autoscaling"
 ---
 

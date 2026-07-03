@@ -13,7 +13,7 @@ relatedRecipes:
   - "kubernetes-vertical-pod-autoscaler-vpa"
   - "llm-autoscaling-kubernetes"
   - "cluster-autoscaler-setup"
-  - "hpa-custom-metrics"
+  - "kubernetes-hpa-prometheus-adapter"
   - "kubernetes-keda-autoscaling-guide"
   - "kubernetes-resource-optimization"
   - "kubernetes-resource-optimization-strategies"

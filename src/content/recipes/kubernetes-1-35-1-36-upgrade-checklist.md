@@ -13,7 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "25 minutes"
 relatedRecipes:
-  - "api-versions-deprecations"
+  - "kubernetes-api-versions-explained"
   - "openshift-lifecycle-support-versions"
   - "kubernetes-etcd-backup-restore"
   - "kubernetes-rolling-update-zero-downtime"

@@ -36,6 +36,40 @@ author: "Luca Berton"
 
 The NVIDIA Open Kernel Module is required for DMA-BUF GPUDirect RDMA and GPUDirect Storage. This recipe walks through the migration from proprietary to open modules with minimal disruption.
 
+## Why Open Modules Matter: DMA-BUF vs nvidia-peermem
+
+Open kernel modules also unlock DMA-BUF as the GPUDirect RDMA transport, replacing the out-of-tree `nvidia-peermem` module:
+
+```yaml
+# ❌ Proprietary stack
+legacy:
+  kernel_modules: "Proprietary .ko (nvidia.ko, nvidia-modeset.ko)"
+  gpudirect_rdma: "nvidia-peermem (out-of-tree module)"
+  coupling: "Tight — kernel update breaks GPU driver"
+  upgrade_risk: "High — driver rebuild per kernel version"
+
+# ✅ Open kernel modules stack
+current:
+  kernel_modules: "Open kernel modules (in-tree compatible)"
+  gpudirect_rdma: "DMA-BUF (upstream kernel subsystem, >= 6.x)"
+  coupling: "Loose — kernel and driver independent"
+  upgrade_risk: "Low — standard kernel interfaces"
+```
+
+Every kernel update to the proprietary stack risks rebuilding two out-of-tree modules (`nvidia.ko` and `nvidia-peermem`). With open modules and DMA-BUF, the RDMA path uses an in-tree kernel subsystem that the kernel itself maintains — only GPU userspace compatibility needs re-verifying after an upgrade.
+
+Verify DMA-BUF is actually in use instead of nvidia-peermem after migrating:
+
+```bash
+# Should return empty — DMA-BUF replaces nvidia-peermem
+kubectl exec -it gpu-pod -- lsmod | grep nvidia_peermem
+
+# Kernel must be >= 6.x for DMA-BUF
+kubectl exec -it gpu-pod -- uname -r
+```
+
+DMA-BUF requires kernel >= 6.x — RHEL 8 and older kernels don't support it, so proprietary `nvidia-peermem` remains necessary there.
+
 ## Before You Start
 
 Verify your GPUs support open kernel modules (Turing architecture or newer):

@@ -116,12 +116,61 @@ kubectl get configmap coredns -n kube-system -o yaml
 # forward . 8.8.8.8 8.8.4.4   ← Explicit upstream
 ```
 
+### Scaling CoreDNS for High DNS Traffic
+
+If CoreDNS itself is the bottleneck (high latency under load, not misconfiguration), scale it or add a cache layer:
+
+```bash
+kubectl scale deployment/coredns -n kube-system --replicas=3
+```
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: {name: coredns, namespace: kube-system}
+spec:
+  scaleTargetRef: {apiVersion: apps/v1, kind: Deployment, name: coredns}
+  minReplicas: 2
+  maxReplicas: 10
+  metrics: [{type: Resource, resource: {name: cpu, target: {type: Utilization, averageUtilization: 70}}}]
+```
+
+For very high-traffic clusters, NodeLocal DNSCache runs a DNS cache on every node, cutting most lookups down to a local hop instead of a trip to a CoreDNS pod:
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/nodelocaldns/nodelocaldns.yaml
+```
+
+### Continuous DNS Health Check
+
+Useful for catching intermittent failures that a one-off `nslookup` test misses:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata: {name: dns-monitor}
+spec:
+  containers:
+    - name: dns-test
+      image: busybox:1.36
+      command:
+        - /bin/sh
+        - -c
+        - |
+          while true; do
+            nslookup kubernetes.default > /dev/null 2>&1 && echo "Internal: OK" || echo "Internal: FAIL"
+            nslookup google.com > /dev/null 2>&1 && echo "External: OK" || echo "External: FAIL"
+            sleep 10
+          done
+```
+
 ## Best Practices
 
 - **Lower ndots to 2** for pods that resolve many external names — reduces DNS queries by 3x
 - **Use FQDN with trailing dot** in configs — `api.example.com.` skips search domains entirely
 - **Always allow DNS in NetworkPolicies** — UDP+TCP port 53 to kube-dns
 - **Monitor CoreDNS** — dashboard or `coredns_dns_request_count_total` metric
+- **Scale CoreDNS or add NodeLocal DNSCache** once request volume, not misconfiguration, is the bottleneck
 - **Don't use `dnsPolicy: Default`** unless you want node DNS instead of cluster DNS
 
 ## Key Takeaways

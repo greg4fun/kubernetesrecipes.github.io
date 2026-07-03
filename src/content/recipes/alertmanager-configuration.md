@@ -16,7 +16,7 @@ relatedRecipes:
   - "prometheus-monitoring-kubernetes-guide"
   - "alertmanager-setup"
   - "container-logging-patterns"
-  - "grafana-kubernetes-dashboards"
+  - "kubernetes-pod-resource-monitoring-grafana"
   - "logging-efk-stack"
   - "kubernetes-opentelemetry-collector"
   - "jaeger-distributed-tracing"

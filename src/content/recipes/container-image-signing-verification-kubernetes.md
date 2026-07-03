@@ -15,7 +15,7 @@ relatedRecipes:
   - "oci-container-image-internals-kubernetes"
   - "container-image-security-scanning-kubernetes"
   - "private-container-registry-kubernetes"
-  - "kyverno-policy-management"
+  - "kubernetes-kyverno-policy-guide"
 ---
 
 > 💡 **Quick Answer:** Sign images with `cosign sign` (keyless via OIDC or with KMS keys), then enforce signature verification at admission time using Kyverno `verifyImages` policies. This ensures only images from your CI pipeline run in production — preventing supply chain attacks, unauthorized modifications, and unvetted third-party images.

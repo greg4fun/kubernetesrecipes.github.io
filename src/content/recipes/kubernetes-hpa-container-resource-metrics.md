@@ -14,7 +14,7 @@ tags:
   - multi-container
 relatedRecipes:
   - "horizontal-pod-autoscaler"
-  - "hpa-custom-metrics"
+  - "kubernetes-hpa-prometheus-adapter"
   - "kubernetes-sidecar-patterns"
 ---
 

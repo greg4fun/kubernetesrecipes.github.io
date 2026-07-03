@@ -16,7 +16,6 @@ relatedRecipes:
   - "kubernetes-thanos-ha-prometheus"
   - "kubernetes-tempo-tracing-guide"
   - "kubernetes-grafana-dashboards-guide"
-  - "grafana-kubernetes-dashboards"
   - "grafana-dashboard-6417-kubernetes"
   - "prometheus-monitoring-kubernetes-guide"
   - "kubernetes-resource-limits-cpu-memory-format"
@@ -38,6 +37,57 @@ flowchart LR
 ```
 
 ## The Solution
+
+### Deploy Grafana (If Not Already Running)
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana:10.2.0
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef: {name: grafana-secret, key: admin-password}
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /var/lib/grafana
+            - name: datasources
+              mountPath: /etc/grafana/provisioning/datasources
+          resources:
+            limits: {memory: 512Mi, cpu: 500m}
+      volumes:
+        - name: grafana-storage
+          persistentVolumeClaim: {claimName: grafana-pvc}
+        - name: datasources
+          configMap: {name: grafana-datasources}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: grafana-datasources, namespace: monitoring}
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+      - {name: Prometheus, type: prometheus, access: proxy, url: http://prometheus:9090, isDefault: true}
+      - {name: Loki, type: loki, access: proxy, url: http://loki:3100}
+```
 
 ### Essential PromQL Queries
 

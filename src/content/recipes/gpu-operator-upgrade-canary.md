@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-readiness-probe-guide"
   - "gpu-upgrade-version-matrix"
   - "gpu-operator-clusterpolicy-reference"
-  - "open-kernel-modules-dma-buf"
+  - "switch-proprietary-to-open-kernel-modules"
   - "openshift-lifecycle-versions"
   - "openshift-mcp-itms-rollout"
   - "clusterpolicy-mofed-upgrade"

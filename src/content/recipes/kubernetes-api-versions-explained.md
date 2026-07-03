@@ -21,93 +21,132 @@ relatedRecipes:
 
 ## The Problem
 
-Teams running production K8s clusters need k8s api versions explained for reliability, security, and operational excellence. Misconfiguration leads to outages, security gaps, or wasted resources.
+Kubernetes deprecates and eventually removes APIs on a predictable schedule — an `apiVersion` that works today can disappear after a cluster upgrade, breaking `kubectl apply` and Helm installs with no warning until that exact moment.
 
 ## The Solution
 
-### Prerequisites
+### Inspecting What's Available
 
 ```bash
-# Verify cluster access
-kubectl cluster-info
-kubectl get nodes
+kubectl api-versions                          # all API versions
+kubectl api-resources                         # resources with their API groups
+kubectl api-resources | grep -i ingress       # check a specific resource
+kubectl get --raw /apis/networking.k8s.io/v1  # confirm a group/version exists
+kubectl get --raw /apis/autoscaling | jq '.preferredVersion'
 ```
 
-### Configuration
+### Detecting Deprecated APIs Before You Upgrade
+
+```bash
+# kubent (Kube No Trouble) — scans a running cluster
+kubent
+# | NAME       | NAMESPACE | KIND    | VERSION             | REPLACEMENT           |
+# | my-ingress | default   | Ingress | extensions/v1beta1  | networking.k8s.io/v1  |
+
+# pluto — scans manifests, Helm releases, or a live cluster against a target version
+pluto detect-files -d ./manifests/ --target-versions k8s=v1.29.0
+pluto detect-helm -o wide
+pluto detect-api-resources
+```
+
+### Common Migrations
 
 ```yaml
-# K8s API Versions Explained — production example
-apiVersion: v1
-kind: ConfigMap
+# Ingress: extensions/v1beta1 (removed 1.22) → networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+spec:
+  ingressClassName: nginx        # new required field
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix     # now required
+            backend: {service: {name: my-service, port: {number: 80}}}
+```
+
+```yaml
+# HPA: autoscaling/v1 (CPU-only) → autoscaling/v2 (full metrics support)
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+spec:
+  metrics: [{type: Resource, resource: {name: cpu, target: {type: Utilization, averageUtilization: 80}}}]
+```
+
+```yaml
+# CronJob: batch/v1beta1 (removed 1.25) → batch/v1 — same shape, just the group
+apiVersion: batch/v1
+kind: CronJob
+```
+
+```yaml
+# PodSecurityPolicy (removed 1.25) → Pod Security Admission namespace labels
 metadata:
-  name: kubernetes-api-versions-explained-config
-  namespace: production
-  labels:
-    app.kubernetes.io/managed-by: kubectl
-data:
-  config.yaml: |
-    enabled: true
-    logLevel: info
+  labels: {pod-security.kubernetes.io/enforce: restricted}
 ```
 
-### Deployment
+### Converting Manifests
 
 ```bash
-# Apply the configuration
-kubectl apply -f config.yaml
-
-# Verify deployment
-kubectl get all -n production -l app.kubernetes.io/managed-by=kubectl
-
-# Check logs for errors
-kubectl logs -n production -l component=controller --tail=50
+# kubectl convert was removed from core kubectl in 1.24 — install the plugin
+kubectl krew install convert
+kubectl convert -f old-resource.yaml --output-version networking.k8s.io/v1
 ```
-
-### Verification
 
 ```bash
-# Confirm everything is running
-kubectl get pods -n production -o wide
-kubectl describe pod -n production <pod-name>
+# Helm releases store the API version in their stored manifest — update it directly
+helm mapkubeapis --dry-run my-release
+helm mapkubeapis my-release
 ```
 
-```mermaid
-graph TD
-    A[Identify Requirement] --> B[Review Configuration]
-    B --> C[Apply to Staging]
-    C --> D{Tests Pass?}
-    D -->|Yes| E[Apply to Production]
-    D -->|No| F[Debug & Fix]
-    F --> C
-    E --> G[Monitor & Alert]
+### CI/CD Deprecation Gate
+
+```yaml
+# GitHub Actions — fail the PR if it introduces a deprecated API
+name: Check Deprecated APIs
+on: [pull_request]
+jobs:
+  check-deprecations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          curl -L -o pluto.tar.gz https://github.com/FairwindsOps/pluto/releases/download/v5.18.0/pluto_5.18.0_linux_amd64.tar.gz
+          tar -xzf pluto.tar.gz
+          ./pluto detect-files -d ./manifests/ --target-versions k8s=v1.29.0 --output-format=json
+```
+
+### Pre-Upgrade Checklist
+
+```text
+1. kubent                          — scan the live cluster
+2. pluto detect-helm                — scan installed Helm releases
+3. Review the K8s deprecation guide for the target version
+4. Upgrade staging first, deploy everything, run integration tests
+5. Update manifests: apiVersion, new required fields, remove deprecated fields
+6. Update/pin Helm charts to versions supporting the new APIs
 ```
 
 ## Common Issues
 
-**Configuration not taking effect**
-
-Verify the resource exists in the correct namespace. Check for typos in label selectors. Use `kubectl get events` to see scheduling or admission errors.
-
-**Performance degradation after changes**
-
-Monitor resource usage before and after. Use `kubectl top pods` and check Prometheus metrics. Roll back if metrics degrade: `kubectl rollout undo`.
-
-**RBAC permission denied**
-
-Ensure the ServiceAccount has the required ClusterRole or Role bindings. Use `kubectl auth can-i` to verify permissions.
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| `kubectl apply` fails with "no matches for kind" after upgrade | The API version was removed in this release | Migrate the manifest's `apiVersion` before upgrading, not after |
+| Helm release stuck referencing a removed API | Helm's stored release metadata still points at the old API | `helm mapkubeapis <release>` to update the stored metadata |
+| `kubectl convert` command not found | Removed from core kubectl in 1.24 | Install via `kubectl krew install convert` |
+| CI doesn't catch a deprecated API until deploy | No deprecation scan in the pipeline | Add a `pluto`/`kubent` step gating merges, not just deploys |
 
 ## Best Practices
 
-- **Test in staging first** — never apply untested configs to production
-- **Use GitOps** — version all manifests in Git for audit trail and rollback
-- **Monitor after deployment** — set up alerts for key metrics within 15 minutes
-- **Document decisions** — record why configurations were chosen in PR descriptions
-- **Automate validation** — add CI checks for YAML syntax and policy compliance
+- **Scan before every cluster upgrade**, not after something breaks — `kubent` (live cluster) and `pluto` (manifests/Helm) both take seconds to run
+- **Gate CI on deprecated APIs**, don't just catch them at deploy time
+- **Migrate one release ahead of removal** — APIs are typically deprecated for ~2-3 releases before removal, giving real lead time
+- **Update Helm chart pins**, not just raw manifests — a stale chart version is a common source of deprecated API resurfacing
+- **Test the full upgrade in staging** — schema changes (like Ingress's new `pathType` requirement) aren't always caught by a version bump alone
 
 ## Key Takeaways
 
-- K8s API Versions Explained is critical for production K8s operations
-- Start with safe defaults and tune based on real monitoring data
-- Always test changes in non-production environments first
-- Combine with observability for full visibility into cluster behavior
-- Automate repetitive tasks with CI/CD pipelines and GitOps
+- APIs move through alpha → beta → stable, then get deprecated and eventually removed — always with advance notice in release notes, never silently
+- `kubent` scans a live cluster; `pluto` scans manifests, Helm releases, or a live cluster against a specific target version
+- Ingress (`extensions/v1beta1`→`networking.k8s.io/v1`), HPA (`v1`→`v2`), CronJob (`batch/v1beta1`→`batch/v1`), and PodSecurityPolicy→PSA are the migrations almost every cluster eventually hits
+- `kubectl convert` is a separate `krew` plugin since 1.24, not built into core kubectl anymore
+- Run deprecation scans in CI, before the upgrade — not as a post-mortem after `kubectl apply` starts failing

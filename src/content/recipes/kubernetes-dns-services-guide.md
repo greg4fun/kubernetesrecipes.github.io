@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-coredns-troubleshooting"
   - "kubernetes-networkpolicy-guide"
-  - "kubernetes-network-debugging-guide"
+  - "kubernetes-network-debugging-tools"
 ---
 
 > 💡 **Quick Answer:** Services get DNS: `<service>.<namespace>.svc.cluster.local`. Same namespace: just `<service>`. Headless services (clusterIP: None) return individual pod IPs. Pod DNS: `<pod-ip-dashed>.<namespace>.pod.cluster.local`. StatefulSet pods: `<pod-name>.<headless-service>.<namespace>.svc.cluster.local`. Tune `ndots: 2` in dnsConfig to reduce DNS lookups for external domains.

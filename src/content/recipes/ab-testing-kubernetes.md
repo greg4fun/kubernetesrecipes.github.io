@@ -65,7 +65,6 @@ relatedRecipes:
   - "pod-lifecycle-hooks"
   - "pod-readiness-gates"
   - "pod-topology-constraints"
-  - "topology-spread-constraints"
 tags: ["a-b-testing", "traffic-routing", "feature-flags", "deployment", "experimentation"]
 ---
 

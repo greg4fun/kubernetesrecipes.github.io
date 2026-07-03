@@ -88,6 +88,32 @@ spec:
     apiGroup: snapshot.storage.k8s.io
 ```
 
+## Pre-Snapshot Hook (Quiesce Application)
+
+Crash-consistent snapshots are fine for most apps, but databases need a quiesce step first to guarantee an application-consistent restore:
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pre-snapshot-quiesce
+spec:
+  template:
+    spec:
+      containers:
+        - name: quiesce
+          image: bitnami/postgresql:15
+          command:
+            - sh
+            - -c
+            - |
+              PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -c "SELECT pg_start_backup('snapshot');"
+          envFrom:
+            - secretRef:
+                name: db-credentials
+      restartPolicy: Never
+```
+
 ## Automated Snapshot CronJob
 
 ```yaml
@@ -164,6 +190,18 @@ kubectl get volumesnapshot db-snapshot-20260420 -o jsonpath='{.status.restoreSiz
 
 # List all snapshots
 kubectl get volumesnapshot -A --sort-by=.metadata.creationTimestamp
+```
+
+## Verify CSI Driver Support
+
+Not every CSI driver supports snapshots — check before relying on the feature:
+
+```bash
+kubectl get csidrivers -o custom-columns=\
+NAME:.metadata.name,\
+SNAPSHOT:.spec.volumeLifecycleModes
+
+kubectl get volumesnapshotclasses
 ```
 
 ## Common Issues

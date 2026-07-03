@@ -147,3 +147,24 @@
 /recipes/observability/opentelemetry-collector/    /recipes/observability/kubernetes-opentelemetry-collector/    301
 /recipes/deployments/pod-affinity-anti-affinity/    /recipes/deployments/kubernetes-pod-affinity-antiaffinity/    301
 /recipes/deployments/pod-priority-preemption-scheduling/    /recipes/configuration/kubernetes-pod-priority-preemption-scheduling/    301
+
+# Duplicate-content consolidation batch 4 (medium-confidence, SEO audit 2026-07-02) — merge-then-redirect
+/recipes/security/admission-webhooks/    /recipes/security/kubernetes-admission-webhooks-guide/    301
+/recipes/configuration/api-versions-deprecations/    /recipes/configuration/kubernetes-api-versions-explained/    301
+/recipes/troubleshooting/debug-dns-issues/    /recipes/troubleshooting/dns-resolution-failure-pods/    301
+/recipes/helm/helm-chart-creation/    /recipes/helm/helm-chart-basics/    301
+/recipes/troubleshooting/kubernetes-kubectl-exec-guide/    /recipes/troubleshooting/kubernetes-exec-into-pod/    301
+/recipes/troubleshooting/kubernetes-network-debugging-guide/    /recipes/troubleshooting/kubernetes-network-debugging-tools/    301
+/recipes/troubleshooting/kubernetes-pending-pod-troubleshooting/    /recipes/troubleshooting/pod-pending-troubleshooting/    301
+/recipes/security/kyverno-policy-management/    /recipes/security/kubernetes-kyverno-policy-guide/    301
+/recipes/deployments/topology-spread-constraints/    /recipes/deployments/pod-topology-constraints/    301
+/recipes/networking/nginx-ingress-tls-cert-manager/    /recipes/networking/kubernetes-ingress-tls-cert-manager/    301
+/recipes/storage/volume-snapshots/    /recipes/storage/kubernetes-csi-snapshots-restore/    301
+/recipes/networking/custom-dns-configuration/    /recipes/networking/kubernetes-dns-policy-configuration/    301
+/recipes/autoscaling/hpa-custom-metrics/    /recipes/autoscaling/kubernetes-hpa-prometheus-adapter/    301
+/recipes/networking/ingress-routing/    /recipes/networking/kubernetes-ingress-complete-guide/    301
+/recipes/troubleshooting/troubleshooting-pending-pvc/    /recipes/troubleshooting/pvc-pending-troubleshooting/    301
+/recipes/ai/nccl-allreduce-benchmark-profile/    /recipes/ai/nccl-test-benchmark-kubernetes/    301
+/recipes/configuration/open-kernel-modules-dma-buf/    /recipes/configuration/switch-proprietary-to-open-kernel-modules/    301
+/recipes/observability/grafana-kubernetes-dashboards/    /recipes/observability/kubernetes-pod-resource-monitoring-grafana/    301
+/recipes/troubleshooting/fix-kubernetes-dns-resolution/    /recipes/troubleshooting/dns-resolution-failure-pods/    301

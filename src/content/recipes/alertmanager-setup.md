@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
   - "container-logging-patterns"
-  - "grafana-kubernetes-dashboards"
+  - "kubernetes-pod-resource-monitoring-grafana"
   - "jaeger-distributed-tracing"
   - "logging-efk-stack"
   - "kubernetes-opentelemetry-collector"

@@ -7,7 +7,6 @@ publishDate: "2026-04-03"
 tags: ["load-balancing", "service", "ingress", "gateway-api", "traffic", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "ingress-routing"
   - "kubernetes-ingress-complete-guide"
   - "kubernetes-network-policy-guide"
   - "kubernetes-service-types-explained"

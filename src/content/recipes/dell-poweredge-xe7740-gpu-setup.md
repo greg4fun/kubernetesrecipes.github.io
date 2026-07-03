@@ -17,7 +17,7 @@ relatedRecipes:
   - "gpu-operator-clusterpolicy-reference"
   - "sriov-mixed-nic-gpu-nodes"
   - "infiniband-ethernet-ai-kubernetes"
-  - "open-kernel-modules-dma-buf"
+  - "switch-proprietary-to-open-kernel-modules"
   - "gpudirect-rdma-dma-buf"
 ---
 

@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "gpu-operator-upgrade-canary"
   - "gpu-operator-clusterpolicy-reference"
-  - "open-kernel-modules-dma-buf"
+  - "switch-proprietary-to-open-kernel-modules"
   - "openshift-mcp-itms-rollout"
   - "clusterpolicy-mofed-upgrade"
   - "openshift-lifecycle-versions"

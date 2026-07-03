@@ -10,7 +10,7 @@ prerequisites:
   - "kubectl configured with appropriate permissions"
   - "Basic understanding of networking concepts"
 relatedRecipes:
-  - "debug-dns-issues"
+  - "dns-resolution-failure-pods"
   - "debug-pod-networking"
   - "network-policies"
 tags:

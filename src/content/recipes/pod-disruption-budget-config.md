@@ -8,7 +8,7 @@ author: "Luca Berton"
 tags: ["pdb", "availability", "disruption", "maintenance", "upgrades"]
 relatedRecipes:
   - "cnpg-postgresql-operator"
-  - "topology-spread-constraints"
+  - "pod-topology-constraints"
   - "argocd-sync-waves-ordering"
 ---
 

@@ -270,6 +270,54 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 ```
 
+### ConfigMap and Conditional Ingress Templates
+
+```yaml
+# templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "myapp.fullname" . }}
+  labels: {{- include "myapp.labels" . | nindent 4 }}
+data:
+  LOG_LEVEL: {{ .Values.config.logLevel | quote }}
+```
+
+```yaml
+# templates/ingress.yaml — the whole block is skipped when ingress.enabled is false
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "myapp.fullname" . }}
+  {{- with .Values.ingress.annotations }}
+  annotations: {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service: {name: {{ include "myapp.fullname" $ }}, port: {number: {{ $.Values.service.port }}}}
+          {{- end }}
+    {{- end }}
+{{- end }}
+```
+
+A checksum annotation on the pod template forces a rollout whenever the ConfigMap content changes — without it, `helm upgrade` updates the ConfigMap but running pods keep the old, already-mounted config:
+
+```yaml
+# in templates/deployment.yaml, inside the pod template metadata
+annotations:
+  checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+```
+
 ## Working with Charts
 
 ### Lint Your Chart
@@ -311,6 +359,9 @@ helm rollback myapp 1
 ```bash
 helm package myapp/
 # Creates myapp-0.1.0.tgz
+
+# Push to an OCI registry (Helm 3.8+, no separate ChartMuseum needed)
+helm push myapp-0.1.0.tgz oci://registry.example.com/charts
 ```
 
 ## Environment-Specific Values

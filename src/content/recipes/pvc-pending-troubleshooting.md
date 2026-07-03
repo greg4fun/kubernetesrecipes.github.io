@@ -62,6 +62,44 @@ kubectl get storageclass
 kubectl get pods -n kube-system | grep -E "csi|provisioner|ebs|ceph|nfs"
 ```
 
+**Driver not found:**
+```bash
+# "driver name ebs.csi.aws.com not found" means the CSI driver isn't installed
+kubectl get csidrivers
+
+# Example: install the AWS EBS CSI driver
+kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.24"
+```
+
+**Static provisioning with no matching PV:**
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""  # Empty for static provisioning
+  hostPath:
+    path: /data/my-pv
+```
+
+## Quick Reference Table
+
+| Error Message | Likely Cause | Quick Fix |
+|---------------|--------------|-----------|
+| no storage class | No default SC | Set default or specify SC |
+| storageclass not found | Wrong SC name | List SCs, use existing one |
+| quota exceeded | Disk quota | Reduce size or request quota |
+| no PV available | Static provisioning | Create matching PV |
+| access mode | Incompatible mode | Use ReadWriteOnce |
+| driver not found | CSI not installed | Install CSI driver |
+| no events | WaitForFirstConsumer | Create pod that uses PVC |
+
 ```mermaid
 graph TD
     A[PVC Pending] --> B{describe pvc events}

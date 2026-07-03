@@ -12,7 +12,7 @@ prerequisites:
   - "Understanding of Custom Resource Definitions (CRDs)"
 relatedRecipes:
   - "custom-resource-definitions"
-  - "admission-webhooks"
+  - "kubernetes-admission-webhooks-guide"
   - "rbac-service-accounts"
 tags:
   - operators

@@ -21,7 +21,7 @@ relatedRecipes:
   - "gpu-operator-mofed-driver"
   - "clusterpolicy-mofed-upgrade"
   - "sriov-mixed-nic-gpu-nodes"
-  - "open-kernel-modules-dma-buf"
+  - "switch-proprietary-to-open-kernel-modules"
   - "gpudirect-rdma-dma-buf"
   - "sriov-vf-troubleshooting"
 ---

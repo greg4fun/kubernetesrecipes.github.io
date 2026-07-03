@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "custom-resource-definitions"
   - "kubernetes-operators"
-  - "admission-webhooks"
+  - "kubernetes-admission-webhooks-guide"
 tags:
   - api-aggregation
   - api-server

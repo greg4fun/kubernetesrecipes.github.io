@@ -23,7 +23,7 @@ relatedRecipes:
   - "nvidia-peermem-gpudirect-rdma-k8s"
   - "enable-gpudirect-storage-openshift"
   - "switch-proprietary-to-open-kernel-modules"
-  - "api-versions-deprecations"
+  - "kubernetes-api-versions-explained"
   - "selinux-scc-gpu-operator-openshift"
   - "scheduler-configuration-tuning"
   - "environment-variables-configmaps"

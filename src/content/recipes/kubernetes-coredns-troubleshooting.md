@@ -18,7 +18,7 @@ relatedRecipes:
   - "nxdomain-dns-troubleshooting-kubernetes"
   - "kubernetes-networkpolicy-guide"
   - "debug-pod-networking"
-  - "kubernetes-network-debugging-guide"
+  - "kubernetes-network-debugging-tools"
 ---
 
 > 💡 **Quick Answer:** Test DNS from a pod: `kubectl run dnstest --image=busybox:1.36 --rm -it -- nslookup kubernetes.default`. If it fails, check CoreDNS pods: `kubectl get pods -n kube-system -l k8s-app=kube-dns`. Check logs: `kubectl logs -n kube-system -l k8s-app=kube-dns`. Common fix: restart CoreDNS: `kubectl rollout restart deployment/coredns -n kube-system`. The `ndots:5` setting in `/etc/resolv.conf` causes excessive DNS lookups — reduce it for external-heavy workloads.

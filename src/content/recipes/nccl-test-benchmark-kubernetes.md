@@ -5,7 +5,7 @@ publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "ai"
 difficulty: "advanced"
-timeToComplete: "10 minutes"
+timeToComplete: "20 minutes"
 kubernetesVersion: "1.28+"
 tags:
   - "nccl"
@@ -14,58 +14,95 @@ tags:
   - "all-reduce"
 relatedRecipes:
   - "nccl-environment-variables-guide"
-  - "kubernetes-pod-security-standards"
+  - "nccl-allgather-benchmark-profile"
   - "nvidia-peermem-gpudirect-rdma-k8s"
+  - "run-nccl-tests-mpijob-kubernetes"
+  - "compare-nccl-intra-inter-node"
 ---
 
-> 💡 **Quick Answer:** Run NCCL tests on Kubernetes for GPU communication benchmarking. all_reduce_perf, all_gather_perf, multi-node bandwidth, and latency validation.
+> 💡 **Quick Answer:** Run `all_reduce_perf -b 8 -e 2G -f 2 -g 1` in GPU pods and track `algbw`/`busbw` over message sizes to validate real cluster throughput. Use `all_gather_perf` with the same flags for collective-specific gather bandwidth.
 
 ## The Problem
 
-Run NCCL tests on Kubernetes for GPU communication benchmarking. Without proper configuration, teams encounter unexpected behavior, errors, or security gaps in production.
+All-reduce and all-gather are the key communication primitives for distributed training. Before trusting a cluster with a multi-day training job, you need a fast, repeatable way to confirm the GPU interconnect and network fabric actually deliver the expected bandwidth.
 
 ## The Solution
 
-### Configuration
-
-```yaml
-# NCCL Test Benchmark Kubernetes example
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: example
-data:
-  key: value
-```
-
-### Steps
+### Baseline Command
 
 ```bash
-kubectl apply -f config.yaml
-kubectl get all -n production
+all_reduce_perf -b 8 -e 2G -f 2 -g 1
 ```
 
-```mermaid
-graph TD
-    A[Identify need] --> B[Configure]
-    B --> C[Deploy]
-    C --> D[Verify]
+- `-b 8` — start at 8 bytes
+- `-e 2G` — sweep up to 2 GB
+- `-f 2` — multiply size by 2 each step
+- `-g 1` — GPUs per process (adjust for multi-GPU-per-rank runs)
+
+For all-gather instead of all-reduce, swap the binary:
+
+```bash
+all_gather_perf -b 8 -e 2G -f 2 -g 1
 ```
+
+### Recommended Matrix
+
+Run each test across these topologies to isolate where bottlenecks appear:
+
+- Single node, 2 GPUs
+- Single node, all local GPUs
+- Two nodes, 1 GPU per node
+- Two nodes, multiple GPUs per node
+
+### What to Capture
+
+- `algbw` and `busbw` (algorithm and bus bandwidth) at each message size
+- GPU model and driver version
+- Node pair tested
+- CNI/network path used (NVLink, InfiniBand, RoCE, etc.)
+
+### Pass Criteria
+
+- Stable bandwidth at medium and large message sizes
+- No repeated NCCL transport warnings in the log output
+- Inter-node results align with the link capabilities (e.g., near-line-rate on InfiniBand/RoCE)
 
 ## Common Issues
 
-**Configuration not working**: Check YAML syntax and ensure the namespace exists. Use `kubectl apply --dry-run=server` to validate before applying.
+**Bandwidth far below link speed on multi-node runs**
+
+Usually a transport fallback — check for `NCCL INFO NET/Socket` in logs, which means NCCL fell back to TCP instead of using RDMA. Verify GPUDirect RDMA is active (see [nvidia-peermem-gpudirect-rdma-k8s](/recipes/ai/nvidia-peermem-gpudirect-rdma-k8s/)).
+
+**Results vary run-to-run**
+
+Check for noisy neighbors on the same NIC/switch, or CPU governor throttling. Pin NCCL to specific interfaces with `NCCL_SOCKET_IFNAME` / `NCCL_IB_HCA` (see [nccl-environment-variables-guide](/recipes/ai/nccl-environment-variables-guide/)).
 
 ## Best Practices
 
-- Test changes in staging first
-- Version all configs in Git
-- Monitor after deployment
-- Document decisions for the team
+- Always run the full size sweep (`-b 8 -e 2G`) — small-message latency and large-message bandwidth fail independently
+- Baseline single-node before testing multi-node — isolates NVLink/PCIe issues from network issues
+- Re-run after any driver, CNI, or NCCL version upgrade — regressions here are silent until training jobs slow down
+- Store results per node-pair so historical comparisons catch fabric degradation early
 
 ## Key Takeaways
 
-- NCCL Test Benchmark Kubernetes is essential for production Kubernetes
-- Follow the configuration patterns shown above
-- Always validate before applying to production
-- Combine with monitoring for full observability
+- `all_reduce_perf` and `all_gather_perf` are the standard NCCL collective benchmarks
+- Test single-node and multi-node topologies separately to localize bottlenecks
+- `algbw`/`busbw` at large message sizes is the number that matters for real training throughput
+- NCCL falling back to TCP sockets instead of RDMA is the most common cause of bad multi-node numbers
+
+---
+
+## 📘 Go Further with Kubernetes Recipes
+
+**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](https://amzn.to/3DzC8QA)**.
+
+Inside the book, you'll master:
+- ✅ Production-ready deployment strategies
+- ✅ Advanced networking and security patterns  
+- ✅ Observability, monitoring, and troubleshooting
+- ✅ Real-world best practices from industry experts
+
+> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+
+**👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!

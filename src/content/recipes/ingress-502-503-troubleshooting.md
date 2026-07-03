@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["ingress", "nginx", "502", "503", "gateway", "troubleshooting"]
 author: "Luca Berton"
 relatedRecipes:
-  - "ingress-routing"
+  - "kubernetes-ingress-complete-guide"
   - "service-endpoints-not-ready"
   - "ingress-tls-certificates"
 ---

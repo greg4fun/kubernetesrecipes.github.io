@@ -14,13 +14,12 @@ tags:
   - "conntrack"
   - "dns"
 relatedRecipes:
-  - "kubernetes-kubectl-exec-guide"
+  - "kubernetes-exec-into-pod"
   - "kubernetes-dns-debugging-guide"
   - "kubernetes-debug-pods"
   - "kubernetes-networkpolicy-zero-trust"
   - "nxdomain-dns-troubleshooting-kubernetes"
   - "kubernetes-coredns-troubleshooting"
-  - "kubernetes-network-debugging-guide"
 ---
 
 > 💡 **Quick Answer:** Deploy `nicolaka/netshoot` as an ephemeral container or debug pod. Use `tcpdump -i eth0 -w capture.pcap` for packet capture, `conntrack -L` for NAT table inspection, and `nslookup svc.namespace.svc.cluster.local` for DNS verification.
@@ -78,6 +77,60 @@ graph TD
     TCP -->|Yes| HTTP{HTTP responds?}
     HTTP -->|No| FIX_APP[Check pod logs<br/>Check readiness probe<br/>Check container port]
     HTTP -->|Yes| OK[✅ Working]
+```
+
+### Inspecting the Service Layer (kube-proxy)
+
+When DNS resolves and the ClusterIP exists but traffic still doesn't reach a pod, the fault is usually in how kube-proxy programmed the Service, or that the Service has no endpoints at all:
+
+```bash
+# No endpoints means the Service selector doesn't match any pod's labels
+kubectl get endpoints my-service
+kubectl get pods -l app=myapp                          # does this match the Service selector?
+kubectl get svc my-service -o jsonpath='{.spec.selector}'
+
+# Check kube-proxy's mode, then inspect the corresponding rules on the node
+kubectl get configmap kube-proxy -n kube-system -o yaml | grep mode
+# iptables mode:
+iptables -t nat -L KUBE-SERVICES | grep my-service
+# IPVS mode:
+ipvsadm -Ln | grep <ClusterIP>
+```
+
+### CNI Plugin Health
+
+If pod-to-pod connectivity fails even before DNS/Service routing comes into play, check the CNI itself:
+
+```bash
+kubectl get pods -n kube-system | grep -E 'calico|cilium|flannel|weave'
+
+# Calico
+calicoctl node status
+# Cilium
+cilium status
+
+# Node-to-node pod network reachability
+kubectl get nodes -o wide
+ping <other-node-pod-cidr-ip>   # from one node to another node's pod subnet
+```
+
+### Isolate NetworkPolicy as the Cause
+
+Temporarily replacing all policies in a namespace with an allow-all rule is the fastest way to confirm (or rule out) NetworkPolicy as the blocker:
+
+```bash
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: allow-all-temp, namespace: my-namespace}
+spec:
+  podSelector: {}
+  ingress: [{}]
+  egress: [{}]
+  policyTypes: [Ingress, Egress]
+EOF
+# If connectivity now works, a NetworkPolicy was the cause — narrow it down from there
+kubectl delete networkpolicy allow-all-temp -n my-namespace
 ```
 
 ## Common Issues

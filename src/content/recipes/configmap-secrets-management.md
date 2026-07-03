@@ -24,7 +24,7 @@ relatedRecipes:
   - "kubernetes-cost-optimization"
   - "external-secrets-operator"
   - "kubernetes-sealed-secrets-management"
-  - "api-versions-deprecations"
+  - "kubernetes-api-versions-explained"
   - "kubernetes-downward-api-guide"
   - "scheduler-configuration-tuning"
   - "environment-variables-configmaps"

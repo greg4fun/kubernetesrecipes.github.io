@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "automate-nccl-preflight-ci"
   - "argocd-gitops"
-  - "helm-chart-creation"
+  - "helm-chart-basics"
   - "kubernetes-kustomize-configuration-management"
 tags:
   - gitops

@@ -9,7 +9,7 @@ prerequisites:
   - "At least two GPU nodes"
   - "NCCL tests runnable in pods"
 relatedRecipes:
-  - "nccl-allreduce-benchmark-profile"
+  - "nccl-test-benchmark-kubernetes"
   - "run-nccl-tests-kubernetes"
   - "validate-gpu-topology-nccl"
   - "nccl-allgather-benchmark-profile"

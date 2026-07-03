@@ -7,7 +7,6 @@ publishDate: "2026-04-03"
 tags: ["ingress", "routing", "tls", "nginx", "load-balancer", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "ingress-routing"
   - "ingress-502-503-troubleshooting"
   - "ingress-tls-certificates"
   - "kubernetes-load-balancing"
@@ -135,6 +134,176 @@ graph LR
     C --> F[Pod 1]
     C --> G[Pod 2]
     D --> H[Pod 3]
+```
+
+### Path Types
+
+`pathType` controls how the path is matched:
+
+```yaml
+# Exact matching — path must match exactly
+- path: /api/v1/users
+  pathType: Exact
+  backend:
+    service:
+      name: users-v1
+      port:
+        number: 80
+
+# Prefix matching — matches the URL path prefix (most common)
+- path: /api/v1
+  pathType: Prefix
+  backend:
+    service:
+      name: api-v1
+      port:
+        number: 80
+```
+
+### URL Rewriting
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rewrite-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: app.example.com
+      http:
+        paths:
+          # /api/users -> /users
+          - path: /api(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: api-service
+                port:
+                  number: 80
+```
+
+### Canary Deployments
+
+Weight-based canary splits traffic between a main and canary Ingress pointing at different Services:
+
+```yaml
+# Main ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: app.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service: {name: main-service, port: {number: 80}}
+---
+# Canary ingress (10% of traffic)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: canary-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-weight: "10"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: app.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service: {name: canary-service, port: {number: 80}}
+```
+
+Header-based canary routes to the canary Service whenever a specific header is present, instead of splitting by weight:
+
+```yaml
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-by-header: "X-Canary"
+    nginx.ingress.kubernetes.io/canary-by-header-value: "true"
+```
+
+### Session Affinity
+
+```yaml
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/affinity-mode: "persistent"
+    nginx.ingress.kubernetes.io/session-cookie-name: "SERVERID"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "3600"
+```
+
+### Basic Authentication
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: auth-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: admin.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service: {name: admin-service, port: {number: 80}}
+```
+
+```bash
+htpasswd -c auth admin
+kubectl create secret generic basic-auth --from-file=auth
+```
+
+### Default Backend
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-with-default
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service: {name: default-service, port: {number: 80}}
+  rules:
+    - host: app.example.com
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service: {name: api-service, port: {number: 80}}
+```
+
+### Debug Ingress
+
+```bash
+kubectl get ingress
+kubectl describe ingress my-ingress
+kubectl logs -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx
+curl -H "Host: app.example.com" http://<ingress-ip>/
+kubectl exec -n ingress-nginx <nginx-pod> -- cat /etc/nginx/nginx.conf
 ```
 
 ## Frequently Asked Questions

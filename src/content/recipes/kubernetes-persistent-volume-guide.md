@@ -15,7 +15,7 @@ tags:
   - "cka"
 relatedRecipes:
   - "kubernetes-local-persistent-volumes"
-  - "troubleshooting-pending-pvc"
+  - "pvc-pending-troubleshooting"
   - "kubernetes-persistentvolumeclaimspec"
   - "etcd-backup-restore-kubernetes"
   - "kubernetes-etcd-backup-guide"

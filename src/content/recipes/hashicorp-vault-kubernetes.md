@@ -15,7 +15,7 @@ relatedRecipes:
   - "external-secrets-operator"
   - "kubernetes-sealed-secrets-management"
   - "secrets-management-best-practices"
-  - "kyverno-policy-management"
+  - "kubernetes-kyverno-policy-guide"
   - "kubernetes-oidc-authentication-guide"
   - "kubernetes-security-context-guide"
   - "selinux-scc-gpu-operator-openshift"

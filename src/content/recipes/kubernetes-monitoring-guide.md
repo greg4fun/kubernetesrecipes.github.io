@@ -11,7 +11,7 @@ relatedRecipes:
   - "helm-sprig-cat-function"
   - "crashloopbackoff-troubleshooting"
   - "prometheus-monitoring-kubernetes-guide"
-  - "grafana-kubernetes-dashboards"
+  - "kubernetes-pod-resource-monitoring-grafana"
   - "alertmanager-setup"
 ---
 

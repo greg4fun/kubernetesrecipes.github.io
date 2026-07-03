@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-networkpolicy-default-deny"
   - "kubernetes-service-mesh-comparison"
   - "jaeger-distributed-tracing"
-  - "grafana-kubernetes-dashboards"
+  - "kubernetes-pod-resource-monitoring-grafana"
 ---
 
 > 💡 **Quick Answer:** Hubble is the observability layer built into Cilium. Enable it with `cilium hubble enable --ui` to get real-time network flow logs, DNS query visibility, HTTP request tracing, and a service dependency map. Use `hubble observe` CLI to filter flows by namespace, pod, verdict (FORWARDED/DROPPED), and protocol.

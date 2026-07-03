@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-cosign-image-verification"
   - "container-image-security-scanning-kubernetes"
   - "openshift-catalogsource-filtering"
-  - "kyverno-policy-management"
+  - "kubernetes-kyverno-policy-guide"
   - "copy-nim-image-internal-quay-registry"
 ---
 

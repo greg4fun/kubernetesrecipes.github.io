@@ -34,7 +34,7 @@ relatedRecipes:
   - "enable-gpudirect-storage-openshift"
   - "agent-config-device-by-path"
   - "coredns-configuration"
-  - "custom-dns-configuration"
+  - "kubernetes-dns-policy-configuration"
   - "dns-policies-configuration"
   - "kubernetes-istio-traffic-management"
   - "kubernetes-dns-configuration"

@@ -8,7 +8,7 @@ tags: ["pending", "scheduling", "resources", "troubleshooting", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "taint-toleration-scheduling-issues"
-  - "topology-spread-constraints"
+  - "pod-topology-constraints"
   - "scheduler-configuration-tuning"
   - "resource-quota-exceeded-error"
 ---

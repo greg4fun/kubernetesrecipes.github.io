@@ -8,7 +8,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "ingress-tls-certificates"
   - "dns-policies-configuration"
-  - "custom-dns-configuration"
+  - "kubernetes-dns-policy-configuration"
 tags: ["coredns", "dns", "networking", "configuration", "resolution"]
 ---
 

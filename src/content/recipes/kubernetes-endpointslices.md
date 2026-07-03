@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["endpointslices", "services", "networking", "discovery", "scalability"]
 relatedRecipes:
-  - "ingress-routing"
+  - "kubernetes-ingress-complete-guide"
   - "ingress-tls-certificates"
   - "networkpolicy-deny-all"
 ---

@@ -7,7 +7,7 @@ publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["secrets", "external-secrets", "vault", "aws", "security"]
 relatedRecipes:
-  - "admission-webhooks"
+  - "kubernetes-admission-webhooks-guide"
   - "rotate-quay-robot-tokens"
   - "service-accounts-rbac"
   - "external-secrets-operator-openshift"

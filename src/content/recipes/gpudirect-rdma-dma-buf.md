@@ -13,7 +13,7 @@ tags:
   - "nccl"
   - "gpu"
 relatedRecipes:
-  - "open-kernel-modules-dma-buf"
+  - "switch-proprietary-to-open-kernel-modules"
   - "infiniband-ethernet-ai-kubernetes"
   - "gpu-operator-mofed-driver"
   - "sriov-vf-ai-workloads"

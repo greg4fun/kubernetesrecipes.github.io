@@ -312,6 +312,65 @@ spec:
           image: myapp:v1
 ```
 
+## Match Label Expressions
+
+`labelSelector` also accepts `matchExpressions` for more precise pod counting — useful when you need to exclude certain versions or environments from the spread calculation:
+
+```yaml
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app: microservice
+      matchExpressions:
+        - key: version
+          operator: In
+          values: ["v1", "v2"]
+        - key: environment
+          operator: NotIn
+          values: ["test"]
+```
+
+## StatefulSet with Spread
+
+Topology spread constraints work the same way on StatefulSets — critical for quorum-based systems like Cassandra or etcd, where losing a whole zone shouldn't take out a majority of replicas:
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cassandra
+spec:
+  serviceName: cassandra
+  replicas: 6
+  selector:
+    matchLabels:
+      app: cassandra
+  template:
+    metadata:
+      labels:
+        app: cassandra
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: cassandra
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: cassandra
+      containers:
+        - name: cassandra
+          image: cassandra:4.1
+```
+
 ## Verify Pod Distribution
 
 ```bash

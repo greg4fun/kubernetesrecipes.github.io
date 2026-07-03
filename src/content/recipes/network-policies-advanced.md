@@ -9,7 +9,7 @@ tags: ["networkpolicy", "security", "networking", "isolation", "zero-trust"]
 relatedRecipes:
   - "update-ca-certificates-kubernetes"
   - "certificate-expiry-troubleshooting"
-  - "kyverno-policy-management"
+  - "kubernetes-kyverno-policy-guide"
   - "kubernetes-validating-admission-policy"
 ---
 

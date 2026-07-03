@@ -14,7 +14,7 @@ difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "kubernetes-logging-elk-stack"
-  - "grafana-kubernetes-dashboards"
+  - "kubernetes-pod-resource-monitoring-grafana"
   - "container-logging-patterns"
   - "kubernetes-opentelemetry-guide"
   - "prometheus-monitoring-kubernetes-guide"

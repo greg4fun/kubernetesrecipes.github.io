@@ -14,7 +14,7 @@ relatedRecipes:
   - "kubernetes-cluster-autoscaler-configuration"
   - "kubernetes-cost-optimization-strategies"
   - "openclaw-resource-limits-tuning"
-  - "hpa-custom-metrics"
+  - "kubernetes-hpa-prometheus-adapter"
   - "horizontal-pod-autoscaler"
 ---
 

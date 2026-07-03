@@ -325,6 +325,36 @@ kyverno apply policies/ --resource resources/
 kyverno validate policy.yaml
 ```
 
+### Verify Image Signatures (Supply Chain Security)
+
+Block images unless they're signed by a trusted key — the strongest form of "only run what we built":
+
+```yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata: {name: verify-image-signatures}
+spec:
+  validationFailureAction: Enforce
+  webhookTimeoutSeconds: 30
+  rules:
+    - name: verify-signature
+      match: {any: [{resources: {kinds: [Pod]}}]}
+      verifyImages:
+        - imageReferences: ["registry.company.com/production/*"]
+          attestors:
+            - count: 1
+              entries:
+                - keys: {publicKeys: "-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"}
+```
+
+### Monitor Kyverno Itself
+
+```bash
+kubectl port-forward -n kyverno svc/kyverno-svc-metrics 8000:8000
+curl localhost:8000/metrics | grep kyverno
+# kyverno_policy_results_total, kyverno_admission_requests_total, kyverno_policy_rule_info_total
+```
+
 ## Common Issues
 
 **Policy not enforcing**

@@ -10,7 +10,7 @@ relatedRecipes:
   - "kubernetes-monitoring-guide"
   - "kubernetes-opentelemetry-guide"
   - "kubernetes-logging-elk-stack"
-  - "grafana-kubernetes-dashboards"
+  - "kubernetes-pod-resource-monitoring-grafana"
 ---
 
 > 💡 **Quick Answer:** Design effective Kubernetes alerts that reduce noise and catch real issues. Covers severity tiers, golden signals, runbook links, and fatigue prevention.

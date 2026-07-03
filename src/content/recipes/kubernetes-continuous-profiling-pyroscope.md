@@ -15,7 +15,7 @@ tags:
   - grafana
 relatedRecipes:
   - "prometheus-monitoring-kubernetes-guide"
-  - "grafana-kubernetes-dashboards"
+  - "kubernetes-pod-resource-monitoring-grafana"
   - "kubernetes-golden-signals-sli-slo"
 ---
 
