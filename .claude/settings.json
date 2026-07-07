@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk '$1 > 5 && $2 < 100 && $1 != \"-\" {print $1, $2, $3}')",
+      "Bash(python3 -c \"import sys; print\\(sys.version\\)\")",
+      "Read(//opt/homebrew/bin/**)",
+      "Bash(command -v yq)",
+      "Bash(python3)",
+      "Bash(yq --version)",
+      "Bash(python3 -c \"import ruamel.yaml\")"
+    ]
+  }
+}
