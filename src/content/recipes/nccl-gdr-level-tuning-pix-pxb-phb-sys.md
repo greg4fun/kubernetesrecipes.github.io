@@ -1,6 +1,6 @@
 ---
 title: "NCCL_NET_GDR_LEVEL Environment Variable Guide"
-description: "NCCL_NET_GDR_LEVEL environment variable explained: compare PIX, PXB, PHB, and SYS GPUDirect RDMA distance thresholds and pick the fastest safe level."
+description: "NCCL_NET_GDR_LEVEL sets GPUDirect RDMA's max PCIe distance. Compare PIX, PXB, PHB, and SYS thresholds and pick the fastest safe level."
 tags:
   - "nccl"
   - "rdma"
