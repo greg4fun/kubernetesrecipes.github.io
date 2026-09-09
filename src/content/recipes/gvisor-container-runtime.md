@@ -400,14 +400,15 @@ kubectl run test-gvisor --image=alpine --rm -it \
 kubectl get pod test-gvisor -o jsonpath='{.spec.runtimeClassName}'
 ```
 
-Test syscall interception:
+Test syscall interception by opening a new terminal into the sandboxed shell:
 
 ```bash
-# Create test pod
+# Open a new terminal and exec into the sandboxed pod
 kubectl run gvisor-test --image=alpine --rm -it \
   --overrides='{"spec":{"runtimeClassName":"gvisor"}}' -- sh
 
-# Inside the container, run:
+# Inside that new terminal, create a testbed directory and inspect the sandbox
+mkdir -p /tmp/sandbox && cd /tmp/sandbox
 cat /proc/version  # Shows gVisor version info
 dmesg             # May show limited/different output
 mount             # May show different mounts than standard container
