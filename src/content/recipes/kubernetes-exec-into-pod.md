@@ -16,9 +16,9 @@ relatedRecipes:
 
 > 💡 **Quick Answer:** Use kubectl exec to run commands inside Kubernetes pods. Covers interactive sessions, multi-container pods, and ephemeral container debugging.
 
-## The Problem
+## What Does kubectl exec Do?
 
-This is one of the most searched Kubernetes topics. Having a comprehensive, well-structured guide helps both beginners and experienced users quickly find what they need.
+`kubectl exec` runs a command inside a container that's already running in a pod — similar to `docker exec`. It opens a session through the Kubernetes API server directly into the target container, without restarting it or changing the pod spec, making it the standard tool for interactive debugging and one-off commands inside a pod.
 
 ## The Solution
 
