@@ -1,6 +1,6 @@
 ---
-title: "ImagePullBackOff Troubleshooting Guide"
-description: "Debug and resolve ImagePullBackOff errors including auth failures, wrong tags, private registry access, and rate limiting from Docker Hub and Quay."
+title: "How to Fix ImagePullBackOff in Kubernetes"
+description: "Fix ImagePullBackOff in Kubernetes: diagnose auth failures, wrong image tags, private registry issues, and Docker Hub rate limits with kubectl."
 category: "troubleshooting"
 difficulty: "beginner"
 publishDate: "2026-04-02"

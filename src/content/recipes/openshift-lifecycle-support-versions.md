@@ -1,6 +1,6 @@
 ---
-title: "OpenShift Support Lifecycle: Versions & EOL"
-description: "OpenShift lifecycle: version support matrix, EOL dates for OCP 4.14-4.18, EUS upgrade paths, and end-of-life schedule. Updated for 2026."
+title: "OpenShift Lifecycle: Support Versions, Dates & EUS"
+description: "Learn OpenShift support lifecycle: release versions, support phases, EOL dates, upgrade paths, and Extended Update Support (EUS) coverage."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "deployments"
