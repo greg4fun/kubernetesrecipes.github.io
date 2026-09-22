@@ -1,6 +1,6 @@
 ---
-title: "Llama 2 70B FP16 Model Size 140GB Guide"
-description: "Llama 2 70B FP16 model size is 140GB. Complete GPU memory requirements for FP16, FP8, INT4 quantization, and multi-GPU tensor parallelism on Kubernetes."
+title: "Llama 2 70B Parameters: FP16 Memory Requirements (140GB)"
+description: "Llama 2 70B: 70 billion parameters = 140GB FP16 VRAM. Complete GPU memory requirements for FP16, FP8, INT4 quantization, tensor parallelism, and Kubernetes."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "ai"
