@@ -1,5 +1,5 @@
 ---
-title: "OpenShift crun vs runc Runtime Differences"
+title: "crun vs runc: Container Runtimes in OpenShift"
 description: "Understand why pods behave differently on GPU vs CPU nodes in OpenShift. Compare crun and runc container runtimes, seccomp profiles, and syscall filtering."
 category: "troubleshooting"
 difficulty: "advanced"

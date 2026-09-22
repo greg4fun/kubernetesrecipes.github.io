@@ -1,6 +1,6 @@
 ---
 title: "NCCL_SOCKET_IFNAME Environment Variable Guide"
-description: "Configure NCCL_SOCKET_IFNAME for multi-node GPU training on Kubernetes. Network interface selection, bonding, InfiniBand, and troubleshooting NCCL timeouts."
+description: "NCCL_SOCKET_IFNAME documentation for GPU training on Kubernetes. Network interface selection, bonding, InfiniBand, and NCCL timeout troubleshooting."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "networking"

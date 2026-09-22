@@ -1,6 +1,6 @@
 ---
-title: "Install Helm on Ubuntu: Setup Guide"
-description: "Install Helm 3 on Ubuntu and configure chart repositories. Covers package manager install, script install, and shell completion for Ubuntu 22.04/24.04."
+title: "Install Helm on Ubuntu 22.04/24.04 (2 Methods)"
+description: "Install Helm 3 on Ubuntu with the official script or apt repository. Step-by-step commands, verification, and shell completion for Ubuntu 22.04 and 24.04."
 category: "helm"
 difficulty: "beginner"
 publishDate: "2026-04-02"
@@ -12,7 +12,7 @@ relatedRecipes:
   - "helm-chart-development-guide"
 ---
 
-> 💡 **Quick Answer:** Install Helm 3 on Ubuntu and configure chart repositories. Covers package manager install, script install, and shell completion for Ubuntu 22.04/24.04.
+> 💡 **Quick Answer:** Install Helm 3 on Ubuntu with the official script (`get-helm-3`) or the apt repository, then run `helm version` to verify. Works on Ubuntu 22.04 and 24.04.
 
 ## The Problem
 
