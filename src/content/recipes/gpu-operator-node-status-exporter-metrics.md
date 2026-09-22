@@ -1,5 +1,5 @@
 ---
-title: "GPU Operator Node Status Exporter Metrics"
+title: "GPU Operator Node Validation Metrics"
 description: "Monitor NVIDIA GPU Operator node validation with gpu_operator_node_driver_ready and status exporter metrics. Prometheus alerts for GPU node health."
 publishDate: "2026-05-02"
 author: "Luca Berton"
