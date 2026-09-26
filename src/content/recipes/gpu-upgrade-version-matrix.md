@@ -18,7 +18,7 @@ relatedRecipes:
   - "switch-proprietary-to-open-kernel-modules"
   - "openshift-mcp-itms-rollout"
   - "clusterpolicy-mofed-upgrade"
-  - "openshift-lifecycle-versions"
+  - "openshift-support-lifecycle-version-matrix"
 ---
 
 > 💡 **Quick Answer:** Store a version matrix in Git tracking GPU Operator, Network Operator, driver, CUDA, firmware, SR-IOV, and OpenShift versions. Test combinations on canary before production. Never upgrade more than one major component at a time.

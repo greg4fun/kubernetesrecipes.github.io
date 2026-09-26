@@ -17,7 +17,7 @@ tags:
 relatedRecipes:
   - "osus-operator-disconnected-openshift"
   - "openshift-upgrade-service-graph"
-  - "openshift-lifecycle-versions"
+  - "openshift-support-lifecycle-version-matrix"
   - "kubernetes-openshift-major-minor-upgrade"
   - "openshift-idms-install-config"
   - "copy-nim-image-internal-quay-registry"

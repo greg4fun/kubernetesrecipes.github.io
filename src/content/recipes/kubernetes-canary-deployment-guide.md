@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-cronjob-patterns-guide"
-  - "kubernetes-terminationgraceperiod"
+  - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-flux-sources-guide"
 ---
 

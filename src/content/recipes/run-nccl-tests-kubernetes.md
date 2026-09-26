@@ -1,6 +1,6 @@
 ---
-title: "Run NCCL Tests for GPU Network Validation"
-description: "Benchmark GPU-to-GPU communication using NVIDIA nccl-tests on Kubernetes or OpenShift to validate bandwidth and latency."
+title: "Run NCCL Tests on Kubernetes (all_reduce_perf)"
+description: "Run nccl-tests all_reduce_perf on Kubernetes or OpenShift, single- and multi-node, and read busbw results to validate GPU interconnect bandwidth and latency."
 category: "ai"
 difficulty: "intermediate"
 timeToComplete: "25 minutes"

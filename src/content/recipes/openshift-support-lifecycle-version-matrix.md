@@ -1,174 +1,190 @@
 ---
-title: "OpenShift Support Lifecycle and Version Matrix"
-description: "OpenShift Container Platform support lifecycle, version EOL dates, Kubernetes version mapping, upgrade paths, and Extended Update Support (EUS). Plan upgrades"
+title: "OpenShift Versions, EOL & Kubernetes Mapping"
+description: "OpenShift lifecycle: EOL dates for OCP 4.12–4.22, OpenShift to Kubernetes version mapping, EUS vs standard support, release cycle and upgrade paths."
 tags:
   - "openshift"
   - "lifecycle"
   - "support"
+  - "support-matrix"
+  - "eus"
   - "upgrades"
   - "versioning"
+  - "version-management"
 category: "configuration"
 publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
+timeToComplete: "15 minutes"
 relatedRecipes:
   - "openshift-cluster-update-process-explained"
+  - "openshift-upgrade-planning-2026"
   - "kubernetes-api-deprecation-migration"
+  - "kubernetes-api-versions-explained"
   - "mirror-openshift-releases-disconnected-registry"
+  - "gpu-upgrade-version-matrix"
+  - "mofed-doca-driver-building-openshift"
+  - "doca-driver-openshift-dtk"
 ---
 
-> 💡 **Quick Answer:** OpenShift versions receive ~18 months of full support from GA. EUS (Extended Update Support) releases (even minor versions: 4.12, 4.14, 4.16, 4.18) get extended to ~24 months. Each OCP version maps to a specific Kubernetes version (e.g., OCP 4.16 = K8s 1.29, OCP 4.17 = K8s 1.30). Upgrade only between adjacent minor versions unless using EUS-to-EUS.
+> 💡 **Quick Answer:** OpenShift ships a new 4.x minor roughly every 4 months. Each minor gets **Full Support** until 3 months after the next minor's GA, then **Maintenance Support** until **18 months after GA** (its end of life). Even minors (4.12, 4.14, 4.16, 4.18, 4.20) are **EUS** releases: EUS Term 1 extends support to 24 months, Term 2 to 36 months (4.12 and 4.14 also got a Term 3). Each OCP minor maps to one Kubernetes minor: **OCP 4.x = Kubernetes 1.(x+13)**, so 4.18 = 1.31, 4.20 = 1.33, 4.22 = 1.35.
 
-## The Problem
+## OpenShift Version Matrix: Kubernetes Version, GA and EOL
 
-- OpenShift versions go end-of-life — running unsupported versions means no security patches
-- Kubernetes API deprecations require planning before upgrading
-- EUS vs non-EUS versions have different support timelines
-- Upgrade path between versions must be sequential (can't skip versions)
-- Mapping OpenShift versions to Kubernetes versions is not obvious
+| OCP | Kubernetes | GA | Full Support Ends | Maintenance Ends (EOL) | EUS Term 1 Ends | EUS Term 2 Ends |
+|:---:|:---:|---|---|---|---|---|
+| **4.22** (EUS) | 1.35 | Jun 9, 2026 | Dec 31, 2026 | Dec 31, 2027 | Jun 30, 2028 | Jun 30, 2029 |
+| **4.21** | 1.34 | Feb 3, 2026 | Sep 9, 2026 | Aug 3, 2027 | — | — |
+| **4.20** (EUS) | 1.33 | Oct 21, 2025 | May 3, 2026 | Apr 21, 2027 | Oct 21, 2027 | Oct 21, 2028 |
+| **4.19** | 1.32 | Jun 17, 2025 | Jan 21, 2026 | Dec 17, 2026 | — | — |
+| **4.18** (EUS) | 1.31 | Feb 25, 2025 | Sep 17, 2025 | Aug 25, 2026 | Feb 25, 2027 | Feb 25, 2028 |
+| **4.17** | 1.30 | Oct 1, 2024 | May 25, 2025 | Apr 1, 2026 | — | — |
+| **4.16** (EUS) | 1.29 | Jun 27, 2024 | Jan 1, 2025 | Dec 27, 2025 | Jun 27, 2026 | Jun 27, 2027 |
+| **4.15** | 1.28 | Feb 27, 2024 | Sep 27, 2024 | Aug 27, 2025 | — | — |
+| **4.14** (EUS) | 1.27 | Oct 31, 2023 | May 27, 2024 | May 1, 2025 | Oct 31, 2025 | Oct 31, 2026 (Term 3: Oct 31, 2027) |
+| **4.13** | 1.26 | May 17, 2023 | Jan 31, 2024 | Nov 17, 2024 | — | — |
+| **4.12** (EUS) | 1.25 | Jan 17, 2023 | Aug 17, 2023 | Jul 17, 2024 | Jan 17, 2025 | Jan 17, 2026 (Term 3: Jan 17, 2027) |
 
-## The Solution
+> **Always confirm** against the [Red Hat OpenShift Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift/) — dates can shift. Dates above are from Red Hat's product life cycle data (checked September 2026); 4.22 does not follow the GA + 18 months rule exactly. EUS terms require an EUS entitlement; without it, a release's EOL is the "Maintenance Ends" date.
 
-### OpenShift ↔ Kubernetes Version Mapping
+**How to read it (as of September 2026):**
 
-```text
-OpenShift  │ Kubernetes │ GA Date     │ End of Life  │ EUS
-───────────┼────────────┼─────────────┼──────────────┼─────
-4.18       │ 1.31       │ 2025-06     │ ~2027-06     │ Yes
-4.17       │ 1.30       │ 2024-11     │ ~2026-05     │ No
-4.16       │ 1.29       │ 2024-06     │ ~2026-06     │ Yes
-4.15       │ 1.28       │ 2024-02     │ ~2025-08     │ No
-4.14       │ 1.27       │ 2023-10     │ ~2025-10     │ Yes
-4.13       │ 1.26       │ 2023-05     │ ~2024-11     │ No
-4.12       │ 1.25       │ 2023-01     │ ~2025-01     │ Yes
-───────────┴────────────┴─────────────┴──────────────┴─────
+- **Current, fully supported:** 4.22 (GA Jun 9, 2026) — also the newest EUS release and the target for new production clusters.
+- **Maintenance only:** 4.21 (Full Support ended Sep 9, 2026; EOL Aug 3, 2027), 4.20 (EOL Apr 21, 2027 without EUS), 4.19 (EOL Dec 17, 2026).
+- **Still supported only with EUS:** 4.18 (Term 1 to Feb 2027), 4.16 (Term 2 to Jun 2027), 4.14 (Term 2 to Oct 2026, Term 3 to Oct 2027), 4.12 (Term 3 to Jan 2027).
+- **4.17** reached EOL Apr 1, 2026; **4.18** standard maintenance ended Aug 25, 2026.
+
+## OpenShift Release Cycle and Support Phases
+
+```mermaid
+flowchart LR
+    GA["GA"] --> FULL["Full Support<br/>until next GA + 3 months"]
+    FULL --> MAINT["Maintenance Support<br/>until GA + 18 months"]
+    MAINT --> EOL["End of Life"]
+    MAINT -.->|"even minors + EUS add-on"| EUS1["EUS Term 1<br/>GA + 24 months"]
+    EUS1 -.-> EUS2["EUS Term 2<br/>GA + 36 months"]
+    EUS2 -.-> EOL
+```
+
+| Phase | Duration | What you get |
+|---|---|---|
+| **Full Support** | GA → next minor GA + 3 months (~6–7 months) | Critical/important security fixes, urgent and high-priority bug fixes, new z-streams, enhancements |
+| **Maintenance Support** | Until 18 months after GA | Critical security fixes and selected high-impact bug fixes; no new features |
+| **EUS Term 1** (even minors) | Until 24 months after GA | Critical security fixes and backported bug fixes; enables EUS-to-EUS upgrades |
+| **EUS Term 2** (even minors) | Until 36 months after GA | Further 12 months of stability-focused updates (separate add-on) |
+| **End of Life** | — | No patches or fixes; self-support only |
 
 Pattern:
-• Even minor versions (4.12, 4.14, 4.16, 4.18) = EUS
-• Odd minor versions (4.13, 4.15, 4.17) = Standard support only
-• Each OCP minor = K8s minor + 3 offset (OCP 4.x ≈ K8s 1.(x-3))
+
+- **Even minors** (4.12, 4.14, 4.16, 4.18, 4.20, 4.22) = EUS-eligible
+- **Odd minors** (4.13, 4.15, 4.17, 4.19, 4.21) = standard 18-month lifecycle only
+- **Kubernetes mapping:** OCP 4.x ships Kubernetes 1.(x+13) — check it on a live cluster with `oc version`
+
+## Upgrade Paths
+
+```mermaid
+flowchart LR
+    416["4.16 EUS"] --> 417["4.17"] --> 418["4.18 EUS"] --> 419["4.19"] --> 420["4.20 EUS"] --> 421["4.21"]
+    416 -.->|"EUS-to-EUS"| 418
+    418 -.->|"EUS-to-EUS"| 420
 ```
 
-### Support Phases
-
-```text
-┌─────────────────────────────────────────────────────────────────┐
-│ Full Support (~12-14 months from GA)                             │
-│ • Security fixes, bug fixes, feature backports                  │
-│ • New z-stream releases (4.16.1, 4.16.2, ...)                  │
-├─────────────────────────────────────────────────────────────────┤
-│ Maintenance Support (~6 months after Full Support ends)          │
-│ • Critical security fixes only                                   │
-│ • No new features, limited bug fixes                            │
-├─────────────────────────────────────────────────────────────────┤
-│ Extended Update Support (EUS versions only, +6 months)           │
-│ • Extends lifecycle to ~24 months total                          │
-│ • Enables EUS-to-EUS upgrade path (skip odd versions)           │
-├─────────────────────────────────────────────────────────────────┤
-│ End of Life                                                      │
-│ • No patches, no support                                         │
-│ • Must upgrade to supported version                             │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### Upgrade Paths
-
-```text
-Standard upgrade path (sequential):
-  4.14 → 4.15 → 4.16 → 4.17 → 4.18
-
-EUS-to-EUS upgrade path (skip odd versions):
-  4.14 → 4.16 → 4.18
-  (Requires EUS subscription; runs through intermediate version internally)
-
-Within minor version (z-stream):
-  4.16.0 → 4.16.5 → 4.16.12 (any z-stream to any higher z-stream)
-```
+- **Minor upgrades are sequential:** 4.18 → 4.19 → 4.20. You cannot skip a minor.
+- **EUS-to-EUS** (e.g. 4.16 → 4.18, 4.18 → 4.20): the control plane still passes through the odd minor, but worker MachineConfigPools stay paused, so workers reboot only once.
+- **z-stream:** any 4.20.z → any higher 4.20.z offered in your channel.
+- Update to the latest z-stream of your current minor before moving to the next minor.
 
 ```bash
-# Check available upgrade paths
-oc adm upgrade
-# Cluster version is 4.16.12
-# Recommended updates:
-#   VERSION    IMAGE
-#   4.16.15    quay.io/openshift-release-dev/ocp-release@sha256:...
-#   4.17.3     quay.io/openshift-release-dev/ocp-release@sha256:...
-
-# Check current version and channel
+# Current version, channel and Kubernetes version
 oc get clusterversion
-# NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-# version   4.16.12   True        False         10d     Cluster version is 4.16.12
+oc get clusterversion version -o jsonpath='{.spec.channel}{"\n"}'   # e.g. eus-4.18
+oc version            # Server Version: 4.18.x / Kubernetes Version: v1.31.x
 
-# Set update channel
-oc adm upgrade channel eus-4.18
-
-# View upgrade graph
+# Available (and not-recommended) update targets
+oc adm upgrade
 oc adm upgrade --include-not-recommended
 ```
 
-### Check Version and Support Status
+### EUS-to-EUS Upgrade (4.18 → 4.20)
 
 ```bash
-# Current cluster version details
-oc get clusterversion version -o yaml | grep -A5 "status:"
+# 1. Pause worker pools so they only reboot once (control plane is never paused)
+oc patch mcp/worker --type merge -p '{"spec":{"paused":true}}'
 
-# Kubernetes version running
-oc version
-# Client Version: 4.16.12
-# Kube Version: v1.29.8
-# Server Version: 4.16.12
+# 2. Switch to the target EUS channel and update to the intermediate minor
+oc adm upgrade channel eus-4.20
+oc adm upgrade --to-latest          # control plane -> 4.19.z
+oc get clusterversion -w
 
-# Check if running EUS version
-oc get clusterversion -o jsonpath='{.items[0].spec.channel}'
-# eus-4.16
+# 3. After 4.19 completes (acknowledge any admin-ack gates), update to 4.20
+oc adm upgrade --to-latest          # control plane -> 4.20.z
+
+# 4. Unpause workers; they roll straight to 4.20
+oc patch mcp/worker --type merge -p '{"spec":{"paused":false}}'
+oc get mcp -w
+oc get co
 ```
 
-### Planning Upgrades
+### Pre-Upgrade Checklist
 
-```text
-Upgrade planning checklist:
-1. Check current version EOL date (Red Hat lifecycle page)
-2. Review deprecated APIs in target version (oc adm upgrade)
-3. Check operator compatibility matrix
-4. Test in non-production first
-5. Review release notes for breaking changes
-6. Ensure enough time before EOL (~3 months buffer)
-7. For EUS-to-EUS: both source and target must be EUS
+- [ ] Current version EOL checked against the matrix above; plan ≥ 3 months before EOL
+- [ ] All ClusterOperators healthy: `oc get co`
+- [ ] No degraded MachineConfigPools: `oc get mcp`
+- [ ] Removed-API usage reviewed: `oc get apirequestcounts`
+- [ ] Installed operators compatible with the target version: `oc get csv -A`
+- [ ] etcd backup taken: `oc debug node/<control-plane> -- chroot /host /usr/local/bin/cluster-backup.sh /home/core/backup`
+- [ ] PodDisruptionBudgets won't block node drains: `oc get pdb -A`
+- [ ] Kernel-dependent drivers (GPU, MOFED/DOCA) pre-built for the target release — see [DOCA driver with DTK](/recipes/configuration/doca-driver-openshift-dtk/)
 
-Timeline recommendation:
-• Start planning upgrade 6 months before EOL
-• Test in dev/staging 3 months before
-• Production upgrade 1-2 months before EOL
-```
+Timeline: start planning ~6 months before EOL, test in staging ~3 months before, upgrade production 1–2 months before.
 
 ## Common Issues
 
-### "Version not found in channel" when trying to upgrade
-- **Cause**: Wrong channel selected (stable vs eus vs candidate)
-- **Fix**: `oc adm upgrade channel stable-4.17` or `eus-4.18`
-
-### Upgrade blocked by deprecated API usage
-- **Cause**: Workloads using APIs removed in target version
-- **Fix**: Run `oc get apirequestcounts` to find deprecated API usage; migrate before upgrading
-
-### Cluster stuck on unsupported version
-- **Cause**: Missed upgrade window, version went EOL
-- **Fix**: Must upgrade through each intermediate version sequentially; contact Red Hat support
+| Issue | Cause | Fix |
+|---|---|---|
+| "Version not found in channel" | Wrong channel (stable / fast / eus / candidate) | `oc adm upgrade channel stable-4.20` or `eus-4.20` |
+| Upgrade blocked on removed APIs | Workloads still call APIs removed in the target Kubernetes | Find callers with `oc get apirequestcounts`, migrate, then admin-ack |
+| Upgrade stuck ~80% | MCP rollout not completing | `oc get mcp`; check degraded nodes and PDBs blocking drains |
+| No EUS-to-EUS path offered | Source or target isn't an even minor, or not on latest z-stream | Update to latest z of current EUS; confirm EUS entitlement |
+| GPU/RDMA drivers broken after upgrade | New RHCOS kernel | Pre-build drivers with the target release's Driver Toolkit image |
+| Cluster already EOL | Missed upgrade window | Upgrade sequentially through each minor; contact Red Hat support |
 
 ## Best Practices
 
-1. **Use EUS versions in production** — longer support, cleaner upgrade paths
-2. **Subscribe to errata notifications** — early warning for security patches
-3. **Test upgrades in non-prod first** — catch operator/workload incompatibilities
-4. **Monitor deprecated API usage** — `oc get apirequestcounts` shows which APIs will break
-5. **Upgrade at least every 12 months** — don't let versions go EOL under you
-6. **Use EUS-to-EUS for minimal disruption** — skip intermediate versions
+1. **Run EUS minors in production** (4.18, 4.20) — longer support, fewer disruptive upgrades
+2. **Use EUS-to-EUS** with paused worker MCPs to halve worker reboots
+3. **Apply z-streams regularly** — CVE fixes land there
+4. **Watch `oc get apirequestcounts`** before every minor — each OCP minor is a new Kubernetes minor
+5. **Never let a cluster reach EOL** — upgrade at least every 12 months on non-EUS
+6. **Test in staging first** with the same operators and workloads
 
 ## Key Takeaways
 
-- OpenShift versions get ~18 months full support (24 months for EUS)
-- EUS = even minor versions (4.12, 4.14, 4.16, 4.18)
-- Each OCP version maps to a specific Kubernetes version (OCP 4.16 = K8s 1.29)
-- Upgrades must be sequential (4.14→4.15→4.16) unless EUS-to-EUS
-- Check lifecycle status at access.redhat.com/support/policy/updates/openshift
-- Plan upgrades 6 months ahead; test 3 months before production
+- New OpenShift minor every ~4 months; each is supported 18 months from GA
+- Full Support ends 3 months after the next minor's GA; Maintenance runs to GA + 18 months
+- EUS (even minors) extends to 24 months (Term 1) or 36 months (Term 2)
+- OCP 4.x = Kubernetes 1.(x+13): 4.16 = 1.29, 4.18 = 1.31, 4.20 = 1.33
+- Upgrades are sequential, except EUS-to-EUS, which saves worker reboots
+- Source of truth: access.redhat.com/support/policy/updates/openshift
+
+## Frequently Asked Questions
+
+### What Kubernetes version does each OpenShift version use?
+Each OpenShift 4.x minor ships exactly one Kubernetes minor, 1.(x+13): OCP 4.12 = 1.25, 4.13 = 1.26, 4.14 = 1.27, 4.15 = 1.28, 4.16 = 1.29, 4.17 = 1.30, 4.18 = 1.31, 4.19 = 1.32, 4.20 = 1.33, 4.21 = 1.34, 4.22 = 1.35. Run `oc version` to see the exact Kubernetes patch version on your cluster.
+
+### What is the OpenShift release cycle?
+Red Hat releases a new OpenShift 4.x minor roughly every 4 months. Each minor gets Full Support until 3 months after the next minor's GA, then Maintenance Support until 18 months after its own GA. Z-stream patch releases ship throughout.
+
+### When is OpenShift 4.18, 4.19 and 4.20 end of life?
+OpenShift 4.18 Maintenance ends Aug 25, 2026; with EUS it is supported to Feb 25, 2027 (Term 1) or Feb 25, 2028 (Term 2). OpenShift 4.19 reaches end of life Dec 17, 2026 (no EUS). OpenShift 4.20 Maintenance ends Apr 21, 2027, with EUS to Oct 21, 2027 (Term 1) or Oct 21, 2028 (Term 2).
+
+### What is OpenShift EUS?
+Extended Update Support (EUS) is available on even-numbered minors (4.12, 4.14, 4.16, 4.18, 4.20, 4.22). EUS Term 1 extends support to about 24 months after GA, and Term 2 to about 36 months; 4.12 and 4.14 also received a Term 3. EUS also enables EUS-to-EUS upgrades, such as 4.18 → 4.20, where worker nodes skip the intermediate odd release.
+
+### What is the current OpenShift version?
+As of September 2026, the newest OpenShift minor is 4.22 (GA Jun 9, 2026, Kubernetes 1.35). It is also an EUS release, so it is the recommended target for new long-lived production clusters; existing 4.20 EUS clusters can move to it with an EUS-to-EUS upgrade (4.20 → 4.22). Check the Red Hat lifecycle page for any newer GA release.
+
+### Can I skip OpenShift versions when upgrading?
+No. Minor upgrades are sequential (4.18 → 4.19 → 4.20). The one exception is EUS-to-EUS: the control plane still passes through the odd minor, but paused worker pools update only once, straight to the target EUS release.
+
+### What happens when OpenShift reaches end of life?
+Red Hat stops shipping security patches and bug fixes, and support moves to self-support only. Running an EOL cluster is a security and compliance risk, so plan the upgrade at least 1–3 months before the Maintenance or EUS end date.

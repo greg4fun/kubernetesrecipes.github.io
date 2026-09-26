@@ -8,7 +8,7 @@ tags: ["backstage", "developer-portal", "idp", "platform-engineering", "kubernet
 author: "Luca Berton"
 relatedRecipes:
   - "argocd-sync-waves-ordering"
-  - "helm-hooks-lifecycle-guide"
+  - "helm-hooks-lifecycle"
 ---
 
 > 💡 **Quick Answer:** Deploy Spotify Backstage on Kubernetes as an internal developer portal. Covers Helm install, PostgreSQL backend, catalog entities, and TechDocs integration.

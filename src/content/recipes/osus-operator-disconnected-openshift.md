@@ -16,7 +16,7 @@ tags:
   - "upgrade"
 relatedRecipes:
   - "openshift-upgrade-service-graph"
-  - "openshift-lifecycle-versions"
+  - "openshift-support-lifecycle-version-matrix"
   - "openshift-upgrade-planning-2026"
   - "kubernetes-openshift-major-minor-upgrade"
   - "openshift-idms-install-config"

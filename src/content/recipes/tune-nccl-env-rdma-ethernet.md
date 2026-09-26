@@ -1,6 +1,6 @@
 ---
-title: "NCCL_NET_GDR_LEVEL and GPU Collective Communication Tuning"
-description: "Configure NCCL_NET_GDR_LEVEL and other environment variables to optimize GPUDirect RDMA for high-performance multi-GPU training on Kubernetes clusters."
+title: "NCCL Env Vars: Force InfiniBand/RoCE and GDR"
+description: "Force NCCL onto InfiniBand or RoCE instead of TCP sockets: set NCCL_IB_HCA, NCCL_SOCKET_IFNAME, NCCL_IB_GID_INDEX and NCCL_NET_GDR_LEVEL on Kubernetes."
 category: "configuration"
 difficulty: "advanced"
 timeToComplete: "20 minutes"

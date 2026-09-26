@@ -13,7 +13,7 @@ prerequisites:
 relatedRecipes:
   - "install-helm-amazon-linux"
   - "helm-sprig-cat-function"
-  - "openshift-lifecycle-versions"
+  - "openshift-support-lifecycle-version-matrix"
   - "crashloopbackoff-troubleshooting"
   - "kai-scheduler-queues"
   - "kai-scheduler-podgroups"

@@ -14,7 +14,7 @@ tags:
   - "osus"
   - "cluster-version"
 relatedRecipes:
-  - "openshift-lifecycle-versions"
+  - "openshift-support-lifecycle-version-matrix"
   - "openshift-upgrade-planning-2026"
   - "kubernetes-openshift-major-minor-upgrade"
   - "kubernetes-openshift-patch-update"

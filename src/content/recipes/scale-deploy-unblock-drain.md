@@ -15,7 +15,7 @@ tags:
   - deployments
 relatedRecipes:
   - "oc-adm-drain-dry-run-diagnostics"
-  - "kubernetes-terminationgraceperiodseconds"
+  - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-taint-toleration"
   - "kubernetes-startup-probe-slow-containers"
   - "kubernetes-request-limit-ranges"

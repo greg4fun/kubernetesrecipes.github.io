@@ -26,7 +26,7 @@ export interface Props {
 // Set enabled to false to hide the banner
 // ============================================
 const announcementConfig = {
-  enabled: true,
+  enabled: false,
   emoji: "📚",
   headline: "Book Signing at KubeCon EU 2026",
   description: "Meet us at Booking.com HQ (Mon 18:30-21:00) & vCluster booth #521 (Tue 24 Mar, 12:30-1:30pm) — free book giveaway!",
@@ -56,7 +56,7 @@ const isRecipeDetailPage = pathname.includes('/recipes/')
 
 const { 
   title, 
-  description = "Kubernetes Recipe Book is a curated collection of Kubernetes recipes to simplify container orchestration and cluster management.",
+  description = "1,300+ copy-paste Kubernetes and OpenShift recipes for platform, SRE, and GPU/AI infrastructure engineers. Fixes for the real-world errors the docs skip.",
   image = "/opengraph.jpg",
   type = "website",
   publishDate,

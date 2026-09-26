@@ -15,7 +15,7 @@ timeToComplete: "30 minutes"
 relatedRecipes:
   - "kubernetes-cluster-upgrade-guide"
   - "openshift-upgrade-planning-2026"
-  - "openshift-lifecycle-support-versions"
+  - "openshift-support-lifecycle-version-matrix"
   - "kubernetes-1-35-1-36-upgrade-checklist"
   - "openshift-machineconfig-mcp-guide"
   - "kubernetes-rolling-update-zero-downtime"

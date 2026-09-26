@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-rolling-update-strategies"
-  - "kubernetes-graceful-shutdown-pod-termination"
+  - "kubernetes-graceful-shutdown-guide"
   - "argocd-gitops"
 ---
 

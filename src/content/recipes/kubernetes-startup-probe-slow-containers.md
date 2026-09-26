@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-rolling-update-zero-downtime"
   - "kubernetes-init-containers-guide"
   - "crashloopbackoff-troubleshooting"
-  - "kubernetes-pod-lifecycle"
+  - "kubernetes-pod-lifecycle-guide"
 ---
 
 > 💡 **Quick Answer:** Startup probes protect slow-starting containers from being killed by liveness probes. The liveness and readiness probes are disabled until the startup probe succeeds. Set \`failureThreshold × periodSeconds\` to cover your worst-case startup time (e.g., \`failureThreshold: 30, periodSeconds: 10\` = 5-minute startup window).

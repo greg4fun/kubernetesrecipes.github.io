@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "openshift-cluster-update-process-explained"
   - "private-container-registry-kubernetes"
-  - "openshift-lifecycle-versions"
+  - "openshift-support-lifecycle-version-matrix"
 ---
 
 > 💡 **Quick Answer:** Use `oc adm release mirror` from a bastion host with access to both the internet (or proxy) and your internal registry. First create auth credentials with `podman login` to both registries, merge into a single auth file, then mirror. For fully air-gapped environments, use `oc mirror` with disk-to-disk transfer.

@@ -1,6 +1,6 @@
 ---
-title: "How to Use K8s Leases for Leader Election"
-description: "Implement distributed coordination with Kubernetes Leases. Configure leader election, distributed locks, and high availability patterns."
+title: "Kubernetes Lease Objects & Leader Election"
+description: "What a Kubernetes Lease is, how the control plane uses it for leader election, and copy-paste client-go code plus kubectl get lease checks for HA controllers."
 category: "deployments"
 difficulty: "advanced"
 publishDate: "2026-01-22"

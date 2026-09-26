@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-daemonset-update-strategies"
   - "kubernetes-readiness-probe-guide"
   - "kubernetes-poddisruptionbudget-guide"
-  - "kubernetes-pod-lifecycle"
+  - "kubernetes-pod-lifecycle-guide"
   - "ab-testing-kubernetes"
 ---
 

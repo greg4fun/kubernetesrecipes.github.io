@@ -14,7 +14,6 @@ difficulty: "intermediate"
 relatedRecipes:
   - "mcp-blocked-stale-update"
   - "openshift-machineconfig-mcp-guide"
-  - "openshift-lifecycle-versions"
   - "kubernetes-cluster-upgrade-guide"
   - "openshift-support-lifecycle-version-matrix"
 ---

@@ -1,18 +1,23 @@
 ---
-title: "Helm Hooks: Database Migrations & Lifecycle"
-description: "Use Helm hooks to run database migrations, backups, and validation jobs during install, upgrade, and rollback. Control execution order with hook weights an."
+title: "Helm Hooks: pre-install, post-upgrade, Weights"
+description: "Helm hooks explained: pre-install, post-upgrade, pre-delete and test hooks for migrations and backups, ordered by hook weights, cleaned by hook-delete-policy."
 category: "helm"
 difficulty: "intermediate"
 publishDate: "2026-04-07"
-tags: ["helm", "hooks", "database-migration", "lifecycle", "pre-install"]
+tags: ["helm", "hooks", "helm-hooks", "database-migration", "lifecycle", "pre-install", "post-upgrade", "hook-weight", "hook-delete-policy", "helm-test"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-cluster-autoscaler-advanced"
-  - "karpenter-node-autoscaling-kubernetes"
-  - "kubeflow-operator-platform"
+  - "helm-hook-delete-policy"
+  - "helm-before-hook-creation"
+  - "helm-chart-development-guide"
+  - "helm-upgrade-failed-troubleshooting"
+  - "helm-chart-dependencies-guide"
+  - "helm-install-chart-guide"
 ---
 
-> 💡 **Quick Answer:** Use Helm hooks to run database migrations, backups, and validation jobs during install, upgrade, and rollback. Control execution order with hook weights and deletion policies.
+> 💡 **Quick Answer:** Add the `helm.sh/hook` annotation to a Job or Pod to run it at a release lifecycle point: `pre-install`, `post-install`, `pre-upgrade`, `post-upgrade`, `pre-delete`, `post-delete`, `pre-rollback`, `post-rollback`, or `test`. Order multiple hooks with `helm.sh/hook-weight` (a quoted string, lowest runs first) and control cleanup with `helm.sh/hook-delete-policy` (`before-hook-creation`, `hook-succeeded`, `hook-failed`).
+>
+> **Gotcha:** Helm waits for each hook Job to complete before continuing — always set `activeDeadlineSeconds`, or a stuck hook blocks the release until `--timeout` fails it.
 
 ## The Problem
 
@@ -34,6 +39,17 @@ Your application needs a database migration before the new version starts, a bac
 # post-rollback  — After a rollback
 # test           — When `helm test` is run
 ```
+
+```yaml
+# Minimal hook annotations
+metadata:
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade      # comma-separate multiple events
+    "helm.sh/hook-weight": "-5"                   # must be a quoted string
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+```
+
+Hook resources are **not** managed as part of the release: `helm uninstall` won't delete them, and a failed hook fails the whole install/upgrade. Delete policies are what control their lifecycle.
 
 ### Database Migration Hook
 
@@ -165,6 +181,57 @@ spec:
               exit 1
 ```
 
+### Backup Before Deletion (pre-delete)
+
+```yaml
+# templates/pre-delete-backup.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-predelete-backup
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: 1
+  activeDeadlineSeconds: 1800
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: backup
+          image: postgres:16
+          command: ["/bin/sh", "-c", "pg_dump \"$DATABASE_URL\" > /backup/{{ .Release.Name }}-$(date +%Y%m%d-%H%M%S).sql"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db-credentials
+                  key: url
+          volumeMounts:
+            - name: backup-storage
+              mountPath: /backup
+      volumes:
+        - name: backup-storage
+          persistentVolumeClaim:
+            claimName: backup-pvc     # must NOT be part of the release, or uninstall deletes it
+```
+
+### Hook Weights: Ordering Multiple Hooks
+
+Hooks for the same event are sorted by weight ascending (negative first), then by resource kind and name, and Helm runs them one after another, waiting for each Job to complete:
+
+```yaml
+# -10: preflight check that required Secrets/namespaces exist
+annotations: {"helm.sh/hook": pre-install, "helm.sh/hook-weight": "-10"}
+---
+# -5: run schema migration
+annotations: {"helm.sh/hook": pre-install, "helm.sh/hook-weight": "-5"}
+---
+# 0: seed initial data
+annotations: {"helm.sh/hook": pre-install, "helm.sh/hook-weight": "0"}
+```
+
 ### Hook Execution Order
 
 ```mermaid
@@ -189,12 +256,16 @@ graph TD
 # before-hook-creation — Delete previous hook resource before creating new one
 # hook-succeeded       — Delete after hook succeeds
 # hook-failed          — Delete after hook fails (keeps successful for debugging)
+# Combine with commas: before-hook-creation,hook-succeeded
+# No annotation at all  → Helm 3 defaults to before-hook-creation
 
 # Recommended combinations:
 # Migrations:  before-hook-creation (keep last attempt visible)
 # Backups:     hook-succeeded (clean up after success, keep failures)
 # Smoke tests: before-hook-creation (always have latest)
 ```
+
+Deep dives: [hook-delete-policy options](/recipes/helm/helm-hook-delete-policy/) and [before-hook-creation](/recipes/helm/helm-before-hook-creation/).
 
 ### Test Hooks
 
@@ -236,12 +307,16 @@ helm test my-release --logs  # Show test output
 | Migration runs before DB ready | No init container wait | Add `wait-for-db` init container |
 | Hook order wrong | Missing hook-weight | Lower weight = runs first |
 | Rollback doesn't undo migration | Migrations are one-way | Write down migrations or use versioned schema |
+| `helm upgrade` fails with "already exists" | Previous hook resource wasn't deleted (e.g. `hook-succeeded` only, after a failure) | Include `before-hook-creation` in the delete policy |
+| `hook-weight` ignored / template error | Weight is a bare number | Quote it: `"helm.sh/hook-weight": "-5"` |
+| Hook Job left behind after uninstall | Hooks aren't release-managed resources | Set a delete policy; clean up manually with `kubectl delete job` |
 
 ## Best Practices
 
 - **Always set `activeDeadlineSeconds`** — hooks without timeouts can block releases forever
 - **Use hook weights** to control order: backup (-5) → migrate (0) → smoke test (5)
-- **Idempotent migrations** — hooks may run multiple times on retry
+- **Idempotent migrations** — `pre-upgrade` hooks re-run on every upgrade, and Jobs may retry
+- **Don't mount release-managed PVCs in `pre-delete`/`post-delete` hooks** — keep backup storage outside the chart
 - **Keep hooks fast** — long-running hooks block the entire release
 - **Test hooks in staging** — a broken hook in production blocks all upgrades
 
@@ -249,6 +324,6 @@ helm test my-release --logs  # Show test output
 
 - Helm hooks automate lifecycle tasks (backup, migrate, test) as part of releases
 - Hook weights control execution order — lower runs first
-- Delete policies prevent resource accumulation
+- Delete policies prevent resource accumulation — hooks aren't removed by `helm uninstall`
 - Pre-upgrade backups + migrations + post-upgrade smoke tests = safe deployments
 - Always set timeouts and make hooks idempotent

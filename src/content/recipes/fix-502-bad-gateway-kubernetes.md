@@ -11,8 +11,7 @@ tags: ["502", "bad-gateway", "ingress", "troubleshooting", "nginx", "load-balanc
 relatedRecipes:
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-oomkilled-troubleshooting"
-  - "kubernetes-graceful-shutdown"
-  - "kubernetes-terminationgraceperiodseconds"
+  - "kubernetes-graceful-shutdown-guide"
   - "taint-toleration-scheduling-issues"
 ---
 

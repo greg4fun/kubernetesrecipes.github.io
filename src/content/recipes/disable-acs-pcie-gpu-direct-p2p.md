@@ -1,6 +1,6 @@
 ---
 title: "Disable PCIe ACS for GPU-Direct P2P"
-description: "Disable PCIe Access Control Services (ACS) to enable GPU-Direct peer-to-peer DMA between GPUs and RDMA NICs. Covers BIOS disable, kernel override, and when"
+description: "Disable PCIe ACS so GPUs and RDMA NICs can use GPUDirect P2P DMA: BIOS setting, setpci and pcie_acs_override, IOMMU passthrough, and nvidia-smi topo checks."
 tags:
   - "acs"
   - "pcie"

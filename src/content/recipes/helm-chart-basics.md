@@ -14,7 +14,7 @@ relatedRecipes:
   - "openclaw-signal-kubernetes"
   - "helm-chart-repositories"
   - "helm-chart-dependencies-guide"
-  - "helm-hooks-lifecycle-guide"
+  - "helm-hooks-lifecycle"
   - "helm-templating-sprig"
   - "helm-install-chart-guide"
 tags:

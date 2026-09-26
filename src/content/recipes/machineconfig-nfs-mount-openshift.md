@@ -15,7 +15,7 @@ tags:
   - systemd
   - rhcos
 relatedRecipes:
-  - "openshift-lifecycle-versions"
+  - "openshift-support-lifecycle-version-matrix"
   - "crashloopbackoff-troubleshooting"
   - "machineconfig-kernel-parameters"
   - "machineconfig-chrony-ntp"

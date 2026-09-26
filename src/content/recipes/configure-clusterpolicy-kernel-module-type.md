@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-kustomize-configuration-management"
   - "kubernetes-leases"
   - "kubernetes-labels-annotations-best-practices"
-  - "kubernetes-finalizers"
+  - "stuck-resources-finalizers"
   - "kubernetes-cost-optimization"
   - "kubectl-config-context-management"
   - "tune-nccl-env-rdma-ethernet"

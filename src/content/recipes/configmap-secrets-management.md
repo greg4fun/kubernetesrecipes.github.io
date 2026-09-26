@@ -20,7 +20,7 @@ relatedRecipes:
   - "pod-mutation-injection"
   - "kubernetes-leases"
   - "kubernetes-labels-annotations-best-practices"
-  - "kubernetes-finalizers"
+  - "stuck-resources-finalizers"
   - "kubernetes-cost-optimization"
   - "external-secrets-operator"
   - "kubernetes-sealed-secrets-management"

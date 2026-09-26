@@ -18,7 +18,7 @@ relatedRecipes:
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-custom-scheduler-guide"
   - "kubernetes-cronjob-patterns-guide"
-  - "kubernetes-terminationgraceperiod"
+  - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-daemonset-guide"
 ---
 

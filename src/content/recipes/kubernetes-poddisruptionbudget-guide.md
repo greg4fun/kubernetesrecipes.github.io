@@ -15,9 +15,9 @@ timeToComplete: "10 minutes"
 relatedRecipes:
   - "kubernetes-node-maintenance-drain"
   - "kubernetes-pdb-rolling-updates"
-  - "kubernetes-pod-lifecycle"
+  - "kubernetes-pod-lifecycle-guide"
   - "cluster-autoscaler-setup"
-  - "openshift-lifecycle-support-versions"
+  - "openshift-support-lifecycle-version-matrix"
 ---
 
 > 💡 **Quick Answer:** A PodDisruptionBudget (PDB) limits how many pods of a workload can be voluntarily disrupted at once during node drains, upgrades, or cluster autoscaler scale-downs. Set \`minAvailable\` (minimum pods that must stay running) or \`maxUnavailable\` (maximum pods that can be down simultaneously).
