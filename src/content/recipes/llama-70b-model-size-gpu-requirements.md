@@ -1,6 +1,6 @@
 ---
 title: "Llama 2 70B Parameters & Memory: FP16 140GB"
-description: "Llama 2 70B has 70B parameters needing ~140GB GPU memory in FP16. Covers FP8, INT4 quantization, and multi-GPU sizing for Kubernetes."
+description: "Llama 2 70B requires 140GB VRAM in FP16 (70B params × 2 bytes). FP8 uses 70GB, INT4 uses 35GB. Complete GPU options and Kubernetes deployment guide."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "ai"
