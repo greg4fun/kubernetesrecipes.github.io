@@ -1,6 +1,6 @@
 ---
-title: "NVIDIA H300 GPU Setup on Kubernetes"
-description: "Deploy NVIDIA H300 GPUs on Kubernetes. H300 vs H100 vs H200 specs comparison, memory bandwidth, GPU Operator setup, and AI inference optimization."
+title: "NVIDIA H300 GPU: Specs, Status & Kubernetes Setup"
+description: "NVIDIA H300 is a rumored Hopper-family GPU; see specs vs H100 and H200, plus Kubernetes GPU Operator setup for production workloads."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "ai"

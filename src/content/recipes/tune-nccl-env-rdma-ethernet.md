@@ -1,6 +1,6 @@
 ---
-title: "Tune NCCL Env Variables for RDMA & Ethernet"
-description: "Apply safe NCCL environment variable profiles — including NCCL_NET_GDR_LEVEL for GPUDirect RDMA — for RDMA-capable and Ethernet-only GPU clusters."
+title: "NCCL_NET_GDR_LEVEL and GPU Collective Communication Tuning"
+description: "Configure NCCL_NET_GDR_LEVEL and other environment variables to optimize GPUDirect RDMA for high-performance multi-GPU training on Kubernetes clusters."
 category: "configuration"
 difficulty: "advanced"
 timeToComplete: "20 minutes"
