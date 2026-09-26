@@ -1,7 +1,7 @@
 ---
 // Newsletter popup using Kit.com (ConvertKit) form
-// Form ID: 9153490
-// Appears once per visitor after 8 seconds or 40% scroll
+// Form ID: 9965628
+// Appears once per visitor after 15 seconds or 50% scroll
 ---
 
 <div id="newsletter-popup" class="newsletter-overlay" aria-hidden="true" role="dialog" aria-label="Newsletter signup">
@@ -9,8 +9,8 @@
     <button id="newsletter-close" class="newsletter-close" aria-label="Close newsletter popup">&times;</button>
     <div class="newsletter-content">
       <div class="newsletter-icon">☸️</div>
-      <h2>Level Up Your Kubernetes Skills</h2>
-      <p>Get weekly recipes, tips, and best practices for Kubernetes, AI/GPU workloads, and cloud-native infrastructure. Join 1,000+ DevOps engineers.</p>
+      <h2>Get Better at Kubernetes — One Practical Recipe at a Time</h2>
+      <p>Get practical Kubernetes tutorials, troubleshooting tips, production patterns, and AI/GPU workload guidance delivered to your inbox.</p>
       <div id="kit-form-container" class="kit-form-container"></div>
       <p class="newsletter-note">No spam. Unsubscribe anytime.</p>
     </div>
@@ -108,7 +108,7 @@
 
 <script is:inline>
 (function() {
-  var STORAGE_KEY = 'k8s_newsletter_dismissed';
+  var STORAGE_KEY = 'k8s_newsletter_9965628_dismissed';
   var DISMISS_DAYS = 30;
 
   // Don't auto-open on recipe browse/listing pages. These rely on client-side
@@ -139,12 +139,12 @@
     var container = document.getElementById('kit-form-container');
     if (container && !container.hasChildNodes()) {
       // Build the ConvertKit inline form HTML
-      container.innerHTML = '<form action="https://app.convertkit.com/forms/9153490/subscriptions" method="post" data-sv-form="9153490" data-uid="ce74a48bfa" data-format="inline" data-version="5" style="display:flex;flex-direction:column;gap:0.5rem;align-items:center;">' +
+      container.innerHTML = '<form action="https://app.convertkit.com/forms/9965628/subscriptions" method="post" data-sv-form="9965628" data-format="inline" data-version="5" style="display:flex;flex-direction:column;gap:0.5rem;align-items:center;">' +
         '<input type="email" name="email_address" placeholder="Your email address" required ' +
         'style="width:100%;padding:0.75rem 1rem;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;outline:none;transition:border-color 0.2s;" ' +
         'onfocus="this.style.borderColor=\'#326CE5\'" onblur="this.style.borderColor=\'#e2e8f0\'">' +
         '<button type="submit" style="width:100%;padding:0.75rem 1rem;background:#326CE5;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:background 0.2s;" ' +
-        'onmouseover="this.style.background=\'#2756b8\'" onmouseout="this.style.background=\'#326CE5\'">Subscribe</button>' +
+        'onmouseover="this.style.background=\'#2756b8\'" onmouseout="this.style.background=\'#326CE5\'">Send Me the Next Recipe</button>' +
         '<input type="hidden" name="tags[]" value="">' +
         '</form>';
       // Load ConvertKit JS to enhance the form (double opt-in, tracking)
@@ -169,11 +169,11 @@
     if (e.key === 'Escape' && shown) dismiss();
   });
 
-  // Trigger: 8s delay OR 40% scroll, whichever first
-  var timer = setTimeout(show, 8000);
+  // Trigger: 15s delay OR 50% scroll, whichever first
+  var timer = setTimeout(show, 15000);
   window.addEventListener('scroll', function onScroll() {
     var scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-    if (scrollPct > 0.4) {
+    if (scrollPct >= 0.5) {
       show();
       window.removeEventListener('scroll', onScroll);
       clearTimeout(timer);
