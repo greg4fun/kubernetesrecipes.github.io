@@ -139,13 +139,16 @@
     var container = document.getElementById('kit-form-container');
     if (container && !container.hasChildNodes()) {
       // Build the ConvertKit inline form HTML
-      container.innerHTML = '<form action="https://app.convertkit.com/forms/9965628/subscriptions" method="post" data-sv-form="9965628" data-format="inline" data-version="5" style="display:flex;flex-direction:column;gap:0.5rem;align-items:center;">' +
+      container.innerHTML = '<form action="https://app.convertkit.com/forms/9965628/subscriptions" method="post" data-sv-form="9965628" data-format="inline" data-version="5">' +
+        '<ul data-element="errors" aria-live="polite" style="list-style:none;margin:0 0 0.5rem;padding:0;color:#b91c1c;font-size:0.875rem;"></ul>' +
+        '<div data-element="fields" style="display:flex;flex-direction:column;gap:0.5rem;align-items:center;">' +
         '<input type="email" name="email_address" placeholder="Your email address" required ' +
         'style="width:100%;padding:0.75rem 1rem;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;outline:none;transition:border-color 0.2s;" ' +
         'onfocus="this.style.borderColor=\'#326CE5\'" onblur="this.style.borderColor=\'#e2e8f0\'">' +
-        '<button type="submit" style="width:100%;padding:0.75rem 1rem;background:#326CE5;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:background 0.2s;" ' +
+        '<button type="submit" data-element="submit" style="width:100%;padding:0.75rem 1rem;background:#326CE5;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:background 0.2s;" ' +
         'onmouseover="this.style.background=\'#2756b8\'" onmouseout="this.style.background=\'#326CE5\'">Send Me the Next Recipe</button>' +
         '<input type="hidden" name="tags[]" value="">' +
+        '</div>' +
         '</form>';
       // Load ConvertKit JS to enhance the form (double opt-in, tracking)
       var s = document.createElement('script');
