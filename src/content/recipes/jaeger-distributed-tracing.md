@@ -1,6 +1,6 @@
 ---
-title: "Jaeger Distributed Tracing on Kubernetes"
-description: "Deploy Jaeger for distributed tracing in Kubernetes. Trace requests across microservices to identify latency issues and debug complex systems."
+title: "Jaeger Tracing on Kubernetes: Setup Guide"
+description: "Set up Jaeger tracing on Kubernetes step by step: install the operator, deploy Jaeger, and instrument Python, Node.js, and Go apps to trace microservices."
 category: "observability"
 difficulty: "intermediate"
 publishDate: "2026-01-22"

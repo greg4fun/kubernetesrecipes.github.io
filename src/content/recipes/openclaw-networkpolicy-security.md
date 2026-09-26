@@ -1,6 +1,6 @@
 ---
-title: "Network Policies for OpenClaw on Kubernetes"
-description: "Secure OpenClaw deployments with Kubernetes NetworkPolicies to restrict egress to messaging APIs, block unauthorized ingress, and isolate the gateway."
+title: "OpenClaw Network Policies: Default-Deny & Gradual Rollout"
+description: "Default-deny NetworkPolicies for OpenClaw: restrict egress to APIs, test with audit mode, and handle edge cases before enforcement."
 category: "security"
 difficulty: "intermediate"
 timeToComplete: "15 minutes"
