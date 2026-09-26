@@ -1,6 +1,6 @@
 ---
-title: "K8s OIDC Authentication Login Guide"
-description: "Configure OIDC authentication for Kubernetes API server. --enable-oidc-issuer with GKE, Keycloak, Dex, kubelogin plugin, and RBAC SSO integration."
+title: "Kubernetes OIDC Authentication with kubelogin"
+description: "Set up OIDC SSO for the Kubernetes API server with Keycloak, Dex, or Azure/Entra ID: API server flags, kubelogin kubeconfig, and RBAC bindings for IdP groups."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "security"

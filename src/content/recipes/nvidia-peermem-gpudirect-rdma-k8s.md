@@ -1,6 +1,6 @@
 ---
-title: "NVIDIA PeerMem GPUDirect RDMA K8s"
-description: "Configure nvidia_peermem and ib_register_peer_memory_client for GPUDirect RDMA on Kubernetes. Module loading and modprobe invalid argument fix."
+title: "Fix modprobe nvidia_peermem Invalid Argument"
+description: "nvidia-peermem won't load or ib_register_peer_memory_client is missing? Fix GPUDirect RDMA on Kubernetes: MOFED load order, GPU Operator settings, or DMA-BUF."
 publishDate: "2026-04-28"
 author: "Luca Berton"
 category: "ai"
