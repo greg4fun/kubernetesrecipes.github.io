@@ -1,6 +1,6 @@
 ---
-title: "OpenShift Lifecycle: Support Versions, Dates & EUS"
-description: "Learn OpenShift support lifecycle: release versions, support phases, EOL dates, upgrade paths, and Extended Update Support (EUS) coverage."
+title: "OpenShift Lifecycle: Release Cycle, Version Support & EOL"
+description: "4-month release cycle, 14-month full support and 4-month maintenance per version. Version support matrix, EOL dates for OCP 4.14-4.18, and EUS options."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "deployments"
