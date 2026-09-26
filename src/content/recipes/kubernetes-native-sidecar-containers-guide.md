@@ -14,10 +14,9 @@ difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "kubernetes-sidecar-containers"
-  - "kubernetes-init-containers-guide"
+  - "kubernetes-init-containers-patterns-examples"
   - "kubernetes-sidecar-patterns"
   - "service-mesh-sidecar-troubleshooting"
-  - "kubernetes-sidecar-containers-guide"
   - "kubernetes-dapr-microservices-guide"
 ---
 

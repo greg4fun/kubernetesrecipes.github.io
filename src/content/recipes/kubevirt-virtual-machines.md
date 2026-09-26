@@ -8,7 +8,7 @@ tags: ["kubevirt", "virtual-machines", "vm", "migration", "hybrid"]
 author: "Luca Berton"
 relatedRecipes:
   - "crashloopbackoff-troubleshooting"
-  - "cloudnativepg-kubernetes-postgresql"
+  - "cnpg-postgresql-operator"
 
 ---
 

@@ -14,7 +14,7 @@ tags:
   - availability
   - node-drain
 relatedRecipes:
-  - "kubernetes-rolling-update-strategies"
+  - "kubernetes-rolling-update-strategy"
   - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-node-affinity-scheduling"
 ---

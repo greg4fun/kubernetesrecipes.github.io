@@ -74,8 +74,8 @@ The foundation — battle-tested patterns for every cluster:
 
 - **Troubleshooting** — [CrashLoopBackOff](/recipes/troubleshooting/debug-crashloopbackoff/), [OOMKilled](/recipes/troubleshooting/debug-oom-killed/), [ImagePullBackOff](/recipes/troubleshooting/debug-imagepullbackoff/), [DNS issues](/recipes/troubleshooting/debug-dns-issues/), [scheduling failures](/recipes/troubleshooting/debug-scheduling-failures/)
 - **Autoscaling** — [HPA](/recipes/autoscaling/horizontal-pod-autoscaler/), [VPA](/recipes/autoscaling/vertical-pod-autoscaler/), [Cluster Autoscaler](/recipes/autoscaling/cluster-autoscaler/), [KEDA](/recipes/autoscaling/keda-event-driven-autoscaling/)
-- **Deployments** — [rolling updates](/recipes/deployments/rolling-update-deployment/), [canary](/recipes/deployments/canary-deployments/), [blue-green](/recipes/deployments/blue-green-deployment/), [probes](/recipes/deployments/liveness-readiness-probes/)
-- **Security** — [NetworkPolicies](/recipes/networking/network-policies/), [Pod Security](/recipes/security/pod-security-standards/), [RBAC](/recipes/security/rbac-service-accounts/), [secrets management](/recipes/configuration/configmap-secrets-management/)
+- **Deployments** — [rolling updates](/recipes/deployments/kubernetes-rolling-update-strategy/), [canary](/recipes/deployments/canary-deployments/), [blue-green](/recipes/deployments/blue-green-deployment/), [probes](/recipes/deployments/liveness-readiness-probes/)
+- **Security** — [NetworkPolicies](/recipes/networking/network-policies/), [Pod Security](/recipes/security/pod-security-standards/), [RBAC](/recipes/security/service-accounts-rbac/), [secrets management](/recipes/configuration/configmap-secrets-management/)
 
 ## What's Next
 

@@ -13,7 +13,7 @@ tags:
   - "prometheus"
   - "nvidia"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

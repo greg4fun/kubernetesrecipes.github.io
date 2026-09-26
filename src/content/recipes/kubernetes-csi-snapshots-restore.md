@@ -14,7 +14,7 @@ tags:
   - backup
   - restore
 relatedRecipes:
-  - "velero-backup-disaster-recovery"
+  - "velero-kubernetes-backup-disaster-recovery"
   - "kubernetes-storage-best-practices"
   - "kubernetes-fsgroupchangepolicy"
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Log Aggregation with Grafana Loki"
-description: "Aggregate Kubernetes logs with Grafana Loki and Promtail. Install Loki stack, LogQL queries, label-based filtering, and Grafana log exploration dashboards."
+description: "Aggregate Kubernetes logs with Grafana Loki 3.x: Helm install, Alloy collector (Promtail replacement), S3 storage, retention, LogQL queries and log alerts."
 publishDate: "2026-04-13"
 author: "Luca Berton"
 category: "observability"
@@ -10,153 +10,276 @@ tags:
   - "promtail"
   - "grafana"
   - "log-aggregation"
+  - "logql"
+  - "alloy"
 difficulty: "intermediate"
-timeToComplete: "20 minutes"
+timeToComplete: "25 minutes"
+kubernetesVersion: "1.28+"
 relatedRecipes:
   - "kubernetes-logging-elk-stack"
+  - "kubernetes-efk-logging-stack"
+  - "kubernetes-logging-fluentbit-guide"
   - "kubernetes-pod-resource-monitoring-grafana"
   - "container-logging-patterns"
   - "kubernetes-opentelemetry-guide"
-  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-prometheus-monitoring-guide"
 ---
 
-> 💡 **Quick Answer:** Grafana Loki is a log aggregation system that indexes log metadata (labels) instead of full text, making it much cheaper than Elasticsearch. Install with `helm install loki grafana/loki-stack`, then query logs in Grafana using LogQL. Promtail/Alloy collects logs from every pod and ships them to Loki with Kubernetes labels.
+> 💡 **Quick Answer:** Grafana Loki indexes only log labels (namespace, pod, container), not the full text, so it is far cheaper to run than Elasticsearch. Install Loki with the `grafana/loki` Helm chart (single binary for small clusters, distributed for scale) backed by object storage, ship pod logs with a **Grafana Alloy** DaemonSet (Promtail is deprecated), add Loki as a Grafana data source and query with LogQL: `{namespace="production"} |= "error" | json | status >= 500`.
+>
+> **Gotcha:** The old `grafana/loki-stack` chart and Promtail are deprecated — new installs should use `grafana/loki` + Alloy, TSDB index and schema `v13`.
 
 ## The Problem
 
-Kubernetes logs are ephemeral — when a pod restarts, its logs vanish. EFK (Elasticsearch-Fluentd-Kibana) works but is resource-hungry and expensive to operate. Loki provides a lightweight alternative: it only indexes labels (namespace, pod, container), not log content, reducing storage by 10-100× while still allowing full-text search via grep-like queries.
+Container logs disappear when pods are rescheduled, and `kubectl logs` doesn't search across pods or history. EFK works but Elasticsearch needs many GB of RAM per node and full-text indexes are expensive. Loki stores compressed chunks in S3/GCS and greps them at query time, filtered by labels — a 10× or better reduction in cost and resources for typical Kubernetes logging.
 
 ```mermaid
 flowchart LR
-    PODS["All Pods"] -->|"stdout/stderr"| PROMTAIL["Promtail<br/>(DaemonSet)"]
-    PROMTAIL -->|"Push logs<br/>+ K8s labels"| LOKI["Loki<br/>(storage + index)"]
-    LOKI -->|"LogQL"| GRAFANA["Grafana<br/>(Explore)"]
+    PODS["Pods<br/>stdout/stderr"] -->|/var/log/pods| ALLOY["Alloy DaemonSet<br/>discover + label"]
+    ALLOY -->|push + K8s labels| LOKI["Loki<br/>distributor / ingester / querier"]
+    LOKI -->|chunks + TSDB index| S3[(S3 / GCS / MinIO)]
+    GRAFANA["Grafana Explore"] -->|LogQL| LOKI
+    RULER["Loki ruler"] -->|alerts| AM["Alertmanager"]
 ```
 
 ## The Solution
 
-### Install Loki Stack
+### Step 1: Install Loki (grafana/loki chart)
+
+```yaml
+# loki-values.yaml — single binary + S3, good up to ~100 GB/day
+deploymentMode: SingleBinary
+loki:
+  auth_enabled: false            # true = multi-tenant, requires X-Scope-OrgID
+  commonConfig:
+    replication_factor: 1
+  schemaConfig:
+    configs:
+      - from: "2025-01-01"
+        store: tsdb
+        object_store: s3
+        schema: v13
+        index:
+          prefix: loki_index_
+          period: 24h
+  storage:
+    type: s3
+    bucketNames:
+      chunks: loki-chunks
+      ruler: loki-ruler
+    s3:
+      region: us-east-1
+      # endpoint: http://minio.minio.svc:9000  + s3ForcePathStyle: true for MinIO
+  limits_config:
+    retention_period: 720h       # 30 days
+    max_query_lookback: 720h
+  compactor:
+    retention_enabled: true
+    delete_request_store: s3
+singleBinary:
+  replicas: 1
+  persistence:
+    size: 20Gi                   # WAL / cache only; chunks live in S3
+read:
+  replicas: 0
+write:
+  replicas: 0
+backend:
+  replicas: 0
+```
 
 ```bash
 helm repo add grafana https://grafana.github.io/helm-charts
-helm install loki grafana/loki-stack \
-  --namespace monitoring \
-  --create-namespace \
-  --set promtail.enabled=true \
-  --set grafana.enabled=true \
-  --set loki.persistence.enabled=true \
-  --set loki.persistence.size=50Gi
+helm repo update
+helm install loki grafana/loki -n monitoring --create-namespace -f loki-values.yaml
+kubectl -n monitoring get pods -l app.kubernetes.io/name=loki
 ```
 
-### Essential LogQL Queries
+For larger volumes use `deploymentMode: Distributed` (separate distributor, ingester, querier, query-frontend, compactor) with `replication_factor: 3`. Credentials: IRSA/Workload Identity, or `loki.storage.s3.accessKeyId/secretAccessKey` from a Secret.
+
+### Step 2: Collect Logs with Grafana Alloy
+
+```yaml
+# alloy-values.yaml
+alloy:
+  mounts:
+    varlog: true                 # mounts /var/log (includes /var/log/pods)
+  configMap:
+    content: |
+      discovery.kubernetes "pods" {
+        role = "pod"
+      }
+
+      discovery.relabel "pods" {
+        targets = discovery.kubernetes.pods.targets
+        rule {
+          source_labels = ["__meta_kubernetes_pod_node_name"]
+          regex         = env("HOSTNAME")
+          action        = "keep"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_namespace"]
+          target_label  = "namespace"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_name"]
+          target_label  = "pod"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_container_name"]
+          target_label  = "container"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
+          target_label  = "app"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_uid", "__meta_kubernetes_pod_container_name"]
+          separator     = "/"
+          target_label  = "__path__"
+          replacement   = "/var/log/pods/*$1/*.log"
+        }
+      }
+
+      local.file_match "pods" {
+        path_targets = discovery.relabel.pods.output
+      }
+
+      loki.source.file "pods" {
+        targets    = local.file_match.pods.targets
+        forward_to = [loki.process.pods.receiver]
+      }
+
+      loki.process "pods" {
+        stage.cri {}             # parse containerd/CRI-O log format
+        forward_to = [loki.write.default.receiver]
+      }
+
+      loki.write "default" {
+        endpoint {
+          url = "http://loki-gateway.monitoring.svc/loki/api/v1/push"
+        }
+      }
+controller:
+  type: daemonset
+```
+
+```bash
+helm install alloy grafana/alloy -n monitoring -f alloy-values.yaml
+```
+
+Simpler alternative: `loki.source.kubernetes` tails logs through the API server (no hostPath), fine for small clusters. The `grafana/k8s-monitoring` chart packages Alloy for logs, metrics and events in one release. Fluent Bit and the OpenTelemetry Collector can also push to Loki.
+
+Migrating from Promtail: `alloy convert --source-format=promtail --output=config.alloy promtail.yaml`.
+
+### Step 3: Grafana Data Source
+
+```yaml
+# Grafana provisioning (or kube-prometheus-stack: grafana.additionalDataSources)
+apiVersion: 1
+datasources:
+  - name: Loki
+    type: loki
+    access: proxy
+    url: http://loki-gateway.monitoring.svc
+    jsonData:
+      maxLines: 5000
+```
+
+### Step 4: Essential LogQL
 
 ```logql
-# All logs from a namespace
-{namespace="my-app"}
+# Stream selectors — always start with labels
+{namespace="production"}
+{namespace="production", pod=~"web-.*"}
 
-# Filter by pod name pattern
-{namespace="my-app", pod=~"web-.*"}
+# Line filters (grep-like)
+{namespace="production"} |= "error"
+{namespace="production"} != "healthz"
+{namespace="production"} |~ "status=[45]\\d{2}"
 
-# Search for errors (grep-like)
-{namespace="my-app"} |= "error"
+# Parse at query time
+{app="api-server"} | json | status >= 500
+{app="api-server"} | logfmt | duration > 2s
+{app="api-server"} | json | level="error" | line_format "{{.msg}}"
 
-# Regex matching
-{namespace="my-app"} |~ "status=[45]\\d{2}"
-
-# JSON log parsing
-{namespace="my-app"} | json | level="error" | line_format "{{.message}}"
-
-# Log rate (lines per second)
-rate({namespace="my-app"}[5m])
-
-# Top 5 noisiest pods
-topk(5, sum(rate({namespace="my-app"}[1h])) by (pod))
+# Metrics from logs
+rate({namespace="production"} |= "error" [5m])
+sum by (app) (rate({namespace="production"} |= "error" [5m]))
+topk(5, sum by (pod) (rate({namespace="production"}[1h])))
+topk(10, sum by (msg) (count_over_time({namespace="production"} | json | level="error" [1h])))
 ```
 
-### Promtail Configuration for Kubernetes
+### Step 5: Alert on Logs (Ruler)
 
 ```yaml
-# Promtail auto-discovers pods via Kubernetes API
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  name: promtail
-  namespace: monitoring
-spec:
-  template:
-    spec:
-      containers:
-        - name: promtail
-          image: grafana/promtail:3.2.0
-          args:
-            - -config.file=/etc/promtail/config.yaml
-          volumeMounts:
-            - name: logs
-              mountPath: /var/log
-            - name: containers
-              mountPath: /var/lib/docker/containers
-              readOnly: true
-      volumes:
-        - name: logs
-          hostPath:
-            path: /var/log
-        - name: containers
-          hostPath:
-            path: /var/lib/docker/containers
+# Rule group loaded by the Loki ruler (ruler storage: S3 bucket "loki-ruler")
+groups:
+  - name: app-errors
+    rules:
+      - alert: HighErrorLogRate
+        expr: sum by (namespace, app) (rate({namespace="production"} |= "error" [5m])) > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "{{ $labels.app }} logging >10 errors/s"
 ```
 
-### Loki vs Elasticsearch Comparison
+Point the ruler at Alertmanager with `loki.rulerConfig.alertmanager_url`.
 
-| Feature | Loki | Elasticsearch |
-|---------|------|---------------|
-| **Index strategy** | Labels only | Full text |
-| **Storage cost** | Low (10-100× less) | High |
-| **Query language** | LogQL | KQL/Lucene |
-| **Resource usage** | ~2GB RAM | ~8-32GB RAM |
-| **Setup complexity** | Helm one-liner | Cluster management |
-| **Best for** | K8s-native, Grafana users | Complex full-text search |
+### Loki vs Elasticsearch
 
-### Retention and Storage
-
-```yaml
-# Loki retention configuration
-loki:
-  config:
-    compactor:
-      retention_enabled: true
-    limits_config:
-      retention_period: 30d           # Keep 30 days
-    storage_config:
-      boltdb_shipper:
-        active_index_directory: /data/loki/index
-        cache_location: /data/loki/cache
-      filesystem:
-        directory: /data/loki/chunks
-```
+| | Loki | Elasticsearch/OpenSearch |
+|---|---|---|
+| Index | Labels only | Full text |
+| Storage | Compressed chunks in object storage | Local disks, replicas |
+| Resources | Low | High (JVM heap per node) |
+| Query | LogQL (Prometheus-like) | KQL / Lucene / DSL |
+| Best for | Kubernetes, Grafana users, cost | Heavy full-text search, analytics |
 
 ## Common Issues
 
-| Issue | Cause | Fix |
-|-------|-------|-----|
-| No logs in Grafana | Promtail not shipping | Check `kubectl logs -n monitoring promtail-xxx` |
-| LogQL returns empty | Wrong label selector | Verify labels with `{namespace="x"} ` first |
-| Loki OOM | Too many active streams | Set `max_streams_per_user` limit |
-| High storage usage | No retention configured | Enable compactor retention |
-| Logs delayed | Promtail backpressure | Increase Promtail resources |
+| Symptom | Cause | Fix |
+|---|---|---|
+| No logs in Grafana | Collector not shipping / wrong push URL | `kubectl logs ds/alloy -n monitoring`; check `loki-gateway` Service |
+| `no org id` (401) | `auth_enabled: true` without tenant header | Set `X-Scope-OrgID` in Alloy and Grafana, or disable auth |
+| `entry too far behind` / out of order | Node clock skew or replayed files | Fix NTP; Loki accepts out-of-order within `max_chunk_age` window |
+| `max streams limit exceeded` / ingester OOM | High-cardinality labels (pod UID, request ID) | Drop them in relabel rules; raise `max_global_streams_per_user` only after |
+| Query timeout | Broad selector over long range | Narrow labels first, shorten range, add query-frontend / more queriers |
+| Storage keeps growing | Compactor retention off | `compactor.retention_enabled: true` + `retention_period` |
+| Empty `__path__` matches on containerd nodes | Paths copied from Docker setups (`/var/lib/docker/containers`) | Use `/var/log/pods/*<uid>/<container>/*.log` |
 
 ## Best Practices
 
-- **Label wisely** — use namespace, pod, container; avoid high-cardinality labels (request ID)
-- **Set retention** — 14-30 days covers most debugging needs
-- **Use LogQL pipelines** — parse JSON/logfmt at query time, not ingestion
-- **Alert on log rate spikes** — `rate({app="x"} |= "error"[5m]) > 10` catches error storms
-- **Separate Loki from Prometheus** — different storage requirements and scaling patterns
-- **Use Grafana Explore** — purpose-built for log search, better than dashboards for debugging
+- **Few, low-cardinality labels** — namespace, app, container, pod; everything else via `| json` at query time
+- **Object storage + TSDB schema v13** for anything beyond a lab
+- **Retention via the compactor** (14–30 days typical); lifecycle rules on the bucket as a backstop
+- **Alloy (or OTel Collector) as collector** — Promtail is end-of-life
+- **Alert from logs with the ruler**, metrics from Prometheus
+- **Correlate** — same labels as Prometheus so Grafana can jump from metrics to logs to Tempo traces
+
+## Frequently Asked Questions
+
+### Is Promtail deprecated?
+
+Yes. Grafana deprecated Promtail in favour of Grafana Alloy, and it only receives critical fixes until end-of-life. Use `alloy convert --source-format=promtail` to migrate existing configs.
+
+### Should I still use the loki-stack Helm chart?
+
+No. `grafana/loki-stack` pins old Loki 2.x and Promtail and is no longer maintained. Use `grafana/loki` for Loki and `grafana/alloy` (or `grafana/k8s-monitoring`) for collection.
+
+### Which Loki deployment mode should I choose?
+
+`SingleBinary` for small clusters and labs; `Distributed` (microservices) for high volume and HA. The simple scalable (read/write/backend) mode still exists but Grafana is steering new installs to the other two.
+
+### How does Loki compare to EFK?
+
+Loki trades full-text indexing for much lower cost and simpler operations; EFK/OpenSearch is better when you need fast arbitrary full-text search and analytics over log fields. See [EFK logging stack](/recipes/observability/kubernetes-efk-logging-stack/).
 
 ## Key Takeaways
 
-- Loki indexes labels, not content — 10-100× cheaper than Elasticsearch
-- LogQL provides grep-like queries with label filtering and JSON parsing
-- Promtail DaemonSet auto-discovers and ships all pod logs
-- Perfect for Kubernetes: auto-labels with namespace, pod, container
-- Pair with Prometheus (metrics) and Tempo (traces) for full observability
+- Loki indexes labels, not content — far cheaper than Elasticsearch
+- Install `grafana/loki` with object storage and TSDB schema v13; collect with Alloy
+- LogQL: label selector first, then line filters, parsers and metric queries
+- Configure compactor retention and ruler alerts from day one

@@ -10,7 +10,7 @@ relatedRecipes:
   - "machineconfig-nfs-mount-openshift"
   - "kubernetes-csi-snapshots-restore"
   - "kubernetes-csi-driver-guide"
-  - "velero-backup-disaster-recovery"
+  - "velero-kubernetes-backup-disaster-recovery"
 ---
 
 > 💡 **Quick Answer:** Production storage best practices for Kubernetes. StorageClass selection, backup strategies, volume expansion, data migration, and performance tuning.

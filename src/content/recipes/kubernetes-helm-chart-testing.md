@@ -13,9 +13,9 @@ tags:
   - "chart-testing"
   - "ci-cd"
 relatedRecipes:
-  - "kubernetes-helm-oci-registry"
-  - "kubernetes-helm-library-charts"
-  - "kubernetes-pod-security-standards"
+  - "helm-oci-registry-management"
+  - "helm-library-charts"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Test Helm charts with helm test, helm lint, chart-testing, and conftest. Unit tests, integration tests, and CI/CD pipeline integration for chart quality.

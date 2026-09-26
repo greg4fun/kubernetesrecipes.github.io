@@ -12,7 +12,7 @@ publishDate: "2026-05-18"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-gateway-api-guide"
+  - "kubernetes-gateway-api"
   - "kubernetes-readiness-probe-guide"
   - "kubernetes-hpa-custom-metrics-guide"
 ---

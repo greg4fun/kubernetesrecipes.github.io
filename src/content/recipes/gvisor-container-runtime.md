@@ -1,9 +1,9 @@
 ---
-title: "gVisor Runtime Sandboxed Containers K8s"
-description: "Deploy gVisor with Kubernetes RuntimeClass for sandboxed containers. Configure runsc runtime, pod isolation, and security hardening for untrusted code."
+title: "gVisor on Kubernetes: RuntimeClass Sandbox (runsc)"
+description: "Run sandboxed pods with gVisor on Kubernetes: install runsc, configure containerd, create the gvisor RuntimeClass, GKE Sandbox, enforcement, verification."
 category: "security"
 difficulty: "advanced"
-timeToComplete: "45 minutes"
+timeToComplete: "30 minutes"
 kubernetesVersion: "1.28+"
 prerequisites:
   - "Understanding of container runtimes"
@@ -11,7 +11,11 @@ prerequisites:
   - "Linux kernel and syscall concepts"
 relatedRecipes:
   - "kubernetes-gvisor-kata-containers-runtimeclass"
+  - "confidential-containers-kata-kubernetes"
   - "pod-security-standards"
+  - "kubernetes-pod-security-admission"
+  - "kubernetes-multi-tenancy"
+  - "kubernetes-network-security-checklist"
   - "container-image-security-scanning-kubernetes"
 tags:
   - gvisor
@@ -19,149 +23,118 @@ tags:
   - sandbox
   - security-isolation
   - runtime-class
+  - runtimeclass
+  - runsc
+  - containerd
+  - workload-isolation
 publishDate: "2026-01-28"
 author: "kubernetes-recipes"
 ---
 
-> 💡 **Quick Answer:** Install gVisor's `runsc` runtime, create a `RuntimeClass` named `gvisor` with `handler: runsc`, then add `runtimeClassName: gvisor` to pod specs for sandboxed execution. gVisor intercepts syscalls in userspace, isolating untrusted workloads from the host kernel.
+> 💡 **Quick Answer:** gVisor (`runsc`) is an application kernel written in Go that intercepts a container's system calls in user space, so the workload never talks to the host kernel directly. On each node install `runsc`, add a `runsc` runtime handler to containerd, then create `RuntimeClass` `gvisor` (`handler: runsc`) and set `spec.runtimeClassName: gvisor` on the pods to sandbox. On **GKE**, enable GKE Sandbox on a node pool and the `gvisor` RuntimeClass already exists.
 >
-> **Key config:** `spec.runtimeClassName: gvisor` in pod spec triggers gVisor runtime instead of standard runc.
+> **Verify:** `kubectl exec <pod> -- dmesg` prints `Starting gVisor...` instead of host kernel messages.
 >
-> **Gotcha:** gVisor has ~10-30% performance overhead and doesn't support all syscalls—test workload compatibility; not all container features work (e.g., some GPU access).
+> **Gotcha:** Expect overhead on syscall-heavy and I/O-heavy workloads and some unsupported syscalls/ioctls — test compatibility; GPU support exists (`nvproxy`) but is limited to specific drivers and frameworks.
 
-## Problem
+## The Problem
 
-Standard container runtimes (runc) share the host kernel, which means kernel vulnerabilities or container escapes can compromise the entire host. You need stronger isolation for untrusted workloads without the overhead of full VMs.
-
-## Solution
-
-Use gVisor, a user-space kernel that intercepts and handles system calls, providing an additional isolation layer between containers and the host kernel. gVisor implements the Linux system call interface in user space, reducing the attack surface.
-
-### Architecture
+runc containers share the host kernel: one kernel exploit from any pod compromises the node and every tenant on it. NetworkPolicies and Pod Security restrict network and API access but not the kernel attack surface. For untrusted code — CI builds, user-submitted jobs, AI agents executing tools, multi-tenant SaaS — you want a stronger boundary without the weight of full VMs.
 
 ```mermaid
 flowchart TB
-    subgraph STANDARD["📦 Standard Container"]
-        direction TB
-        APP1["📱 Application Process"]
-        APP1 -->|"syscalls"| KERNEL1["🐧 Host Kernel<br/>(shared with host)"]
+    subgraph STANDARD["Standard container (runc)"]
+        APP1["Application"] -->|"~350 syscalls"| HOST1["Host Linux kernel<br/>shared attack surface"]
     end
-
-    subgraph GVISOR["🛡️ gVisor Sandboxed Container"]
-        direction TB
-        APP2["📱 Application Process"]
-        APP2 -->|"syscalls"| SENTRY["🔒 gVisor Sentry<br/>(user-space)<br/>Implements Linux syscall interface"]
-        SENTRY -->|"limited syscalls"| KERNEL2["🐧 Host Kernel<br/>(reduced attack surface)"]
+    subgraph GVISOR["gVisor sandbox (runsc)"]
+        APP2["Application"] -->|"syscalls intercepted"| SENTRY["Sentry<br/>user-space Linux kernel"]
+        SENTRY -->|"small seccomp allowlist"| HOST2["Host Linux kernel<br/>reduced attack surface"]
+        SENTRY --> GOFER["Gofer / directfs<br/>file access"]
     end
-
-    STANDARD ~~~ GVISOR
-
-    style STANDARD fill:#ffcccc,stroke:#cc0000
-    style GVISOR fill:#ccffcc,stroke:#00cc00
 ```
 
-### Step 1: Install gVisor on Nodes
+## The Solution
 
-Install gVisor (runsc) on Kubernetes nodes:
+### Step 1: Install runsc on Nodes
 
 ```bash
-# Download and install gVisor
+# Debian/Ubuntu (on every node that will run sandboxed pods)
 curl -fsSL https://gvisor.dev/archive.key | sudo gpg --dearmor -o /usr/share/keyrings/gvisor-archive-keyring.gpg
-
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/gvisor-archive-keyring.gpg] https://storage.googleapis.com/gvisor/releases release main" | \
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/gvisor-archive-keyring.gpg] https://storage.googleapis.com/gvisor/releases release main" | \
   sudo tee /etc/apt/sources.list.d/gvisor.list
+sudo apt-get update && sudo apt-get install -y runsc   # installs runsc + containerd-shim-runsc-v1
 
-sudo apt-get update && sudo apt-get install -y runsc
-
-# Verify installation
 runsc --version
+which containerd-shim-runsc-v1
 ```
 
-### Step 2: Configure containerd for gVisor
+Other distros: download `runsc` and `containerd-shim-runsc-v1` from `https://storage.googleapis.com/gvisor/releases/release/latest/$(uname -m)/` and put them in `/usr/local/bin`.
 
-Add gVisor runtime to containerd configuration:
+### Step 2: Configure containerd
 
 ```toml
-# /etc/containerd/config.toml
+# /etc/containerd/config.toml  (containerd 1.x config version 2)
 version = 2
 
-[plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
-  # Default runtime (runc)
-  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-    runtime_type = "io.containerd.runc.v2"
-    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-      SystemdCgroup = true
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+  runtime_type = "io.containerd.runc.v2"
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+    SystemdCgroup = true
 
-  # gVisor runtime
-  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runsc]
-    runtime_type = "io.containerd.runsc.v1"
-    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runsc.options]
-      TypeUrl = "io.containerd.runsc.v1.options"
-      ConfigPath = "/etc/containerd/runsc.toml"
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runsc]
+  runtime_type = "io.containerd.runsc.v1"
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runsc.options]
+    TypeUrl = "io.containerd.runsc.v1.options"
+    ConfigPath = "/etc/containerd/runsc.toml"
 ```
 
-Create gVisor configuration:
+On containerd 2.x (config `version = 3`) the section is `[plugins."io.containerd.cri.v1.runtime".containerd.runtimes.runsc]`.
 
 ```toml
-# /etc/containerd/runsc.toml
+# /etc/containerd/runsc.toml — runsc flags, one per key
 [runsc_config]
-  # Platform options: ptrace, kvm (if available)
-  platform = "systrap"
-  # Enable debug logging
+  platform = "systrap"        # default; "kvm" on bare metal / nested-virt for lower syscall overhead
+  file-access = "exclusive"   # rootfs owned exclusively by the sandbox (faster)
+  network = "sandbox"         # gVisor netstack (full isolation); "host" trades isolation for speed
   debug = false
-  # Enable strace for syscall debugging (dev only)
-  strace = false
-  # Network configuration
-  network = "sandbox"
-  # File access configuration
-  file-access = "exclusive"
+  # debug-log = "/var/log/runsc/%ID%/"   # enable temporarily when troubleshooting
 ```
-
-Restart containerd:
 
 ```bash
 sudo systemctl restart containerd
-sudo systemctl status containerd
+sudo crictl info | grep -A3 runsc     # handler registered with CRI
 ```
 
-### Step 3: Create RuntimeClass
-
-Define RuntimeClass for gVisor:
+### Step 3: Create the RuntimeClass
 
 ```yaml
 apiVersion: node.k8s.io/v1
 kind: RuntimeClass
 metadata:
   name: gvisor
-handler: runsc
+handler: runsc                 # must equal the containerd runtime name
+overhead:
+  podFixed:                    # added to pod requests for scheduling/quota (Sentry + Gofer)
+    memory: "64Mi"
+    cpu: "50m"
 scheduling:
   nodeSelector:
-    gvisor.io/enabled: "true"
+    gvisor.io/enabled: "true"  # only nodes that have runsc
   tolerations:
-  - key: "gvisor.io/sandbox"
-    operator: "Equal"
-    value: "true"
-    effect: "NoSchedule"
-# Optional: Overhead configuration
-# overhead:
-#   podFixed:
-#     memory: "100Mi"
-#     cpu: "100m"
+    - key: gvisor.io/sandbox
+      operator: Equal
+      value: "true"
+      effect: NoSchedule
 ```
-
-Label nodes with gVisor:
 
 ```bash
-# Label nodes that have gVisor installed
 kubectl label nodes node1 node2 gvisor.io/enabled=true
-
-# Optionally taint nodes for gVisor-only workloads
-kubectl taint nodes node1 gvisor.io/sandbox=true:NoSchedule
+kubectl taint nodes node1 node2 gvisor.io/sandbox=true:NoSchedule   # optional: dedicate the pool
 ```
 
-### Step 4: Deploy Workloads with gVisor
+`scheduling` in the RuntimeClass is merged into every pod that uses it, so workloads don't need their own nodeSelector/tolerations.
 
-Run pods using gVisor runtime:
+### Step 4: Run Sandboxed Workloads
 
 ```yaml
 apiVersion: apps/v1
@@ -179,50 +152,86 @@ spec:
       labels:
         app: untrusted-app
     spec:
-      runtimeClassName: gvisor  # Use gVisor runtime
+      runtimeClassName: gvisor
       containers:
-      - name: app
-        image: untrusted-app:v1.0
-        ports:
-        - containerPort: 8080
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
-        securityContext:
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsUser: 1000
+        - name: app
+          image: untrusted-app:v1.0
+          ports:
+            - containerPort: 8080
+          resources:
+            requests: { memory: 128Mi, cpu: 100m }
+            limits: { memory: 256Mi, cpu: 200m }
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+---
+# CI build runner — contain breakouts from arbitrary build scripts
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ci-build
+  namespace: ci-builds
+spec:
+  template:
+    spec:
+      runtimeClassName: gvisor
+      restartPolicy: Never
+      containers:
+        - name: builder
+          image: golang:1.24
+          command: ["go", "build", "-o", "/tmp/app", "./..."]
+          workingDir: /workspace
+          volumeMounts:
+            - name: source
+              mountPath: /workspace
+      volumes:
+        - name: source
+          emptyDir: {}
 ```
 
-### Step 5: Configure gVisor Platform Options
+### GKE Sandbox
 
-Optimize gVisor for different use cases:
+```bash
+gcloud container node-pools create sandbox-pool \
+  --cluster=my-cluster --region=europe-west1 \
+  --sandbox type=gvisor --machine-type=e2-standard-4
+kubectl get runtimeclass gvisor     # created by GKE
+```
+
+```yaml
+# GKE sandbox pod spec example
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sandboxed
+spec:
+  runtimeClassName: gvisor   # GKE adds the sandbox node selector/toleration automatically
+  containers:
+    - name: app
+      image: nginx:1.27
+```
+
+GKE Autopilot also accepts `runtimeClassName: gvisor`. Some features (hostPath, privileged pods, host namespaces) are rejected in sandboxed pods.
+
+### Step 5: Platform and Multiple Handlers
+
+| Platform | When |
+|---|---|
+| `systrap` (default) | Works everywhere, including VMs without nested virtualization |
+| `kvm` | Bare metal or VMs with nested virt; lower syscall overhead |
+| `ptrace` | Legacy; slowest, kept for compatibility/debugging |
+
+Expose variants as separate handlers — each needs its **own containerd runtime entry** and RuntimeClass:
 
 ```toml
-# /etc/containerd/runsc-ptrace.toml
-# For maximum compatibility (slower)
-[runsc_config]
-  platform = "ptrace"
-  file-access = "exclusive"
-
-# /etc/containerd/runsc-kvm.toml
-# For better performance (requires KVM)
-[runsc_config]
-  platform = "kvm"
-  file-access = "exclusive"
-  
-# /etc/containerd/runsc-systrap.toml
-# Balanced option (default)
-[runsc_config]
-  platform = "systrap"
-  file-access = "exclusive"
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runsc-kvm]
+  runtime_type = "io.containerd.runsc.v1"
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runsc-kvm.options]
+    TypeUrl = "io.containerd.runsc.v1.options"
+    ConfigPath = "/etc/containerd/runsc-kvm.toml"   # [runsc_config] platform = "kvm"
 ```
-
-Create multiple RuntimeClasses for different options:
 
 ```yaml
 apiVersion: node.k8s.io/v1
@@ -230,267 +239,149 @@ kind: RuntimeClass
 metadata:
   name: gvisor-kvm
 handler: runsc-kvm
----
-apiVersion: node.k8s.io/v1
-kind: RuntimeClass
-metadata:
-  name: gvisor-ptrace
-handler: runsc-ptrace
+scheduling:
+  nodeSelector:
+    gvisor.io/kvm: "true"
 ```
 
-### Step 6: Network Configuration for gVisor
-
-Configure network modes:
-
-```toml
-# /etc/containerd/runsc.toml
-[runsc_config]
-  # Network modes:
-  # "sandbox" - full network isolation (recommended)
-  # "host" - use host network stack
-  # "none" - no networking
-  network = "sandbox"
-  
-  # Enable GSO for better network performance
-  gso = true
-  
-  # Network namespace configuration
-  network-namespace = "/var/run/netns/%s"
-```
-
-### Step 7: Monitor gVisor Workloads
-
-Debug and monitor gVisor containers:
-
-```bash
-# Check runtime class of pods
-kubectl get pods -o custom-columns=\
-NAME:.metadata.name,\
-RUNTIME:.spec.runtimeClassName
-
-# View gVisor logs
-sudo journalctl -u containerd | grep runsc
-
-# Debug gVisor container
-sudo runsc --root /run/containerd/runsc/k8s.io debug <container-id>
-
-# Get syscall stats
-sudo runsc --root /run/containerd/runsc/k8s.io events <container-id>
-```
-
-### Step 8: Enforce gVisor with Policies
-
-Use admission policies to enforce gVisor for untrusted workloads:
+### Step 6: Enforce gVisor per Namespace
 
 ```yaml
-# Kyverno policy to enforce gVisor
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: require-gvisor-runtime
-spec:
-  validationFailureAction: Enforce
-  rules:
-  - name: require-gvisor-for-untrusted
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-          namespaces:
-          - untrusted
-          - sandbox
-    validate:
-      message: "Pods in untrusted namespaces must use gVisor runtime"
-      pattern:
-        spec:
-          runtimeClassName: gvisor
----
-# Mutating policy to add gVisor automatically
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: default-gvisor-for-sandbox
+  name: gvisor-for-untrusted
 spec:
   rules:
-  - name: add-gvisor-runtime
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-          namespaces:
-          - sandbox
-    mutate:
-      patchStrategicMerge:
-        spec:
-          runtimeClassName: gvisor
+    # Default untrusted pods to gVisor...
+    - name: add-gvisor-runtime
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: [sandbox, ci-builds]
+      mutate:
+        patchStrategicMerge:
+          spec:
+            runtimeClassName: gvisor
+    # ...and reject anything that tries to opt out
+    - name: require-gvisor
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: [sandbox, ci-builds]
+      validate:
+        failureAction: Enforce
+        message: "Pods in untrusted namespaces must use the gvisor RuntimeClass"
+        pattern:
+          spec:
+            runtimeClassName: gvisor
 ```
 
-### Step 9: Compare Performance
+A `ValidatingAdmissionPolicy` with `object.spec.runtimeClassName == 'gvisor'` works without Kyverno on Kubernetes 1.30+.
 
-Benchmark gVisor vs standard runtime:
-
-```yaml
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: benchmark-gvisor
-spec:
-  template:
-    spec:
-      runtimeClassName: gvisor
-      containers:
-      - name: benchmark
-        image: alpine:latest
-        command:
-        - sh
-        - -c
-        - |
-          echo "Starting benchmark with gVisor..."
-          time for i in $(seq 1 1000); do
-            echo "test" > /tmp/file
-            cat /tmp/file > /dev/null
-          done
-          echo "Benchmark complete"
-      restartPolicy: Never
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: benchmark-runc
-spec:
-  template:
-    spec:
-      # No runtimeClassName = default runc
-      containers:
-      - name: benchmark
-        image: alpine:latest
-        command:
-        - sh
-        - -c
-        - |
-          echo "Starting benchmark with runc..."
-          time for i in $(seq 1 1000); do
-            echo "test" > /tmp/file
-            cat /tmp/file > /dev/null
-          done
-          echo "Benchmark complete"
-      restartPolicy: Never
-```
-
-## Verification
-
-Verify gVisor is running:
+### Step 7: Verify the Sandbox
 
 ```bash
-# Check RuntimeClass exists
 kubectl get runtimeclass gvisor
+kubectl run gvisor-test --image=alpine --restart=Never \
+  --overrides='{"spec":{"runtimeClassName":"gvisor"}}' -- sleep 3600
 
-# Deploy test pod
-kubectl run test-gvisor --image=alpine --rm -it \
-  --overrides='{"spec":{"runtimeClassName":"gvisor"}}' \
-  -- uname -a
+kubectl exec gvisor-test -- dmesg | head -3
+# [   0.000000] Starting gVisor...
+kubectl exec gvisor-test -- uname -r
+# 4.4.0   <- synthetic kernel version reported by the Sentry, not the host's
+kubectl get pod gvisor-test -o jsonpath='{.spec.runtimeClassName}{"\n"}'
 
-# Output should show something like:
-# Linux test-gvisor 4.4.0 #1 SMP ... x86_64 Linux
-# (gVisor reports a synthetic kernel version)
-
-# Verify runtime
-kubectl get pod test-gvisor -o jsonpath='{.spec.runtimeClassName}'
-```
-
-Test syscall interception by opening a new terminal into the sandboxed shell:
-
-```bash
-# Open a new terminal and exec into the sandboxed pod
-kubectl run gvisor-test --image=alpine --rm -it \
-  --overrides='{"spec":{"runtimeClassName":"gvisor"}}' -- sh
-
-# Inside that new terminal, create a testbed directory and inspect the sandbox
-mkdir -p /tmp/sandbox && cd /tmp/sandbox
-cat /proc/version  # Shows gVisor version info
-dmesg             # May show limited/different output
-mount             # May show different mounts than standard container
-```
-
-Check gVisor events:
-
-```bash
-# List gVisor containers
+# On the node
 sudo runsc --root /run/containerd/runsc/k8s.io list
-
-# Get detailed state
-sudo runsc --root /run/containerd/runsc/k8s.io state <container-id>
-
-# Monitor events
-sudo runsc --root /run/containerd/runsc/k8s.io events <container-id>
+sudo runsc --root /run/containerd/runsc/k8s.io events <container-id>   # resource stats
+kubectl get pods -A -o custom-columns=NS:.metadata.namespace,NAME:.metadata.name,RUNTIME:.spec.runtimeClassName
 ```
 
-## Best Practices
+### Step 8: Measure the Overhead
 
-1. **Use gVisor for untrusted workloads** only (performance overhead)
-2. **Test application compatibility** before deployment
-3. **Choose appropriate platform** (systrap/kvm/ptrace)
-4. **Monitor memory overhead** from gVisor sentry
-5. **Combine with Pod Security Standards** for defense in depth
-6. **Use dedicated node pools** for sandboxed workloads
-7. **Document compatibility limitations** for development teams
-8. **Benchmark critical paths** for performance impact
-9. **Keep gVisor updated** for security fixes
-10. **Use network=sandbox** for full network isolation
-
-## Limitations and Compatibility
-
-**Not supported in gVisor:**
-- Direct device access
-- Some ioctl operations
-- Certain /proc and /sys features
-- Some network protocols
-- Certain file system features
-
-**Check compatibility:**
-```bash
-# Test application with gVisor locally
-docker run --runtime=runsc myapp:latest
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bench-gvisor
+spec:
+  template:
+    spec:
+      runtimeClassName: gvisor      # duplicate the Job without this line for a runc baseline
+      restartPolicy: Never
+      containers:
+        - name: bench
+          image: alpine:3.20
+          command: ["sh", "-c", "time sh -c 'for i in $(seq 1 5000); do echo x > /tmp/f; cat /tmp/f >/dev/null; done'"]
 ```
+
+CPU-bound code runs at near-native speed; the cost shows up in syscall-heavy paths (many small file ops, process spawning, high packet rates).
+
+### runc vs gVisor vs Kata
+
+| | runc | gVisor (runsc) | Kata Containers |
+|---|---|---|---|
+| Isolation | Namespaces + cgroups + seccomp | User-space kernel | Lightweight VM per pod |
+| Startup | Fastest | Fast (~sub-second) | Slower (VM boot) |
+| Memory overhead | None | Tens of MiB per pod | ~100+ MiB per pod |
+| Needs virtualization | No | No (KVM optional) | Yes (bare metal / nested virt) |
+| Syscall compatibility | Full | Most, not all | Full (guest kernel) |
+| GPU | Yes | Limited (nvproxy) | Yes (passthrough) |
+| Best for | Trusted workloads | Untrusted code, multi-tenant, CI | Strong isolation, confidential computing |
+
+Side-by-side setup on k3s: [gVisor and Kata with RuntimeClass](/recipes/security/kubernetes-gvisor-kata-containers-runtimeclass/).
 
 ## Common Issues
 
-**Pod fails to start with gVisor:**
-- Check if RuntimeClass handler matches containerd config
-- Verify gVisor is installed on node
-- Check containerd logs for errors
+| Symptom | Cause | Fix |
+|---|---|---|
+| `RuntimeClass "gvisor" not found` | RuntimeClass not created | `kubectl apply` the RuntimeClass |
+| Pod `ContainerCreating`: `no runtime for "runsc" is configured` | Handler missing in containerd or containerd not restarted on that node | Fix `config.toml` (right section for containerd 1.x vs 2.x), restart containerd |
+| Pod Pending | RuntimeClass nodeSelector matches no node, or taint not tolerated | Label nodes; check `scheduling` in the RuntimeClass |
+| App crashes with `function not implemented` / `operation not supported` | Syscall or ioctl not implemented (e.g. io_uring, some raw socket ops) | Check gVisor compatibility docs and `debug-log` output; run that workload on runc or Kata |
+| Slow file I/O | Gofer round-trips | Keep `file-access = "exclusive"` (directfs), use emptyDir for scratch |
+| Low network throughput | gVisor netstack | Try `kvm` platform; `network = "host"` only if you accept weaker isolation |
+| `docker run --runtime=runsc` fails locally | Docker doesn't know the runtime | `sudo runsc install && sudo systemctl restart docker` |
 
-**Performance degradation:**
-- Consider using KVM platform if available
-- Optimize file-access settings
-- Use standard runtime for performance-critical workloads
+## Best Practices
 
-**Syscall not implemented:**
-- Check gVisor compatibility documentation
-- Consider using ptrace platform for better compatibility
-- Report missing syscalls to gVisor project
+1. **Sandbox untrusted workloads only** — trusted internal services don't need the overhead
+2. **Dedicated, labelled, tainted node pool** referenced from the RuntimeClass `scheduling`
+3. **Set `overhead.podFixed`** so quotas and scheduling account for the Sentry
+4. **Enforce with policy** (Kyverno/VAP) per namespace rather than relying on developers
+5. **Keep defense in depth** — Pod Security `restricted`, NetworkPolicy, non-root, read-only rootfs still apply
+6. **Test compatibility and benchmark** critical paths before rollout
+7. **Patch runsc** regularly alongside node OS updates
 
-## Related Resources
+## Frequently Asked Questions
 
-- [gVisor Documentation](https://gvisor.dev/docs/)
-- [RuntimeClass](https://kubernetes.io/docs/concepts/containers/runtime-class/)
-- [gVisor Compatibility](https://gvisor.dev/docs/user_guide/compatibility/)
-- [Container Sandboxing](https://gvisor.dev/docs/architecture_guide/security/)
+### How does gVisor work with Kubernetes?
 
----
+Kubernetes selects the low-level runtime through a `RuntimeClass`. Its `handler` names a runtime configured in containerd (or CRI-O); when a pod sets `runtimeClassName: gvisor`, the kubelet asks containerd to start it with `containerd-shim-runsc-v1`, which launches the gVisor Sentry instead of runc.
 
-## 📘 Go Further with Kubernetes Recipes
+### What is the GKE Sandbox runtimeClassName?
 
-**Love this recipe? There's so much more!** This is just one of **100+ hands-on recipes** in our comprehensive **[Kubernetes Recipes book](https://amzn.to/3DzC8QA)**.
+`gvisor`. After creating a node pool with `--sandbox type=gvisor`, GKE provides a RuntimeClass named `gvisor`; add `runtimeClassName: gvisor` to the pod spec and GKE schedules it onto sandbox nodes.
 
-Inside the book, you'll master:
-- ✅ Production-ready deployment strategies
-- ✅ Advanced networking and security patterns  
-- ✅ Observability, monitoring, and troubleshooting
-- ✅ Real-world best practices from industry experts
+### Does Cloud Run use gVisor?
 
-> *"The practical, recipe-based approach made complex Kubernetes concepts finally click for me."*
+Cloud Run's first-generation execution environment is gVisor-based; the second-generation environment runs containers in a microVM with a full Linux kernel instead. You pick the generation per service; there is no separate gVisor toggle.
 
-**👉 [Get Your Copy Now](https://amzn.to/3DzC8QA)** — Start building production-grade Kubernetes skills today!
+### gVisor vs Kata Containers?
+
+gVisor re-implements the Linux syscall surface in user space — light, fast to start and no hardware virtualization needed, but not 100% syscall-compatible. Kata runs each pod in a lightweight VM with its own kernel — full compatibility and hardware isolation, at higher memory and startup cost, and it needs KVM.
+
+### Can I run GPU workloads in gVisor?
+
+Partially. gVisor's `nvproxy` supports NVIDIA GPUs for common CUDA frameworks on specific driver versions (enable with the `nvproxy` flag or GKE's GPU sandbox support). Validate your exact stack; Kata with GPU passthrough is the broader-compatibility option.
+
+## Key Takeaways
+
+- gVisor inserts a user-space kernel between the container and the host kernel
+- Install runsc + shim, add a containerd handler, create RuntimeClass `gvisor`, set `runtimeClassName`
+- GKE Sandbox gives you the same `gvisor` RuntimeClass as a managed feature
+- Enforce it for untrusted namespaces and verify with `dmesg` inside the pod
+- Budget for overhead on syscall/I/O-heavy workloads and test compatibility

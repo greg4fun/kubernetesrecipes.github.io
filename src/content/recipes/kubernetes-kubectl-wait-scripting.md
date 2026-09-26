@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubectl-cheat-sheet"
   - "kubectl-apply-vs-create"
-  - "kubernetes-rolling-update-strategies"
+  - "kubernetes-rolling-update-strategy"
   - "kubernetes-api-resources-explain"
   - "kubernetes-kubectl-plugins-guide"
 ---

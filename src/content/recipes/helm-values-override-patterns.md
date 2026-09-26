@@ -13,7 +13,7 @@ tags:
   - "override"
   - "configuration"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

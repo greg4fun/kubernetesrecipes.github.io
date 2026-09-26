@@ -1,39 +1,36 @@
 ---
-title: "K8s Jobs and CronJobs: Complete Guide"
-description: "Create Kubernetes Jobs and CronJobs for batch processing. Parallelism, backoff limits, completion counts, cron schedules, and failure handling patterns."
+title: "Kubernetes Jobs and CronJobs: Complete Guide"
+description: "Kubernetes Jobs and CronJobs with YAML: run-to-completion, backoffLimit, parallelism, Indexed jobs, podFailurePolicy, TTL cleanup and cron scheduling."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "deployments"
 difficulty: "beginner"
-timeToComplete: "10 minutes"
+timeToComplete: "15 minutes"
 kubernetesVersion: "1.28+"
 tags:
   - "jobs"
   - "cronjobs"
   - "batch"
   - "scheduling"
+  - "automation"
   - "cka"
 relatedRecipes:
+  - "kubernetes-cronjob-best-practices"
   - "cronjob-concurrency-policy"
-  - "kubernetes-init-containers-guide"
-  - "kubernetes-deployment-rolling-update"
-  - "kubernetes-sidecar-containers-guide"
+  - "kubernetes-job-completion-parallelism"
+  - "kubernetes-job-completion-patterns"
+  - "kubernetes-job-ttl-cleanup"
+  - "kubernetes-sidecar-containers"
+  - "kubernetes-init-containers-patterns-examples"
+  - "kubernetes-resource-quotas-limitranges"
+  - "kubernetes-pod-priority-preemption-scheduling"
+  - "kubernetes-operator-pattern"
+  - "ai-batch-processing-volcano"
 ---
 
-> 💡 **Quick Answer:** A Job runs a pod to completion: `kubectl create job myjob --image=busybox -- echo hello`. A CronJob runs Jobs on a schedule: `schedule: "0 * * * *"` (hourly). Key settings: `backoffLimit: 4` (retries), `completions: 5` (run 5 times), `parallelism: 3` (3 pods at once), `concurrencyPolicy: Forbid` (skip if previous still running).
+> 💡 **Quick Answer:** A **Job** runs pods until a set number exit 0: `kubectl create job myjob --image=busybox:1.36 -- echo hello`. Key fields: `backoffLimit` (retries, default 6), `activeDeadlineSeconds` (timeout), `completions` + `parallelism` (batch size and concurrency), `completionMode: Indexed` (shard work by `$JOB_COMPLETION_INDEX`), `ttlSecondsAfterFinished` (auto-delete). A **CronJob** creates Jobs on a cron schedule (`schedule: "0 * * * *"`) with `concurrencyPolicy: Forbid` to stop overlaps.
 
-## The Problem
-
-Not all workloads run forever — some need to:
-
-- Process a batch of items and exit
-- Run database migrations once
-- Generate reports on a schedule
-- Clean up old resources periodically
-
-## The Solution
-
-### Basic Job
+## Basic Job
 
 ```yaml
 apiVersion: batch/v1
@@ -41,187 +38,234 @@ kind: Job
 metadata:
   name: data-migration
 spec:
-  backoffLimit: 4           # Retry up to 4 times on failure
-  activeDeadlineSeconds: 600  # Kill after 10 minutes
+  backoffLimit: 4                  # pod failures before the Job is Failed (default 6)
+  activeDeadlineSeconds: 600       # whole-Job timeout, overrides backoffLimit
+  ttlSecondsAfterFinished: 3600    # delete Job + pods 1h after it finishes
   template:
     spec:
+      restartPolicy: Never         # Never or OnFailure — Always is invalid for Jobs
       containers:
-      - name: migrate
-        image: myapp:v2
-        command: ["./migrate", "--target", "latest"]
-        env:
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: db-creds
-              key: url
-      restartPolicy: Never    # Required: Never or OnFailure
+        - name: migrate
+          image: myapp:v2
+          command: ["./migrate", "--target", "latest"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-creds
+                  key: url
+          resources:
+            requests: {cpu: 200m, memory: 256Mi}
+            limits: {memory: 512Mi}
 ```
 
 ```bash
-# Create job imperatively
-kubectl create job myjob --image=busybox -- echo "hello world"
+kubectl create job myjob --image=busybox:1.36 -- echo "hello world"   # imperative
 
-# Watch job status
 kubectl get jobs -w
-# NAME             COMPLETIONS   DURATION   AGE
-# data-migration   1/1           45s        2m
+# NAME             STATUS     COMPLETIONS   DURATION   AGE
+# data-migration   Complete   1/1           45s        2m
 
-# Check logs
 kubectl logs job/data-migration
-
-# Delete job (and its pods)
-kubectl delete job data-migration
+kubectl wait --for=condition=complete job/data-migration --timeout=10m   # CI gate
+kubectl delete job data-migration                                        # also deletes its pods
+kubectl delete jobs --field-selector status.successful=1                 # all succeeded Jobs
 ```
 
-### Parallel Jobs
+### restartPolicy: Never vs OnFailure
+
+- **Never** — each failure creates a new pod; failed pods remain for `kubectl logs`. Best for debugging and for `podFailurePolicy`.
+- **OnFailure** — the kubelet restarts the container in the same pod; fewer pods, but logs of earlier attempts are lost (only `--previous`) and the pod may be deleted when `backoffLimit` is hit.
+
+Retries use exponential backoff: 10 s, 20 s, 40 s … capped at 6 minutes.
+
+## Parallel Jobs
 
 ```yaml
-# Process 10 items, 3 at a time
+# Fixed completion count: 10 successful pods, 3 at a time (work queue style)
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: batch-processor
 spec:
-  completions: 10     # Total successful completions needed
-  parallelism: 3      # Run 3 pods simultaneously
+  completions: 10
+  parallelism: 3
   backoffLimit: 5
   template:
     spec:
-      containers:
-      - name: worker
-        image: myworker:v1
-        env:
-        - name: JOB_COMPLETION_INDEX
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
       restartPolicy: Never
+      containers:
+        - name: worker
+          image: myworker:v1        # pulls its next item from a queue
+```
 
----
-# Indexed job (K8s 1.24+) — each pod gets unique index
+```yaml
+# Indexed: each pod gets a unique index 0..completions-1
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: indexed-job
+  name: image-processor
 spec:
-  completions: 5
-  parallelism: 5
-  completionMode: Indexed    # Each pod gets JOB_COMPLETION_INDEX 0-4
+  completions: 10
+  parallelism: 3
+  completionMode: Indexed
+  backoffLimitPerIndex: 2          # per-shard retries (GA 1.33)
+  maxFailedIndexes: 1              # tolerate one bad shard
   template:
     spec:
-      containers:
-      - name: worker
-        image: myworker:v1
-        command: ["./process", "--partition"]
-        env:
-        - name: PARTITION
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
       restartPolicy: Never
+      containers:
+        - name: processor
+          image: myapp/processor:v1
+          # JOB_COMPLETION_INDEX is injected automatically in Indexed mode
+          command: ["python", "process.py", "--shard=$(JOB_COMPLETION_INDEX)"]
 ```
 
-### CronJob
+| Pattern | completions | parallelism | completionMode |
+|---------|------------|-------------|----------------|
+| Single run | 1 (default) | 1 | NonIndexed |
+| Fixed count, shared queue | N | M | NonIndexed |
+| Static sharding | N | M | Indexed |
+| Work queue until empty | unset | M | NonIndexed (workers exit 0 when queue drained) |
+
+`JOB_COMPLETION_INDEX` and the `batch.kubernetes.io/job-completion-index` annotation only exist in **Indexed** mode. Pods also get the hostname `<job>-<index>`, so an Indexed Job plus a headless Service gives stable peer DNS for MPI/PyTorch-style workers. More: [Job completions and parallelism](/recipes/deployments/kubernetes-job-completion-parallelism/).
+
+## Failure Handling with podFailurePolicy
+
+```yaml
+spec:
+  backoffLimit: 6
+  podFailurePolicy:                # GA 1.31; requires restartPolicy: Never
+    rules:
+      - action: FailJob            # bug in the code: don't retry
+        onExitCodes:
+          containerName: main
+          operator: In
+          values: [42]
+      - action: Ignore             # node drain / preemption: retry without counting
+        onPodConditions:
+          - type: DisruptionTarget
+```
+
+## Jobs with Sidecars
+
+A regular sidecar container (proxy, log shipper) keeps the pod running and the Job never completes. Declare it as a native sidecar — `initContainers` with `restartPolicy: Always` — and it's stopped automatically when the main container exits. See [sidecar containers](/recipes/configuration/kubernetes-sidecar-containers/).
+
+## CronJob
 
 ```yaml
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: daily-report
+  name: nightly-backup
 spec:
-  schedule: "0 6 * * *"          # 6 AM daily
-  timeZone: "Europe/Rome"        # K8s 1.27+
-  concurrencyPolicy: Forbid      # Skip if previous still running
-  successfulJobsHistoryLimit: 3  # Keep last 3 successful
-  failedJobsHistoryLimit: 1      # Keep last 1 failed
-  startingDeadlineSeconds: 300   # Don't start if 5min late
+  schedule: "0 2 * * *"            # 02:00 daily
+  timeZone: "Europe/Rome"          # GA 1.27
+  concurrencyPolicy: Forbid        # skip if the previous run is still active
+  startingDeadlineSeconds: 600     # missed run may start up to 10 min late
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       backoffLimit: 2
+      activeDeadlineSeconds: 3600
       template:
         spec:
-          containers:
-          - name: reporter
-            image: myapp:v2
-            command: ["./generate-report"]
           restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: postgres:16
+              command: ["/bin/sh", "-c", "pg_dump -h $DB_HOST -U $DB_USER $DB_NAME | gzip > /backup/db-$(date +%Y%m%d).sql.gz"]
+              env:
+                - name: DB_HOST
+                  value: postgres.default.svc
+                - name: DB_NAME
+                  value: myapp
+                - name: DB_USER
+                  valueFrom: {secretKeyRef: {name: db-credentials, key: username}}
+                - name: PGPASSWORD
+                  valueFrom: {secretKeyRef: {name: db-credentials, key: password}}
+              volumeMounts:
+                - name: backup
+                  mountPath: /backup
+          volumes:
+            - name: backup
+              persistentVolumeClaim:
+                claimName: backup-pvc
 ```
 
-### Cron Schedule Syntax
+| Schedule | Meaning |
+|----------|---------|
+| `*/15 * * * *` | Every 15 minutes |
+| `0 * * * *` | Every hour |
+| `0 6 * * 1-5` | Weekdays at 06:00 |
+| `0 6,18 * * *` | 06:00 and 18:00 |
+| `0 0 1 * *` | Midnight on the 1st |
 
-```
-┌───────── minute (0-59)
-│ ┌───────── hour (0-23)
-│ │ ┌───────── day of month (1-31)
-│ │ │ ┌───────── month (1-12)
-│ │ │ │ ┌───────── day of week (0-6, Sun=0)
-│ │ │ │ │
-* * * * *
-
-# Examples:
-"0 * * * *"      # Every hour
-"*/15 * * * *"   # Every 15 minutes
-"0 6 * * *"      # Daily at 6 AM
-"0 6 * * 1-5"    # Weekdays at 6 AM
-"0 0 1 * *"      # First day of month at midnight
-"0 6,18 * * *"   # 6 AM and 6 PM daily
-```
-
-### ConcurrencyPolicy Options
-
-| Policy | Behavior |
+| concurrencyPolicy | Behaviour when the previous run is still active |
 |--------|----------|
-| `Allow` (default) | Multiple jobs can run simultaneously |
-| `Forbid` | Skip new job if previous still running |
-| `Replace` | Kill running job, start new one |
-
-### Manage Jobs
+| `Allow` (default) | Runs both |
+| `Forbid` | Skips the new run |
+| `Replace` | Deletes the running Job, starts a new one |
 
 ```bash
-# Create CronJob
-kubectl create cronjob hourly-cleanup --image=busybox \
-  --schedule="0 * * * *" -- /bin/sh -c "echo cleanup"
+kubectl create cronjob hourly-cleanup --image=busybox:1.36 --schedule="0 * * * *" -- /bin/sh -c "echo cleanup"
+kubectl create job manual-run --from=cronjob/nightly-backup          # run now
+kubectl patch cronjob nightly-backup -p '{"spec":{"suspend":true}}'  # pause
+```
 
-# Trigger CronJob manually
-kubectl create job manual-run --from=cronjob/daily-report
+Schedule syntax, time zones, missed runs and monitoring: [CronJob best practices](/recipes/deployments/kubernetes-cronjob-best-practices/). Overlap semantics: [concurrencyPolicy](/recipes/deployments/cronjob-concurrency-policy/).
 
-# Suspend CronJob
-kubectl patch cronjob daily-report -p '{"spec":{"suspend":true}}'
-
-# Resume
-kubectl patch cronjob daily-report -p '{"spec":{"suspend":false}}'
-
-# List recent jobs from a CronJob
-kubectl get jobs -l job-name -o wide
+```mermaid
+graph TD
+    A[CronJob nightly-backup] -->|02:00| B[Job]
+    B --> C[Pod runs pg_dump]
+    C -->|exit 0| D[Job Complete]
+    C -->|exit != 0| E{backoffLimit reached?}
+    E -->|No| F[New pod / restart]
+    E -->|Yes| G[Job Failed]
 ```
 
 ## Common Issues
 
-**Job pods not cleaned up**
+**Job stuck at 0/1, pods CrashLooping** — once `backoffLimit` is exhausted the Job is `Failed` with reason `BackoffLimitExceeded`. `kubectl describe job`, then `kubectl logs` on the failed pod (keep them with `restartPolicy: Never`).
 
-Set `ttlSecondsAfterFinished: 300` to auto-delete completed job pods after 5 minutes.
+**Job never completes** — a regular sidecar container is still running, or a work-queue worker never exits 0. Use native sidecars; make workers exit when the queue is empty.
 
-**CronJob missed schedule**
+**Completed Jobs and pods pile up** — standalone Jobs need `ttlSecondsAfterFinished`; CronJob Jobs are pruned by history limits.
 
-If `startingDeadlineSeconds` passed, the run is skipped. Check controller logs: `kubectl logs -n kube-system -l component=kube-controller-manager`.
+**Job killed at exactly N seconds** — `activeDeadlineSeconds` reached (reason `DeadlineExceeded`); it applies to the whole Job, not per pod.
 
-**Job stuck — pods keep failing**
-
-`backoffLimit` reached. Check pod logs: `kubectl logs <pod>`. Exponential backoff: 10s, 20s, 40s...
+**Pods evicted during node drain count as failures** — add a `podFailurePolicy` rule that ignores `DisruptionTarget`.
 
 ## Best Practices
 
-- **Set `activeDeadlineSeconds`** — prevent runaway jobs from consuming resources forever
-- **Set `backoffLimit`** — don't retry infinitely on permanent failures
-- **Use `concurrencyPolicy: Forbid`** for CronJobs — prevent overlap
-- **Set `ttlSecondsAfterFinished`** — auto-cleanup completed job pods
-- **Use `timeZone`** (K8s 1.27+) — avoid UTC confusion for scheduled tasks
+- **Always set `activeDeadlineSeconds` and a sane `backoffLimit`** — no runaway retries
+- **`ttlSecondsAfterFinished` on standalone Jobs** — completed objects add etcd and API load
+- **Make work idempotent** — pods can be retried or run twice after node failures
+- **Resource requests on every Job pod** — batch bursts starve neighbours without them
+- **Indexed Jobs for sharded work** instead of hand-rolled coordination
+- **`concurrencyPolicy: Forbid`** for CronJobs unless overlap is explicitly safe
+- **Use `kubectl wait --for=condition=complete`** in pipelines instead of polling
 
-## Key Takeaways
+## Frequently Asked Questions
 
-- Jobs run pods to completion with configurable retries and parallelism
-- CronJobs create Jobs on a cron schedule with concurrency control
-- `completions` × `parallelism` controls total work and concurrent pods
-- `concurrencyPolicy: Forbid` prevents overlapping runs
-- Always set `backoffLimit` and `activeDeadlineSeconds` for safety
+### What's the difference between a Job and a CronJob?
+
+A Job runs pods to completion once. A CronJob is a controller that creates a new Job from its `jobTemplate` on every schedule tick.
+
+### What does backoffLimit do?
+
+It's the number of pod failures (or container restarts with `OnFailure`) allowed before the Job is marked `Failed`. The default is 6, with exponential backoff between retries.
+
+### How do completions and parallelism work?
+
+`completions` is how many pods must succeed; `parallelism` is how many run at once. `completions: 10, parallelism: 3` runs up to 3 pods at a time until 10 have exited 0.
+
+### How do I clean up finished Jobs automatically?
+
+Set `ttlSecondsAfterFinished` on the Job. For CronJobs, `successfulJobsHistoryLimit` and `failedJobsHistoryLimit` prune old Jobs.
+
+### Should I use restartPolicy Never or OnFailure?
+
+`Never` keeps every failed pod for inspection and is required for `podFailurePolicy`. `OnFailure` retries in place and creates fewer pods. Both are valid; `Always` is not allowed in a Job.

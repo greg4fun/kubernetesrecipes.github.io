@@ -13,7 +13,7 @@ tags:
   - "flow-schema"
   - "rate-limiting"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

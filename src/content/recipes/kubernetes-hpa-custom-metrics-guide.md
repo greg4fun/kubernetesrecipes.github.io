@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-hpa-tutorial-guide"
   - "kubernetes-hpa-max-replicas-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-horizontal-pod-autoscaler-guide"
 ---

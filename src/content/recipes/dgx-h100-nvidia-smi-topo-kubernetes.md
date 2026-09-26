@@ -17,7 +17,7 @@ tags:
 relatedRecipes:
   - "nvidia-smi-kubernetes-monitoring"
   - "nvidia-h300-gpu-kubernetes"
-  - "nccl-environment-variables-guide"
+  - "nccl-environment-variables-reference-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Run `nvidia-smi topo -m` on a DGX H100 to see the GPU interconnect topology matrix. NVLink connections show `NV18` (18 NVLinks = full NVSwitch bandwidth ~900 GB/s bidirectional), PCIe shows `PIX`/`PXB`/`PHB`, and `SYS` means cross-NUMA. For Kubernetes, this topology determines GPU scheduling — always co-locate tensor-parallel GPUs on the same NVSwitch domain.

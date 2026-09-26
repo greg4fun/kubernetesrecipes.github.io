@@ -7,8 +7,8 @@ publishDate: "2026-04-07"
 tags: ["external-dns", "dns", "route53", "cloudflare", "automation"]
 author: "Luca Berton"
 relatedRecipes:
-  - "argo-workflows-kubernetes"
-  - "tekton-pipelines-kubernetes"
+  - "kubernetes-argo-workflows-guide"
+  - "kubernetes-tekton-pipelines-guide"
   - "falco-runtime-security"
 ---
 

@@ -14,7 +14,7 @@ tags:
   - "automation"
 relatedRecipes:
   - "kubeflow-ml-platform-kubernetes"
-  - "argo-workflows-kubernetes"
+  - "kubernetes-argo-workflows-guide"
   - "tensorrt-llm-kubernetes-guide"
 ---
 

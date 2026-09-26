@@ -1,6 +1,6 @@
 ---
-title: "oc-mirror Troubleshooting Disconnected"
-description: "Troubleshoot oc-mirror failures in disconnected OpenShift. Fix archive corruption, registry auth errors, v1/v2 mismatches, and delta mirror issues."
+title: "oc-mirror Troubleshooting: Fix Common Errors"
+description: "Fix oc-mirror errors in disconnected OpenShift: unexpected EOF writing layers, registry 401/403, disk space, v1/v2 mismatch, graph image and delta issues."
 publishDate: "2026-04-30"
 author: "Luca Berton"
 category: "troubleshooting"
@@ -14,6 +14,7 @@ tags:
   - "troubleshooting"
   - "registry"
 relatedRecipes:
+  - "oc-mirror-disconnected-openshift"
   - "airgap-openshift-upgrade-oc-mirror-osus"
   - "osus-direct-vs-replicated-openshift"
   - "openshift-upgrade-disconnected-environment"
@@ -157,6 +158,28 @@ grep -A5 "graph:" imageset-config.yaml
 
 # Verify graph-data was mirrored
 skopeo list-tags docker://registry.example.com:5000/openshift-update-service/graph-data
+```
+
+### Error: "error writing layer: unexpected EOF" During Mirroring
+
+```bash
+# Symptom (mirror-to-disk or mirror-to-mirror)
+# error writing layer: unexpected EOF
+# error processing graph image: ... unexpected EOF
+
+# Cause: the source connection dropped mid-blob (proxy/firewall idle
+# timeout, registry throttling, flaky link) — not a corrupted config.
+
+# Fix 1: just re-run the same command — v2 reuses the cache and only
+# fetches what is missing
+oc mirror -c imageset-config.yaml file:///data/mirror --v2
+
+# Fix 2: fewer parallel pulls + more retries on slow/proxied links
+oc mirror -c imageset-config.yaml file:///data/mirror --v2 \
+  --parallel-images 4 --parallel-layers 5 --retry-times 5
+
+# Fix 3: check the proxy isn't cutting long downloads
+env | grep -i proxy
 ```
 
 ### Error: Archive Corruption After Transfer

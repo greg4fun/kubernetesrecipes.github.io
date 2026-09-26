@@ -13,7 +13,7 @@ tags:
   - "distributed-training"
   - "pytorch"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "dgx-h100-gpu-topology-nvidia-smi"
 ---

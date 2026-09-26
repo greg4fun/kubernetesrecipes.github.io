@@ -14,7 +14,7 @@ tags:
   - "service-discovery"
   - "cka"
 relatedRecipes:
-  - "kubernetes-coredns-troubleshooting"
+  - "coredns-troubleshooting"
   - "kubernetes-networkpolicy-guide"
   - "kubernetes-network-debugging-tools"
 ---

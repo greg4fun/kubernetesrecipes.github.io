@@ -8,8 +8,8 @@ tags: ["health-checks", "probes", "liveness", "readiness", "startup"]
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-service-account-guide"
-  - "kubernetes-canary-deployment"
-  - "kubernetes-pod-security-standards"
+  - "kubernetes-canary-deployment-guide"
+  - "pod-security-standards"
   - "kubernetes-blue-green-deployment"
 ---
 

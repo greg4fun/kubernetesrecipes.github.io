@@ -13,7 +13,7 @@ tags:
   - "runtime-security"
   - "syscall"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "openshift-acs-rhacs-security-guide"
 ---

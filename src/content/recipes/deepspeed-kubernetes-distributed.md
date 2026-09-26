@@ -14,7 +14,7 @@ tags:
   - "large-models"
 relatedRecipes:
   - "distributed-training-tensorflow-pytorch-kubernetes"
-  - "nccl-environment-variables-guide"
+  - "nccl-environment-variables-reference-kubernetes"
   - "kubeflow-training-operator"
 ---
 

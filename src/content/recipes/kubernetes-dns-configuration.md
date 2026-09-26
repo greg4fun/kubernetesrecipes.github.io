@@ -1,14 +1,16 @@
 ---
-title: "How to Configure DNS in Kubernetes"
-description: "Understand and configure Kubernetes DNS with CoreDNS. Customize DNS policies, configure external DNS resolution, and troubleshoot DNS issues."
+title: "Kubernetes DNS Configuration: CoreDNS and dnsPolicy"
+description: "Configure Kubernetes DNS: service/pod record formats, dnsPolicy and dnsConfig, CoreDNS forwarding, stub domains, static hosts, ndots, and NodeLocal DNSCache."
 category: "networking"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 author: "Luca Berton"
 tags: ["dns", "coredns", "networking", "service-discovery", "resolution"]
 relatedRecipes:
-  - "nncp-vlan-tagging-workers"
-  - "agent-config-device-by-path"
+  - "coredns-configuration"
+  - "coredns-troubleshooting"
+  - "dns-policies-configuration"
+  - "nxdomain-dns-troubleshooting-kubernetes"
   - "networkpolicy-deny-all"
 ---
 
@@ -33,6 +35,28 @@ Kubernetes uses CoreDNS for service discovery and name resolution. Understanding
 # Examples:
 # my-service.default.svc.cluster.local
 # 10-244-1-5.default.pod.cluster.local
+```
+
+```bash
+# Same namespace — short name works
+curl http://api-service/endpoint
+
+# Cross namespace — append the namespace
+curl http://api-service.production/endpoint
+
+# Fully qualified
+curl http://api-service.production.svc.cluster.local/endpoint
+
+# SRV record for a named port (_<port-name>._<proto>)
+dig _http._tcp.api-service.default.svc.cluster.local SRV
+```
+
+```mermaid
+graph TD
+    A[Pod: curl api-service] --> B[/etc/resolv.conf]
+    B --> C[CoreDNS: 10.96.0.10]
+    C -->|cluster.local| D[Return ClusterIP]
+    C -->|external| E[Forward to upstream DNS]
 ```
 
 ## Check DNS Configuration
@@ -84,6 +108,8 @@ data:
 ## Custom DNS Configuration
 
 ### Add Custom DNS Entries
+
+> **Note:** A separate `coredns-custom` ConfigMap is only read on distributions whose Corefile imports it (AKS, k3s/RKE2, some managed offerings). On kubeadm/vanilla clusters put server blocks directly in the `coredns` ConfigMap's Corefile. On OpenShift use `oc edit dns.operator/default` (`spec.servers`).
 
 ```yaml
 # coredns-custom.yaml
@@ -326,12 +352,14 @@ nslookup my-headless.default.svc.cluster.local
 
 ```bash
 # Test DNS from a pod
-kubectl run dnsutils --image=gcr.io/kubernetes-e2e-test-images/dnsutils:1.3 --rm -it -- bash
+kubectl run dnsutils --image=registry.k8s.io/e2e-test-images/jessie-dnsutils:1.3 --rm -it --restart=Never -- bash
+# or: kubectl run dns-debug --rm -it --image=nicolaka/netshoot -- bash
 
 # Inside pod:
 nslookup kubernetes.default
 nslookup my-service.my-namespace
 dig my-service.my-namespace.svc.cluster.local
+dig @10.96.0.10 my-service.my-namespace.svc.cluster.local   # query CoreDNS directly
 cat /etc/resolv.conf
 
 # Check CoreDNS logs
@@ -374,7 +402,7 @@ data:
 
 ### High DNS Query Volume
 
-```yaml
+```bash
 # Add more CoreDNS replicas
 kubectl scale deployment coredns -n kube-system --replicas=3
 
@@ -448,6 +476,20 @@ kubectl exec my-pod -- cat /etc/resolv.conf
 # search default.svc.cluster.local svc.cluster.local cluster.local
 # options ndots:5
 ```
+
+## Frequently Asked Questions
+
+### What is the DNS name of a Kubernetes Service?
+`<service>.<namespace>.svc.cluster.local`. Within the same namespace the short name `<service>` works; from another namespace use `<service>.<namespace>`. Headless StatefulSet pods get `<pod>.<service>.<namespace>.svc.cluster.local`.
+
+### What is the difference between dnsPolicy ClusterFirst and Default?
+`ClusterFirst` (the default) sends queries to CoreDNS, which answers cluster names and forwards the rest. `Default` makes the pod inherit the node's `/etc/resolv.conf` and cannot resolve Services. `hostNetwork` pods need `ClusterFirstWithHostNet` to use cluster DNS.
+
+### How do I forward a domain to a corporate DNS server?
+Add a server block such as `corp.example.com:53 { forward . 10.150.0.1 }` to the CoreDNS Corefile (or `spec.servers` in the OpenShift DNS Operator). The `reload` plugin applies it within about 30 seconds.
+
+### Why is DNS slow in my cluster?
+Usually `ndots:5` search-domain expansion for external names, an under-resourced CoreDNS, or conntrack races on UDP. Set `ndots: 2` for external-heavy pods, scale CoreDNS or deploy NodeLocal DNSCache. See [CoreDNS troubleshooting](/recipes/troubleshooting/coredns-troubleshooting/).
 
 ## Summary
 

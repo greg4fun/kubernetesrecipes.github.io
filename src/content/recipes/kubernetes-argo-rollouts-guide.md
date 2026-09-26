@@ -14,7 +14,7 @@ tags:
   - "analysis"
 relatedRecipes:
   - "gpu-operator-upgrade-canary"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Progressive delivery with Argo Rollouts on Kubernetes. Canary, blue-green, analysis templates, and experiment-based promotion for safe deployments.

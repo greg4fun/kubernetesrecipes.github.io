@@ -18,7 +18,7 @@ relatedRecipes:
   - "kubernetes-pod-security-admission"
   - "kubernetes-security-context-guide"
   - "kubernetes-rbac-role-rolebinding"
-  - "kubernetes-falco-runtime-security"
+  - "falco-runtime-security"
   - "kubernetes-trivy-security-scanning"
 ---
 

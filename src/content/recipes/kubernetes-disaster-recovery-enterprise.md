@@ -14,7 +14,7 @@ difficulty: "advanced"
 timeToComplete: "60 minutes"
 relatedRecipes:
   - "kubernetes-etcd-operations-guide"
-  - "velero-backup-disaster-recovery"
+  - "velero-kubernetes-backup-disaster-recovery"
   - "rook-ceph-storage-kubernetes"
   - "kubernetes-cluster-upgrade"
 ---

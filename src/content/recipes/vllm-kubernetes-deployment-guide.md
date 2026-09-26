@@ -13,7 +13,7 @@ tags:
   - "llm"
   - "deployment"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "tensorrt-llm-vs-vllm-benchmark"
 ---

@@ -7,9 +7,9 @@ publishDate: "2026-04-07"
 tags: ["pvc", "persistent-volume", "storage", "dynamic-provisioning", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-secrets-guide"
+  - "secrets-management-best-practices"
   - "kubernetes-commands"
-  - "kubernetes-cronjob"
+  - "kubernetes-cronjob-best-practices"
   - "kubernetes-debug-pods"
 ---
 

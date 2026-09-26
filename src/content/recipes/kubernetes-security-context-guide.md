@@ -17,10 +17,10 @@ relatedRecipes:
   - "kubernetes-pod-security-admission"
   - "kubernetes-rbac-role-rolebinding"
   - "kubernetes-serviceaccount-guide"
-  - "kubernetes-audit-logging-guide"
+  - "kubernetes-audit-logging-configuration"
   - "kubernetes-certificate-management"
   - "kubernetes-kyverno-policy-guide"
-  - "kubernetes-falco-runtime-security"
+  - "falco-runtime-security"
   - "kubernetes-trivy-security-scanning"
   - "cve-2026-31431-linux-kernel-crypto-algif-aead"
 ---

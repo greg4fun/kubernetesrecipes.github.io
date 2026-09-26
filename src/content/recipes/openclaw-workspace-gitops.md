@@ -14,7 +14,7 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-multi-agent-kubernetes"
   - "argocd-gitops"
-  - "crossplane-kubernetes-infrastructure-management"
+  - "kubernetes-crossplane-infrastructure"
 tags:
   - openclaw
   - gitops

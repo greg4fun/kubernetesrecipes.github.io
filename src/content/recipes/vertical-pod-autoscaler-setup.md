@@ -18,7 +18,7 @@ relatedRecipes:
   - "kubernetes-multidimensional-pod-autoscaler"
   - "kubernetes-hpa-custom-metrics-prometheus"
   - "kubernetes-hpa-container-resource-metrics"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "vpa-hack-vpa-up-sh-install-kubernetes"
 ---
 

@@ -1,6 +1,6 @@
 ---
-title: "K8s NetworkPolicy: Allow and Deny Rules"
-description: "Configure Kubernetes NetworkPolicy for pod-to-pod traffic control. Default deny, allow by label, namespace selectors, egress rules, and CIDR blocks."
+title: "Kubernetes NetworkPolicy Examples and Guide"
+description: "Copy-paste Kubernetes NetworkPolicy examples: default deny, allow DNS, allow by label or namespace, ingress controller, database access and egress CIDRs."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "networking"
@@ -13,7 +13,13 @@ tags:
   - "networking"
   - "cka"
   - "zero-trust"
+  - "examples"
+  - "egress"
 relatedRecipes:
+  - "kubernetes-networkpolicy-default-deny"
+  - "kubernetes-networkpolicy-default-deny-egress"
+  - "kubernetes-calico-networkpolicy"
+  - "rhacs-network-segmentation"
   - "networkpolicy-deny-all"
   - "kubernetes-namespace-guide"
   - "kubernetes-service-mesh-comparison"
@@ -21,7 +27,9 @@ relatedRecipes:
   - "kubernetes-endpoint-slices-discovery"
 ---
 
-> 💡 **Quick Answer:** NetworkPolicy controls pod-to-pod traffic at L3/L4. Default: all traffic allowed. Apply a default-deny policy, then whitelist specific flows. Use `podSelector` to target pods, `ingress`/`egress` to define allowed traffic, and `namespaceSelector` for cross-namespace rules. Requires a CNI that supports NetworkPolicy (Calico, Cilium, Weave — NOT default Flannel).
+> 💡 **Quick Answer:** NetworkPolicy controls pod-to-pod traffic at L3/L4. Default: all traffic allowed. Apply a default-deny policy, then whitelist specific flows. Use `podSelector` to target pods, `ingress`/`egress` to define allowed traffic, and `namespaceSelector` for cross-namespace rules. Requires a CNI that enforces NetworkPolicy (Calico, Cilium, OVN-Kubernetes on OpenShift, Antrea — **not** plain Flannel, where policies are silently ignored).
+>
+> **Gotcha:** Policies are additive allow-lists. Once any policy selects a pod for a direction, everything not explicitly allowed in that direction is dropped — including DNS.
 
 ## The Problem
 
@@ -73,7 +81,7 @@ spec:
       port: 8080
 
 ---
-# Allow traffic from specific namespace
+# Allow traffic from a specific namespace (auto-label, no manual labelling needed)
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -87,10 +95,46 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          purpose: monitoring
+          kubernetes.io/metadata.name: monitoring
     ports:
     - protocol: TCP
       port: 9090
+```
+
+### AND vs OR Selectors
+
+The single most common NetworkPolicy bug is one YAML dash:
+
+```yaml
+ingress:
+- from:
+  - namespaceSelector:              # ONE element: namespace AND pod must match
+      matchLabels: { kubernetes.io/metadata.name: monitoring }
+    podSelector:
+      matchLabels: { app: prometheus }
+---
+ingress:
+- from:
+  - namespaceSelector:              # TWO elements: ANY pod in monitoring
+      matchLabels: { kubernetes.io/metadata.name: monitoring }
+  - podSelector:                    # OR app=prometheus in THIS namespace
+      matchLabels: { app: prometheus }
+```
+
+### Allow Same-Namespace Traffic
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-same-namespace
+  namespace: production
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+  ingress:
+  - from:
+    - podSelector: {}               # any pod in this namespace
 ```
 
 ### Allow DNS Egress (Essential)
@@ -107,10 +151,12 @@ spec:
   podSelector: {}
   egress:
   - to:
-    - namespaceSelector: {}
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system   # openshift-dns on OpenShift
       podSelector:
         matchLabels:
-          k8s-app: kube-dns
+          k8s-app: kube-dns                          # dns.operator.openshift.io/daemonset-dns: default
     ports:
     - protocol: UDP
       port: 53
@@ -123,7 +169,7 @@ spec:
 ### Complete Microservice Example
 
 ```yaml
-# Frontend → API → Database pattern
+# Frontend → API → Database pattern (DNS comes from the allow-dns policy above)
 ---
 # Frontend: accept from ingress, talk to API
 apiVersion: networking.k8s.io/v1
@@ -138,7 +184,7 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          app: ingress-nginx
+          kubernetes.io/metadata.name: ingress-nginx
     ports:
     - port: 80
   egress:
@@ -221,6 +267,21 @@ spec:
     - port: 443
 ```
 
+## Test a Policy
+
+```bash
+kubectl get networkpolicy -n production
+kubectl describe networkpolicy api-policy -n production
+
+# From an allowed pod
+kubectl exec -n production deploy/frontend -- curl -s -m 3 http://api:8080/healthz
+# From a pod that should be blocked (expect timeout)
+kubectl run np-test -n production --rm -it --image=busybox --restart=Never -- \
+  wget -qO- -T 3 http://postgres:5432 || echo BLOCKED
+```
+
+Blocked traffic times out rather than being refused, so use short timeouts. Cilium (`hubble observe --verdict DROPPED`) and Calico flow logs show which policy dropped a packet.
+
 ## Common Issues
 
 **Pods can't resolve DNS after default-deny**
@@ -229,24 +290,46 @@ Add a DNS egress policy allowing traffic to kube-dns on port 53 (see example abo
 
 **NetworkPolicy not enforced**
 
-CNI doesn't support NetworkPolicy. Flannel doesn't — switch to Calico or Cilium.
+CNI doesn't enforce NetworkPolicy. Plain Flannel doesn't — switch to Calico, Cilium, or run Calico in policy-only mode alongside Flannel (Canal).
 
 **Ingress controller can't reach backend pods**
 
-Add ingress rule allowing from the ingress-nginx namespace. Use `namespaceSelector` with the ingress namespace labels.
+Add an ingress rule allowing from the ingress controller namespace via `kubernetes.io/metadata.name`. On OpenShift, routers run with host networking on some platforms — allow `policy-group.network.openshift.io/ingress: ""` instead.
+
+**Egress to a Service IP doesn't match `ipBlock`**
+
+`ipBlock` is evaluated after Service DNAT, against pod IPs, and isn't meant for in-cluster destinations. Use pod/namespace selectors for cluster traffic.
 
 ## Best Practices
 
 - **Always start with default deny** — whitelist, don't blacklist
 - **Allow DNS first** — almost every policy needs DNS egress
 - **Label namespaces** — enables `namespaceSelector` in policies
-- **Use Calico or Cilium** — full NetworkPolicy support
+- **Use a policy-enforcing CNI** — Calico, Cilium, OVN-Kubernetes
 - **Test with `kubectl exec` + `curl`** — verify connectivity after policy changes
+
+## Frequently Asked Questions
+
+### What does a Kubernetes NetworkPolicy do?
+
+It's an L3/L4 allow-list for pod traffic, enforced by the CNI. It selects pods by label and lists which peers (pods, namespaces, CIDRs) and ports may connect to them (ingress) or that they may connect to (egress).
+
+### Are NetworkPolicies deny or allow?
+
+Allow only. There's no explicit deny rule in the core API; isolation happens because a pod selected by any policy drops traffic that no policy allows. A "default deny" is just a policy selecting all pods with no rules. Calico and Cilium add explicit deny and cluster-wide policies via their own CRDs.
+
+### Why does my pod lose DNS after applying a NetworkPolicy?
+
+Your policy includes `Egress` in `policyTypes` without allowing UDP/TCP 53 to the cluster DNS pods. Add an allow-dns egress policy like the one above.
+
+### Do NetworkPolicies work with Flannel?
+
+No. Flannel provides connectivity only; policies are accepted by the API server but not enforced. Use Canal (Flannel + Calico policy), Calico or Cilium.
 
 ## Key Takeaways
 
 - NetworkPolicy is the firewall for pod-to-pod traffic (L3/L4)
 - Start with default-deny, then allow specific flows
 - Always allow DNS egress or pods can't resolve service names
-- Requires a compatible CNI (Calico, Cilium, Weave — not Flannel)
+- Requires a policy-enforcing CNI (Calico, Cilium, OVN-Kubernetes — not plain Flannel)
 - Use podSelector + namespaceSelector + ipBlock for precise rules

@@ -13,7 +13,7 @@ tags:
   - "right-sizing"
   - "resources"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-hpa-prometheus-adapter"
 ---

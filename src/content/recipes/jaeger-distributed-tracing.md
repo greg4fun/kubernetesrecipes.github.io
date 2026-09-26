@@ -8,7 +8,7 @@ author: "Luca Berton"
 tags: ["jaeger", "tracing", "observability", "opentelemetry", "debugging"]
 relatedRecipes:
   - "monitor-nccl-performance-prometheus"
-  - "alertmanager-setup"
+  - "alertmanager-configuration"
 ---
 
 > 💡 **Quick Answer:** Install Jaeger Operator, create a `Jaeger` CR (use `allInOne` strategy for dev). Instrument apps with **OpenTelemetry SDK** sending to `jaeger-collector:14268`. Access the UI via `kubectl port-forward svc/jaeger-query 16686`. Ensure trace context headers propagate between services.

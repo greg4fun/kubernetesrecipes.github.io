@@ -15,7 +15,6 @@ relatedRecipes:
   - "kubernetes-efk-logging-stack"
   - "openclaw-monitoring-prometheus"
   - "openclaw-ha-kubernetes"
-  - "logging-efk-stack"
   - "container-logging-patterns"
   - "kubernetes-opentelemetry-collector"
   - "kubernetes-logging-fluentbit-guide"

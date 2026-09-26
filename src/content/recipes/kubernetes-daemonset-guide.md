@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes DaemonSet: One Pod Per Node Guide"
-description: "Kubernetes DaemonSet runs one pod on each node. Official-style docs for log collectors, monitoring agents, tolerations, control-plane nodes, and updates."
+description: "Kubernetes DaemonSet: run one pod on every node (or a subset). Log collectors, node-exporter, GPU nodes, control-plane tolerations, maxSurge updates."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "deployments"
@@ -10,14 +10,18 @@ kubernetesVersion: "1.28+"
 tags:
   - "daemonset"
   - "deployments"
+  - "per-node"
   - "monitoring"
   - "logging"
   - "cka"
 relatedRecipes:
+  - "kubernetes-daemonset-update-strategies"
   - "kubernetes-taints-tolerations-guide"
   - "kubernetes-efk-logging-stack"
-  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-prometheus-monitoring-guide"
   - "kubernetes-topology-spread-constraints"
+  - "kubernetes-service-account-guide"
+  - "kubernetes-headless-service"
 ---
 
 > 💡 **Quick Answer:** A DaemonSet ensures one pod runs on every node (or a subset). Define like a Deployment but with `kind: DaemonSet` and no `replicas`. Common uses: log collectors (Fluentd/Fluent Bit), monitoring agents (node-exporter, DCGM), CNI plugins (Calico, Cilium), and storage daemons (CSI node plugins). Use `nodeSelector` or tolerations to target specific nodes.
@@ -32,7 +36,16 @@ Some workloads must run on every node:
 - Security — runtime scanning, audit logging
 - Storage — CSI node drivers, local volume provisioner
 
-Deployments can't guarantee one-per-node placement.
+Deployments can't guarantee one-per-node placement, and they don't follow node count as the cluster scales.
+
+| Use case | Examples |
+|----------|----------|
+| Monitoring | Prometheus node-exporter, NVIDIA DCGM exporter, Datadog agent |
+| Logging | Fluent Bit, Fluentd, Vector, Filebeat |
+| Networking | Calico, Cilium, kube-proxy, OVN-Kubernetes |
+| Storage | CSI node plugins, Longhorn, local-path provisioners |
+| Security | Falco, Tetragon, runtime scanners |
+| Hardware | NVIDIA device plugin / GPU Operator components |
 
 ## The Solution
 
@@ -60,9 +73,6 @@ spec:
         - name: varlog
           mountPath: /var/log
           readOnly: true
-        - name: containers
-          mountPath: /var/lib/docker/containers
-          readOnly: true
         resources:
           requests:
             cpu: 50m
@@ -74,12 +84,13 @@ spec:
       - name: varlog
         hostPath:
           path: /var/log
-      - name: containers
-        hostPath:
-          path: /var/lib/docker/containers
       tolerations:
       - operator: Exists    # Run on ALL nodes including tainted
 ```
+
+On containerd/CRI-O nodes (every current distro, OpenShift included) container logs live under `/var/log/pods` and `/var/log/containers`, so mounting `/var/log` is enough. `/var/lib/docker/containers` only exists on legacy dockershim nodes.
+
+The DaemonSet controller automatically adds tolerations for `node.kubernetes.io/not-ready`, `unreachable` (NoExecute), `disk-pressure`, `memory-pressure`, `pid-pressure` and `unschedulable`, so agents keep running on cordoned or unhealthy nodes. `kubectl drain` needs `--ignore-daemonsets` for the same reason.
 
 ### Target Specific Nodes
 
@@ -131,13 +142,15 @@ spec:
     type: RollingUpdate        # Default
     rollingUpdate:
       maxUnavailable: 1        # Update 1 node at a time
-      maxSurge: 0              # No extra pods (K8s 1.22+)
+      maxSurge: 0              # >0 starts the new pod before killing the old one (GA 1.25)
   
   # Or OnDelete — manual control
   # updateStrategy:
   #   type: OnDelete
   # Pods only update when manually deleted
 ```
+
+`maxSurge` and `maxUnavailable` can't both be 0. Surge (`maxSurge: 1, maxUnavailable: 0`) avoids a per-node gap in log/metric collection but fails for pods using `hostPort` or `hostNetwork` ports, since old and new pods would bind the same port on the node. See [DaemonSet update strategies](/recipes/deployments/kubernetes-daemonset-update-strategies/).
 
 ### Common DaemonSet Patterns
 
@@ -203,6 +216,8 @@ spec:
 | Update | Rolling per-node | Rolling per-replica |
 | Use case | Node agents | Application workloads |
 
+A Deployment with pod anti-affinity only approximates this: it doesn't grow with new nodes and leaves pods Pending when replicas exceed nodes.
+
 ### Manage DaemonSets
 
 ```bash
@@ -243,7 +258,7 @@ Set resource `requests` and `limits`. Use `PriorityClass` to ensure DaemonSet po
 - **Use `hostPath` volumes sparingly** — security risk, prefer CSI drivers
 - **Set `priorityClassName: system-node-critical`** for essential DaemonSets
 
-## FAQ
+## Frequently Asked Questions
 
 ### How do I make Kubernetes run one pod per node?
 
@@ -260,6 +275,10 @@ Not by default — control-plane nodes are tainted, so DaemonSet pods skip them.
 ### How do I run a DaemonSet on only some nodes?
 
 Add a `nodeSelector` (e.g. `nvidia.com/gpu.present: "true"`) or `nodeAffinity` to the pod template. The DaemonSet then places one pod only on nodes matching those rules — useful for GPU device plugins or storage daemons that belong on specific hardware.
+
+### DaemonSet or Deployment with pod anti-affinity?
+
+Use a DaemonSet for anything that must exist once per node. Deployment + anti-affinity needs a manually maintained replica count, doesn't place pods on new nodes automatically, and leaves extra replicas Pending.
 
 ### Why does DESIRED show fewer pods than my node count?
 

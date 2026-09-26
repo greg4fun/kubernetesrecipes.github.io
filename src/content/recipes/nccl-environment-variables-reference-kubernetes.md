@@ -1,6 +1,6 @@
 ---
 title: "NCCL Environment Variables Complete Reference"
-description: "Complete reference for NCCL environment variables on Kubernetes. Configure network transport, InfiniBand, GPUDirect RDMA, socket"
+description: "NCCL environment variables reference for Kubernetes: NCCL_SOCKET_IFNAME, NCCL_IB_HCA, GID index, GDR level, socket tuning, algorithms, and NCCL_DEBUG."
 tags:
   - "nccl"
   - "gpu"
@@ -13,6 +13,12 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
+  - "tune-nccl-env-rdma-ethernet"
+  - "nccl-socket-ifname-environment-variable"
+  - "nccl-ib-disable-environment-variable"
+  - "nccl-gdr-level-tuning-pix-pxb-phb-sys"
+  - "nccl-debug-subsystems-gpu-troubleshooting"
+  - "run-nccl-tests-kubernetes"
   - "nccl-rccl-networking-performance-kubernetes"
   - "nccl-topology-dump-tuning-kubernetes"
   - "nccl-pxn-cross-nic-nvlink-topology"
@@ -20,6 +26,8 @@ relatedRecipes:
 ---
 
 > 💡 **Quick Answer:** NCCL environment variables control network transport selection, InfiniBand configuration, GPUDirect RDMA, TCP socket tuning, algorithm selection, and debugging output. Set them in your Pod spec `env` section. Key variables: `NCCL_SOCKET_IFNAME` (network interface), `NCCL_IB_HCA` (IB devices), `NCCL_NET_GDR_LEVEL` (GPUDirect RDMA), `NCCL_DEBUG` (logging), `NCCL_IB_DISABLE` (disable IB).
+>
+> **To force InfiniBand/RoCE with GPUDirect RDMA** (and fail fast instead of silently falling back to TCP), see [NCCL env vars: force InfiniBand/RoCE and GDR](/recipes/configuration/tune-nccl-env-rdma-ethernet/).
 
 ## The Problem
 
@@ -37,6 +45,8 @@ relatedRecipes:
 env:
   # NCCL_SOCKET_IFNAME — Select network interface for TCP/socket communication
   # Prefix with = for exact match, ^ for exclusion
+  # Used for bootstrap/out-of-band traffic and for the Socket transport.
+  # It does NOT pick the RDMA devices when IB/RoCE is used — NCCL_IB_HCA does.
   - name: NCCL_SOCKET_IFNAME
     value: "=eth0"           # Use exactly eth0
     # value: "eth"           # Any interface starting with "eth"
@@ -68,16 +78,17 @@ env:
 
   # NCCL_IB_GID_INDEX — GID index for RoCE v2
   - name: NCCL_IB_GID_INDEX
-    value: "3"               # Typically 3 for RoCE v2 (IPv4)
-    # 0 = IB default (InfiniBand native)
-    # 1 = RoCE v1
-    # 2 = RoCE v2 (link-local IPv6)
-    # 3 = RoCE v2 (IPv4) ← most common
+    value: "3"               # Often 3 for RoCE v2 (IPv4) — VERIFY with show_gids
+    # Typical mlx5 layout with one IPv4 address (not guaranteed):
+    # 0 = RoCE v1 link-local, 1 = RoCE v2 link-local,
+    # 2 = RoCE v1 IPv4,       3 = RoCE v2 IPv4
+    # Native InfiniBand ignores this. NCCL 2.21+ auto-selects a RoCE v2
+    # GID when unset (tune with NCCL_IB_ROCE_VERSION_NUM / NCCL_IB_ADDR_FAMILY)
 
   # NCCL_IB_TIMEOUT — IB transport timeout
   - name: NCCL_IB_TIMEOUT
     value: "23"              # Timeout = 4.096µs × 2^value
-    # 14 = ~67ms (default)
+    # 20 = ~4.3s (default in recent NCCL; older releases used 18 or 14 = ~67ms)
     # 22 = ~17s
     # 23 = ~34s (recommended for large clusters)
 
@@ -100,7 +111,7 @@ env:
 
   # NCCL_IB_ADAPTIVE_ROUTING — Enable IB adaptive routing
   - name: NCCL_IB_ADAPTIVE_ROUTING
-    value: "1"               # 0=disable, 1=enable (requires switch support)
+    value: "1"               # Default: 1 on InfiniBand, 0 on RoCE (requires switch support)
 
   # NCCL_IB_AR_THRESHOLD — Adaptive routing message size threshold
   - name: NCCL_IB_AR_THRESHOLD
@@ -113,20 +124,21 @@ env:
 env:
   # NCCL_NET_GDR_LEVEL — GPUDirect RDMA topology level
   - name: NCCL_NET_GDR_LEVEL
-    value: "5"
-    # Controls max PCIe distance for GPUDirect RDMA:
-    # 0 = disabled (no GDR)
-    # 1 = same GPU (PHB — same PCIe hub)
-    # 2 = same PCIe switch (PIX)
-    # 3 = same PCIe root complex (PXB)
-    # 4 = same NUMA node (NODE)
-    # 5 = any distance (SYS) ← allows cross-NUMA GDR
+    value: "PHB"
+    # Max GPU<->NIC topology distance at which GDR is used (string form preferred):
+    # LOC  = never use GDR
+    # PIX  = same PCIe switch
+    # PXB  = across multiple PCIe switches (no CPU root complex hop)
+    # PHB  = same PCIe host bridge / CPU socket
+    # NODE = same NUMA node, across host bridges
+    # SYS  = anywhere, including across the SMP interconnect (cross-socket)
+    # Legacy integers: 0=LOC 1=PIX 2=PXB 3=PHB 4=SYS
 
   # NCCL_NET_GDR_READ — Enable GPUDirect RDMA for read operations
   - name: NCCL_NET_GDR_READ
     value: "1"               # 0=disable, 1=enable
     # Allows NIC to read directly from GPU memory
-    # Requires NVIDIA peer memory module (nvidia_peermem)
+    # GDR needs nvidia_peermem, or DMA-BUF (NCCL 2.19+, kernel 5.12+, open GPU driver)
 
   # NCCL_P2P_DISABLE — Disable PCIe peer-to-peer
   - name: NCCL_P2P_DISABLE
@@ -135,8 +147,8 @@ env:
 
   # NCCL_P2P_LEVEL — PCIe P2P topology level
   - name: NCCL_P2P_LEVEL
-    value: "5"               # Same scale as GDR_LEVEL
-    # Controls intra-node GPU-to-GPU PCIe P2P
+    value: "SYS"             # LOC | NVL | PIX | PXB | PHB | SYS
+    # Max distance for intra-node GPU-to-GPU P2P (NVL = NVLink only)
 
   # NCCL_SHM_DISABLE — Disable shared memory transport
   - name: NCCL_SHM_DISABLE
@@ -199,13 +211,11 @@ env:
 
   # NCCL_MAX_NCHANNELS — Maximum communication channels
   - name: NCCL_MAX_NCHANNELS
-    value: "32"              # Default varies by GPU
-    # H100: default max 32
-    # A100: default max 16
+    value: "32"              # Default varies by GPU arch and NCCL version
 
   # NCCL_NTHREADS — GPU threads per channel
   - name: NCCL_NTHREADS
-    value: "512"             # Default: 512. Range: 64-1024
+    value: "512"             # Default: 512. Allowed: 64, 128, 256, 512
     # Higher = more GPU resources for communication
 
   # NCCL_CROSS_NIC — Allow cross-NIC (non-rail) communication
@@ -247,8 +257,8 @@ env:
 
   # NCCL_LAUNCH_MODE — Process launch mode
   - name: NCCL_LAUNCH_MODE
-    value: "GROUP"           # PARALLEL | GROUP
-    # GROUP: all GPUs init together (better for containers)
+    value: "PARALLEL"        # PARALLEL (default) | GROUP
+    # Only matters when one process drives several GPUs; leave default
 ```
 
 ### Debugging and Logging
@@ -319,7 +329,7 @@ spec:
 
         # === GPUDirect RDMA ===
         - name: NCCL_NET_GDR_LEVEL
-          value: "5"
+          value: "PHB"
         - name: NCCL_NET_GDR_READ
           value: "1"
 
@@ -369,17 +379,17 @@ NCCL_SOCKET_IFNAME           │ auto     │ =eth0, ^lo       │ Network inter
 NCCL_NET                     │ auto     │ IB, Socket       │ Force transport
 NCCL_IB_DISABLE              │ 0        │ 0, 1             │ Disable InfiniBand
 NCCL_IB_HCA                  │ auto     │ =mlx5_0,...      │ Select IB devices
-NCCL_IB_GID_INDEX            │ 0        │ 0-3              │ RoCE GID index
-NCCL_IB_TIMEOUT              │ 14       │ 1-31             │ IB timeout exponent
+NCCL_IB_GID_INDEX            │ auto*    │ 0-N              │ RoCE GID index
+NCCL_IB_TIMEOUT              │ 20       │ 1-31             │ IB timeout exponent
 NCCL_IB_RETRY_CNT            │ 7        │ 0-7              │ IB retries
 NCCL_IB_SL                   │ 0        │ 0-15             │ Service level
 NCCL_IB_TC                   │ 0        │ 0-255            │ Traffic class
 NCCL_IB_QPS_PER_CONNECTION   │ 1        │ 1-128            │ QPs per conn
-NCCL_IB_ADAPTIVE_ROUTING     │ 0        │ 0, 1             │ Adaptive routing
-NCCL_NET_GDR_LEVEL           │ auto     │ 0-5              │ GPUDirect RDMA distance
+NCCL_IB_ADAPTIVE_ROUTING     │ 1 IB/0 RoCE │ 0, 1          │ Adaptive routing
+NCCL_NET_GDR_LEVEL           │ auto     │ LOC..SYS         │ GPUDirect RDMA distance
 NCCL_NET_GDR_READ            │ 0        │ 0, 1             │ GDR read enable
 NCCL_P2P_DISABLE             │ 0        │ 0, 1             │ Disable PCIe P2P
-NCCL_P2P_LEVEL               │ auto     │ 0-5              │ P2P topology level
+NCCL_P2P_LEVEL               │ auto     │ LOC,NVL..SYS     │ P2P topology level
 NCCL_SHM_DISABLE             │ 0        │ 0, 1             │ Disable shared mem
 NCCL_SOCKET_NTHREADS         │ 1        │ 1-16             │ TCP threads
 NCCL_NSOCKS_PERTHREAD        │ 1        │ 1-16             │ Sockets per thread
@@ -388,15 +398,16 @@ NCCL_ALGO                    │ auto     │ Ring,Tree,...     │ Algorithm
 NCCL_PROTO                   │ auto     │ LL,LL128,Simple  │ Protocol
 NCCL_MIN_NCHANNELS           │ varies   │ 1-32             │ Min channels
 NCCL_MAX_NCHANNELS           │ varies   │ 1-32             │ Max channels
-NCCL_NTHREADS                │ 512      │ 64-1024          │ GPU threads/channel
+NCCL_NTHREADS                │ 512      │ 64,128,256,512   │ GPU threads/channel
 NCCL_CROSS_NIC               │ 2        │ 0, 1, 2          │ Cross-NIC policy
 NCCL_TOPO_FILE               │ none     │ path             │ Topology XML
 NCCL_TOPO_DUMP_FILE          │ none     │ path             │ Dump topology
 NCCL_COLLNET_ENABLE          │ 0        │ 0, 1             │ SHARP offload
 NCCL_DEBUG                   │ WARN     │ WARN,INFO,TRACE  │ Log level
-NCCL_DEBUG_SUBSYS            │ ALL      │ INIT,NET,...     │ Log filter
+NCCL_DEBUG_SUBSYS            │ INIT,BOOTSTRAP,ENV │ INIT,NET,... │ Log filter
 NCCL_DEBUG_FILE              │ stderr   │ path (%h,%p)     │ Log file
 ─────────────────────────────┴──────────┴──────────────────┴────────────────────────
+* NCCL 2.21+ auto-selects a RoCE v2 GID; older versions default to 0.
 ```
 
 ## Common Issues
@@ -407,7 +418,7 @@ NCCL_DEBUG_FILE              │ stderr   │ path (%h,%p)     │ Log file
 
 ### "Invalid argument" on modprobe nvidia_peermem
 - **Cause**: Driver version mismatch between nvidia.ko and nvidia_peermem.ko
-- **Fix**: Ensure GPU Operator installs matching driver + peermem versions; check `dmesg` for details
+- **Fix**: Ensure GPU Operator installs matching driver + peermem versions and that MOFED/`ib_core` loads first; check `dmesg`. With NCCL 2.19+ and the open kernel driver, DMA-BUF GDR avoids nvidia_peermem entirely
 
 ### NCCL_NET_GDR_LEVEL set but GDR not active
 - **Cause**: `nvidia_peermem` module not loaded, or NIC not RDMA-capable
@@ -419,13 +430,27 @@ NCCL_DEBUG_FILE              │ stderr   │ path (%h,%p)     │ Log file
 
 ### High latency despite IB being enabled
 - **Cause**: `NCCL_IB_GID_INDEX` wrong for RoCE setup (using IB native on RoCE fabric)
-- **Fix**: Set GID index to 3 for RoCE v2; verify with `ibv_devinfo -d mlx5_0 -v | grep GID`
+- **Fix**: Point `NCCL_IB_GID_INDEX` at the RoCE v2 IPv4 GID; list them with `show_gids` (MOFED) or `ibv_devinfo -d mlx5_0 -v | grep GID`
+
+## Frequently Asked Questions
+
+### Does NCCL_SOCKET_IFNAME control InfiniBand or only TCP sockets?
+Only IP interfaces. NCCL uses it for bootstrap/out-of-band connections and for the Socket transport. When the IB/RoCE transport is active, data flows over the HCAs chosen by `NCCL_IB_HCA`; `NCCL_SOCKET_IFNAME` still has to point at a reachable interface for bootstrap.
+
+### What is the difference between NCCL_IB_HCA and NCCL_SOCKET_IFNAME?
+`NCCL_IB_HCA` selects RDMA devices by verbs name (`mlx5_0`, optionally `:port`) for the IB/RoCE data path. `NCCL_SOCKET_IFNAME` selects Linux network interfaces by name (`eth0`, `net1`) for bootstrap and TCP. On Kubernetes with Multus/SR-IOV, the pod's `net1..netN` interfaces map to the HCAs you pass in `NCCL_IB_HCA`.
+
+### How do I force NCCL to use InfiniBand instead of TCP?
+Set `NCCL_IB_DISABLE=0`, `NCCL_NET=IB`, and `NCCL_IB_HCA` to the right devices; `NCCL_NET=IB` makes NCCL fail instead of silently falling back to sockets. The full recipe, including RoCE GID and GDR checks, is in [NCCL env vars: force InfiniBand/RoCE and GDR](/recipes/configuration/tune-nccl-env-rdma-ethernet/).
+
+### How do I see which NCCL environment variables are in effect?
+Run with `NCCL_DEBUG=INFO` (and `NCCL_DEBUG_SUBSYS=INIT,ENV,NET`). NCCL logs each `NCCL_*` variable it read and the transport chosen, e.g. `NET/IB : Using [0]mlx5_0:1/RoCE` versus `NET/Socket`.
 
 ## Best Practices
 
 1. **Don't set NCCL_ALGO/NCCL_PROTO** — auto-selection is correct 95% of the time
 2. **Always set NCCL_SOCKET_IFNAME** — Kubernetes pods may have multiple interfaces
-3. **Use NCCL_TOPO_FILE in containers** — avoids 10-30s topology detection on every start
+3. **Use NCCL_TOPO_FILE when auto-detection is wrong** — VMs or containers with a restricted `/sys` can hide the real PCIe/NUMA layout
 4. **Set NCCL_DEBUG=INFO for initial runs** — verify transport selection, then reduce to WARN
 5. **NCCL_IB_TIMEOUT=23 for large clusters** — prevents spurious timeout failures
 6. **NCCL_CROSS_NIC=0 for rail-optimized networks** — avoids suboptimal cross-switch paths
@@ -438,10 +463,10 @@ NCCL_DEBUG_FILE              │ stderr   │ path (%h,%p)     │ Log file
 
 - NCCL environment variables control all aspects of GPU collective communication
 - `NCCL_IB_DISABLE=1` forces TCP — 5-10x slower than IB/RDMA (use only for debugging)
-- `NCCL_NET_GDR_LEVEL=5` + `NCCL_NET_GDR_READ=1` enables GPUDirect RDMA at any PCIe distance
-- `NCCL_IB_GID_INDEX=3` is required for RoCE v2 (IPv4) — wrong index = connection failure
+- `NCCL_NET_GDR_LEVEL=SYS` + `NCCL_NET_GDR_READ=1` allows GPUDirect RDMA at any topology distance (use `PHB` to keep it socket-local)
+- `NCCL_IB_GID_INDEX` must point at the RoCE v2 GID (often 3) — wrong index = connection failure or RoCE v1 traffic
 - TCP tuning: `NCCL_SOCKET_NTHREADS × NCCL_NSOCKS_PERTHREAD` = total sockets (max 64)
-- `NCCL_TOPO_FILE` eliminates topology detection overhead in containers
+- `NCCL_TOPO_FILE` fixes wrong topology detection in VMs and restricted containers
 - `NCCL_DEBUG=INFO` + `NCCL_DEBUG_SUBSYS=INIT,NET` shows transport selection without noise
 - Don't manually set algorithms/protocols unless benchmarking proves improvement
 - All variables set via Pod `env` section — no config files needed

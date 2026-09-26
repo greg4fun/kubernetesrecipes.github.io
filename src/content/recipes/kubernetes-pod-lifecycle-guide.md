@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "pod-lifecycle-hooks"
   - "kubernetes-graceful-shutdown-guide"
-  - "kubernetes-init-containers-guide"
+  - "kubernetes-init-containers-patterns-examples"
   - "kubernetes-native-sidecar-containers-guide"
   - "kubernetes-liveness-readiness-startup-probes"
   - "pod-pending-troubleshooting"

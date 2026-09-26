@@ -13,7 +13,7 @@ tags:
   - "inference"
   - "comparison"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "nvidia-pytorch-container-kubernetes"
   - "cuda-compatibility-kubernetes-guide"

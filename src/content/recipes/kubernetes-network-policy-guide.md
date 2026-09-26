@@ -14,7 +14,7 @@ tags:
   - "zero-trust"
   - "microsegmentation"
 relatedRecipes:
-  - "kubernetes-namespace-management-guide"
+  - "kubernetes-namespace-guide"
   - "nfs-tenant-segregation-kubernetes"
 ---
 

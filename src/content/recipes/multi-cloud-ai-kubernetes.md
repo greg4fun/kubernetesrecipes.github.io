@@ -13,7 +13,7 @@ tags:
   - "spot-instances"
   - "cloud-agnostic"
 relatedRecipes:
-  - "kubernetes-multicluster-management"
+  - "multi-cluster-management-kubernetes"
   - "kubernetes-cost-optimization-strategies"
   - "llm-deployment-challenges-kubernetes"
 ---

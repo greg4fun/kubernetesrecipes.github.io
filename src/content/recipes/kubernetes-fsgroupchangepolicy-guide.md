@@ -14,7 +14,7 @@ tags:
   - "volume"
 relatedRecipes:
   - "kubernetes-fsgroupchangepolicy"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-hostpath-vs-pvc"
 ---
 

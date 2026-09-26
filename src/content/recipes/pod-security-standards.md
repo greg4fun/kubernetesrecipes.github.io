@@ -1,6 +1,6 @@
 ---
-title: "How to Implement Pod Security Standards"
-description: "Secure your Kubernetes workloads using Pod Security Standards (PSS). Learn to enforce Privileged, Baseline, and Restricted policies at the namespace level."
+title: "Kubernetes Pod Security Standards (PSS/PSA)"
+description: "Enforce Kubernetes Pod Security Standards with Pod Security Admission: privileged, baseline and restricted levels, namespace labels, rollout and exemptions."
 category: "security"
 difficulty: "intermediate"
 timeToComplete: "25 minutes"
@@ -10,10 +10,14 @@ prerequisites:
   - "kubectl configured with admin privileges"
   - "Understanding of Pod security concepts"
 relatedRecipes:
-  - "kubernetes-oidc-authentication-guide"
-  - "rbac-service-accounts"
-  - "networkpolicy-deny-all"
+  - "kubernetes-pod-security-admission"
   - "kubernetes-security-context-guide"
+  - "service-accounts-rbac"
+  - "kubernetes-rbac-least-privilege"
+  - "kubernetes-gvisor-kata-containers-runtimeclass"
+  - "ubuntu-2604-kubernetes-sudo-rs"
+  - "kubernetes-oidc-authentication-guide"
+  - "networkpolicy-deny-all"
 tags:
   - security
   - pod-security
@@ -25,10 +29,12 @@ author: "Luca Berton"
 ---
 
 > **💡 Quick Answer:** Pod Security Standards (PSS) replace PodSecurityPolicies. Three levels: `privileged` (unrestricted), `baseline` (minimal restrictions), `restricted` (hardened). Apply via namespace labels: `kubectl label ns myns pod-security.kubernetes.io/enforce=restricted`. Modes: `enforce` (block), `audit` (log), `warn` (warn user). Start with `warn` mode to identify violations before enforcing.
+>
+> **Gotcha:** Enforcement applies to **pods**, not controllers — a non-compliant Deployment is accepted but its ReplicaSet can't create pods. `warn` shows the problem at `kubectl apply` time; check `kubectl describe rs` for `FailedCreate`.
 
 ## The Problem
 
-You need to enforce security policies to prevent containers from running with dangerous privileges like root access or host networking.
+You need to enforce security policies to prevent containers from running with dangerous privileges like root access or host networking. PodSecurityPolicy was removed in Kubernetes 1.25; Pod Security Admission (PSA), built into the API server and GA since 1.25, is its replacement.
 
 ## The Solution
 
@@ -38,11 +44,11 @@ Use Pod Security Standards (PSS) with Pod Security Admission (PSA) to enforce se
 
 There are three policy levels:
 
-| Level | Description |
-|-------|-------------|
-| **Privileged** | Unrestricted, allows all capabilities |
-| **Baseline** | Minimally restrictive, prevents known privilege escalations |
-| **Restricted** | Highly restrictive, follows security best practices |
+| Level | Description | Typical use |
+|-------|-------------|-------------|
+| **Privileged** | Unrestricted, allows all capabilities | CNI, CSI, GPU/network operators, `kube-system` |
+| **Baseline** | Blocks known escalations: privileged, host namespaces, hostPath, added caps beyond the default set | Monitoring/logging agents, legacy apps |
+| **Restricted** | Baseline + non-root, drop ALL caps, no privilege escalation, seccomp `RuntimeDefault`, restricted volume types | Application namespaces, multi-tenant |
 
 ## Enforcement Modes
 
@@ -82,6 +88,8 @@ kubectl label namespace production \
   pod-security.kubernetes.io/warn=restricted
 ```
 
+`enforce-version: latest` tracks the cluster's version, so an upgrade can tighten the rules. Pin it (e.g. `v1.31`) in regulated environments and bump deliberately.
+
 ## Step 2: Gradual Rollout Strategy
 
 Start with warn/audit, then enforce:
@@ -118,6 +126,8 @@ spec:
 
 ### Restricted Compliant Pod
 
+The stock `nginx` image runs as root on port 80, so use the unprivileged variant (listens on 8080 as UID 101):
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -130,12 +140,12 @@ spec:
       type: RuntimeDefault
   containers:
   - name: app
-    image: nginx:latest
+    image: nginxinc/nginx-unprivileged:1.27
     securityContext:
       allowPrivilegeEscalation: false
       readOnlyRootFilesystem: true
       runAsNonRoot: true
-      runAsUser: 1000
+      runAsUser: 101
       capabilities:
         drop:
           - ALL
@@ -250,11 +260,17 @@ plugins:
         - cert-manager
 ```
 
+Pass it with `--admission-control-config-file`. Prefer labelling system namespaces `enforce: privileged` over cluster-wide exemptions — labels are visible and auditable.
+
+### OpenShift
+
+OpenShift enforces Security Context Constraints (SCCs) and runs a PSA label syncer that sets `warn`/`audit` labels from the SCCs your service accounts can use. `openshift-*` namespaces are excluded. To opt a namespace out of syncing and manage labels yourself, set `security.openshift.io/scc.podSecurityLabelSync: "false"`.
+
 ## Checking Policy Violations
 
 ### Dry-Run Test
 
-Test if a pod would be admitted:
+See which **existing** pods in a namespace would violate a level before enforcing it:
 
 ```bash
 kubectl label --dry-run=server --overwrite ns production \
@@ -263,7 +279,7 @@ kubectl label --dry-run=server --overwrite ns production \
 
 ### View Audit Logs
 
-Check the API server audit logs for violations.
+With `audit` mode, violations are recorded as `pod-security.kubernetes.io/audit-violations` annotations on audit events (requires API server audit logging at `Metadata` level or higher).
 
 ### Warnings in kubectl
 
@@ -310,6 +326,16 @@ When moving to Restricted:
        type: RuntimeDefault
    ```
 
+## Common Issues
+
+**`violates PodSecurity "restricted:latest"`** — the message lists the fields: typically missing `runAsNonRoot`, `seccompProfile`, `allowPrivilegeEscalation: false`, or `capabilities.drop: ["ALL"]`.
+
+**Deployment created but no pods** — the ReplicaSet is being rejected; `kubectl get events -n <ns> --field-selector reason=FailedCreate`.
+
+**`runAsNonRoot` set but container fails to start** — the image's user is root (UID 0) or a non-numeric username; set a numeric `runAsUser` or rebuild the image with `USER 1000`.
+
+**System components break after enforcing** — label `kube-system`, CNI/CSI and operator namespaces `privileged`.
+
 ## Best Practices
 
 - Start with `warn` and `audit` before `enforce`
@@ -317,6 +343,24 @@ When moving to Restricted:
 - Document exemptions and review regularly
 - Test workloads in staging first
 - Use namespace isolation for different security levels
+
+## Frequently Asked Questions
+
+### What are the Kubernetes Pod Security Standards?
+
+Three cumulative policy levels defined by upstream Kubernetes — privileged, baseline and restricted — that describe which pod security settings are allowed. Pod Security Admission is the built-in admission controller that enforces them per namespace.
+
+### What is the difference between Pod Security Standards and Pod Security Admission?
+
+Pod Security Standards are the policy definitions; Pod Security Admission is the enforcement mechanism (namespace labels `enforce`, `audit`, `warn`). Kyverno or OPA Gatekeeper can also enforce PSS when you need finer-grained exceptions.
+
+### What replaced PodSecurityPolicy?
+
+Pod Security Admission with the Pod Security Standards. PSP was deprecated in 1.21 and removed in 1.25.
+
+### Can I exempt a single workload from restricted?
+
+PSA only exempts by namespace, username or RuntimeClass. Put the workload in a namespace with a lower level, or use a policy engine such as Kyverno with a scoped exception.
 
 ## Key Takeaways
 

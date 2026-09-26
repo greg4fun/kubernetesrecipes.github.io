@@ -14,7 +14,7 @@ tags:
   - adapter
 relatedRecipes:
   - "kubernetes-sidecar-patterns"
-  - "kubernetes-init-containers-guide"
+  - "kubernetes-init-containers-patterns-examples"
   - "kubernetes-projected-volumes"
 ---
 

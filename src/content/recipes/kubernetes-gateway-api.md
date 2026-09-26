@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Gateway API: HTTPRoute Guide"
-description: "Deploy Kubernetes Gateway API for HTTP routing. GatewayClass, Gateway, HTTPRoute, TLSRoute, traffic splitting, and migration from Ingress resources."
+title: "Kubernetes Gateway API: HTTPRoute Examples"
+description: "Gateway API examples: GatewayClass, Gateway listeners, HTTPRoute, GRPCRoute, TLSRoute, canary weights, HTTPS redirect, ReferenceGrant, Ingress migration."
 category: "networking"
 difficulty: "intermediate"
 timeToComplete: "30 minutes"
@@ -15,6 +15,10 @@ relatedRecipes:
   - "ingress-tls-certificates"
   - "canary-deployments"
   - "kubernetes-istio-traffic-management"
+  - "ingress2gateway-migration"
+  - "kubernetes-rate-limiting-gateway-api"
+  - "kubernetes-gateway-api-grpc-routes"
+  - "canary-deployment-gateway-api-traffic-splitting"
 tags:
   - gateway-api
   - networking
@@ -26,7 +30,7 @@ publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
-> 💡 **Quick Answer:** Gateway API replaces Ingress with more features. Install CRDs (`kubectl apply -f gateway-api-crds.yaml`), deploy a **GatewayClass** + **Gateway**, then create **HTTPRoute** resources to route traffic. Routes attach to Gateways with `parentRefs` and define path/header-based routing rules.
+> 💡 **Quick Answer:** Gateway API replaces Ingress with more features. Install CRDs (`kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/standard-install.yaml`), deploy a **GatewayClass** + **Gateway**, then create **HTTPRoute** resources to route traffic. Routes attach to Gateways with `parentRefs` and define path/header-based routing rules.
 >
 > **Key concept:** GatewayClass (infrastructure) → Gateway (listener config) → HTTPRoute (routing rules)—separating infrastructure and app team concerns.
 >
@@ -41,6 +45,16 @@ Kubernetes Ingress has limitations: vendor-specific annotations, no support for 
 Use the Gateway API, the next-generation Kubernetes networking standard that provides expressive, extensible, and role-oriented routing for HTTP, HTTPS, TCP, and gRPC traffic.
 
 ## Gateway API vs Ingress
+
+| Feature | Ingress | Gateway API |
+|---|---|---|
+| Traffic splitting | Annotations only | Native `weight` on backendRefs |
+| Header / query matching | Annotations only | Native |
+| URL rewrite, redirects, header mods | Annotations only | Native filters |
+| gRPC routing | No | `GRPCRoute` (GA, standard channel) |
+| TLS passthrough / TCP / UDP | No | `TLSRoute`, `TCPRoute`, `UDPRoute` (experimental) |
+| Cross-namespace, multi-tenant | No | `allowedRoutes` + `ReferenceGrant` |
+| Role separation | One resource | GatewayClass / Gateway / Route |
 
 ```mermaid
 flowchart TB
@@ -60,11 +74,13 @@ flowchart TB
 ## Step 1: Install Gateway API CRDs
 
 ```bash
-# Install the standard channel CRDs
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+# Standard channel: GatewayClass, Gateway, HTTPRoute, GRPCRoute, ReferenceGrant
+# (check https://github.com/kubernetes-sigs/gateway-api/releases for the latest tag
+#  and the version your controller supports)
+kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/standard-install.yaml
 
-# For experimental features (TCPRoute, TLSRoute, etc.)
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/experimental-install.yaml
+# Experimental channel adds TLSRoute, TCPRoute, UDPRoute
+kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/experimental-install.yaml
 
 # Verify installation
 kubectl get crds | grep gateway
@@ -75,9 +91,9 @@ kubectl get crds | grep gateway
 ### Option A: NGINX Gateway Fabric
 
 ```bash
-# Install NGINX Gateway Fabric
-kubectl apply -f https://github.com/nginxinc/nginx-gateway-fabric/releases/download/v1.1.0/crds.yaml
-kubectl apply -f https://github.com/nginxinc/nginx-gateway-fabric/releases/download/v1.1.0/nginx-gateway.yaml
+# Install NGINX Gateway Fabric (Helm)
+helm install ngf oci://ghcr.io/nginx/charts/nginx-gateway-fabric \
+  -n nginx-gateway --create-namespace
 
 # Verify deployment
 kubectl get pods -n nginx-gateway
@@ -88,7 +104,6 @@ kubectl get pods -n nginx-gateway
 ```bash
 # Install Envoy Gateway
 helm install eg oci://docker.io/envoyproxy/gateway-helm \
-  --version v0.6.0 \
   -n envoy-gateway-system --create-namespace
 
 # Verify
@@ -98,9 +113,17 @@ kubectl get pods -n envoy-gateway-system
 ### Option C: Istio Gateway
 
 ```bash
-# If Istio is installed, enable Gateway API support
-istioctl install --set values.pilot.env.PILOT_ENABLE_GATEWAY_API=true
+# Gateway API support is on by default in current Istio releases
+istioctl install --set profile=minimal
 ```
+
+### Option D: Cilium
+
+```bash
+cilium install --set kubeProxyReplacement=true --set gatewayAPI.enabled=true
+```
+
+On OpenShift 4.19+, the Ingress Operator ships Gateway API support backed by OpenShift Service Mesh; create a `GatewayClass` with `controllerName: openshift.io/gateway-controller/v1`.
 
 ## Step 3: Create GatewayClass and Gateway
 
@@ -538,7 +561,7 @@ spec:
 ## GRPCRoute
 
 ```yaml
-apiVersion: gateway.networking.k8s.io/v1alpha2
+apiVersion: gateway.networking.k8s.io/v1   # GA since Gateway API v1.1
 kind: GRPCRoute
 metadata:
   name: grpc-route
@@ -679,6 +702,9 @@ kubectl get gatewayclass
 # Debug routing
 kubectl get httproutes -A -o wide
 
+# Is the route Accepted and are refs Resolved?
+kubectl get httproute web-app-route -o jsonpath='{.status.parents[*].conditions}' | jq
+
 # Test routing
 curl -H "Host: app.example.com" http://<gateway-ip>/
 ```
@@ -735,6 +761,31 @@ spec:
         - name: api-service
           port: 8080
 ```
+
+## Common Issues
+
+**HTTPRoute not working — no traffic.** The route isn't attached. Check `status.parents[].conditions`: `Accepted=False` usually means the route's namespace isn't allowed by the listener's `allowedRoutes`, or `sectionName`/hostname doesn't match any listener.
+
+**Gateway stuck with no address / not Programmed.** No controller owns the GatewayClass. Verify `kubectl get gatewayclass` shows `ACCEPTED=True` and `controllerName` matches the installed controller.
+
+**`ResolvedRefs=False` / `RefNotPermitted`.** A backendRef or certificateRef points to another namespace without a `ReferenceGrant` in the target namespace.
+
+## Frequently Asked Questions
+
+### What is the difference between Gateway API and Ingress?
+Ingress is a single resource with controller-specific annotations for anything beyond host/path routing. Gateway API splits infrastructure (GatewayClass, Gateway) from routing (HTTPRoute, GRPCRoute) and makes traffic splitting, header matching, rewrites and cross-namespace routing part of the standard API.
+
+### How do I redirect HTTP to HTTPS with Gateway API?
+Attach an HTTPRoute to the HTTP listener with `parentRefs[].sectionName: http` and a `RequestRedirect` filter with `scheme: https` and `statusCode: 301` (see Redirects above). Attach your real routes to the HTTPS listener only.
+
+### Is GRPCRoute stable?
+Yes. GRPCRoute moved to `gateway.networking.k8s.io/v1` and the standard channel in Gateway API v1.1. TLSRoute, TCPRoute and UDPRoute remain experimental (`v1alpha2`).
+
+### How many rules can a TLSRoute have?
+The TLSRoute spec allows 1 to 16 rules per route. In practice use one rule per route and set `hostnames` for SNI matching.
+
+### Which Gateway API implementation should I use?
+Envoy Gateway, Istio, Cilium, NGINX Gateway Fabric, Traefik and Kong are all conformant for HTTPRoute. Pick the one that matches your existing stack (service mesh, CNI, or OpenShift's built-in support) and check its conformance report for the features you need.
 
 ## Summary
 

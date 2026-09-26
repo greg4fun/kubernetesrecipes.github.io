@@ -12,7 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-namespace-best-practices"
+  - "kubernetes-namespace-guide"
 ---
 
 > 💡 **Quick Answer:** Labels are for identifying and selecting resources (used by services, deployments, scheduling). Annotations are for non-identifying metadata (build info, descriptions, tool config). Use the recommended `app.kubernetes.io/*` label keys. Labels are queryable with selectors; annotations are not.

@@ -15,7 +15,7 @@ relatedRecipes:
   - "kubernetes-1-36-user-namespaces"
   - "kubernetes-1-36-selinux-mount-labeling"
   - "kubernetes-persistent-volume-guide"
-  - "kubernetes-init-containers-guide"
+  - "kubernetes-init-containers-patterns-examples"
   - "nim-model-profiles-selection-kubernetes"
 ---
 

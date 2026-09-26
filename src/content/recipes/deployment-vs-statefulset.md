@@ -7,7 +7,6 @@ publishDate: "2026-04-03"
 tags: ["deployment", "statefulset", "comparison", "databases", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-statefulset-patterns"
   - "kubernetes-ci-cd-pipeline"
   - "kubernetes-deployment-guide"
   - "statefulset-management"

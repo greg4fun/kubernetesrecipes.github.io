@@ -7,10 +7,10 @@ publishDate: "2026-04-07"
 tags: ["nodeport", "service", "external-access", "networking", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-secrets-guide"
+  - "secrets-management-best-practices"
   - "kubernetes-pvc-guide"
   - "kubernetes-commands"
-  - "kubernetes-cronjob"
+  - "kubernetes-cronjob-best-practices"
 ---
 
 > 💡 **Quick Answer:** networking

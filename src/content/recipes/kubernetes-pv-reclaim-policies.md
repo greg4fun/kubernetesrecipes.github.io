@@ -14,7 +14,7 @@ tags:
   - "data-recovery"
 relatedRecipes:
   - "kubernetes-storage-classes-provisioners"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

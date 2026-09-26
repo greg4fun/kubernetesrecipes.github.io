@@ -14,7 +14,7 @@ tags:
   - "nvidia-smi"
   - "nvswitch"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "nvidia-peermem-gpudirect-rdma-k8s"
 ---

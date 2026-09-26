@@ -1,9 +1,11 @@
 ---
-title: "Kubernetes StatefulSet Headless Service Guide"
-description: "Deploy stateful applications with Kubernetes StatefulSets. Stable network identity, ordered deployment, persistent storage per pod, headless services"
+title: "StatefulSet Headless Service: serviceName and Pod DNS"
+description: "Why a StatefulSet needs a headless Service: serviceName, per-pod DNS records, SRV lookups, publishNotReadyAddresses, and fixing pod names that won't resolve."
 tags:
   - "statefulset"
   - "headless-service"
+  - "dns"
+  - "stable-identity"
   - "persistent-storage"
   - "databases"
   - "ordered-deployment"
@@ -11,35 +13,34 @@ category: "deployments"
 publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
+timeToComplete: "12 minutes"
+kubernetesVersion: "1.28+"
 relatedRecipes:
+  - "statefulset-management"
+  - "kubernetes-headless-service"
+  - "kubernetes-service-dns-resolution"
   - "cloudnativepg-postgresql-operator-kubernetes"
   - "kubernetes-persistent-volume-claims"
+  - "kubernetes-persistent-volume-reclaim-policy"
   - "kubernetes-service-types-loadbalancer-guide"
+  - "mariadb-scc-openshift-deployment"
 ---
 
-> 💡 **Quick Answer:** StatefulSet provides stable pod identity (pod-0, pod-1, pod-2), ordered creation/deletion, and persistent storage per replica via `volumeClaimTemplates`. Pair with a headless Service (`clusterIP: None`) for stable DNS: `pod-0.my-service.namespace.svc.cluster.local`. Use for databases, message queues, and any workload needing stable network identity or dedicated storage.
+> 💡 **Quick Answer:** A StatefulSet's `spec.serviceName` must name a **headless Service** (`clusterIP: None`) with a matching selector. That Service is what creates stable per-pod DNS: `<pod>.<service>.<namespace>.svc.cluster.local` (e.g. `database-0.database.production.svc.cluster.local`). The Service name itself resolves to all Ready pod IPs — no VIP, no load balancing. Add a second, normal ClusterIP Service for load-balanced client traffic.
 
-## The Problem
+Regular Services hide pods behind one virtual IP. Stateful systems (databases, brokers, consensus clusters) need to address **specific** replicas — "connect to the primary at `-0`", "join peers `-1` and `-2`". The headless Service gives each StatefulSet pod a stable, predictable DNS name that survives rescheduling even though the pod IP changes.
 
-- Deployments give random pod names — databases need stable identity for replication
-- Regular Services load-balance — distributed systems need to address specific instances
-- PVCs can't be automatically created per replica with Deployments
-- Need ordered startup (primary first, then replicas) for database clusters
-- Pod rescheduling shouldn't lose its data or change its network identity
-
-## The Solution
-
-### StatefulSet with Headless Service
+## StatefulSet with Headless Service
 
 ```yaml
-# Headless Service (required for StatefulSet DNS)
+# Headless Service: governs the StatefulSet's network identity
 apiVersion: v1
 kind: Service
 metadata:
   name: database
   namespace: production
 spec:
-  clusterIP: None    # Headless — no load balancing
+  clusterIP: None          # headless
   selector:
     app: database
   ports:
@@ -52,7 +53,7 @@ metadata:
   name: database
   namespace: production
 spec:
-  serviceName: database    # Must match headless Service name
+  serviceName: database    # must match the headless Service name exactly
   replicas: 3
   selector:
     matchLabels:
@@ -67,6 +68,7 @@ spec:
           image: postgres:16
           ports:
             - containerPort: 5432
+              name: postgres
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -76,8 +78,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql/data
-
-  # Each pod gets its own PVC (persists across restarts)
   volumeClaimTemplates:
     - metadata:
         name: data
@@ -89,78 +89,48 @@ spec:
             storage: 50Gi
 ```
 
-### DNS Records Created
+Create the Service first (or in the same `kubectl apply`). The StatefulSet controller doesn't create or validate it — a typo in `serviceName` produces pods with **no** per-pod DNS and no error.
+
+## DNS Records Created
 
 ```text
-StatefulSet: database (3 replicas)
-Headless Service: database
+StatefulSet: database (3 replicas)   Headless Service: database
 
-DNS records:
+A records
 ├── database-0.database.production.svc.cluster.local → 10.0.1.5
 ├── database-1.database.production.svc.cluster.local → 10.0.1.6
 ├── database-2.database.production.svc.cluster.local → 10.0.1.7
-└── database.production.svc.cluster.local → [10.0.1.5, 10.0.1.6, 10.0.1.7]
-                                            (returns all pod IPs)
+└── database.production.svc.cluster.local           → 10.0.1.5, 10.0.1.6, 10.0.1.7
 
-PVCs created:
-├── data-database-0    (50Gi, bound)
-├── data-database-1    (50Gi, bound)
-└── data-database-2    (50Gi, bound)
+SRV records (per named port)
+└── _postgres._tcp.database.production.svc.cluster.local
+      → database-0.database..., database-1.database..., database-2.database...
 ```
 
+The StatefulSet controller also sets each pod's `spec.hostname` to the pod name and `spec.subdomain` to `serviceName`, so `hostname -f` inside `database-1` returns its FQDN.
+
 ```bash
-# Verify DNS from another pod
-kubectl run dns-test --rm -it --image=busybox -- nslookup database-0.database.production
-# Server: 10.96.0.10
+# Per-pod A record
+kubectl run dns-test -n production --rm -it --restart=Never --image=busybox:1.36 -- \
+  nslookup database-0.database
 # Name: database-0.database.production.svc.cluster.local
 # Address: 10.0.1.5
+
+# All Ready pods behind the Service
+kubectl run dns-test -n production --rm -it --restart=Never --image=busybox:1.36 -- \
+  nslookup database
+
+# SRV lookup for peer discovery
+kubectl run dns-test -n production --rm -it --restart=Never --image=tutum/dnsutils -- \
+  dig +short SRV _postgres._tcp.database.production.svc.cluster.local
 ```
 
-### Ordered vs Parallel Pod Management
+Short names work within the namespace (`database-0.database`); across namespaces use `database-0.database.production`.
+
+## Headless for Peers, ClusterIP for Clients
 
 ```yaml
-spec:
-  # Default: OrderedReady — pods created 0,1,2 sequentially
-  # Each must be Running+Ready before next starts
-  podManagementPolicy: OrderedReady
-
-  # Alternative: Parallel — all pods start simultaneously
-  # podManagementPolicy: Parallel
-  # Use when pods don't depend on startup order
-```
-
-### Update Strategies
-
-```yaml
-spec:
-  updateStrategy:
-    type: RollingUpdate
-    rollingUpdate:
-      partition: 0        # Update all pods
-      maxUnavailable: 1   # One at a time (K8s 1.24+)
-
-  # Canary update: set partition to only update pods >= partition number
-  # partition: 2 → only database-2 gets updated (test before rolling to all)
-```
-
-### StatefulSet Scaling
-
-```bash
-# Scale up (adds database-3, database-4)
-kubectl scale statefulset database --replicas=5
-
-# Scale down (removes highest ordinal first: database-4, database-3)
-kubectl scale statefulset database --replicas=3
-
-# PVCs are NOT deleted on scale-down (data preserved for scale-up)
-# Manual cleanup:
-kubectl delete pvc data-database-3 data-database-4
-```
-
-### Client Service (Load-Balanced)
-
-```yaml
-# Headless for pod-specific access (replication, peer discovery)
+# Headless: per-pod identity, replication, peer discovery
 apiVersion: v1
 kind: Service
 metadata:
@@ -172,20 +142,42 @@ spec:
   ports:
     - port: 5432
 ---
-# Regular service for client connections (load-balanced reads)
+# Normal ClusterIP: load-balanced client connections
 apiVersion: v1
 kind: Service
 metadata:
   name: database-read
 spec:
-  type: ClusterIP    # Normal — load-balances across all pods
   selector:
     app: database
   ports:
     - port: 5432
 ```
 
-### Init Container for Cluster Bootstrap
+For a writable primary, don't point clients at a Service that selects all replicas — use an operator (CloudNativePG, Patroni) that labels the current primary and exposes a `-rw` Service.
+
+## Readiness and `publishNotReadyAddresses`
+
+By default DNS only publishes pods that pass readiness. That breaks clusters whose members must discover each other **before** they are Ready (etcd, ZooKeeper, Cassandra, Elasticsearch bootstrap):
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: etcd-peers
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true   # DNS records exist as soon as the pod has an IP
+  selector:
+    app: etcd
+  ports:
+    - port: 2380
+      name: peer
+```
+
+Use a separate headless Service with `publishNotReadyAddresses: true` for peer traffic and keep the client Service readiness-gated.
+
+## Bootstrap Using the Ordinal and Peer DNS
 
 ```yaml
 spec:
@@ -198,54 +190,66 @@ spec:
             - bash
             - -c
             - |
-              # Determine role from hostname ordinal
               ORDINAL=${HOSTNAME##*-}
               if [ "$ORDINAL" = "0" ]; then
-                echo "I am the primary"
-                # Initialize as primary
+                echo "primary: initialising"
               else
-                echo "I am replica $ORDINAL, waiting for primary..."
-                until pg_isready -h database-0.database.production; do
-                  sleep 2
-                done
-                # Clone from primary
+                echo "replica $ORDINAL: waiting for primary"
+                until pg_isready -h database-0.database.production; do sleep 2; done
+                # pg_basebackup from database-0 ...
               fi
+```
+
+This works because `OrderedReady` (the default `podManagementPolicy`) starts `database-0` first. For scaling, updates, partitions and PVC retention see the full [StatefulSet guide](/recipes/deployments/statefulset-management/).
+
+```mermaid
+graph TD
+    subgraph StatefulSet database
+        P0[database-0<br/>PVC data-database-0]
+        P1[database-1<br/>PVC data-database-1]
+        P2[database-2<br/>PVC data-database-2]
+    end
+    HS[Headless Service database<br/>clusterIP: None] --> P0
+    HS --> P1
+    HS --> P2
+    RS[ClusterIP Service database-read] --> P0
+    RS --> P1
+    RS --> P2
+    P1 -->|database-0.database| P0
+    P2 -->|database-0.database| P0
 ```
 
 ## Common Issues
 
-### Pods stuck in Pending (PVC not binding)
-- **Cause**: StorageClass doesn't support dynamic provisioning; or no available PVs
-- **Fix**: Verify StorageClass exists and has provisioner; check PV availability
+### Pod names don't resolve
+- `spec.serviceName` doesn't match the Service name, or the Service is in another namespace
+- The Service isn't headless (`clusterIP` set) — per-pod records are only created for headless Services
+- Selector doesn't match the pod labels: `kubectl get endpointslices -l kubernetes.io/service-name=database`
+- Pod isn't Ready yet — set `publishNotReadyAddresses: true` if peers need it earlier
 
-### Pod stuck in Terminating during deletion
-- **Cause**: Finalizers on pod or PVC; or pod has long terminationGracePeriod
-- **Fix**: Wait for grace period; check finalizers; force delete as last resort
+### Client sticks to a dead pod IP
+Apps or JVMs caching DNS indefinitely. Reduce DNS cache TTL (e.g. `networkaddress.cache.ttl` for Java) and always connect by name.
 
-### DNS not resolving pod names
-- **Cause**: Headless service name doesn't match `spec.serviceName`; or pod not Ready
-- **Fix**: Ensure `serviceName` matches Service name exactly; pod must pass readiness probe
+### Changing `serviceName` on an existing StatefulSet
+`serviceName` is immutable. Delete with `kubectl delete statefulset database --cascade=orphan`, recreate with the new name (pods and PVCs are adopted), then restart pods to pick up the new subdomain.
 
-### Scale-down data loss concern
-- **Cause**: PVCs persist after scale-down but pod is gone
-- **Fix**: PVCs are intentionally retained — data safe. Delete PVCs manually only when confirmed unnecessary
+### Pods stuck in Pending after scale-up
+New ordinals get new PVCs from `volumeClaimTemplates`. Check provisioning: `kubectl describe pvc data-database-3`.
 
-## Best Practices
+## Frequently Asked Questions
 
-1. **Always pair with headless Service** — required for stable DNS identity
-2. **Use `volumeClaimTemplates`** — each pod gets dedicated persistent storage
-3. **OrderedReady for databases** — primary must start before replicas
-4. **Partition for canary updates** — test on highest ordinal before rolling to all
-5. **Separate read/write services** — headless for peer discovery, ClusterIP for client reads
-6. **Don't delete PVCs automatically** — prevents accidental data loss on scale-down
-7. **Set `podAntiAffinity`** — spread StatefulSet pods across nodes for HA
+### Does a StatefulSet require a headless Service?
 
-## Key Takeaways
+`spec.serviceName` is a required field, and it must point at a headless Service for pods to get stable DNS names. Kubernetes won't stop you from omitting or misnaming the Service, but then `database-0.database` won't resolve — which defeats most of the reason to use a StatefulSet.
 
-- StatefulSet: stable identity (pod-0, pod-1), ordered lifecycle, dedicated storage
-- Headless Service (`clusterIP: None`) enables DNS: `pod-0.svc.ns.svc.cluster.local`
-- `volumeClaimTemplates`: auto-create PVC per pod (persists across restarts/rescheduling)
-- `podManagementPolicy: OrderedReady` (sequential) vs `Parallel` (simultaneous)
-- Scale-down removes highest ordinal first; PVCs retained for data safety
-- `partition` in updateStrategy enables canary: only update pods ≥ partition number
-- Use for: databases, message queues, distributed caches, consensus systems (etcd, ZooKeeper)
+### What is the DNS name of a StatefulSet pod?
+
+`<statefulset-name>-<ordinal>.<serviceName>.<namespace>.svc.cluster.local`, for example `database-0.database.production.svc.cluster.local`. It stays the same across restarts and rescheduling; the IP behind it changes.
+
+### What's the difference between a headless Service and a ClusterIP Service?
+
+A ClusterIP Service gets a virtual IP and kube-proxy load-balances across pods. A headless Service (`clusterIP: None`) gets no VIP: DNS returns the pod IPs directly, plus per-pod A records for StatefulSet members.
+
+### Can I use one Service for both peers and clients?
+
+Yes for simple cases, but production setups usually run a headless Service for peer identity (often with `publishNotReadyAddresses: true`) and a separate ClusterIP Service for client traffic.

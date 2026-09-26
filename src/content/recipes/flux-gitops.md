@@ -1,67 +1,71 @@
 ---
-title: "How to Deploy with Flux GitOps"
-description: "Implement GitOps continuous deployment with Flux CD. Automatically sync Kubernetes manifests and Helm releases from Git repositories."
+title: "Flux GitOps on Kubernetes: Bootstrap to HelmRelease"
+description: "Flux CD GitOps: bootstrap on GitHub/GitLab, GitRepository + Kustomization, HelmRelease, image automation, multi-tenant repo layout, alerts and debugging."
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
-tags: ["flux", "gitops", "continuous-deployment", "helm", "kustomize"]
+timeToComplete: "20 minutes"
+kubernetesVersion: "1.28+"
+tags: ["flux", "gitops", "continuous-deployment", "helm", "kustomize", "ci-cd", "image-automation"]
 author: "Luca Berton"
 relatedRecipes:
-  - "openshift-mcp-itms-rollout"
+  - "flux-gitops-continuous-delivery"
+  - "argocd-gitops"
+  - "kubernetes-kustomize-guide"
+  - "kubernetes-tekton-pipelines-guide"
   - "kubernetes-blue-green-deployment"
+  - "openshift-mcp-itms-rollout"
   - "openclaw-whatsapp-kubernetes"
 ---
 
-> 💡 **Quick Answer:** Bootstrap Flux with `flux bootstrap github --owner=myorg --repository=fleet-infra --path=clusters/production`. Create `GitRepository` + `Kustomization` CRDs to sync manifests, or `HelmRepository` + `HelmRelease` for Helm charts. Flux watches Git and auto-applies changes.
+> 💡 **Quick Answer:** Bootstrap Flux with `flux bootstrap github --owner=myorg --repository=fleet-infra --branch=main --path=clusters/production`. Flux commits its own manifests to that repo and then syncs everything under the path. Use a `GitRepository` (source) + `Kustomization` (apply) for plain YAML/Kustomize, and a `HelmRepository` + `HelmRelease` for charts. Force a sync with `flux reconcile kustomization <name> --with-source`.
 >
-> **Key concept:** Flux uses source controllers (GitRepository, HelmRepository) + reconciliation controllers (Kustomization, HelmRelease).
+> **Key concept:** Source controllers fetch artifacts (Git, OCI, Helm repos, buckets); reconcilers (`Kustomization`, `HelmRelease`) apply them and prune what was removed from Git.
 >
-> **Gotcha:** Flux is pull-based—no webhooks needed but changes take up to `interval` time. Set `interval: 1m` for faster sync.
+> **Gotcha:** Flux polls on `spec.interval`. For push-triggered syncs add a `Receiver` webhook instead of dropping every interval to `1m`.
 
+Flux is a CNCF-graduated set of GitOps controllers. It is CLI/CRD-driven with no UI by default, lighter than Argo CD, and composable — run only the controllers you need.
 
-Flux is a set of continuous delivery solutions for Kubernetes. It automatically reconciles cluster state with Git repositories.
-
-## Install Flux CLI
+## Install the Flux CLI
 
 ```bash
-# macOS
-brew install fluxcd/tap/flux
+brew install fluxcd/tap/flux                      # macOS
+curl -s https://fluxcd.io/install.sh | sudo bash  # Linux
 
-# Linux
-curl -s https://fluxcd.io/install.sh | sudo bash
-
-# Verify
 flux --version
-flux check --pre
+flux check --pre     # validates cluster version/permissions before install
 ```
 
 ## Bootstrap Flux
 
 ```bash
-# Bootstrap with GitHub
-export GITHUB_TOKEN=<your-token>
-
+# GitHub (token needs repo admin to create the repo/deploy key)
+export GITHUB_TOKEN=<token>
 flux bootstrap github \
   --owner=myorg \
   --repository=fleet-infra \
   --branch=main \
   --path=clusters/production \
-  --personal
+  --personal            # omit for an organisation repo
 
-# Bootstrap with GitLab
-export GITLAB_TOKEN=<your-token>
-
+# GitLab
+export GITLAB_TOKEN=<token>
 flux bootstrap gitlab \
   --owner=myorg \
   --repository=fleet-infra \
   --branch=main \
   --path=clusters/production
+
+flux check
+kubectl get pods -n flux-system
+# source-controller, kustomize-controller, helm-controller, notification-controller
 ```
 
-## GitRepository Source
+Bootstrap is idempotent — re-run it to upgrade Flux. Add `--components-extra=image-reflector-controller,image-automation-controller` to enable image automation. For any other Git server use `flux bootstrap git --url=ssh://...`.
+
+## GitRepository + Kustomization
 
 ```yaml
-# git-repository.yaml
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
@@ -73,94 +77,87 @@ spec:
   ref:
     branch: main
   secretRef:
-    name: github-token  # For private repos
-```
-
-## Kustomization (Sync Manifests)
-
-```yaml
-# kustomization.yaml
+    name: git-credentials   # private repos: flux create secret git ...
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
+kind: Kustomization          # Flux CRD — not the kustomize.config.k8s.io file
 metadata:
   name: my-app
   namespace: flux-system
 spec:
   interval: 5m
-  path: ./k8s/overlays/production
-  prune: true  # Delete removed resources
   sourceRef:
     kind: GitRepository
     name: my-app
+  path: ./k8s/overlays/production
+  prune: true                # delete resources removed from Git
+  wait: true                 # health-check everything it applied
+  timeout: 3m
   targetNamespace: production
-  healthChecks:
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: my-app
-      namespace: production
+  dependsOn:
+    - name: infrastructure   # e.g. CRDs / cert-manager first
 ```
 
-## HelmRepository Source
+## HelmRepository + HelmRelease
 
 ```yaml
-# helm-repository.yaml
-apiVersion: source.toolkit.fluxcd.io/v1beta2
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: bitnami
+  name: podinfo
   namespace: flux-system
 spec:
+  type: oci
   interval: 1h
-  url: https://charts.bitnami.com/bitnami
-```
-
-## HelmRelease
-
-```yaml
-# helm-release.yaml
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+  url: oci://ghcr.io/stefanprodan/charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: redis
+  name: podinfo
   namespace: production
 spec:
-  interval: 5m
+  interval: 10m
   chart:
     spec:
-      chart: redis
-      version: "17.x"
+      chart: podinfo
+      version: "6.x"
       sourceRef:
         kind: HelmRepository
-        name: bitnami
+        name: podinfo
         namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      remediateLastFailure: true   # roll back if the last retry fails
   values:
-    architecture: standalone
-    auth:
-      enabled: true
-    master:
-      persistence:
-        size: 10Gi
+    replicaCount: 3
   valuesFrom:
     - kind: ConfigMap
-      name: redis-values
+      name: podinfo-values
       optional: true
 ```
 
+`helm.toolkit.fluxcd.io/v2beta1`/`v2beta2` are removed in current Flux; migrate to `v2` (same spec for most fields).
+
 ## Image Automation
 
+Scan a registry, pick the newest tag by policy, and commit it back to Git:
+
 ```yaml
-# image-repository.yaml
-apiVersion: image.toolkit.fluxcd.io/v1beta1
+apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageRepository
 metadata:
   name: my-app
   namespace: flux-system
 spec:
   image: ghcr.io/myorg/my-app
-  interval: 1m
+  interval: 5m
 ---
-# image-policy.yaml
-apiVersion: image.toolkit.fluxcd.io/v1beta1
+apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
 metadata:
   name: my-app
@@ -172,17 +169,16 @@ spec:
     semver:
       range: ">=1.0.0"
 ---
-# image-update-automation.yaml
-apiVersion: image.toolkit.fluxcd.io/v1beta1
+apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageUpdateAutomation
 metadata:
   name: my-app
   namespace: flux-system
 spec:
-  interval: 1m
+  interval: 5m
   sourceRef:
     kind: GitRepository
-    name: fleet-infra
+    name: flux-system
   git:
     checkout:
       ref:
@@ -191,7 +187,7 @@ spec:
       author:
         name: fluxbot
         email: flux@example.com
-      messageTemplate: "Update image to {{.NewImage}}"
+      messageTemplate: "chore: update {{ .AutomationObject.Name }} images"
     push:
       branch: main
   update:
@@ -199,48 +195,38 @@ spec:
     strategy: Setters
 ```
 
-## Multi-Cluster Setup
+Mark the field to update with a setter comment — exact format matters:
 
 ```yaml
-# clusters/production/kustomization.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ../../base/apps
-  - ../../base/infrastructure
-patches:
-  - path: patches/replicas.yaml
+containers:
+  - name: app
+    image: ghcr.io/myorg/my-app:1.2.3 # {"$imagepolicy": "flux-system:my-app"}
 ```
 
-## Flux CLI Commands
+Flux 2.7+ also serves these APIs as `image.toolkit.fluxcd.io/v1`.
 
-```bash
-# Check Flux status
-flux check
+## Multi-Tenant Repository Layout
 
-# Get all Flux resources
-flux get all
-
-# Reconcile immediately
-flux reconcile source git my-app
-flux reconcile kustomization my-app
-
-# Suspend/resume
-flux suspend kustomization my-app
-flux resume kustomization my-app
-
-# View logs
-flux logs --follow
-
-# Export resources
-flux export source git my-app > git-repository.yaml
+```
+fleet-infra/
+├── clusters/
+│   ├── production/
+│   │   ├── flux-system/        # written by bootstrap
+│   │   ├── infrastructure.yaml # Kustomization -> ./infrastructure
+│   │   └── tenants.yaml        # Kustomization -> ./tenants, dependsOn infrastructure
+│   └── staging/
+├── infrastructure/             # cert-manager, ingress, monitoring
+└── tenants/
+    ├── team-a/                 # namespace, RBAC, GitRepository + Kustomization
+    └── team-b/
 ```
 
-## Notifications
+Give each tenant Kustomization `serviceAccountName: team-a` so it applies with that team's RBAC only (and start the kustomize-controller with `--default-service-account` to enforce it).
+
+## Notifications and Webhooks
 
 ```yaml
-# notification-provider.yaml
-apiVersion: notification.toolkit.fluxcd.io/v1beta2
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
   name: slack
@@ -251,8 +237,7 @@ spec:
   secretRef:
     name: slack-webhook
 ---
-# alert.yaml
-apiVersion: notification.toolkit.fluxcd.io/v1beta2
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
   name: on-call
@@ -266,23 +251,82 @@ spec:
       name: "*"
     - kind: HelmRelease
       name: "*"
+---
+# Push-based trigger from GitHub instead of waiting for the poll interval
+apiVersion: notification.toolkit.fluxcd.io/v1
+kind: Receiver
+metadata:
+  name: github
+  namespace: flux-system
+spec:
+  type: github
+  events: ["push"]
+  secretRef:
+    name: webhook-token
+  resources:
+    - kind: GitRepository
+      name: flux-system
 ```
 
-## Troubleshooting
+## Flux CLI Cheat Sheet
 
 ```bash
-# Check source status
+flux get all -A                                   # everything and its Ready status
 flux get sources git
-
-# Check kustomization status  
 flux get kustomizations
-
-# Check helm releases
 flux get helmreleases -A
 
-# Describe for errors
-kubectl describe kustomization my-app -n flux-system
+flux reconcile source git flux-system             # fetch now
+flux reconcile kustomization my-app --with-source # fetch + apply now
+flux reconcile helmrelease podinfo -n production
 
-# Force reconciliation
-flux reconcile kustomization my-app --with-source
+flux diff kustomization my-app --path ./k8s/overlays/production
+flux suspend kustomization my-app                 # pause during an incident
+flux resume kustomization my-app
+flux logs --follow --level=error
+flux events --for Kustomization/my-app
+flux export source git my-app > git-repository.yaml
 ```
+
+## Common Issues
+
+**Kustomization `Not Ready`** — source not fetched (auth, branch name) or a health check failing. `flux get sources git`, then `flux events --for Kustomization/<name>`.
+
+**HelmRelease `install retries exhausted`** — bad values or a failing hook. `flux logs --kind=HelmRelease --name=podinfo -n production`, fix values in Git, then `flux reconcile helmrelease podinfo -n production --force`.
+
+**`no matches for kind "HelmRelease" in version "helm.toolkit.fluxcd.io/v2beta1"`** — the API was removed on upgrade; change to `v2`.
+
+**Image automation not committing** — missing/wrong `$imagepolicy` marker, image controllers not installed, or the deploy key is read-only (bootstrap with `--read-write-key`).
+
+**Rollback** — revert the commit in Git; Flux reconciles to it. For a HelmRelease, `upgrade.remediation` rolls back automatically on failure.
+
+## Best Practices
+
+- **Bootstrap once, manage Flux from Git** — upgrades are a re-bootstrap or a PR
+- **Separate `infrastructure/` from apps/tenants** and order with `dependsOn`
+- **`prune: true` + `wait: true`** on every Kustomization
+- **Pin chart versions** (`6.x` in dev, exact in prod)
+- **Receivers + alerts** instead of aggressive polling
+- **Encrypt secrets** with SOPS (`spec.decryption.provider: sops`) or use External Secrets
+
+## Frequently Asked Questions
+
+### What is Flux in GitOps?
+
+Flux is a set of Kubernetes controllers that continuously pull desired state from Git (or OCI/Helm repositories) and reconcile the cluster to it. Git becomes the source of truth: a merge deploys, a revert rolls back, and manual drift is corrected on the next reconcile.
+
+### Flux vs Argo CD — which should I use?
+
+Both are CNCF-graduated pull-based GitOps tools. Flux is CRD/CLI-native, modular and has first-class image automation and SOPS decryption; Argo CD offers a rich web UI, SSO/RBAC, AppProjects and ApplicationSets. See [Argo CD GitOps](/recipes/deployments/argocd-gitops/) and the [Flux vs Argo CD comparison](/recipes/deployments/flux-vs-argocd-gitops-comparison/).
+
+### Is Flux CI/CD?
+
+Flux is the CD half. CI (build, test, push image) stays in GitHub Actions, GitLab CI, Tekton, etc.; Flux picks up the new manifest commit — or the new image tag via image automation — and deploys it.
+
+### How do I force Flux to sync immediately?
+
+`flux reconcile source git flux-system` fetches the latest commit; `flux reconcile kustomization <name> --with-source` fetches and applies in one step.
+
+### How do I roll back with Flux?
+
+`git revert` the offending commit and push; Flux applies the previous state. HelmReleases can also roll back automatically via `upgrade.remediation`. Use `flux suspend` to freeze reconciliation while you investigate.

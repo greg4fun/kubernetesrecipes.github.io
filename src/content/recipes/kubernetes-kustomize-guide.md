@@ -1,6 +1,6 @@
 ---
-title: "Kustomize: Customize K8s Manifests"
-description: "Use Kustomize to customize Kubernetes manifests without templates. Overlays, patches, configMapGenerator, secretGenerator."
+title: "Kustomize Guide: Overlays, Patches, Generators"
+description: "Kustomize for Kubernetes: base/overlay layout, kustomization.yaml (kustomize.config.k8s.io/v1beta1), patches, images, replicas, ConfigMap generators, fixes."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"
@@ -13,15 +13,23 @@ tags:
   - "gitops"
   - "overlays"
   - "cka"
+  - "patches"
 relatedRecipes:
   - "kustomize-vs-helm-comparison"
   - "kubectl-apply-vs-create"
   - "kubernetes-configmap-guide"
   - "kubernetes-api-resources-explain"
   - "kubernetes-kubectl-wait-scripting"
+  - "kubernetes-kustomize-overlays-guide"
+  - "kubernetes-kustomize-advanced-patterns"
+  - "openshift-gitops-kustomize"
+  - "argocd-gitops"
+  - "configmap-secrets-management"
 ---
 
 > 💡 **Quick Answer:** Kustomize customizes YAML without templates. Create a `kustomization.yaml` listing resources, then `kubectl apply -k .` to deploy. Use overlays for environment-specific changes: `base/` has common manifests, `overlays/production/` patches replicas, images, and config. Built into kubectl since v1.14 — no extra tools needed.
+>
+> **Gotcha:** `kustomization.yaml` is build input, not a cluster object. `kubectl apply -f kustomization.yaml` fails with `no matches for kind "Kustomization" in version "kustomize.config.k8s.io/v1beta1"` — use `kubectl apply -k <dir>`.
 
 ## The Problem
 
@@ -68,8 +76,10 @@ resources:
 - service.yaml
 - configmap.yaml
 
-commonLabels:
-  app: myapp
+labels:
+  - pairs:
+      app: myapp
+    includeSelectors: true   # base only: selectors are immutable after first apply
 
 # base/deployment.yaml
 apiVersion: apps/v1
@@ -111,8 +121,9 @@ namespace: production
 
 namePrefix: prod-
 
-commonLabels:
-  environment: production
+labels:
+  - pairs:
+      environment: production   # metadata/template labels only, selectors untouched
 
 # Override image
 images:
@@ -120,9 +131,16 @@ images:
   newName: registry.example.com/myapp
   newTag: v2.1.0
 
-# Patch replicas and resources
+# Replica count without a patch
+replicas:
+- name: myapp
+  count: 5
+
+# Extra prod-only resources
+# resources: [../../base, hpa.yaml]
+
+# Patch resources
 patches:
-- path: replica-patch.yaml
 - target:
     kind: Deployment
     name: myapp
@@ -133,15 +151,9 @@ patches:
     - op: replace
       path: /spec/template/spec/containers/0/resources/requests/memory
       value: 1Gi
-
-# overlays/production/replica-patch.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: myapp
-spec:
-  replicas: 5
 ```
+
+Patches and `replicas` target the **base** name (`myapp`), not the prefixed `prod-myapp` — Kustomize tracks the original ID.
 
 ### ConfigMap and Secret Generators
 
@@ -173,8 +185,17 @@ secretGenerator:
   type: kubernetes.io/tls
 
 # Generated names include content hash: app-config-abc123
-# Triggers rolling update when config changes!
+# Kustomize rewrites references in Deployments → rolling update when config changes
+
+# In an overlay, change a base-generated ConfigMap instead of replacing it
+configMapGenerator:
+- name: app-config
+  behavior: merge        # or "replace"; default "create" fails if it already exists
+  literals:
+  - LOG_LEVEL=warn
 ```
+
+Don't commit real secrets in `secretGenerator` literals — use SOPS (with Flux/KSOPS), Sealed Secrets or External Secrets instead.
 
 ### Patch Types
 
@@ -244,8 +265,9 @@ kubectl delete -k overlays/production/
 
 ```yaml
 # Cross-cutting fields
-commonLabels:
-  team: platform
+labels:
+- pairs:
+    team: platform
 commonAnnotations:
   managed-by: kustomize
 
@@ -288,6 +310,22 @@ Use `generatorOptions: {disableNameSuffixHash: true}` if you don't want hash suf
 
 Strategic merge patches merge arrays by key. For containers, the `name` field is the key. Ensure container names match.
 
+**`no matches for kind "Kustomization" in version "kustomize.config.k8s.io/v1beta1"`**
+
+You ran `kubectl apply -f` on a directory or file containing `kustomization.yaml`, so kubectl tried to create it as a resource. Use `kubectl apply -k dir/`. (Flux's `kustomize.toolkit.fluxcd.io` Kustomization *is* a CRD — different API group.)
+
+**`field is immutable` on Deployment selector after adding labels**
+
+`commonLabels` (or `labels` with `includeSelectors: true`) changed `spec.selector`. Keep selector labels in the base only; in overlays use `labels` without `includeSelectors`.
+
+**Feature works with `kustomize` but not `kubectl -k`**
+
+kubectl embeds an older Kustomize. Check `kubectl version --client` (it prints the Kustomize version) or use the standalone binary: `kustomize build dir/ | kubectl apply -f -`.
+
+**Deprecation warnings (`patchesStrategicMerge`, `bases`, `commonLabels`, `vars`)**
+
+Run `kustomize edit fix` to migrate to `patches`, `resources`, `labels` and `replacements`.
+
 ## Best Practices
 
 - **Base + overlays pattern** — base for common, overlays for environment-specific
@@ -304,3 +342,21 @@ Strategic merge patches merge arrays by key. For containers, the `name` field is
 - ConfigMapGenerator adds content hash — auto-triggers rolling updates
 - Patches: strategic merge (YAML) or JSON patch (precise operations)
 - `kubectl apply -k .` deploys, `kubectl kustomize .` previews
+
+## Frequently Asked Questions
+
+### What is `kustomize.config.k8s.io/v1beta1`?
+
+The `apiVersion` of the `kustomization.yaml` file. It is only read by the Kustomize engine (kubectl or the `kustomize` binary) and never sent to the API server, which is why applying it directly fails.
+
+### How do I patch a ConfigMap with Kustomize?
+
+For a generated ConfigMap, add a `configMapGenerator` entry with the same name and `behavior: merge` in the overlay. For a plain ConfigMap resource, use a strategic merge patch with just `apiVersion`, `kind`, `metadata.name` and the `data` keys to change.
+
+### Kustomize or Helm?
+
+Kustomize patches plain YAML and is ideal for your own manifests and environment overlays; Helm packages parameterised, versioned charts with release history. Many teams render third-party Helm charts and patch them with Kustomize (`helmCharts` field or Argo CD/Flux post-rendering). See [Kustomize vs Helm](/recipes/configuration/kustomize-vs-helm-comparison/).
+
+### How do I use Kustomize with GitOps?
+
+Argo CD and Flux both build Kustomize directories natively — point the Application / Flux Kustomization at `overlays/<env>`. On OpenShift, see [OpenShift GitOps with Kustomize](/recipes/deployments/openshift-gitops-kustomize/).

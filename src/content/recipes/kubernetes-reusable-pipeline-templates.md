@@ -14,7 +14,7 @@ tags:
 difficulty: "beginner"
 timeToComplete: "15 minutes"
 relatedRecipes:
-  - "tekton-pipelines-kubernetes"
+  - "kubernetes-tekton-pipelines-guide"
   - "kubernetes-deploy-new-app-five-minutes"
 ---
 

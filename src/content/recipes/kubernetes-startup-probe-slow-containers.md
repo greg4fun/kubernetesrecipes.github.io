@@ -14,8 +14,8 @@ difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
   - "kubernetes-readiness-probe-guide"
-  - "kubernetes-rolling-update-zero-downtime"
-  - "kubernetes-init-containers-guide"
+  - "kubernetes-rolling-update-strategy"
+  - "kubernetes-init-containers-patterns-examples"
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-pod-lifecycle-guide"
 ---

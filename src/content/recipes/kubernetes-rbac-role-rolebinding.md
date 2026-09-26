@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-namespace-guide"
   - "kubernetes-secret-types-guide"
   - "kubernetes-security-context-guide"
-  - "kubernetes-audit-logging-guide"
+  - "kubernetes-audit-logging-configuration"
   - "kubernetes-serviceaccount-guide"
 ---
 

@@ -14,7 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-pod-priority-preemption-scheduling"
   - "kubernetes-graceful-shutdown-guide"
-  - "kubernetes-rolling-update-strategies"
+  - "kubernetes-rolling-update-strategy"
 ---
 
 > 💡 **Quick Answer:** A PodDisruptionBudget (PDB) limits how many pods can be simultaneously unavailable during voluntary disruptions (node drain, cluster upgrade, autoscaler). Set `minAvailable: 2` (always keep at least 2 running) or `maxUnavailable: 1` (remove at most 1 at a time). PDBs protect against `kubectl drain` and voluntary evictions but NOT against crashes or resource limits.

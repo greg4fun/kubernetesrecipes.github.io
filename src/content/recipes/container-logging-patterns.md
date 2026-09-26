@@ -6,9 +6,9 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
-  - "alertmanager-setup"
+  - "alertmanager-configuration"
   - "jaeger-distributed-tracing"
-  - "logging-efk-stack"
+  - "kubernetes-efk-logging-stack"
   - "kubernetes-opentelemetry-collector"
 tags: ["logging", "observability", "sidecar", "fluentd", "stdout"]
 ---

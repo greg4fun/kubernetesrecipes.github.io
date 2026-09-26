@@ -40,14 +40,14 @@ const currentTags: string[] = currentRecipe?.data?.tags || [];
 
 // Hand-curated learning paths (optional "next step" feel where defined).
 const suggestedProgression: Record<string, string[]> = {
-  "rolling-update-deployment": ["blue-green-deployment", "canary-deployments"],
+  "kubernetes-rolling-update-strategy": ["blue-green-deployment", "canary-deployments"],
   "blue-green-deployment": ["canary-deployments", "argocd-gitops-deployment"],
   "canary-deployments": ["argocd-gitops-deployment", "flux-gitops-continuous-delivery"],
-  "jobs-cronjobs": ["horizontal-pod-autoscaler", "pod-disruption-budgets"],
-  "rbac-service-accounts": ["pod-security-standards", "network-policies"],
+  "kubernetes-job-cronjob-guide": ["horizontal-pod-autoscaler", "pod-disruption-budgets"],
+  "service-accounts-rbac": ["pod-security-standards", "network-policies"],
   "pod-security-standards": ["secrets-management-best-practices", "network-policies-advanced"],
-  "prometheus-monitoring-setup": ["grafana-kubernetes-dashboards", "alertmanager-setup"],
-  "grafana-kubernetes-dashboards": ["alertmanager-setup", "distributed-tracing-jaeger"],
+  "prometheus-monitoring-setup": ["grafana-kubernetes-dashboards", "alertmanager-configuration"],
+  "grafana-kubernetes-dashboards": ["alertmanager-configuration", "distributed-tracing-jaeger"],
 };
 
 const MAX = 6;

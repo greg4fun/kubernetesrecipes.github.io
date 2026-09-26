@@ -14,7 +14,7 @@ tags:
   - namespace-isolation
   - cilium
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

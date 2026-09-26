@@ -14,7 +14,7 @@ tags:
   - "renewal"
 relatedRecipes:
   - "post-quantum-cryptography-kubernetes"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Monitor and manage Kubernetes certificate expiration. kubeadm cert check, cert-manager alerts, auto-renewal, and preventing expired certificate outages.

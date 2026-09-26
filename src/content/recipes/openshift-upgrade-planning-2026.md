@@ -16,7 +16,7 @@ relatedRecipes:
   - "stuck-resources-finalizers"
   - "openshift-support-lifecycle-version-matrix"
   - "openshift-mcp-itms-rollout"
-  - "kubernetes-etcd-backup-restore"
+  - "etcd-backup-restore-kubernetes"
   - "kubernetes-1-35-1-36-upgrade-checklist"
 ---
 

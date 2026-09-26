@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "dns-resolution-failure-pods"
   - "kubernetes-dns-services-guide"
-  - "kubernetes-coredns-troubleshooting"
+  - "coredns-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Customize pod DNS with `spec.dnsPolicy` and `spec.dnsConfig`. Use `ClusterFirst` (default), `ClusterFirstWithHostNet`, `Default` (node's DNS), or `None` (fully custom). Add nameservers and searches via `dnsConfig.nameservers` and `dnsConfig.searches`.

@@ -8,7 +8,7 @@ tags: ["api-deprecation", "migration", "upgrade", "pluto", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-velero-backup-restore"
-  - "kubernetes-cluster-upgrade-guide"
+  - "kubernetes-cluster-upgrade"
   - "kubernetes-api-versions-explained"
   - "kubectl-cheat-sheet"
 ---

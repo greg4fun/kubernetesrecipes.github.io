@@ -16,7 +16,7 @@ relatedRecipes:
   - "ai-supercomputing-kubernetes-gpu-clusters"
   - "kubernetes-job-completion-parallelism"
   - "post-quantum-cryptography-kubernetes"
-  - "argo-workflows-kubernetes"
+  - "kubernetes-argo-workflows-guide"
   - "ai-infrastructure-cost-optimization-kubernetes"
 ---
 

@@ -13,7 +13,7 @@ tags:
   - "event-driven"
   - "kafka"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

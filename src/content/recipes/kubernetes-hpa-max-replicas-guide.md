@@ -14,7 +14,7 @@ tags:
   - "scaling-limits"
 relatedRecipes:
   - "kubernetes-hpa-tutorial-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-hpa-prometheus-adapter"
   - "kubernetes-horizontal-pod-autoscaler-guide"
   - "kubernetes-horizontal-scaling-patterns"

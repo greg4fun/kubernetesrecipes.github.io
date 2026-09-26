@@ -12,7 +12,7 @@ relatedRecipes:
   - "gitea-postgresql-valkey-k3s"
   - "gitea-actions-runner-quay-push"
   - "full-gitops-pipeline-k3s"
-  - "cloudnativepg-postgresql-kubernetes"
+  - "cnpg-postgresql-operator"
   - "build-kubernetes-operator-docker-testing"
   - "openshift-crun-runc-runtime-differences"
   - "cluster-autoscaler-setup"

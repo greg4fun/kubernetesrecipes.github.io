@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "nccl-gpudirect-rdma-distance-pix-sys"
   - "nccl-network-validation-script-openshift"
-  - "nccl-roce-validation-mpijob-complete-reference"
+  - "nccl-roce-validation-mpijob-kubernetes"
   - "mpi-dns-resolution-hostfile-kubernetes"
   - "nccl-shared-memory-transport-kubernetes"
   - "runai-gpu-scheduling-kubeflow-mpijob"

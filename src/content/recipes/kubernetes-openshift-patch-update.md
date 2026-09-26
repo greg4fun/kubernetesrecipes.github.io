@@ -14,9 +14,9 @@ difficulty: "intermediate"
 timeToComplete: "30 minutes"
 relatedRecipes:
   - "kubernetes-openshift-upgrade-overview"
-  - "kubernetes-cluster-upgrade-guide"
+  - "kubernetes-cluster-upgrade"
   - "openshift-support-lifecycle-version-matrix"
-  - "kubernetes-rolling-update-zero-downtime"
+  - "kubernetes-rolling-update-strategy"
   - "openshift-machineconfig-mcp-guide"
   - "mcp-pause-unpause-rollout"
 ---

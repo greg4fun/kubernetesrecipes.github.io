@@ -14,7 +14,7 @@ tags:
   - "api"
 relatedRecipes:
   - "kubernetes-operator-sdk-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Design and implement Kubernetes Custom Resource Definitions. Schema validation, status subresource, printer columns, conversion webhooks, and versioning strategies.

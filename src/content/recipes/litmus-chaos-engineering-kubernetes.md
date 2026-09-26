@@ -1,12 +1,13 @@
 ---
-title: "LitmusChaos Engineering on Kubernetes"
-description: "Deploy LitmusChaos for resilience testing on Kubernetes. Covers ChaosEngine, ChaosExperiment, ChaosResult CRDs, built-in experiments, GameDay planning, Litmus"
+title: "LitmusChaos: Chaos Engineering on Kubernetes"
+description: "Run LitmusChaos experiments on Kubernetes: install ChaosCenter, pod-delete ChaosEngine, HTTP/cmd/Prometheus probes, ChaosResult verdicts vs Chaos Mesh."
 tags:
   - "chaos-engineering"
   - "litmus"
   - "resilience"
   - "testing"
   - "cncf"
+  - "chaos-testing"
 category: "troubleshooting"
 publishDate: "2026-05-09"
 author: "Luca Berton"
@@ -16,9 +17,12 @@ relatedRecipes:
   - "kubernetes-pod-disruption-budget"
   - "kubernetes-readiness-probe-guide"
   - "kubernetes-hpa-custom-metrics-guide"
+  - "kubernetes-rbac-least-privilege"
 ---
 
-> 💡 **Quick Answer:** LitmusChaos (CNCF incubating) provides chaos engineering with a built-in experiment hub of 50+ pre-built faults. Define a `ChaosEngine` to attach experiments to target workloads, validate with `SteadyState` hypothesis probes, and view results via `ChaosResult`. Great for teams wanting pre-built chaos experiments without writing custom fault logic.
+> 💡 **Quick Answer:** LitmusChaos (CNCF incubating) ships 50+ pre-built faults (pod-delete, network latency, CPU/memory hog, disk fill, node drain) via ChaosHub. Install the fault definition (`ChaosExperiment`), give it a ServiceAccount, then create a `ChaosEngine` that targets workloads by label and validates steady state with probes (HTTP, cmd, Prometheus, k8s). Read the verdict from `kubectl get chaosresult`. ChaosCenter (the Litmus 3.x UI) adds scheduling, GameDays and multi-cluster chaos infrastructure.
+>
+> **Gotcha:** Litmus 3.x probe `runProperties` take duration strings (`probeTimeout: 5s`); 2.x-style integers are rejected.
 
 ## The Problem
 
@@ -44,14 +48,25 @@ helm install litmus litmuschaos/litmus \
   --create-namespace \
   --set portal.frontend.service.type=ClusterIP
 
-# Install chaos experiments from ChaosHub
-kubectl apply -f https://hub.litmuschaos.io/api/chaos/3.0.0?file=charts/generic/experiments.yaml \
-  -n litmus
-
-# Verify
+# Verify ChaosCenter (frontend, server, auth, MongoDB)
 kubectl get pods -n litmus
-kubectl get chaosexperiments -n litmus
+kubectl port-forward -n litmus svc/litmus-frontend-service 9091:9091   # admin / litmus, change it
 ```
+
+ChaosCenter connects to target clusters through a **chaos infrastructure** agent that you deploy from the UI. To run faults directly with CRDs (no UI), install the chaos operator and the individual fault into the target namespace:
+
+```bash
+# Fault definition (ChaosExperiment) from the chaos-charts repo — pin the branch to your Litmus version
+kubectl apply -n production -f \
+  https://raw.githubusercontent.com/litmuschaos/chaos-charts/master/faults/kubernetes/pod-delete/fault.yaml
+kubectl get chaosexperiments -n production
+
+# Least-privilege ServiceAccount for the experiment
+kubectl apply -n production -f \
+  https://raw.githubusercontent.com/litmuschaos/chaos-charts/master/faults/kubernetes/pod-delete/rbac.yaml
+```
+
+The rbac manifest creates a ServiceAccount (`pod-delete-sa`); reference it as `chaosServiceAccount`.
 
 ### ChaosEngine: Run an Experiment
 
@@ -67,7 +82,9 @@ spec:
     appns: production
     applabel: app=my-api
     appkind: deployment
-  chaosServiceAccount: litmus-admin
+  engineState: active
+  chaosServiceAccount: pod-delete-sa
+  jobCleanUpPolicy: delete
   experiments:
     - name: pod-delete
       spec:
@@ -91,10 +108,10 @@ spec:
                   criteria: ==
                   responseCode: "200"
             runProperties:
-              probeTimeout: 5
+              probeTimeout: 5s
               retry: 3
-              interval: 5
-              probePollingInterval: 2
+              interval: 5s
+              probePollingInterval: 2s
 ```
 
 ### Built-in Experiments
@@ -142,8 +159,8 @@ experiments:
                 criteria: ==
                 responseCode: "200"
           runProperties:
-            probeTimeout: 5
-            interval: 3
+            probeTimeout: 5s
+            interval: 3s
 
         # CMD probe — run command to validate
         - name: check-replicas
@@ -156,7 +173,8 @@ experiments:
               criteria: ">="
               value: "2"          # At least 2 replicas available
           runProperties:
-            probeTimeout: 10
+            probeTimeout: 10s
+            interval: 5s
 
         # Prometheus probe — check SLO metrics
         - name: error-rate-slo
@@ -170,8 +188,8 @@ experiments:
               criteria: "<="
               value: "0.01"       # Error rate < 1%
           runProperties:
-            probeTimeout: 5
-            interval: 10
+            probeTimeout: 5s
+            interval: 10s
 ```
 
 ### ChaosResult: Check Outcome
@@ -202,11 +220,12 @@ Feature              LitmusChaos          Chaos Mesh
 CNCF status          Incubating           Incubating
 Pre-built faults     50+ (ChaosHub)       10+ (built-in)
 CRD approach         ChaosEngine          Direct fault CRDs
-Validation           Probes (HTTP/CMD/    Manual / webhook
-                     Prom/K8s)
+Validation           Probes (HTTP/CMD/    StatusCheck in
+                     Prom/K8s)            Workflows
 Dashboard            ChaosCenter          Chaos Dashboard
-Scheduling           CronChaosEngine      Scheduler in spec
-Workflow             Argo Workflows       Built-in Workflow
+Scheduling           ChaosCenter cron     Schedule CRD
+Workflow             Argo-based chaos     Built-in Workflow
+                     experiments
 Best for             Teams wanting        Teams wanting
                      pre-built +          fine-grained
                      validation           fault control
@@ -216,8 +235,12 @@ GameDay support      Built-in             Manual
 ## Common Issues
 
 ### ChaosEngine stuck in "Initialized"
-- **Cause**: ChaosExperiment not installed in namespace
-- **Fix**: Apply experiments YAML to target namespace
+- **Cause**: ChaosExperiment not installed in the ChaosEngine's namespace, or the chaos operator isn't running
+- **Fix**: `kubectl get chaosexperiments -n <ns>`; apply the fault YAML there; check operator logs
+
+### `runProperties` validation error after upgrading to 3.x
+- **Cause**: integer timeouts from Litmus 2.x examples
+- **Fix**: use duration strings — `probeTimeout: 5s`, `interval: 2s`
 
 ### Probes always fail
 - **Cause**: Service DNS not resolvable from chaos runner Pod
@@ -245,3 +268,21 @@ GameDay support      Built-in             Manual
 - Better than Chaos Mesh for teams wanting pre-built + validation
 - RBAC via chaosServiceAccount controls what experiments can target
 - GameDay support built into ChaosCenter dashboard
+
+## Frequently Asked Questions
+
+### What is LitmusChaos?
+
+An open-source, CNCF incubating chaos engineering platform for Kubernetes. It provides a chaos operator and CRDs (`ChaosExperiment`, `ChaosEngine`, `ChaosResult`), a hub of ready-made faults, probes to verify steady state, and ChaosCenter for scheduling, GameDays and reporting.
+
+### Is it safe to run Litmus in production?
+
+Yes, with guardrails: start in staging, target by label (never all pods), keep `TOTAL_CHAOS_DURATION` short, run with a least-privilege ServiceAccount, make sure PodDisruptionBudgets and alerting are in place, and use probes so a failing steady state aborts and flags the run.
+
+### LitmusChaos vs Chaos Mesh?
+
+Litmus leans on pre-built faults plus probe-based validation and a GameDay UI; Chaos Mesh exposes one CRD per fault type (PodChaos, NetworkChaos, IOChaos, TimeChaos) with fine-grained kernel-level injection. See [Chaos Mesh fault injection](/recipes/troubleshooting/chaos-mesh-fault-injection-kubernetes/).
+
+### What happens when a probe fails?
+
+The `ChaosResult` verdict becomes `Fail` and records which probe failed; in ChaosCenter the experiment run is marked failed and the resilience score drops. Chaos is still reverted at the end of the duration.

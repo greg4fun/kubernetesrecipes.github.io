@@ -15,7 +15,7 @@ timeToComplete: "25 minutes"
 relatedRecipes:
   - "cluster-api-infrastructure-as-code"
   - "kubernetes-multi-tenancy"
-  - "crossplane-kubernetes-infrastructure"
+  - "kubernetes-crossplane-infrastructure"
   - "kubernetes-oidc-enterprise-sso"
   - "gitops-ai-workloads-kubernetes"
 ---

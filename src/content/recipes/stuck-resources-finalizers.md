@@ -10,7 +10,7 @@ relatedRecipes:
   - "namespace-stuck-terminating"
   - "persistent-volume-stuck-terminating"
   - "kubernetes-operator-sdk-guide"
-  - "kubernetes-namespace-best-practices"
+  - "kubernetes-namespace-guide"
   - "kubernetes-pod-lifecycle-guide"
   - "argocd-gitops"
   - "debug-node-issues"

@@ -14,7 +14,7 @@ tags:
   - "aws"
 relatedRecipes:
   - "kubernetes-cluster-autoscaler-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Scale Kubernetes nodes with Karpenter. NodePool configuration, instance selection, consolidation, and cost optimization vs Cluster Autoscaler.

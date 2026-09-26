@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "debug-node-issues"
   - "kubernetes-events-monitoring"
-  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-prometheus-monitoring-guide"
 tags:
   - node-problem-detector
   - observability

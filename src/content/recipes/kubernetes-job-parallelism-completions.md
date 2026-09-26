@@ -13,7 +13,7 @@ tags:
   - parallelism
   - indexed-job
 relatedRecipes:
-  - "kubernetes-cronjob-concurrencypolicy-guide"
+  - "cronjob-concurrency-policy"
   - "ai-batch-processing-volcano"
 ---
 

@@ -13,7 +13,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-security-checklist-2026"
   - "crun-vs-runc-container-runtime"
 ---

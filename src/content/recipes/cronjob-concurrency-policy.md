@@ -1,111 +1,93 @@
 ---
-title: "How to Configure CronJob Concurrency Policy"
-description: "Master Kubernetes CronJob concurrency policies to control parallel execution. Learn when to use Allow, Forbid, and Replace with real-world examples and."
+title: "Kubernetes CronJob concurrencyPolicy: Forbid, Replace"
+description: "Kubernetes CronJob concurrencyPolicy explained: Allow vs Forbid vs Replace, how Forbid interacts with startingDeadlineSeconds and activeDeadlineSeconds."
 category: "deployments"
 difficulty: "intermediate"
-timeToComplete: "15 minutes"
+timeToComplete: "10 minutes"
 kubernetesVersion: "1.28+"
 prerequisites:
   - "A running Kubernetes cluster"
   - "kubectl configured with appropriate permissions"
   - "Basic understanding of CronJobs"
 relatedRecipes:
+  - "kubernetes-cronjob-best-practices"
+  - "kubernetes-job-cronjob-guide"
+  - "kubernetes-job-ttl-cleanup"
+  - "kubernetes-graceful-shutdown-guide"
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-readiness-probe-guide"
-  - "jobs-cronjobs"
   - "kubernetes-pod-priority-preemption-scheduling"
 tags:
   - cronjob
   - concurrency
   - scheduling
   - batch
+  - jobs
   - kubernetes
 publishDate: "2026-02-03"
 author: "Luca Berton"
 ---
 
-> 💡 **Quick Answer:** Set `spec.concurrencyPolicy` in your CronJob: **Allow** (default—concurrent runs permitted), **Forbid** (skip if previous still running), or **Replace** (kill previous, start new). Use `Forbid` for idempotent jobs, `Replace` for "latest data wins" scenarios.
+> 💡 **Quick Answer:** `spec.concurrencyPolicy` decides what happens when a CronJob's schedule fires while its previous Job is still active: **`Allow`** (default) starts another Job alongside it, **`Forbid`** skips the new run, **`Replace`** deletes the running Job and starts a new one. Use `Forbid` for backups, reports and anything that takes locks; `Replace` for "latest data wins" refreshes. Pair it with `activeDeadlineSeconds` so a hung Job can't block (Forbid) or pile up (Allow) forever.
 >
-> **Key config:** `concurrencyPolicy: Forbid` prevents overlap; check stuck jobs with `kubectl get jobs --selector=job-name`.
->
-> **Gotcha:** If jobs consistently overlap, either increase `schedule` interval or optimize job performance—`Forbid` just masks the problem.
+> **Gotcha:** If runs keep overlapping, `Forbid` only hides the problem — the job is slower than its interval. Fix the job or the schedule.
 
 ## The Problem
 
-Your CronJob runs every 5 minutes, but sometimes the previous job hasn't finished when the next one starts. This leads to:
-- Resource contention
-- Duplicate processing
-- Database locks
-- Unexpected behavior
+A CronJob runs every 5 minutes but sometimes takes 7. Without a policy you get:
 
-You need to control what happens when a new CronJob schedule triggers while a previous job is still running.
+- Overlapping runs competing for CPU, memory and database connections
+- Duplicate processing, double-sent emails, lock contention
+- Two backups writing the same file
+- Jobs accumulating until the namespace quota is exhausted
 
-## The Solution
+## The Three Policies
 
-Kubernetes provides three concurrency policies via `spec.concurrencyPolicy`:
+| Policy | Previous Job still active → | Missed runs | Use when |
+|--------|---------|--------|----------|
+| **Allow** (default) | New Job runs concurrently | None | Runs are idempotent and independent (per-time-window processing) |
+| **Forbid** | New run not started | Possible (started late within `startingDeadlineSeconds`, else skipped) | Runs must be sequential: backups, ETL, file processing, exclusive locks |
+| **Replace** | Running Job deleted, new Job created | None — the old one is interrupted | Only the latest run matters: cache refresh, status sync |
 
-| Policy | Behavior | Use When |
-|--------|----------|----------|
-| **Allow** (default) | Multiple jobs can run simultaneously | Jobs are idempotent and independent |
-| **Forbid** | Skip new job if previous is still running | Jobs must run sequentially |
-| **Replace** | Cancel running job and start new one | Only latest data matters |
+The policy only applies to Jobs created by **this** CronJob. Jobs from other CronJobs, or created manually with `kubectl create job --from=cronjob/...`, aren't counted as "active".
 
-## Quick Start
-
-```yaml
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: data-sync
-spec:
-  schedule: "*/5 * * * *"
-  concurrencyPolicy: Forbid  # Change this based on your needs
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-          - name: sync
-            image: myapp/sync:v1
-          restartPolicy: OnFailure
+```mermaid
+graph TD
+    T[Schedule fires] --> A{Previous Job active?}
+    A -->|No| C[Create Job]
+    A -->|Yes| P{concurrencyPolicy}
+    P -->|Allow| C
+    P -->|Forbid| F[Don't create; event JobAlreadyActive]
+    P -->|Replace| R[Delete active Job, create new Job]
 ```
 
-## Concurrency Policy: Allow (Default)
-
-With `Allow`, multiple Job instances can run at the same time.
+## Allow
 
 ```yaml
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: parallel-reports
+  name: send-notifications
 spec:
-  schedule: "0 * * * *"
+  schedule: "*/5 * * * *"
   concurrencyPolicy: Allow
   jobTemplate:
     spec:
+      activeDeadlineSeconds: 1800        # safeguard: no Job lives longer than 30 min
       template:
         spec:
+          restartPolicy: Never
           containers:
-          - name: report
-            image: reports:v1
-            env:
-            - name: REPORT_TIME
-              value: "$(date +%H)"
-          restartPolicy: OnFailure
+            - name: notify
+              image: registry.example.com/notify:v1
+              resources:
+                requests: {cpu: 100m, memory: 128Mi}
+                limits: {memory: 256Mi}
 ```
 
-**When to use Allow:**
-- Jobs process independent data (e.g., different time ranges)
-- Jobs are fully idempotent
-- Jobs don't share resources (databases, files, APIs)
-- You want maximum throughput
+If a run takes longer than the interval, running Jobs accumulate without bound. Always add `activeDeadlineSeconds` and resource requests with `Allow`, and consider a ResourceQuota on `count/jobs.batch` in the namespace.
 
-**⚠️ Warning:** If your job takes longer than the schedule interval, you'll accumulate running jobs, potentially exhausting cluster resources.
-
-## Concurrency Policy: Forbid
-
-With `Forbid`, the new job is skipped if the previous one is still running.
+## Forbid
 
 ```yaml
 apiVersion: batch/v1
@@ -115,35 +97,45 @@ metadata:
 spec:
   schedule: "0 2 * * *"
   concurrencyPolicy: Forbid
-  startingDeadlineSeconds: 3600  # Important: allow delayed start
+  startingDeadlineSeconds: 3600        # a blocked run may still start up to 1h late
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
+      activeDeadlineSeconds: 7200      # a hung backup is killed after 2h and stops blocking
       template:
         spec:
+          restartPolicy: Never
           containers:
-          - name: backup
-            image: backup:v1
-            volumeMounts:
-            - name: backup-volume
-              mountPath: /backups
-          restartPolicy: OnFailure
+            - name: backup
+              image: registry.example.com/db-backup:v1
+              env:
+                - name: DATABASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-credentials
+                      key: url
+              volumeMounts:
+                - name: backup-volume
+                  mountPath: /backups
           volumes:
-          - name: backup-volume
-            persistentVolumeClaim:
-              claimName: backup-pvc
+            - name: backup-volume
+              persistentVolumeClaim:
+                claimName: backup-pvc
 ```
 
-**When to use Forbid:**
-- Jobs must not overlap (database backups, file processing)
-- Missing an occasional run is acceptable
-- Jobs share external resources with locks
-- Data integrity is critical
+### How Forbid interacts with startingDeadlineSeconds
 
-**💡 Tip:** Always set `startingDeadlineSeconds` with Forbid. If a job is blocked for longer than this deadline, Kubernetes will skip it entirely rather than running it late.
+When a run is blocked, the controller keeps treating that schedule as **missed** and re-checks it:
 
-## Concurrency Policy: Replace
+- **No `startingDeadlineSeconds`** — as soon as the previous Job finishes, the most recent missed run starts immediately, however late. (After more than 100 missed schedules the controller stops and logs "too many missed start times".)
+- **With `startingDeadlineSeconds: N`** — the missed run starts only if the previous Job finishes within N seconds of the scheduled time; otherwise it's skipped until the next schedule.
 
-With `Replace`, the currently running job is terminated and a new one starts.
+So set the deadline to "how late is still useful". A 02:00 backup starting at 02:40 is fine; a 5-minute metrics push starting 4 minutes late usually isn't. Don't set it below ~10 s — the controller may never get to start the Job.
+
+And set `activeDeadlineSeconds` on the Job: a hung Job with `Forbid` blocks **every** future run until someone deletes it.
+
+## Replace
 
 ```yaml
 apiVersion: batch/v1
@@ -155,126 +147,107 @@ spec:
   concurrencyPolicy: Replace
   jobTemplate:
     spec:
-      activeDeadlineSeconds: 540  # Kill if running > 9 minutes
+      activeDeadlineSeconds: 540       # finish (or die) before the next tick at 10 min
       template:
         spec:
+          restartPolicy: Never
+          terminationGracePeriodSeconds: 30
           containers:
-          - name: refresh
-            image: cache-refresh:v1
-          restartPolicy: OnFailure
+            - name: refresh
+              image: registry.example.com/cache-refresh:v1
 ```
 
-**When to use Replace:**
-- Only the latest run matters (cache refresh, status updates)
-- Stale data is worse than interrupted processing
-- Jobs should never run past their next scheduled time
+The controller deletes the old Job (background cascade); its pods get SIGTERM and `terminationGracePeriodSeconds` to exit. The app must handle SIGTERM (commit or roll back its transaction, release locks) — see [graceful shutdown](/recipes/deployments/kubernetes-graceful-shutdown-guide/). Never use `Replace` for work that can't be safely interrupted.
 
-**⚠️ Warning:** The terminated job's pods receive SIGTERM. Ensure your application handles graceful shutdown.
-
-## Monitoring CronJob Concurrency
-
-Check if jobs are being skipped or replaced:
+## Check What the Controller Did
 
 ```bash
-# List recent CronJob events
-kubectl describe cronjob <name> | grep -A 20 "Events:"
+kubectl get cronjobs
+# NAME              SCHEDULE       SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+# database-backup   0 2 * * *      False     1        8h              30d   ← ACTIVE 1 = a run is in progress
+# cache-refresh     */10 * * * *   False     1        2m              7d
 
-# Check for skipped executions
-kubectl get events --field-selector reason=MissSchedule
+kubectl describe cronjob database-backup
+# Events:
+#   Normal   SuccessfulCreate   Created job database-backup-29345678
+#   Normal   JobAlreadyActive   Not starting job because prior execution is running and concurrency policy is Forbid
+#   Normal   SawCompletedJob    Saw completed job: database-backup-29345678, status: Complete
+#   Warning  MissSchedule       Missed scheduled time to start a job: ...
 
-# See active vs completed jobs
-kubectl get jobs -l app=<cronjob-name> --sort-by=.status.startTime
+kubectl get events --field-selector involvedObject.name=database-backup,reason=JobAlreadyActive
+
+# Which Job is blocking? (active Jobs are listed in status)
+kubectl get cronjob database-backup -o jsonpath='{.status.active[*].name}'
 ```
 
-## Common Mistakes ⚠️
+For `Replace`, look for `SuccessfulDelete` events on the CronJob.
 
-### 1. Using Allow without resource limits
+## Common Mistakes
+
+### 1. Allow with no safeguards
+
 ```yaml
-# ❌ Bad: Unbounded jobs can accumulate
+# ❌ Unbounded: slow runs accumulate
 spec:
   concurrencyPolicy: Allow
-  # No resource limits or activeDeadlineSeconds
 
-# ✅ Good: Add safeguards
+# ✅ Bound each run
 spec:
   concurrencyPolicy: Allow
   jobTemplate:
     spec:
       activeDeadlineSeconds: 1800
-      template:
-        spec:
-          containers:
-          - name: job
-            resources:
-              limits:
-                memory: "512Mi"
-                cpu: "500m"
 ```
 
-### 2. Forbid without startingDeadlineSeconds
-```yaml
-# ❌ Bad: Missed jobs disappear silently
-spec:
-  concurrencyPolicy: Forbid
-  
-# ✅ Good: Set a reasonable deadline
-spec:
-  concurrencyPolicy: Forbid
-  startingDeadlineSeconds: 600  # Allow 10 min delay
+### 2. Forbid with a hung Job and no activeDeadlineSeconds
+
+The CronJob silently stops running: every tick logs `JobAlreadyActive`. Add `activeDeadlineSeconds` and alert on `kube_cronjob_status_last_successful_time`.
+
+### 3. Forbid with a tiny startingDeadlineSeconds
+
+`startingDeadlineSeconds: 10` on a job that sometimes overruns means the blocked run is almost always skipped. Size it to the acceptable delay.
+
+### 4. Replace for non-interruptible work
+
+A killed migration or half-written export is worse than a skipped refresh. Use `Forbid`.
+
+## Decision Flow
+
+```text
+Can two runs safely execute at the same time?
+├── YES → Allow (+ activeDeadlineSeconds + requests)
+└── NO  → Is only the latest run's result useful, and is interruption safe?
+          ├── YES → Replace (+ SIGTERM handling)
+          └── NO  → Forbid (+ activeDeadlineSeconds + startingDeadlineSeconds)
 ```
 
-### 3. Replace without graceful shutdown handling
-```yaml
-# ❌ Bad: Job gets killed mid-transaction
-containers:
-- name: db-job
-  command: ["./process.sh"]
+## Best Practices
 
-# ✅ Good: Handle SIGTERM
-containers:
-- name: db-job
-  command: ["./process.sh"]
-  lifecycle:
-    preStop:
-      exec:
-        command: ["/bin/sh", "-c", "cleanup.sh"]
-```
+1. **Default to `Forbid`** for production CronJobs
+2. **Always set `activeDeadlineSeconds`** — shorter than the interval for `Replace`, shorter than "blocking is acceptable" for `Forbid`
+3. **Set `startingDeadlineSeconds`** to the latest acceptable start
+4. **Keep history limits low** (`3`/`3`) so `kubectl get jobs` stays readable
+5. **Alert on skipped runs** — `JobAlreadyActive` events or stale last-success time
+6. **Make jobs idempotent** — retries and late starts happen with every policy
 
-## Decision Flowchart
+## Frequently Asked Questions
 
-```
-Is the job idempotent?
-├── YES → Can multiple instances run safely?
-│   ├── YES → Use Allow (with resource limits)
-│   └── NO → Use Forbid
-└── NO → Does only the latest run matter?
-    ├── YES → Use Replace
-    └── NO → Use Forbid + fix your job to be idempotent
-```
+### What is the default concurrencyPolicy for a CronJob?
 
-## Troubleshooting
+`Allow`. Concurrent runs are permitted unless you set `Forbid` or `Replace`.
 
-**Jobs keep piling up:**
-- Check if jobs are taking longer than schedule interval
-- Add `activeDeadlineSeconds` to kill slow jobs
-- Consider increasing schedule interval or using Forbid
+### What does concurrencyPolicy: Forbid do?
 
-**Jobs are being skipped:**
-- Check events for `MissSchedule` or `FailedNeedsStart`
-- Increase `startingDeadlineSeconds`
-- Check if nodes have enough resources to schedule pods
+If the previous Job created by the CronJob is still active when the schedule fires, the controller doesn't create a new Job. The run is treated as missed: it may start late once the previous Job finishes (within `startingDeadlineSeconds`, if set), otherwise it's skipped.
 
-**Jobs terminated unexpectedly:**
-- With Replace policy, previous job is killed when new one starts
-- Check pod logs for SIGTERM handling
-- Add graceful shutdown handling
+### Forbid vs Replace?
 
-## Summary
+`Forbid` protects the running Job and drops or delays the new one. `Replace` kills the running Job and starts fresh. Choose `Forbid` when interruption is harmful, `Replace` when stale results are worse than interrupted ones.
 
-| Policy | Overlap Allowed | Missed Runs | Best For |
-|--------|-----------------|-------------|----------|
-| Allow | ✅ Yes | None | Idempotent, independent jobs |
-| Forbid | ❌ No | Possible | Sequential processing, shared resources |
-| Replace | ❌ No | None (old killed) | Latest-data-only scenarios |
+### Does activeDeadlineSeconds have a default?
 
-Choose based on your job's characteristics and what's worse: duplicate runs or missed runs.
+No. Without it a Job can run forever — and with `Forbid`, block all future runs. Set it in `jobTemplate.spec`, not on the CronJob spec.
+
+### Does concurrencyPolicy apply to manually triggered Jobs?
+
+No. Jobs created with `kubectl create job --from=cronjob/<name>` aren't tracked in the CronJob's `status.active`, so they neither block nor get replaced.

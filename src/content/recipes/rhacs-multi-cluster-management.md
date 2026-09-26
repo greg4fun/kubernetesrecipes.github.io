@@ -14,7 +14,7 @@ tags:
   - "fleet"
 relatedRecipes:
   - "rhacs-cicd-pipeline-integration"
-  - "kubernetes-multicluster-management-guide"
+  - "multi-cluster-management-kubernetes"
   - "openshift-acs-kubernetes"
   - "rhacs-custom-security-policies"
   - "rhacs-compliance-scanning"

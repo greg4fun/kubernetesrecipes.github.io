@@ -1,23 +1,31 @@
 ---
 title: "Kubernetes Audit Logging Configuration"
-description: "Configure Kubernetes audit logging to track API requests. Define audit policies, capture who did what and when, send logs to backends like"
+description: "Configure Kubernetes audit logging: audit policy levels and rules, kube-apiserver flags, webhook backend, OpenShift audit profiles, and jq queries."
 tags:
   - "audit-logging"
   - "security"
   - "compliance"
   - "api-server"
   - "monitoring"
+  - "audit"
+  - "logging"
+  - "cka"
 category: "security"
 publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
+  - "kubernetes-audit-logging-compliance"
   - "kubernetes-rbac-role-clusterrole"
-  - "kubernetes-secrets-management-best-practices"
+  - "secrets-management-best-practices"
+  - "falco-runtime-security"
+  - "kubernetes-pod-security-admission"
   - "kubernetes-efk-stack-centralized-logging"
 ---
 
 > 💡 **Quick Answer:** Kubernetes audit logging records all API requests (who, what, when, result). Configure an audit policy YAML defining which events to log at which level (None/Metadata/Request/RequestResponse), then pass `--audit-policy-file` and `--audit-log-path` to kube-apiserver. For production, use webhook backend to send events to a log aggregator.
+>
+> **Gotcha:** Rules are first-match. Logging `secrets` at `Request`/`RequestResponse` writes secret values into the audit log — keep secrets (and tokenreviews) at `Metadata`.
 
 ## The Problem
 
@@ -84,10 +92,21 @@ rules:
       - "RequestReceived"
 ```
 
+### Audit Levels
+
+| Level | Records | Use for |
+|-------|---------|---------|
+| `None` | Nothing | Health checks, metrics, noisy reads |
+| `Metadata` | User, verb, resource, source IP, status, timestamps | Default; **secrets**, configmaps, tokenreviews |
+| `Request` | Metadata + request body | Writes on important resources |
+| `RequestResponse` | Metadata + request + response body | RBAC changes, exec/attach (never secrets) |
+
+Stages: `RequestReceived`, `ResponseStarted` (long-running only, e.g. watch/exec), `ResponseComplete`, `Panic`. Omitting `RequestReceived` halves event volume with little loss.
+
 ### Enable Audit Logging (kube-apiserver)
 
 ```yaml
-# kube-apiserver flags
+# /etc/kubernetes/manifests/kube-apiserver.yaml (static pod, kubeadm)
 spec:
   containers:
     - name: kube-apiserver
@@ -108,10 +127,29 @@ spec:
     - name: audit-policy
       hostPath:
         path: /etc/kubernetes/audit-policy.yaml
+        type: File
     - name: audit-logs
       hostPath:
         path: /var/log/kubernetes
+        type: DirectoryOrCreate
 ```
+
+The kubelet restarts the API server when the manifest changes. Repeat on every control-plane node — each writes its own log.
+
+### OpenShift: Audit Profiles
+
+OpenShift manages the policy for you; pick a profile on the cluster `APIServer` resource instead of editing flags:
+
+```bash
+oc patch apiserver cluster --type=merge -p '{"spec":{"audit":{"profile":"WriteRequestBodies"}}}'
+# Default | WriteRequestBodies | AllRequestBodies | None
+# Per-group overrides: spec.audit.customRules[{group: system:authenticated:oauth, profile: WriteRequestBodies}]
+
+oc adm node-logs --role=master --path=kube-apiserver/        # list files
+oc adm node-logs --role=master --path=kube-apiserver/audit.log | jq 'select(.verb=="delete")'
+```
+
+OpenShift never logs Secret, Route or OAuthClient bodies, even with `AllRequestBodies`. Ship them off-cluster with the Logging operator's `ClusterLogForwarder` (`inputRefs: [audit]`).
 
 ### Webhook Backend (Production)
 
@@ -188,7 +226,25 @@ cat /var/log/kubernetes/audit.log | \
   jq 'select(.objectRef.subresource == "exec")'
 ```
 
+### Aggregate Analysis
+
+Single-event greps find one thing; aggregation surfaces patterns:
+
+```bash
+# Most active users / verbs - a sudden spike is worth investigating
+jq -r '.user.username' audit.log | sort | uniq -c | sort -rn | head
+jq -r '.verb' audit.log | sort | uniq -c | sort -rn
+
+# Repeated 401s from one source - brute force / credential stuffing
+jq -r 'select(.responseStatus.code == 401) | .sourceIPs[0]' audit.log | sort | uniq -c | sort -rn
+
+# Off-hours activity (adjust the hour prefix)
+jq 'select(.stageTimestamp | startswith("2026-06-01T03"))' audit.log
+```
+
 ### Falco Integration (Real-Time Alerts)
+
+Falco's `k8saudit` plugin consumes audit events (point an audit webhook backend at Falco's `/k8s-audit` endpoint) and evaluates rules on them in real time:
 
 ```yaml
 # Falco rule to alert on secret access
@@ -214,6 +270,10 @@ cat /var/log/kubernetes/audit.log | \
 - **Cause**: Webhook backend slow; or too many events
 - **Fix**: Use batch mode (`--audit-webhook-batch-*`); filter noisy events with `level: None`
 
+### kube-apiserver won't start after adding audit flags
+- **Cause**: Policy YAML error, or the file/directory isn't mounted into the static pod
+- **Fix**: `crictl ps -a | grep kube-apiserver` then `crictl logs <id>`; validate the policy and check `hostPath` + `volumeMounts`
+
 ### Missing events in audit log
 - **Cause**: Policy rules order matters — first match wins
 - **Fix**: Put specific `None` rules first (health checks), then more verbose rules for important resources
@@ -231,6 +291,24 @@ cat /var/log/kubernetes/audit.log | \
 5. **Set retention limits** — `maxage`, `maxbackup`, `maxsize` prevent disk exhaustion
 6. **Alert on anomalies** — Falco or SIEM rules for unusual access patterns
 7. **Policy order matters** — first matching rule wins; put exceptions first
+
+## Frequently Asked Questions
+
+### How do I enable audit logging in Kubernetes?
+
+Write an audit `Policy` file and start kube-apiserver with `--audit-policy-file` plus either `--audit-log-path` (file backend) or `--audit-webhook-config-file` (webhook backend). On kubeadm clusters, edit the static pod manifest and mount both paths. Managed services and OpenShift expose it as a platform setting instead.
+
+### What are the Kubernetes audit levels?
+
+`None`, `Metadata`, `Request` and `RequestResponse`, in increasing detail. `Metadata` records who did what to which object and the result; `Request` adds the request body; `RequestResponse` adds the response body too.
+
+### Where are Kubernetes audit logs stored?
+
+Wherever `--audit-log-path` points on each control-plane node (commonly `/var/log/kubernetes/audit.log`), or in your collector when using the webhook backend. On OpenShift they're under `/var/log/kube-apiserver/` on control-plane nodes; on EKS/GKE/AKS they go to CloudWatch, Cloud Audit Logs or Azure Monitor.
+
+### Do audit logs slow down the API server?
+
+Some overhead is unavoidable; it scales with event volume and level. Drop noisy events with `level: None`, omit the `RequestReceived` stage, avoid `RequestResponse` on high-volume resources, and use batched webhook mode.
 
 ## Key Takeaways
 

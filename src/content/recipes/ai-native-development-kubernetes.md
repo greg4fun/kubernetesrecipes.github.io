@@ -17,7 +17,7 @@ kubernetesVersion: "1.28+"
 relatedRecipes:
   - "tabnine-enterprise-self-hosted-kubernetes"
   - "openclaw-multi-agent-kubernetes"
-  - "kubernetes-backstage-developer-portal"
+  - "backstage-kubernetes-developer-portal"
   - "kubernetes-tekton-pipelines-guide"
   - "argocd-gitops"
 ---

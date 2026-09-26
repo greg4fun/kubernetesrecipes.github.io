@@ -13,7 +13,7 @@ prerequisites:
 relatedRecipes:
   - "openshift-cluster-wide-pull-secret"
   - "quay-robot-account-kubernetes"
-  - "namespace-management"
+  - "kubernetes-namespace-guide"
   - "service-accounts-rbac"
 tags: ["openshift", "templates", "namespaces", "pull-secrets", "automation"]
 publishDate: "2026-02-26"

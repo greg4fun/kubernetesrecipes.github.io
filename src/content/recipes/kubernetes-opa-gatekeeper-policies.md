@@ -15,7 +15,7 @@ tags:
   - "rego"
 relatedRecipes:
   - "kubernetes-admission-webhooks-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Install OPA Gatekeeper and create `ConstraintTemplates` with Rego policies. Apply `Constraints` to enforce rules like requiring resource limits, blocking privileged containers, and mandating labels. Use `enforcementAction: dryrun` to audit before enforcing.

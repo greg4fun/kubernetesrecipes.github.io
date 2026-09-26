@@ -1,6 +1,6 @@
 ---
-title: "K8s ReplicaSet: Maintain Pod Replicas"
-description: "Understand Kubernetes ReplicaSets for maintaining desired pod count. Selector matching, scaling, ownership, and relationship to Deployments."
+title: "Kubernetes ReplicaSet Explained with Examples"
+description: "What a Kubernetes ReplicaSet does, how selectors and ownerReferences work, pod-template-hash, scaling, and why you should use a Deployment instead."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "deployments"
@@ -13,10 +13,14 @@ tags:
   - "scaling"
   - "deployments"
   - "cka"
+  - "controller"
 relatedRecipes:
-  - "kubernetes-deployment-rolling-update"
+  - "kubernetes-rolling-update-strategy"
+  - "kubernetes-deployment-guide"
+  - "kubernetes-operator-pattern"
   - "kubernetes-hpa-cpu-memory-guide"
   - "kubernetes-pod-disruption-budget"
+  - "kubectl-rollout-restart-deployment"
 ---
 
 > 💡 **Quick Answer:** A ReplicaSet maintains a stable set of replica pods running at any given time. If a pod dies, the ReplicaSet creates a new one. In practice, you rarely create ReplicaSets directly — use Deployments instead, which manage ReplicaSets and provide rolling updates. ReplicaSets use label selectors to identify pods they own.
@@ -121,6 +125,8 @@ spec:
 # Deployment creates ReplicaSet automatically:
 # kubectl get replicaset
 # nginx-5d5dd5db49   3   3   3   (managed by Deployment)
+# The suffix is the pod-template-hash label, added to the RS selector and its pods
+# so ReplicaSets of different revisions never select each other's pods.
 
 # Deployment adds:
 # - Rolling updates (zero-downtime)
@@ -128,6 +134,17 @@ spec:
 # - Pause/resume deployments
 # - Update strategies (RollingUpdate, Recreate)
 ```
+
+```mermaid
+graph TD
+    A[Deployment] -->|creates| B[ReplicaSet rev 1 - 0 replicas]
+    A -->|creates| C[ReplicaSet rev 2 - 3 replicas]
+    C --> D[Pod 1]
+    C --> E[Pod 2]
+    C --> F[Pod 3]
+```
+
+Each template change creates a new ReplicaSet; the old one is scaled to 0 and kept as a rollback target. `spec.revisionHistoryLimit` (default 10) caps how many old ReplicaSets remain.
 
 ### Label Selector Types
 
@@ -188,9 +205,9 @@ kubectl get rs -l app=nginx
 
 ## Common Issues
 
-**ReplicaSet creates too many pods**
+**ReplicaSet deletes pods you created, or runs fewer new pods than expected**
 
-Orphan pods with matching labels get counted. Check: `kubectl get pods -l <selector>` — remove stray pods or fix labels.
+Bare pods whose labels match the selector are adopted and counted toward `replicas`, so the RS deletes the excess. Check `kubectl get pods -l <selector>` and make selectors specific (Deployments avoid this via `pod-template-hash`).
 
 **Pods not being replaced after deletion**
 
@@ -215,3 +232,25 @@ ReplicaSets don't do rolling updates. Change the template and existing pods keep
 - Deployments manage ReplicaSets — use Deployments in practice
 - ReplicaSets don't support rolling updates (Deployments do)
 - CKA exam tests understanding of RS→Deployment→Pod ownership chain
+
+## Frequently Asked Questions
+
+### What is a ReplicaSet in Kubernetes?
+
+A controller (`apps/v1`) that keeps a specified number of identical pods running. It finds its pods by label selector, creates replacements when pods die, and deletes extras when there are too many.
+
+### What is the difference between a ReplicaSet and a Deployment?
+
+A Deployment manages ReplicaSets. It creates a new ReplicaSet per template revision and shifts replicas between them, which gives you rolling updates, rollback (`kubectl rollout undo`) and pause/resume. A bare ReplicaSet never updates existing pods.
+
+### Should I create ReplicaSets directly?
+
+Almost never. Use a Deployment. Direct ReplicaSets only make sense when a custom controller does its own update orchestration.
+
+### ReplicaSet vs ReplicationController?
+
+ReplicationController is the legacy `v1` predecessor and supports only equality-based selectors. ReplicaSet adds set-based `matchExpressions`. Don't create new ReplicationControllers.
+
+### Why are there old ReplicaSets with 0 replicas?
+
+They are previous Deployment revisions kept for rollback. Limit them with `spec.revisionHistoryLimit` on the Deployment; don't delete them by hand unless you don't need rollback.

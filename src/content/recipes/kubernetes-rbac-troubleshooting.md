@@ -14,7 +14,7 @@ tags:
   - "authorization"
 relatedRecipes:
   - "kubernetes-node-notready-troubleshooting"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "fix-kubernetes-pod-cgroup-errors"
 ---
 

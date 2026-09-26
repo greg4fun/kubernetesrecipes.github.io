@@ -7,7 +7,6 @@ publishDate: "2026-04-07"
 tags: ["wasm", "wasi", "containerd", "wasmtime", "wasmedge"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-daemonset"
   - "kubernetes-daemonset-update-strategy"
   - "kubernetes-daemonset-guide"
   - "kubernetes-blue-green-canary-deployments"

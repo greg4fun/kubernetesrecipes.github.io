@@ -14,9 +14,9 @@ difficulty: "intermediate"
 timeToComplete: "25 minutes"
 relatedRecipes:
   - "openshift-scc-security-context-constraints"
-  - "kubernetes-secrets-management-guide"
+  - "secrets-management-best-practices"
   - "kubernetes-persistent-volume-claims"
-  - "kubernetes-statefulset-guide"
+  - "statefulset-management"
 ---
 
 > 💡 **Quick Answer:** MariaDB's official container runs as UID 999 (mysql). OpenShift's default `restricted-v2` SCC assigns a random UID, which causes permission denied on `/var/lib/mysql`. Fix: create a ServiceAccount, grant `anyuid` SCC, and set `runAsUser: 999` + `fsGroup: 999` in the pod spec. For Galera clusters, use a StatefulSet with headless Service.

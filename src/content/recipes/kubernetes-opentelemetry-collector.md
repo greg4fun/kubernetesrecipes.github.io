@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-tempo-tracing-guide"
   - "kubernetes-jaeger-tracing-guide"
-  - "kubernetes-loki-log-aggregation"
+  - "kubernetes-log-aggregation-loki"
 ---
 
 > 💡 **Quick Answer:** Deploy the OpenTelemetry Collector as a DaemonSet for node-level collection and a Deployment for cluster-level processing. Configure receivers (OTLP, Prometheus, Jaeger), processors (batch, memory_limiter), and exporters (Prometheus, Loki, Jaeger/Tempo) in a single pipeline.

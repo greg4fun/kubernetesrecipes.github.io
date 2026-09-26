@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-rbac-audit-guide"
   - "data-sovereignty-geopatriation-kubernetes"
   - "copy-nim-image-internal-quay-registry"
-  - "kubernetes-etcd-backup-restore"
+  - "etcd-backup-restore-kubernetes"
   - "itms-idms-ai-platform-disconnected-mirror"
 ---
 

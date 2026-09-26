@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-debug-pods"
   - "kubernetes-troubleshooting-guide"
-  - "kubernetes-init-containers"
+  - "kubernetes-init-containers-patterns-examples"
   - "kubernetes-namespace-guide"
 ---
 

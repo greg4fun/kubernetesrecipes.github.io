@@ -1,6 +1,6 @@
 ---
-title: "Fix Namespace Stuck in Terminating"
-description: "Remove Kubernetes namespaces stuck in Terminating state. Identify blocking finalizers, orphaned API resources, and safely force namespace cleanup procedures."
+title: "Fix Kubernetes Namespace Stuck in Terminating"
+description: "Fix a Kubernetes namespace stuck in Terminating: find leftover resources, finalizers and broken APIServices, then force-remove the namespace finalizer safely."
 publishDate: "2026-03-19"
 author: "Luca Berton"
 category: "troubleshooting"
@@ -13,12 +13,20 @@ tags:
   - finalizer
   - cleanup
   - troubleshooting
+  - stuck
+  - apiservice
 relatedRecipes:
+  - "stuck-resources-finalizers"
+  - "kubernetes-namespace-guide"
   - "crashloopbackoff-troubleshooting"
   - "persistent-volume-stuck-terminating"
   - "fix-kubernetes-certificate-errors"
 ---
 > 💡 **Quick Answer:** A namespace stuck in Terminating has resources with unresolvable finalizers. Check `kubectl get all -n <ns>` for remaining resources, then `kubectl get ns <ns> -o json | jq '.status.conditions'` for the reason. Remove stuck finalizers or delete orphaned resources to unblock.
+>
+> **Key command (last resort):** `kubectl get ns myapp -o json | jq '.spec.finalizers = []' | kubectl replace --raw "/api/v1/namespaces/myapp/finalize" -f -`
+>
+> **Gotcha:** `NamespaceDeletionDiscoveryFailure` means an aggregated APIService (often `v1beta1.metrics.k8s.io`) is down — fix or delete that APIService and the namespace finishes on its own.
 
 ## The Problem
 
@@ -31,26 +39,39 @@ You ran `kubectl delete namespace myapp` but it's been stuck at `Terminating` fo
 ```bash
 # Check namespace conditions
 kubectl get ns myapp -o json | jq '.status.conditions'
-# Look for "NamespaceDeletionContentFailure" or "NamespaceDeletionDiscoveryFailure"
+# NamespaceDeletionDiscoveryFailure -> an APIService is unavailable (see below)
+# NamespaceContentRemaining / NamespaceFinalizersRemaining -> leftover objects with finalizers
+# NamespaceDeletionContentFailure -> a delete call failed (often an admission webhook)
 
 # List ALL resources in the namespace
 kubectl api-resources --verbs=list --namespaced -o name | \
   xargs -I{} kubectl get {} -n myapp --ignore-not-found --show-kind 2>/dev/null
 ```
 
-### Step 2: Delete Remaining Resources
+### Step 2: Fix Unavailable APIServices
 
 ```bash
-# Common culprits: CRDs, PVCs, Secrets with finalizers
-kubectl get pvc -n myapp
-kubectl get secrets -n myapp
-kubectl get sa -n myapp
-
-# Delete stuck resources
-kubectl delete pvc --all -n myapp --force --grace-period=0
+kubectl get apiservice | grep -v True
+# v1beta1.metrics.k8s.io   kube-system/metrics-server   False (MissingEndpoints)
 ```
 
-### Step 3: Remove Namespace Finalizer (Last Resort)
+The namespace controller must list every namespaced API before it can finish. Restore the backing service, or delete the stale APIService if the add-on was removed: `kubectl delete apiservice v1beta1.metrics.k8s.io`.
+
+### Step 3: Clear Remaining Resources
+
+```bash
+# Find what's left and which finalizer holds it
+kubectl api-resources --verbs=list --namespaced -o name \
+  | xargs -n1 kubectl get -n myapp --ignore-not-found -o name 2>/dev/null \
+  | xargs -r -n1 kubectl get -n myapp -o jsonpath='{.kind}/{.metadata.name}: {.metadata.finalizers}{"\n"}'
+
+# Let the owning controller clean up if it still exists; otherwise drop the finalizer
+kubectl patch <kind>/<name> -n myapp --type=merge -p '{"metadata":{"finalizers":null}}'
+```
+
+`--force --grace-period=0` does **not** bypass finalizers — it only skips graceful pod termination. PVCs held by `kubernetes.io/pvc-protection` release once no pod uses them. More on finalizers: [stuck resources and finalizers](/recipes/troubleshooting/stuck-resources-finalizers/).
+
+### Step 4: Remove Namespace Finalizer (Last Resort)
 
 ```bash
 # Export namespace JSON
@@ -63,7 +84,9 @@ cat /tmp/ns.json | jq '.spec.finalizers = []' > /tmp/ns-clean.json
 kubectl replace --raw "/api/v1/namespaces/myapp/finalize" -f /tmp/ns-clean.json
 ```
 
-### Step 4: Verify
+On OpenShift the same works with `oc`; do this only after Steps 2–3, because anything still inside becomes orphaned in etcd and external resources (load balancers, cloud disks, DNS) are never cleaned up.
+
+### Step 5: Verify
 
 ```bash
 kubectl get ns myapp
@@ -93,6 +116,20 @@ A validating webhook that matches DELETE operations can block namespace cleanup.
 - **Don't delete CRDs before their instances** — creates orphaned resources
 - **Use `--force --grace-period=0`** only as a last resort
 - **Check for operator-managed resources** — operators may recreate resources during deletion
+
+## Frequently Asked Questions
+
+### Why is my namespace stuck in Terminating?
+
+Either an object inside still has a finalizer whose controller is gone or failing, or the namespace controller can't enumerate resources because an aggregated APIService is unavailable. `kubectl get ns <ns> -o json | jq .status.conditions` tells you which.
+
+### How do I force delete a namespace stuck in Terminating?
+
+Clear the namespace's `spec.finalizers` through the finalize subresource: `kubectl get ns <ns> -o json | jq '.spec.finalizers = []' | kubectl replace --raw "/api/v1/namespaces/<ns>/finalize" -f -`. `kubectl delete ns --force --grace-period=0` alone does not work.
+
+### Is it safe to remove the namespace finalizer?
+
+It completes the deletion, but any remaining objects are orphaned and their external resources may leak. Fix APIServices and clean up finalizers on the contained objects first; use the finalize call only when nothing important remains.
 
 ## Key Takeaways
 

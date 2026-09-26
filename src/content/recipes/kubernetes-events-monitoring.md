@@ -8,7 +8,7 @@ author: "Luca Berton"
 tags: ["events", "monitoring", "troubleshooting", "observability", "alerts"]
 relatedRecipes:
   - "openshift-user-workload-monitoring"
-  - "alertmanager-setup"
+  - "alertmanager-configuration"
   - "openclaw-logging-efk"
 ---
 

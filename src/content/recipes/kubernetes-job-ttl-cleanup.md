@@ -14,7 +14,7 @@ tags:
   - "cronjob"
 relatedRecipes:
   - "kubernetes-job-completion-patterns"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Automate Kubernetes Job cleanup with TTL controller. ttlSecondsAfterFinished, CronJob history limits, and preventing completed Job accumulation.

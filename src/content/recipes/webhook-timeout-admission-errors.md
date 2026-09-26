@@ -14,7 +14,7 @@ tags:
   - api-server
   - troubleshooting
 relatedRecipes:
-  - "kubernetes-chaos-engineering-litmus"
+  - "litmus-chaos-engineering-kubernetes"
   - "kubectl-logs-view-pod-logs"
   - "kubectl-cp-copy-files-pods"
   - "job-failure-troubleshooting"

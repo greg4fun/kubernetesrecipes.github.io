@@ -14,7 +14,7 @@ tags:
   - configuration
   - rolling-update
 relatedRecipes:
-  - "kubernetes-rolling-update-strategies"
+  - "kubernetes-rolling-update-strategy"
   - "kubernetes-api-versions-explained"
 ---
 

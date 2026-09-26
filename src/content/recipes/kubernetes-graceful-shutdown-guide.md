@@ -22,9 +22,9 @@ relatedRecipes:
   - "kubernetes-pod-lifecycle-guide"
   - "pod-lifecycle-hooks"
   - "kubernetes-liveness-readiness-startup-probes"
-  - "kubernetes-rolling-update-strategies"
+  - "kubernetes-rolling-update-strategy"
   - "kubernetes-pod-disruption-budget-guide"
-  - "kubernetes-sidecar-containers-guide"
+  - "kubernetes-sidecar-containers"
   - "fix-502-bad-gateway-kubernetes"
 ---
 

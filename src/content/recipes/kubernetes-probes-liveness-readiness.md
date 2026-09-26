@@ -14,7 +14,7 @@ tags:
   - "readiness"
   - "cka"
 relatedRecipes:
-  - "kubernetes-deployment-rolling-update"
+  - "kubernetes-rolling-update-strategy"
   - "kubernetes-endpoint-slices-discovery"
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-graceful-shutdown-guide"

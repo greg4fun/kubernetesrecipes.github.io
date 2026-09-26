@@ -13,7 +13,7 @@ tags:
   - "rdma"
   - "ib-register-peer-memory"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "vllm-alternatives-llm-inference-k8s"
 ---

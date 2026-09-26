@@ -13,7 +13,7 @@ tags:
   - "virtual-service"
   - "circuit-breaker"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "openshift-routes-vs-ingress"
 ---

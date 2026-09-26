@@ -13,7 +13,7 @@ tags:
   - "sso"
   - "keycloak"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "gke-oidc-issuer-workload-identity"
   - "openshift-oidc-claims-mapping-troubleshooting"

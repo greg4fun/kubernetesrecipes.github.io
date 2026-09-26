@@ -12,7 +12,7 @@ tags:
 difficulty: "beginner"
 timeToComplete: "15 minutes"
 relatedRecipes:
-  - "kubernetes-rolling-update-zero-downtime"
+  - "kubernetes-rolling-update-strategy"
   - "kubernetes-gateway-api"
 ---
 

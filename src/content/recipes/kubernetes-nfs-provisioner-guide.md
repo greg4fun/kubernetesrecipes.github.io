@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "access-zones-scaleout-nas-kubernetes"
   - "nfsordma-persistent-volume"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Deploy NFS dynamic provisioner for ReadWriteMany storage on Kubernetes. NFS CSI driver, StorageClass configuration, and performance tuning with nconnect.

@@ -15,7 +15,7 @@ timeToComplete: "50 minutes"
 relatedRecipes:
   - "resource-quotas"
   - "network-policies"
-  - "kubernetes-namespace-best-practices"
+  - "kubernetes-namespace-guide"
   - "service-accounts-rbac"
   - "pod-security-standards"
 ---

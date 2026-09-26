@@ -13,12 +13,12 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "30 minutes"
 relatedRecipes:
-  - "kubernetes-cluster-upgrade-guide"
+  - "kubernetes-cluster-upgrade"
   - "openshift-upgrade-planning-2026"
   - "openshift-support-lifecycle-version-matrix"
   - "kubernetes-1-35-1-36-upgrade-checklist"
   - "openshift-machineconfig-mcp-guide"
-  - "kubernetes-rolling-update-zero-downtime"
+  - "kubernetes-rolling-update-strategy"
 ---
 
 > 💡 **Quick Answer:** Kubernetes uses semantic versioning (1.x.y): **patch** (1.31.1→1.31.2) for bug/security fixes, **minor** (1.31→1.32) for new features, and **major** (theoretical 1.x→2.x). OpenShift follows Kubernetes releases (OCP 4.16 ≈ K8s 1.29). Always upgrade sequentially — never skip minor versions. Pre-flight: check API deprecations, drain nodes, backup etcd, verify PodDisruptionBudgets.

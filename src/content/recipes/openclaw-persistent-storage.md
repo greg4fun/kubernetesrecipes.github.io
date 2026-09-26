@@ -12,11 +12,11 @@ tags:
   - "storageclass"
   - "backup"
 relatedRecipes:
-  - "kubernetes-longhorn-distributed-storage"
+  - "longhorn-distributed-storage"
   - "openclaw-workspace-gitops"
   - "openclaw-backup-restore"
   - "openclaw-kubernetes-deployment"
-  - "velero-backup-disaster-recovery"
+  - "velero-kubernetes-backup-disaster-recovery"
 ---
 
 > 💡 **Quick Answer:** Use PersistentVolumeClaims with appropriate StorageClasses to persist OpenClaw workspace data (memory files, skills, configuration) across pod restarts.

@@ -1,6 +1,6 @@
 ---
-title: "How to Deploy with Argo CD GitOps"
-description: "Implement GitOps continuous deployment with Argo CD. Sync Kubernetes manifests from Git repositories automatically with declarative application management."
+title: "Argo CD GitOps: Install, Apps and ApplicationSets"
+description: "Argo CD GitOps on Kubernetes: install, Application and ApplicationSet YAML, Helm/Kustomize sources, sync waves, App of Apps, multi-cluster, RBAC, alerts."
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
@@ -15,7 +15,10 @@ relatedRecipes:
   - "pod-lifecycle-hooks"
   - "pod-readiness-gates"
   - "pod-topology-constraints"
-tags: ["argocd", "gitops", "continuous-deployment", "kubernetes", "automation"]
+  - "flux-gitops"
+  - "kubernetes-kustomize-guide"
+  - "kubernetes-rolling-update-strategy"
+tags: ["argocd", "gitops", "continuous-deployment", "kubernetes", "automation", "applicationset", "ci-cd"]
 author: "Luca Berton"
 ---
 
@@ -26,7 +29,7 @@ author: "Luca Berton"
 > **Gotcha:** Enable auto-sync with `syncPolicy.automated` for true GitOps; manual sync is default. Use `selfHeal: true` to revert manual cluster changes.
 
 
-Argo CD is a declarative GitOps continuous delivery tool. It monitors Git repositories and automatically syncs application state to your Kubernetes cluster.
+Argo CD is a declarative, pull-based GitOps continuous delivery tool. It continuously compares the manifests in Git (plain YAML, Helm, Kustomize, Jsonnet) with the live cluster, reports drift, and syncs — so Git is the single source of truth, rollback is a `git revert`, and the UI shows what is deployed where.
 
 ## Install Argo CD
 
@@ -39,7 +42,13 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 
 # Wait for pods to be ready
 kubectl wait --for=condition=Ready pods --all -n argocd --timeout=300s
+
+# Install the CLI
+curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+sudo install -m 555 argocd /usr/local/bin/argocd
 ```
+
+On OpenShift, install the **Red Hat OpenShift GitOps** operator from OperatorHub instead — it deploys and upgrades Argo CD for you.
 
 ## Access Argo CD UI
 
@@ -78,6 +87,28 @@ spec:
       selfHeal: true   # Revert manual changes
     syncOptions:
       - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+```
+
+### Ignore Controller-Managed Fields
+
+If an HPA owns `replicas` (or a webhook injects fields), the app flaps OutOfSync. Tell Argo CD to ignore them:
+
+```yaml
+spec:
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
+  syncPolicy:
+    syncOptions:
+      - RespectIgnoreDifferences=true   # also don't overwrite them on sync
 ```
 
 ## Create Application via CLI
@@ -178,6 +209,38 @@ spec:
       syncPolicy:
         automated:
           prune: true
+```
+
+Git directory generator — one Application per directory under `apps/`:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: all-apps
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/myorg/k8s-manifests.git
+        revision: main
+        directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/myorg/k8s-manifests.git
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{path.basename}}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
 ```
 
 ## Sync Waves and Hooks
@@ -440,12 +503,31 @@ argocd app sync my-app
 # View app diff
 argocd app diff my-app
 
-# Rollback
+# Force a re-read of Git (skip the 3-minute poll)
+argocd app get my-app --refresh
+
+# Preview rendered manifests (Helm/Kustomize output)
+argocd app manifests my-app
+
+# Rollback (auto-sync must be disabled first)
 argocd app rollback my-app
 
-# Delete app (keeps resources)
+# Delete app but keep its resources
 argocd app delete my-app --cascade=false
+
+# Clusters
+argocd cluster list
 ```
+
+## Common Issues
+
+**App OutOfSync right after a successful sync** — a controller mutates the resource (HPA replicas, defaulted fields, injected sidecars). Add `ignoreDifferences` (above), or enable `ServerSideApply=true`.
+
+**`permission denied` / `forbidden` in target namespace** — the `argocd-application-controller` ServiceAccount lacks RBAC there (common with namespace-scoped installs and OpenShift GitOps: label the namespace `argocd.argoproj.io/managed-by=<argocd-namespace>`). Also check the AppProject `destinations` and resource whitelists.
+
+**Helm values not applied** — invalid YAML in `helm.values` or a wrong key; inspect with `argocd app manifests my-app`.
+
+**`argocd app rollback` refused** — rollback is blocked while `syncPolicy.automated` is on; revert in Git instead (the GitOps way) or disable auto-sync.
 
 ## Best Practices
 
@@ -454,3 +536,27 @@ argocd app delete my-app --cascade=false
 3. **Use sync waves** for ordered deployments
 4. **Implement RBAC** with Argo CD projects
 5. **Store secrets** with Sealed Secrets or External Secrets
+6. **Pin chart versions and Git revisions** for production (`targetRevision: 1.2.3` or a tag, not `HEAD`)
+7. **Notifications** to Slack/Teams for sync failures and degraded health
+
+## Frequently Asked Questions
+
+### What is the difference between Argo CD and Flux?
+
+Both are CNCF-graduated pull-based GitOps controllers. Argo CD ships a web UI, SSO/RBAC, AppProjects and ApplicationSets and is Application-centric; Flux is a set of composable controllers (source, kustomize, helm, notification, image automation) driven entirely by CRDs and the CLI, with no built-in UI. See [Flux GitOps](/recipes/deployments/flux-gitops/).
+
+### Does Argo CD auto-sync by default?
+
+No. Applications sync manually unless `spec.syncPolicy.automated` is set. `prune: true` deletes resources removed from Git and `selfHeal: true` reverts manual `kubectl` changes; both are off by default.
+
+### How often does Argo CD check Git?
+
+Every 3 minutes by default (`timeout.reconciliation` in `argocd-cm`). Configure a Git webhook to `https://<argocd>/api/webhook` for near-instant syncs.
+
+### What is the difference between an Application and an ApplicationSet?
+
+An Application maps one source (repo/path or chart) to one destination. An ApplicationSet is a template plus generators (list, cluster, git, matrix, pull request) that stamps out many Applications — one per environment, cluster or directory.
+
+### How do I deploy to multiple clusters?
+
+Register each cluster (`argocd cluster add <context>` or a Secret labelled `argocd.argoproj.io/secret-type: cluster`) and use an ApplicationSet with the `clusters` generator, optionally filtered by cluster labels.

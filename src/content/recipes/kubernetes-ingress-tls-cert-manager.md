@@ -14,7 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-ingress-nginx-guide"
   - "kubernetes-gateway-api-httproute"
-  - "kubernetes-secrets-management-best-practices"
+  - "secrets-management-best-practices"
 ---
 
 > 💡 **Quick Answer:** cert-manager automates TLS certificate lifecycle on Kubernetes. Install with Helm, create a `ClusterIssuer` pointing to Let's Encrypt, then annotate your Ingress with `cert-manager.io/cluster-issuer: letsencrypt-prod`. cert-manager automatically issues, stores (as Secret), and renews certificates before expiry.

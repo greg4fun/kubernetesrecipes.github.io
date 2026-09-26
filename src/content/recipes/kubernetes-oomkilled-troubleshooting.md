@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes OOMKilled: Troubleshooting Guide"
-description: "Troubleshoot and fix OOMKilled errors in Kubernetes. Memory limits, Java heap sizing, memory leak detection, and VPA recommendations."
+title: "Kubernetes OOMKilled (Exit Code 137): Debug and Fix"
+description: "Fix OOMKilled (exit code 137) in Kubernetes: find the killed container, container vs node OOM, memory limits, JVM/Node.js heap sizing, leaks, and VPA."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "troubleshooting"
@@ -12,14 +12,17 @@ tags:
   - "memory"
   - "troubleshooting"
   - "resources"
+  - "exit-code-137"
+  - "vpa"
 relatedRecipes:
-  - "kubernetes-rbac-troubleshooting"
-  - "kubernetes-pod-security-standards"
-  - "kubernetes-rbac-least-privilege"
+  - "kubernetes-resource-requests-limits"
+  - "kubernetes-vertical-pod-autoscaler-guide"
+  - "crashloopbackoff-troubleshooting"
+  - "oom-killed-troubleshooting"
   - "kubectl-exec-into-pod"
 ---
 
-> 💡 **Quick Answer:** Troubleshoot and fix OOMKilled errors in Kubernetes. Memory limit tuning, Java heap sizing, memory leak detection, and VPA recommendations.
+> 💡 **Quick Answer:** `OOMKilled` with exit code 137 means the kernel killed the container for exceeding `resources.limits.memory` (or the node ran out of memory). Confirm with `kubectl describe pod <pod>` (Last State: OOMKilled), compare `kubectl top pod --containers` with the limit, then either raise the limit, cap the runtime heap below it (`-XX:MaxRAMPercentage=75`, `--max-old-space-size`), or fix the leak. Use VPA in `Off` mode for sizing recommendations.
 
 ## The Problem
 
@@ -35,6 +38,9 @@ kubectl get pods --all-namespaces -o json | jq -r '
   .items[] |
   select(.status.containerStatuses[]?.lastState.terminated.reason == "OOMKilled") |
   [.metadata.namespace, .metadata.name] | @tsv'
+
+# Which container, and when?
+kubectl get pod myapp-pod -o jsonpath='{range .status.containerStatuses[*]}{.name}{"\t"}{.lastState.terminated.reason}{"\t"}{.lastState.terminated.exitCode}{"\n"}{end}'
 
 # Confirm on a specific pod
 kubectl describe pod myapp-pod
@@ -68,14 +74,13 @@ resources:
 
 ### Fix Runtime-Specific Memory Behavior
 
-Most OOMKills in managed runtimes come from the runtime not knowing about the container's cgroup limit:
+Most OOMKills in managed runtimes come from heap sizing that ignores the rest of the process footprint. Modern JVMs (JDK 10+, 8u191+) detect the cgroup limit, but default the max heap to only 25% of it; older runtimes and Node.js size from host memory or fixed defaults:
 
 ```yaml
 # Java: let the JVM respect the container limit instead of the host's
 env:
   - name: JAVA_OPTS
     value: >-
-      -XX:+UseContainerSupport
       -XX:MaxRAMPercentage=75.0
       -XX:+HeapDumpOnOutOfMemoryError
       -XX:HeapDumpPath=/tmp/heapdump.hprof
@@ -151,6 +156,16 @@ dmesg | grep -i "out of memory"
 kubectl describe node <node> | grep -A5 Conditions
 ```
 
+```mermaid
+graph TD
+    A[OOMKilled exit code 137] --> B{Container limit or node OOM?}
+    B -->|Last State OOMKilled, usage near limit| C{Usage pattern}
+    B -->|OOMKilling node events, dmesg| N[Node pressure: requests too low, add capacity]
+    C -->|Grows steadily| D[Memory leak: profile and fix]
+    C -->|Spikes under load| E[Raise limit / cap heap / stream data]
+    C -->|Constantly high| F[Right-size with VPA]
+```
+
 ## Common Issues
 
 | Cause | Fix |
@@ -161,6 +176,20 @@ kubectl describe node <node> | grep -A5 Conditions
 | Large file processing | Stream instead of loading the whole file into memory |
 | Unbounded cache | Add a size limit and LRU eviction |
 | Node memory exhaustion | Add nodes, or set namespace ResourceQuotas |
+
+## Frequently Asked Questions
+
+### Why is OOMKilled exit code 137?
+137 = 128 + 9: the process was terminated by signal 9 (SIGKILL), which is what the kernel OOM killer sends. You'll also see `command terminated with exit code 137` from `kubectl exec` when the process is killed.
+
+### What is the difference between container OOMKilled and node OOM?
+A container OOMKill means it hit its own cgroup memory limit. A node-level OOM means the whole node ran out of memory; the kubelet evicts pods (status `Evicted`) or the kernel kills a process based on QoS (BestEffort first, Guaranteed last). Set memory requests realistically so the scheduler doesn't overcommit nodes.
+
+### How do I debug OOMKilled errors in Kubernetes?
+Find the container with `kubectl describe pod`, compare its working set (`kubectl top pod --containers` or `container_memory_working_set_bytes`) against the limit over time, check runtime heap flags, and take a heap dump or profile (pprof, jmap, tracemalloc) if usage grows without bound.
+
+### Should memory limits equal requests?
+For latency-critical or stateful workloads, yes — `requests == limits` gives the Guaranteed QoS class and prevents node overcommit. For bursty stateless apps, a limit 1.5-2x the request is a common compromise.
 
 ## Best Practices
 
@@ -174,6 +203,6 @@ kubectl describe node <node> | grep -A5 Conditions
 
 - OOMKilled = exit code 137 = the container exceeded `resources.limits.memory`, or the node ran out of memory
 - Diagnose with `kubectl describe pod` (Last State: OOMKilled) and `kubectl top pod --containers`
-- Runtime memory settings (JVM, Node.js, Python) need to match the container limit — the runtime doesn't detect it automatically
+- Runtime memory settings (JVM, Node.js, Python) must leave headroom below the container limit — defaults are either too small (JVM 25%) or unaware of the limit
 - Alert at 90% utilization to catch it before the kill, not just after
 - VPA in recommendation-only mode is the fastest way to find the right limit without guessing

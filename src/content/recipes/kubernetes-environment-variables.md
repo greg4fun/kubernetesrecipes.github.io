@@ -10,7 +10,7 @@ relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-downward-api-guide"
   - "environment-variables-configmaps"
-  - "configmap-hot-reload-troubleshooting"
+  - "kubernetes-configmap-hot-reload"
 ---
 
 > 💡 **Quick Answer:** Set environment variables in Kubernetes pods from literals, ConfigMaps, Secrets, and the Downward API. Covers variable ordering, references, and best practices.

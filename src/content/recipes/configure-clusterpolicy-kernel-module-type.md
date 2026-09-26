@@ -13,7 +13,7 @@ relatedRecipes:
   - "resource-limits-requests"
   - "kubernetes-pod-resource-monitoring-grafana"
   - "pod-mutation-injection"
-  - "kubernetes-kustomize-configuration-management"
+  - "kubernetes-kustomize-guide"
   - "kubernetes-leases"
   - "kubernetes-labels-annotations-best-practices"
   - "stuck-resources-finalizers"

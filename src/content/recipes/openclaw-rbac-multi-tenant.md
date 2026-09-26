@@ -18,7 +18,7 @@ relatedRecipes:
   - "openclaw-secrets-management"
   - "openclaw-multi-agent-kubernetes"
   - "service-accounts-rbac"
-  - "namespace-management"
+  - "kubernetes-namespace-guide"
 ---
 
 > 💡 **Quick Answer:** Use Kubernetes RBAC with dedicated ServiceAccounts per OpenClaw agent and namespace isolation to enforce multi-tenant boundaries in shared clusters.

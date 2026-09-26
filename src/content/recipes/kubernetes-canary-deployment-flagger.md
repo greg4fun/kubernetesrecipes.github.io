@@ -14,7 +14,7 @@ tags:
   - deployment
   - traffic-splitting
 relatedRecipes:
-  - "kubernetes-rolling-update-strategies"
+  - "kubernetes-rolling-update-strategy"
   - "kubernetes-service-mesh-comparison"
 ---
 

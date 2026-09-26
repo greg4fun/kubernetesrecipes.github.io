@@ -12,7 +12,7 @@ publishDate: "2026-05-03"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-velero-backup-guide"
+  - "velero-kubernetes-backup-disaster-recovery"
   - "kubernetes-persistent-volume-guide"
   - "kubernetes-1-36-oci-volume-source"
   - "kubernetes-1-36-csi-differential-snapshots"

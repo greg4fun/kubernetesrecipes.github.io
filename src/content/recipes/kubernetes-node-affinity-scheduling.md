@@ -14,10 +14,10 @@ tags:
   - "taints"
 relatedRecipes:
   - "kubernetes-taints-tolerations-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-custom-scheduler-guide"
-  - "kubernetes-cronjob-patterns-guide"
+  - "kubernetes-cronjob-best-practices"
   - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-daemonset-guide"
 ---

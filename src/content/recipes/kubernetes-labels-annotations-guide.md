@@ -14,7 +14,7 @@ tags:
   - "selectors"
 relatedRecipes:
   - "kubernetes-downward-api-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-labels-best-practices"
 ---

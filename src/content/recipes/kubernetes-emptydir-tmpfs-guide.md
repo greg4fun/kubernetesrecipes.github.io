@@ -14,7 +14,7 @@ tags:
   - "cache"
 relatedRecipes:
   - "kubernetes-ephemeral-storage-management"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 
