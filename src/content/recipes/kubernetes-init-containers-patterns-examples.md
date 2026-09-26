@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
   - "kubernetes-probes-liveness-readiness"
-  - "kubernetes-graceful-shutdown-pod-termination"
+  - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-multi-container-pod-patterns"
 ---
 

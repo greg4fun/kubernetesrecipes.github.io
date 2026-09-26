@@ -14,7 +14,7 @@ tags:
   - "harbor"
 relatedRecipes:
   - "kubernetes-helm-vs-kustomize"
-  - "helm-hooks-lifecycle-guide"
+  - "helm-hooks-lifecycle"
   - "kubernetes-helm-library-charts"
   - "kubernetes-helm-chart-testing"
   - "kubernetes-pod-security-standards"

@@ -12,7 +12,7 @@ prerequisites:
   - "Maintenance window for node reboots"
 relatedRecipes:
   - "kubernetes-image-pull-policy-always-never"
-  - "kubernetes-finalizers-explained"
+  - "stuck-resources-finalizers"
   - "kubernetes-crossplane-infrastructure"
   - "kubernetes-configmap"
   - "kubernetes-configmap-from-file"

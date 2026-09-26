@@ -11,6 +11,22 @@ import icon from "astro-icon";
 // accidentally excluding real destination pages with overlapping slugs
 // (e.g. /recipes/autoscaling/kubernetes-resource-optimization/).
 const redirectStubPaths = new Set([
+  "/recipes/configuration/kubernetes-pod-lifecycle/",
+  "/recipes/troubleshooting/kubernetes-pod-lifecycle-states/",
+  "/recipes/helm/helm-hooks-lifecycle-guide/",
+  "/recipes/deployments/openshift-lifecycle-support-versions/",
+  "/recipes/configuration/openshift-lifecycle-versions/",
+  "/recipes/troubleshooting/kubernetes-finalizers-explained-troubleshooting/",
+  "/recipes/configuration/kubernetes-finalizers/",
+  "/recipes/configuration/kubernetes-finalizers-ownership-guide/",
+  "/recipes/configuration/kubernetes-finalizers-guide/",
+  "/recipes/configuration/kubernetes-finalizers-explained/",
+  "/recipes/deployments/kubernetes-pod-lifecycle-termination/",
+  "/recipes/deployments/kubernetes-graceful-shutdown-prestop/",
+  "/recipes/configuration/kubernetes-terminationgraceperiodseconds/",
+  "/recipes/deployments/kubernetes-terminationgraceperiod/",
+  "/recipes/deployments/kubernetes-graceful-shutdown-pod-termination/",
+  "/recipes/deployments/kubernetes-graceful-shutdown/",
   "/recipes/gitops/",
   "/recipes/configuration/argocd-gitops/",
   "/recipes/configuration/flux-gitops/",

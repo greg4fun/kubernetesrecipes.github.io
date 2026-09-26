@@ -18,7 +18,7 @@ relatedRecipes:
   - "gpu-upgrade-version-matrix"
   - "gpu-operator-clusterpolicy-reference"
   - "switch-proprietary-to-open-kernel-modules"
-  - "openshift-lifecycle-versions"
+  - "openshift-support-lifecycle-version-matrix"
   - "openshift-mcp-itms-rollout"
   - "clusterpolicy-mofed-upgrade"
 ---

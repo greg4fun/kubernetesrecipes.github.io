@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
-  - "kubernetes-terminationgraceperiod"
+  - "kubernetes-graceful-shutdown-guide"
 ---
 
 > 💡 **Quick Answer:** Manage stateful applications on Kubernetes with StatefulSets. Ordered deployment, stable network identity, persistent storage, and scaling strategies for databases.

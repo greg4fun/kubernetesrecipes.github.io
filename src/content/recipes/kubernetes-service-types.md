@@ -10,7 +10,7 @@ relatedRecipes:
   - "kubernetes-secrets-guide"
   - "kubernetes-nodeport"
   - "kubernetes-pvc-guide"
-  - "kubernetes-pod-lifecycle"
+  - "kubernetes-pod-lifecycle-guide"
 ---
 
 > 💡 **Quick Answer:** networking

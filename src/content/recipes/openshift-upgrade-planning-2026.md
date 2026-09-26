@@ -13,9 +13,8 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "25 minutes"
 relatedRecipes:
-  - "kubernetes-finalizers-ownership-guide"
-  - "openshift-lifecycle-support-versions"
-  - "openshift-lifecycle-versions"
+  - "stuck-resources-finalizers"
+  - "openshift-support-lifecycle-version-matrix"
   - "openshift-mcp-itms-rollout"
   - "kubernetes-etcd-backup-restore"
   - "kubernetes-1-35-1-36-upgrade-checklist"

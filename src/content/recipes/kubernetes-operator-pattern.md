@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "install-helm-amazon-linux"
   - "helm-sprig-cat-function"
-  - "openshift-lifecycle-versions"
+  - "openshift-support-lifecycle-version-matrix"
   - "argocd-gitops"
   - "kubernetes-ci-cd-pipeline"
   - "kubernetes-replicaset-explained"

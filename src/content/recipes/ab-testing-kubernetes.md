@@ -38,7 +38,6 @@ relatedRecipes:
   - "logging-efk-stack"
   - "kubernetes-kustomize-configuration-management"
   - "kubernetes-labels-annotations-best-practices"
-  - "kubernetes-finalizers"
   - "kubernetes-endpointslices"
   - "kubernetes-dns-configuration"
   - "kubernetes-cost-optimization"

@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-crd-development-guide"
   - "kubernetes-pod-security-standards"
   - "kubernetes-rbac-least-privilege"
-  - "kubernetes-finalizers-explained-troubleshooting"
+  - "stuck-resources-finalizers"
   - "kubernetes-leases"
 ---
 

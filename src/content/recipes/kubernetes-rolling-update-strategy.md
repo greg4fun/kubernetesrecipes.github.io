@@ -14,7 +14,7 @@ tags:
   - zero-downtime
 relatedRecipes:
   - "kubernetes-pod-disruption-budget-guide"
-  - "kubernetes-graceful-shutdown-prestop"
+  - "kubernetes-graceful-shutdown-guide"
   - "ab-testing-kubernetes"
 ---
 

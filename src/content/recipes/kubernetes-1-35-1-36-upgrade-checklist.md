@@ -14,7 +14,7 @@ difficulty: "intermediate"
 timeToComplete: "25 minutes"
 relatedRecipes:
   - "kubernetes-api-versions-explained"
-  - "openshift-lifecycle-support-versions"
+  - "openshift-support-lifecycle-version-matrix"
   - "kubernetes-etcd-backup-restore"
   - "kubernetes-rolling-update-zero-downtime"
   - "kubernetes-pod-priority-preemption"

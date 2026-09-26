@@ -10,7 +10,7 @@ prerequisites:
   - "kubernetes-nmstate operator installed"
   - "Worker nodes with available network interfaces"
 relatedRecipes:
-  - "openshift-lifecycle-versions"
+  - "openshift-support-lifecycle-version-matrix"
   - "verify-ovn-underlay-interface"
   - "nncp-bond-interfaces-workers"
   - "nncp-vlan-tagging-workers"

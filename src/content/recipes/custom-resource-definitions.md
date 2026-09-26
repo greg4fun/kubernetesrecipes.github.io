@@ -8,7 +8,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "pod-mutation-injection"
   - "kubernetes-leases"
-  - "kubernetes-finalizers"
+  - "stuck-resources-finalizers"
   - "kubectl-config-context-management"
   - "kubernetes-api-aggregation"
   - "kubernetes-labels-annotations-best-practices"

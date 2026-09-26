@@ -12,7 +12,7 @@ relatedRecipes:
   - "kubernetes-local-development"
   - "kubernetes-kind-local-development"
   - "kubernetes-job-cronjob-guide"
-  - "kubernetes-graceful-shutdown"
+  - "kubernetes-graceful-shutdown-guide"
   - "distributed-fio-kubernetes-openshift"
   - "kubeflow-operator-platform"
   - "k8s-fio-config-profiles-openshift"

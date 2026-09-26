@@ -15,7 +15,7 @@ timeToComplete: "10 minutes"
 relatedRecipes:
   - "kubernetes-cronjob-concurrencypolicy-guide"
   - "argo-workflows-kubernetes"
-  - "kubernetes-pod-lifecycle"
+  - "kubernetes-pod-lifecycle-guide"
   - "kubernetes-pod-priority-preemption"
 ---
 

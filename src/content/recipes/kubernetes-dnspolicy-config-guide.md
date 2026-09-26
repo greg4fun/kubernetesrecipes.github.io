@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-service-dns-discovery"
   - "kubernetes-coredns-custom-config"
   - "kubernetes-networkpolicy-default-deny"
-  - "kubernetes-pod-lifecycle"
+  - "kubernetes-pod-lifecycle-guide"
   - "kubernetes-endpoint-slices-discovery"
   - "kubernetes-dns-services-guide"
 ---

@@ -22,7 +22,7 @@ relatedRecipes:
   - "kubernetes-kustomize-configuration-management"
   - "kubernetes-leases"
   - "kubernetes-labels-annotations-best-practices"
-  - "kubernetes-finalizers"
+  - "stuck-resources-finalizers"
   - "kubernetes-cost-optimization"
   - "kubernetes-api-aggregation"
   - "kubectl-config-context-management"

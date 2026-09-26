@@ -9,6 +9,29 @@
 # These recipes have been consolidated to avoid duplicate content issues
 # =============================================================================
 
+# Pod lifecycle / Helm hooks - Consolidate 3 duplicates into their ranking canonicals
+/recipes/configuration/kubernetes-pod-lifecycle/    /recipes/configuration/kubernetes-pod-lifecycle-guide/    301
+/recipes/troubleshooting/kubernetes-pod-lifecycle-states/    /recipes/configuration/kubernetes-pod-lifecycle-guide/    301
+/recipes/helm/helm-hooks-lifecycle-guide/    /recipes/helm/helm-hooks-lifecycle/    301
+
+# OpenShift lifecycle - Consolidate 2 duplicate lifecycle pages into the ranking support-lifecycle-version-matrix page
+/recipes/deployments/openshift-lifecycle-support-versions/    /recipes/configuration/openshift-support-lifecycle-version-matrix/    301
+
+# Finalizers - Consolidate 5 duplicate finalizer pages into the ranking stuck-resources-finalizers page
+/recipes/troubleshooting/kubernetes-finalizers-explained-troubleshooting/    /recipes/troubleshooting/stuck-resources-finalizers/    301
+/recipes/configuration/kubernetes-finalizers/    /recipes/troubleshooting/stuck-resources-finalizers/    301
+/recipes/configuration/kubernetes-finalizers-ownership-guide/    /recipes/troubleshooting/stuck-resources-finalizers/    301
+/recipes/configuration/kubernetes-finalizers-guide/    /recipes/troubleshooting/stuck-resources-finalizers/    301
+/recipes/configuration/kubernetes-finalizers-explained/    /recipes/troubleshooting/stuck-resources-finalizers/    301
+
+# Graceful shutdown - Consolidate 6 termination/grace-period duplicates into the ranking graceful-shutdown-guide page
+/recipes/deployments/kubernetes-pod-lifecycle-termination/    /recipes/deployments/kubernetes-graceful-shutdown-guide/    301
+/recipes/deployments/kubernetes-graceful-shutdown-prestop/    /recipes/deployments/kubernetes-graceful-shutdown-guide/    301
+/recipes/configuration/kubernetes-terminationgraceperiodseconds/    /recipes/deployments/kubernetes-graceful-shutdown-guide/    301
+/recipes/deployments/kubernetes-terminationgraceperiod/    /recipes/deployments/kubernetes-graceful-shutdown-guide/    301
+/recipes/deployments/kubernetes-graceful-shutdown-pod-termination/    /recipes/deployments/kubernetes-graceful-shutdown-guide/    301
+/recipes/deployments/kubernetes-graceful-shutdown/    /recipes/deployments/kubernetes-graceful-shutdown-guide/    301
+
 # ArgoCD GitOps - Keep the more complete version
 /recipes/configuration/argocd-gitops/    /recipes/deployments/argocd-gitops-deployment/    301
 
@@ -40,7 +63,7 @@
 /recipes/storage/velero-backup-restore/    /recipes/storage/velero-backup-disaster-recovery/    301
 
 # OpenShift Lifecycle - Consolidate thin templated guide into canonical
-/recipes/configuration/openshift-lifecycle-versions-guide/    /recipes/configuration/openshift-lifecycle-versions/    301
+/recipes/configuration/openshift-lifecycle-versions-guide/    /recipes/configuration/openshift-support-lifecycle-version-matrix/    301
 
 # Grafana Dashboard 6417 - Consolidate factually-incorrect node-exporter page (6417 is "Kubernetes Cluster", not Node Exporter Full which is 1860)
 /recipes/observability/grafana-dashboard-6417-node-exporter/    /recipes/observability/grafana-dashboard-6417-kubernetes/    301
@@ -118,7 +141,7 @@
 /recipes/storage/etcd-backup-restore/    /recipes/storage/etcd-backup-restore-kubernetes/    301
 /recipes/deployments/graceful-shutdown/    /recipes/deployments/kubernetes-graceful-shutdown-guide/    301
 /recipes/helm/helm-dependencies/    /recipes/helm/helm-chart-dependencies-guide/    301
-/recipes/helm/helm-hooks/    /recipes/helm/helm-hooks-lifecycle-guide/    301
+/recipes/helm/helm-hooks/    /recipes/helm/helm-hooks-lifecycle/    301
 /recipes/deployments/init-containers/    /recipes/configuration/kubernetes-init-containers/    301
 /recipes/networking/istio-traffic-management/    /recipes/networking/kubernetes-istio-traffic-management/    301
 /recipes/ai/kai-scheduler-topology-aware/    /recipes/ai/kubernetes-1-36-topology-aware-scheduling/    301

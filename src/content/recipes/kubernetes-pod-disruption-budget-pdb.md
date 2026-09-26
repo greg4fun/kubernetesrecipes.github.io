@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-pod-priority-preemption-scheduling"
-  - "kubernetes-graceful-shutdown-pod-termination"
+  - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-rolling-update-strategies"
 ---
 

@@ -18,7 +18,6 @@ relatedRecipes:
   - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-sidecar-containers-guide"
   - "kubernetes-replicaset-guide"
-  - "kubernetes-pod-lifecycle-termination"
   - "kubernetes-dapr-microservices-guide"
 ---
 

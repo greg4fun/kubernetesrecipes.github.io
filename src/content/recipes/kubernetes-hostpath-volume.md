@@ -9,7 +9,7 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["hostpath", "volumes", "storage", "daemonset", "security", "local-storage"]
 relatedRecipes:
-  - "openshift-lifecycle-versions"
+  - "openshift-support-lifecycle-version-matrix"
   - "kubernetes-storage-best-practices"
   - "kubernetes-emptydir-volume"
   - "kubernetes-security-context-guide"

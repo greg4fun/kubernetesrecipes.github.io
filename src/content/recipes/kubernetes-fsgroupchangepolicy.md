@@ -15,7 +15,7 @@ timeToComplete: "10 minutes"
 relatedRecipes:
   - "kubernetes-fsgroupchangepolicy-guide"
   - "kubernetes-security-context-guide"
-  - "kubernetes-pod-lifecycle"
+  - "kubernetes-pod-lifecycle-guide"
 ---
 
 > 💡 **Quick Answer:** When you set \`fsGroup\` in a pod's security context, Kubernetes recursively \`chown\`s every file in mounted volumes on startup. For volumes with millions of files, this takes minutes. Set \`fsGroupChangePolicy: OnRootMismatch\` to only change ownership when the root directory's group doesn't match — reducing mount time from minutes to seconds.
