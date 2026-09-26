@@ -1,6 +1,6 @@
 ---
-title: "crun vs runc: Container Runtime Benchmarks 2026"
-description: "Compare crun vs runc container runtime benchmarks: memory footprint, cold-start performance, cgroup v2 support, and migration from runc to crun."
+title: "crun vs runc: Memory and Performance Benchmarks 2026"
+description: "Compare crun vs runc: 50% faster container startup and 10x lower memory footprint. Includes benchmarks, cgroup v2 support, and migration guide."
 publishDate: "2026-04-25"
 author: "Luca Berton"
 category: "configuration"
