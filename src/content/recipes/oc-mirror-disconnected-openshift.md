@@ -14,6 +14,7 @@ tags:
   - "air-gapped"
   - "mirroring"
 relatedRecipes:
+  - "oc-mirror-troubleshooting-disconnected"
   - "mirror-registry-disconnected-openshift"
   - "osus-operator-disconnected-openshift"
   - "openshift-upgrade-disconnected-environment"

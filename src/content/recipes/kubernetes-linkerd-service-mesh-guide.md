@@ -15,7 +15,7 @@ tags:
   - "observability"
 relatedRecipes:
   - "kubernetes-service-mesh-istio-guide"
-  - "kubernetes-gateway-api-guide"
+  - "kubernetes-gateway-api"
   - "kubernetes-networkpolicy-guide"
   - "kubernetes-cilium-networking-guide"
 ---

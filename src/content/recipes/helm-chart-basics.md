@@ -10,7 +10,7 @@ prerequisites:
   - "Helm 3 installed"
   - "kubectl configured to access your cluster"
 relatedRecipes:
-  - "rolling-update-deployment"
+  - "kubernetes-rolling-update-strategy"
   - "openclaw-signal-kubernetes"
   - "helm-chart-repositories"
   - "helm-chart-dependencies-guide"

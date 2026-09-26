@@ -14,7 +14,7 @@ tags:
   - "elasticsearch"
   - "loki"
 relatedRecipes:
-  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-prometheus-monitoring-guide"
 ---
 
 > 💡 **Quick Answer:** Deploy Fluent Bit as a DaemonSet to collect logs from every node. It reads container logs from `/var/log/containers/`, enriches with Kubernetes metadata (pod name, namespace, labels), and forwards to a backend (Elasticsearch, Grafana Loki, S3, Kafka). Install via `helm install fluent-bit fluent/fluent-bit` — it handles log rotation, multiline parsing, and back-pressure automatically.

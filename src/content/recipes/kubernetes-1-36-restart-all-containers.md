@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-1-36-selinux-mount-labeling"
   - "gpu-sharing-mig-timeslicing-kubernetes"
   - "distributed-training-tensorflow-pytorch-kubernetes"
-  - "nccl-environment-variables-guide"
+  - "nccl-environment-variables-reference-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Kubernetes 1.36 introduces **RestartAllContainers** (Alpha). When one container in a multi-container Pod fails, all containers restart in-place instead of the Pod being rescheduled — saving hours of ML training checkpoint recovery time.

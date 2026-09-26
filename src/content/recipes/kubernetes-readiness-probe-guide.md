@@ -14,7 +14,7 @@ tags:
   - "tcp-socket"
 relatedRecipes:
   - "kubernetes-readiness-liveness-startup"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "canary-deployment-gateway-api-traffic-splitting"
 ---
 

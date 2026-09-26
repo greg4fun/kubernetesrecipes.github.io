@@ -13,7 +13,7 @@ tags:
   - "path-based"
   - "host-based"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

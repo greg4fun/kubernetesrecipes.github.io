@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-service-account-guide"
   - "kubernetes-health-checks"
-  - "kubernetes-canary-deployment"
+  - "kubernetes-canary-deployment-guide"
   - "kubernetes-headless-service"
 ---
 

@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-karpenter-node-autoscaling"
   - "kubernetes-gateway-api-httproute"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-endpoint-slices-service-topology"
 ---
 

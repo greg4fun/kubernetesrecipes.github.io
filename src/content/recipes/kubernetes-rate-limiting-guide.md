@@ -15,8 +15,8 @@ tags:
   - "networking"
   - "security"
 relatedRecipes:
-  - "kubernetes-ingress-guide"
-  - "kubernetes-gateway-api-guide"
+  - "kubernetes-ingress-complete-guide"
+  - "kubernetes-gateway-api"
   - "nginx-ingress-limit-burst-multiplier"
   - "kubernetes-ingress-fundamentals"
   - "kubernetes-ingress-nginx-guide"

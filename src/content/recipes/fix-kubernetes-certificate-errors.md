@@ -13,7 +13,7 @@ tags:
   - "x509"
   - "cert-manager"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

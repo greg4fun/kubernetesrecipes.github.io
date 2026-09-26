@@ -12,7 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-rolling-update-strategies"
+  - "kubernetes-rolling-update-strategy"
   - "kubernetes-graceful-shutdown-guide"
   - "argocd-gitops"
 ---

@@ -14,7 +14,7 @@ tags:
   - observability
   - grafana
 relatedRecipes:
-  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-prometheus-monitoring-guide"
   - "kubernetes-pod-resource-monitoring-grafana"
   - "kubernetes-golden-signals-sli-slo"
 ---

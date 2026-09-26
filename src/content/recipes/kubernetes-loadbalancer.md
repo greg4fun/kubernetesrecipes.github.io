@@ -7,7 +7,7 @@ publishDate: "2026-04-07"
 tags: ["loadbalancer", "service", "external-access", "metallb", "cloud"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-secrets-guide"
+  - "secrets-management-best-practices"
   - "kubernetes-nodeport"
   - "kubernetes-pvc-guide"
   - "kubernetes-commands"

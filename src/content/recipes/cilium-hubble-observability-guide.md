@@ -13,7 +13,7 @@ tags:
   - "network-flows"
   - "observability"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

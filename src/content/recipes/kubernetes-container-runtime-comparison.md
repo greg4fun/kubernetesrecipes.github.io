@@ -13,7 +13,7 @@ tags:
   - "cri-o"
   - "kata"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-api-versions-explained"
 ---
 

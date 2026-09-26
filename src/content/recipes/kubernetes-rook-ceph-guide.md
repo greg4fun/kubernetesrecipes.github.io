@@ -13,7 +13,7 @@ tags:
   - "block-storage"
   - "object-storage"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "csi-snapshot-restore-guide"
 ---
 

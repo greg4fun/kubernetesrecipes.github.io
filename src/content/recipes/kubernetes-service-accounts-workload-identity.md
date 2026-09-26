@@ -15,7 +15,7 @@ tags:
   - cloud
 relatedRecipes:
   - "kubernetes-rbac-least-privilege"
-  - "kubernetes-secrets-management-external"
+  - "external-secrets-operator"
   - "kubernetes-pod-security-admission"
 ---
 

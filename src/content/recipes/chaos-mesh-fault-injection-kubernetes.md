@@ -15,7 +15,7 @@ relatedRecipes:
   - "litmus-chaos-engineering-kubernetes"
   - "kubernetes-pod-disruption-budget"
   - "network-policy-debug-connectivity"
-  - "kubernetes-oomkilled-fix"
+  - "kubernetes-oomkilled-troubleshooting"
 ---
 
 > 💡 **Quick Answer:** Chaos Mesh is a CNCF incubating project that injects faults into Kubernetes workloads — Pod kills, network delays, disk I/O errors, CPU/memory stress — via CRDs. Install with Helm, define experiments as YAML, scope with namespace selectors, and integrate into CI/CD for automated resilience testing.

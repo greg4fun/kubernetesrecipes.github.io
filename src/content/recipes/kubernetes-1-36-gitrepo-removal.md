@@ -15,7 +15,7 @@ relatedRecipes:
   - "kubernetes-1-36-user-namespaces"
   - "kubernetes-1-36-selinux-mount-labeling"
   - "kubernetes-1-36-oci-volume-source"
-  - "kubernetes-init-containers-guide"
+  - "kubernetes-init-containers-patterns-examples"
   - "kubernetes-persistent-volume-guide"
 ---
 

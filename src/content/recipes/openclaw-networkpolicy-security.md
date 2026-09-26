@@ -10,7 +10,7 @@ prerequisites:
   - "OpenClaw deployed on Kubernetes"
 relatedRecipes:
   - "kubernetes-security-context-guide"
-  - "namespace-management"
+  - "kubernetes-namespace-guide"
   - "openclaw-kubernetes-deployment"
   - "openclaw-secrets-management"
   - "kubernetes-oidc-authentication-guide"

@@ -7,9 +7,9 @@ publishDate: "2026-04-02"
 tags: ["sidecar", "patterns", "logging", "proxy", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-init-containers-guide"
+  - "kubernetes-init-containers-patterns-examples"
   - "service-mesh-sidecar-troubleshooting"
-  - "configmap-hot-reload-troubleshooting"
+  - "kubernetes-configmap-hot-reload"
 ---
 
 > 💡 **Quick Answer:** Implement sidecar containers for logging, proxying, config reload, and security. Built-in sidecar support in Kubernetes 1.28+ with restartPolicy Always.

@@ -13,7 +13,7 @@ tags:
   - "comparison"
   - "storage"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-emptydir-hostpath-volumes"
 ---

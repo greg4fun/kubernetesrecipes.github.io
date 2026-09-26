@@ -12,7 +12,7 @@ tags:
   - "nccl"
   - "security"
 relatedRecipes:
-  - "kubernetes-networkpolicy-examples"
+  - "kubernetes-networkpolicy-guide"
   - "multi-tenant-gpu-namespace-isolation"
   - "gpu-tenant-bootstrap-bundle"
   - "infiniband-ethernet-ai-kubernetes"

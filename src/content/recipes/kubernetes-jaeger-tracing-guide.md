@@ -14,7 +14,7 @@ tags:
   - "observability"
 relatedRecipes:
   - "kubernetes-opentelemetry-collector"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Deploy Jaeger for distributed tracing on Kubernetes. Collector, storage backends, sampling strategies, and trace analysis for microservice debugging.

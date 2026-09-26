@@ -14,7 +14,7 @@ tags:
   - "access-modes"
 relatedRecipes:
   - "kubernetes-pv-reclaim-policies"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

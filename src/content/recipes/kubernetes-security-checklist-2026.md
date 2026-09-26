@@ -13,7 +13,7 @@ tags:
   - "hardening"
   - "compliance"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-image-scanning-trivy"
   - "edr-flexera-kubernetes-agents"

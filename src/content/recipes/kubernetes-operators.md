@@ -13,7 +13,7 @@ prerequisites:
 relatedRecipes:
   - "custom-resource-definitions"
   - "kubernetes-admission-webhooks-guide"
-  - "rbac-service-accounts"
+  - "service-accounts-rbac"
 tags:
   - operators
   - controllers

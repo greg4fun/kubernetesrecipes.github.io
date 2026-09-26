@@ -1,19 +1,20 @@
 ---
-title: "Multi-Cluster Fleet Management on Kubernetes"
-description: "Manage multiple Kubernetes clusters with kubectl contexts, federation, GitOps fleet patterns, and tools like Rancher, ArgoCD, and Cluster API."
+title: "Kubernetes Multi-Cluster Management: Fleet Patterns"
+description: "Manage Kubernetes fleets: kubectl contexts/kubectx, Argo CD ApplicationSets, Rancher Fleet, OpenShift ACM, Cluster API, and cross-cluster service mesh."
 category: "deployments"
 publishDate: "2026-04-20"
 author: "Luca Berton"
 difficulty: "advanced"
 timeToComplete: "20 minutes"
 kubernetesVersion: "1.25+"
-tags: ["multi-cluster", "federation", "fleet", "gitops", "management"]
+tags: ["multi-cluster", "federation", "fleet", "gitops", "management", "argocd", "cluster-api", "kubectx"]
 relatedRecipes:
-  - "kubernetes-readiness-liveness-startup"
-  - "kubernetes-graceful-shutdown-guide"
   - "argocd-multi-cluster-app-of-apps"
+  - "argocd-gitops"
   - "kubectl-config-context-management"
-  - "kubernetes-multi-cluster-management"
+  - "cilium-clustermesh-multicluster"
+  - "rhacs-multi-cluster-management"
+  - "kubernetes-disaster-recovery-enterprise"
 ---
 
 > 💡 **Quick Answer:** Manage multiple K8s clusters by: 1) `kubectl` contexts for manual switching, 2) ArgoCD ApplicationSets for GitOps fleet deployment, 3) Cluster API for lifecycle management, or 4) Rancher/OpenShift ACM for full platform management.
@@ -51,7 +52,14 @@ KUBECONFIG=~/.kube/prod.yaml:~/.kube/staging.yaml kubectl config view --flatten 
 
 # Rename context for clarity
 kubectl config rename-context kubernetes-admin@cluster prod-us-east
+
+# kubectx / kubens for fast switching
+kubectx prod-eu
+kubectx prod=arn:aws:eks:eu-west-1:123456789:cluster/production   # rename
+kubens payments
 ```
+
+Always check `kubectl config current-context` (or show it in your prompt) before destructive commands.
 
 ### ArgoCD Multi-Cluster GitOps
 
@@ -87,6 +95,47 @@ spec:
         automated:
           prune: true
           selfHeal: true
+```
+
+Register clusters with `argocd cluster add <context> --name prod-eu`, then label the generated cluster Secret (`env`, `region`) for the generator selectors. Run Argo CD in a dedicated management cluster, not in a cluster it deploys to.
+
+### Rancher Fleet (Edge Scale)
+
+```yaml
+apiVersion: fleet.cattle.io/v1alpha1
+kind: GitRepo
+metadata:
+  name: my-app
+  namespace: fleet-default
+spec:
+  repo: https://git.example.com/apps/my-app.git
+  branch: main
+  paths:
+    - overlays/edge
+  targets:
+    - name: edge-clusters
+      clusterSelector:
+        matchLabels:
+          location: edge
+```
+
+### OpenShift Advanced Cluster Management (ACM)
+
+ACM groups managed clusters into `ManagedClusterSet`s and selects targets with `Placement`, which policies and Argo CD (OpenShift GitOps) ApplicationSets consume:
+
+```yaml
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: prod-clusters
+  namespace: openshift-gitops
+spec:
+  clusterSets: ["production"]
+  predicates:
+    - requiredClusterSelector:
+        labelSelector:
+          matchLabels:
+            env: production
 ```
 
 ### Cluster API (Lifecycle Management)
@@ -149,21 +198,29 @@ graph TD
 
 ### Service Mesh Multi-Cluster
 
+```bash
+# Istio multi-primary: shared root CA, then give each control plane
+# API access to the other cluster for endpoint discovery
+istioctl create-remote-secret --context=prod-eu --name=prod-eu | \
+  kubectl apply -f - --context=prod-us
+istioctl create-remote-secret --context=prod-us --name=prod-us | \
+  kubectl apply -f - --context=prod-eu
+# Same-named Services in the same namespace are now load-balanced across clusters
+```
+
 ```yaml
-# Istio multi-cluster (shared trust domain)
-# Link services across clusters
-apiVersion: networking.istio.io/v1alpha3
-kind: ServiceEntry
+# Cilium Cluster Mesh: mark a Service global (same name/namespace in each cluster)
+apiVersion: v1
+kind: Service
 metadata:
-  name: remote-service
+  name: backend
+  annotations:
+    service.cilium.io/global: "true"
 spec:
-  hosts:
-    - myservice.namespace.global
-  location: MESH_INTERNAL
-  endpoints:
-    - address: 10.1.2.3  # Remote cluster gateway IP
-      ports:
-        http: 15443
+  selector:
+    app: backend
+  ports:
+    - port: 80
 ```
 
 ### Centralized Monitoring
@@ -190,12 +247,23 @@ spec:
 | Config drift between clusters | Manual changes | Enforce GitOps — no `kubectl apply` |
 | Inconsistent versions | Clusters at different K8s versions | Use Cluster API for version management |
 
+## Frequently Asked Questions
+
+### What is the best tool for Kubernetes multi-cluster management?
+It depends on the layer. For app delivery, Argo CD ApplicationSets or Flux; for edge fleets of hundreds of clusters, Rancher Fleet; for cluster lifecycle, Cluster API or your cloud's managed API; for governance on OpenShift, ACM. Most enterprises combine a GitOps tool with one lifecycle tool.
+
+### Is Kubernetes Federation (KubeFed) still used?
+No. KubeFed was archived in 2023. Its role is covered by GitOps fan-out (ApplicationSets, Fleet), ACM/Open Cluster Management placement, and multi-cluster service meshes.
+
+### How do services communicate across clusters?
+Via a multi-cluster mesh or CNI: Istio multi-primary/primary-remote, Cilium Cluster Mesh global services, Linkerd multicluster, or Skupper for L7 links without flat networking. The Kubernetes MCS API (`ServiceExport`/`ServiceImport`) standardizes this where supported.
+
 ## Best Practices
 
 1. **Use a management cluster** — single pane for fleet operations
 2. **GitOps for all deployments** — ArgoCD ApplicationSets across clusters
 3. **Standardize cluster labels** — `env`, `region`, `tier` for fleet targeting
-4. **Separate kubeconfigs per cluster** — avoid accidental cross-cluster commands
+4. **Separate kubeconfigs per cluster** — avoid accidental cross-cluster commands; use descriptive context names, not ARNs
 5. **Centralize observability** — one Grafana for all clusters with cluster label
 
 ## Key Takeaways

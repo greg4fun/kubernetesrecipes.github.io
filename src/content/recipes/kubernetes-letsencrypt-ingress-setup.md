@@ -14,7 +14,7 @@ tags:
   - "cert-manager"
 relatedRecipes:
   - "nodeport-raw-vs-https-ingress"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Set up Let's Encrypt TLS certificates for Kubernetes Ingress with cert-manager. HTTP-01 challenge, automatic renewal, and HTTPS redirect configuration.

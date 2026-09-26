@@ -20,7 +20,7 @@ relatedRecipes:
   - "kubernetes-secret-types-guide"
   - "kubernetes-security-context-guide"
   - "kubernetes-certificate-management"
-  - "kubernetes-external-secrets-guide"
+  - "external-secrets-operator"
   - "kubernetes-serviceaccount-running-pod"
   - "runai-keycloak-sso-authentication"
 ---

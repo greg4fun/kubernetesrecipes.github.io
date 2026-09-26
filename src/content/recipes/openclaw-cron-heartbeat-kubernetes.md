@@ -11,7 +11,7 @@ prerequisites:
 relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-monitoring-prometheus"
-  - "jobs-cronjobs"
+  - "kubernetes-job-cronjob-guide"
 tags:
   - openclaw
   - cron

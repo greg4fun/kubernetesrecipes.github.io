@@ -14,7 +14,7 @@ tags:
   - "configuration"
 relatedRecipes:
   - "kubernetes-configmap-reload-patterns"
-  - "kubernetes-secrets-management-external"
+  - "external-secrets-operator"
 ---
 
 > 💡 **Quick Answer:** Set `immutable: true` on ConfigMaps and Secrets that shouldn't change after creation. This reduces API server watch load (kubelet stops watching immutable objects) and prevents accidental modifications. Use name-based versioning (`config-v2`) for updates.

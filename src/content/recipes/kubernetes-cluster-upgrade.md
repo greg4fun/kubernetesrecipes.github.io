@@ -1,6 +1,6 @@
 ---
-title: "How to Upgrade Kubernetes Clusters Safely"
-description: "Perform Kubernetes cluster upgrades with zero downtime. Learn upgrade strategies, pre-flight checks, rollback procedures, and best practices for."
+title: "Kubernetes Cluster Upgrade with kubeadm: Step-by-Step"
+description: "Upgrade Kubernetes safely: version skew, etcd backup, kubeadm control plane and worker upgrades, drain/uncordon, EKS/AKS/GKE commands, and rollback."
 category: "configuration"
 difficulty: "advanced"
 timeToComplete: "45 minutes"
@@ -14,18 +14,20 @@ relatedRecipes:
   - "kubernetes-readiness-probe-guide"
   - "etcd-backup-restore-kubernetes"
   - "pod-disruption-budget-config"
-  - "rolling-update-deployment"
+  - "kubernetes-rolling-update-strategy"
+  - "kubernetes-api-deprecation-migration"
 tags:
   - upgrade
   - cluster-management
   - maintenance
   - high-availability
   - zero-downtime
+  - kubeadm
 publishDate: "2026-01-28"
 author: "Luca Berton"
 ---
 
-> 💡 **Quick Answer:** Upgrade one minor version at a time (1.28→1.29, not 1.28→1.30). Process: **backup etcd**, upgrade control plane nodes first (`kubeadm upgrade apply`), then workers (`kubeadm upgrade node` + drain/uncordon). Check API deprecations with `kubectl deprecations` or pluto before upgrading.
+> 💡 **Quick Answer:** Upgrade one minor version at a time (1.28→1.29, not 1.28→1.30). Process: **backup etcd**, upgrade control plane nodes first (`kubeadm upgrade apply`), then workers (`kubeadm upgrade node` + drain/uncordon). Check removed/deprecated APIs with `kubent` or `pluto` before upgrading.
 >
 > **Key command:** `kubeadm upgrade plan` shows available versions and required actions.
 >
@@ -81,8 +83,8 @@ flowchart LR
     subgraph SKEW["Kubernetes Version Skew Rules"]
         direction TB
         API["kube-apiserver<br/>N/A - defines the version"]
-        CM["kube-controller-mgr<br/>±1 minor from apiserver"]
-        SCHED["kube-scheduler<br/>±1 minor from apiserver"]
+        CM["kube-controller-mgr<br/>0 to -1 minor from apiserver"]
+        SCHED["kube-scheduler<br/>0 to -1 minor from apiserver"]
         KL["kubelet<br/>-3 to 0 from apiserver"]
         KP["kube-proxy<br/>Same as kubelet"]
         KC["kubectl<br/>±1 minor from apiserver"]
@@ -90,7 +92,7 @@ flowchart LR
 ```
 
 **Example:** If API server is 1.29:
-- Control plane: Must be 1.28, 1.29, or 1.30
+- controller-manager / scheduler: 1.28 or 1.29 (never newer than the API server)
 - Kubelet: Can be 1.26, 1.27, 1.28, or 1.29
 - kubectl: Can be 1.28, 1.29, or 1.30
 
@@ -215,6 +217,16 @@ echo -e "\n=== Pre-upgrade checks complete ==="
 ```
 
 ## Phase 2: Control Plane Upgrade (kubeadm)
+
+### Switch the Package Repository to the New Minor
+
+The community repos at `pkgs.k8s.io` are per minor version, so `apt-cache madison kubeadm` will not show 1.29 packages until you repoint the repo (the legacy `apt.kubernetes.io` repos are frozen):
+
+```bash
+# Debian/Ubuntu — on every node
+sudo sed -i 's|/v1.28/|/v1.29/|' /etc/apt/sources.list.d/kubernetes.list
+# RHEL-family: edit baseurl/gpgkey in /etc/yum.repos.d/kubernetes.repo the same way
+```
 
 ### Upgrade First Control Plane Node
 
@@ -534,7 +546,11 @@ systemctl daemon-reload
 systemctl restart kubelet
 ```
 
+kubeadm does not support downgrades: `kubeadm upgrade apply` to an older version is refused. A control-plane rollback means restoring the pre-upgrade etcd snapshot and static pod manifests — which is why the backup step is mandatory. On multi-member etcd, restore every member from the same snapshot.
+
 ### Rollback Worker Nodes
+
+Workers usually don't need rolling back: an older kubelet is within skew of a newer control plane. If a new kubelet misbehaves, reinstall the previous kubelet package:
 
 ```bash
 # Drain node
@@ -542,8 +558,7 @@ kubectl drain worker-1 --ignore-daemonsets --delete-emptydir-data
 
 # SSH and downgrade
 ssh worker-1
-apt-get install -y kubeadm=1.28.0-1.1 kubelet=1.28.0-1.1 kubectl=1.28.0-1.1
-kubeadm upgrade node
+apt-get install -y --allow-downgrades kubelet=1.28.0-1.1
 systemctl daemon-reload
 systemctl restart kubelet
 exit
@@ -607,6 +622,20 @@ spec:
 - [ ] worker-2 upgraded
 ...
 ```
+
+## Frequently Asked Questions
+
+### Can I skip Kubernetes minor versions when upgrading?
+No. kubeadm and every managed service upgrade the control plane one minor version at a time (1.28 → 1.29 → 1.30). Workers can lag the control plane by up to three minors, so you can upgrade the control plane twice and then jump workers once — but the control plane itself never skips.
+
+### How long does a Kubernetes cluster upgrade take?
+The control plane takes roughly 5-15 minutes per node with kubeadm. Worker time is dominated by drain: pods with long `terminationGracePeriodSeconds` or tight PodDisruptionBudgets can hold a drain for many minutes per node.
+
+### What should I back up before upgrading?
+An etcd snapshot (`etcdctl snapshot save`), `/etc/kubernetes` (manifests, PKI, kubeconfigs) from each control plane node, and your GitOps/manifest source. See [etcd backup and restore](/recipes/storage/etcd-backup-restore-kubernetes/).
+
+### Why is kubectl drain stuck during an upgrade?
+A PodDisruptionBudget allows zero disruptions (e.g. `minAvailable` equals replicas), or a pod without a controller needs `--force`. Check `kubectl get pdb -A` for `ALLOWED DISRUPTIONS 0`.
 
 ## Summary
 

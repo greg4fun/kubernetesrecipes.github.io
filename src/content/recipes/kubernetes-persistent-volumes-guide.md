@@ -14,7 +14,7 @@ tags:
   - "storageclass"
   - "fundamentals"
 relatedRecipes:
-  - "kubernetes-backup-velero-guide"
+  - "velero-kubernetes-backup-disaster-recovery"
 ---
 
 > 💡 **Quick Answer:** PersistentVolume (PV) is the storage, PersistentVolumeClaim (PVC) is the request, StorageClass enables dynamic provisioning. Create a StorageClass, reference it in a PVC, mount the PVC in a pod. Use `ReadWriteOnce` for single-node (block), `ReadWriteMany` for shared (NFS/CephFS), and `allowVolumeExpansion: true` on StorageClass for online resize.

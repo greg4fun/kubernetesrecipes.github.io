@@ -13,7 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
-  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-prometheus-monitoring-guide"
   - "kubernetes-pod-resource-monitoring-grafana"
   - "kubernetes-alerting-best-practices"
   - "kubernetes-monitoring-guide"

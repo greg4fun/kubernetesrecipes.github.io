@@ -14,7 +14,7 @@ relatedRecipes:
   - "kubernetes-image-pull-policy-always-never"
   - "stuck-resources-finalizers"
   - "kubernetes-crossplane-infrastructure"
-  - "kubernetes-configmap"
+  - "kubernetes-configmap-guide"
   - "kubernetes-configmap-from-file"
   - "selinux-scc-gpu-operator-openshift"
   - "configure-clusterpolicy-kernel-module-type"

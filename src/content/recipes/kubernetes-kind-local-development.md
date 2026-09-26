@@ -14,7 +14,7 @@ tags:
   - "testing"
 relatedRecipes:
   - "kubernetes-crd-development-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

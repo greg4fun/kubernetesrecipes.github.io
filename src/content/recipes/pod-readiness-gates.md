@@ -13,7 +13,7 @@ relatedRecipes:
   - "kubernetes-istio-traffic-management"
   - "kubernetes-readiness-probe-guide"
   - "pod-disruption-budget-config"
-  - "rolling-update-deployment"
+  - "kubernetes-rolling-update-strategy"
 tags:
   - readiness-gates
   - pod-conditions

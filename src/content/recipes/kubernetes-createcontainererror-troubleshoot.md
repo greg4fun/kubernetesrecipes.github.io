@@ -14,7 +14,7 @@ tags:
   - "debugging"
   - "cka"
 relatedRecipes:
-  - "kubernetes-imagepullbackoff-troubleshoot"
+  - "imagepullbackoff-troubleshooting"
   - "kubernetes-kubectl-debug-guide"
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-secret-types-guide"

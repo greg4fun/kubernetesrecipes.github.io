@@ -11,7 +11,7 @@ prerequisites:
   - "NVIDIA nv-ipam configured"
   - "Access to pod events and cluster CRs"
 relatedRecipes:
-  - "kubernetes-502-bad-gateway-troubleshooting"
+  - "fix-502-bad-gateway-kubernetes"
   - "configure-sriovnetwork-nv-ipam"
   - "create-nv-ipam-ippool"
   - "openshift-sriov-vf-creation"

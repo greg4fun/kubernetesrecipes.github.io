@@ -15,7 +15,7 @@ tags:
   - "cka"
 relatedRecipes:
   - "kubernetes-service-types-explained"
-  - "kubernetes-coredns-troubleshooting"
+  - "coredns-troubleshooting"
   - "kubernetes-ingress-nginx-guide"
   - "dns-policies-configuration"
   - "kubernetes-dns-services-guide"

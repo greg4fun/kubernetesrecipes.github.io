@@ -9,8 +9,8 @@ author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-service-account-guide"
   - "kubernetes-health-checks"
-  - "kubernetes-canary-deployment"
-  - "kubernetes-pod-security-standards"
+  - "kubernetes-canary-deployment-guide"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** configuration

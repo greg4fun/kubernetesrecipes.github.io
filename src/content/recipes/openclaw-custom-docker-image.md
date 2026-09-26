@@ -12,7 +12,7 @@ relatedRecipes:
   - "openclaw-kubernetes-deployment"
   - "openclaw-ha-kubernetes"
   - "openclaw-signal-kubernetes"
-  - "rolling-update-deployment"
+  - "kubernetes-rolling-update-strategy"
 tags:
   - openclaw
   - docker

@@ -14,7 +14,7 @@ tags:
   - "supply-chain"
 relatedRecipes:
   - "kubernetes-enterprise-image-governance"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

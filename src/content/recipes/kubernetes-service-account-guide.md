@@ -7,9 +7,9 @@ publishDate: "2026-04-05"
 tags: ["service-account", "rbac", "tokens", "workload-identity", "security"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-canary-deployment"
+  - "kubernetes-canary-deployment-guide"
   - "kubernetes-blue-green-deployment"
-  - "kubernetes-statefulset-guide"
+  - "statefulset-management"
   - "kubernetes-sidecar-containers"
 ---
 

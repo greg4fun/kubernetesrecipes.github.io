@@ -15,9 +15,8 @@ tags:
   - "federation"
 relatedRecipes:
   - "kubernetes-enterprise-service-mesh-mtls"
-  - "kubernetes-multicluster-management-guide"
   - "kubernetes-service-mesh-comparison"
-  - "kubernetes-multicluster-management"
+  - "multi-cluster-management-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Use Istio multi-primary or Linkerd multi-cluster to enable transparent cross-cluster service communication. Services in cluster A can call services in cluster B using the same DNS name. Traffic automatically fails over to the remote cluster if local endpoints are unhealthy.

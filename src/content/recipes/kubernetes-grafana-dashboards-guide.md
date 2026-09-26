@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "grafana-dashboard-6417-kubernetes"
   - "kubernetes-pod-resource-monitoring-grafana"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "gpu-operator-node-status-exporter-metrics"
 ---
 

@@ -13,12 +13,12 @@ tags:
 difficulty: "beginner"
 timeToComplete: "15 minutes"
 relatedRecipes:
-  - "kubernetes-backstage-developer-portal"
+  - "backstage-kubernetes-developer-portal"
   - "kubernetes-namespace-template-instant-environments"
   - "kubernetes-reusable-pipeline-templates"
   - "kubernetes-deploy-new-app-five-minutes"
   - "kubernetes-multi-tenancy-enterprise"
-  - "kubernetes-crossplane-infrastructure-guide"
+  - "kubernetes-crossplane-infrastructure"
 ---
 
 > 💡 **Quick Answer:** A **golden path** is a pre-built, opinionated way to do things right. Instead of every developer figuring out Kubernetes from scratch, you give them a paved road: "Run this command, get a production-ready service." Backstage catalogs, Helm charts, and self-service portals turn Kubernetes from "infrastructure you fight" into "infrastructure that works for you."

@@ -1,6 +1,6 @@
 ---
-title: "K8s ConfigMap: Create and Mount Guide"
-description: "Create Kubernetes ConfigMaps from files, literals, and directories. Mount as volumes or environment variables with hot-reload and immutable ConfigMap patterns."
+title: "Kubernetes ConfigMap: Create, Mount, Update"
+description: "Create Kubernetes ConfigMaps from files, literals and directories, mount them as volumes or env vars, update them safely, and apply ConfigMap best practices."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"
@@ -13,10 +13,18 @@ tags:
   - "volumes"
   - "environment-variables"
   - "cka"
+  - "best-practices"
+  - "immutable"
 relatedRecipes:
+  - "configmap-secrets-management"
+  - "kubernetes-configmap-from-file"
+  - "kubernetes-envfrom-configmap-environment-variables"
+  - "kubernetes-configmap-hot-reload"
+  - "kubernetes-configmap-subpath-updates"
+  - "configmap-too-large-error"
   - "environment-variables-configmaps"
   - "kubernetes-downward-api-guide"
-  - "kubernetes-secrets-management-guide"
+  - "secrets-management-best-practices"
   - "kustomize-vs-helm-comparison"
   - "kubernetes-resource-quota-limitrange"
   - "kubernetes-projected-volumes-guide"
@@ -95,6 +103,19 @@ data:
     logging.level.root=INFO
 ```
 
+### Binary Data
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: certs-bundle
+binaryData:
+  keystore.jks: <base64>      # kubectl --from-file puts non-UTF-8 files here automatically
+```
+
+`data` values are plain UTF-8 strings (quote numbers and booleans: `"5432"`, `"true"`); only `binaryData` is base64.
+
 ### Mount as Environment Variables
 
 ```yaml
@@ -110,6 +131,7 @@ spec:
     envFrom:
     - configMapRef:
         name: app-config
+      prefix: APP_            # optional: DB_HOST -> APP_DB_HOST
     
     # Or select specific keys
     env:
@@ -166,9 +188,17 @@ kubectl create configmap app-config --from-file=new-config.yaml \
 # Volume mounts update automatically (~60-120 seconds)
 # env vars do NOT update — pod restart required
 
-# Watch for config changes in app
-inotifywait -m /etc/config -e modify
+# Watch for config changes in app (kubelet swaps a ..data symlink, so watch the dir)
+inotifywait -m /etc/config -e create -e moved_to
 ```
+
+| Method | Auto-updates? | Use when |
+|--------|---------------|----------|
+| `env` / `envFrom` | No (restart) | Simple key-value settings |
+| Volume mount | Yes (~60s) | Config files (nginx, properties) |
+| `subPath` mount | No (restart) | One file into an existing directory |
+
+To roll pods automatically on change, add a checksum of the ConfigMap to the pod template (Helm: `checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}`), use Kustomize `configMapGenerator` hashed names, or run Stakater Reloader. Full patterns: [ConfigMap hot reload](/recipes/configuration/kubernetes-configmap-hot-reload/).
 
 ### Immutable ConfigMaps
 
@@ -199,9 +229,17 @@ Env vars don't auto-update. Restart pods: `kubectl rollout restart deployment/ap
 
 Known limitation — `subPath` volume mounts don't get ConfigMap updates. Use full directory mount or restart pods.
 
-**ConfigMap too large (>1MB)**
+**ConfigMap too large (>1 MiB)**
 
-ConfigMaps are limited to 1MB. For larger configs, use a PersistentVolume or init container to fetch config.
+ConfigMaps are limited to 1 MiB. For larger configs, use a PersistentVolume or an init container that fetches config. See [ConfigMap too large](/recipes/troubleshooting/configmap-too-large-error/).
+
+**`envFrom` silently skips keys**
+
+Keys that aren't valid env var names (`nginx.conf`, `my-key` on older versions) are skipped with an `InvalidVariableNames` event. Mount those as files.
+
+**Pod stuck in `ContainerCreating` with `configmap not found`**
+
+The ConfigMap must exist in the pod's namespace before the pod starts, unless the reference sets `optional: true`.
 
 ## Best Practices
 
@@ -210,6 +248,27 @@ ConfigMaps are limited to 1MB. For larger configs, use a PersistentVolume or ini
 - **Version ConfigMaps** — `app-config-v2` instead of editing in-place
 - **Prefer volume mounts** over env vars — supports hot reload
 - **Avoid `subPath`** if you need auto-updates
+- **One ConfigMap per app/concern**, not a shared mega-ConfigMap that restarts everything on edit
+- **Label them** (`app.kubernetes.io/name`, `app.kubernetes.io/part-of`) so they're cleaned up with the app
+- **Keep secrets out** — anything sensitive goes in a Secret ([ConfigMaps and Secrets](/recipes/configuration/configmap-secrets-management/))
+
+## Frequently Asked Questions
+
+### How do I create a ConfigMap from a file?
+
+`kubectl create configmap nginx-config --from-file=nginx.conf` — the filename becomes the key. Use `--from-file=custom-key=path` to rename it, `--from-file=dir/` for one key per file, and add `--dry-run=client -o yaml` to generate a manifest for Git.
+
+### How do I mount a ConfigMap as a file?
+
+Add a `configMap` volume and a `volumeMount`; each key becomes a file under `mountPath`. Use `items` to select keys, or `subPath` to place one file into an existing directory (at the cost of losing auto-updates).
+
+### ConfigMap vs Secret?
+
+ConfigMaps hold non-sensitive config in plain text. Secrets hold passwords, tokens and certificates, are base64-encoded, can be encrypted at rest, and are usually RBAC-restricted separately.
+
+### What is the ConfigMap size limit?
+
+1 MiB per ConfigMap. For larger data use a volume or an external config store.
 
 ## Key Takeaways
 
@@ -217,4 +276,4 @@ ConfigMaps are limited to 1MB. For larger configs, use a PersistentVolume or ini
 - Create from files, literals, directories, or env files
 - Volume mounts auto-update (~60s); environment variables don't
 - Immutable ConfigMaps prevent changes and reduce API server load
-- 1MB size limit — use external storage for larger configurations
+- 1 MiB size limit — use external storage for larger configurations

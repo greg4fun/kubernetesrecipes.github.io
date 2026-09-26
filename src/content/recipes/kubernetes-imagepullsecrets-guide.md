@@ -14,7 +14,7 @@ tags:
   - "docker"
 relatedRecipes:
   - "kubernetes-imagepullsecrets-private-registry"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Configure imagePullSecrets for pulling from private container registries on Kubernetes. Docker registry secrets, service account default, and namespace-wide setup.

@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-external-dns-automation"
   - "kubernetes-dnspolicy-config-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** How Kubernetes DNS service discovery works. Service FQDN format, headless services, SRV records, and cross-namespace DNS resolution patterns.

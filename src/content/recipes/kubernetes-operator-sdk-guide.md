@@ -14,7 +14,7 @@ tags:
   - "custom-resource"
 relatedRecipes:
   - "kubernetes-crd-development-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "stuck-resources-finalizers"
   - "kubernetes-leases"

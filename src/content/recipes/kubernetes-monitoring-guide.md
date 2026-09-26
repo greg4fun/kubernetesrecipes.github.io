@@ -10,9 +10,9 @@ relatedRecipes:
   - "install-helm-amazon-linux"
   - "helm-sprig-cat-function"
   - "crashloopbackoff-troubleshooting"
-  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-prometheus-monitoring-guide"
   - "kubernetes-pod-resource-monitoring-grafana"
-  - "alertmanager-setup"
+  - "alertmanager-configuration"
 ---
 
 > 💡 **Quick Answer:** Set up Kubernetes monitoring with Prometheus and Grafana. Covers kube-prometheus-stack, custom dashboards, alerting rules, and key metrics to monitor.

@@ -17,7 +17,7 @@ tags:
 relatedRecipes:
   - "multi-gpu-pytorch-ddp-kubernetes"
   - "deepspeed-kubernetes-distributed"
-  - "nccl-environment-variables-guide"
+  - "nccl-environment-variables-reference-kubernetes"
   - "dgx-h100-nvidia-smi-topo-kubernetes"
 ---
 

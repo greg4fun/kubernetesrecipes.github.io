@@ -8,7 +8,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "container-image-security-scanning-kubernetes"
   - "gvisor-container-runtime"
-  - "kubernetes-audit-logging-guide"
+  - "kubernetes-audit-logging-configuration"
   - "kubernetes-cert-manager-guide"
   - "secrets-encryption-kms"
   - "service-accounts-rbac"

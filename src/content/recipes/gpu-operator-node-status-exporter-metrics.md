@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "nvidia-gpu-operator-troubleshooting"
   - "gpu-feature-discovery-kubernetes"
-  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-prometheus-monitoring-guide"
   - "kubernetes-metrics-server-top"
 ---
 

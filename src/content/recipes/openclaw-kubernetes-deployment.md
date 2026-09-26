@@ -11,7 +11,7 @@ prerequisites:
   - "An Anthropic or OpenAI API key"
   - "Helm 3 installed (optional)"
 relatedRecipes:
-  - "rolling-update-deployment"
+  - "kubernetes-rolling-update-strategy"
   - "openclaw-skills-kubernetes"
   - "openclaw-cron-heartbeat-kubernetes"
   - "openclaw-backup-restore"

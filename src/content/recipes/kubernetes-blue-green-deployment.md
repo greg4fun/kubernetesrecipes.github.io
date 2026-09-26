@@ -7,8 +7,8 @@ publishDate: "2026-04-05"
 tags: ["blue-green", "deployment-strategy", "zero-downtime", "rollback", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-canary-deployment"
-  - "kubernetes-statefulset-guide"
+  - "kubernetes-canary-deployment-guide"
+  - "statefulset-management"
   - "kubernetes-sidecar-containers"
 ---
 

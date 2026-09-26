@@ -9,6 +9,101 @@
 # These recipes have been consolidated to avoid duplicate content issues
 # =============================================================================
 
+# Round 2 consolidation (config/security)
+/recipes/security/kubernetes-secrets-management-best-practices/    /recipes/security/secrets-management-best-practices/    301
+/recipes/security/kubernetes-secrets-best-practices/    /recipes/security/secrets-management-best-practices/    301
+/recipes/security/kubernetes-secrets-complete-guide/    /recipes/security/secrets-management-best-practices/    301
+/recipes/security/kubernetes-secrets-guide/    /recipes/security/secrets-management-best-practices/    301
+/recipes/security/kubernetes-secrets-management-guide/    /recipes/security/secrets-management-best-practices/    301
+/recipes/security/kubernetes-secrets-management-external/    /recipes/security/external-secrets-operator/    301
+/recipes/security/kubernetes-external-secrets-guide/    /recipes/security/external-secrets-operator/    301
+/recipes/configuration/kubernetes-configmap-secrets-management/    /recipes/configuration/configmap-secrets-management/    301
+/recipes/configuration/kubernetes-configmap/    /recipes/configuration/kubernetes-configmap-guide/    301
+/recipes/configuration/kubernetes-configmap-best-practices/    /recipes/configuration/kubernetes-configmap-guide/    301
+/recipes/configuration/configmap-hot-reload-troubleshooting/    /recipes/configuration/kubernetes-configmap-hot-reload/    301
+/recipes/configuration/namespace-management/    /recipes/configuration/kubernetes-namespace-guide/    301
+/recipes/configuration/kubernetes-namespace-management-guide/    /recipes/configuration/kubernetes-namespace-guide/    301
+/recipes/configuration/kubernetes-namespace-best-practices/    /recipes/configuration/kubernetes-namespace-guide/    301
+/recipes/troubleshooting/kubernetes-namespace-stuck-terminating/    /recipes/troubleshooting/namespace-stuck-terminating/    301
+/recipes/security/rbac-service-accounts/    /recipes/security/service-accounts-rbac/    301
+/recipes/security/kubernetes-pod-security-standards/    /recipes/security/pod-security-standards/    301
+/recipes/security/kubernetes-falco-runtime-security/    /recipes/security/falco-runtime-security/    301
+/recipes/security/kubernetes-networkpolicy-examples/    /recipes/networking/kubernetes-networkpolicy-guide/    301
+/recipes/security/kubernetes-networkpolicy-default-deny-examples/    /recipes/security/kubernetes-networkpolicy-default-deny/    301
+/recipes/security/kubernetes-audit-logging-guide/    /recipes/security/kubernetes-audit-logging-configuration/    301
+
+# Round 2 consolidation (workloads)
+/recipes/deployments/kubernetes-statefulset-patterns/    /recipes/deployments/statefulset-management/    301
+/recipes/deployments/kubernetes-statefulset-guide/    /recipes/deployments/statefulset-management/    301
+/recipes/deployments/kubernetes-statefulset-management/    /recipes/deployments/statefulset-management/    301
+/recipes/deployments/kubernetes-statefulset-headless-service/    /recipes/deployments/kubernetes-statefulset-headless-service-guide/    301
+/recipes/deployments/kubernetes-daemonset/    /recipes/deployments/kubernetes-daemonset-guide/    301
+/recipes/deployments/kubernetes-replicaset-explained/    /recipes/deployments/kubernetes-replicaset-guide/    301
+/recipes/deployments/kubernetes-deployment-strategies/    /recipes/deployments/deployment-strategies/    301
+/recipes/deployments/kubernetes-deployment-rolling-update/    /recipes/deployments/kubernetes-rolling-update-strategy/    301
+/recipes/deployments/rolling-update-deployment/    /recipes/deployments/kubernetes-rolling-update-strategy/    301
+/recipes/deployments/kubernetes-rolling-update-strategies/    /recipes/deployments/kubernetes-rolling-update-strategy/    301
+/recipes/deployments/kubernetes-rolling-update-zero-downtime/    /recipes/deployments/kubernetes-rolling-update-strategy/    301
+/recipes/deployments/kubernetes-canary-deployment/    /recipes/deployments/kubernetes-canary-deployment-guide/    301
+/recipes/configuration/kubernetes-init-containers/    /recipes/deployments/kubernetes-init-containers-patterns-examples/    301
+/recipes/deployments/kubernetes-init-containers-guide/    /recipes/deployments/kubernetes-init-containers-patterns-examples/    301
+/recipes/deployments/sidecar-containers/    /recipes/configuration/kubernetes-sidecar-containers/    301
+/recipes/deployments/kubernetes-sidecar-containers-guide/    /recipes/configuration/kubernetes-sidecar-containers/    301
+/recipes/deployments/kubernetes-cronjob/    /recipes/deployments/kubernetes-cronjob-best-practices/    301
+/recipes/deployments/kubernetes-cronjob-patterns-guide/    /recipes/deployments/kubernetes-cronjob-best-practices/    301
+/recipes/deployments/kubernetes-job-cronjob/    /recipes/deployments/kubernetes-job-cronjob-guide/    301
+/recipes/deployments/kubernetes-jobs-cronjobs-guide/    /recipes/deployments/kubernetes-job-cronjob-guide/    301
+/recipes/deployments/jobs-cronjobs/    /recipes/deployments/kubernetes-job-cronjob-guide/    301
+/recipes/configuration/kubernetes-cronjob-concurrencypolicy-guide/    /recipes/deployments/cronjob-concurrency-policy/    301
+
+# Round 2 consolidation (networking/troubleshooting)
+/recipes/troubleshooting/kubernetes-coredns-troubleshooting/    /recipes/troubleshooting/coredns-troubleshooting/    301
+/recipes/networking/kubernetes-dns-guide/    /recipes/networking/kubernetes-dns-configuration/    301
+/recipes/networking/kubernetes-ingress-guide/    /recipes/networking/kubernetes-ingress-complete-guide/    301
+/recipes/networking/kubernetes-gateway-api-guide/    /recipes/networking/kubernetes-gateway-api/    301
+/recipes/networking/kubernetes-cni-comparison/    /recipes/networking/kubernetes-cni-comparison-guide/    301
+/recipes/networking/kubernetes-service-types/    /recipes/networking/kubernetes-service-types-explained/    301
+/recipes/troubleshooting/kubernetes-502-bad-gateway-troubleshooting/    /recipes/troubleshooting/fix-502-bad-gateway-kubernetes/    301
+/recipes/troubleshooting/kubernetes-imagepullbackoff-troubleshoot/    /recipes/troubleshooting/imagepullbackoff-troubleshooting/    301
+/recipes/troubleshooting/kubernetes-imagepullbackoff-fix/    /recipes/troubleshooting/imagepullbackoff-troubleshooting/    301
+/recipes/deployments/kubernetes-image-pull-optimization/    /recipes/configuration/image-pull-optimization-kubernetes/    301
+/recipes/troubleshooting/kubernetes-oomkilled-fix/    /recipes/troubleshooting/kubernetes-oomkilled-troubleshooting/    301
+/recipes/configuration/kubernetes-cluster-upgrade-guide/    /recipes/configuration/kubernetes-cluster-upgrade/    301
+/recipes/configuration/kubernetes-etcd-backup-restore/    /recipes/storage/etcd-backup-restore-kubernetes/    301
+/recipes/deployments/kubernetes-multi-cluster-management/    /recipes/deployments/multi-cluster-management-kubernetes/    301
+/recipes/configuration/kubernetes-multicluster-management/    /recipes/deployments/multi-cluster-management-kubernetes/    301
+/recipes/deployments/kubernetes-multicluster-management-guide/    /recipes/deployments/multi-cluster-management-kubernetes/    301
+/recipes/deployments/kubernetes-operator-pattern-guide/    /recipes/deployments/kubernetes-operator-pattern/    301
+/recipes/ai/nccl-environment-variables-guide/    /recipes/ai/nccl-environment-variables-reference-kubernetes/    301
+/recipes/ai/nccl-roce-validation-mpijob-complete-reference/    /recipes/ai/nccl-roce-validation-mpijob-kubernetes/    301
+
+# Round 2 consolidation (ecosystem tools)
+/recipes/configuration/crossplane-kubernetes-infrastructure-management/    /recipes/configuration/kubernetes-crossplane-infrastructure/    301
+/recipes/configuration/kubernetes-crossplane-infrastructure-guide/    /recipes/configuration/kubernetes-crossplane-infrastructure/    301
+/recipes/deployments/crossplane-kubernetes-infrastructure/    /recipes/configuration/kubernetes-crossplane-infrastructure/    301
+/recipes/deployments/kubernetes-argocd-gitops-guide/    /recipes/deployments/argocd-gitops/    301
+/recipes/deployments/kubernetes-flux-gitops-guide/    /recipes/deployments/flux-gitops/    301
+/recipes/deployments/argo-workflows-kubernetes/    /recipes/deployments/kubernetes-argo-workflows-guide/    301
+/recipes/deployments/tekton-pipelines-kubernetes/    /recipes/deployments/kubernetes-tekton-pipelines-guide/    301
+/recipes/configuration/kubernetes-backstage-developer-portal/    /recipes/deployments/backstage-kubernetes-developer-portal/    301
+/recipes/troubleshooting/kubernetes-chaos-engineering-litmus/    /recipes/troubleshooting/litmus-chaos-engineering-kubernetes/    301
+/recipes/storage/kubernetes-backup-velero-guide/    /recipes/storage/velero-kubernetes-backup-disaster-recovery/    301
+/recipes/storage/kubernetes-velero-backup-guide/    /recipes/storage/velero-kubernetes-backup-disaster-recovery/    301
+/recipes/storage/velero-backup-disaster-recovery/    /recipes/storage/velero-kubernetes-backup-disaster-recovery/    301
+/recipes/storage/kubernetes-rook-ceph-storage/    /recipes/storage/rook-ceph-storage-kubernetes/    301
+/recipes/storage/kubernetes-longhorn-distributed-storage/    /recipes/storage/longhorn-distributed-storage/    301
+/recipes/observability/kubernetes-loki-log-aggregation/    /recipes/observability/kubernetes-log-aggregation-loki/    301
+/recipes/observability/logging-efk-stack/    /recipes/observability/kubernetes-efk-logging-stack/    301
+/recipes/observability/prometheus-monitoring-kubernetes-guide/    /recipes/observability/kubernetes-prometheus-monitoring-guide/    301
+/recipes/observability/alertmanager-setup/    /recipes/observability/alertmanager-configuration/    301
+/recipes/deployments/cloudnativepg-postgresql-kubernetes/    /recipes/deployments/cnpg-postgresql-operator/    301
+/recipes/deployments/cloudnativepg-kubernetes-postgresql/    /recipes/deployments/cnpg-postgresql-operator/    301
+/recipes/helm/kubernetes-helm-oci-registry/    /recipes/helm/helm-oci-registry-management/    301
+/recipes/helm/kubernetes-helm-library-charts/    /recipes/helm/helm-library-charts/    301
+/recipes/configuration/kubernetes-kustomize-configuration-management/    /recipes/configuration/kubernetes-kustomize-guide/    301
+/recipes/security/kubernetes-gvisor-runtimeclass-guide/    /recipes/security/gvisor-container-runtime/    301
+/recipes/security/kubernetes-runtimeclass-gvisor-guide/    /recipes/security/gvisor-container-runtime/    301
+
 # Pod lifecycle / Helm hooks - Consolidate 3 duplicates into their ranking canonicals
 /recipes/configuration/kubernetes-pod-lifecycle/    /recipes/configuration/kubernetes-pod-lifecycle-guide/    301
 /recipes/troubleshooting/kubernetes-pod-lifecycle-states/    /recipes/configuration/kubernetes-pod-lifecycle-guide/    301
@@ -42,7 +137,7 @@
 /recipes/observability/prometheus-monitoring/    /recipes/observability/prometheus-monitoring-setup/    301
 
 # Jobs/CronJobs - Consolidate to primary version
-/recipes/configuration/kubernetes-jobs-cronjobs/    /recipes/deployments/jobs-cronjobs/    301
+/recipes/configuration/kubernetes-jobs-cronjobs/    /recipes/deployments/kubernetes-job-cronjob-guide/    301
 
 # Flux GitOps - Consolidate
 /recipes/configuration/flux-gitops/    /recipes/deployments/flux-gitops-continuous-delivery/    301
@@ -60,7 +155,7 @@
 /recipes/security/kyverno-policies/    /recipes/security/kyverno-policy-management/    301
 
 # Velero Backup - Consolidate
-/recipes/storage/velero-backup-restore/    /recipes/storage/velero-backup-disaster-recovery/    301
+/recipes/storage/velero-backup-restore/    /recipes/storage/velero-kubernetes-backup-disaster-recovery/    301
 
 # OpenShift Lifecycle - Consolidate thin templated guide into canonical
 /recipes/configuration/openshift-lifecycle-versions-guide/    /recipes/configuration/openshift-support-lifecycle-version-matrix/    301
@@ -118,23 +213,23 @@
 /recipes/configuration/kubeconfig-contexts/    /recipes/configuration/kubectl-config-context-management/    301
 /recipes/troubleshooting/kubectl-plugins-extensions/    /recipes/configuration/kubernetes-kubectl-plugins-guide/    301
 /recipes/configuration/kubernetes-backup-restore/    /recipes/storage/kubernetes-velero-backup-restore/    301
-/recipes/configuration/kubernetes-cronjob-concurrencypolicy/    /recipes/configuration/kubernetes-cronjob-concurrencypolicy-guide/    301
+/recipes/configuration/kubernetes-cronjob-concurrencypolicy/    /recipes/deployments/cronjob-concurrency-policy/    301
 /recipes/troubleshooting/kubernetes-debug-container-ephemeral/    /recipes/troubleshooting/kubernetes-debug-pods/    301
 /recipes/configuration/kubernetes-labels-annotations/    /recipes/configuration/kubernetes-labels-annotations-best-practices/    301
 /recipes/troubleshooting/kubernetes-node-taint-master-fix/    /recipes/troubleshooting/kubernetes-node-untolerated-taint-master/    301
 /recipes/security/kubernetes-runtimeclass/    /recipes/security/kubernetes-gvisor-kata-containers-runtimeclass/    301
-/recipes/configuration/kustomize-configuration/    /recipes/configuration/kubernetes-kustomize-configuration-management/    301
+/recipes/configuration/kustomize-configuration/    /recipes/configuration/kubernetes-kustomize-guide/    301
 /recipes/ai/nvidia-gpu-operator-setup/    /recipes/ai/nvidia-gpu-operator-gitops-openshift/    301
 /recipes/deployments/pod-disruption-budgets/    /recipes/deployments/pod-disruption-budget-config/    301
 /recipes/deployments/pod-priority-preemption/    /recipes/configuration/kubernetes-pod-priority-preemption-scheduling/    301
-/recipes/observability/prometheus-metrics-setup/    /recipes/observability/prometheus-monitoring-kubernetes-guide/    301
+/recipes/observability/prometheus-metrics-setup/    /recipes/observability/kubernetes-prometheus-monitoring-guide/    301
 /recipes/configuration/resource-quotas-namespace/    /recipes/configuration/resource-quotas/    301
 
 # Duplicate-content consolidation batch 2 (SEO audit 2026-07-02) — merge-then-redirect
 /recipes/deployments/argocd-gitops-deployment/    /recipes/deployments/argocd-gitops/    301
 /recipes/deployments/blue-green-deployment/    /recipes/deployments/kubernetes-blue-green-deployment/    301
 /recipes/autoscaling/cluster-autoscaler/    /recipes/autoscaling/cluster-autoscaler-setup/    301
-/recipes/configuration/crossplane-infrastructure-management/    /recipes/configuration/crossplane-kubernetes-infrastructure-management/    301
+/recipes/configuration/crossplane-infrastructure-management/    /recipes/configuration/kubernetes-crossplane-infrastructure/    301
 /recipes/troubleshooting/debug-oom-killed/    /recipes/troubleshooting/kubernetes-oomkilled-troubleshooting/    301
 /recipes/configuration/downward-api-metadata/    /recipes/configuration/kubernetes-downward-api-guide/    301
 /recipes/troubleshooting/ephemeral-containers-debugging/    /recipes/troubleshooting/kubernetes-debug-pods/    301
@@ -142,11 +237,11 @@
 /recipes/deployments/graceful-shutdown/    /recipes/deployments/kubernetes-graceful-shutdown-guide/    301
 /recipes/helm/helm-dependencies/    /recipes/helm/helm-chart-dependencies-guide/    301
 /recipes/helm/helm-hooks/    /recipes/helm/helm-hooks-lifecycle/    301
-/recipes/deployments/init-containers/    /recipes/configuration/kubernetes-init-containers/    301
+/recipes/deployments/init-containers/    /recipes/deployments/kubernetes-init-containers-patterns-examples/    301
 /recipes/networking/istio-traffic-management/    /recipes/networking/kubernetes-istio-traffic-management/    301
 /recipes/ai/kai-scheduler-topology-aware/    /recipes/ai/kubernetes-1-36-topology-aware-scheduling/    301
 /recipes/troubleshooting/kubectl-debugging-commands/    /recipes/configuration/kubernetes-commands/    301
-/recipes/security/kubernetes-audit-logging/    /recipes/security/kubernetes-audit-logging-guide/    301
+/recipes/security/kubernetes-audit-logging/    /recipes/security/kubernetes-audit-logging-configuration/    301
 /recipes/troubleshooting/kubernetes-imagepullbackoff-troubleshooting/    /recipes/troubleshooting/imagepullbackoff-troubleshooting/    301
 /recipes/deployments/kubernetes-probes-configuration/    /recipes/deployments/kubernetes-readiness-liveness-startup/    301
 /recipes/networking/linkerd-service-mesh/    /recipes/networking/linkerd-service-mesh-mtls-kubernetes/    301
@@ -157,7 +252,7 @@
 /recipes/configuration/pod-resource-management/    /recipes/observability/kubernetes-pod-resource-monitoring-grafana/    301
 /recipes/security/pod-security-admission/    /recipes/security/kubernetes-pod-security-admission/    301
 /recipes/security/pod-security-context/    /recipes/security/kubernetes-security-context-guide/    301
-/recipes/observability/prometheus-monitoring-setup/    /recipes/observability/prometheus-monitoring-kubernetes-guide/    301
+/recipes/observability/prometheus-monitoring-setup/    /recipes/observability/kubernetes-prometheus-monitoring-guide/    301
 /recipes/networking/rate-limiting-kubernetes/    /recipes/networking/kubernetes-rate-limiting-guide/    301
 /recipes/configuration/resource-requests-limits/    /recipes/configuration/kubernetes-resource-requests-limits/    301
 /recipes/security/sealed-secrets-gitops/    /recipes/security/kubernetes-sealed-secrets-management/    301

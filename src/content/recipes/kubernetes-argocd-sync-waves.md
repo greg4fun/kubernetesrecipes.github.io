@@ -14,7 +14,7 @@ tags:
   - "ordering"
 relatedRecipes:
   - "kubernetes-enterprise-gitops-fleet"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Configure ArgoCD sync waves for ordered deployments. Wave ordering, sync hooks, resource health checks, and dependency management patterns.

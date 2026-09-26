@@ -13,7 +13,7 @@ tags:
   - "nginx"
   - "annotations"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

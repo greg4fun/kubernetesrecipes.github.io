@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-labels-annotations-guide"
   - "kubernetes-envfrom-configmapref"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

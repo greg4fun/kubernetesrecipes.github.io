@@ -25,7 +25,7 @@ relatedRecipes:
   - "llm-autoscaling-kubernetes"
   - "cronjob-concurrency-policy"
   - "kai-scheduler-queues"
-  - "jobs-cronjobs"
+  - "kubernetes-job-cronjob-guide"
 tags:
   - volcano
   - batch

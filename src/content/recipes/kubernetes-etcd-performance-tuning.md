@@ -14,8 +14,8 @@ tags:
   - "monitoring"
 relatedRecipes:
   - "crun-vs-runc-container-runtime"
-  - "kubernetes-etcd-backup-restore"
-  - "kubernetes-pod-security-standards"
+  - "etcd-backup-restore-kubernetes"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Tune etcd for Kubernetes cluster performance. Disk IOPS requirements, compaction, defragmentation, and monitoring etcd health metrics.

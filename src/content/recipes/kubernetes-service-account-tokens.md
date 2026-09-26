@@ -13,7 +13,7 @@ tags:
   - "authentication"
   - "projected-volume"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "openshift-oauth-proxy-guide"
 ---

@@ -14,7 +14,7 @@ tags:
   - "least-privilege"
 relatedRecipes:
   - "sovereign-air-gapped-kubernetes-clusters"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Audit Kubernetes RBAC permissions for security compliance. Identify over-permissioned roles, service account privileges, and least-privilege enforcement.

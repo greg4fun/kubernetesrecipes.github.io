@@ -14,7 +14,7 @@ tags:
   - "troubleshooting"
   - "networking"
 relatedRecipes:
-  - "kubernetes-coredns-troubleshooting"
+  - "coredns-troubleshooting"
   - "kubernetes-network-debugging-tools"
 ---
 

@@ -12,13 +12,13 @@ tags:
   - "replication"
   - "backup"
 relatedRecipes:
-  - "kubernetes-longhorn-distributed-storage"
+  - "longhorn-distributed-storage"
   - "openclaw-persistent-storage"
   - "dynamic-volume-provisioning"
   - "nfsordma-persistent-volume"
   - "cnpg-postgresql-operator"
   - "cnpg-scaling-upgrades"
-  - "velero-backup-disaster-recovery"
+  - "velero-kubernetes-backup-disaster-recovery"
   - "openclaw-backup-restore"
   - "nfsordma-dedicated-nic"
 ---

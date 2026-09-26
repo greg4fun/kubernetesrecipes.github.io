@@ -14,7 +14,7 @@ tags:
   - "traffic-splitting"
 relatedRecipes:
   - "kubernetes-topology-aware-routing"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-calico-networkpolicy"
   - "kubernetes-endpoint-slices-service-topology"
 ---

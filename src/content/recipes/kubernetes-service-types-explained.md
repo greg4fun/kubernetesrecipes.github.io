@@ -1,10 +1,10 @@
 ---
-title: "K8s Service Types: ClusterIP NodePort LB"
-description: "Kubernetes Service types explained: ClusterIP, NodePort, LoadBalancer, and ExternalName. When to use each type with YAML examples and traffic flow diagrams."
+title: "K8s Service Types: ClusterIP, NodePort, LoadBalancer"
+description: "Kubernetes Service types explained: ClusterIP, NodePort, LoadBalancer, ExternalName and headless. When to use each, with YAML and traffic flow examples."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "networking"
-difficulty: "beginner"
+difficulty: "intermediate"
 timeToComplete: "10 minutes"
 kubernetesVersion: "1.28+"
 tags:
@@ -13,9 +13,11 @@ tags:
   - "load-balancer"
   - "nodeport"
   - "cka"
+  - "clusterip"
+  - "externalname"
 relatedRecipes:
-  - "kubernetes-ingress-guide"
-  - "kubernetes-gateway-api-guide"
+  - "kubernetes-ingress-complete-guide"
+  - "kubernetes-gateway-api"
   - "dns-policies-configuration"
   - "kubernetes-service-mesh-comparison"
   - "kubernetes-networkpolicy-guide"
@@ -191,11 +193,23 @@ kubectl expose deployment nginx --type=LoadBalancer --port=80 --target-port=8080
 kubectl expose deployment nginx --port=80 --dry-run=client -o yaml
 ```
 
+```mermaid
+graph TD
+    A[Choose Service Type] --> B{External access needed?}
+    B -->|No| C{Need direct pod IPs?}
+    C -->|Yes| H[Headless]
+    C -->|No| CI[ClusterIP]
+    B -->|Yes| D{LB controller available? cloud / MetalLB}
+    D -->|Yes| E[LoadBalancer, or Ingress/Gateway in front of ClusterIP]
+    D -->|No| F[NodePort + external LB]
+    I{Alias an external DNS name?} -->|Yes| J[ExternalName]
+```
+
 ## Common Issues
 
 **LoadBalancer stuck in "Pending" EXTERNAL-IP**
 
-No cloud LB controller. On bare-metal, install MetalLB: `kubectl apply -f https://metallb.io/manifests`.
+No cloud LB controller. On bare-metal, install MetalLB (`helm install metallb metallb/metallb -n metallb-system --create-namespace`) and define an `IPAddressPool` + `L2Advertisement` or BGP peering. On OpenShift, install the MetalLB Operator.
 
 **NodePort not reachable**
 
@@ -204,6 +218,20 @@ Firewall blocking port range 30000-32767. Open these ports on cloud security gro
 **Service has no endpoints**
 
 Selector doesn't match any pod labels. Check: `kubectl get endpoints <svc>`.
+
+## Frequently Asked Questions
+
+### What is the difference between ClusterIP, NodePort and LoadBalancer?
+They build on each other: ClusterIP gives a cluster-internal virtual IP; NodePort adds a static port (30000-32767) on every node forwarding to that ClusterIP; LoadBalancer adds an external load balancer that targets the NodePorts (or pods directly, depending on the provider).
+
+### Which Service type is most common?
+ClusterIP by far — most services are internal. For external HTTP(S), a single LoadBalancer in front of an Ingress or Gateway controller routes to many ClusterIP Services.
+
+### ExternalName vs a Service without a selector?
+ExternalName returns a DNS CNAME and only works with hostnames. To point a Service at external IP addresses, create a Service without a selector and an `EndpointSlice` (label `kubernetes.io/service-name: <svc>`) listing the IPs.
+
+### How do I preserve the client source IP?
+Set `externalTrafficPolicy: Local` on NodePort/LoadBalancer Services. Traffic is only sent to nodes running a ready pod, and SNAT is skipped.
 
 ## Best Practices
 

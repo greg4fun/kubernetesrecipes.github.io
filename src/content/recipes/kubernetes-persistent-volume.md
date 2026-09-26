@@ -8,9 +8,9 @@ tags: ["persistent-volume", "pv", "storage", "provisioning", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-service-account-guide"
-  - "kubernetes-deployment-strategies"
+  - "deployment-strategies"
   - "kubernetes-health-checks"
-  - "kubernetes-canary-deployment"
+  - "kubernetes-canary-deployment-guide"
 ---
 
 > 💡 **Quick Answer:** storage

@@ -13,8 +13,8 @@ tags:
   - "encryption"
   - "gitops"
 relatedRecipes:
-  - "kubernetes-secrets-best-practices"
-  - "kubernetes-secrets-management-external"
+  - "secrets-management-best-practices"
+  - "external-secrets-operator"
   - "kubernetes-secret-types-guide"
 ---
 

@@ -6,6 +6,8 @@ difficulty: "intermediate"
 publishDate: "2026-01-22"
 author: "Luca Berton"
 relatedRecipes:
+  - "coredns-troubleshooting"
+  - "kubernetes-dns-configuration"
   - "ingress-tls-certificates"
   - "dns-policies-configuration"
   - "kubernetes-dns-policy-configuration"

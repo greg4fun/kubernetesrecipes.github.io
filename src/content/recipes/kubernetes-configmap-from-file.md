@@ -11,7 +11,7 @@ tags: ["configmap", "kubectl", "configuration", "volumes", "environment-variable
 relatedRecipes:
   - "kubernetes-configmap-guide"
   - "kubernetes-resource-requests-limits"
-  - "configmap-hot-reload-troubleshooting"
+  - "kubernetes-configmap-hot-reload"
   - "kubernetes-environment-variables"
 ---
 

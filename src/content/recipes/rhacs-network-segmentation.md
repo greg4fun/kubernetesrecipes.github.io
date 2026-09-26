@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-spiffe-spire-identity"
   - "confidential-computing-attestation-kubernetes"
-  - "kubernetes-networkpolicy-examples"
+  - "kubernetes-networkpolicy-guide"
   - "kubernetes-network-policy-recipes"
   - "openshift-acs-kubernetes"
   - "rhacs-custom-security-policies"

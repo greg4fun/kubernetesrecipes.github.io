@@ -1,31 +1,35 @@
 ---
-title: "K8s Ingress: Routing, TLS, and Controllers"
-description: "Configure Kubernetes Ingress for HTTP routing, TLS termination, and path-based routing. Covers NGINX, Traefik, and HAProxy ingress controllers."
+title: "Kubernetes Ingress Guide: Routing, TLS, Controllers"
+description: "Kubernetes Ingress in practice: host/path routing, pathType, TLS with cert-manager, rewrites, canary, auth, NGINX annotations, and Ingress vs Gateway API."
 category: "networking"
-difficulty: "beginner"
+difficulty: "intermediate"
 publishDate: "2026-04-03"
-tags: ["ingress", "routing", "tls", "nginx", "load-balancer", "kubernetes"]
+tags: ["ingress", "routing", "tls", "nginx", "nginx-ingress", "load-balancer", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "ingress-502-503-troubleshooting"
   - "ingress-tls-certificates"
+  - "kubernetes-ingress-tls-cert-manager"
+  - "kubernetes-ingress-rate-limit-nginx"
+  - "kubernetes-gateway-api"
+  - "ingress2gateway-migration"
   - "kubernetes-load-balancing"
 ---
 
-> 💡 **Quick Answer:** Configure Kubernetes Ingress for HTTP routing, TLS termination, and path-based routing. Covers NGINX, Traefik, and HAProxy ingress controllers.
-
-## The Problem
-
-This is one of the most searched Kubernetes topics. Having a comprehensive, well-structured guide helps both beginners and experienced users quickly find what they need.
+> 💡 **Quick Answer:** An Ingress is an L7 routing rule (host + path → Service) that only works once an Ingress controller is installed. Install one (`helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create-namespace`, or Traefik/HAProxy/your cloud's ALB controller), set `spec.ingressClassName`, and add `cert-manager.io/cluster-issuer` for automatic TLS. For new platforms, evaluate [Gateway API](/recipes/networking/kubernetes-gateway-api/).
+>
+> **Heads-up:** the community `ingress-nginx` project was retired by Kubernetes SIG Network in March 2026 (no further releases or security fixes). Existing Ingress objects keep working with other controllers; plan a move to a maintained controller or Gateway API.
 
 ## The Solution
 
-### Install NGINX Ingress Controller
+### Install an Ingress Controller
 
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm install ingress-nginx ingress-nginx/ingress-nginx \
   --namespace ingress-nginx --create-namespace
+
+kubectl get ingressclass
 ```
 
 ### Basic Ingress
@@ -35,8 +39,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: my-app-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
@@ -69,7 +71,16 @@ spec:
                   number: 80
 ```
 
+Don't add `rewrite-target: /` here: it would rewrite `/api/users` to `/` for the backend. Use regex rewrites (below) only when the backend expects a stripped prefix.
+
 ### TLS with cert-manager
+
+```bash
+helm repo add jetstack https://charts.jetstack.io
+helm install cert-manager jetstack/cert-manager \
+  --namespace cert-manager --create-namespace \
+  --set crds.enabled=true
+```
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -117,13 +128,24 @@ spec:
 ```yaml
 metadata:
   annotations:
-    nginx.ingress.kubernetes.io/rate-limit: "10"
-    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+    nginx.ingress.kubernetes.io/limit-rps: "10"          # per client IP
+    nginx.ingress.kubernetes.io/limit-burst-multiplier: "5"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "10m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
 ```
+
+| Annotation (ingress-nginx) | Purpose |
+|-----------|---------|
+| `ssl-redirect: "true"` | Redirect HTTP to HTTPS when TLS is set |
+| `proxy-body-size: "50m"` | Max upload size (413 errors) |
+| `limit-rps` / `limit-connections` | Per-IP rate limiting |
+| `auth-type: basic` | Basic auth |
+| `enable-cors: "true"` + `cors-allow-origin` | CORS headers |
+| `affinity: cookie` | Session affinity |
+
+All keys are prefixed `nginx.ingress.kubernetes.io/`. Other controllers (Traefik, HAProxy, OpenShift Router) use their own annotations.
 
 ```mermaid
 graph LR
@@ -320,16 +342,24 @@ Gateway API is the successor to Ingress with more features: cross-namespace rout
 
 Yes. The Ingress resource is just configuration — you need a controller (NGINX, Traefik, HAProxy, or cloud-specific) to implement it.
 
+### Which Ingress controller should I use?
+
+Traefik and HAProxy are mature general-purpose options; F5 NGINX Ingress Controller is the maintained NGINX-based alternative to the retired community ingress-nginx. On cloud, the AWS Load Balancer Controller or GKE Ingress provision native L7 load balancers. On OpenShift, the built-in Router (HAProxy) implements both Routes and Ingress.
+
+### What is the difference between pathType Prefix and Exact?
+
+`Exact` matches only the exact path. `Prefix` matches by path elements split on `/`, so `/api` matches `/api` and `/api/v1` but not `/apiv1`. `ImplementationSpecific` defers to the controller and is required for regex paths in ingress-nginx.
+
 ## Best Practices
 
-- **Start simple** — use the basic form first, add complexity as needed
-- **Be consistent** — follow naming conventions across your cluster
-- **Document your choices** — add annotations explaining why, not just what
-- **Monitor and iterate** — review configurations regularly
+- **Always set `ingressClassName`** — relying on a default class breaks when a second controller is installed
+- **Terminate TLS at the Ingress** with cert-manager and force HTTPS redirects
+- **Keep rewrites explicit** — only use `rewrite-target` with regex capture groups
+- **Test with `curl -H "Host: ..."`** against the controller IP before touching DNS
 
 ## Key Takeaways
 
-- This is fundamental Kubernetes knowledge every engineer needs
-- Start with the simplest approach that solves your problem
-- Use `kubectl explain` and `kubectl describe` when unsure
-- Practice in a test cluster before applying to production
+- Ingress = host/path routing rules; the controller does the actual proxying
+- Use `Prefix` for most paths, `Exact` for single endpoints, `ImplementationSpecific` for regex
+- Annotations are controller-specific — they don't port between controllers
+- Gateway API is the successor for multi-team, traffic-splitting, and header-routing needs

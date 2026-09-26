@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-hpa-custom-metrics-guide"
   - "kubernetes-hpa-cpu-memory-guide"
   - "kubernetes-hpa-max-replicas-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Step-by-step HPA tutorial for Kubernetes. Create, monitor, and tune Horizontal Pod Autoscalers with kubectl commands and YAML examples.

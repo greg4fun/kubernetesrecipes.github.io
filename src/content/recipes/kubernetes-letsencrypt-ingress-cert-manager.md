@@ -9,7 +9,7 @@ timeToComplete: "20 minutes"
 kubernetesVersion: "1.21+"
 tags: ["cert-manager", "letsencrypt", "tls", "ingress", "certificates", "security"]
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "certmanager-ovh-dns01-wildcard-tls"
   - "gateway-api-httproutes-tls-k3s"

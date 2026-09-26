@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-letsencrypt-ingress-setup"
   - "kubernetes-gateway-api-httproute"
   - "kubernetes-gateway-api"
-  - "kubernetes-service-types"
+  - "kubernetes-service-types-explained"
   - "openshift-4-20-new-features-guide"
 ---
 

@@ -13,7 +13,7 @@ tags:
   - "oom"
   - "kernel"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "cuda-out-of-memory-kubernetes"
 ---

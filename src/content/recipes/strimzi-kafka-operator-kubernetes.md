@@ -12,10 +12,10 @@ publishDate: "2026-05-09"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-statefulset-guide"
+  - "statefulset-management"
   - "kubernetes-pod-disruption-budget"
   - "pvc-storageclass-examples"
-  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-prometheus-monitoring-guide"
 ---
 
 > 💡 **Quick Answer:** Strimzi (CNCF incubating) is the standard Kafka operator for Kubernetes. Define a `Kafka` CR to deploy brokers + ZooKeeper (or KRaft), manage topics with `KafkaTopic`, users with `KafkaUser`, and connectors with `KafkaConnect` — all as Kubernetes-native CRDs.

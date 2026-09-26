@@ -10,7 +10,7 @@ relatedRecipes:
   - "kubernetes-rolling-update-strategy"
   - "deployment-vs-statefulset"
   - "kubernetes-ci-cd-pipeline"
-  - "kubernetes-replicaset-explained"
+  - "kubernetes-replicaset-guide"
 ---
 
 > 💡 **Quick Answer:** Create and manage Kubernetes Deployments for stateless applications. Covers replicas, selectors, rolling updates, rollback, and deployment strategies.

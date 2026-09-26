@@ -15,7 +15,7 @@ relatedRecipes:
   - "argocd-app-of-apps-pattern"
   - "argocd-sync-waves-ordering"
   - "argocd-operatorgroup-management"
-  - "kubernetes-kustomize-configuration-management"
+  - "kubernetes-kustomize-guide"
 tags:
   - "kustomize"
   - "gitops"

@@ -15,7 +15,7 @@ tags:
   - "security"
 relatedRecipes:
   - "kubernetes-security-checklist-2026"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-node-notready-troubleshooting"
   - "gke-oidc-issuer-workload-identity"
   - "kata-containers-runtimeclass-kubernetes"

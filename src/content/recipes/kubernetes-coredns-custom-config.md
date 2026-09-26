@@ -14,7 +14,7 @@ tags:
   - "forwarding"
 relatedRecipes:
   - "kubernetes-horizontal-dns-autoscaling"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-ingress-rate-limit-nginx"
   - "kubernetes-endpoint-slices-service-topology"
 ---

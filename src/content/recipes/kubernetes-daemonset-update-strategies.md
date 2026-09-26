@@ -13,7 +13,7 @@ tags:
   - "ondelete"
   - "node-agent"
 relatedRecipes:
-  - "kubernetes-rolling-update-strategies"
+  - "kubernetes-rolling-update-strategy"
   - "kubernetes-node-affinity-scheduling"
 ---
 

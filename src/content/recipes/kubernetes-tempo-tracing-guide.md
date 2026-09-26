@@ -14,7 +14,7 @@ tags:
   - "traceql"
 relatedRecipes:
   - "kubernetes-jaeger-tracing-guide"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Deploy Grafana Tempo for cost-effective distributed tracing on Kubernetes. Object storage backend, TraceQL queries, and Grafana integration.

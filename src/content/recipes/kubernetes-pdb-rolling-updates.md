@@ -14,7 +14,7 @@ tags:
   - "availability"
 relatedRecipes:
   - "kubernetes-pdb-best-practices"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Coordinate PodDisruptionBudgets with rolling updates on Kubernetes. minAvailable vs maxUnavailable, voluntary disruptions, and upgrade-safe configurations.

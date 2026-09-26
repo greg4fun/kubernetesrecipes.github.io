@@ -15,7 +15,7 @@ tags:
   - "compliance"
 relatedRecipes:
   - "kubernetes-harbor-registry-guide"
-  - "kubernetes-falco-runtime-security"
+  - "falco-runtime-security"
   - "kubernetes-pod-security-admission"
 ---
 

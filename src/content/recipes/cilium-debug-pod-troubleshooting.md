@@ -14,7 +14,7 @@ tags:
   - "hubble"
   - "networking"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "fix-kubernetes-service-not-reachable"
 ---

@@ -13,7 +13,7 @@ tags:
   - "security-context"
   - "psa"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "openshift-oauth-proxy-guide"
 ---

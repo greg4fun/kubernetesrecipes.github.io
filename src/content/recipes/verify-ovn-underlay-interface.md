@@ -12,8 +12,8 @@ prerequisites:
   - "ovs-vsctl available on host"
 relatedRecipes:
   - "kubernetes-dns-how-it-works"
-  - "kubernetes-dns-guide"
-  - "kubernetes-cni-comparison"
+  - "kubernetes-dns-configuration"
+  - "kubernetes-cni-comparison-guide"
   - "kubernetes-clusterip-service"
   - "knative-ingress-networking"
   - "external-dns-kubernetes"

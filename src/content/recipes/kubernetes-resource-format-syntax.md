@@ -15,7 +15,7 @@ tags:
   - "syntax"
 relatedRecipes:
   - "kubernetes-resource-management-limits-cpu-memory"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Understand Kubernetes resource format: CPU millicores (200m, 500m, 1) and memory units (256Mi, 1Gi). Syntax reference for requests, limits, and QoS class impact.

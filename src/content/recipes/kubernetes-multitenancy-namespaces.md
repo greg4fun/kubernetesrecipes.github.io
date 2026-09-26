@@ -13,7 +13,7 @@ tags:
   - "isolation"
   - "rbac"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "openshift-scc-guide-2026"
 ---

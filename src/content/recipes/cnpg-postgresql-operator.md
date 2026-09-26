@@ -1,24 +1,37 @@
 ---
-title: "CloudNativePG PostgreSQL Operator"
-description: "Deploy highly available PostgreSQL clusters on Kubernetes using CloudNativePG operator with automated failover and backups."
+title: "CloudNativePG (CNPG): PostgreSQL Operator on Kubernetes"
+description: "Run HA PostgreSQL on Kubernetes with CloudNativePG: operator install, Cluster CR, anti-affinity, S3 WAL backups, PITR, PgBouncer Pooler and monitoring."
 publishDate: "2026-02-26"
 author: "Luca Berton"
 category: "deployments"
 difficulty: "intermediate"
+timeToComplete: "30 minutes"
+kubernetesVersion: "1.28+"
 tags:
   - "cnpg"
+  - "cloudnativepg"
   - "postgresql"
   - "database"
   - "operator"
   - "high-availability"
+  - "backup"
+  - "pgbouncer"
 relatedRecipes:
-  - "velero-backup-disaster-recovery"
+  - "cnpg-scaling-upgrades"
+  - "cnpg-disaster-recovery"
+  - "cloudnativepg-postgresql-operator-kubernetes"
+  - "velero-kubernetes-backup-disaster-recovery"
+  - "kubernetes-storage-best-practices"
+  - "kubernetes-graceful-shutdown-guide"
+  - "mariadb-scc-openshift-deployment"
   - "horizontal-pod-autoscaler"
   - "pod-disruption-budget-config"
   - "openclaw-persistent-storage"
 ---
 
-> 💡 **Quick Answer:** Install CloudNativePG operator and create a `Cluster` CR to get a production-ready PostgreSQL cluster with streaming replication, automatic failover, and continuous backup to S3.
+> 💡 **Quick Answer:** CloudNativePG (CNPG, a CNCF project) is the Kubernetes operator for PostgreSQL. Install it (`helm install cnpg cnpg/cloudnative-pg -n cnpg-system --create-namespace`), then create a `Cluster` CR with `instances: 3`: the operator runs one primary and two streaming replicas, fails over automatically, creates `<name>-rw` / `-ro` / `-r` Services and an `<name>-app` credentials Secret, archives WAL to S3 for point-in-time recovery, and adds PgBouncer via the `Pooler` CR. Manage it with the `kubectl cnpg` plugin.
+>
+> **Gotcha:** `ScheduledBackup.spec.schedule` uses a **6-field** cron with seconds (`"0 0 2 * * *"` = 02:00 daily) — a 5-field Kubernetes-style cron means something else.
 
 ## The Problem
 
@@ -40,10 +53,19 @@ helm install cnpg cnpg/cloudnative-pg \
   --create-namespace \
   --set monitoring.podMonitorEnabled=true
 
+# Or plain manifests (server-side apply is required for the large CRDs)
+kubectl apply --server-side -f \
+  https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.27/releases/cnpg-1.27.0.yaml
+
+# kubectl plugin
+curl -sSfL https://github.com/cloudnative-pg/cloudnative-pg/raw/main/hack/install-cnpg-plugin.sh | sudo sh -s -- -b /usr/local/bin
+
 # Verify operator is running
 kubectl get pods -n cnpg-system
 kubectl get crds | grep cnpg
 ```
+
+On OpenShift, install CloudNativePG from OperatorHub (or EDB Postgres for Kubernetes for commercial support); the default `restricted-v2` SCC works without changes.
 
 ### Basic PostgreSQL Cluster
 
@@ -91,6 +113,30 @@ spec:
     enablePodAntiAffinity: true
     topologyKey: kubernetes.io/hostname
 ```
+
+### High Availability and Placement
+
+```yaml
+spec:
+  instances: 3
+  primaryUpdateStrategy: unsupervised   # switchover automatically during rolling updates
+  failoverDelay: 0                       # seconds to wait before failing over an unhealthy primary
+  affinity:
+    enablePodAntiAffinity: true
+    podAntiAffinityType: required        # "preferred" if you have fewer nodes than instances
+    topologyKey: topology.kubernetes.io/zone   # or kubernetes.io/hostname
+    nodeSelector:
+      node-role: database
+    tolerations:
+      - key: dedicated
+        operator: Equal
+        value: database
+        effect: NoSchedule
+  minSyncReplicas: 1                     # optional synchronous replication (RPO 0)
+  maxSyncReplicas: 1
+```
+
+All placement settings live under a single `affinity:` block — two `affinity:` keys in one YAML map silently drop the first. CNPG creates a PodDisruptionBudget for the cluster automatically.
 
 ### Database Credentials Secret
 
@@ -145,6 +191,34 @@ spec:
     retentionPolicy: "30d"
 ```
 
+> **CNPG 1.26+:** the in-tree `barmanObjectStore` still works but is deprecated in favour of the **Barman Cloud Plugin**. New clusters should install the plugin and use an `ObjectStore` CR:
+>
+> ```yaml
+> apiVersion: barmancloud.cnpg.io/v1
+> kind: ObjectStore
+> metadata:
+>   name: s3-store
+>   namespace: production
+> spec:
+>   configuration:
+>     destinationPath: s3://my-pg-backups/app-db/
+>     s3Credentials:
+>       accessKeyId: { name: s3-creds, key: ACCESS_KEY_ID }
+>       secretAccessKey: { name: s3-creds, key: SECRET_ACCESS_KEY }
+>     wal:
+>       compression: gzip
+>   retentionPolicy: "30d"
+> ---
+> # in the Cluster spec
+> plugins:
+>   - name: barman-cloud.cloudnative-pg.io
+>     isWALArchiver: true
+>     parameters:
+>       barmanObjectName: s3-store
+> ```
+>
+> and `method: plugin` + `pluginConfiguration: {name: barman-cloud.cloudnative-pg.io}` in ScheduledBackups.
+
 ### Scheduled Backups
 
 ```yaml
@@ -154,7 +228,7 @@ metadata:
   name: app-db-daily
   namespace: production
 spec:
-  schedule: "0 0 2 * * *"  # Daily at 2 AM
+  schedule: "0 0 2 * * *"  # sec min hour dom month dow → daily at 02:00
   backupOwnerReference: self
   cluster:
     name: app-db
@@ -357,6 +431,9 @@ graph TD
 - **Backup failing to S3** — verify S3 credentials secret exists and IAM role has `s3:PutObject`, `s3:GetObject`, `s3:ListBucket`
 - **Failover not happening** — CNPG uses lease-based failover; check operator logs `kubectl logs -n cnpg-system deploy/cnpg-cloudnative-pg`
 - **PgBouncer connection errors** — ensure `max_client_conn` in Pooler > total app connections; check `default_pool_size` matches PostgreSQL `max_connections`
+- **Pods Pending with `enablePodAntiAffinity`** — `required` anti-affinity needs as many eligible nodes (or zones) as instances; switch to `preferred` or add nodes
+- **App errors right after failover** — apps must connect through the `-rw` Service (or pooler), never pod IPs, and retry on disconnect
+- **ScheduledBackup runs at the wrong time** — 5-field cron used; CNPG expects 6 fields with seconds first
 
 ## Best Practices
 
@@ -377,3 +454,21 @@ graph TD
 - PgBouncer Pooler CRD handles connection pooling natively
 - Three auto-created Services: `-rw` (primary), `-ro` (replicas), `-r` (any)
 - `kubectl cnpg` plugin provides status, failover, psql, and benchmark commands
+
+## Frequently Asked Questions
+
+### What is CloudNativePG?
+
+An open-source Kubernetes operator (CNCF sandbox, originally by EDB) that manages PostgreSQL clusters without StatefulSets: it creates the pods and PVCs itself, configures streaming replication, performs failover/switchover, handles rolling minor upgrades, WAL archiving, backups, PITR and connection pooling — all declared in a `Cluster` CR.
+
+### How does CNPG failover work?
+
+The instance manager in each pod reports health to the operator. If the primary becomes unhealthy for longer than `failoverDelay`, the operator promotes the most up-to-date replica and repoints the `-rw` Service; the old primary rejoins as a replica once it recovers (using `pg_rewind`). Typical failover takes seconds.
+
+### How do I connect to a CloudNativePG database?
+
+Use the `<cluster>-rw` Service for writes and `<cluster>-ro` for read replicas, with credentials from the generated `<cluster>-app` Secret (it contains `username`, `password`, `host`, `uri` and `jdbc-uri`). Put a `Pooler` in front for many short-lived connections.
+
+### CloudNativePG vs other Postgres operators?
+
+Zalando and Crunchy PGO rely on Patroni/StatefulSets; CNPG talks to the Kubernetes API directly for leader election and manages pods itself, with a small footprint and first-class Barman backups. See also [scaling and upgrades](/recipes/deployments/cnpg-scaling-upgrades/) and [disaster recovery](/recipes/storage/cnpg-disaster-recovery/).

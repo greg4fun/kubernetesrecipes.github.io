@@ -14,7 +14,7 @@ tags:
   - "kubectl"
 relatedRecipes:
   - "kubernetes-imagepullsecrets-private-registry"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Create Kubernetes docker-registry secrets with kubectl. --docker-password-stdin, .dockerconfigjson format, and automating registry authentication.

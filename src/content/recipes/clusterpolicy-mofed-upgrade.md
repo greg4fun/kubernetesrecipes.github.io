@@ -11,7 +11,7 @@ prerequisites:
   - "ClusterPolicy configured"
   - "Multiple GPU nodes for rolling upgrades"
 relatedRecipes:
-  - "crossplane-kubernetes-infrastructure-management"
+  - "kubernetes-crossplane-infrastructure"
   - "scheduler-configuration-tuning"
   - "resource-quotas"
   - "resource-limits-requests"
@@ -19,7 +19,7 @@ relatedRecipes:
   - "pod-mutation-injection"
   - "openshift-project-request-template"
   - "kubernetes-taint-toleration-guide"
-  - "kubernetes-kustomize-configuration-management"
+  - "kubernetes-kustomize-guide"
   - "kubernetes-leases"
   - "kubernetes-labels-annotations-best-practices"
   - "stuck-resources-finalizers"

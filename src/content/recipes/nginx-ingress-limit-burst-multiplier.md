@@ -14,8 +14,8 @@ tags:
   - "networking"
 relatedRecipes:
   - "kubernetes-rate-limiting-guide"
-  - "kubernetes-ingress-guide"
-  - "kubernetes-gateway-api-guide"
+  - "kubernetes-ingress-complete-guide"
+  - "kubernetes-gateway-api"
   - "kubernetes-ingress-fundamentals"
   - "kubernetes-ingress-nginx-guide"
 ---

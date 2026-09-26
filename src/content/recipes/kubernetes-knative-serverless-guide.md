@@ -15,7 +15,7 @@ tags:
   - "autoscaling"
 relatedRecipes:
   - "kubernetes-keda-autoscaling-guide"
-  - "kubernetes-gateway-api-guide"
+  - "kubernetes-gateway-api"
 ---
 
 > 💡 **Quick Answer:** Knative runs serverless containers on Kubernetes — auto-scales to zero, manages revisions, splits traffic. Install Serving: `kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.14.0/serving-crds.yaml && serving-core.yaml`. Deploy: create a `Service` with just an image. Knative handles scaling, routing, HTTPS, and revision management. No Dockerfile changes needed — any container that listens on a port works.

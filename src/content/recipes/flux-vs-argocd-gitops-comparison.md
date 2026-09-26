@@ -13,12 +13,12 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
-  - "kubernetes-flux-gitops-guide"
+  - "flux-gitops"
   - "flux-gitops-continuous-delivery"
   - "argocd-app-of-apps-pattern"
   - "platform-engineering-internal-developer-platform-kubernetes"
   - "argocd-app-of-apps-sync-waves"
-  - "kubernetes-argocd-gitops-guide"
+  - "argocd-gitops"
   - "kubernetes-flux-sources-guide"
 ---
 

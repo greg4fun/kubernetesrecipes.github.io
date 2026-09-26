@@ -13,7 +13,7 @@ relatedRecipes:
   - "automate-nccl-preflight-ci"
   - "argocd-gitops"
   - "helm-chart-basics"
-  - "kubernetes-kustomize-configuration-management"
+  - "kubernetes-kustomize-guide"
 tags:
   - gitops
   - flux

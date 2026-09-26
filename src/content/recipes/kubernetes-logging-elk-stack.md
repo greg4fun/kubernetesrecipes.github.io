@@ -7,7 +7,7 @@ publishDate: "2026-04-03"
 tags: ["logging", "elasticsearch", "fluentd", "kibana", "elk", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "logging-efk-stack"
+  - "kubernetes-efk-logging-stack"
   - "container-logging-patterns"
   - "kubernetes-monitoring-guide"
 ---

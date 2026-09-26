@@ -14,7 +14,7 @@ tags:
   - "container-images"
   - "vulnerability-scanning"
 relatedRecipes:
-  - "kubernetes-imagepullbackoff-troubleshoot"
+  - "imagepullbackoff-troubleshooting"
   - "kubernetes-secret-types-guide"
 ---
 

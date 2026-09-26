@@ -14,7 +14,7 @@ tags:
   - "cluster-health"
 relatedRecipes:
   - "kubernetes-rbac-troubleshooting"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Troubleshoot Kubernetes nodes in NotReady state. Kubelet issues, disk pressure, network problems, certificate expiration, and recovery procedures.

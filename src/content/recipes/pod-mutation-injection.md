@@ -9,7 +9,7 @@ tags: ["admission-controller", "mutation", "injection", "configuration", "automa
 relatedRecipes:
   - "kubernetes-api-aggregation"
   - "kubernetes-cluster-upgrade"
-  - "namespace-management"
+  - "kubernetes-namespace-guide"
 ---
 
 > 💡 **Quick Answer:** Use **MutatingWebhookConfiguration** to intercept pod creation and modify specs automatically. Webhooks receive `AdmissionReview`, return JSON patches to add env vars, volumes, sidecars, or labels. Tools like **Kyverno** simplify this with YAML policies instead of custom code.

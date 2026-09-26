@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "kubernetes-vertical-pod-autoscaler-vpa"
-  - "prometheus-monitoring-kubernetes-guide"
+  - "kubernetes-prometheus-monitoring-guide"
   - "kubernetes-horizontal-pod-autoscaler-v2"
   - "keda-event-driven-autoscaling-kubernetes"
 ---

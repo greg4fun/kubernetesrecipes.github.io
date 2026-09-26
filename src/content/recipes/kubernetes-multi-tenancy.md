@@ -10,7 +10,7 @@ relatedRecipes:
   - "confidential-computing-kubernetes"
   - "kubernetes-admission-controllers-guide"
   - "kubernetes-network-security-checklist"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Implement multi-tenancy in Kubernetes with namespaces, RBAC, quotas, network policies, and virtual clusters. Covers soft and hard tenancy models.

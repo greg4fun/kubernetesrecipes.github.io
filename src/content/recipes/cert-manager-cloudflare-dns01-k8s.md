@@ -13,7 +13,7 @@ tags:
   - "dns01"
   - "wildcard-tls"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

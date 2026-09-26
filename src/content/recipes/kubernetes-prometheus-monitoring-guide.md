@@ -1,6 +1,6 @@
 ---
-title: "Prometheus: K8s Monitoring and Alerting"
-description: "Deploy Prometheus monitoring in Kubernetes with kube-prometheus-stack. ServiceMonitor, PrometheusRule, Grafana dashboards, and alerting for production clusters."
+title: "Prometheus Monitoring on Kubernetes: Setup Guide"
+description: "Monitor Kubernetes with Prometheus: kube-prometheus-stack Helm install, ServiceMonitor/PodMonitor, PrometheusRule alerts, recording rules and key PromQL."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "observability"
@@ -13,12 +13,22 @@ tags:
   - "alerting"
   - "observability"
   - "grafana"
+  - "servicemonitor"
+  - "promql"
 relatedRecipes:
+  - "alertmanager-configuration"
+  - "grafana-kubernetes-monitoring-dashboards"
+  - "kubernetes-log-aggregation-loki"
   - "kubernetes-metrics-server-top"
   - "kubernetes-probes-liveness-readiness"
+  - "kubernetes-logging-fluentbit-guide"
+  - "gpu-operator-node-status-exporter-metrics"
+  - "doca-telemetry-bluefield-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Deploy the full monitoring stack: `helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring --create-namespace`. Includes Prometheus, Grafana, Alertmanager, node-exporter, and kube-state-metrics. Create `ServiceMonitor` to scrape your apps. Create `PrometheusRule` for alerts. Access Grafana: `kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring` (admin/prom-operator).
+>
+> **Gotcha:** By default the chart's Prometheus only picks up ServiceMonitors/PodMonitors/PrometheusRules labelled `release: <helm-release-name>`. Label them, or install with `--set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false` (and the `podMonitor…`/`rule…` equivalents) to select all.
 
 ## The Problem
 
@@ -38,7 +48,7 @@ You need visibility into your Kubernetes cluster:
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm install prometheus prometheus-community/kube-prometheus-stack \
   -n monitoring --create-namespace \
-  --set grafana.adminPassword=admin \
+  --set grafana.adminPassword='change-me' \
   --set prometheus.prometheusSpec.retention=30d \
   --set prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage=50Gi
 
@@ -52,7 +62,32 @@ helm install prometheus prometheus-community/kube-prometheus-stack \
 
 # Access Grafana
 kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring
-# http://localhost:3000 → admin / admin
+# http://localhost:3000 → admin / change-me
+
+# Prometheus UI (targets, rules, TSDB status)
+kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090 -n monitoring
+```
+
+On OpenShift, Prometheus, Alertmanager and Grafana-less console dashboards are built in (`openshift-monitoring`); enable **user workload monitoring** and create ServiceMonitors in your namespace instead of installing this chart.
+
+```mermaid
+graph TD
+    subgraph Targets
+        APP[App Pods<br/>/metrics]
+        NE[node-exporter]
+        KSM[kube-state-metrics]
+        KUBELET[kubelet / cAdvisor]
+    end
+    subgraph Monitoring Stack
+        OP[Prometheus Operator] -->|renders config from<br/>ServiceMonitor / PodMonitor / PrometheusRule| P
+        P[Prometheus] -->|scrape| APP
+        P -->|scrape| NE
+        P -->|scrape| KSM
+        P -->|scrape| KUBELET
+        P -->|fire alerts| AM[Alertmanager]
+        AM -->|notify| SL[Slack / PagerDuty / email]
+        G[Grafana] -->|PromQL| P
+    end
 ```
 
 ### ServiceMonitor (Scrape Your Apps)
@@ -105,6 +140,8 @@ kind: PodMonitor
 metadata:
   name: batch-jobs
   namespace: monitoring
+  labels:
+    release: prometheus
 spec:
   namespaceSelector:
     matchNames:
@@ -179,6 +216,8 @@ spec:
 ```
 
 ### Alertmanager Configuration
+
+An `AlertmanagerConfig` only matches alerts whose `namespace` label equals the namespace the object lives in — the operator injects that matcher. Put team configs in the team's namespace, or configure global routing in Helm values (`alertmanager.config`). Full routing/receiver/inhibition examples: [Alertmanager configuration](/recipes/observability/alertmanager-configuration/).
 
 ```yaml
 # In Helm values or AlertmanagerConfig CRD
@@ -256,28 +295,55 @@ topk(10, sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (pod
 ### Instrument Your App
 
 ```python
-# Python with prometheus_client
-from prometheus_client import Counter, Histogram, start_http_server
+from flask import Flask, Response
+from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
 
-REQUEST_COUNT = Counter('http_requests_total', 'Total requests', ['method', 'endpoint', 'status'])
-REQUEST_LATENCY = Histogram('http_request_duration_seconds', 'Request latency', ['endpoint'])
+app = Flask(__name__)
+REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint', 'status'])
+REQUEST_LATENCY = Histogram('http_request_duration_seconds', 'HTTP request latency', ['method', 'endpoint'])
 
 @app.route('/api/data')
-@REQUEST_LATENCY.labels(endpoint='/api/data').time()
 def get_data():
-    result = process()
-    REQUEST_COUNT.labels(method='GET', endpoint='/api/data', status=200).inc()
+    with REQUEST_LATENCY.labels('GET', '/api/data').time():
+        result = process_data()
+    REQUEST_COUNT.labels('GET', '/api/data', '200').inc()
     return result
 
-# Expose /metrics on port 8080
-start_http_server(8080)
+@app.route('/metrics')
+def metrics():
+    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
 ```
+
+Keep label values bounded (route templates, not raw URLs or user IDs).
+
+### Recording Rules (Pre-Compute Expensive Queries)
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: recording-rules
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: aggregations
+      interval: 30s
+      rules:
+        - record: job:http_requests_total:rate5m
+          expr: sum(rate(http_requests_total[5m])) by (job)
+        - record: job:http_request_duration_seconds:p99
+          expr: histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (job, le))
+```
+
+Dashboards and alerts then query the cheap `job:...` series instead of re-aggregating raw data on every refresh.
 
 ## Common Issues
 
 **ServiceMonitor not discovered**
 
-Missing `release: prometheus` label. Prometheus operator only watches ServiceMonitors matching its selector.
+Missing `release: prometheus` label (or whatever the Prometheus CR selects). Check: `kubectl get prometheus -n monitoring -o jsonpath='{.items[0].spec.serviceMonitorSelector}'` and `...serviceMonitorNamespaceSelector`.
 
 **"0 active targets" for custom metrics**
 
@@ -285,7 +351,15 @@ Service port name doesn't match ServiceMonitor `endpoints.port`. Must use port n
 
 **Prometheus OOM killed**
 
-Retention too long or too many series. Reduce retention, add storage, or use Thanos/Cortex for long-term.
+Too many active series (high-cardinality labels) more than retention. Find offenders in *Status → TSDB Status*, drop labels with `metricRelabelings` on the ServiceMonitor endpoint, pre-aggregate with recording rules, and move long-term storage to Thanos/Mimir.
+
+**Grafana shows "No data"**
+
+Wrong data source URL (in-cluster default: `http://prometheus-kube-prometheus-prometheus.monitoring:9090`) or the target is down — check *Status → Targets* in Prometheus.
+
+**kube-controller-manager / kube-scheduler / etcd targets down**
+
+Managed control planes (EKS, GKE, AKS) don't expose them; disable those scrapes in values (`kubeControllerManager.enabled=false` etc.). On kubeadm, bind them to `0.0.0.0` or scrape via the node IP.
 
 ## Best Practices
 
@@ -302,3 +376,21 @@ Retention too long or too many series. Reduce retention, add storage, or use Tha
 - PrometheusRule CRD defines alerting rules
 - PromQL for querying — learn the key patterns (rate, sum, histogram_quantile)
 - Instrument your apps with /metrics endpoint for custom metrics
+
+## Frequently Asked Questions
+
+### What is kube-prometheus-stack?
+
+A Helm chart that installs the Prometheus Operator, Prometheus, Alertmanager, Grafana, node-exporter and kube-state-metrics, plus ~100 alerting rules and dashboards from the kubernetes-mixin. It is the standard way to get full Kubernetes monitoring in one release.
+
+### ServiceMonitor vs PodMonitor?
+
+A ServiceMonitor scrapes the endpoints behind a Service (selected by Service labels, named port). A PodMonitor selects pods directly — useful for Jobs, DaemonSets or sidecars without a Service. Both are rendered into Prometheus scrape config by the operator.
+
+### How long should Prometheus retain data?
+
+15–30 days locally is typical; size storage at roughly `ingested samples/s × 2 bytes × retention seconds`. For months or years, use remote write to Thanos, Mimir or a managed service.
+
+### Why alert on symptoms instead of CPU?
+
+High CPU is often harmless; users feel errors and latency. Page on SLO symptoms (error rate, p99 latency, availability) and keep resource alerts as warnings or capacity signals.

@@ -15,8 +15,8 @@ timeToComplete: "25 minutes"
 relatedRecipes:
   - "kubernetes-api-versions-explained"
   - "openshift-support-lifecycle-version-matrix"
-  - "kubernetes-etcd-backup-restore"
-  - "kubernetes-rolling-update-zero-downtime"
+  - "etcd-backup-restore-kubernetes"
+  - "kubernetes-rolling-update-strategy"
   - "kubernetes-pod-priority-preemption"
 ---
 

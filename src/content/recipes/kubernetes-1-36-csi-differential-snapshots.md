@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "kubernetes-1-36-volume-group-snapshot"
-  - "kubernetes-velero-backup-guide"
+  - "velero-kubernetes-backup-disaster-recovery"
   - "kubernetes-persistent-volume-guide"
 ---
 

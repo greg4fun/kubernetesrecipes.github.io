@@ -13,7 +13,7 @@ tags:
   - "gpu"
   - "all-reduce"
 relatedRecipes:
-  - "nccl-environment-variables-guide"
+  - "nccl-environment-variables-reference-kubernetes"
   - "nccl-allgather-benchmark-profile"
   - "nvidia-peermem-gpudirect-rdma-k8s"
   - "run-nccl-tests-mpijob-kubernetes"
@@ -75,7 +75,7 @@ Usually a transport fallback — check for `NCCL INFO NET/Socket` in logs, which
 
 **Results vary run-to-run**
 
-Check for noisy neighbors on the same NIC/switch, or CPU governor throttling. Pin NCCL to specific interfaces with `NCCL_SOCKET_IFNAME` / `NCCL_IB_HCA` (see [nccl-environment-variables-guide](/recipes/ai/nccl-environment-variables-guide/)).
+Check for noisy neighbors on the same NIC/switch, or CPU governor throttling. Pin NCCL to specific interfaces with `NCCL_SOCKET_IFNAME` / `NCCL_IB_HCA` (see [NCCL environment variables reference](/recipes/ai/nccl-environment-variables-reference-kubernetes/)).
 
 ## Best Practices
 

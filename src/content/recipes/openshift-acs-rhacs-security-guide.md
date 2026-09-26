@@ -13,7 +13,7 @@ tags:
   - "rhacs"
   - "vulnerability-scanning"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "ubuntu-2604-kubernetes-sudo-rs"
 ---

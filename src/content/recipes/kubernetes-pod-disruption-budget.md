@@ -14,7 +14,7 @@ tags:
   - "scheduling"
   - "cka"
 relatedRecipes:
-  - "kubernetes-deployment-rolling-update"
+  - "kubernetes-rolling-update-strategy"
   - "kubernetes-graceful-shutdown-guide"
   - "cluster-autoscaler-setup"
   - "kubernetes-node-affinity-guide"

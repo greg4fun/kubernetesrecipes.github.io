@@ -14,7 +14,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "25 minutes"
 relatedRecipes:
-  - "kubernetes-namespace-stuck-terminating"
+  - "namespace-stuck-terminating"
   - "kubernetes-rbac-guide"
   - "kubernetes-multi-tenancy-enterprise"
   - "openshift-scc-security-context-constraints"

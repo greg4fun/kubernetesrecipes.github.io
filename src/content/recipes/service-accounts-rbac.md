@@ -1,25 +1,40 @@
 ---
-title: "How to Configure Service Accounts and RBAC"
-description: "Secure your Kubernetes workloads with service accounts and role-based access control. Create roles, bindings, and implement least-privilege access."
+title: "Kubernetes Service Account: YAML, RBAC, Tokens"
+description: "Create a Kubernetes ServiceAccount, attach it to a Deployment, grant least-privilege RBAC with Roles and bindings, and test it with kubectl auth can-i."
 category: "security"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 author: "Luca Berton"
-tags: ["rbac", "service-accounts", "security", "authorization", "least-privilege"]
+tags: ["rbac", "service-accounts", "security", "authorization", "least-privilege", "role", "clusterrole", "tokens"]
 relatedRecipes:
+  - "kubernetes-rbac-role-clusterrole"
+  - "kubernetes-rbac-least-privilege"
+  - "kubernetes-service-accounts-tokens"
+  - "kubernetes-service-accounts-workload-identity"
+  - "pod-security-standards"
+  - "kubernetes-namespace-guide"
+  - "openshift-acs-rhacs-security-guide"
   - "kubernetes-security-context-guide"
   - "workload-identity-cloud-access"
   - "networkpolicy-deny-default-gpu"
 ---
 
-> 💡 **Quick Answer:** Create `ServiceAccount`, then create `Role` (namespace-scoped) or `ClusterRole` (cluster-wide) with verb/resource permissions, then bind with `RoleBinding` or `ClusterRoleBinding`. Reference ServiceAccount in pod spec with `serviceAccountName`. Use `automountServiceAccountToken: false` when not needed.
+> 💡 **Quick Answer:** Create a `ServiceAccount` (`kubectl create sa my-app-sa -n production`), then create `Role` (namespace-scoped) or `ClusterRole` (cluster-wide) with verb/resource permissions, then bind with `RoleBinding` or `ClusterRoleBinding`. Reference ServiceAccount in pod spec with `serviceAccountName`. Use `automountServiceAccountToken: false` when not needed.
 >
 > **Key command:** `kubectl auth can-i --as=system:serviceaccount:<ns>:<sa> --list` shows SA permissions.
 >
-> **Gotcha:** Default ServiceAccount has minimal permissions; always create dedicated SAs with least-privilege roles for workloads needing API access.
+> **Gotcha:** Every namespace's `default` ServiceAccount is auto-mounted into pods that don't name one. It has no RBAC grants out of the box, but any binding someone adds to it is inherited by every pod in the namespace — use dedicated SAs per workload.
 
 
 Service accounts provide identity for pods, while RBAC (Role-Based Access Control) controls what actions they can perform. Together they implement the principle of least privilege.
+
+| Resource | Scope | Purpose |
+|----------|-------|---------|
+| `ServiceAccount` | Namespace | Identity for pods: `system:serviceaccount:<ns>:<name>` |
+| `Role` | Namespace | Permissions within one namespace |
+| `ClusterRole` | Cluster | Permissions on cluster-scoped resources, or a reusable template |
+| `RoleBinding` | Namespace | Grants a Role **or ClusterRole** inside one namespace |
+| `ClusterRoleBinding` | Cluster | Grants a ClusterRole in every namespace |
 
 ## Create a Service Account
 
@@ -35,10 +50,14 @@ automountServiceAccountToken: false  # Don't auto-mount unless needed
 
 ```bash
 kubectl apply -f service-account.yaml
+# or imperatively
+kubectl create serviceaccount my-app-sa -n production
 kubectl get serviceaccounts -n production
 ```
 
-## Use Service Account in Pod
+## Use Service Account in a Pod or Deployment
+
+`serviceAccountName` lives in the pod spec (`spec.template.spec` for a Deployment). It's immutable on a running pod — changing it on a Deployment triggers a rollout.
 
 ```yaml
 # pod-with-sa.yaml
@@ -71,6 +90,17 @@ rules:
   - apiGroups: [""]
     resources: ["pods/log"]
     verbs: ["get"]
+```
+
+With Helm, most charts expose this as values:
+
+```yaml
+serviceAccount:
+  create: true
+  name: my-app-sa
+  automount: false
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/my-app   # cloud workload identity
 ```
 
 ## Create a ClusterRole (Cluster-Wide)
@@ -110,6 +140,8 @@ roleRef:
 ```
 
 ## ClusterRoleBinding
+
+Bound with a `ClusterRoleBinding`, `list secrets` means every Secret in the cluster — only grant this to trusted system components. To reuse a ClusterRole in a single namespace, reference it from a `RoleBinding` instead.
 
 ```yaml
 # clusterrolebinding.yaml
@@ -177,6 +209,29 @@ rules:
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 ```
 
+### CI/CD Pipeline Account
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cicd-deployer
+  namespace: production
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["services", "configmaps", "secrets"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch", "delete"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+```
+
 ### CronJob Operator
 
 ```yaml
@@ -238,6 +293,14 @@ rules:
 
 ## Service Account Token
 
+Since Kubernetes 1.24, no long-lived token Secret is created automatically. For short-lived tokens (CI jobs, debugging) use the TokenRequest API:
+
+```bash
+kubectl create token ci-deployer -n production --duration=1h
+```
+
+Only if an external system truly needs a non-expiring token, create a legacy token Secret explicitly (and rotate it):
+
 ```yaml
 # sa-with-token.yaml
 apiVersion: v1
@@ -262,6 +325,8 @@ kubectl get secret ci-deployer-token -n production -o jsonpath='{.data.token}' |
 ```
 
 ## Test RBAC Permissions
+
+The service account's username is `system:serviceaccount:<namespace>:<name>`; impersonate it with `--as`:
 
 ```bash
 # Check if service account can perform action
@@ -380,6 +445,18 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
+## Common Verbs Reference
+
+| Verb | HTTP | Notes |
+|------|------|-------|
+| `get` | GET (single) | Read one named object |
+| `list` | GET (collection) | Returns full objects — `list secrets` exposes all values |
+| `watch` | GET `?watch` | Stream changes |
+| `create` | POST | |
+| `update` / `patch` | PUT / PATCH | |
+| `delete` / `deletecollection` | DELETE | |
+| `impersonate`, `bind`, `escalate` | — | Privilege-escalation verbs; grant sparingly |
+
 ## Best Practices
 
 ```yaml
@@ -401,6 +478,28 @@ rules:
     resources: ["*"]
     verbs: ["*"]
 ```
+
+## Frequently Asked Questions
+
+### What is a Kubernetes service account?
+
+A ServiceAccount is a namespaced identity for processes running in pods. The kubelet mounts a short-lived, auto-rotated token for it (unless automounting is disabled), and the API server authenticates the pod as `system:serviceaccount:<ns>:<name>`, which RBAC then authorizes.
+
+### How do I add a service account to a Deployment?
+
+Set `spec.template.spec.serviceAccountName: my-app-sa` in the Deployment. The ServiceAccount must exist in the same namespace; the change rolls out new pods.
+
+### How do I check a service account's permissions?
+
+`kubectl auth can-i --list --as=system:serviceaccount:<ns>:<sa> -n <ns>` lists everything; `kubectl auth can-i create deployments --as=system:serviceaccount:<ns>:<sa> -n <ns>` checks one action.
+
+### Should I disable automountServiceAccountToken?
+
+Yes for any workload that doesn't call the Kubernetes API. Set `automountServiceAccountToken: false` on the ServiceAccount or pod spec; this also satisfies scanners that flag "bind this resource's automounted service account to RBAC or disable automounting".
+
+### How do I get a token for a service account?
+
+`kubectl create token <sa> -n <ns>` issues a time-bound token (1.24+). Long-lived token Secrets still work but must be created manually and are discouraged.
 
 ## Summary
 

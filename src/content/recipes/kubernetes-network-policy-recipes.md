@@ -14,7 +14,7 @@ tags:
   - "zero-trust"
 relatedRecipes:
   - "rhacs-network-segmentation"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Common Kubernetes NetworkPolicy recipes. Default deny, allow DNS, namespace isolation, database access, and external egress patterns for zero-trust networking.

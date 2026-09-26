@@ -14,7 +14,7 @@ tags:
   - "long-term-storage"
 relatedRecipes:
   - "kubernetes-prometheus-alerting-rules"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "nvidia-dcgm-exporter-monitoring"
 ---
 

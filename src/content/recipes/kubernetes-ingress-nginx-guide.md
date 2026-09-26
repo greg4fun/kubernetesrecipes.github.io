@@ -14,7 +14,7 @@ tags:
   - "routing"
   - "cka"
 relatedRecipes:
-  - "kubernetes-gateway-api-guide"
+  - "kubernetes-gateway-api"
   - "kubernetes-service-types-explained"
   - "nginx-ingress-limit-burst-multiplier"
   - "kubernetes-rate-limiting-gateway-api"

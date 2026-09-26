@@ -1,23 +1,29 @@
 ---
 title: "NCCL RoCE Validation with Kubeflow MPIJob on Kubernetes"
-description: "Run NCCL all_reduce_perf validation tests using Kubeflow MPIJob on GPU clusters. Configure MPI launcher and workers, NCCL environment variables, test"
+description: "Validate NCCL over RoCE with a Kubeflow MPIJob: launcher/worker YAML, OpenMPI vs NCCL network planes, RDMA device requests, IB logs, and expected busbw."
 tags:
   - "nccl"
   - "mpi"
   - "rdma"
   - "roce"
   - "distributed-training"
+  - "openshift"
+  - "validation"
 category: "ai"
 publishDate: "2026-06-04"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nccl-all-reduce-perf-benchmark-multi-node"
+  - "nccl-network-validation-script-openshift"
+  - "nccl-gpudirect-rdma-distance-pix-sys"
+  - "nccl-environment-variables-reference-kubernetes"
+  - "tune-nccl-env-rdma-ethernet"
   - "nccl-channel-routing-transport-analysis"
   - "nvidia-network-operator-rdma-kubernetes"
 ---
 
-> 💡 **Quick Answer:** Use Kubeflow's MPIJob (v2beta1) to run NCCL `all_reduce_perf` validation across GPU nodes. The MPIJob creates a launcher pod and worker pods, orchestrates MPI rank placement, and runs collective tests. Single-node 8× H200 NVL achieves ~68 GB/s busbw (pure NVLink). Multi-node 2×2 GPU over RoCE with `NCCL_NET_PLUGIN=none` (socket fallback) gets ~13-35 GB/s. For full RDMA performance, ensure pods have `/dev/infiniband` access via the shared RDMA device plugin.
+> 💡 **Quick Answer:** Use Kubeflow's MPIJob (v2beta1) to run NCCL `all_reduce_perf` validation across GPU nodes. The MPIJob creates a launcher pod and worker pods, orchestrates MPI rank placement, and runs collective tests. Single-node 8× H200 NVL achieves ~68 GB/s busbw (pure NVLink). Multi-node 2×2 GPU falling back to TCP sockets (no `/dev/infiniband` in the pods) gets ~13-35 GB/s; with RoCE + GPUDirect RDMA the same test reaches ~32 GB/s at 1 GB messages and ~48-50 GB/s peak. Keep MPI control traffic on `eth0` and NCCL data on the SR-IOV `net1`, and give workers `rdma/rdma_shared_device_a` + `IPC_LOCK`.
 
 ## The Problem
 
@@ -170,9 +176,20 @@ spec:
                 - name: NCCL_DMABUF_ENABLE
                   value: "1"            # Enable DMA-BUF for GPUDirect
                 - name: NCCL_NET_PLUGIN
-                  value: none           # Disable IB plugin (use TCP sockets)
+                  value: none           # Don't load an external net plugin (built-in IB/Socket only)
                 - name: NCCL_SHM_DISABLE
                   value: "1"            # Force network path (no SHM shortcut)
+                # OpenMPI control plane: pod network, not the RDMA interface
+                - name: OMPI_MCA_btl_tcp_if_include
+                  value: eth0
+                - name: OMPI_MCA_plm_rsh_agent
+                  value: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+                - name: OMPI_MCA_orte_abort_timeout
+                  value: "60"
+                - name: OMPI_MCA_coll_ucc_enable
+                  value: "0"
+                - name: OMPI_MCA_coll_hcoll_enable
+                  value: "0"
               image: nvcr.io/nvidia/pytorch:24.04-py3
               command:
                 - /opt/nccl-tests/build/all_reduce_perf
@@ -215,8 +232,8 @@ spec:
 ### Results: Multi-Node Without RDMA (Socket Fallback)
 
 ```text
-# When /dev/infiniband is missing and NCCL_NET_PLUGIN=none:
-# NCCL falls back to TCP sockets over the secondary network (net1)
+# When /dev/infiniband is missing in the pods, NCCL finds 0 HCAs and
+# falls back to TCP sockets over the secondary network (net1)
 
 =============== System diagnostics ===============
 Hostname: nccl-roce-validation-launcher
@@ -235,7 +252,21 @@ WARNING: /dev/infiniband is missing. RDMA will not work.
 # Average: ~13.5 GB/s (across all sizes)
 #
 # ⚠️ This is WITHOUT RDMA — TCP socket over RoCE NIC
-# With proper RDMA (/dev/infiniband + IB plugin): expect 2-3× better
+# With proper RDMA (/dev/infiniband + built-in IB transport): expect 2-3× better
+```
+
+### Results: Multi-Node With RoCE + GPUDirect RDMA
+
+```text
+# NCCL_NET_GDR_LEVEL=PIX, GDRDMA active for close GPU/NIC pairs:
+# GPU Direct RDMA Enabled for GPU 0 / HCA 0 (distance 9 <= 9), read 1 mode Default
+# IB connection: MTU 5, GID 3, ECE supported, 4 QPs per connection
+# NCCL INFO Connected all trees
+
+  1073741824  268435456  float  sum  -1  50047.0  21.45  32.11  0  50156.6  21.41  32.11  0
+
+# ~32 GB/s busbw at 1 GB with GDRDMA
+# vs ~13 GB/s average socket fallback, ~68 GB/s NVLink intra-node
 ```
 
 ### NCCL Environment Variables Explained
@@ -245,7 +276,7 @@ Variable                  │ Value  │ Purpose
 ──────────────────────────┼────────┼─────────────────────────────────────
 NCCL_SOCKET_IFNAME        │ net1   │ Use secondary network (Multus) for NCCL
 NCCL_DMABUF_ENABLE        │ 1      │ Allow DMA-BUF for GPUDirect RDMA
-NCCL_NET_PLUGIN           │ none   │ Disable IB verbs plugin (force sockets)
+NCCL_NET_PLUGIN           │ none   │ Skip external libnccl-net plugin loading
 NCCL_SHM_DISABLE          │ 1      │ Disable shared memory (force network path)
 MPI_NP                    │ 4      │ Total MPI processes (ranks)
 GPUS_PER_MPI_PROCESS      │ 1      │ Each rank gets 1 GPU
@@ -254,18 +285,67 @@ MPI_DNS_WAIT_INTERVAL     │ 3      │ DNS retry interval (seconds)
 REWRITE_MPI_HOSTFILE_FQDN │ false  │ Don't rewrite hostfile with FQDNs
 ──────────────────────────┴────────┴─────────────────────────────────────
 
-To enable RDMA instead of sockets:
-  NCCL_NET_PLUGIN: ""          (or remove — use default IB plugin)
-  NCCL_IB_HCA: mlx5_0,mlx5_3  (specify HCAs)
-  NCCL_NET_GDR_LEVEL: 5       (enable GPUDirect RDMA)
+NCCL_NET_PLUGIN=none does NOT disable InfiniBand/RoCE — the built-in IB
+transport is used whenever HCAs are visible. For a deliberate socket
+baseline use NCCL_NET=Socket (or NCCL_IB_DISABLE=1); to fail instead of
+falling back, set NCCL_NET=IB.
 ```
+
+### OpenMPI Control Plane vs NCCL Data Plane
+
+MPI uses `eth0` (pod network) for launch, signals and barriers; NCCL moves GPU data over `net1` (SR-IOV VF via Multus). Keep them separate:
+
+| Variable | Value | Purpose |
+|---|---|---|
+| `OMPI_MCA_btl_tcp_if_include` | `eth0` | MPI TCP traffic on the pod network, not the RDMA VF |
+| `OMPI_MCA_plm_rsh_agent` | `ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null` | No host-key prompts for ephemeral pods |
+| `OMPI_MCA_orte_abort_timeout` | `60` | Give ranks time to flush logs before being killed |
+| `OMPI_MCA_coll_ucc_enable` / `coll_hcoll_enable` | `0` | Don't let UCC/HCOLL take collectives — NCCL handles GPU collectives |
+
+On OpenShift, the pod interface shows as `eth0@ifNNN` in `ip link`; the name to use is still `eth0`.
+
+### MPI Hostfile and DNS
+
+The MPI Operator generates `/etc/mpi/hostfile` with worker FQDNs from the job's headless Service. The launcher must wait until they resolve:
+
+```text
+nccl-roce-validation-worker-0.nccl-roce-validation.gpu-workloads.svc slots=2
+nccl-roce-validation-worker-1.nccl-roce-validation.gpu-workloads.svc slots=2
+
+DNS WAIT: nccl-roce-validation-worker-0.nccl-roce-validation.gpu-workloads.svc not resolvable yet
+...  (retries every MPI_DNS_WAIT_INTERVAL until MPI_DNS_WAIT_SECONDS)
+```
+
+Format: `<pod>.<headless-svc>.<namespace>.svc`; `slots` = GPUs (ranks) per worker.
+
+### Decode the IB Connection Logs
+
+```text
+NCCL INFO NET/IB: NCCL Dev 0 IBDev 0 Port 1 qpn 364 mtu 5 GID 3 (0/B9D4E80AFFFF0000) fifoRKey=0x41200 fifoLKey=0x41200
+NCCL INFO NET/IB: IBDev 0 Port 1 qpn 364 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+NCCL INFO NET/IB: IBDev 0 Port 1 qpn 236 set_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+```
+
+| Field | Meaning |
+|---|---|
+| `IBDev 0 Port 1` | First RDMA device, port 1 |
+| `qpn 364/236/...` | Queue pair numbers — several per connection (`NCCL_IB_QPS_PER_CONNECTION`) |
+| `mtu 5` | IB MTU enum 5 = 4096 bytes |
+| `GID 3` | GID index 3 — typically RoCE v2 IPv4 |
+| `vendor_id=0x15b3` | NVIDIA/Mellanox NIC |
+| `query_ece`/`set_ece supported=1` | Enhanced Connection Establishment negotiated |
+
+`NCCL INFO Connected all trees` confirms the ring/tree topology is established.
+
+### NCCL_NET_GDR_READ
+
+`NCCL_NET_GDR_READ=1` lets the NIC read send buffers directly from GPU memory; `0` stages sends through host memory (one extra copy, receives can still use GDR). With SR-IOV VFs whose GPU/NIC placement isn't guaranteed to be PCIe-close, `0` avoids cross-socket read penalties; with rail-aligned GPU/NIC pairs, `1` is faster.
 
 ### Fix: Enable RDMA in Multi-Node Test
 
 ```yaml
-# The 2x2gpu test showed "0 HCAs found" because:
-# 1. Pods don't request rdma/rdma_shared_device_a
-# 2. NCCL_NET_PLUGIN=none explicitly disables IB
+# The 2x2gpu test showed "0 HCAs found" because the pods
+# didn't request rdma/rdma_shared_device_a (no /dev/infiniband)
 
 # Fixed version with RDMA:
 env:
@@ -273,11 +353,12 @@ env:
     value: net1
   - name: NCCL_DMABUF_ENABLE
     value: "1"
-  # Remove NCCL_NET_PLUGIN=none (let NCCL use IB plugin)
+  - name: NCCL_NET
+    value: IB                         # fail instead of silently using sockets
   - name: NCCL_IB_HCA
     value: "mlx5_0,mlx5_3,mlx5_5,mlx5_6"
   - name: NCCL_NET_GDR_LEVEL
-    value: "5"
+    value: "SYS"
   # Remove NCCL_SHM_DISABLE (allow SHM for intra-node)
 
 # Worker must request RDMA device:
@@ -333,7 +414,7 @@ WARNING: /dev/infiniband is missing. RDMA will not work.
 
 ================ NCCL / MPI environment ================
 CUDA_ARCH_LIST=7.5 8.0 8.6 9.0 10.0 12.0
-CUDA_DRIVER_VERSION=560.95.05
+CUDA_DRIVER_VERSION=580.95.05
 CUDA_VERSION=13.0.2.006
 GPUS_PER_MPI_PROCESS=1
 MPI_DNS_WAIT_INTERVAL=3
@@ -406,26 +487,46 @@ grep "Avg bus bandwidth" nccl-prod-*.log
 - **Fix**: This is expected. Only workers need GPU resources. Ignore this warning in launcher logs.
 
 ### Low busbw on multi-node (13 GB/s instead of 50 GB/s)
-- **Cause**: `NCCL_NET_PLUGIN=none` forces TCP sockets; no RDMA
-- **Fix**: Remove `NCCL_NET_PLUGIN=none`; add RDMA device to workers; set `NCCL_IB_HCA`
+- **Cause**: NCCL fell back to TCP sockets — no `/dev/infiniband` in workers, wrong `NCCL_IB_HCA`, or GDR disabled. Check for `NET/Socket` instead of `NET/IB` in `NCCL_DEBUG=INFO` output
+- **Fix**: Request `rdma/rdma_shared_device_a` + `IPC_LOCK` on workers; set `NCCL_IB_HCA`; set `NCCL_NET=IB` to fail fast
 
 ### MPI launcher times out waiting for workers
 - **Cause**: DNS not resolving worker hostnames; or workers not ready
-- **Fix**: Increase `MPI_DNS_WAIT_SECONDS`; verify worker pods are Running; check headless Service
+- **Fix**: Increase `MPI_DNS_WAIT_SECONDS`; verify worker pods are Running and the job's headless Service has endpoints
+
+### "OMPI_MCA_btl_tcp_if_include: eth0 not found"
+- **Cause**: The pod's primary interface has a different name
+- **Fix**: Run `ip link` in a worker and use the actual name (ignore the `@ifNNN` suffix)
+
+### Workers stay Terminating for minutes after the job
+- **Cause**: SR-IOV VF release, GPU deallocation and large `/dev/shm` teardown take time
+- **Fix**: Normal up to a few minutes; delete the MPIJob (not pods). Beyond ~5 minutes: `kubectl delete pod <worker> --force --grace-period=0` and check the SR-IOV device plugin logs
 
 ### "NCCL WARN Connect to ... failed"
 - **Cause**: Network policy blocking inter-pod traffic; or wrong `NCCL_SOCKET_IFNAME`
 - **Fix**: Allow all traffic between NCCL pods; set `NCCL_SOCKET_IFNAME` to correct interface (net1 for Multus secondary)
+
+## Frequently Asked Questions
+
+### How do I run NCCL tests with a Kubeflow MPIJob?
+Create an `MPIJob` (`kubeflow.org/v2beta1`) with one launcher running `all_reduce_perf` and N workers requesting GPUs, the RDMA resource and `IPC_LOCK`. The MPI Operator generates the hostfile and SSH setup; read the `busbw` column in the launcher logs.
+
+### Does NCCL_NET_PLUGIN=none disable RDMA?
+No. It only stops NCCL from loading an external network plugin (`libnccl-net.so`). The built-in IB/RoCE transport is still used when HCAs are visible. Use `NCCL_NET=Socket` or `NCCL_IB_DISABLE=1` to force TCP.
+
+### What busbw should I expect for RoCE validation?
+On the H200 NVL nodes here: ~68 GB/s intra-node over NVLink, ~13-35 GB/s multi-node over TCP sockets, and ~32 GB/s at 1 GB messages rising to ~48-50 GB/s peak with RoCE + GPUDirect RDMA. Compare against your NIC line rate (e.g. 400 Gb/s ≈ 50 GB/s per rail).
 
 ## Best Practices
 
 1. **Test NVLink first (1x8)** — validate intra-node before adding network complexity
 2. **Then test network (2x2)** — isolates network performance from NVLink
 3. **Save logs and describe output** — create test evidence for cluster acceptance
-4. **Compare socket vs RDMA** — run with and without `NCCL_NET_PLUGIN=none` to measure RDMA gain
-5. **Use large messages for peak bandwidth** — 32GB messages show true fabric capacity
-6. **Run regularly** — detect hardware degradation early
-7. **Pin NCCL test image version** — reproducible results across test runs
+4. **Compare socket vs RDMA** — run once with `NCCL_NET=Socket` and once with `NCCL_NET=IB` to measure RDMA gain
+5. **Separate control and data planes** — MPI on `eth0`, NCCL on `net1`; disable UCC/HCOLL
+6. **Use large messages for peak bandwidth** — 32GB messages show true fabric capacity
+7. **Run regularly** — detect hardware degradation early
+8. **Pin NCCL test image version** — reproducible results across test runs
 
 ## Key Takeaways
 
@@ -433,7 +534,8 @@ grep "Avg bus bandwidth" nccl-prod-*.log
 - **1x8 H200 NVL: ~68 GB/s busbw** = healthy NVLink (near theoretical max)
 - **2x2 socket fallback: ~13-35 GB/s** = works but suboptimal (no RDMA)
 - **2x2 with RDMA: ~48-50 GB/s** expected with GDRDMA + IB plugin
-- `NCCL_NET_PLUGIN=none` deliberately disables RDMA — useful for socket baseline testing
+- `NCCL_NET_PLUGIN=none` only skips external plugins — use `NCCL_NET=Socket` for a socket baseline
+- MPI control on `eth0`, NCCL data on `net1`; decode `NET/IB` logs for GID, MTU and QPs
 - Launcher pod has no GPUs and no RDMA (expected) — only workers need resources
 - Run:ai tracks GPU allocation and node placement via annotations
 - Missing `/dev/infiniband` = need `rdma/rdma_shared_device_a` resource in pod spec

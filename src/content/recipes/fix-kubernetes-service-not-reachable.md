@@ -13,7 +13,7 @@ tags:
   - "endpoints"
   - "kube-proxy"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
 ---
 

@@ -8,7 +8,7 @@ tags: ["debug", "kubectl-debug", "ephemeral-containers", "netshoot", "troublesho
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-troubleshooting-guide"
-  - "kubernetes-init-containers"
+  - "kubernetes-init-containers-patterns-examples"
   - "kubernetes-namespace-guide"
 ---
 

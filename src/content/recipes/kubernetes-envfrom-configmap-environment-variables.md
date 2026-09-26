@@ -12,8 +12,8 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-configmap-secrets-management"
-  - "kubernetes-secrets-management-guide"
+  - "configmap-secrets-management"
+  - "secrets-management-best-practices"
 ---
 
 > 💡 **Quick Answer:** `envFrom` injects ALL keys from a ConfigMap (or Secret) as environment variables in one declaration. Use `envFrom[].configMapRef.name` to inject an entire ConfigMap, or `env[].valueFrom.configMapKeyRef` for individual keys. Keys become env var names; values become env var values.

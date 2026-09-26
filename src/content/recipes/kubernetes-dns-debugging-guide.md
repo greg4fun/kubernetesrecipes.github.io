@@ -13,7 +13,7 @@ tags:
   - "debugging"
   - "ndots"
 relatedRecipes:
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "nxdomain-dns-troubleshooting-kubernetes"
 ---

@@ -14,7 +14,7 @@ tags:
   - "bulk-injection"
 relatedRecipes:
   - "kubernetes-env-configmap-secrets"
-  - "kubernetes-pod-security-standards"
+  - "pod-security-standards"
 ---
 
 > 💡 **Quick Answer:** Inject all ConfigMap keys as environment variables using envFrom configMapRef in Kubernetes. Bulk injection, prefix, and selective key patterns.
