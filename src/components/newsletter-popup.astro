@@ -1,7 +1,7 @@
 ---
 // Newsletter popup using Kit.com (ConvertKit) form
 // Form ID: 9965628
-// Appears once per visitor after 15 seconds or 50% scroll
+// Appears once per visitor after 8 seconds or 40% scroll
 ---
 
 <div id="newsletter-popup" class="newsletter-overlay" aria-hidden="true" role="dialog" aria-label="Newsletter signup">
@@ -169,11 +169,11 @@
     if (e.key === 'Escape' && shown) dismiss();
   });
 
-  // Trigger: 15s delay OR 50% scroll, whichever first
-  var timer = setTimeout(show, 15000);
+  // Trigger: 8s delay OR 40% scroll, whichever first
+  var timer = setTimeout(show, 8000);
   window.addEventListener('scroll', function onScroll() {
     var scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-    if (scrollPct >= 0.5) {
+    if (scrollPct > 0.4) {
       show();
       window.removeEventListener('scroll', onScroll);
       clearTimeout(timer);
