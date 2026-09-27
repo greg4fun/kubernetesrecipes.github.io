@@ -14,8 +14,11 @@ tags:
   - type-conversion
   - templates
 relatedRecipes:
+  - "helm-sprig-functions-complete-reference"
   - "helm-templating-sprig"
   - "helm-sprig-cat-function"
+  - "helm-sprig-print-quote-default-functions"
+  - "helm-sprig-add1-trim-merge-functions"
   - "helm-sprig-join-function"
   - "helm-hooks-lifecycle"
 ---
@@ -168,11 +171,26 @@ ingress:
 # Output: "tag1,tag2,tag3"
 ```
 
+### toStrings — Convert Every List Item
+
+`toStrings` (plural) is the list-aware sibling of `toString`: it converts each element of a list to a string and returns a list, rather than collapsing the list into Go's bracket syntax.
+
+```yaml
+# toStrings converts every item, keeps it a list
+{{ list 1 2 3 | toStrings }}
+# Output: ["1" "2" "3"]
+
+# Useful before join when items are mixed/non-string types
+{{ list 1 2 3 | toStrings | join "," }}
+# Output: "1,2,3"
+```
+
 ## Best Practices
 
 - **Always `toString` before `quote`** for numeric values in annotations
 - **Use `default` before `toString`** — handle nil values gracefully
 - **Prefer `join` for lists** — `toString` on lists produces ugly Go syntax
+- **Use `toStrings` when you need a list back** — converts each item, keeps the list shape, instead of collapsing to Go's `[a b c]` syntax
 - **Check types with `kindIs`** — avoid double conversion
 - **Use `toJson` for complex objects** — maps and nested structures
 

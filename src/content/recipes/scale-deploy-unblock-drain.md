@@ -22,7 +22,7 @@ relatedRecipes:
   - "kubernetes-release-cycle-version-support"
   - "mcp-drain-pdb-workaround"
   - "mcp-update-automation-script"
-  - "openshift-node-cordon-uncordon"
+  - "kubernetes-node-drain-cordon"
 ---
 > 💡 **Quick Answer:** `oc scale deploy/<name> --replicas=0 -n <ns>` removes pods blocking a drain. Record original replica count first, complete the drain and node maintenance, then `oc scale deploy/<name> --replicas=<original>` to restore.
 

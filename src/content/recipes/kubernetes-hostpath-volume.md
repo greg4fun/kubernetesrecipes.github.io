@@ -11,7 +11,7 @@ tags: ["hostpath", "volumes", "storage", "daemonset", "security", "local-storage
 relatedRecipes:
   - "openshift-support-lifecycle-version-matrix"
   - "kubernetes-storage-best-practices"
-  - "kubernetes-emptydir-volume"
+  - "kubernetes-emptydir-hostpath-volumes"
   - "kubernetes-security-context-guide"
 ---
 

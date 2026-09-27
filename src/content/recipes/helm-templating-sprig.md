@@ -43,55 +43,33 @@ The most-used Helm Sprig functions, with exact input and rendered output:
 
 ### `cat` — join with spaces
 
-`cat` concatenates all arguments into one **space-separated** string. It is handy for assembling command lines or labels.
+`cat` concatenates all arguments into one **space-separated** string: `{{ cat "nginx" "-c" .Values.configPath | quote }}` → `"nginx -c /etc/nginx.conf"`.
 
-```yaml
-# {{ cat "nginx" "-c" "/etc/nginx.conf" }}  =>  nginx -c /etc/nginx.conf
-data:
-  command: {{ cat "nginx" "-c" .Values.configPath | quote }}
-```
+> Full syntax, `nospace`, and gotchas: [Helm Sprig cat Function](/recipes/helm/helm-sprig-cat-function/).
 
 ### `print` / `printf` — concatenate and format
 
-`print` joins arguments with **no separator** between strings (it mirrors Go's `fmt.Sprint`). Use `printf` when you need a format string.
+`print` joins arguments with **no separator** (mirrors Go's `fmt.Sprint`); `printf` takes a format string when you need exact control: `{{ printf "%s-%s" .Values.app .Values.env | quote }}` → `"web-prod"`.
 
-```yaml
-# print  => HelloWorld     printf => web-prod
-data:
-  greeting: {{ print "Hello" "World" | quote }}
-  fullname: {{ printf "%s-%s" .Values.app .Values.env | quote }}
-```
+> Full syntax and patterns: [Helm Sprig print/quote/default Functions](/recipes/helm/helm-sprig-print-quote-default-functions/).
 
 ### `toString` — force a string
 
-`toString` converts numbers, booleans, or other types into a string — essential because Kubernetes env-var and annotation values **must** be strings.
+`toString` converts numbers, booleans, or other types into a string — essential because Kubernetes env-var and annotation values **must** be strings: `{{ .Values.port | toString | quote }}` → `8080` becomes `"8080"`.
 
-```yaml
-env:
-  - name: PORT
-    value: {{ .Values.port | toString | quote }}      # 8080  -> "8080"
-  - name: DEBUG
-    value: {{ .Values.debug | toString | quote }}     # true  -> "true"
-```
+> Full syntax, nil handling, and the list gotcha: [Helm Sprig toString Function Guide](/recipes/helm/helm-sprig-tostring-function/).
 
 ### `add1` — increment an integer
 
-`add1 n` returns `n + 1`. Useful for 1-based indexes inside `range` loops.
+`add1 n` returns `n + 1` — useful for 1-based indexes inside `range` loops: `{{ add1 $i }}`.
 
-```yaml
-# StatefulSet replica labels, 1-based
-{{- range $i, $host := .Values.hosts }}
-replica-{{ add1 $i }}: {{ $host | quote }}
-{{- end }}
-```
+> Full syntax and port-offset patterns: [Helm Sprig add1 trim merge Functions](/recipes/helm/helm-sprig-add1-trim-merge-functions/).
 
 ### `quote` and `join` — the everyday pair
 
-```yaml
-# quote wraps in " " ; join collapses a list into one string
-labels: {{ .Values.tags | join "," | quote }}   # [a b c] -> "a,b,c"
-name:   {{ .Values.appName | quote }}            # myapp    -> "myapp"
-```
+`quote` wraps a value in `" "`; `join` collapses a list into one string: `{{ .Values.tags | join "," | quote }}` turns `[a b c]` into `"a,b,c"`.
+
+> Full syntax: [Helm Sprig print/quote/default Functions](/recipes/helm/helm-sprig-print-quote-default-functions/) and [Helm Sprig join Function](/recipes/helm/helm-sprig-join-function/).
 
 > 💡 Looking for the full catalog? See the [complete Sprig function reference](/recipes/helm/helm-sprig-functions-complete-reference/) for every string, list, math, and date helper.
 

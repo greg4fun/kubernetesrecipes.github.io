@@ -14,7 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "nccl-network-validator-production-mpijob"
   - "nccl-gdr-level-tuning-pix-pxb-phb-sys"
-  - "kubernetes-emptydir-volume"
+  - "kubernetes-emptydir-hostpath-volumes"
 ---
 
 > 💡 **Quick Answer:** Mount a 16Gi Memory-backed `emptyDir` at `/dev/shm` for NCCL shared memory transport. Keep `NCCL_SHM_DISABLE=0` (enabled) for intra-node GPU communication when NVLink is unavailable. NCCL uses SHM as a CPU-mediated fallback between GPUs on the same node that lack direct P2P paths.

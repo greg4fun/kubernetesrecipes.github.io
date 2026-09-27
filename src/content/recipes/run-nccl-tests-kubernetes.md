@@ -22,7 +22,7 @@ relatedRecipes:
   - "kubeflow-mpijob-worker-ssh-gpu-training"
   - "automate-nccl-preflight-ci"
   - "monitor-nccl-performance-prometheus"
-  - "ib-write-bw-rdma-bandwidth-kubernetes"
+  - "ib-write-bw-rdma-benchmark-kubernetes"
 tags:
   - nccl
   - nccl-tests
@@ -258,7 +258,7 @@ Example from a 2-node, 16-GPU run over 4×400G RoCE NICs per node:
 - The example above plateaus at ~35 GB/s — far below what 4×400G can carry. That pattern points to only part of the fabric being used, GPUDirect RDMA not active, or congestion; work through the checks below.
 - In-place and out-of-place results should be close.
 
-Use [ib_write_bw](/recipes/networking/ib-write-bw-rdma-bandwidth-kubernetes/) to measure raw NIC-to-NIC bandwidth first — nccl-tests can't beat the wire.
+Use [ib_write_bw](/recipes/networking/ib-write-bw-rdma-benchmark-kubernetes/) to measure raw NIC-to-NIC bandwidth first — nccl-tests can't beat the wire.
 
 ## Verify the Transport in NCCL_DEBUG=INFO Logs
 

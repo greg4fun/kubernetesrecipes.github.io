@@ -13,6 +13,9 @@ tags:
 difficulty: "advanced"
 timeToComplete: "15 minutes"
 relatedRecipes:
+  - "nccl-environment-variables-reference-kubernetes"
+  - "tune-nccl-env-rdma-ethernet"
+  - "nccl-ib-disable-environment-variable"
   - "nvidia-gpu-operator-gitops-openshift"
   - "cilium-clustermesh-multicluster"
 ---
@@ -218,6 +221,10 @@ spec:
 | \`NCCL_TOPO_DUMP_FILE\` | Dump topology to file | \`/tmp/nccl-topo.xml\` |
 | \`NCCL_P2P_LEVEL\` | P2P communication level | \`NVL\` (NVLink) |
 | \`NCCL_ALGO\` | Algorithm selection | \`Ring\`, \`Tree\`, \`CollNet\` |
+
+### Does This Control InfiniBand Too?
+
+No — \`NCCL_SOCKET_IFNAME\` only selects Linux network interfaces (by name) for NCCL's bootstrap/out-of-band connections and for the plain Socket transport. When IB/RoCE is active, the bulk data path runs over the HCAs chosen by \`NCCL_IB_HCA\` instead; \`NCCL_SOCKET_IFNAME\` still needs to point at a reachable interface for the initial rendezvous. See the [complete NCCL environment variables reference](/recipes/ai/nccl-environment-variables-reference-kubernetes/) for how the two interact, or [force NCCL onto InfiniBand/RoCE](/recipes/configuration/tune-nccl-env-rdma-ethernet/) for a full RDMA transport-selection walkthrough.
 
 ### Debug NCCL Interface Selection
 

@@ -18,15 +18,18 @@ tags:
 relatedRecipes:
   - "pod-disruption-budget-config"
   - "pdb-allowed-disruptions-zero"
-  - "openshift-node-cordon-uncordon"
   - "kubernetes-taint-toleration-guide"
   - "debug-pod-eviction-reasons"
   - "kubernetes-rolling-update-strategy"
+  - "mcp-blocked-stale-update"
+  - "rhcos-openshift-node-management"
+  - "node-drain-hostnetwork-ports"
+  - "oc-adm-drain-dry-run-diagnostics"
 ---
 
 > 💡 **Quick Answer:** `kubectl cordon <node>` marks a node unschedulable (no new pods), `kubectl drain <node>` evicts all pods and cordons in one step. Always drain with `--ignore-daemonsets --delete-emptydir-data` for clean maintenance. Uncordon with `kubectl uncordon <node>` when maintenance is complete.
 >
-> **Gotcha:** Drain uses the Eviction API, so PodDisruptionBudgets can hold it indefinitely — always pass `--timeout`. On OpenShift use `oc adm cordon/drain/uncordon` (see [OpenShift node cordon/uncordon](/recipes/configuration/openshift-node-cordon-uncordon/)).
+> **Gotcha:** Drain uses the Eviction API, so PodDisruptionBudgets can hold it indefinitely — always pass `--timeout`. On OpenShift, `oc adm cordon/drain/uncordon` take the same flags (add `--timeout=30m`+ for MachineConfig-triggered reboots); see [OpenShift node management](/recipes/configuration/rhcos-openshift-node-management/) for MCP-specific gotchas.
 
 ## The Problem
 

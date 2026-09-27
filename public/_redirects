@@ -9,6 +9,13 @@
 # These recipes have been consolidated to avoid duplicate content issues
 # =============================================================================
 
+# Round 2 consolidation (J)
+/recipes/networking/ib-write-bw-rdma-bandwidth-kubernetes/    /recipes/networking/ib-write-bw-rdma-benchmark-kubernetes/    301
+
+# Round 2 consolidation (I)
+/recipes/configuration/openshift-node-cordon-uncordon/    /recipes/deployments/kubernetes-node-drain-cordon/    301
+/recipes/storage/kubernetes-emptydir-volume/    /recipes/storage/kubernetes-emptydir-hostpath-volumes/    301
+
 # Resource quotas / service accounts - round 5 leftover consolidation
 /recipes/configuration/resource-quotas/    /recipes/configuration/kubernetes-resource-quota-limitrange/    301
 /recipes/security/kubernetes-service-account-guide/    /recipes/security/service-accounts-rbac/    301

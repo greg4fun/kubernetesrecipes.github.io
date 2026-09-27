@@ -19,7 +19,7 @@ relatedRecipes:
   - "machineconfig-nfs-mount-openshift"
   - "fio-nfs-benchmark-openshift"
   - "openshift-mcd-logs-debugging"
-  - "openshift-node-cordon-uncordon"
+  - "kubernetes-node-drain-cordon"
 ---
 
 > 💡 **Quick Answer:** `oc debug node` runs in a temporary container with its own mount namespace. Any `mount` command executes inside the container — not on the host kernel. When the debug pod exits, all mounts vanish. Use MachineConfig systemd mount units for persistent mounts.

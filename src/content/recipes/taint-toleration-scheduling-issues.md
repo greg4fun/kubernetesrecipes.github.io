@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "crashloopbackoff-troubleshooting"
   - "debug-pod-eviction-reasons"
-  - "openshift-node-cordon-uncordon"
+  - "kubernetes-node-drain-cordon"
 ---
 > 💡 **Quick Answer:** Pending pods with "0/N nodes are available: N node(s) had taints that the pod didn't tolerate" need matching tolerations. Check node taints with `kubectl describe node <node> | grep Taints`, then add tolerations to the pod spec.
 

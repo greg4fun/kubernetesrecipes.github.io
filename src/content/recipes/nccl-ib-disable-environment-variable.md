@@ -13,6 +13,7 @@ tags:
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
+  - "nccl-environment-variables-reference-kubernetes"
   - "tune-nccl-env-rdma-ethernet"
   - "nccl-socket-ifname-environment-variable"
   - "run-nccl-tests-kubernetes"
