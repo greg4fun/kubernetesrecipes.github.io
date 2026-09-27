@@ -7,7 +7,7 @@ publishDate: "2026-04-05"
 tags: ["health-checks", "probes", "liveness", "readiness", "startup"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-service-account-guide"
+  - "service-accounts-rbac"
   - "kubernetes-canary-deployment-guide"
   - "pod-security-standards"
   - "kubernetes-blue-green-deployment"

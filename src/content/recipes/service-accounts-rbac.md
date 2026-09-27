@@ -100,7 +100,8 @@ serviceAccount:
   name: my-app-sa
   automount: false
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/my-app   # cloud workload identity
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/my-app   # AWS IRSA
+    # iam.gke.io/gcp-service-account: my-app@project.iam.gserviceaccount.com  # GCP Workload Identity
 ```
 
 ## Create a ClusterRole (Cluster-Wide)

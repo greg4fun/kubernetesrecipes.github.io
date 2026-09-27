@@ -11,6 +11,8 @@ import icon from "astro-icon";
 // accidentally excluding real destination pages with overlapping slugs
 // (e.g. /recipes/autoscaling/kubernetes-resource-optimization/).
 const redirectStubPaths = new Set([
+  "/recipes/configuration/resource-quotas/",
+  "/recipes/security/kubernetes-service-account-guide/",
   "/recipes/autoscaling/karpenter-node-autoscaling-kubernetes/",
   "/recipes/autoscaling/kubernetes-karpenter-node-autoscaling/",
   "/recipes/autoscaling/cluster-autoscaler-setup/",

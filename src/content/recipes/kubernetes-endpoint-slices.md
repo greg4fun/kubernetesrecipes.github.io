@@ -7,7 +7,7 @@ publishDate: "2026-04-05"
 tags: ["endpointslices", "endpoints", "service-discovery", "networking", "scalability"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-service-account-guide"
+  - "service-accounts-rbac"
   - "kubernetes-health-checks"
   - "kubernetes-canary-deployment-guide"
   - "kubernetes-headless-service"

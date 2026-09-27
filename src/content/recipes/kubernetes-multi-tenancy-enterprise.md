@@ -13,7 +13,7 @@ tags:
 difficulty: "advanced"
 timeToComplete: "50 minutes"
 relatedRecipes:
-  - "resource-quotas"
+  - "kubernetes-resource-quota-limitrange"
   - "kubernetes-networkpolicy-guide"
   - "kubernetes-namespace-guide"
   - "service-accounts-rbac"

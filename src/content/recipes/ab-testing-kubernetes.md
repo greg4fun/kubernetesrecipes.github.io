@@ -27,7 +27,7 @@ relatedRecipes:
   - "stuck-resources-finalizers"
   - "service-accounts-rbac"
   - "scheduler-configuration-tuning"
-  - "resource-quotas"
+  - "kubernetes-resource-quota-limitrange"
   - "kubernetes-resource-requests-limits"
   - "kubernetes-rate-limiting-guide"
   - "kubernetes-pod-resource-monitoring-grafana"

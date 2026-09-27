@@ -9,7 +9,7 @@ prerequisites:
   - "NVIDIA GPU Operator v25.3.0+ installed"
   - "Turing architecture or newer GPU"
 relatedRecipes:
-  - "resource-quotas"
+  - "kubernetes-resource-quota-limitrange"
   - "kubernetes-resource-requests-limits"
   - "kubernetes-pod-resource-monitoring-grafana"
   - "pod-mutation-injection"

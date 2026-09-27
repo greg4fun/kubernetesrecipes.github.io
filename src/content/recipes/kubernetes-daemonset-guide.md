@@ -20,7 +20,7 @@ relatedRecipes:
   - "kubernetes-efk-logging-stack"
   - "kubernetes-prometheus-monitoring-guide"
   - "pod-topology-constraints"
-  - "kubernetes-service-account-guide"
+  - "service-accounts-rbac"
   - "kubernetes-headless-service"
 ---
 

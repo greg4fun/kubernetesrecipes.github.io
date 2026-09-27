@@ -9,6 +9,10 @@
 # These recipes have been consolidated to avoid duplicate content issues
 # =============================================================================
 
+# Resource quotas / service accounts - round 5 leftover consolidation
+/recipes/configuration/resource-quotas/    /recipes/configuration/kubernetes-resource-quota-limitrange/    301
+/recipes/security/kubernetes-service-account-guide/    /recipes/security/service-accounts-rbac/    301
+
 # Round 2 consolidation (scheduling/scaling)
 /recipes/autoscaling/karpenter-node-autoscaling-kubernetes/    /recipes/autoscaling/karpenter-node-autoscaling/    301
 /recipes/autoscaling/kubernetes-karpenter-node-autoscaling/    /recipes/autoscaling/karpenter-node-autoscaling/    301
@@ -311,7 +315,7 @@
 /recipes/deployments/pod-disruption-budgets/    /recipes/deployments/pod-disruption-budget-config/    301
 /recipes/deployments/pod-priority-preemption/    /recipes/deployments/kubernetes-pod-priority-preemption/    301
 /recipes/observability/prometheus-metrics-setup/    /recipes/observability/kubernetes-prometheus-monitoring-guide/    301
-/recipes/configuration/resource-quotas-namespace/    /recipes/configuration/resource-quotas/    301
+/recipes/configuration/resource-quotas-namespace/    /recipes/configuration/kubernetes-resource-quota-limitrange/    301
 
 # Duplicate-content consolidation batch 2 (SEO audit 2026-07-02) — merge-then-redirect
 /recipes/deployments/argocd-gitops-deployment/    /recipes/deployments/argocd-gitops/    301
