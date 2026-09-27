@@ -12,6 +12,8 @@ publishDate: "2026-06-04"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
+  - "nccl-environment-variables-reference-kubernetes"
+  - "tune-nccl-env-rdma-ethernet"
   - "run-nccl-tests-kubernetes"
   - "nccl-network-validator-production-mpijob"
   - "nccl-gpudirect-rdma-distance-pix-sys"
@@ -243,8 +245,8 @@ env:
 - **Fix**: Compare SYS vs PHB results. If PHB is faster, cross-socket overhead dominates. Use PHB + topology-aware scheduling.
 
 ### "GPU Direct RDMA Enabled" not appearing in logs
-- **Cause**: GDR level too restrictive for your topology
-- **Fix**: Increase level (PIX → PXB → PHB → SYS) or check `NCCL_DMABUF_ENABLE=1`
+- **Cause**: GDR level too restrictive for your topology, or the kernel module GDR needs isn't loaded
+- **Fix**: Increase level (PIX → PXB → PHB → SYS); verify `lsmod | grep nvidia_peermem` (or use DMA-BUF via `NCCL_DMABUF_ENABLE=1` on NCCL 2.19+ with the open kernel driver, which avoids `nvidia_peermem` entirely)
 
 ### Inconsistent bandwidth across runs
 - **Cause**: SR-IOV VF assignment non-deterministic; different VFs have different PCIe distances

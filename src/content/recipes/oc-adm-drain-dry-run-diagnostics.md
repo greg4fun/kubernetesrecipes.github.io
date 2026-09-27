@@ -14,7 +14,7 @@ tags:
   - diagnostics
   - openshift
 relatedRecipes:
-  - "openshift-node-cordon-uncordon"
+  - "kubernetes-node-drain-cordon"
   - "mcp-drain-pdb-workaround"
   - "mcp-blocked-stale-update"
 ---

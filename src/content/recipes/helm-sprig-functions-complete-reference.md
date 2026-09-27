@@ -12,9 +12,14 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
+  - "helm-templating-sprig"
+  - "helm-sprig-cat-function"
+  - "helm-sprig-join-function"
+  - "helm-sprig-print-quote-default-functions"
+  - "helm-sprig-add1-trim-merge-functions"
+  - "helm-sprig-tostring-function"
   - "helm-hooks-lifecycle"
   - "helm-chart-development-guide"
-  - "kustomize-vs-helm-comparison"
 ---
 
 > 💡 **Quick Answer:** Helm uses Sprig template functions for string manipulation, math, and data transformation in charts. The `cat` function concatenates strings with spaces between arguments. Use `print`/`printf` for concatenation without spaces. `join` combines list elements with a separator. `toString` converts values to strings. All Sprig functions are available in `{{ }}` template expressions.
@@ -29,134 +34,71 @@ relatedRecipes:
 
 ## The Solution
 
+### Complete Function List
+
+Every Sprig function commonly used in Helm charts, grouped by category. Functions with their own dedicated recipe link out to the full treatment (edge cases, gotchas, more examples); the rest are documented in full below.
+
+| Function | Purpose | Full guide |
+|----------|---------|-------------|
+| `cat` | Concatenate values with spaces | [helm-sprig-cat-function](/recipes/helm/helm-sprig-cat-function/) |
+| `print` / `printf` | Concatenate / format without spaces | [helm-sprig-print-quote-default-functions](/recipes/helm/helm-sprig-print-quote-default-functions/) |
+| `quote` / `squote` | Wrap a value in double/single quotes | [helm-sprig-print-quote-default-functions](/recipes/helm/helm-sprig-print-quote-default-functions/) |
+| `default` | Fallback value when input is empty/nil | [helm-sprig-print-quote-default-functions](/recipes/helm/helm-sprig-print-quote-default-functions/) |
+| `join` | Combine a list with a separator | [helm-sprig-join-function](/recipes/helm/helm-sprig-join-function/) |
+| `toString` / `toStrings` | Convert value(s) to string | [helm-sprig-tostring-function](/recipes/helm/helm-sprig-tostring-function/) |
+| `add1` | Increment an integer by 1 | [helm-sprig-add1-trim-merge-functions](/recipes/helm/helm-sprig-add1-trim-merge-functions/) |
+| `trim` / `trimAll` / `trimPrefix` / `trimSuffix` | Strip whitespace or a substring | [helm-sprig-add1-trim-merge-functions](/recipes/helm/helm-sprig-add1-trim-merge-functions/) |
+| `merge` / `mergeOverwrite` | Combine dictionaries | [helm-sprig-add1-trim-merge-functions](/recipes/helm/helm-sprig-add1-trim-merge-functions/) |
+| `upper` / `lower` / `title` / `camelcase` / `snakecase` / `kebabcase` | Case conversion | documented below |
+| `replace` / `regexReplaceAll` | Simple / regex string replacement | documented below |
+| `trunc` / `abbrev` | Length limiting | documented below |
+| `contains` / `hasPrefix` / `hasSuffix` | Substring checks | documented below |
+| `indent` / `nindent` | Whitespace control for YAML | documented below |
+| `add` / `sub` / `mul` / `div` / `mod` / `max` / `min` / `ceil` / `floor` / `round` | Arithmetic | documented below |
+| `int` / `int64` / `float64` / `atoi` / `toJson` / `toYaml` / `fromJson` / `fromYaml` | Numeric/structured conversion | documented below |
+| `list` / `first` / `last` / `rest` / `initial` / `append` / `prepend` / `has` / `uniq` / `sortAlpha` / `compact` | List operations | documented below |
+| `dict` / `get` / `set` / `unset` / `keys` / `values` / `hasKey` / `pick` / `omit` | Dictionary operations | documented below |
+| `now` / `date` / `dateModify` | Date/time | documented below |
+| `coalesce` / `ternary` / `empty` / `required` | Flow control / validation | documented below |
+| `b64enc` / `b64dec` / `sha256sum` | Encoding/hashing | documented below |
+
 ### String Functions
 
 #### cat — Concatenate with Spaces
 
-The `cat` function joins arguments with a **space** between each:
+`cat` joins arguments with a **space** between each — `{{ cat "hello" "world" }}` → `hello world`. It always adds spaces, so image tags (`repo:tag`) need `printf "%s:%s"` instead.
 
-```yaml
-# cat inserts spaces between arguments
-{{ cat "hello" "world" }}
-# Output: hello world
-
-# In a Helm chart:
-metadata:
-  annotations:
-    description: {{ cat .Values.app.name "version" .Values.app.version }}
-    # Output: myapp version 1.2.3
-```
-
-**Important:** `cat` always adds spaces. For no-space concatenation, use `printf` or `print`:
-
-```yaml
-# ❌ cat adds unwanted spaces
-image: {{ cat .Values.image.repository ":" .Values.image.tag }}
-# Output: nginx : latest  (broken!)
-
-# ✅ printf for no-space concatenation
-image: {{ printf "%s:%s" .Values.image.repository .Values.image.tag }}
-# Output: nginx:latest
-```
+> Full syntax, `nospace`, auto type conversion, and the nil-value gotcha: [Helm Sprig cat Function](/recipes/helm/helm-sprig-cat-function/).
 
 #### print / printf — Formatted String Output
 
-```yaml
-# print concatenates without spaces (like Go's fmt.Sprint)
-{{ print .Values.prefix .Values.name }}
-# With prefix="app-" name="web" → app-web
+`print` concatenates with **no separator** (like Go's `fmt.Sprint`); `printf` takes a Go format string for precise control — `{{ printf "%s-%s" .Release.Name .Chart.Name }}` → `myrelease-mychart`.
 
-# printf with format verbs (like Go's fmt.Sprintf)
-{{ printf "%s-%s-%d" .Release.Name .Chart.Name .Values.replicas }}
-# Output: myrelease-mychart-3
-
-# Common patterns:
-image: {{ printf "%s:%s" .Values.image.repository (.Values.image.tag | default .Chart.AppVersion) }}
-name: {{ printf "%s-%s" (include "mychart.fullname" .) "config" }}
-url: {{ printf "https://%s.%s.svc.cluster.local:%d" .Values.service.name .Release.Namespace (.Values.service.port | int) }}
-```
+> Full syntax, padding, and common Kubernetes image/URL patterns: [Helm Sprig print/quote/default Functions](/recipes/helm/helm-sprig-print-quote-default-functions/).
 
 #### toString / toStrings — Type Conversion
 
-```yaml
-# toString converts any value to string
-{{ .Values.replicas | toString }}
-# int 3 → "3"
+`toString` converts any value (int, bool, float) to a string — required because Kubernetes annotations and env values must be strings: `{{ .Values.replicas | toString }}` → `"3"`. `toStrings` does the same across every item in a list.
 
-# Useful when annotations require strings:
-metadata:
-  annotations:
-    prometheus.io/port: {{ .Values.metrics.port | toString | quote }}
-
-# toStrings converts a list of values to list of strings
-{{ list 1 2 3 | toStrings }}
-# Output: ["1" "2" "3"]
-
-# Convert int to string for concatenation:
-name: {{ cat .Values.name (.Values.version | toString) }}
-```
+> Full syntax, nil handling, and the `toString`-vs-`join` list gotcha: [Helm Sprig toString Function Guide](/recipes/helm/helm-sprig-tostring-function/).
 
 #### join — Combine List Elements
 
-```yaml
-# join combines list elements with a separator
-{{ list "a" "b" "c" | join "," }}
-# Output: a,b,c
+`join` combines list elements with a separator: `{{ list "a" "b" "c" | join "," }}` → `a,b,c` — the standard way to turn a `values.yaml` list into a CSV annotation or env value.
 
-# Common patterns:
-env:
-  - name: ALLOWED_HOSTS
-    value: {{ .Values.allowedHosts | join "," | quote }}
-
-# Join with newline (for multi-line values):
-{{ .Values.extraArgs | join "\n" }}
-
-# Join list for annotation:
-metadata:
-  annotations:
-    nginx.ingress.kubernetes.io/cors-allow-origins: {{ .Values.corsOrigins | join ", " | quote }}
-```
+> Full syntax, CORS/env/ConfigMap patterns, and empty-list handling: [Helm Sprig join Function](/recipes/helm/helm-sprig-join-function/).
 
 #### trim / trimAll / trimPrefix / trimSuffix
 
-```yaml
-# trim removes leading/trailing whitespace
-{{ "  hello  " | trim }}
-# Output: hello
+`trim` strips leading/trailing whitespace; `trimPrefix` / `trimSuffix` / `trimAll` strip a specific string from the ends — `{{ "  hello  " | trim }}` → `hello`.
 
-# trimAll removes specific characters from both ends
-{{ "---hello---" | trimAll "-" }}
-# Output: hello
-
-# trimPrefix removes prefix
-{{ "https://example.com" | trimPrefix "https://" }}
-# Output: example.com
-
-# trimSuffix removes suffix
-{{ "myapp.yaml" | trimSuffix ".yaml" }}
-# Output: myapp
-
-# Common: clean up values that might have trailing slashes
-{{ .Values.baseUrl | trimSuffix "/" }}
-```
+> Full syntax, the "trim expects a string" gotcha, and the `merge` dictionary function: [Helm Sprig add1 trim merge Functions](/recipes/helm/helm-sprig-add1-trim-merge-functions/).
 
 #### quote / squote — Add Quotes
 
-```yaml
-# quote adds double quotes (escaped for YAML)
-{{ .Values.name | quote }}
-# Output: "myapp"
+`quote` wraps a value in double quotes (escaping special characters); `squote` uses single quotes — `{{ .Values.name | quote }}` → `"myapp"`. Essential for annotations and labels that must stay strings.
 
-# squote adds single quotes
-{{ .Values.name | squote }}
-# Output: 'myapp'
-
-# Essential for annotations (must be strings):
-metadata:
-  annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum | quote }}
-    prometheus.io/scrape: {{ .Values.metrics.enabled | toString | quote }}
-```
+> Full syntax, the "when to quote" table, and the `default` fallback function: [Helm Sprig print/quote/default Functions](/recipes/helm/helm-sprig-print-quote-default-functions/).
 
 #### upper / lower / title / camelcase / snakecase / kebabcase
 
@@ -266,6 +208,8 @@ resources:
     memory: {{ printf "%dMi" .Values.memoryMb }}
 ```
 
+> `add1` has dedicated port-offset and 1-based-index patterns: [Helm Sprig add1 trim merge Functions](/recipes/helm/helm-sprig-add1-trim-merge-functions/).
+
 #### max / min / ceil / floor / round
 
 ```yaml
@@ -288,9 +232,6 @@ replicas: {{ max .Values.replicas 1 }}
 
 # atoi — string to int (alias)
 {{ "8080" | atoi }}       # 8080
-
-# toString — any to string
-{{ 3 | toString }}        # "3"
 
 # toJson / toPrettyJson / toYaml / toToml
 {{ .Values.config | toJson }}
@@ -350,7 +291,7 @@ resources:
 # keys / values
 {{ .Values.labels | keys | join "," }}
 
-# merge / mergeOverwrite
+# merge / mergeOverwrite — see the dedicated guide for precedence rules
 {{- $defaults := dict "replicas" 1 "port" 8080 }}
 {{- $merged := mergeOverwrite $defaults .Values.overrides }}
 
@@ -363,6 +304,8 @@ resources:
 {{ pick .Values.labels "app" "version" }}
 {{ omit .Values.annotations "internal.example.com/managed" }}
 ```
+
+> Full `merge` vs `mergeOverwrite` precedence rules and default-dict patterns: [Helm Sprig add1 trim merge Functions](/recipes/helm/helm-sprig-add1-trim-merge-functions/).
 
 ### Date/Time Functions
 
@@ -385,12 +328,9 @@ annotations:
 
 ### Flow Control Functions
 
-```yaml
-# default — provide fallback value
-image: {{ .Values.image | default "nginx:latest" }}
-replicas: {{ .Values.replicas | default 1 }}
-{{ .Values.name | default (printf "%s-app" .Release.Name) }}
+`default` provides a fallback for empty/nil/zero/false values — full "what triggers default" table and chart patterns: [Helm Sprig print/quote/default Functions](/recipes/helm/helm-sprig-print-quote-default-functions/).
 
+```yaml
 # coalesce — first non-empty value
 {{ coalesce .Values.override .Values.default "fallback" }}
 

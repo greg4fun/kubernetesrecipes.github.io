@@ -13,13 +13,13 @@ tags:
 difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
+  - "helm-sprig-functions-complete-reference"
   - "helm-sprig-add1-trim-merge-functions"
   - "helm-sprig-cat-function"
   - "helm-sprig-tostring-function"
   - "helm-sprig-join-function"
   - "helm-templating-sprig"
   - "helm-chart-basics"
-  - "helm-install-chart-guide"
 ---
 
 > 💡 **Quick Answer:** \`print\` concatenates values without separators, \`quote\` wraps strings in double quotes for YAML safety, and \`default\` provides fallback values when a variable is empty or undefined. These three Sprig functions handle 90% of Helm string formatting needs.

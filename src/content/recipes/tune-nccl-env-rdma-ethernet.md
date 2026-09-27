@@ -9,6 +9,11 @@ prerequisites:
   - "NCCL workloads running in Kubernetes"
   - "Knowledge of network interfaces used by pods"
 relatedRecipes:
+  - "nccl-environment-variables-reference-kubernetes"
+  - "nccl-socket-ifname-environment-variable"
+  - "nccl-ib-disable-environment-variable"
+  - "nccl-gdr-level-tuning-pix-pxb-phb-sys"
+  - "nccl-ib-hca-qps-tuning-roce"
   - "kubernetes-change-management-enterprise"
   - "kubernetes-api-priority-fairness"
   - "kubernetes-affinity-anti-affinity"
@@ -57,17 +62,19 @@ graph TD
 
 The goal of tuning is simple: **stay on the green paths and never silently land on the red one.**
 
-## Complete NCCL Environment Variable Reference
+## Environment Variables Used in the Profiles Below
+
+This is the subset of variables the transport-selection profiles below actually need — not the full NCCL variable set. For every variable NCCL ships (algorithms, topology files, debug subsystems, and more), see the [NCCL Environment Variables Complete Reference](/recipes/ai/nccl-environment-variables-reference-kubernetes/).
 
 | Variable | Purpose | Typical value |
 |----------|---------|---------------|
 | `NCCL_DEBUG` | Log verbosity (`VERSION`, `WARN`, `INFO`, `TRACE`) | `INFO` while tuning |
 | `NCCL_DEBUG_SUBSYS` | Restrict logs to subsystems | `INIT,NET,GRAPH` |
-| `NCCL_SOCKET_IFNAME` | Bootstrap/out-of-band interface | `eth0` or `=ib0` |
-| `NCCL_IB_DISABLE` | `0` = use IB/RoCE verbs, `1` = force TCP | `0` on RDMA fabrics |
-| `NCCL_IB_HCA` | Which RDMA HCAs/ports to use | `mlx5_0,mlx5_1` or `mlx5_0:1` |
-| `NCCL_NET_GDR_LEVEL` | GPUDirect RDMA aggressiveness (`LOC`<`PIX`<`PXB`<`PHB`<`SYS`) | `SYS` (or `PHB`) |
-| `NCCL_IB_GID_INDEX` | RoCE GID table index (RoCEv2) | `3` (verify per host) |
+| [`NCCL_SOCKET_IFNAME`](/recipes/networking/nccl-socket-ifname-environment-variable/) | Bootstrap/out-of-band interface | `eth0` or `=ib0` |
+| [`NCCL_IB_DISABLE`](/recipes/ai/nccl-ib-disable-environment-variable/) | `0` = use IB/RoCE verbs, `1` = force TCP | `0` on RDMA fabrics |
+| [`NCCL_IB_HCA`](/recipes/ai/nccl-ib-hca-qps-tuning-roce/) | Which RDMA HCAs/ports to use | `mlx5_0,mlx5_1` or `mlx5_0:1` |
+| [`NCCL_NET_GDR_LEVEL`](/recipes/ai/nccl-gdr-level-tuning-pix-pxb-phb-sys/) | GPUDirect RDMA aggressiveness (`LOC`<`PIX`<`PXB`<`PHB`<`SYS`) | `SYS` (or `PHB`) |
+| [`NCCL_IB_GID_INDEX`](/recipes/ai/nccl-ib-hca-qps-tuning-roce/) | RoCE GID table index (RoCEv2) | `3` (verify per host) |
 | `NCCL_IB_TC` | RoCE traffic class / DSCP for QoS | `106` |
 | `NCCL_IB_SL` | InfiniBand service level | `0`–`3` per fabric |
 | `NCCL_IB_TIMEOUT` | QP timeout exponent; raise on large fabrics | `18`–`22` |

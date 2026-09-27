@@ -14,9 +14,12 @@ tags:
   - string-functions
   - templates
 relatedRecipes:
+  - "helm-sprig-functions-complete-reference"
   - "helm-templating-sprig"
-  - "helm-sprig-tostring-function"
   - "helm-sprig-join-function"
+  - "helm-sprig-print-quote-default-functions"
+  - "helm-sprig-add1-trim-merge-functions"
+  - "helm-sprig-tostring-function"
   - "helm-hooks-lifecycle"
 ---
 
@@ -136,6 +139,20 @@ data:
 # Solution 2: printf for precise control
 {{ printf "%s-%s" .Release.Name .Values.suffix }}
 # Output: "myrelease-mysuffix"
+```
+
+### Broken Image References
+
+The most common `cat` mistake: using it to build an `image:tag` reference. The inserted space breaks the reference outright.
+
+```yaml
+# ❌ cat adds unwanted spaces
+image: {{ cat .Values.image.repository ":" .Values.image.tag }}
+# Output: nginx : latest  (broken — not a valid image reference)
+
+# ✅ printf for no-space concatenation
+image: {{ printf "%s:%s" .Values.image.repository .Values.image.tag }}
+# Output: nginx:latest
 ```
 
 ### Nil Values Cause Empty Segments

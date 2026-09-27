@@ -80,6 +80,16 @@ volumes:
 # - /tmp for applications that need fast I/O
 ```
 
+### When to Use emptyDir
+
+| Use Case | Configuration |
+|----------|--------------|
+| Scratch space / temp files | `emptyDir: {}` |
+| Shared data between containers | `emptyDir: {}` |
+| Cache directory | `emptyDir: { sizeLimit: 1Gi }` |
+| High-speed processing | `emptyDir: { medium: Memory }` |
+| Read-only rootfs writable `/tmp` | `emptyDir: {}` mounted at `/tmp` |
+
 ### hostPath
 
 ```yaml
@@ -185,6 +195,16 @@ tmpfs `medium: Memory` usage counts toward the container's memory limit. Set mem
 **hostPath not available on other nodes**
 
 hostPath is node-local. If pod reschedules to a different node, data is gone. Use PVCs for persistent data.
+
+## Frequently Asked Questions
+
+### Does emptyDir persist across container restarts?
+
+Yes — emptyDir survives container crashes/restarts within the same pod. It's deleted only when the pod is removed from the node.
+
+### emptyDir vs PVC?
+
+**emptyDir** is temporary (dies with the pod). **PVC** persists independently of the pod lifecycle. Use emptyDir for cache/temp, PVC for data that must survive pod deletion.
 
 ## Best Practices
 

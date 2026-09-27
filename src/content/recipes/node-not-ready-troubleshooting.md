@@ -14,7 +14,7 @@ tags:
   - troubleshooting
   - health
 relatedRecipes:
-  - "openshift-node-cordon-uncordon"
+  - "kubernetes-node-drain-cordon"
   - "rhcos-openshift-node-management"
   - "fix-certificate-expiration-cluster"
 ---

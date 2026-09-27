@@ -17,6 +17,7 @@ relatedRecipes:
   - "nccl-socket-ifname-environment-variable"
   - "nccl-ib-disable-environment-variable"
   - "nccl-gdr-level-tuning-pix-pxb-phb-sys"
+  - "nccl-ib-hca-qps-tuning-roce"
   - "nccl-debug-subsystems-gpu-troubleshooting"
   - "run-nccl-tests-kubernetes"
   - "nccl-rccl-networking-performance-kubernetes"
@@ -43,15 +44,11 @@ relatedRecipes:
 
 ```yaml
 env:
-  # NCCL_SOCKET_IFNAME — Select network interface for TCP/socket communication
-  # Prefix with = for exact match, ^ for exclusion
-  # Used for bootstrap/out-of-band traffic and for the Socket transport.
-  # It does NOT pick the RDMA devices when IB/RoCE is used — NCCL_IB_HCA does.
+  # NCCL_SOCKET_IFNAME — bootstrap/out-of-band interface and Socket transport.
+  # Prefix = for exact match, ^ for exclusion. It does NOT pick the RDMA
+  # devices when IB/RoCE is used — NCCL_IB_HCA does.
   - name: NCCL_SOCKET_IFNAME
     value: "=eth0"           # Use exactly eth0
-    # value: "eth"           # Any interface starting with "eth"
-    # value: "^docker0,lo"   # Exclude docker0 and loopback
-    # value: "=ib0"          # Use InfiniBand interface
 
   # NCCL_NET — Force network transport type
   - name: NCCL_NET
@@ -59,31 +56,24 @@ env:
     # value: "Socket"        # Force TCP sockets (disable IB/RDMA)
 ```
 
+> Full variable guide — interface bonding, exclusion patterns, PyTorchJob examples, and timeout troubleshooting: [NCCL_SOCKET_IFNAME Environment Variable Guide](/recipes/networking/nccl-socket-ifname-environment-variable/).
+
 ### InfiniBand Configuration
 
 ```yaml
 env:
-  # NCCL_IB_DISABLE — Completely disable InfiniBand
+  # NCCL_IB_DISABLE — 0=enable IB/RoCE verbs (default), 1=force TCP sockets.
   - name: NCCL_IB_DISABLE
-    value: "0"               # 0=enable (default), 1=disable IB entirely
-    # Set to "1" to force TCP even when IB is available
+    value: "0"
 
-  # NCCL_IB_HCA — Select specific InfiniBand HCA devices
+  # NCCL_IB_HCA — select IB/RoCE HCA devices (=exact, ^exclude, or prefix match).
   - name: NCCL_IB_HCA
     value: "=mlx5_0,mlx5_1,mlx5_2,mlx5_3"
-    # = prefix: exact device names
-    # ^ prefix: exclude devices
-    # No prefix: match prefix (mlx5 matches all mlx5_*)
-    # value: "^mlx5_bond0"   # Exclude bonded device
 
-  # NCCL_IB_GID_INDEX — GID index for RoCE v2
+  # NCCL_IB_GID_INDEX — RoCE v2 GID table index (often 3 for IPv4) — VERIFY with show_gids.
+  # Native InfiniBand ignores this.
   - name: NCCL_IB_GID_INDEX
-    value: "3"               # Often 3 for RoCE v2 (IPv4) — VERIFY with show_gids
-    # Typical mlx5 layout with one IPv4 address (not guaranteed):
-    # 0 = RoCE v1 link-local, 1 = RoCE v2 link-local,
-    # 2 = RoCE v1 IPv4,       3 = RoCE v2 IPv4
-    # Native InfiniBand ignores this. NCCL 2.21+ auto-selects a RoCE v2
-    # GID when unset (tune with NCCL_IB_ROCE_VERSION_NUM / NCCL_IB_ADDR_FAMILY)
+    value: "3"
 
   # NCCL_IB_TIMEOUT — IB transport timeout
   - name: NCCL_IB_TIMEOUT
@@ -118,21 +108,16 @@ env:
     value: "8192"            # Only use AR for messages > this size (bytes)
 ```
 
+> Deep dive on HCA device selection, the full GID index table, and queue-pair tuning: [NCCL IB HCA Selection and QPS Tuning for RoCE](/recipes/ai/nccl-ib-hca-qps-tuning-roce/).
+
 ### GPUDirect RDMA
 
 ```yaml
 env:
-  # NCCL_NET_GDR_LEVEL — GPUDirect RDMA topology level
+  # NCCL_NET_GDR_LEVEL — max PCIe distance for GPUDirect RDMA (LOC < PIX < PXB < PHB < SYS).
+  # Full level-by-level comparison and testing methodology: see below.
   - name: NCCL_NET_GDR_LEVEL
     value: "PHB"
-    # Max GPU<->NIC topology distance at which GDR is used (string form preferred):
-    # LOC  = never use GDR
-    # PIX  = same PCIe switch
-    # PXB  = across multiple PCIe switches (no CPU root complex hop)
-    # PHB  = same PCIe host bridge / CPU socket
-    # NODE = same NUMA node, across host bridges
-    # SYS  = anywhere, including across the SMP interconnect (cross-socket)
-    # Legacy integers: 0=LOC 1=PIX 2=PXB 3=PHB 4=SYS
 
   # NCCL_NET_GDR_READ — Enable GPUDirect RDMA for read operations
   - name: NCCL_NET_GDR_READ
@@ -155,6 +140,8 @@ env:
     value: "0"               # 0=enable (default), 1=disable
     # SHM used for intra-node when P2P not available
 ```
+
+> Full level-by-level comparison (PIX/PXB/PHB/SYS), PCIe topology diagrams, and a testing methodology: [NCCL_NET_GDR_LEVEL Environment Variable Guide](/recipes/ai/nccl-gdr-level-tuning-pix-pxb-phb-sys/).
 
 ### TCP/Socket Tuning
 

@@ -12,6 +12,8 @@ publishDate: "2026-06-04"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
+  - "nccl-environment-variables-reference-kubernetes"
+  - "tune-nccl-env-rdma-ethernet"
   - "nccl-gdr-level-tuning-pix-pxb-phb-sys"
   - "nccl-network-validator-production-mpijob"
   - "nvidia-network-operator-rdma-kubernetes"
@@ -70,6 +72,8 @@ InfiniBand (not RoCE)            │ mlx5 (same wildcard works)
 
 export NCCL_IB_GID_INDEX=3   # RoCEv2 over IPv4 — use this for K8s
 ```
+
+> NCCL 2.21+ auto-selects a RoCE v2 GID when this is left unset (tune the choice with `NCCL_IB_ROCE_VERSION_NUM` / `NCCL_IB_ADDR_FAMILY` instead). Native InfiniBand fabrics ignore `NCCL_IB_GID_INDEX` entirely.
 
 ```bash
 # Verify GID table contents:

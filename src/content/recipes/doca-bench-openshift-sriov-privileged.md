@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nvidia-doca-bench-dpu-performance-kubernetes"
-  - "ib-write-bw-rdma-bandwidth-kubernetes"
+  - "ib-write-bw-rdma-benchmark-kubernetes"
 ---
 
 > 💡 **Quick Answer:** To run DOCA Bench on OpenShift: (1) configure SR-IOV with `isRdma: true` for Mellanox VFs, (2) create a dedicated namespace with privileged SCC granted to a service account, (3) request huge pages and the SR-IOV resource, (4) deploy a Job using the `nvcr.io/nvidia/doca/doca:2.9.0-devel` image targeting the device via `--device net1`. Always start with `--query device-capabilities` before running benchmarks.

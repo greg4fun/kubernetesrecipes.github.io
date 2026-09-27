@@ -13,6 +13,7 @@ tags:
 difficulty: "beginner"
 timeToComplete: "10 minutes"
 relatedRecipes:
+  - "helm-sprig-functions-complete-reference"
   - "helm-sprig-print-quote-default-functions"
   - "helm-sprig-cat-function"
   - "helm-sprig-tostring-function"
@@ -135,6 +136,15 @@ metadata:
 {{- $resources := merge (.Values.resources | default dict) $defaultResources -}}
 resources:
   {{- toYaml $resources | nindent 2 }}
+
+# Merge default env vars with user-supplied env, then range over the result
+{{- $defaultEnv := dict "LOG_LEVEL" "info" "PORT" "8080" -}}
+{{- $mergedEnv := merge .Values.env $defaultEnv -}}
+env:
+  {{- range $key, $value := $mergedEnv }}
+  - name: {{ $key }}
+    value: {{ $value | quote }}
+  {{- end }}
 ```
 
 #### \`merge\` vs \`mergeOverwrite\`

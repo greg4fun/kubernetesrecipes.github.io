@@ -14,8 +14,11 @@ tags:
   - list-functions
   - templates
 relatedRecipes:
+  - "helm-sprig-functions-complete-reference"
   - "helm-templating-sprig"
   - "helm-sprig-cat-function"
+  - "helm-sprig-print-quote-default-functions"
+  - "helm-sprig-add1-trim-merge-functions"
   - "helm-sprig-tostring-function"
   - "helm-hooks-lifecycle"
 ---
@@ -79,6 +82,13 @@ allowedHosts:
 env:
   - name: ALLOWED_HOSTS
     value: {{ .Values.allowedHosts | join "," | quote }}
+```
+
+#### Multi-Line Values
+
+```yaml
+# Join with newline for multi-line values (e.g. extra CLI args, one per line)
+{{ .Values.extraArgs | join "\n" }}
 ```
 
 #### Node Affinity Labels

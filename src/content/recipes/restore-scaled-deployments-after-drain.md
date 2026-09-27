@@ -15,7 +15,7 @@ tags:
   - post-drain
 relatedRecipes:
   - "scale-deploy-unblock-drain"
-  - "openshift-node-cordon-uncordon"
+  - "kubernetes-node-drain-cordon"
   - "mcp-update-automation-script"
 ---
 > 💡 **Quick Answer:** After the drained node returns to `Ready`, uncordon it (`oc adm uncordon <node>`), then restore each deployment to its original replica count (`oc scale deploy/<name> --replicas=<original>`). Verify pods are Running and Services have endpoints.
