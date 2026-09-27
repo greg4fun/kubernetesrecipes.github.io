@@ -14,7 +14,7 @@ tags:
   - "headless"
 relatedRecipes:
   - "kubernetes-external-dns-automation"
-  - "kubernetes-dnspolicy-config-guide"
+  - "dns-policies-configuration"
   - "pod-security-standards"
 ---
 

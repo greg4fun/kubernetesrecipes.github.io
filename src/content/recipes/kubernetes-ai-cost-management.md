@@ -15,7 +15,7 @@ tags:
   - "finops"
 relatedRecipes:
   - "kubernetes-cost-optimization-strategies"
-  - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "kubernetes-gpu-sharing-mps-mig"
   - "kueue-job-queuing-kubernetes"
 ---
 

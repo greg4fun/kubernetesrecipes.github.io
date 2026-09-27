@@ -11,11 +11,11 @@ prerequisites:
   - "Access to NVIDIA NGC container registry"
   - "Sufficient GPU memory for target model"
 relatedRecipes:
-  - "genai-perf-triton-benchmark"
+  - "genai-perf-nvidia-inference-benchmarking"
   - "triton-vllm-kubernetes"
   - "triton-multi-model-serving"
   - "triton-autoscaling-gpu-metrics"
-  - "triton-tensorrt-vllm-comparison"
+  - "triton-inference-server-vs-vllm-comparison"
 tags:
   - triton
   - tensorrt-llm

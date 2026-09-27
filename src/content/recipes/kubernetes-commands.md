@@ -8,7 +8,7 @@ tags: ["kubectl", "commands", "reference", "cli", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-debug-pods"
-  - "kubernetes-cordon-drain-node"
+  - "kubernetes-node-drain-cordon"
   - "kubernetes-container-probes-startup"
   - "kubernetes-troubleshooting-guide"
 ---

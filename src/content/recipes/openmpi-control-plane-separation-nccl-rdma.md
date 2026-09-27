@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nccl-network-validator-production-mpijob"
-  - "nccl-all-reduce-perf-benchmark-multi-node"
+  - "run-nccl-tests-kubernetes"
   - "runai-distributed-inference-vllm-nccl"
 ---
 

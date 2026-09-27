@@ -8,9 +8,9 @@ tags: ["helm", "library-chart", "templates", "dry", "reusable", "named-templates
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-cluster-autoscaler-advanced"
-  - "karpenter-node-autoscaling-kubernetes"
+  - "karpenter-node-autoscaling"
   - "kubeflow-operator-platform"
-  - "helm-oci-registry-management"
+  - "helm-oci-registry-charts"
   - "kubernetes-helm-chart-testing"
   - "helm-hooks-lifecycle"
 ---

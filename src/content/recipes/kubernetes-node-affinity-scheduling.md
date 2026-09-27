@@ -13,7 +13,7 @@ tags:
   - "labels"
   - "taints"
 relatedRecipes:
-  - "kubernetes-taints-tolerations-guide"
+  - "kubernetes-taint-toleration-guide"
   - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-custom-scheduler-guide"

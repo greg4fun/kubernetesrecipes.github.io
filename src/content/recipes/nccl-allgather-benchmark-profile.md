@@ -12,7 +12,6 @@ prerequisites:
 relatedRecipes:
   - "run-nccl-tests-kubernetes"
   - "validate-gpu-topology-nccl"
-  - "nccl-test-benchmark-kubernetes"
 tags:
   - nccl
   - allgather

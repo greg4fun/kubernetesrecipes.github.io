@@ -7,7 +7,7 @@ publishDate: "2026-04-02"
 tags: ["crashloopbackoff", "pods", "debugging", "troubleshooting", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "oom-killed-troubleshooting"
+  - "kubernetes-oomkilled-troubleshooting"
   - "pod-pending-troubleshooting"
   - "node-not-ready-troubleshooting"
   - "resource-quota-exceeded-error"

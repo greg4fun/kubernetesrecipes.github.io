@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-imagepullsecrets-guide"
   - "kubernetes-docker-registry-secret"
   - "imagepullbackoff-troubleshooting"
-  - "kubernetes-service-accounts-tokens"
+  - "kubernetes-service-account-token"
   - "secrets-management-best-practices"
   - "containerd-certs-d-registry-ca-trust"
 ---

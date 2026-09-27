@@ -27,7 +27,7 @@ relatedRecipes:
   - "service-accounts-rbac"
   - "nfs-tenant-segregation-kubernetes"
   - "kubernetes-labels-best-practices"
-  - "resource-limits-requests"
+  - "kubernetes-resource-requests-limits"
 ---
 
 > 💡 **Quick Answer:** `kubectl create namespace production` creates a namespace. Use namespaces to separate teams or environments, then give every namespace a `ResourceQuota` (aggregate CPU/memory/object caps), a `LimitRange` (per-container defaults), RBAC `RoleBinding`s, and a default-deny `NetworkPolicy`. Built-in namespaces: `default`, `kube-system`, `kube-public`, `kube-node-lease`.

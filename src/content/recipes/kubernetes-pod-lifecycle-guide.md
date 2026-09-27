@@ -10,7 +10,7 @@ relatedRecipes:
   - "pod-lifecycle-hooks"
   - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-init-containers-patterns-examples"
-  - "kubernetes-native-sidecar-containers-guide"
+  - "kubernetes-sidecar-patterns"
   - "kubernetes-liveness-readiness-startup-probes"
   - "pod-pending-troubleshooting"
   - "crashloopbackoff-troubleshooting"

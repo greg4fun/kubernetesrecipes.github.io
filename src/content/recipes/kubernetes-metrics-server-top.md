@@ -15,7 +15,7 @@ tags:
   - "cka"
 relatedRecipes:
   - "kubernetes-hpa-cpu-memory-guide"
-  - "resource-limits-requests"
+  - "kubernetes-resource-requests-limits"
   - "kubernetes-prometheus-monitoring-guide"
 ---
 

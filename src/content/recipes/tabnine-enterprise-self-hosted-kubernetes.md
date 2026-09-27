@@ -16,7 +16,7 @@ relatedRecipes:
   - "poolside-ai-foundation-models-kubernetes"
   - "vllm-openai-container-kubernetes"
   - "red-hat-ai-studio-openshift-model-development"
-  - "kubernetes-network-policy-guide"
+  - "kubernetes-networkpolicy-guide"
 ---
 
 > 💡 **Quick Answer:** Tabnine Enterprise can be self-hosted on Kubernetes for private AI code completion. It supports both Tabnine's proprietary protected models (trained on permissive-license code only) and third-party models (Claude, GPT, Gemini, Llama). Deploy the inference server on GPU nodes, connect IDE extensions to your internal endpoint, and maintain zero data retention.

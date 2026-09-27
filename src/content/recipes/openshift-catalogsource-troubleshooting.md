@@ -13,7 +13,6 @@ relatedRecipes:
   - "openshift-catalogsource-custom-operator"
   - "openshift-catalogsource-filtering"
   - "crashloopbackoff-troubleshooting"
-  - "debug-imagepullbackoff"
   - "oc-mirror-troubleshooting-disconnected"
   - "selinux-ssh-login-failure-troubleshooting"
   - "openshift-cluster-operator-upgrade-debug"

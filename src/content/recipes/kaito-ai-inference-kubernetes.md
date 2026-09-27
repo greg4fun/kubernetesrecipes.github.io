@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kserve-model-serving-kubernetes"
   - "llm-deployment-challenges-kubernetes"
-  - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "kubernetes-gpu-sharing-mps-mig"
 ---
 
 > 💡 **Quick Answer:** Create a KAITO `Workspace` CR specifying the model name and GPU requirements. KAITO automatically provisions GPU nodes, pulls model weights, containerizes the model, and deploys an inference endpoint — reducing LLM deployment from days to minutes.

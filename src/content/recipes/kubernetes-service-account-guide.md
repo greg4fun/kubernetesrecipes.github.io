@@ -10,7 +10,7 @@ relatedRecipes:
   - "kubernetes-canary-deployment-guide"
   - "kubernetes-blue-green-deployment"
   - "statefulset-management"
-  - "kubernetes-sidecar-containers"
+  - "kubernetes-sidecar-patterns"
 ---
 
 > 💡 **Quick Answer:** security

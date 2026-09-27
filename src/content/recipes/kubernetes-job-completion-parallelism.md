@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Job Completions and Parallelism"
-description: "Configure Kubernetes Job completions, parallelism, backoffLimit, and indexed jobs. Parallel batch processing, work queue patterns, and job failure handling."
+description: "Kubernetes Job completions vs parallelism with YAML: indexed jobs, work queues, backoffLimit, backoffLimitPerIndex, podFailurePolicy and successPolicy."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "deployments"
@@ -10,6 +10,7 @@ tags:
   - "parallelism"
   - "completions"
   - "indexed-jobs"
+  - "batch"
 difficulty: "intermediate"
 timeToComplete: "10 minutes"
 relatedRecipes:
@@ -17,9 +18,13 @@ relatedRecipes:
   - "kubernetes-argo-workflows-guide"
   - "kubernetes-pod-lifecycle-guide"
   - "kubernetes-pod-priority-preemption"
+  - "kubernetes-job-cronjob-guide"
+  - "job-failure-troubleshooting"
+  - "kubernetes-job-ttl-cleanup"
+  - "ai-batch-processing-volcano"
 ---
 
-> 💡 **Quick Answer:** \`completions\` = total successful pod runs needed. \`parallelism\` = maximum pods running simultaneously. A Job with \`completions: 10, parallelism: 3\` runs 3 pods at a time until 10 complete successfully. Indexed Jobs (completionMode: Indexed) give each pod a unique \`JOB_COMPLETION_INDEX\` for partitioned work.
+> 💡 **Quick Answer:** `completions` = total successful pod runs needed. `parallelism` = maximum pods running simultaneously. A Job with `completions: 10, parallelism: 3` runs 3 pods at a time until 10 complete successfully. Indexed Jobs (completionMode: Indexed) give each pod a unique `JOB_COMPLETION_INDEX` for partitioned work.
 
 ## The Problem
 
@@ -69,7 +74,7 @@ spec:
 
 ### Indexed Jobs (Partitioned Work)
 
-Each pod gets a unique index via \`JOB_COMPLETION_INDEX\`:
+Each pod gets a unique index via `JOB_COMPLETION_INDEX`:
 
 ```yaml
 apiVersion: batch/v1
@@ -98,8 +103,10 @@ echo $JOB_COMPLETION_INDEX
 # 7
 
 # Use index to partition work
-# Shard 7 of 50 → process items 7*1000 to 7999
+# Shard 7 of 50 → process items 7000 to 7999
 ```
+
+The index is also exposed as the annotation/label `batch.kubernetes.io/job-completion-index` (usable via the Downward API) and as the pod hostname `<job-name>-<index>` — pair with a headless Service for stable per-index DNS (MPI/PyTorch-style workers).
 
 ### Work Queue Pattern
 
@@ -171,6 +178,24 @@ spec:
           values: [0]                # Any other non-zero exit
 ```
 
+`podFailurePolicy` requires `restartPolicy: Never` (GA since 1.31).
+
+### Per-Index Retries and Early Success (Indexed Jobs, GA 1.33)
+
+```yaml
+spec:
+  completions: 100
+  parallelism: 10
+  completionMode: Indexed
+  backoffLimitPerIndex: 2     # each index retried at most twice
+  maxFailedIndexes: 5         # fail the Job once >5 indexes have failed
+  successPolicy:
+    rules:
+      - succeededIndexes: "0"   # e.g. leader index 0 succeeded → Job succeeds
+```
+
+With `backoffLimitPerIndex`, one flaky shard no longer burns the Job-wide `backoffLimit`; failed indexes are listed in `.status.failedIndexes`.
+
 ### Monitor Jobs
 
 ```bash
@@ -197,27 +222,51 @@ kubectl get pods -l job-name=image-resize --field-selector=status.phase=Failed
 
 | Issue | Cause | Fix |
 |-------|-------|-----|
-| Job stuck at N-1 completions | Last pod keeps failing | Check pod logs, increase \`backoffLimit\` |
-| All pods run at once | \`parallelism\` not set (defaults to \`completions\`) | Explicitly set \`parallelism\` |
-| Job pods not cleaned up | No \`ttlSecondsAfterFinished\` | Add TTL or manually delete |
-| Index out of range | Pod logic doesn't handle \`JOB_COMPLETION_INDEX\` correctly | Validate index bounds in code |
-| Job takes forever | Parallelism too low for completion count | Increase \`parallelism\` |
-| Zombie jobs | \`activeDeadlineSeconds\` not set | Add deadline to prevent infinite running |
+| Job stuck at N-1 completions | Last pod keeps failing | Check pod logs, increase `backoffLimit` |
+| Only one pod runs at a time | `parallelism` not set (defaults to 1) | Set `parallelism` explicitly |
+| Fewer pods than `parallelism` | Active pods are capped at remaining completions, or quota/requests block scheduling | Expected near the end; otherwise check `kubectl describe job` and quota |
+| Job pods not cleaned up | No `ttlSecondsAfterFinished` | Add TTL or manually delete |
+| Index out of range | Pod logic doesn't handle `JOB_COMPLETION_INDEX` correctly | Validate index bounds in code |
+| Job takes forever | Parallelism too low for completion count | Increase `parallelism` |
+| Zombie jobs | `activeDeadlineSeconds` not set | Add deadline to prevent infinite running |
 
 ## Best Practices
 
 - **Use Indexed Jobs for partitioned data** — cleaner than work queues for fixed datasets
-- **Set \`activeDeadlineSeconds\`** — prevents jobs from running indefinitely
-- **Set \`ttlSecondsAfterFinished\`** — automatic cleanup of completed jobs
-- **Use \`restartPolicy: Never\`** over \`OnFailure\` — easier to debug (pod logs preserved)
-- **Add \`podFailurePolicy\`** to distinguish retryable from fatal errors
-- **Monitor with \`kubectl get jobs -w\`** — watch completion progress
+- **Set `activeDeadlineSeconds`** — prevents jobs from running indefinitely
+- **Set `ttlSecondsAfterFinished`** — automatic cleanup of completed jobs
+- **Use `restartPolicy: Never`** over `OnFailure` — easier to debug (pod logs preserved)
+- **Add `podFailurePolicy`** to distinguish retryable from fatal errors
+- **Monitor with `kubectl get jobs -w`** — watch completion progress
 
 ## Key Takeaways
 
-- \`completions\` = how many pods must succeed; \`parallelism\` = how many run concurrently
-- Indexed Jobs give each pod a unique \`JOB_COMPLETION_INDEX\` (0 to N-1)
+- `completions` = how many pods must succeed; `parallelism` = how many run concurrently
+- Indexed Jobs give each pod a unique `JOB_COMPLETION_INDEX` (0 to N-1)
 - Work queue pattern (no completions set) = pods process until queue is empty
-- \`backoffLimit\` controls total retries; \`activeDeadlineSeconds\` caps total runtime
-- \`podFailurePolicy\` (K8s 1.26+) enables exit-code-based retry decisions
+- `backoffLimit` controls total retries; `activeDeadlineSeconds` caps total runtime
+- `podFailurePolicy` (GA 1.31) enables exit-code-based retry decisions; `backoffLimitPerIndex` isolates retries per shard
 - Always set TTL cleanup to prevent orphaned job pods consuming resources
+
+## Frequently Asked Questions
+
+### What is the difference between completions and parallelism in a Kubernetes Job?
+
+`completions` is how many pods must finish successfully for the Job to succeed. `parallelism` is the maximum number of pods running at once. `completions: 10, parallelism: 3` runs three pods at a time until ten have succeeded.
+
+### What are the defaults for completions and parallelism?
+
+Both default to 1. If you set `parallelism` but leave `completions` unset, the Job runs in work-queue mode: it succeeds when any pod exits 0 and all pods have terminated.
+
+### What is an Indexed Job?
+
+A Job with `completionMode: Indexed`. Each pod gets a unique index from 0 to `completions-1` in `JOB_COMPLETION_INDEX`, and the Job is complete when every index has one successful pod — ideal for static sharding.
+
+### Does backoffLimit count per pod or for the whole Job?
+
+For the whole Job by default — failures across all parallel pods add up. For Indexed Jobs, use `backoffLimitPerIndex` to limit retries per index instead.
+
+### How do I change parallelism on a running Job?
+
+`parallelism` is mutable: `kubectl patch job image-resize -p '{"spec":{"parallelism":6}}'`. Setting it to 0 pauses the Job (or use `spec.suspend: true`). `completions` is immutable except for Indexed Jobs, where it can be changed together with `parallelism` to the same value (elastic Indexed Jobs).
+

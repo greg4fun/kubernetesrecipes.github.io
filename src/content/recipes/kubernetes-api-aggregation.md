@@ -11,7 +11,7 @@ prerequisites:
   - "Familiarity with Go programming (for custom API servers)"
 relatedRecipes:
   - "custom-resource-definitions"
-  - "kubernetes-operators"
+  - "kubernetes-operator-pattern"
   - "kubernetes-admission-webhooks-guide"
 tags:
   - api-aggregation

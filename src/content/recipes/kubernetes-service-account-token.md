@@ -1,14 +1,17 @@
 ---
-title: "Kubernetes Service Account Token Guide"
-description: "Create and manage Kubernetes service account tokens. TokenRequest API, projected volumes, long-lived tokens, and RBAC binding for pod-to-API authentication."
+title: "Kubernetes Service Account Tokens: kubectl create token"
+description: "Create Kubernetes service account tokens after 1.24: kubectl create token, projected volumes, custom audiences, long-lived Secret tokens, and expiry limits."
 category: "security"
 publishDate: "2026-04-20"
 author: "Luca Berton"
 difficulty: "intermediate"
 timeToComplete: "15 minutes"
 kubernetesVersion: "1.24+"
-tags: ["service-account", "token", "rbac", "authentication", "security", "tokenrequest"]
+tags: ["service-account", "token", "rbac", "authentication", "security", "tokenrequest", "projected-volume", "oidc"]
 relatedRecipes:
+  - "service-accounts-rbac"
+  - "kubernetes-service-accounts-workload-identity"
+  - "workload-identity-cloud-access"
   - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-user-onboarding-offboarding-automation"
@@ -128,6 +131,23 @@ spec:
                         fieldPath: metadata.namespace
 ```
 
+### Audience-Bound Token for an External Service
+
+Mount a second token with its own audience (e.g. Vault's Kubernetes auth) instead of reusing the API-server token. The receiving service validates `aud`, so a leaked token can't be replayed against the API server.
+
+```yaml
+      volumes:
+        - name: vault-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: vault-token
+                  expirationSeconds: 600
+                  audience: vault
+```
+
+Mount it at a non-default path (e.g. `/var/run/secrets/tokens`) and point the client at `/var/run/secrets/tokens/vault-token`. For cloud APIs, prefer OIDC federation (IRSA, GKE/Azure Workload Identity) — see [workload identity](/recipes/security/kubernetes-service-accounts-workload-identity/).
+
 ### Long-Lived Token (Legacy / External Use)
 
 ```yaml
@@ -147,6 +167,27 @@ type: kubernetes.io/service-account-token
 # Retrieve the token
 kubectl get secret app-controller-token -n production -o jsonpath='{.data.token}' | base64 -d
 ```
+
+### Token Expiry Limits and Inspection
+
+```bash
+# Imperative SA + read-only binding
+kubectl create serviceaccount app-sa -n production
+kubectl create rolebinding app-sa-view -n production \
+  --clusterrole=view --serviceaccount=production:app-sa
+
+# Bind the token to a pod: it becomes invalid when the pod is deleted
+kubectl create token app-sa -n production \
+  --bound-object-kind=Pod --bound-object-name=app-7d9f-abcde
+
+# Decode the JWT payload to check exp / aud / sub
+kubectl create token app-sa -n production | cut -d. -f2 | base64 -d 2>/dev/null | jq '{sub, aud, exp: (.exp|todate)}'
+
+# Test what the SA can do
+kubectl auth can-i --list --as=system:serviceaccount:production:app-sa -n production
+```
+
+`--duration` is capped by the API server flag `--service-account-max-token-expiration`; a larger request is silently shortened. `kubectl create token` can't produce a non-expiring token — for that you need the Secret-based token below.
 
 ### Architecture
 
@@ -216,3 +257,26 @@ print(resp.json()["items"])
 - Projected volumes are the recommended pod authentication method — auto-rotated by kubelet
 - Long-lived tokens still work via explicit Secret creation but should be avoided
 - Always pair service accounts with least-privilege RBAC bindings
+- Use a dedicated audience per external consumer; RBAC for the SA lives in [Service Account RBAC](/recipes/security/service-accounts-rbac/)
+
+## Frequently Asked Questions
+
+### How do I create a service account token without expiration?
+
+`kubectl create token` always issues an expiring token. For a non-expiring token, create a `kubernetes.io/service-account-token` Secret annotated with `kubernetes.io/service-account.name`; the token controller populates it. Treat it like a password and rotate it by deleting and recreating the Secret. Since 1.29, unused legacy Secret tokens are labeled and can be auto-invalidated by the LegacyServiceAccountTokenCleanUp feature.
+
+### Why doesn't my service account have a token Secret after Kubernetes 1.24?
+
+Since 1.24 (KEP-2799), Secrets are no longer auto-generated for ServiceAccounts. Pods get a projected, auto-rotated token via the kubelet; external clients use `kubectl create token` or an explicitly created Secret.
+
+### What is the maximum duration for kubectl create token?
+
+It's bounded by `--service-account-max-token-expiration` on kube-apiserver (unset means no cap from that flag, but managed platforms often limit it). Tokens mounted into pods are refreshed by the kubelet at 80% of their lifetime or after 24h, whichever comes first.
+
+### How do I use a service account token with kubectl?
+
+```bash
+TOKEN=$(kubectl create token app-sa -n production --duration=1h)
+kubectl --token="$TOKEN" --server=https://api.example.com:6443 get pods -n production
+```
+

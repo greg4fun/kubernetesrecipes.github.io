@@ -15,7 +15,7 @@ tags:
   - "scheduling"
 relatedRecipes:
   - "ai-resource-allocation-optimization-kubernetes"
-  - "kubernetes-resource-quotas-limitranges"
+  - "kubernetes-resource-quota-limitrange"
   - "ai-batch-processing-volcano"
 ---
 

@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-canary-deployment-guide"
   - "statefulset-management"
-  - "kubernetes-sidecar-containers"
+  - "kubernetes-sidecar-patterns"
 ---
 
 > 💡 **Quick Answer:** Run two identical environments — blue (current) and green (new) — behind one Service. Switch traffic instantly by patching the Service selector: `kubectl patch svc web -p '{"spec":{"selector":{"version":"green"}}}'`. Rollback is the same command in reverse. Costs 2x resources while both run.

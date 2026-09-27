@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "nccl-network-validator-production-mpijob"
   - "nccl-gdr-level-tuning-pix-pxb-phb-sys"
-  - "nccl-all-reduce-perf-benchmark-multi-node"
+  - "run-nccl-tests-kubernetes"
   - "nccl-debug-subsystems-gpu-troubleshooting"
 ---
 

@@ -14,9 +14,8 @@ relatedRecipes:
   - "nccl-allgather-benchmark-profile"
   - "run-nccl-tests-kubernetes"
   - "monitor-nccl-performance-prometheus"
-  - "run-nccl-tests-mpijob-kubernetes"
   - "argocd-gitops"
-  - "flux-gitops-continuous-delivery"
+  - "flux-gitops"
 tags:
   - nccl
   - ci-cd

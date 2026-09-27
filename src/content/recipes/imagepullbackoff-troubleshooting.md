@@ -142,6 +142,39 @@ curl -v https://registry.example.com/v2/
 
 Pull secrets and per-node containerd CA trust are per-node state — a secret created after some nodes already cached credentials, or a CA cert only copied to some nodes, produces exactly this pattern. Check `/etc/containerd/certs.d/<registry>/` matches across every node.
 
+**Managed cloud registries (ECR, Artifact Registry, ACR):**
+
+On EKS, GKE and AKS the node identity usually pulls from the provider's own registry — fix IAM before creating secrets: EKS node role needs `AmazonEC2ContainerRegistryReadOnly`; GKE node service account needs `roles/artifactregistry.reader`; AKS: `az aks update -n <cluster> -g <rg> --attach-acr <registry>`. For cross-account or non-native clusters, use a pull secret:
+
+```bash
+# ECR — token expires after 12h; refresh with a CronJob or External Secrets (ECRAuthorizationToken generator)
+kubectl create secret docker-registry ecr-secret \
+  --docker-server=123456789012.dkr.ecr.us-east-1.amazonaws.com \
+  --docker-username=AWS \
+  --docker-password="$(aws ecr get-login-password --region us-east-1)"
+
+# Artifact Registry (gcr.io is served by Artifact Registry now)
+kubectl create secret docker-registry gar-secret \
+  --docker-server=europe-docker.pkg.dev \
+  --docker-username=_json_key \
+  --docker-password="$(cat key.json)"
+
+# Reuse an existing, already-logged-in Docker config
+kubectl create secret generic regcred \
+  --from-file=.dockerconfigjson=$HOME/.docker/config.json \
+  --type=kubernetes.io/dockerconfigjson
+```
+
+A `~/.docker/config.json` that uses a `credsStore`/credential helper contains no credentials — the secret will be empty of auth. Log in with `--password-stdin` into a temporary `DOCKER_CONFIG` dir first.
+
+### Find Every Failing Pull
+
+```bash
+kubectl get events -A --field-selector reason=Failed | grep -i pull
+# On the node: the runtime's own view
+journalctl -u containerd --since "15 min ago" | grep -iE "pull|error"   # crio on OpenShift
+```
+
 ### Verify a Pull Secret Actually Works
 
 ```bash
@@ -201,6 +234,9 @@ It's the event the kubelet emits while in `ImagePullBackOff`: it will retry the 
 
 ### How do I fix "failed to pull and unpack image"?
 It's the containerd wrapper around the real error — read the rest of the message: `not found` means a bad tag, `unauthorized` a missing pull secret, `x509` an untrusted CA, `unknown blob` a broken/partially pushed image in the registry.
+
+### Why does ECR ImagePullBackOff start after 12 hours?
+An ECR pull secret created from `aws ecr get-login-password` holds a token valid for 12 hours. Once it expires new pulls fail with `unauthorized`. Use the node IAM role, or refresh the secret automatically.
 
 ### Do image pull secrets work across namespaces?
 No. The secret must exist in the same namespace as the pod. Copy it to each namespace or attach it via each namespace's ServiceAccount. On OpenShift, add the registry to the global pull secret in `openshift-config`.

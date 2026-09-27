@@ -14,7 +14,6 @@ relatedRecipes:
   - "quay-robot-account-kubernetes"
   - "openshift-cluster-wide-pull-secret"
   - "image-pull-secrets"
-  - "debug-imagepullbackoff"
   - "imagepullbackoff-troubleshooting"
 tags: ["secrets", "base64", "troubleshooting", "debugging", "container-registry"]
 publishDate: "2026-02-26"

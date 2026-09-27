@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Labels Best Practices"
-description: "Kubernetes labels best practices for organizing workloads. Recommended label schemas, selector patterns, naming conventions, and operational label strategies."
+title: "Kubernetes Labels Best Practices (app.kubernetes.io)"
+description: "Kubernetes labels best practices: recommended app.kubernetes.io labels (name, part-of, component), naming rules, selector patterns, cost-allocation labels."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"
@@ -14,12 +14,14 @@ tags:
   - "organization"
   - "selectors"
 relatedRecipes:
+  - "kubernetes-labels-annotations-best-practices"
+  - "kubernetes-labels-selectors-guide"
   - "kubernetes-namespace-template-instant-environments"
   - "kubernetes-rbac-role-clusterrole"
   - "configmap-secrets-management"
 ---
 
-> 💡 **Quick Answer:** Use the standard `app.kubernetes.io/` label prefix: `app.kubernetes.io/name`, `app.kubernetes.io/version`, `app.kubernetes.io/component`, `app.kubernetes.io/part-of`, `app.kubernetes.io/managed-by`. Add custom labels like `team`, `environment`, `cost-center` for operational needs. Never put mutable data in label selectors (they're immutable on Services/Deployments).
+> 💡 **Quick Answer:** Use the standard `app.kubernetes.io/` label prefix: `app.kubernetes.io/name`, `app.kubernetes.io/version`, `app.kubernetes.io/component`, `app.kubernetes.io/part-of`, `app.kubernetes.io/managed-by`. Add custom labels like `team`, `environment`, `cost-center` for operational needs. Never put mutable data (like `version`) in selectors — `spec.selector` is immutable on Deployments, StatefulSets and DaemonSets. For labels vs annotations, see [Labels vs Annotations](/recipes/configuration/kubernetes-labels-annotations-best-practices/).
 
 ## The Problem
 
@@ -186,3 +188,22 @@ Labels are stored in etcd. Keep total label data under ~256KB per object. Use an
 - Labels are for filtering, annotations are for metadata
 - Cost allocation labels (`team`, `cost-center`) enable cloud FinOps
 - Enforce required labels with admission policies (OPA, Kyverno)
+
+## Frequently Asked Questions
+
+### What are the recommended Kubernetes labels?
+
+The `app.kubernetes.io/` set: `name` (application), `instance` (unique release, e.g. `myapp-prod`), `version`, `component` (e.g. `database`), `part-of` (the larger application) and `managed-by` (e.g. `Helm`, `argocd`). Tools like Helm, Argo CD and dashboards understand them.
+
+### Should I use `app` or `app.kubernetes.io/name`?
+
+Use `app.kubernetes.io/name` for new workloads. Plain `app` is fine for existing selectors — changing a Deployment selector requires recreating it, so migrate by adding the new labels to the template first and switching selectors only on the next recreate.
+
+### What is kubernetes.io/metadata.name?
+
+An immutable label the API server sets on every namespace (1.21+) with the namespace's name. Use it in NetworkPolicy `namespaceSelector` instead of labeling namespaces by hand.
+
+### What are the naming rules for Kubernetes labels?
+
+Keys: optional DNS-subdomain prefix (≤253 chars) plus a name ≤63 chars; values ≤63 chars, alphanumerics plus `-`, `_`, `.`, starting and ending with an alphanumeric. The `kubernetes.io/` and `k8s.io/` prefixes are reserved for Kubernetes core components.
+

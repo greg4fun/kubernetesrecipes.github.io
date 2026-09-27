@@ -15,7 +15,7 @@ tags:
   - "serving-runtime"
 relatedRecipes:
   - "kserve-model-serving-kubernetes"
-  - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "kubernetes-gpu-sharing-mps-mig"
   - "kubernetes-cost-optimization-strategies"
 ---
 

@@ -21,12 +21,12 @@ relatedRecipes:
   - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-readiness-probe-guide"
   - "kubernetes-probes-liveness-readiness"
-  - "kubernetes-pod-disruption-budget-guide"
+  - "pod-disruption-budget-config"
   - "kubernetes-pdb-rolling-updates"
   - "rollout-stuck-troubleshooting"
   - "kubectl-rollout-restart-deployment"
   - "kubernetes-daemonset-update-strategies"
-  - "kubernetes-topology-spread-constraints"
+  - "pod-topology-constraints"
   - "horizontal-pod-autoscaler"
   - "ab-testing-kubernetes"
 ---
@@ -107,6 +107,7 @@ sequenceDiagram
 | Balanced | `1` | `1` | Replace one while starting one |
 | Fast (staging, hotfix) | `50%` | `25%`–`50%` | Large batches, visible capacity dip |
 | Default | `25%` | `25%` | Good for most stateless apps with headroom |
+| Blue-green-like | `100%` | `0` | Full new ReplicaSet comes up before any old pod goes; doubles resources briefly |
 
 With `maxUnavailable: 0`, surge pods that stay Pending (no node capacity, quota) block the rollout forever. On full clusters use `maxSurge: 0, maxUnavailable: 1` or add capacity.
 
@@ -155,7 +156,7 @@ t=10   preStop ends → SIGTERM → app stops accepting, drains, exits
 t=60   terminationGracePeriodSeconds → SIGKILL if still running
 ```
 
-3. The app must handle SIGTERM (stop accepting, finish in-flight, exit). 4. Add a [PodDisruptionBudget](/recipes/deployments/kubernetes-pod-disruption-budget-guide/) so node drains don't stack on top of the rollout. Full details: [graceful shutdown guide](/recipes/deployments/kubernetes-graceful-shutdown-guide/). Verify by running `k6` or `hey` against the Service during `kubectl rollout restart`.
+3. The app must handle SIGTERM (stop accepting, finish in-flight, exit). 4. Set resource requests and spread replicas across nodes/zones (`topologySpreadConstraints` or `podAntiAffinity` on `kubernetes.io/hostname`) so one node loss mid-rollout can't take out every Ready pod. 5. Add a [PodDisruptionBudget](/recipes/deployments/pod-disruption-budget-config/) so node drains don't stack on top of the rollout. Full details: [graceful shutdown guide](/recipes/deployments/kubernetes-graceful-shutdown-guide/). Verify by running `k6` or `hey` against the Service during `kubectl rollout restart`.
 
 ## Trigger, Monitor, Pause
 
@@ -225,6 +226,18 @@ Both default to `25%`. With 4 replicas that means 1 extra pod and 1 unavailable 
 ### How do I get zero downtime with a rolling update?
 
 Use `maxSurge: 1` (or 25%) with `maxUnavailable: 0`, a readiness probe, a `preStop` sleep of 5–15 s, SIGTERM handling in the app and a `terminationGracePeriodSeconds` longer than preStop + drain time.
+
+### What triggers a rolling update?
+
+Any change to `.spec.template`: image, env vars, resources, labels/annotations on the pod template. Changing `replicas`, `strategy` or Deployment metadata does **not** create a new ReplicaSet. `kubectl rollout restart` works by stamping a `kubectl.kubernetes.io/restartedAt` template annotation.
+
+### Can maxSurge and maxUnavailable both be 0?
+
+No. The API rejects it: the controller could neither add a new pod nor remove an old one, so the rollout could never progress.
+
+### Why do I still get 502s during a rolling update?
+
+Usually one of the readiness probe, `preStop` sleep or `maxUnavailable: 0` is missing, or the app exits immediately on SIGTERM. All are needed; see the zero-downtime checklist above.
 
 ### What's the difference between RollingUpdate and Recreate?
 

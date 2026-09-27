@@ -8,7 +8,7 @@ tags: ["fio", "storage-benchmark", "openshift", "performance", "distributed-test
 author: "Luca Berton"
 relatedRecipes:
   - "nfsordma-troubleshooting-performance"
-  - "kubernetes-pvc-guide"
+  - "kubernetes-persistent-volume-guide"
   - "kubernetes-storage-best-practices"
   - "kubernetes-csi-driver-guide"
 ---

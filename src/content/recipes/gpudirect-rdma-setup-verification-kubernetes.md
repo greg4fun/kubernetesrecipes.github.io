@@ -12,7 +12,7 @@ publishDate: "2026-06-04"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "nccl-all-reduce-perf-benchmark-multi-node"
+  - "run-nccl-tests-kubernetes"
   - "nccl-channel-routing-transport-analysis"
   - "nvidia-gpu-topology-matrix-kubernetes"
   - "gpu-operator-clusterpolicy-rdma-gds-iommu"

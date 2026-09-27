@@ -13,11 +13,9 @@ tags:
   - "prometheus-adapter"
   - "autoscaling"
 relatedRecipes:
-  - "kubernetes-hpa-tutorial-guide"
-  - "kubernetes-hpa-max-replicas-guide"
   - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
-  - "kubernetes-horizontal-pod-autoscaler-guide"
+  - "horizontal-pod-autoscaler"
 ---
 
 > 💡 **Quick Answer:** Scale Kubernetes workloads on custom Prometheus metrics with HPA. Prometheus Adapter, external metrics, and request-rate-based scaling for web services.

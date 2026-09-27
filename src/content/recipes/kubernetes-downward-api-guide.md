@@ -13,7 +13,7 @@ tags:
   - "environment-variables"
   - "fieldref"
 relatedRecipes:
-  - "kubernetes-labels-annotations-guide"
+  - "kubernetes-labels-annotations-best-practices"
   - "kubernetes-envfrom-configmapref"
   - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"

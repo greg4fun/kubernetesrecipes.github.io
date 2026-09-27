@@ -9,7 +9,6 @@ author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-dns-configuration"
   - "coredns-configuration"
-  - "kubernetes-dns-policy-configuration"
   - "dns-policies-configuration"
 ---
 

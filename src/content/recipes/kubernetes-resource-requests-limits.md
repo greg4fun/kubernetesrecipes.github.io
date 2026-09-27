@@ -1,27 +1,30 @@
 ---
 title: "Kubernetes Resource Requests and Limits Guide"
-description: "Configure CPU and memory requests and limits in Kubernetes. Understand QoS classes, OOMKilled, CPU throttling, and right-sizing with VPA recommendations."
+description: "Set CPU and memory requests and limits in Kubernetes: QoS classes, CPU throttling vs OOMKilled, LimitRange defaults, GPUs, and right-sizing."
 category: "configuration"
 difficulty: "beginner"
 publishDate: "2026-04-03"
-tags: ["resources", "requests", "limits", "cpu", "memory", "qos", "kubernetes"]
+tags: ["resources", "requests", "limits", "cpu", "memory", "qos", "oomkill", "capacity-planning", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
+  - "kubernetes-resource-limits-cpu-memory-format"
   - "kubernetes-pod-resource-monitoring-grafana"
-  - "resource-limits-requests"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
+  - "kubernetes-oomkilled-troubleshooting"
+  - "kubernetes-resource-quota-limitrange"
+  - "horizontal-pod-autoscaler"
   - "kubectl-cheat-sheet"
-  - "kubernetes-affinity-guide"
 ---
 
-> 💡 **Quick Answer:** Configure CPU and memory requests and limits in Kubernetes. Understand QoS classes, OOMKilled, CPU throttling, and right-sizing with VPA recommendations.
+> 💡 **Quick Answer:** `resources.requests` is what the scheduler reserves on a node for the container; `resources.limits` is the runtime ceiling. Exceeding the **CPU** limit throttles the container; exceeding the **memory** limit gets it **OOMKilled**. Requests == limits for every container gives Guaranteed QoS (evicted last). A common production default: always set memory request and limit, set a CPU request, and skip the CPU limit on latency-sensitive services.
+>
+> **Key command:** `kubectl get pod <pod> -o jsonpath='{.status.qosClass}'`
 
 ## The Problem
 
-Pods get OOMKilled, throttled, or stuck Pending because requests and limits are missing, mismatched, or copy-pasted without matching the workload's actual usage.
+Pods get OOMKilled, throttled, evicted or stuck Pending because requests and limits are missing, mismatched, or copy-pasted without matching actual usage. Over-requesting wastes capacity just as badly as under-requesting destabilizes nodes.
 
-## The Solution
-
-### Set Requests and Limits
+## Set Requests and Limits
 
 ```yaml
 apiVersion: v1
@@ -33,90 +36,120 @@ spec:
     - name: app
       image: my-app:v1
       resources:
-        requests:          # Minimum guaranteed
-          cpu: 250m        # 0.25 CPU cores
-          memory: 256Mi    # 256 MiB
-        limits:            # Maximum allowed
-          cpu: "1"         # 1 CPU core
-          memory: 512Mi    # 512 MiB - OOMKilled if exceeded
+        requests:          # Reserved for scheduling
+          cpu: 250m        # 0.25 core
+          memory: 256Mi
+        limits:            # Enforced at runtime
+          cpu: "1"         # Throttled above 1 core
+          memory: 512Mi    # OOMKilled above 512Mi
 ```
-
-### CPU vs Memory Units
 
 | Resource | Units | Examples |
 |----------|-------|---------|
-| CPU | Millicores (m) | 100m = 0.1 core, 1000m = 1 core, 1.5 = 1500m |
-| Memory | Bytes (Mi, Gi) | 128Mi, 1Gi, 512Mi |
+| CPU | Cores or millicores | `100m` = 0.1 core, `1` = `1000m`, `1.5` = `1500m` |
+| Memory | Bytes with binary (`Ki`, `Mi`, `Gi`) or decimal (`k`, `M`, `G`) suffixes | `256Mi` = 268,435,456 bytes; `256M` = 256,000,000 bytes |
 
-### QoS Classes
+See [CPU 200m / memory 256Mi format](/recipes/configuration/kubernetes-resource-limits-cpu-memory-format/) for unit conversions and the `Mi` vs `M` pitfall.
 
-| Class | Condition | Eviction Priority |
+Defaulting rules:
+- Only a limit set → the request defaults to the limit.
+- Only a request set → no limit (unless a `LimitRange` supplies one).
+- Memory limit lower than request → the API server rejects the pod.
+
+## QoS Classes
+
+| Class | Condition | Eviction order under node pressure |
 |-------|-----------|-------------------|
-| **Guaranteed** | requests == limits for all containers | Last to evict |
-| **Burstable** | At least one request set, requests < limits | Middle |
-| **BestEffort** | No requests or limits set | First to evict |
+| **Guaranteed** | Every container has CPU and memory requests == limits | Last |
+| **Burstable** | Not Guaranteed, but at least one container has a request or limit | Middle (those furthest above requests first) |
+| **BestEffort** | No requests or limits on any container | First |
 
 ```yaml
-# Guaranteed QoS — best for production
+# Guaranteed — databases, critical services
 resources:
-  requests:
-    cpu: 500m
-    memory: 256Mi
-  limits:
-    cpu: 500m        # Same as request
-    memory: 256Mi    # Same as request
+  requests: {cpu: 500m, memory: 512Mi}
+  limits:   {cpu: 500m, memory: 512Mi}
+
+# Burstable — typical web service, no CPU limit to avoid throttling
+resources:
+  requests: {cpu: 250m, memory: 256Mi}
+  limits:   {memory: 512Mi}
 ```
 
-### What Happens When Limits Are Exceeded?
+```bash
+kubectl get pod my-pod -o jsonpath='{.status.qosClass}'
+kubectl describe pod my-pod | grep "QoS Class"
+```
+
+## CPU Throttling vs OOMKilled
+
+```text
+CPU (compressible):
+  Enforced by CFS quota per 100ms period: limit 500m = 50ms of CPU time per 100ms.
+  A multi-threaded burst can exhaust the quota early in the period and stall
+  for the rest of it — p99 latency spikes even when average usage looks low.
+
+Memory (incompressible):
+  Working set above the limit -> kernel OOM killer -> container restarts
+  (reason: OOMKilled, exit code 137).
+```
 
 ```bash
-# CPU: Throttled (slowed down, not killed)
-# Memory: OOMKilled (pod restarted)
-
-# Check for OOM kills
-kubectl describe pod <name> | grep -i oom
+# OOMKilled
 kubectl get pod <name> -o jsonpath='{.status.containerStatuses[0].lastState.terminated.reason}'
-# Output: OOMKilled
+kubectl describe pod <name> | grep -i -A3 "last state"
+
+# Throttling (cgroup v2)
+kubectl exec <pod> -- cat /sys/fs/cgroup/cpu.stat    # nr_throttled, throttled_usec
+
+# Pending on resources
+kubectl describe pod <name> | grep -i insufficient
 ```
 
-### Right-Sizing with VPA
-
-```bash
-# Install VPA, create VPA object in "Off" mode, then check recommendations
-kubectl describe vpa my-app-vpa
-# Target:     cpu: 120m, memory: 200Mi  ← use these as your requests
-```
+`kubectl top pod` shows the working set sampled every ~15s; short spikes, child processes and tmpfs (`emptyDir.medium: Memory`) count against the limit and can OOMKill a container that "only uses 400Mi".
 
 ```mermaid
 graph TD
     A[Pod resources] --> B{requests}
-    B -->|Scheduler uses for placement| C[Node with enough capacity]
+    B -->|Scheduler reserves| C[Node with enough allocatable]
     A --> D{limits}
-    D -->|CPU exceeded| E[Throttled - slowed down]
-    D -->|Memory exceeded| F[OOMKilled - restarted]
+    D -->|CPU exceeded| E[Throttled]
+    D -->|Memory exceeded| F[OOMKilled]
+    G[Node memory pressure] -->|Evict first| H[BestEffort]
+    G -->|Then| I[Burstable above requests]
+    G -->|Last| J[Guaranteed]
 ```
 
-### Common Mistakes
+## Init Containers, Ephemeral Storage and GPUs
+
+A pod's effective request is `max(largest init container request, sum of app container requests)` per resource — a heavy init container can make a pod unschedulable even if the app is small.
 
 ```yaml
-# Memory limit below request — rejected by the API server, not just bad practice
 resources:
-  requests: {memory: "512Mi"}
-  limits: {memory: "256Mi"}    # INVALID: must be >= request
+  requests:
+    cpu: 500m
+    memory: 256Mi
+    ephemeral-storage: 1Gi     # Container logs, writable layer, emptyDir
+  limits:
+    memory: 512Mi
+    ephemeral-storage: 2Gi     # Exceeding it evicts the pod
 ```
+
+Extended resources such as GPUs are integers and can't be overcommitted — set them in `limits` (the request defaults to the same value):
 
 ```yaml
-# No limits at all — this container can consume the entire node's remaining capacity
 resources:
-  requests: {memory: "128Mi", cpu: "100m"}
-  # limits omitted
+  limits:
+    nvidia.com/gpu: 1
+    memory: 8Gi
+  requests:
+    cpu: "2"
+    memory: 8Gi
 ```
 
-Requests set far above actual usage waste cluster capacity just as much as missing limits risk instability — both show up in a `kubectl top pods` vs. requests comparison.
+## Namespace Defaults and Caps
 
-### Namespace-Level Defaults and Caps
-
-Don't rely on every team remembering to set resources correctly — `LimitRange` fills in defaults and enforces bounds, `ResourceQuota` caps the namespace total:
+`LimitRange` fills in defaults and enforces per-container bounds; `ResourceQuota` caps the namespace total:
 
 ```yaml
 apiVersion: v1
@@ -125,56 +158,67 @@ metadata: {name: default-limits, namespace: production}
 spec:
   limits:
     - type: Container
-      default: {memory: "256Mi", cpu: "500m"}
-      defaultRequest: {memory: "128Mi", cpu: "100m"}
-      min: {memory: "64Mi", cpu: "50m"}
-      max: {memory: "2Gi", cpu: "2"}
-```
-
-```yaml
+      default:        {memory: 256Mi, cpu: 500m}   # Default limits
+      defaultRequest: {memory: 128Mi, cpu: 100m}
+      min:            {memory: 64Mi,  cpu: 50m}
+      max:            {memory: 2Gi,   cpu: "2"}
+---
 apiVersion: v1
 kind: ResourceQuota
 metadata: {name: compute-quota, namespace: production}
 spec:
-  hard: {requests.cpu: "10", requests.memory: "20Gi", limits.cpu: "20", limits.memory: "40Gi", pods: "50"}
+  hard: {requests.cpu: "10", requests.memory: 20Gi, limits.cpu: "20", limits.memory: 40Gi, pods: "50"}
 ```
 
-### Troubleshooting
+Once a quota covers `requests.cpu`/`limits.memory` etc., pods without those fields are rejected — pair every quota with a LimitRange.
+
+## Right-Sizing
+
+Start from measured usage, not guesses:
 
 ```bash
-# OOMKilled — check for the event, then raise the memory limit or fix the leak
-kubectl describe pod myapp | grep -i oom
-kubectl get events --field-selector reason=OOMKilled
-
-# Pending — insufficient node capacity for the requested resources
-kubectl describe pod myapp | grep -i insufficient
-
-# CPU throttling — read the cgroup stats directly
-kubectl exec myapp -- cat /sys/fs/cgroup/cpu.stat
+kubectl top pods -n production --containers
+kubectl describe vpa my-app-vpa      # Target: cpu 120m, memory 200Mi -> use as requests
 ```
 
-## Frequently Asked Questions
+```promql
+# CPU usage / request per container
+sum by (namespace, pod, container) (rate(container_cpu_usage_seconds_total{container!=""}[5m]))
+  / sum by (namespace, pod, container) (kube_pod_container_resource_requests{resource="cpu"})
 
-### Should I always set limits?
+# Memory working set / request
+sum by (namespace, pod, container) (container_memory_working_set_bytes{container!=""})
+  / sum by (namespace, pod, container) (kube_pod_container_resource_requests{resource="memory"})
+```
 
-Set **memory limits** always (prevents OOM from affecting other pods). CPU limits are debatable — throttling can cause latency spikes. Some teams set CPU requests only and skip CPU limits.
-
-### What are good defaults?
-
-Start with requests based on actual usage (check `kubectl top pods`). Set memory limit = 2× request. Adjust based on monitoring.
+Ratios consistently below 0.5 mean over-provisioning; memory near 1.0 of the *limit* means OOMKill risk. A [VPA](/recipes/autoscaling/kubernetes-vertical-pod-autoscaler-vpa/) in `Off` mode gives per-container targets.
 
 ## Best Practices
 
-- **Always set memory limits** — an unbounded container can starve every other pod on the node
-- **CPU limits are debatable** — throttling can cause latency spikes; some teams set CPU requests only
-- **Use `LimitRange` for namespace defaults** so a forgotten resource block doesn't default to BestEffort
-- **Right-size from real data** — `kubectl top pods` or VPA recommendations, not guesses
-- **Re-check after workload changes** — a code change that alters memory/CPU profile makes old limits stale
+- **Always set memory requests and limits** — an unbounded container can starve the node
+- **CPU limits are optional** — skip them for latency-sensitive services; keep them for noisy batch jobs or strict multi-tenancy
+- **Guaranteed QoS for databases and critical services**
+- **LimitRange in every namespace** so a missing resource block doesn't become BestEffort
+- **Re-check after code changes** — memory/CPU profiles drift
 
-## Key Takeaways
+## Frequently Asked Questions
 
-- Requests drive scheduling; limits are enforced at runtime — CPU throttles, memory OOMKills
-- Memory limit must be ≥ request or the pod spec is rejected outright
-- `LimitRange` sets namespace defaults/bounds; `ResourceQuota` caps the namespace total
-- QoS class (Guaranteed/Burstable/BestEffort) is derived automatically and determines eviction order
-- Diagnose OOMKilled with `kubectl describe`/events, Pending with insufficient-resource events, throttling via cgroup `cpu.stat`
+### What is the difference between requests and limits?
+
+Requests are reserved capacity used by the scheduler to place the pod and by the kubelet to rank eviction. Limits are hard ceilings enforced by the container runtime through cgroups: CPU is throttled, memory triggers an OOM kill.
+
+### Should I always set CPU limits?
+
+Not necessarily. CPU limits cause CFS throttling, which hurts tail latency even at low average usage. Many teams set CPU requests on everything and CPU limits only on batch or untrusted workloads. Memory limits should always be set.
+
+### What happens if I don't set requests?
+
+If no limits are set either, the pod is BestEffort: the scheduler reserves nothing, it's evicted first under pressure, and a LimitRange default (if present) is applied. If only a limit is set, the request defaults to the limit.
+
+### What are good default values?
+
+Base requests on observed steady-state usage (P90 CPU, peak working-set memory) and set the memory limit about 1.5-2× the request for Burstable workloads, or equal to the request for Guaranteed. Refine with monitoring or VPA recommendations.
+
+### Why was my container OOMKilled below its limit in kubectl top?
+
+`kubectl top` samples periodically and misses short spikes; page cache under pressure, child processes and memory-backed `emptyDir` also count against the cgroup limit.

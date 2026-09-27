@@ -14,7 +14,7 @@ tags:
   - node-agents
 relatedRecipes:
   - "kubernetes-rolling-update-strategy"
-  - "kubernetes-pod-disruption-budget-guide"
+  - "pod-disruption-budget-config"
   - "openshift-machineconfig-mcp-guide"
 ---
 

@@ -16,7 +16,7 @@ relatedRecipes:
   - "sriov-nicclusterpolicy-vfs"
   - "configure-gpudirect-rdma-gpu-operator"
   - "tune-nccl-env-rdma-ethernet"
-  - "run-nccl-tests-mpijob-kubernetes"
+  - "run-nccl-tests-kubernetes"
   - "create-nv-ipam-ippool"
 tags: ["sriov", "rdma", "ai", "distributed-training", "nccl", "networking"]
 publishDate: "2026-02-26"

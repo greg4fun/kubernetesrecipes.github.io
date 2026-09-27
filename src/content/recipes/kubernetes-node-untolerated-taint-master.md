@@ -14,7 +14,6 @@ tags:
   - "control-plane"
   - "troubleshooting"
 relatedRecipes:
-  - "kubernetes-taints-tolerations-guide"
   - "kubernetes-taint-toleration-guide"
   - "debug-scheduling-failures"
 ---

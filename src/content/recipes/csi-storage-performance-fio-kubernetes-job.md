@@ -14,7 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "pvc-storageclass-examples"
   - "kubernetes-csi-driver-guide"
-  - "kubernetes-persistent-volume"
+  - "kubernetes-persistent-volume-guide"
   - "emptydir-volume-sharing-lifecycle-memory-backed"
 ---
 

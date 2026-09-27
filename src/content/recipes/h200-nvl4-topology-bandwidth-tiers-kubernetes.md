@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nccl-gdr-level-tuning-pix-pxb-phb-sys"
-  - "nccl-all-reduce-perf-benchmark-multi-node"
+  - "run-nccl-tests-kubernetes"
   - "nccl-network-validator-production-mpijob"
 ---
 

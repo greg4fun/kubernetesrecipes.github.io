@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "nvidia-gpu-operator-install"
   - "kubernetes-gpu-operator-advanced-config"
-  - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "kubernetes-gpu-sharing-mps-mig"
 ---
 
 > 💡 **Quick Answer:** Run PyTorch DistributedDataParallel across multiple GPUs on Kubernetes. torchrun, NCCL backend, pod topology, and scaling to multi-node training.

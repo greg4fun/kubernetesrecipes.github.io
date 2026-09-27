@@ -19,7 +19,7 @@ relatedRecipes:
   - "backstage-kubernetes-developer-portal"
   - "kubernetes-crossplane-infrastructure"
   - "argocd-app-of-apps-pattern"
-  - "flux-gitops-continuous-delivery"
+  - "flux-gitops"
   - "kubernetes-multi-tenancy-enterprise"
 ---
 

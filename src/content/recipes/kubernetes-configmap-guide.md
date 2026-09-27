@@ -27,7 +27,7 @@ relatedRecipes:
   - "secrets-management-best-practices"
   - "kustomize-vs-helm-comparison"
   - "kubernetes-resource-quota-limitrange"
-  - "kubernetes-projected-volumes-guide"
+  - "kubernetes-projected-volumes"
   - "kubernetes-kubelet-configuration"
   - "kubernetes-qos-classes-guide"
   - "kubernetes-container-runtime-guide"

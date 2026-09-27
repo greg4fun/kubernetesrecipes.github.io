@@ -14,9 +14,9 @@ tags:
   - "administration"
   - "cka"
 relatedRecipes:
-  - "kubernetes-etcd-backup-guide"
-  - "kubernetes-pod-disruption-budget"
-  - "kubernetes-taints-tolerations-guide"
+  - "etcd-backup-restore-kubernetes"
+  - "pod-disruption-budget-config"
+  - "kubernetes-taint-toleration-guide"
   - "kubernetes-kubeadm-init-guide"
   - "kubernetes-cluster-api-guide"
 ---

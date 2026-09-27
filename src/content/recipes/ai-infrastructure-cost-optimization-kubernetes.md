@@ -15,7 +15,7 @@ timeToComplete: "20 minutes"
 relatedRecipes:
   - "nim-model-profiles-selection-kubernetes"
   - "karpenter-node-autoscaling"
-  - "cluster-autoscaler-setup"
+  - "kubernetes-cluster-autoscaler-configuration"
 ---
 
 > 💡 **Quick Answer:** AI infrastructure costs are dominated by GPU compute. Optimize by: (1) right-sizing GPU allocation (MIG/time-slicing), (2) using quantized models (FP8/INT4 = 2-4× less GPU memory), (3) batching inference requests, (4) spot/preemptible instances for training, and (5) scaling to zero during off-hours. Most orgs waste 40-60% of their GPU budget.

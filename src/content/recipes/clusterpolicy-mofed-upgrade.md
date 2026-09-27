@@ -14,7 +14,7 @@ relatedRecipes:
   - "kubernetes-crossplane-infrastructure"
   - "scheduler-configuration-tuning"
   - "resource-quotas"
-  - "resource-limits-requests"
+  - "kubernetes-resource-requests-limits"
   - "kubernetes-pod-resource-monitoring-grafana"
   - "pod-mutation-injection"
   - "openshift-project-request-template"

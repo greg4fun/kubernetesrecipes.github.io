@@ -14,7 +14,7 @@ tags:
   - "event-driven"
   - "autoscaling"
 relatedRecipes:
-  - "kubernetes-keda-autoscaling-guide"
+  - "kubernetes-keda-event-driven-autoscaling"
   - "kubernetes-gateway-api"
 ---
 

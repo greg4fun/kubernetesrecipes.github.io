@@ -11,10 +11,10 @@ prerequisites:
   - "Git repository with app definitions"
 relatedRecipes:
   - "pod-topology-constraints"
-  - "kubernetes-pod-priority-preemption-scheduling"
+  - "kubernetes-pod-priority-preemption"
   - "pod-lifecycle-hooks"
   - "pod-disruption-budget-config"
-  - "kubernetes-multi-container-pod-patterns"
+  - "kubernetes-multi-container-patterns"
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-leases"
   - "deployment-strategies"

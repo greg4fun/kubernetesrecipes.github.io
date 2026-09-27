@@ -16,8 +16,8 @@ tags:
 relatedRecipes:
   - "kubernetes-multi-tenancy-enterprise"
   - "kubernetes-storage-class-guide"
-  - "kubernetes-network-policy-guide"
-  - "kubernetes-pvc-guide"
+  - "kubernetes-networkpolicy-guide"
+  - "kubernetes-persistent-volume-guide"
 ---
 
 > 💡 **Quick Answer:** NFS tenant segregation in Kubernetes combines server-side export policies (IP-based access, root squash, read-only enforcement), dedicated exports per namespace, NetworkPolicy restricting NFS traffic by tenant, and CSI driver provisioning with per-StorageClass export paths. Defense in depth: no single layer is sufficient alone.

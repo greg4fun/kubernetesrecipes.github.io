@@ -16,7 +16,7 @@ tags:
   - "helm"
 relatedRecipes:
   - "openshift-gitops-kustomize"
-  - "kubernetes-network-policy-guide"
+  - "kubernetes-networkpolicy-guide"
   - "kubernetes-networkpolicy-default-deny-egress"
   - "verify-ovn-underlay-interface"
 ---

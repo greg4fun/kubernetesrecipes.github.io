@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
   - "kubernetes-emptydir-hostpath-volumes"
-  - "kubernetes-persistent-volume"
+  - "kubernetes-persistent-volume-guide"
   - "pvc-storageclass-examples"
   - "kubernetes-init-containers-patterns-examples"
 ---

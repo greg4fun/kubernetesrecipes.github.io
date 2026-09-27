@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Projected Volumes Explained"
-description: "Combine Secrets, ConfigMaps, Downward API, and ServiceAccount tokens into a single projected volume mount for cleaner pod configuration."
+description: "Combine Secrets, ConfigMaps, Downward API and bound ServiceAccount tokens into one projected volume mount. YAML, permissions, token audience, gotchas."
 publishDate: "2026-04-21"
 author: "Luca Berton"
 category: "storage"
@@ -9,24 +9,30 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.28+"
 tags:
   - projected-volumes
+  - volumes
   - secrets
   - configmap
   - downward-api
+  - service-accounts
+  - cka
 relatedRecipes:
   - "configmap-secrets-management"
   - "kubernetes-service-account-token"
+  - "kubernetes-downward-api-guide"
+  - "kubernetes-secret-types-guide"
+  - "kubernetes-emptydir-hostpath-volumes"
   - "kubernetes-environment-variables"
 ---
 
-> 💡 **Quick Answer:** Projected volumes combine multiple volume sources (Secrets, ConfigMaps, Downward API, ServiceAccount tokens) into a single directory, reducing volume mounts and simplifying configuration.
+> 💡 **Quick Answer:** A `projected` volume maps several sources — `secret`, `configMap`, `downwardAPI`, `serviceAccountToken` (and `clusterTrustBundle` on recent versions) — into **one directory**. Example: `volumes: [{name: all, projected: {sources: [{secret: {name: creds}}, {configMap: {name: config}}, {serviceAccountToken: {path: token, audience: vault, expirationSeconds: 3600}}]}}]`. Keep every `path` unique across sources.
+>
+> **Fun fact:** every pod's default API token mount (`kube-api-access-xxxxx` at `/var/run/secrets/kubernetes.io/serviceaccount`) is itself a projected volume: token + `ca.crt` ConfigMap + namespace from the Downward API.
 
 ## The Problem
 
-Applications often need data from multiple sources mounted together — TLS certs from a Secret, config from a ConfigMap, and pod metadata from the Downward API. Without projected volumes, each requires a separate volume and mount point.
+Applications often want TLS certs from a Secret, settings from a ConfigMap, pod metadata and a scoped token in the same config directory. With plain volumes that's four volumes and four mount points, and some apps can only read from one directory.
 
-## The Solution
-
-### Combined Configuration Volume
+## Combine Multiple Sources
 
 ```yaml
 apiVersion: v1
@@ -64,23 +70,31 @@ spec:
                 - path: labels
                   fieldRef:
                     fieldPath: metadata.labels
-                - path: annotations
-                  fieldRef:
-                    fieldPath: metadata.annotations
+                - path: cpu-request
+                  resourceFieldRef:
+                    containerName: app
+                    resource: requests.cpu
+                    divisor: 1m
+          - serviceAccountToken:
+              path: token
+              audience: api.example.com
+              expirationSeconds: 3600
 ```
 
-Result inside the container:
-```
+```text
 /etc/app/
-├── config.yaml        (from ConfigMap)
+├── config.yaml        (ConfigMap)
 ├── certs/
-│   ├── tls.crt        (from Secret)
-│   └── tls.key        (from Secret)
-├── labels             (from Downward API)
-└── annotations        (from Downward API)
+│   ├── tls.crt        (Secret)
+│   └── tls.key        (Secret)
+├── labels             (Downward API)
+├── cpu-request        (Downward API, in millicores)
+└── token              (bound ServiceAccount token)
 ```
 
-### Bound Service Account Token
+Omit `items` to project every key of a Secret/ConfigMap. Add `optional: true` to a source so the pod starts even if that Secret or ConfigMap doesn't exist.
+
+## Bound ServiceAccount Token
 
 ```yaml
 volumes:
@@ -89,8 +103,8 @@ volumes:
       sources:
         - serviceAccountToken:
             path: token
-            expirationSeconds: 3600
-            audience: vault
+            expirationSeconds: 600     # Minimum 600s; default 3600
+            audience: vault            # aud claim — only Vault should accept it
         - configMap:
             name: vault-config
             items:
@@ -98,21 +112,39 @@ volumes:
                 path: vault-addr
 ```
 
-### File Permissions
+The kubelet requests the token through the TokenRequest API and refreshes it at 80% of its lifetime (or after 24h). It's bound to the pod and invalid once the pod is deleted. The app must **re-read the file**, not cache it at startup. Use this for Vault Kubernetes auth, cloud workload identity (IRSA, GKE/AKS workload identity) and service-to-service auth instead of long-lived Secret-based tokens.
+
+## Downward API Fields in Volumes
+
+Volumes support fewer fields than environment variables:
+
+| Source | Allowed in a volume |
+|--------|--------------------|
+| `fieldRef` | `metadata.name`, `metadata.namespace`, `metadata.uid`, `metadata.labels`, `metadata.annotations`, `metadata.labels['key']`, `metadata.annotations['key']` |
+| `resourceFieldRef` | `requests.cpu`, `limits.cpu`, `requests.memory`, `limits.memory`, `requests.ephemeral-storage`, `limits.ephemeral-storage` (needs `containerName`) |
+
+`spec.nodeName`, `spec.serviceAccountName`, `status.podIP` and `status.hostIP` are **only** available as environment variables. The advantage of the volume form: label and annotation files update when metadata changes; env vars never do.
+
+## File Permissions
 
 ```yaml
 volumes:
-  - name: secrets
+  - name: secure-config
     projected:
-      defaultMode: 0400
+      defaultMode: 0440            # Applies to every projected file
       sources:
         - secret:
-            name: db-credentials
+            name: tls-cert
             items:
-              - key: password
-                path: db-password
-                mode: 0400
+              - key: tls.key
+                path: tls.key
+                mode: 0400         # Per-file override
+              - key: tls.crt
+                path: tls.crt
+                mode: 0444
 ```
+
+The default mode is `0644`. Combine with `securityContext.fsGroup` so a non-root container can read group-readable files.
 
 ```mermaid
 graph TD
@@ -120,39 +152,42 @@ graph TD
     PV --> S[Secret: app-tls]
     PV --> DA[Downward API: metadata]
     PV --> SA[ServiceAccountToken]
-    PV --> M[Single Mount: /etc/app/]
-    M --> F1[config.yaml]
-    M --> F2[certs/tls.crt]
-    M --> F3[certs/tls.key]
-    M --> F4[labels]
-    M --> F5[token]
+    PV --> M[Single mount: /etc/app/]
 ```
 
 ## Common Issues
 
-**Path conflicts between sources**
-Two sources writing to the same `path` fail validation. Use unique paths or subdirectories.
-
-**Token not refreshing**
-ServiceAccount tokens in projected volumes auto-rotate. Ensure your app re-reads the file periodically (don't cache at startup).
-
-**Permission denied**
-Set `defaultMode` or per-item `mode` to match your application's expectations. Secrets default to `0644`.
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| Files missing or one source overwrites another | Two sources use the same `path` | Keep paths unique; use subdirectories |
+| Pod stuck `ContainerCreating` | Referenced Secret/ConfigMap missing | Create it, or set `optional: true` |
+| `spec.nodeName` rejected in volume | Field not supported in downwardAPI volumes | Use an env var with `fieldRef` |
+| Token rejected after an hour | App cached the token at startup | Re-read the file on each use or on a timer |
+| ConfigMap change not visible | Mounted with `subPath`, or source is `immutable: true` | Mount the whole directory; updates arrive within the kubelet sync period (~1 min) |
+| Permission denied | Mode too strict for the container user | Adjust `defaultMode`/`mode` or `fsGroup` |
 
 ## Best Practices
 
-- Use projected volumes to reduce volumeMounts count (cleaner pod spec)
-- Always set `readOnly: true` on projected volume mounts
-- Use short-lived serviceAccountToken with specific audience for external services
-- Set restrictive `defaultMode: 0400` for secrets
-- Use `items` to control which keys are exposed and their file paths
-- Combine related configs that the app reads from the same directory
+- Mount projected volumes `readOnly: true`
+- Use `items` to expose only the keys the app needs
+- Use short-lived, audience-scoped `serviceAccountToken` sources for anything external
+- Set restrictive modes (`0400`/`0440`) for private keys and credentials
+- Group sources the app reads from one directory; keep unrelated config in separate volumes
 
-## Key Takeaways
+## Frequently Asked Questions
 
-- Projected volumes merge multiple sources into one mount point
-- Supported sources: ConfigMap, Secret, Downward API, ServiceAccountToken
-- Each source can select specific keys and remap file paths
-- ServiceAccountToken source enables bound tokens with expiry and audience
-- File permissions are configurable per-source and per-item
-- Changes to ConfigMaps and Secrets propagate automatically (kubelet sync period)
+### What is a projected volume in Kubernetes?
+
+A volume type that projects several existing sources — Secrets, ConfigMaps, Downward API data, ServiceAccount tokens and cluster trust bundles — into a single directory, with per-source key selection, path remapping and file modes.
+
+### What sources can a projected volume combine?
+
+`secret`, `configMap`, `downwardAPI`, `serviceAccountToken`, and `clusterTrustBundle` (feature-gated; beta in recent releases). Other volume types like PVCs or `emptyDir` can't be projected.
+
+### Do projected volumes update automatically?
+
+Yes for Secret, ConfigMap and Downward API sources (within about a minute, via the kubelet's sync) and for tokens (rotated before expiry) — unless the volume is mounted with `subPath` or the Secret/ConfigMap is immutable.
+
+### How is a projected ServiceAccount token different from a Secret-based token?
+
+It's short-lived, has an explicit audience, is bound to the pod's lifetime and is never stored in etcd. Legacy Secret-based tokens don't expire and are no longer auto-created since Kubernetes 1.24.

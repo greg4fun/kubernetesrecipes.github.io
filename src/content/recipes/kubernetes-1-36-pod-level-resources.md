@@ -14,7 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "kubernetes-resource-limits-cpu-memory-format"
   - "kubernetes-resource-quota-limitrange"
-  - "kubernetes-sidecar-containers"
+  - "kubernetes-sidecar-patterns"
 ---
 
 > 💡 **Quick Answer:** Kubernetes 1.36 introduces **Pod-level resource requests and limits** (KEP-5419). Set a single resource budget for the entire Pod instead of configuring each container individually — ideal for sidecar-heavy workloads.

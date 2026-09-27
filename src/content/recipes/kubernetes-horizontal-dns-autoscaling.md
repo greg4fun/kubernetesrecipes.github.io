@@ -13,7 +13,7 @@ tags:
   - "autoscaling"
   - "node-local-dns"
 relatedRecipes:
-  - "kubernetes-dns-policy-configuration"
+  - "dns-policies-configuration"
   - "kubernetes-service-dns-discovery"
   - "kubernetes-coredns-custom-config"
   - "kubernetes-coredns-customization-guide"

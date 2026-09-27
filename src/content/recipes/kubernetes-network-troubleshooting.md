@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "dns-resolution-failure-pods"
   - "debug-pod-networking"
-  - "network-policies"
+  - "kubernetes-networkpolicy-guide"
 tags:
   - networking
   - troubleshooting

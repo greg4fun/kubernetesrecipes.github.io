@@ -9,7 +9,7 @@ kubernetesVersion: "1.28+"
 tags: ["flux", "gitops", "continuous-deployment", "helm", "kustomize", "ci-cd", "image-automation"]
 author: "Luca Berton"
 relatedRecipes:
-  - "flux-gitops-continuous-delivery"
+  - "helm-chart-basics"
   - "argocd-gitops"
   - "kubernetes-kustomize-guide"
   - "kubernetes-tekton-pipelines-guide"
@@ -221,6 +221,8 @@ fleet-infra/
     └── team-b/
 ```
 
+For per-environment differences keep an `apps/base/` plus `apps/staging/` and `apps/production/` Kustomize overlays, and point each cluster's `apps` Kustomization at its overlay path (`path: ./apps/production`).
+
 Give each tenant Kustomization `serviceAccountName: team-a` so it applies with that team's RBAC only (and start the kustomize-controller with `--default-service-account` to enforce it).
 
 ## Notifications and Webhooks
@@ -267,6 +269,51 @@ spec:
     - kind: GitRepository
       name: flux-system
 ```
+
+## Progressive Delivery with Flagger
+
+Flux applies whatever is in Git; for canaries add Flagger (same Flux project), which shifts traffic through your mesh or ingress and rolls back on bad metrics.
+
+```yaml
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flagger
+  namespace: flagger-system
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: flagger
+      sourceRef: {kind: HelmRepository, name: flagger, namespace: flux-system}   # url: https://flagger.app
+  values:
+    meshProvider: nginx            # istio, linkerd, contour, gatewayapi:v1, ...
+    metricsServer: http://prometheus.monitoring:9090
+---
+apiVersion: flagger.app/v1beta1
+kind: Canary
+metadata:
+  name: myapp
+  namespace: production
+spec:
+  targetRef: {apiVersion: apps/v1, kind: Deployment, name: myapp}
+  service:
+    port: 8080
+  analysis:
+    interval: 1m
+    threshold: 5          # failed checks before rollback
+    maxWeight: 50
+    stepWeight: 10
+    metrics:
+      - name: request-success-rate
+        thresholdRange: {min: 99}
+        interval: 1m
+      - name: request-duration
+        thresholdRange: {max: 500}
+        interval: 1m
+```
+
+An image bump committed by image automation now becomes a 10%→50% canary instead of a straight rolling update.
 
 ## Flux CLI Cheat Sheet
 

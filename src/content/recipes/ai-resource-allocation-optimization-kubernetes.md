@@ -15,7 +15,7 @@ tags:
   - "topology"
 relatedRecipes:
   - "kubernetes-cost-optimization-strategies"
-  - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "kubernetes-gpu-sharing-mps-mig"
   - "runai-topology-aware-scheduling-kubernetes"
 ---
 

@@ -14,7 +14,7 @@ tags:
   - "bgp"
   - "l2"
 relatedRecipes:
-  - "kubernetes-service-types-explained"
+  - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
   - "cert-manager-cloudflare-dns01-k8s"
   - "kubernetes-ippool-management-guide"
 ---

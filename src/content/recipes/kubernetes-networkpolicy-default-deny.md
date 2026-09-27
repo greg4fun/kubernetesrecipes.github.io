@@ -20,7 +20,6 @@ relatedRecipes:
   - "networkpolicy-deny-all"
   - "kubernetes-namespace-guide"
   - "kubernetes-security-checklist-2026"
-  - "network-policies"
   - "kubernetes-service-mesh-istio-guide"
 ---
 

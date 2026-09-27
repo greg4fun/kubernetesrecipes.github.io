@@ -16,7 +16,7 @@ relatedRecipes:
   - "vllm-openai-container-kubernetes"
   - "nim-multinode-deployment-helm-kubernetes"
   - "red-hat-ai-studio-openshift-model-development"
-  - "kubernetes-network-policy-guide"
+  - "kubernetes-networkpolicy-guide"
 ---
 
 > 💡 **Quick Answer:** Poolside AI builds foundation models optimized for long-horizon software engineering tasks — code generation, multi-agent orchestration, and tool use in sandboxed environments. Deploy on-prem or in your VPC on Kubernetes with strict data boundaries, RBAC for both humans and agents, and air-gap support for defense/regulated use cases.

@@ -19,7 +19,7 @@ relatedRecipes:
   - "kubernetes-deployment-guide"
   - "kubernetes-operator-pattern"
   - "kubernetes-hpa-cpu-memory-guide"
-  - "kubernetes-pod-disruption-budget"
+  - "pod-disruption-budget-config"
   - "kubectl-rollout-restart-deployment"
 ---
 

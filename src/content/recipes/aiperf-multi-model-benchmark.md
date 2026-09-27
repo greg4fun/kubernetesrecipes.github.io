@@ -12,11 +12,11 @@ relatedRecipes:
   - "nvidia-clara-medical-ai-kubernetes"
   - "aiperf-trace-replay-kubernetes"
   - "triton-autoscaling-gpu-metrics"
-  - "genai-perf-triton-benchmark"
+  - "genai-perf-nvidia-inference-benchmarking"
   - "aiperf-benchmark-llm-kubernetes"
   - "aiperf-concurrency-sweep-kubernetes"
   - "aiperf-goodput-slo-benchmark"
-  - "triton-tensorrt-vllm-comparison"
+  - "triton-inference-server-vs-vllm-comparison"
   - "triton-multi-model-serving"
 tags:
   - aiperf

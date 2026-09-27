@@ -20,7 +20,7 @@ relatedRecipes:
   - "secrets-management-best-practices"
   - "falco-runtime-security"
   - "kubernetes-pod-security-admission"
-  - "kubernetes-efk-stack-centralized-logging"
+  - "kubernetes-efk-logging-stack"
 ---
 
 > 💡 **Quick Answer:** Kubernetes audit logging records all API requests (who, what, when, result). Configure an audit policy YAML defining which events to log at which level (None/Metadata/Request/RequestResponse), then pass `--audit-policy-file` and `--audit-log-path` to kube-apiserver. For production, use webhook backend to send events to a log aggregator.

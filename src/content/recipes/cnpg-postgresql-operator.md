@@ -19,7 +19,7 @@ tags:
 relatedRecipes:
   - "cnpg-scaling-upgrades"
   - "cnpg-disaster-recovery"
-  - "cloudnativepg-postgresql-operator-kubernetes"
+  - "strimzi-kafka-operator-kubernetes"
   - "velero-kubernetes-backup-disaster-recovery"
   - "kubernetes-storage-best-practices"
   - "kubernetes-graceful-shutdown-guide"
@@ -132,9 +132,14 @@ spec:
         operator: Equal
         value: database
         effect: NoSchedule
-  minSyncReplicas: 1                     # optional synchronous replication (RPO 0)
-  maxSyncReplicas: 1
+  postgresql:
+    synchronous:                         # optional synchronous replication (RPO 0), CNPG 1.24+
+      method: any                        # quorum-based; "first" = priority-based
+      number: 1                          # replicas that must confirm each commit
+      dataDurability: required           # "preferred" (1.25+) keeps writes flowing if replicas are down
 ```
+
+`minSyncReplicas`/`maxSyncReplicas` still work but are the legacy API; don't mix them with `postgresql.synchronous`.
 
 All placement settings live under a single `affinity:` block — two `affinity:` keys in one YAML map silently drop the first. CNPG creates a PodDisruptionBudget for the cluster automatically.
 
@@ -433,6 +438,8 @@ graph TD
 - **PgBouncer connection errors** — ensure `max_client_conn` in Pooler > total app connections; check `default_pool_size` matches PostgreSQL `max_connections`
 - **Pods Pending with `enablePodAntiAffinity`** — `required` anti-affinity needs as many eligible nodes (or zones) as instances; switch to `preferred` or add nodes
 - **App errors right after failover** — apps must connect through the `-rw` Service (or pooler), never pod IPs, and retry on disconnect
+- **PVC full (WAL piling up)** — usually WAL archiving is failing so WAL can't be recycled; fix archiving first, then grow `spec.storage.size` (StorageClass must allow expansion) or add a separate `walStorage` volume
+- **Short connection drops during failover/switchover** — expected (seconds); apps need reconnect/retry logic, and a Pooler hides most of it
 - **ScheduledBackup runs at the wrong time** — 5-field cron used; CNPG expects 6 fields with seconds first
 
 ## Best Practices

@@ -8,8 +8,8 @@ tags: ["load-balancing", "service", "ingress", "gateway-api", "traffic", "kubern
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-ingress-complete-guide"
-  - "kubernetes-network-policy-guide"
-  - "kubernetes-service-types-explained"
+  - "kubernetes-networkpolicy-guide"
+  - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
 ---
 
 > 💡 **Quick Answer:** Configure Kubernetes load balancing with Services, Ingress, and Gateway API. Round-robin, session affinity, weighted routing, and traffic policy.

@@ -13,7 +13,7 @@ tags:
   - "zone-aware"
   - "cost-optimization"
 relatedRecipes:
-  - "kubernetes-karpenter-node-autoscaling"
+  - "karpenter-node-autoscaling"
   - "kubernetes-gateway-api-httproute"
   - "pod-security-standards"
   - "kubernetes-endpoint-slices-service-topology"

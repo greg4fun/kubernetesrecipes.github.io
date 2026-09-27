@@ -8,7 +8,7 @@ tags: ["helm", "secrets", "sops", "encryption", "gitops"]
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-cluster-autoscaler-advanced"
-  - "karpenter-node-autoscaling-kubernetes"
+  - "karpenter-node-autoscaling"
   - "kubeflow-operator-platform"
 ---
 

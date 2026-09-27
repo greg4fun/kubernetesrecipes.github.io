@@ -14,7 +14,7 @@ tags:
   - placement
 relatedRecipes:
   - "kubernetes-affinity-guide"
-  - "kubernetes-pod-topology-spread"
+  - "pod-topology-constraints"
   - "kubernetes-taint-toleration-guide"
 ---
 

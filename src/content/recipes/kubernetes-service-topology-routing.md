@@ -14,7 +14,7 @@ tags:
   - networking
 relatedRecipes:
   - "kubernetes-endpointslice-service-discovery"
-  - "kubernetes-pod-topology-spread"
+  - "pod-topology-constraints"
   - "kubernetes-service-dns-resolution"
 ---
 

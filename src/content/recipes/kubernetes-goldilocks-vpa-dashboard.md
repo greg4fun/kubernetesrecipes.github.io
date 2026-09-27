@@ -12,7 +12,7 @@ publishDate: "2026-05-06"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-vpa-vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "kubernetes-resource-quota-limitrange"
   - "kubernetes-horizontal-pod-autoscaler-v2"
 ---

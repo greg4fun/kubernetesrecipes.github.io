@@ -1,54 +1,51 @@
 ---
-title: "GPU Time-Slicing on Kubernetes"
-description: "Share GPUs across multiple workloads using NVIDIA time-slicing on Kubernetes. Configure the device plugin, set replica counts, and manage fairness."
+title: "Configure GPU Time-Slicing on Kubernetes"
+description: "Configure NVIDIA GPU time-slicing with the GPU Operator: device plugin ConfigMap, replicas, per-node profiles, verification, and memory-sharing caveats."
 publishDate: "2026-03-19"
+updatedDate: "2026-09-27"
 author: "Luca Berton"
 category: "ai"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
 kubernetesVersion: "1.28+"
+prerequisites:
+  - "NVIDIA GPU Operator installed"
 tags:
   - nvidia
   - gpu
   - time-slicing
   - gpu-sharing
+  - gpu-operator
   - kubernetes
   - cost-optimization
 relatedRecipes:
-  - "nvidia-gpu-operator-gitops-openshift"
+  - "kubernetes-gpu-sharing-mps-mig"
   - "kai-scheduler-gpu-sharing"
   - "gpu-operator-clusterpolicy-reference"
+  - "nvidia-gpu-operator-gitops-openshift"
+  - "resourcequota-limitrange-gpu"
   - "kubernetes-cost-optimization"
-  - "resource-limits-requests"
+  - "kubernetes-resource-requests-limits"
 ---
 
-> 💡 **Quick Answer:** Create a ConfigMap with `sharing.timeSlicing.replicas: 4` and reference it in the GPU Operator's device plugin config. Each physical GPU appears as 4 `nvidia.com/gpu` resources, letting 4 pods share one GPU via CUDA time-slicing — no MIG hardware partitioning needed.
+> 💡 **Quick Answer:** Create a device-plugin ConfigMap with `sharing.timeSlicing.resources[].replicas: 4`, point the GPU Operator ClusterPolicy at it (`spec.devicePlugin.config.name` / `.default`), and each physical GPU is advertised as 4 `nvidia.com/gpu`. Pods take turns on the GPU via CUDA time-slicing. It works on any NVIDIA GPU, but there is **no memory or fault isolation** — every pod can allocate all of the VRAM. For isolation, see [time-slicing vs MIG vs MPS](/recipes/ai/kubernetes-gpu-sharing-mps-mig/).
 
-## The Problem
+## When Time-Slicing Fits
 
-GPUs are expensive. A single NVIDIA A100 costs ~$10,000, yet many workloads (notebooks, dev inference, small models) use only 10-30% of GPU capacity. Without sharing, each pod requesting `nvidia.com/gpu: 1` gets exclusive access to an entire GPU, wasting resources. You need GPU sharing that works with any NVIDIA GPU — not just MIG-capable ones.
+Notebooks, dev/test inference, CI jobs and other bursty, low-utilization workloads that would otherwise each hold a whole GPU. Not for training or latency-SLA inference: contention between pods is unbounded.
 
-## The Solution
+## Step 1: Create the Device Plugin Config
 
-### How Time-Slicing Works
-
-CUDA time-slicing shares a physical GPU across multiple processes by rapidly switching execution context. Each workload gets a "slice" of GPU time. Unlike MIG (which partitions GPU hardware), time-slicing:
-- Works on **any NVIDIA GPU** (not just A100/H100)
-- Shares **all GPU memory** (no hard memory isolation)
-- Provides **fair scheduling** via CUDA scheduler
-- Has **minimal overhead** (~2-5%)
-
-### Step 1: Create Device Plugin Config
+Each key is a named profile; nodes pick one.
 
 ```yaml
-# gpu-time-slicing-config.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: device-plugin-config
   namespace: gpu-operator
 data:
-  default: |
+  default: |-
     version: v1
     sharing:
       timeSlicing:
@@ -57,7 +54,7 @@ data:
         resources:
           - name: nvidia.com/gpu
             replicas: 4
-  dev: |
+  dev: |-
     version: v1
     sharing:
       timeSlicing:
@@ -66,176 +63,154 @@ data:
         resources:
           - name: nvidia.com/gpu
             replicas: 8
+  no-sharing: |-
+    version: v1
 ```
 
-**Key settings:**
-- `replicas: 4` — each physical GPU advertised as 4 virtual GPUs
-- `failRequestsGreaterThanOne: true` — reject pods requesting >1 GPU (prevents accidental full-GPU allocation)
-- `renameByDefault: false` — keep `nvidia.com/gpu` resource name (set to `true` to use `nvidia.com/gpu.shared`)
+- `replicas` — how many shares each GPU is advertised as.
+- `failRequestsGreaterThanOne: true` — reject containers requesting more than one share (`UnexpectedAdmissionError`). Two shares of the same GPU give no extra performance, so this prevents a false sense of capacity.
+- `renameByDefault: true` — advertise `nvidia.com/gpu.shared` instead of `nvidia.com/gpu`, so workloads must opt in to shared GPUs explicitly.
 
-### Step 2: Apply and Configure GPU Operator
+## Step 2: Point the GPU Operator at It
 
 ```bash
-kubectl apply -f gpu-time-slicing-config.yaml
+kubectl apply -f device-plugin-config.yaml
 
-# Update ClusterPolicy to reference the config
-kubectl patch clusterpolicy cluster-policy \
-  --type merge \
+kubectl patch clusterpolicies.nvidia.com/cluster-policy --type merge \
   -p '{"spec":{"devicePlugin":{"config":{"name":"device-plugin-config","default":"default"}}}}'
 ```
 
-Or set during Helm install:
+Or at install time:
 
 ```bash
 helm install gpu-operator nvidia/gpu-operator \
-  --namespace gpu-operator \
-  --create-namespace \
+  --namespace gpu-operator --create-namespace \
   --set devicePlugin.config.name=device-plugin-config \
   --set devicePlugin.config.default=default
 ```
 
-### Step 3: Label Nodes for Different Profiles
+## Step 3: Per-Node Profiles
 
 ```bash
-# Dev nodes: 8-way sharing (more pods, less GPU per pod)
-kubectl label node dev-gpu-node nvidia.com/device-plugin.config=dev
+# dev nodes: 8-way sharing
+kubectl label node dev-gpu-node nvidia.com/device-plugin.config=dev --overwrite
 
-# Production nodes: 4-way sharing (default)
-# No label needed — uses "default" profile
+# training nodes: exclusive GPUs
+kubectl label node train-gpu-node nvidia.com/device-plugin.config=no-sharing --overwrite
 
-# Training nodes: no sharing (exclusive GPU access)
-kubectl label node train-gpu-node nvidia.com/device-plugin.config=no-sharing
+# unlabeled nodes use the "default" profile (4-way)
 ```
 
-Add a no-sharing profile:
+The device plugin's config manager picks up label changes. If you edit the ConfigMap contents, restart the plugin:
+
+```bash
+kubectl rollout restart -n gpu-operator ds/nvidia-device-plugin-daemonset
+```
+
+## Step 4: Verify
+
+```bash
+# allocatable = physical GPUs × replicas (e.g. 2 GPUs × 4 = 8)
+kubectl get node gpu-node -o jsonpath='{.status.allocatable.nvidia\.com/gpu}{"\n"}'
+
+# GPU Feature Discovery labels reflect sharing
+kubectl get node gpu-node -L nvidia.com/gpu.replicas -L nvidia.com/gpu.product
+# gpu.product gets a -SHARED suffix when time-slicing is active
+```
+
+Schedule four pods onto one GPU's worth of shares:
 
 ```yaml
-data:
-  no-sharing: |
-    version: v1
-    sharing:
-      timeSlicing:
-        resources:
-          - name: nvidia.com/gpu
-            replicas: 1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timeslice-test
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: timeslice-test
+  template:
+    metadata:
+      labels:
+        app: timeslice-test
+    spec:
+      containers:
+        - name: cuda
+          image: nvcr.io/nvidia/cuda:12.4.1-base-ubuntu22.04
+          command: ["sleep", "infinity"]
+          resources:
+            limits:
+              nvidia.com/gpu: 1
 ```
-
-### Step 4: Verify Time-Slicing
 
 ```bash
-# Check advertised GPU count (should be physical × replicas)
-kubectl get node gpu-node -o jsonpath='{.status.allocatable}' | jq '."nvidia.com/gpu"'
-# "8"  (2 physical GPUs × 4 replicas)
-
-# Deploy test pods
-for i in $(seq 1 4); do
-  kubectl run gpu-test-$i --image=nvcr.io/nvidia/cuda:12.4.0-base-ubuntu22.04 \
-    --command -- sleep infinity \
-    --overrides='{"spec":{"containers":[{"name":"gpu-test-'$i'","image":"nvcr.io/nvidia/cuda:12.4.0-base-ubuntu22.04","command":["sleep","infinity"],"resources":{"limits":{"nvidia.com/gpu":"1"}}}]}}'
-done
-
-# All 4 pods should be Running on the same GPU
-kubectl get pods -o wide
+kubectl apply -f timeslice-test.yaml
+kubectl get pods -l app=timeslice-test -o wide
+kubectl exec deploy/timeslice-test -- nvidia-smi -L   # compare GPU UUIDs across pods
 ```
 
-```mermaid
-graph TD
-    A[Physical GPU: A100 80GB] -->|Time-Slicing ×4| B[Pod 1: Notebook<br>20GB shared memory]
-    A -->|Time-Slicing ×4| C[Pod 2: Inference<br>20GB shared memory]
-    A -->|Time-Slicing ×4| D[Pod 3: Dev Model<br>20GB shared memory]
-    A -->|Time-Slicing ×4| E[Pod 4: Fine-tuning<br>20GB shared memory]
-    
-    F[Scheduling] -->|Round-robin| A
-    
-    style A fill:#76b900,color:#fff
-    style B fill:#e8f5e9
-    style C fill:#e8f5e9
-    style D fill:#e8f5e9
-    style E fill:#e8f5e9
-```
+## Choosing a Replica Count
 
-### Choosing the Right Replica Count
+| Replicas | Typical use |
+|----------|-------------|
+| 1 (`no-sharing`) | Training, large models |
+| 2 | Light sharing of production-ish inference |
+| 4 | Mixed dev / small inference |
+| 8+ | Notebooks, CI, tests |
 
-| Workload Type | Replicas | Use Case |
-|--------------|----------|----------|
-| 1 | Exclusive | Training, large models |
-| 2 | Light sharing | Production inference |
-| 4 | Standard | Mixed dev/inference |
-| 8 | Heavy sharing | Notebooks, small models |
-| 10+ | Maximum | CI/CD, testing |
-
-### When to Use Time-Slicing vs MIG
-
-| Feature | Time-Slicing | MIG |
-|---------|-------------|-----|
-| GPU support | Any NVIDIA GPU | A100, H100, H200 only |
-| Memory isolation | ❌ Shared | ✅ Hardware-isolated |
-| Fault isolation | ❌ Shared | ✅ Independent |
-| Configuration | ConfigMap | GPU Operator + device plugin |
-| Overhead | ~2-5% | ~0% |
-| Flexibility | Easy to change | Requires reconfiguration |
-| Best for | Dev, notebooks, small inference | Production, multi-tenant |
+Higher counts increase density but not capacity: four pods on a 4-way GPU each get roughly a quarter of GPU time when all are busy.
 
 ## Common Issues
 
-### OOM When Sharing GPUs
+### One pod's OOM breaks the others
 
-Time-slicing doesn't isolate GPU memory. If one pod allocates too much VRAM, others get OOM:
-
-```yaml
-# Set CUDA memory limits per container
-env:
-  - name: NVIDIA_VISIBLE_DEVICES
-    value: "all"
-  - name: CUDA_MPS_ACTIVE_THREAD_PERCENTAGE
-    value: "25"  # Limit to 25% of GPU compute
-```
-
-Or use framework-level limits:
+Time-slicing doesn't partition memory. Cap usage inside the application:
 
 ```python
-# PyTorch
-torch.cuda.set_per_process_memory_fraction(0.25)
-
-# TensorFlow
-gpus = tf.config.experimental.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(gpus[0], True)
+import torch
+torch.cuda.set_per_process_memory_fraction(0.25)   # PyTorch: cap for this process
 ```
-
-### Pods Stuck Pending After Config Change
-
-The device plugin needs to restart to pick up new config:
 
 ```bash
-kubectl -n gpu-operator delete pods -l app=nvidia-device-plugin-daemonset
-# Wait for restart, then check allocatable
-kubectl get nodes -o json | jq '.items[].status.allocatable["nvidia.com/gpu"]'
+vllm serve <model> --gpu-memory-utilization 0.20   # vLLM pre-allocates this fraction
 ```
 
-### Uneven GPU Utilization
+For TensorFlow, enable memory growth (`tf.config.experimental.set_memory_growth`) or set a logical device memory limit. For enforced limits use **MPS** (per-client memory/compute caps) or **MIG** — `CUDA_MPS_*` variables have no effect under plain time-slicing.
 
-Time-slicing uses round-robin scheduling. For fairer allocation, use KAI Scheduler:
+### Pods stuck Pending after a config change
 
-```yaml
-# See kai-scheduler-gpu-sharing recipe for fair queueing
-schedulerName: kai-scheduler
-```
+Allocatable hasn't updated. Check the device plugin logs and restart it (`kubectl rollout restart -n gpu-operator ds/nvidia-device-plugin-daemonset`), then re-check `allocatable`.
+
+### Pods rejected with UnexpectedAdmissionError
+
+The container asked for more than one share while `failRequestsGreaterThanOne: true`. Request `nvidia.com/gpu: 1`, or move the workload to a `no-sharing` node.
+
+### Uneven GPU time across tenants
+
+Time-slicing gives equal time slices per process, not per tenant. For quota-aware fractional sharing and fair queueing use [KAI Scheduler](/recipes/ai/kai-scheduler-gpu-sharing/).
 
 ## Best Practices
 
-- **4 replicas for general use** — good balance of sharing and performance
-- **8+ replicas for dev/notebooks** — maximize density, accept performance variability
-- **1 replica for training** — never time-slice training workloads
-- **Set `failRequestsGreaterThanOne: true`** — prevent pods from hogging GPUs
-- **Monitor with DCGM** — watch `DCGM_FI_DEV_GPU_UTIL` to detect oversubscription
-- **Use node labels for profiles** — different sharing ratios for dev vs production nodes
-- **Set framework memory limits** — time-slicing doesn't isolate memory; apps must self-limit
+- Keep training and SLA inference on `no-sharing` or MIG nodes; label nodes per profile.
+- Set `failRequestsGreaterThanOne: true`; consider `renameByDefault: true` so sharing is opt-in.
+- Watch `DCGM_FI_DEV_GPU_UTIL` and framebuffer usage per GPU to spot oversubscription.
+- Enforce memory caps in the frameworks you run, since the GPU won't.
 
-## Key Takeaways
+## Frequently Asked Questions
 
-- Time-slicing multiplies advertised GPU count by `replicas` in device plugin config
-- Works on any NVIDIA GPU — no MIG-capable hardware required
-- No GPU memory isolation — workloads share the full VRAM
-- Use per-node labels to assign different sharing profiles (dev: 8x, prod: 4x, training: 1x)
-- Combine with DCGM monitoring to detect oversubscription
-- For hard memory isolation, use MIG on A100/H100/H200 instead
+### How do I enable GPU time-slicing in Kubernetes?
+
+With the NVIDIA GPU Operator: create a ConfigMap containing a `sharing.timeSlicing` config with the desired `replicas`, then set `spec.devicePlugin.config.name` and `.default` in the ClusterPolicy (or the equivalent Helm values). The device plugin re-advertises each GPU as that many `nvidia.com/gpu` resources.
+
+### Does time-slicing isolate GPU memory?
+
+No. All pods sharing a GPU see and can allocate its full memory, and a fault in one can affect the others. Use MIG for hardware isolation or MPS for enforced per-client limits.
+
+### Does time-slicing work on any NVIDIA GPU?
+
+Yes — unlike MIG it needs no special hardware, so it works on T4, L4, L40S, A10 and other GPUs, and it can also oversubscribe MIG slices.
+
+### Can I use different sharing ratios on different nodes?
+
+Yes. Put several named profiles in the ConfigMap and label nodes with `nvidia.com/device-plugin.config=<profile>`; unlabeled nodes use the ClusterPolicy default.

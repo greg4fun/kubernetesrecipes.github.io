@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-taint-toleration-guide"
   - "debug-scheduling-failures"
   - "kubernetes-node-untolerated-taint-master"
-  - "kubernetes-topology-spread-constraints"
+  - "pod-topology-constraints"
 ---
 
 > 💡 **Quick Answer:** `nodeSelector: {disk: ssd}` schedules pods to nodes with matching labels (hard constraint). For flexible rules, use `nodeAffinity` with `requiredDuringSchedulingIgnoredDuringExecution` (hard) or `preferredDuringSchedulingIgnoredDuringExecution` (soft). Pod affinity/anti-affinity co-locates or spreads pods relative to other pods. `topologySpreadConstraints` distributes pods evenly across zones/nodes.

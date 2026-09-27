@@ -16,7 +16,7 @@ relatedRecipes:
   - "pod-security-standards"
   - "kubernetes-rbac-least-privilege"
   - "kubernetes-hostpath-vs-pvc"
-  - "kubernetes-etcd-backup-guide"
+  - "etcd-backup-restore-kubernetes"
   - "velero-kubernetes-backup-disaster-recovery"
 ---
 

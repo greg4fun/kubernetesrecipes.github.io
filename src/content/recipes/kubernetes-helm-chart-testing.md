@@ -13,7 +13,7 @@ tags:
   - "chart-testing"
   - "ci-cd"
 relatedRecipes:
-  - "helm-oci-registry-management"
+  - "helm-oci-registry-charts"
   - "helm-library-charts"
   - "pod-security-standards"
 ---

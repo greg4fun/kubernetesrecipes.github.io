@@ -8,7 +8,7 @@ tags: ["kubelet", "node", "notready", "eviction", "troubleshooting", "kubernetes
 author: "Luca Berton"
 relatedRecipes:
   - "node-not-ready-troubleshooting"
-  - "oom-killed-troubleshooting"
+  - "kubernetes-oomkilled-troubleshooting"
   - "pod-pending-troubleshooting"
 ---
 

@@ -10,7 +10,7 @@ relatedRecipes:
   - "kubernetes-graceful-shutdown-guide"
   - "kubernetes-leases"
   - "kubernetes-readiness-liveness-startup"
-  - "kubernetes-multi-container-pod-patterns"
+  - "kubernetes-multi-container-patterns"
   - "pod-disruption-budget-config"
   - "pod-lifecycle-hooks"
   - "pod-readiness-gates"

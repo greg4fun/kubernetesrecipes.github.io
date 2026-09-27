@@ -1,15 +1,19 @@
 ---
-title: "How to Use Pod Topology Spread Constraints"
-description: "Distribute pods evenly across failure domains using topology spread constraints. Ensure high availability across zones, nodes, and custom topologies."
+title: "topologySpreadConstraints: maxSkew, minDomains, Examples"
+description: "Kubernetes pod topology spread constraints with YAML: maxSkew, whenUnsatisfiable, minDomains, matchLabelKeys, nodeTaintsPolicy, and cluster defaults."
 category: "deployments"
 difficulty: "intermediate"
 publishDate: "2026-01-22"
 author: "Luca Berton"
-tags: ["topology", "scheduling", "high-availability", "zones", "distribution"]
+tags: ["topology", "topology-spread", "scheduling", "high-availability", "zones", "distribution", "cka"]
 relatedRecipes:
-  - "flux-gitops-continuous-delivery"
-  - "automate-nccl-preflight-ci"
-  - "argocd-sync-waves-crd-operators"
+  - "kubernetes-pod-topology-spread-advanced"
+  - "pod-disruption-budget-config"
+  - "kubernetes-node-affinity-guide"
+  - "kubernetes-affinity-guide"
+  - "kubernetes-taint-toleration-guide"
+  - "karpenter-node-autoscaling"
+  - "runai-topology-aware-scheduling-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Add `topologySpreadConstraints` to pod spec with `topologyKey` (e.g., `topology.kubernetes.io/zone`), `maxSkew` (max imbalance allowed), and `whenUnsatisfiable` (DoNotSchedule or ScheduleAnyway). Ensures pods spread across zones/nodes for high availability.
@@ -19,7 +23,7 @@ relatedRecipes:
 > **Gotcha:** `DoNotSchedule` can leave pods pending if spread can't be satisfied; use `ScheduleAnyway` for softer constraint. Combine with `minDomains` for minimum availability zones.
 
 
-Topology spread constraints distribute pods across failure domains like zones, nodes, or racks. This ensures high availability by preventing all replicas from landing on the same failure domain.
+Topology spread constraints distribute pods across failure domains like zones, nodes, or racks. Pod anti-affinity only prevents co-location; it won't stop 6 replicas landing 4-1-1 across 3 zones. `maxSkew: 1` forces 2-2-2.
 
 ## Basic Topology Spread
 
@@ -74,6 +78,30 @@ topologySpreadConstraints:
       matchLabels:
         app: web-app
     # Pods to count when calculating spread
+```
+
+| Field | Default | Since | Effect |
+|---|---|---|---|
+| `maxSkew` | — | 1.19 | Max difference in matching pods between any domain and the least-loaded eligible domain |
+| `whenUnsatisfiable` | — | 1.19 | `DoNotSchedule` (hard) or `ScheduleAnyway` (scoring only) |
+| `minDomains` | 1 | GA 1.30 | Treat missing domains as 0 pods until N domains exist; only with `DoNotSchedule` |
+| `matchLabelKeys` | — | beta 1.27 | Add the pod's own values for these label keys to the selector (e.g. `pod-template-hash`) |
+| `nodeAffinityPolicy` | `Honor` | beta 1.26 | Only nodes matching the pod's nodeSelector/affinity count as domains |
+| `nodeTaintsPolicy` | `Ignore` | beta 1.26 | `Honor` excludes tainted nodes the pod doesn't tolerate |
+
+### maxSkew Explained
+
+Skew = pods in a domain − minimum pods in any eligible domain.
+
+```
+maxSkew: 1, 3 zones
+  6 pods [2, 2, 2] ✅ skew 0
+  7 pods [3, 2, 2] ✅ skew 1
+  6 pods [4, 1, 1] ❌ skew 3
+
+maxSkew: 2, 3 zones
+  8 pods [4, 2, 2] ✅ skew 2
+  6 pods [5, 1, 0] ❌ skew 5
 ```
 
 ## Spread Across Nodes
@@ -201,12 +229,28 @@ spec:
           labelSelector:
             matchLabels:
               app: gpu-app
-          # Only count nodes matching nodeSelector
+          # nodeAffinityPolicy: Honor (default) → only gpu=true nodes count as domains
           matchLabelKeys:
-            - pod-template-hash  # Match same deployment revision
+            - pod-template-hash  # Count only pods of the same ReplicaSet (rollout-safe)
       containers:
         - name: app
           image: gpu-app:v1
+```
+
+## matchLabelKeys: Rolling-Update Safe Spread
+
+Without it, old and new ReplicaSet pods are counted together, so a rollout can pile new pods into one zone (or block with `DoNotSchedule`). With `pod-template-hash`, each revision is spread independently:
+
+```yaml
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app: web-app
+    matchLabelKeys:
+      - pod-template-hash
 ```
 
 ## Custom Topology Keys
@@ -303,7 +347,7 @@ spec:
           labelSelector:
             matchLabels:
               app: taint-aware
-          nodeTaintsPolicy: Honor  # Ignore tainted nodes in calculations
+          nodeTaintsPolicy: Honor  # Skip tainted nodes this pod doesn't tolerate
       tolerations:
         - key: "special"
           operator: "Exists"
@@ -371,6 +415,18 @@ spec:
           image: cassandra:4.1
 ```
 
+## Topology Spread vs Pod Anti-Affinity
+
+| | topologySpreadConstraints | podAntiAffinity |
+|---|:---:|:---:|
+| Even distribution | ✅ `maxSkew` | ❌ only prevents co-location |
+| Replicas > domains | ✅ works | ❌ hard rule leaves pods Pending |
+| Soft mode | `ScheduleAnyway` | `preferredDuringScheduling...` |
+| Zone + node in one spec | ✅ two constraints | ⚠️ verbose |
+| Rollout-safe | ✅ `matchLabelKeys` | ⚠️ old pods count |
+
+Both are evaluated; a `required` anti-affinity term can make a spread constraint unsatisfiable.
+
 ## Verify Pod Distribution
 
 ```bash
@@ -428,9 +484,36 @@ profiles:
           defaultingType: List
 ```
 
-## Summary
+`defaultConstraints` apply only to pods that set no `topologySpreadConstraints` and belong to a Service, ReplicaSet, StatefulSet or ReplicationController (the selector is derived from them). The built-in defaults (`defaultingType: System`) are zone `maxSkew: 5` and hostname `maxSkew: 3`, both `ScheduleAnyway`.
 
-Topology spread constraints ensure pods are distributed across failure domains like zones, nodes, or custom topologies. Set `maxSkew` to control the maximum difference in pod counts between domains. Use `DoNotSchedule` for hard requirements or `ScheduleAnyway` for best-effort spreading. Combine multiple constraints to spread across both zones and nodes. Verify distribution with `kubectl get pods -o wide` and check node labels for topology information. This pattern is essential for high availability in multi-zone clusters.
+## Common Issues
+
+| Issue | Cause | Fix |
+|---|---|---|
+| Pending: `didn't match pod topology spread constraints` | Not enough nodes/zones for `maxSkew` with `DoNotSchedule` | Add capacity, raise `maxSkew`, or `ScheduleAnyway` |
+| Rollout stuck or clustered | Old ReplicaSet pods counted | `matchLabelKeys: [pod-template-hash]` |
+| Uneven after scale-down or node loss | Spread is only evaluated at scheduling time | Run the Descheduler `RemovePodsViolatingTopologySpreadConstraint` plugin |
+| Tainted/control-plane nodes skew results | `nodeTaintsPolicy: Ignore` counts them as domains | `nodeTaintsPolicy: Honor` |
+| Pods pile into existing zones while autoscaler adds a new one | Missing zone isn't a domain yet | `minDomains: 3` |
+| Spread ignored | `labelSelector` doesn't match the pod's own labels | Selector must match the pod template labels |
+
+## Frequently Asked Questions
+
+### What does maxSkew mean in topologySpreadConstraints?
+
+The maximum allowed difference between the number of matching pods in any topology domain and the least-populated eligible domain. `maxSkew: 1` means zones can differ by at most one pod.
+
+### What is nodeTaintsPolicy: Honor?
+
+It makes the scheduler exclude nodes with taints the pod doesn't tolerate when computing skew. The default `Ignore` counts them, which can leave pods Pending because a tainted, unusable node looks like an empty domain.
+
+### What does minDomains do?
+
+With `DoNotSchedule`, if fewer than `minDomains` eligible domains exist, the global minimum is treated as 0 — forcing pods to wait for (or trigger the autoscaler to create) new domains instead of stacking into existing ones.
+
+### Topology spread constraints vs pod anti-affinity: which should I use?
+
+Use topology spread for balanced HA across zones/nodes, especially when replicas exceed domains. Use anti-affinity to keep specific workloads apart (e.g. never co-locate two cache pods). They can be combined.
 
 ---
 

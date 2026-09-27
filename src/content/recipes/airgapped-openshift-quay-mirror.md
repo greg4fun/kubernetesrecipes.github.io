@@ -13,7 +13,7 @@ tags:
   - "disconnected"
   - "idms"
 relatedRecipes:
-  - "kubernetes-multi-container-pod-patterns"
+  - "kubernetes-multi-container-patterns"
   - "deployment-strategies"
   - "argocd-sync-waves-crd-operators"
   - "itms-external-registry-mapping"

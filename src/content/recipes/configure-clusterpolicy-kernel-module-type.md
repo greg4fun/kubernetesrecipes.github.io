@@ -10,7 +10,7 @@ prerequisites:
   - "Turing architecture or newer GPU"
 relatedRecipes:
   - "resource-quotas"
-  - "resource-limits-requests"
+  - "kubernetes-resource-requests-limits"
   - "kubernetes-pod-resource-monitoring-grafana"
   - "pod-mutation-injection"
   - "kubernetes-kustomize-guide"

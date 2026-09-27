@@ -15,7 +15,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "runai-distributed-inference-vllm-nccl"
   - "distributed-inference-kubernetes"
-  - "lws-multi-node-distributed-inference"
+  - "leaderworkerset-operator"
   - "nim-multinode-deployment-helm-kubernetes"
   - "integrate-disaggregatedset-llmd-kubernetes"
 ---

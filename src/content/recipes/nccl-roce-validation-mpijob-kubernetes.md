@@ -14,7 +14,7 @@ publishDate: "2026-06-04"
 author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
-  - "nccl-all-reduce-perf-benchmark-multi-node"
+  - "run-nccl-tests-kubernetes"
   - "nccl-network-validation-script-openshift"
   - "nccl-gpudirect-rdma-distance-pix-sys"
   - "nccl-environment-variables-reference-kubernetes"

@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes HPA: Set Max Replicas and Scale"
-description: "Configure Kubernetes HPA with autoscaling/v2, averageUtilization targets, and max replica settings. CPU, memory, and custom metrics scaling policies."
+description: "Configure Kubernetes HPA (autoscaling/v2): averageUtilization, set or change maxReplicas, CPU, memory and custom metrics, and scaling behavior."
 category: "autoscaling"
 difficulty: "intermediate"
 timeToComplete: "20 minutes"
@@ -12,9 +12,11 @@ prerequisites:
 relatedRecipes:
   - "kubernetes-vertical-pod-autoscaler-vpa"
   - "llm-autoscaling-kubernetes"
-  - "cluster-autoscaler-setup"
+  - "kubernetes-cluster-autoscaler-configuration"
   - "kubernetes-hpa-prometheus-adapter"
-  - "kubernetes-keda-autoscaling-guide"
+  - "kubernetes-keda-event-driven-autoscaling"
+  - "keda-vs-hpa-autoscaling-comparison"
+  - "kubernetes-horizontal-scaling-patterns"
   - "kubernetes-resource-optimization"
   - "kubernetes-resource-optimization-strategies"
 tags:
@@ -24,11 +26,12 @@ tags:
   - cpu
   - memory
   - scaling
+  - performance
 publishDate: "2026-01-20"
 author: "Luca Berton"
 ---
 
-> **💡 Quick Answer:** Create an HPA with `kubectl autoscale deployment <name> --cpu-percent=80 --min=2 --max=10`. Ensure metrics-server is installed (`kubectl top pods` should work). For custom metrics, install prometheus-adapter. Set `resources.requests` on your pods—HPA uses these to calculate utilization percentage.
+> **💡 Quick Answer:** Create an HPA with `kubectl autoscale deployment <name> --cpu-percent=70 --min=2 --max=10`, or an `autoscaling/v2` manifest with `minReplicas`, `maxReplicas` and a metric target such as `averageUtilization: 70`. Change the ceiling later with `kubectl patch hpa <name> -p '{"spec":{"maxReplicas":20}}'`. metrics-server must be running (`kubectl top pods` works) and every container needs `resources.requests` — utilization is measured against requests.
 
 ## The Problem
 
@@ -126,6 +129,39 @@ spec:
           averageUtilization: 70
 ```
 
+## Set or Change Max Replicas
+
+`maxReplicas` is required and caps how far the HPA can scale; `minReplicas` defaults to 1.
+
+```bash
+# Change the ceiling on an existing HPA
+kubectl patch hpa my-app-hpa -p '{"spec":{"maxReplicas":20}}'
+
+# Or both bounds
+kubectl patch hpa my-app-hpa --type merge -p '{"spec":{"minReplicas":3,"maxReplicas":30}}'
+
+# Check whether the HPA is pinned at the ceiling
+kubectl describe hpa my-app-hpa | grep -A5 Conditions
+# ScalingLimited  True  TooManyReplicas  the desired replica count is more than the maximum replica count
+```
+
+Don't set `spec.replicas` on the Deployment in GitOps manifests managed alongside an HPA — every sync resets the replica count the HPA chose. Remove the field (or ignore it in Argo CD) and let the HPA own it.
+
+Sizing `maxReplicas`: treat it as a cost and blast-radius cap. Keep `maxReplicas × pod requests` within the namespace ResourceQuota and what the cluster autoscaler can actually add, check downstream limits (DB connections, API rate limits), and alert when the HPA sits at the ceiling:
+
+```promql
+kube_horizontalpodautoscaler_status_current_replicas
+  >= kube_horizontalpodautoscaler_spec_max_replicas
+```
+
+How the HPA computes replicas:
+
+```text
+desiredReplicas = ceil(currentReplicas * currentMetricValue / targetValue)
+```
+
+With 4 pods at 90% CPU and a 70% target: `ceil(4 * 90/70) = 6`. Changes within the 10% tolerance (ratio 0.9-1.1) are ignored, and the result is clamped to `[minReplicas, maxReplicas]`.
+
 ## HPA with Multiple Metrics
 
 Scale based on both CPU and memory:
@@ -160,6 +196,19 @@ spec:
 ```
 
 > **Note:** HPA uses the metric that results in the highest replica count.
+
+Memory can also be targeted as an absolute value per pod instead of a percentage of requests:
+
+```yaml
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: 512Mi
+```
+
+Memory is a weak scaling signal on its own: many runtimes (JVM, Go, Python) don't return memory after load drops, so a memory-driven HPA scales up and never back down. Use CPU or a request-rate metric as the primary signal and memory as a safety net.
 
 ## Scale Based on Custom Metrics
 
@@ -315,9 +364,13 @@ Check if your Deployment has reached maxReplicas:
 kubectl describe hpa my-app-hpa | grep -A5 Conditions
 ```
 
-### Scaling too aggressively
+### Scaling too aggressively (flapping)
 
-Adjust the behavior section to add stabilization windows and limit scale velocity.
+Add `behavior` with a scale-down `stabilizationWindowSeconds` (default 300s) and rate-limiting policies. Scale-up has no stabilization by default.
+
+### HPA not scaling down on memory
+
+The app holds on to memory after load drops. Scale on CPU or request rate instead, or raise the memory target.
 
 ## Complete Production Example
 
@@ -368,18 +421,6 @@ spec:
       selectPolicy: Max
 ```
 
-## Summary
-
-You've learned how to:
-
-1. Set up metrics-server for resource metrics
-2. Create HPA for CPU-based scaling
-3. Configure multi-metric scaling
-4. Control scaling behavior
-5. Troubleshoot common HPA issues
-
-**Key takeaway:** Always define resource requests on your containers for HPA to work correctly.
-
 ## References
 
 - [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
@@ -404,47 +445,33 @@ Inside the book, you'll master:
 ## Frequently Asked Questions
 
 ### What is HPA in Kubernetes?
-HPA (Horizontal Pod Autoscaler) automatically scales the number of pod replicas based on observed CPU utilization, memory usage, or custom metrics. When demand increases, HPA adds more pods; when demand decreases, it scales down to save resources.
 
-### How does HPA work with VPA?
-HPA scales horizontally (more replicas) while VPA scales vertically (more CPU/memory per pod). Use HPA for stateless workloads that scale out, and VPA for stateful workloads or when adding replicas isn't practical. Don't use both on the same CPU/memory metric simultaneously.
+The Horizontal Pod Autoscaler is a built-in controller that changes the replica count of a Deployment, StatefulSet or other scalable resource based on CPU, memory, custom or external metrics, within `minReplicas` and `maxReplicas`.
 
-### What metrics can HPA use?
-HPA supports three metric types: **Resource metrics** (CPU, memory via metrics-server), **Custom metrics** (application-specific like requests-per-second via Prometheus Adapter), and **External metrics** (cloud provider metrics like SQS queue depth).
+### How do I set max replicas for an HPA?
 
-## Frequently Asked Questions
+Set `spec.maxReplicas` in the HPA manifest, pass `--max` to `kubectl autoscale`, or patch a live HPA: `kubectl patch hpa my-app-hpa -p '{"spec":{"maxReplicas":20}}'`. When the HPA wants more pods than the maximum, its `ScalingLimited` condition shows `TooManyReplicas`.
 
-### What is HPA in Kubernetes?
+### What does averageUtilization mean?
 
-HPA (Horizontal Pod Autoscaler) automatically scales the number of pod replicas based on observed metrics like CPU utilization, memory usage, or custom metrics. When load increases, HPA adds pods; when it decreases, HPA removes them.
+For `type: Utilization`, `averageUtilization` is the target average usage across all pods as a percentage of their **requests**. With `requests.cpu: 200m` and `averageUtilization: 70`, the HPA aims for about 140m per pod. Pods without requests make the metric `<unknown>`.
 
-### How does horizontal pod autoscaling work?
+### How does the HPA calculate the replica count?
 
-HPA runs a control loop every 15 seconds: fetches current metric values from Metrics Server, calculates desired replicas using `ceil(currentReplicas × (currentMetric / targetMetric))`, and scales the Deployment up or down within min/max bounds.
+Every 15 seconds (default sync period) it computes `ceil(currentReplicas × currentMetric / targetMetric)` per metric, takes the highest result, skips changes within a 10% tolerance, applies `behavior` policies and stabilization, and clamps to min/max.
 
 ### Why is my HPA not scaling?
 
-Common reasons: Metrics Server not installed (run `kubectl top pods` to verify), no resource requests set on pods, already at min/max replicas, or the stabilization window hasn't elapsed (5 minutes default for scale-down).
+Common reasons: metrics-server missing (`kubectl top pods` fails), no resource requests on the containers, already at `maxReplicas`, the scale-down stabilization window (300s default) hasn't elapsed, or a custom metric isn't served by the adapter. `kubectl describe hpa` shows the conditions and events.
+
+### What is the default HPA stabilization window?
+
+300 seconds for scale-down and 0 seconds for scale-up. Tune them with `behavior.scaleDown.stabilizationWindowSeconds` and `behavior.scaleUp.stabilizationWindowSeconds`.
+
+### Can HPA scale to zero?
+
+Not by default — `minReplicas` must be at least 1 unless the alpha `HPAScaleToZero` feature gate is enabled. Use [KEDA](/recipes/autoscaling/kubernetes-keda-event-driven-autoscaling/) for scale-to-zero on event sources.
 
 ### Can HPA and VPA be used together?
 
-Yes, but with constraints. Use [VPA](/recipes/autoscaling/vertical-pod-autoscaler/) for memory right-sizing and HPA for CPU horizontal scaling. Don't let both control the same metric.
-
-See also: [VPA Setup](/recipes/autoscaling/vertical-pod-autoscaler/), [KEDA Event-Driven Autoscaling](/recipes/autoscaling/keda-event-driven-autoscaling/), [Cost Optimization](/recipes/configuration/kubernetes-cost-optimization-strategies/)
-
-## Frequently Asked Questions
-
-### What is HPA in Kubernetes?
-HPA (Horizontal Pod Autoscaler) automatically scales the number of pod replicas based on observed metrics like CPU utilization, memory usage, or custom metrics. When load increases above the target threshold, HPA adds pods; when load decreases, it removes them.
-
-### How does HPA work in Kubernetes?
-HPA runs a control loop every 15 seconds (default). It queries the Metrics API for current resource usage, calculates the desired replica count using `desiredReplicas = ceil(currentReplicas × (currentMetricValue / desiredMetricValue))`, and updates the Deployment's replica count.
-
-### What is the difference between HPA and VPA?
-HPA scales horizontally — adds or removes pod replicas based on load. VPA (Vertical Pod Autoscaler) scales vertically — adjusts CPU/memory requests on existing pods. Use HPA for stateless workloads that scale out well; use VPA for stateful workloads or single-replica deployments. They can coexist if VPA manages memory only and HPA manages CPU.
-
-### How do I configure HPA with custom metrics?
-Install a metrics adapter (Prometheus Adapter, KEDA, or Datadog), then create an HPA targeting `type: Pods` or `type: Object` metrics instead of `type: Resource`. For example, scale on requests-per-second from Prometheus using `pods/http_requests_per_second`.
-
-### What is the default HPA cooldown period?
-The default stabilization window is 300 seconds (5 minutes) for scale-down and 0 seconds for scale-up. Configure `behavior.scaleDown.stabilizationWindowSeconds` and `behavior.scaleUp` in the HPA spec to tune this.
+Yes, if they don't act on the same resource. A common split is [VPA](/recipes/autoscaling/kubernetes-vertical-pod-autoscaler-vpa/) for memory requests and HPA on CPU or custom metrics. If VPA changes CPU requests while the HPA targets CPU utilization, the two chase each other.

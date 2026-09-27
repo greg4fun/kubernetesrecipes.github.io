@@ -9,7 +9,6 @@ kubernetesVersion: "1.28+"
 tags: ["rook", "ceph", "storage", "distributed", "block", "object", "kubernetes", "distributed-storage", "cephfs"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-rook-ceph-guide"
   - "longhorn-distributed-storage"
   - "kubernetes-csi-driver-guide"
   - "kubernetes-csi-snapshots-restore"

@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "model-storage-hostpath-pvc"
   - "deploy-minimax-m25-kubernetes"
-  - "triton-tensorrt-vllm-comparison"
+  - "triton-inference-server-vs-vllm-comparison"
   - "triton-tensorrt-llm-kubernetes"
   - "triton-vllm-kubernetes"
   - "deploy-phi4-kubernetes"

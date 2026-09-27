@@ -14,7 +14,7 @@ tags:
   - offline
   - inference
 relatedRecipes:
-  - "aiperf-llm-benchmarking-kubernetes"
+  - "aiperf-benchmark-llm-kubernetes"
   - "runai-distributed-vllm-nccl-rdma"
   - "deploy-multinode-nim-models-kubernetes"
 ---

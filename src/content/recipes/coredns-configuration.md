@@ -10,7 +10,6 @@ relatedRecipes:
   - "kubernetes-dns-configuration"
   - "ingress-tls-certificates"
   - "dns-policies-configuration"
-  - "kubernetes-dns-policy-configuration"
 tags: ["coredns", "dns", "networking", "configuration", "resolution"]
 ---
 

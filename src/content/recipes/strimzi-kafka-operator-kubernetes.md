@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "statefulset-management"
-  - "kubernetes-pod-disruption-budget"
+  - "pod-disruption-budget-config"
   - "pvc-storageclass-examples"
   - "kubernetes-prometheus-monitoring-guide"
 ---

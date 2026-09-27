@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "kubernetes-job-ttl-cleanup"
   - "kubernetes-cronjob-best-practices"
-  - "kubernetes-init-container-patterns"
+  - "kubernetes-init-containers-patterns-examples"
 ---
 
 > 💡 **Quick Answer:** Use `completions: N` with `parallelism: M` for fixed-count parallel jobs, `completionMode: Indexed` for worker-index-aware processing, and `ttlSecondsAfterFinished: 3600` for automatic cleanup.

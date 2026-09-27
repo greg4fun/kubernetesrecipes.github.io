@@ -11,7 +11,7 @@ prerequisites:
   - "NVLink/NVSwitch or InfiniBand interconnect"
 relatedRecipes:
   - "deploy-minimax-m25-kubernetes"
-  - "triton-tensorrt-vllm-comparison"
+  - "triton-inference-server-vs-vllm-comparison"
   - "deploy-qwen3-coder-kubernetes"
   - "deploy-qwen35-397b-moe-kubernetes"
   - "deploy-qwen3-235b-moe-kubernetes"

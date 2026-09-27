@@ -10,7 +10,7 @@ relatedRecipes:
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-debugging-toolkit"
   - "coredns-troubleshooting"
-  - "debug-imagepullbackoff"
+  - "imagepullbackoff-troubleshooting"
   - "kubernetes-1-36-spdy-to-websockets"
 ---
 

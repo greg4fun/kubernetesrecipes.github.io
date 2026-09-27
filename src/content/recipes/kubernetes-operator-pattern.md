@@ -10,12 +10,13 @@ tags: ["operator", "operators", "crd", "custom-resource", "controller", "control
 author: "Luca Berton"
 relatedRecipes:
   - "kubernetes-crd-guide"
-  - "kubernetes-operator-sdk-guide"
+  - "kubernetes-crd-development-guide"
+  - "kubernetes-leases"
   - "build-kubernetes-operator-docker-testing"
   - "stuck-resources-finalizers"
   - "kubernetes-admission-webhooks-guide"
   - "kubernetes-rbac-role-rolebinding"
-  - "cloudnativepg-postgresql-operator-kubernetes"
+  - "cnpg-postgresql-operator"
   - "argocd-gitops"
 ---
 
@@ -200,6 +201,27 @@ func (r *DatabaseReconciler) handleDeletion(ctx context.Context, db *examplev1.D
 
 If the operator is uninstalled while CRs still carry its finalizer, they hang in `Terminating` — see [stuck resources and finalizers](/recipes/troubleshooting/stuck-resources-finalizers/).
 
+### Status Conditions
+
+Report progress through `status.conditions` with the standard helper — it dedupes by `Type` and only bumps `lastTransitionTime` on a real change (appending to the slice creates duplicates):
+
+```go
+import "k8s.io/apimachinery/pkg/api/meta"
+
+meta.SetStatusCondition(&db.Status.Conditions, metav1.Condition{
+    Type:               "Ready",
+    Status:             metav1.ConditionTrue,
+    Reason:             "ReconcileSucceeded",
+    Message:            "StatefulSet ready 3/3",
+    ObservedGeneration: db.Generation,
+})
+if err := r.Status().Update(ctx, db); err != nil {
+    return ctrl.Result{}, err
+}
+```
+
+Users (and `kubectl wait --for=condition=Ready database/prod-db`) can then rely on it.
+
 ### 6. Scaffold with Kubebuilder
 
 ```bash
@@ -238,6 +260,22 @@ operator-sdk create api --group database --version v1 --kind Database --generate
 # OLM bundle for OperatorHub
 make bundle IMG=registry.example.com/db-operator:v1
 ```
+
+Operator SDK / Kubebuilder dev loop:
+
+```bash
+make generate manifests          # deepcopy code, CRDs and RBAC from +kubebuilder markers
+make install run                 # install CRDs, run the controller locally against your kubeconfig
+make test                        # envtest: real kube-apiserver + etcd binaries, no cluster needed
+make docker-build docker-push deploy IMG=registry.example.com/db-operator:v0.1.0
+
+# OLM: validate and run the bundle on a cluster with OLM (OpenShift has it built in)
+operator-sdk bundle validate ./bundle --select-optional suite=operatorframework
+operator-sdk run bundle registry.example.com/db-operator-bundle:v0.1.0 -n operators
+operator-sdk scorecard ./bundle  # spec/status/OLM best-practice checks
+```
+
+The scaffolded `cmd/main.go` enables leader election (`--leader-elect`, a Lease in the operator namespace), so you can run 2+ replicas safely.
 
 ### Framework Comparison
 

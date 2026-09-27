@@ -14,7 +14,7 @@ tags:
   - "resources"
 relatedRecipes:
   - "kubernetes-vpa-recommender-guide"
-  - "kubernetes-resource-limits-requests"
+  - "kubernetes-resource-requests-limits"
 ---
 
 > 💡 **Quick Answer:** Deploy VPA in `Off` mode first to collect recommendations for 1 week without making changes. Review suggested CPU/memory values, then switch to `Auto` for non-critical workloads. For HPA-managed Deployments, use VPA for memory only (`controlledResources: [memory]`) to avoid conflicts.

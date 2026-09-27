@@ -14,7 +14,7 @@ tags:
   - "disk-pressure"
 relatedRecipes:
   - "kubernetes-emptydir-tmpfs-guide"
-  - "kubernetes-resource-quotas-limitranges"
+  - "kubernetes-resource-quota-limitrange"
   - "kubernetes-persistent-volume-expansion"
 ---
 
