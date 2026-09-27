@@ -13,7 +13,7 @@ relatedRecipes:
   - "kubernetes-namespace-guide"
   - "kai-scheduler-installation"
   - "kai-scheduler-podgroups"
-  - "resource-quotas"
+  - "kubernetes-resource-quota-limitrange"
 tags:
   - kai-scheduler
   - nvidia

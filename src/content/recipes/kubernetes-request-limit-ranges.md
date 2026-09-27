@@ -7,7 +7,7 @@ publishDate: "2026-04-05"
 tags: ["limitrange", "resourcequota", "resource-management", "quotas", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-service-account-guide"
+  - "service-accounts-rbac"
   - "kubernetes-health-checks"
   - "kubernetes-canary-deployment-guide"
   - "pod-security-standards"

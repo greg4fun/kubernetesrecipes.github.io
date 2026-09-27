@@ -190,6 +190,53 @@ spec:
   - BestEffort
 ```
 
+`Terminating` / `NotTerminating` scope by `activeDeadlineSeconds` instead — useful to give Jobs and other bounded-lifetime pods their own budget:
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: terminating-quota
+  namespace: team-a
+spec:
+  hard:
+    pods: "100"
+    requests.cpu: "20"
+  scopes:
+    - Terminating   # pods with activeDeadlineSeconds set (Jobs)
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: long-running-quota
+  namespace: team-a
+spec:
+  hard:
+    pods: "30"
+    requests.cpu: "10"
+  scopes:
+    - NotTerminating   # everything else
+```
+
+### Quota for a CI/CD Namespace
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: ci-quota
+  namespace: ci-builds
+spec:
+  hard:
+    pods: "20"                       # cap concurrent builds
+    requests.cpu: "10"
+    requests.memory: 20Gi
+    limits.cpu: "20"
+    limits.memory: 40Gi
+    requests.ephemeral-storage: 50Gi # build artifacts, layer caches
+    limits.ephemeral-storage: 100Gi
+```
+
 ### Monitor Quota Usage
 
 ```bash
@@ -199,9 +246,74 @@ kubectl get resourcequota -A
 # Prometheus metrics
 # kube_resourcequota{namespace="team-a",resource="requests.cpu",type="hard"} 10
 # kube_resourcequota{namespace="team-a",resource="requests.cpu",type="used"} 3.5
+```
 
-# Alert when approaching quota
-# expr: kube_resourcequota{type="used"} / kube_resourcequota{type="hard"} > 0.9
+```yaml
+# Alertmanager rule: fire before teams hit the wall
+- alert: ResourceQuotaHighUsage
+  expr: |
+    kube_resourcequota{type="used"} / kube_resourcequota{type="hard"} > 0.9
+  for: 5m
+  labels:
+    severity: warning
+  annotations:
+    summary: "Namespace {{ $labels.namespace }} quota near limit"
+```
+
+### Complete Multi-Tenant Namespace
+
+Bundling Namespace + ResourceQuota + LimitRange + a default-deny NetworkPolicy into one apply is the fastest way to onboard a new team safely:
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: team-alpha
+  labels:
+    team: alpha
+    environment: production
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-quota
+  namespace: team-alpha
+spec:
+  hard:
+    requests.cpu: "20"
+    requests.memory: 40Gi
+    limits.cpu: "40"
+    limits.memory: 80Gi
+    pods: "100"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: default-limits
+  namespace: team-alpha
+spec:
+  limits:
+    - type: Container
+      defaultRequest:
+        cpu: 100m
+        memory: 256Mi
+      default:
+        cpu: 500m
+        memory: 512Mi
+      max:
+        cpu: "4"
+        memory: 8Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: team-alpha
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
 ```
 
 ## Common Issues

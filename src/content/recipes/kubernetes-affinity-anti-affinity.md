@@ -7,7 +7,7 @@ publishDate: "2026-04-07"
 tags: ["affinity", "anti-affinity", "scheduling", "topology", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-service-account-guide"
+  - "service-accounts-rbac"
   - "kubernetes-health-checks"
   - "kubernetes-canary-deployment-guide"
   - "kubernetes-headless-service"

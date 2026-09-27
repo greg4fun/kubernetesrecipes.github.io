@@ -13,7 +13,7 @@ prerequisites:
 relatedRecipes:
   - "kubernetes-crossplane-infrastructure"
   - "scheduler-configuration-tuning"
-  - "resource-quotas"
+  - "kubernetes-resource-quota-limitrange"
   - "kubernetes-resource-requests-limits"
   - "kubernetes-pod-resource-monitoring-grafana"
   - "pod-mutation-injection"
