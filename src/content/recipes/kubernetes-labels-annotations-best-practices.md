@@ -1,17 +1,22 @@
 ---
-title: "Kubernetes Labels and Annotations Best Practices"
-description: "Implement Kubernetes labels and annotations following best practices. Recommended label keys, organizational conventions, selectors, annotations vs labels"
+title: "Kubernetes Labels vs Annotations: Best Practices"
+description: "Kubernetes labels vs annotations: when to use each, recommended app.kubernetes.io labels, naming rules, common annotations, and selector pitfalls."
 tags:
   - "labels"
   - "annotations"
   - "metadata"
   - "best-practices"
   - "organization"
+  - "selectors"
 category: "configuration"
 publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
+  - "kubernetes-labels-selectors-guide"
+  - "kubernetes-labels-best-practices"
+  - "kubernetes-annotations-guide"
+  - "kubernetes-downward-api-guide"
   - "kubernetes-namespace-guide"
 ---
 
@@ -139,6 +144,8 @@ metadata:
     sidecar.istio.io/inject: "true"
 ```
 
+For the full selector syntax (set-based queries, `matchExpressions`, field selectors) see the [labels and selectors guide](/recipes/configuration/kubernetes-labels-selectors-guide/).
+
 ### Query with Label Selectors
 
 ```bash
@@ -184,7 +191,7 @@ Value format:
 Reserved prefixes:
 ├── kubernetes.io/ — Kubernetes core components
 ├── k8s.io/ — Kubernetes SIG projects
-├── app.kubernetes.io/ — Recommended application labels
+├── app.kubernetes.io/ — Recommended application labels (defined by Kubernetes, safe to use)
 └── *.example.com/ — Your organization
 
 Examples:
@@ -193,7 +200,8 @@ Examples:
 ✅ mycompany.com/team: platform
 ✅ version: 2.1.0-beta.1
 ❌ app: "this value is way too long and exceeds sixty-three characters limit"
-❌ 123-invalid: (can't start with number for key name)
+❌ -team: platform          (name must start with an alphanumeric character)
+❌ env: "prod/eu"           (/ is not allowed in values)
 ```
 
 ## Common Issues
@@ -229,3 +237,26 @@ Examples:
 - Service selectors MUST match pod labels exactly — no endpoints otherwise
 - `spec.selector` is immutable — plan labels before creating Deployments
 - Labels are queryable (`-l key=value`); annotations are not
+
+## Frequently Asked Questions
+
+### What is the difference between labels and annotations in Kubernetes?
+
+Labels are short, constrained key/value pairs that identify objects and are indexed for selectors — Services, Deployments, NetworkPolicies and `kubectl get -l` all use them. Annotations are free-form metadata (up to 256 KiB total per object) for tools and humans, and can't be selected on.
+
+### When should I use an annotation instead of a label?
+
+If nothing will ever select or group objects by it, make it an annotation: commit SHAs, build URLs, owners' email addresses, descriptions, and controller configuration such as `nginx.ingress.kubernetes.io/*` or `cert-manager.io/cluster-issuer`.
+
+### What are the recommended Kubernetes labels?
+
+`app.kubernetes.io/name`, `instance`, `version`, `component`, `part-of` and `managed-by`. Helm, Argo CD, dashboards and many operators understand them. Add your own prefixed keys (e.g. `example.com/team`, `example.com/cost-center`) for ownership and chargeback.
+
+### Should the version label be in a selector?
+
+No. Selectors on Deployments are immutable and Services would drop old pods mid-rollout. Keep `app.kubernetes.io/version` on the pod template for filtering and dashboards, and select only on stable labels like `name` and `instance`.
+
+### How do I enforce labeling standards?
+
+Use an admission policy — a `ValidatingAdmissionPolicy` (GA in Kubernetes 1.30), Kyverno or OPA Gatekeeper — to reject workloads missing required labels such as `app.kubernetes.io/name` and `team`.
+

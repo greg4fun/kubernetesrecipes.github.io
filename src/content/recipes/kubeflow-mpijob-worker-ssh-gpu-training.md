@@ -14,7 +14,7 @@ difficulty: "intermediate"
 relatedRecipes:
   - "nccl-network-validator-production-mpijob"
   - "openmpi-control-plane-separation-nccl-rdma"
-  - "nccl-all-reduce-perf-benchmark-multi-node"
+  - "run-nccl-tests-kubernetes"
 ---
 
 > 💡 **Quick Answer:** Kubeflow MPI Operator requires SSH access from launcher to worker pods. Workers run in "shell" mode: start SSHD, mount operator-provided SSH keys from `/root/.ssh`, keep the container alive with `sleep infinity`. The launcher uses `ssh -o StrictHostKeyChecking=no` to connect and run `all_reduce_perf` (or training scripts) on each worker via `mpirun`.

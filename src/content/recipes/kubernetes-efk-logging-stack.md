@@ -16,7 +16,7 @@ tags:
   - "observability"
   - "centralized-logging"
 relatedRecipes:
-  - "kubernetes-efk-stack-centralized-logging"
+  - "kubernetes-audit-logging-configuration"
   - "kubernetes-logging-elk-stack"
   - "kubernetes-log-aggregation-loki"
   - "kubernetes-logging-fluentbit-guide"
@@ -369,6 +369,8 @@ curl -sk -u "$AUTH" -X PUT "$ES/_index_template/k8s-logs" -H 'Content-Type: appl
     "index.lifecycle.name": "k8s-logs" } } }'
 ```
 
+For larger clusters add a `warm` phase (`"min_age": "7d"`, `forcemerge` to 1 segment, `allocate` to warm-tier nodes) before delete to cut heap and disk cost on older indices.
+
 With `logstash_format` (daily indices) the delete phase is what matters; for true rollover write to a data stream instead (`data_stream_name` in fluent-plugin-elasticsearch).
 
 ### Step 7: Access Kibana and Search
@@ -399,6 +401,8 @@ Expose Kibana through an Ingress/Route with TLS and SSO (Kibana has its own logi
 **Cluster `yellow`/`red`** — replicas can't be allocated (fewer nodes than replicas + 1, or disk watermark reached at 85/90%). `GET _cluster/allocation/explain`.
 
 **Fluentd `buffer space has too many data`** — Elasticsearch is slower than ingest. Scale ES, raise `total_limit_size`, drop noisy namespaces with a `grep` filter.
+
+**Kibana Discover shows "No results"** — no data view for `k8s-logs-*`, the wrong timestamp field, or a time picker window older than the first indexed log. Check `GET _cat/indices/k8s-logs-*?v` first to confirm documents exist.
 
 **Mapping conflicts (`mapper_parsing_exception`)** — the same JSON field has different types across apps. Namespace app fields (`app.*`), or use separate indices per team.
 

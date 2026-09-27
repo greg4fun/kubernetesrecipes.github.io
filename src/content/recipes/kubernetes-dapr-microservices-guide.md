@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-service-mesh-istio-guide"
   - "kubernetes-linkerd-service-mesh-guide"
-  - "kubernetes-sidecar-containers"
+  - "kubernetes-sidecar-patterns"
   - "kubernetes-nats-messaging-guide"
 ---
 

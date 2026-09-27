@@ -15,7 +15,7 @@ tags:
   - prometheus-adapter
 relatedRecipes:
   - "kubernetes-hpa-cpu-memory-guide"
-  - "kubernetes-cluster-autoscaler-guide"
+  - "kubernetes-cluster-autoscaler-configuration"
 ---
 
 > 💡 **Quick Answer:** Deploy Prometheus Adapter, configure metric rules to map Prometheus queries to the `custom.metrics.k8s.io` API, then create an HPA targeting your custom metric (e.g., `http_requests_per_second`). The adapter bridges Prometheus and the Kubernetes metrics API.

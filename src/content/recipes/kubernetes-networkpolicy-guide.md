@@ -25,6 +25,8 @@ relatedRecipes:
   - "kubernetes-service-mesh-comparison"
   - "dns-policies-configuration"
   - "kubernetes-endpoint-slices-discovery"
+  - "network-policy-debug-connectivity"
+  - "kubernetes-network-policy-egress"
 ---
 
 > 💡 **Quick Answer:** NetworkPolicy controls pod-to-pod traffic at L3/L4. Default: all traffic allowed. Apply a default-deny policy, then whitelist specific flows. Use `podSelector` to target pods, `ingress`/`egress` to define allowed traffic, and `namespaceSelector` for cross-namespace rules. Requires a CNI that enforces NetworkPolicy (Calico, Cilium, OVN-Kubernetes on OpenShift, Antrea — **not** plain Flannel, where policies are silently ignored).
@@ -265,6 +267,16 @@ spec:
         - 192.168.0.0/16
     ports:
     - port: 443
+```
+
+### Port Ranges (endPort)
+
+```yaml
+  ingress:
+  - ports:
+    - protocol: TCP
+      port: 32000
+      endPort: 32768        # GA since 1.25; port must be numeric, not a named port
 ```
 
 ## Test a Policy

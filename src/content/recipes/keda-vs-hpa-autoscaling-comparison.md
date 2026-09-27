@@ -14,11 +14,10 @@ difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "horizontal-pod-autoscaler"
-  - "kubernetes-keda-autoscaling-guide"
+  - "kubernetes-keda-event-driven-autoscaling"
   - "llm-autoscaling-kubernetes"
   - "kubernetes-pod-priority-preemption"
   - "kubernetes-vertical-pod-autoscaler-vpa"
-  - "kubernetes-horizontal-pod-autoscaler-guide"
   - "kubernetes-horizontal-scaling-patterns"
 ---
 

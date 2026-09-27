@@ -14,7 +14,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "poolside-ai-foundation-models-kubernetes"
-  - "kubernetes-network-policy-guide"
+  - "kubernetes-networkpolicy-guide"
   - "pod-security-standards"
   - "tabnine-enterprise-self-hosted-kubernetes"
   - "hermes-agent-self-hosted-kubernetes"

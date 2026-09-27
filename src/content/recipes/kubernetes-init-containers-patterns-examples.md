@@ -19,8 +19,8 @@ kubernetesVersion: "1.28+"
 relatedRecipes:
   - "kubernetes-probes-liveness-readiness"
   - "kubernetes-startup-probe-slow-containers"
-  - "kubernetes-native-sidecar-containers-guide"
-  - "kubernetes-multi-container-pod-patterns"
+  - "kubernetes-sidecar-patterns"
+  - "kubernetes-multi-container-patterns"
   - "argocd-sync-waves-database-migration"
   - "helm-hooks-lifecycle"
   - "kubernetes-graceful-shutdown-guide"
@@ -308,7 +308,7 @@ A heavy init container inflates the pod's scheduling footprint even after it exi
 | Blocks next init until | Exit 0 | Started (startupProbe passes) | — |
 | Requests | max(inits) vs sum(apps) | Added to app sum | Summed |
 
-Native sidecars: alpha 1.28, on by default 1.29, GA 1.33. See [native sidecar containers](/recipes/deployments/kubernetes-native-sidecar-containers-guide/).
+Native sidecars: alpha 1.28, on by default 1.29, GA 1.33. See [native sidecar containers](/recipes/configuration/kubernetes-sidecar-patterns/).
 
 ### Debugging Init Containers
 

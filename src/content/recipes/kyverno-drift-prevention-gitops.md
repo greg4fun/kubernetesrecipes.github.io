@@ -15,7 +15,7 @@ relatedRecipes:
   - "kyverno-cel-policy-model"
   - "kyverno-rebac-multi-tenant-rbac"
   - "argocd-declarative-application-setup"
-  - "flux-gitops-continuous-delivery"
+  - "flux-gitops"
 ---
 
 > 💡 **Quick Answer:** Use Kyverno to block direct `kubectl edit/apply/patch` on resources managed by ArgoCD or Flux, ensuring all changes flow through Git. Only the GitOps controller's ServiceAccount is allowed to mutate protected resources.

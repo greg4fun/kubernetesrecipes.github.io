@@ -14,7 +14,6 @@ difficulty: "intermediate"
 timeToComplete: "20 minutes"
 relatedRecipes:
   - "flux-gitops"
-  - "flux-gitops-continuous-delivery"
   - "argocd-app-of-apps-pattern"
   - "platform-engineering-internal-developer-platform-kubernetes"
   - "argocd-app-of-apps-sync-waves"

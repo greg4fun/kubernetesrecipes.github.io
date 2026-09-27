@@ -18,8 +18,7 @@ relatedRecipes:
   - "cronjob-concurrency-policy"
   - "tune-nccl-env-rdma-ethernet"
   - "nccl-p2p-latency-diagnostics"
-  - "run-nccl-tests-mpijob-kubernetes"
-  - "debug-imagepullbackoff"
+  - "run-nccl-tests-kubernetes"
   - "kubernetes-network-troubleshooting"
 tags:
   - nccl

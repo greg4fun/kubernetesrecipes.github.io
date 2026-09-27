@@ -12,7 +12,7 @@ publishDate: "2026-05-06"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-vpa-vertical-pod-autoscaler"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "kubernetes-goldilocks-vpa-dashboard"
   - "kubernetes-horizontal-pod-autoscaler-v2"
   - "kubernetes-resource-quota-limitrange"

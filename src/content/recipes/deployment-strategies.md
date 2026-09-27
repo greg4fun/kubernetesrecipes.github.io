@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-liveness-readiness-startup-probes"
   - "ab-testing-kubernetes"
   - "openclaw-webhook-automation-kubernetes"
-  - "kubernetes-pod-priority-preemption-scheduling"
+  - "kubernetes-pod-priority-preemption"
   - "openclaw-signal-kubernetes"
 ---
 

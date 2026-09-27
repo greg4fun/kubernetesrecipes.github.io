@@ -8,7 +8,7 @@ tags: ["nodeport", "service", "external-access", "networking", "kubernetes"]
 author: "Luca Berton"
 relatedRecipes:
   - "secrets-management-best-practices"
-  - "kubernetes-pvc-guide"
+  - "kubernetes-persistent-volume-guide"
   - "kubernetes-commands"
   - "kubernetes-cronjob-best-practices"
 ---

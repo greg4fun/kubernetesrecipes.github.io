@@ -1,6 +1,6 @@
 ---
-title: "K8s fsGroupChangePolicy: Fix Slow Mounts"
-description: "Configure fsGroupChangePolicy OnRootMismatch to skip recursive chown on volume mounts. Fix slow pod starts caused by large persistent volumes with millions."
+title: "fsGroupChangePolicy OnRootMismatch: Fix Slow Mounts"
+description: "Fix slow pod starts from recursive fsGroup chown: set fsGroupChangePolicy OnRootMismatch, check CSI fsGroupPolicy, and handle OpenShift SCC fsGroup."
 publishDate: "2026-04-12"
 author: "Luca Berton"
 category: "storage"
@@ -10,19 +10,22 @@ tags:
   - "persistent-volumes"
   - "performance"
   - "storage"
+  - "onrootmismatch"
+  - "chown"
 difficulty: "intermediate"
 timeToComplete: "10 minutes"
 relatedRecipes:
-  - "kubernetes-fsgroupchangepolicy-guide"
   - "kubernetes-security-context-guide"
+  - "pod-security-standards"
+  - "kubernetes-hostpath-vs-pvc"
   - "kubernetes-pod-lifecycle-guide"
 ---
 
-> 💡 **Quick Answer:** When you set \`fsGroup\` in a pod's security context, Kubernetes recursively \`chown\`s every file in mounted volumes on startup. For volumes with millions of files, this takes minutes. Set \`fsGroupChangePolicy: OnRootMismatch\` to only change ownership when the root directory's group doesn't match — reducing mount time from minutes to seconds.
+> 💡 **Quick Answer:** When you set `fsGroup` in a pod's security context, Kubernetes recursively `chown`s every file in mounted volumes on startup. For volumes with millions of files, this takes minutes. Set `fsGroupChangePolicy: OnRootMismatch` to only change ownership when the root directory's group doesn't match — reducing mount time from minutes to seconds.
 
 ## The Problem
 
-Setting \`fsGroup\` is common for non-root containers that need write access to persistent volumes. But Kubernetes's default behavior (\`Always\`) runs recursive \`chown\` on every file and directory in the volume mount on every pod start:
+Setting `fsGroup` is common for non-root containers that need write access to persistent volumes. But Kubernetes's default behavior (`Always`) runs recursive `chown` on every file and directory in the volume mount on every pod start:
 
 ```
 Volume with 1M files:
@@ -79,8 +82,8 @@ spec:
 
 | Policy | Behavior | Speed | Use Case |
 |--------|----------|:-----:|----------|
-| \`Always\` (default) | Recursive chown on every pod start | Slow | Security-critical: must guarantee every file has correct group |
-| \`OnRootMismatch\` | Chown only if volume root dir group ≠ fsGroup | Fast | Standard workloads, large volumes, databases |
+| `Always` (default) | Recursive chown on every pod start | Slow | Security-critical: must guarantee every file has correct group |
+| `OnRootMismatch` | Chown only if volume root dir group ≠ fsGroup | Fast | Standard workloads, large volumes, databases |
 
 ### When OnRootMismatch Triggers Chown
 
@@ -133,19 +136,18 @@ spec:
 
 ### Init Container Race Condition Fix
 
-A common pattern where \`fsGroupChangePolicy\` helps:
+A common pattern where `fsGroupChangePolicy` helps:
 
 ```yaml
 spec:
   securityContext:
     fsGroup: 1000
     fsGroupChangePolicy: OnRootMismatch
-  initContainers:
-    - name: fix-permissions
-      image: busybox
-      # NO LONGER NEEDED with fsGroupChangePolicy!
-      # command: ["sh", "-c", "chown -R 1000:1000 /data"]
-      # This was the old workaround — remove it
+  # Old workaround — delete this initContainer:
+  # initContainers:
+  #   - name: fix-permissions
+  #     image: busybox
+  #     command: ["sh", "-c", "chown -R 1000:1000 /data"]
   containers:
     - name: app
       image: myapp
@@ -153,6 +155,26 @@ spec:
         - name: data
           mountPath: /data
 ```
+
+### CSI Drivers: fsGroupPolicy
+
+Whether the kubelet applies `fsGroup` at all depends on the CSI driver's `fsGroupPolicy`:
+
+```bash
+kubectl get csidriver -o custom-columns=NAME:.metadata.name,FSGROUP:.spec.fsGroupPolicy
+```
+
+| `fsGroupPolicy` | Effect |
+|---|---|
+| `ReadWriteOnceWithFSType` (default) | Applied only for RWO volumes with an `fsType` set |
+| `File` | Always applied — `fsGroupChangePolicy` matters |
+| `None` | Never applied — fix ownership server-side (common for NFS/SMB drivers) |
+
+Some drivers (Azure File, some NFS) support `VolumeMountGroup` and apply the group at mount time instead of chown, so no recursive walk happens.
+
+### OpenShift
+
+The `restricted-v2` SCC injects an `fsGroup` from the namespace's `openshift.io/sa.scc.supplemental-groups` range, so large PVs get chowned even if you never set `fsGroup`. Add `fsGroupChangePolicy: OnRootMismatch` to the pod spec (allowed by restricted-v2) rather than granting `anyuid`.
 
 ### Verify the Setting
 
@@ -174,25 +196,45 @@ kubectl get pod my-app -o jsonpath='{.status.conditions[?(@.type=="Ready")].last
 
 | Issue | Cause | Fix |
 |-------|-------|-----|
-| Pod takes 2+ minutes to start | Recursive chown on large volume | Set \`fsGroupChangePolicy: OnRootMismatch\` |
-| New files have wrong group | \`OnRootMismatch\` doesn't chown new files | Set \`umask\` or use \`setgid\` bit on directory |
-| Init container \`chown -R\` slow | Manual recursive permission fix | Remove init container, use \`fsGroupChangePolicy\` instead |
+| Pod takes 2+ minutes to start | Recursive chown on large volume | Set `fsGroupChangePolicy: OnRootMismatch` |
+| New files have wrong group | `OnRootMismatch` doesn't chown new files | Set `umask` or use `setgid` bit on directory |
+| Init container `chown -R` slow | Manual recursive permission fix | Remove init container, use `fsGroupChangePolicy` instead |
 | Permission denied after restart | fsGroup changed between deploys | OnRootMismatch will re-chown when group doesn't match |
-| NFS volumes ignore fsGroup | NFS doesn't support fsGroup | Use \`supplementalGroups\` or server-side permissions |
+| NFS volumes ignore fsGroup | Driver `fsGroupPolicy: None` / in-tree NFS has no ownership management | Use `supplementalGroups` or server-side permissions |
+| Still slow with OnRootMismatch | Root dir permissions/group reset by something else (backup, restore) each time | Fix the external process; check `ls -ld` on the mount root |
 
 ## Best Practices
 
-- **Always use \`OnRootMismatch\` for volumes > 10K files** — prevents slow pod starts
-- **Remove manual chown init containers** — \`fsGroupChangePolicy\` handles this natively
-- **Set \`setgid\` on directories** — ensures new files inherit the group: \`chmod g+s /data\`
+- **Always use `OnRootMismatch` for volumes > 10K files** — prevents slow pod starts
+- **Remove manual chown init containers** — `fsGroupChangePolicy` handles this natively
+- **Set `setgid` on directories** — ensures new files inherit the group: `chmod g+s /data`
 - **Test with large volumes** — verify start time improvement before production
-- **Use \`Always\` only for strict compliance** — where every file must be verified on every restart
+- **Use `Always` only for strict compliance** — where every file must be verified on every restart
 
 ## Key Takeaways
 
-- \`fsGroupChangePolicy: Always\` (default) runs recursive chown on every pod start — very slow for large volumes
-- \`OnRootMismatch\` checks only the volume root directory — skips chown if group already matches
+- `fsGroupChangePolicy: Always` (default) runs recursive chown on every pod start — very slow for large volumes
+- `OnRootMismatch` checks only the volume root directory — skips chown if group already matches
 - This can reduce pod start time from minutes to under a second
 - Requires Kubernetes 1.20+ (GA since 1.23)
-- Doesn't affect NFS or CSI volumes that don't support fsGroup
-- Remove manual \`chown -R\` init containers — use this instead
+- Doesn't affect NFS or CSI volumes whose driver has `fsGroupPolicy: None`, nor `secret`/`configMap`/`emptyDir` volumes
+- Remove manual `chown -R` init containers — use this instead
+
+## Frequently Asked Questions
+
+### What does fsGroupChangePolicy OnRootMismatch do?
+
+It tells the kubelet to check only the ownership and permissions of the volume's root directory. If they already match `fsGroup`, the recursive `chown`/`chmod` is skipped; otherwise the full walk runs once.
+
+### What is the default fsGroupChangePolicy?
+
+`Always` — every mount of a supporting volume triggers a recursive ownership and permission change. It applies only when `fsGroup` is set (or injected, as on OpenShift).
+
+### Why is my pod stuck in ContainerCreating with a large PVC?
+
+Check kubelet logs for `Setting volume ownership` — the recursive fsGroup chown is still running. Set `fsGroupChangePolicy: OnRootMismatch` or remove `fsGroup` if the volume is already owned correctly.
+
+### Does fsGroupChangePolicy work with NFS?
+
+Only if the CSI driver applies fsGroup (`fsGroupPolicy: File`). Most NFS setups use `None`, so fsGroup — and therefore the policy — is ignored.
+

@@ -12,7 +12,7 @@ publishDate: "2026-06-01"
 author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
-  - "kubernetes-network-policy-guide"
+  - "kubernetes-networkpolicy-guide"
 ---
 
 > 💡 **Quick Answer:** Linkerd provides automatic mutual TLS (mTLS) between all meshed pods with zero application changes. Install the control plane (`linkerd install`), inject the sidecar proxy (`linkerd inject`), and all pod-to-pod communication is encrypted and authenticated. Get per-route golden metrics (success rate, latency, throughput) via the Linkerd dashboard or Prometheus.

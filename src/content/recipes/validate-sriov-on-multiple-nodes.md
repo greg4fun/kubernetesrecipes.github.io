@@ -12,8 +12,7 @@ prerequisites:
   - "A working SriovNetworkNodePolicy"
 relatedRecipes:
   - "troubleshooting-pods-devices-gpu-kubernetes"
-  - "pod-eviction-troubleshooting"
-  - "kubernetes-pod-eviction"
+  - "debug-pod-eviction-reasons"
   - "kubernetes-oomkilled-troubleshooting"
   - "kubernetes-node-status-check"
   - "imagepullbackoff-troubleshooting"

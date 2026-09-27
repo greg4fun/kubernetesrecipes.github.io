@@ -9,7 +9,7 @@ tags: ["finalizers", "deletion", "cleanup", "stuck-resources", "terminating", "g
 relatedRecipes:
   - "namespace-stuck-terminating"
   - "persistent-volume-stuck-terminating"
-  - "kubernetes-operator-sdk-guide"
+  - "kubernetes-operator-pattern"
   - "kubernetes-namespace-guide"
   - "kubernetes-pod-lifecycle-guide"
   - "argocd-gitops"

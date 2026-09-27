@@ -14,7 +14,7 @@ difficulty: "advanced"
 timeToComplete: "50 minutes"
 relatedRecipes:
   - "resource-quotas"
-  - "network-policies"
+  - "kubernetes-networkpolicy-guide"
   - "kubernetes-namespace-guide"
   - "service-accounts-rbac"
   - "pod-security-standards"

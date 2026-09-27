@@ -19,7 +19,7 @@ relatedRecipes:
   - "mariadb-scc-openshift-deployment"
   - "kubernetes-resource-limits-cpu-memory-format"
   - "kubernetes-limit-range-defaults"
-  - "kubernetes-pod-disruption-budget-guide"
+  - "pod-disruption-budget-config"
   - "openshift-machineconfig-mcp-guide"
 ---
 

@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-kubeadm-upgrade-guide"
   - "kubernetes-resource-quota-limitrange"
   - "kubernetes-oomkilled-troubleshooting"
-  - "kubernetes-projected-volumes-guide"
+  - "kubernetes-projected-volumes"
   - "kubernetes-qos-classes-guide"
   - "kubernetes-kubeadm-init-guide"
   - "kubernetes-cluster-api-guide"

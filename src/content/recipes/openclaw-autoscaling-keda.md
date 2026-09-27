@@ -16,7 +16,6 @@ relatedRecipes:
   - "kubernetes-vertical-pod-autoscaler-vpa"
   - "openclaw-ha-kubernetes"
   - "openclaw-multi-agent-kubernetes"
-  - "kubernetes-keda-autoscaling-guide"
   - "horizontal-pod-autoscaler"
   - "openclaw-monitoring-prometheus"
   - "vpa-hack-vpa-up-sh-install-kubernetes"

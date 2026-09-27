@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "nccl-roce-validation-mpijob-kubernetes"
-  - "nccl-all-reduce-perf-benchmark-multi-node"
+  - "run-nccl-tests-kubernetes"
   - "shared-rdma-device-plugin-kubernetes"
 ---
 

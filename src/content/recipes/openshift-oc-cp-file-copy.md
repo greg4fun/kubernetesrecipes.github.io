@@ -13,8 +13,8 @@ author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
   - "openshift-oc-rsync-file-transfer"
-  - "kubernetes-persistent-volumes-guide"
-  - "kubernetes-ephemeral-containers-debug"
+  - "kubernetes-persistent-volume-guide"
+  - "kubernetes-ephemeral-containers-debugging"
 ---
 
 > 💡 **Quick Answer:** `oc cp` (same as `kubectl cp`) copies files between your local machine and a Pod using tar over the exec API. Unlike `oc rsync`, it works for single files and doesn't require rsync or tar in the container path — only `/bin/tar` must exist.

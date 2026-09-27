@@ -14,7 +14,7 @@ difficulty: "advanced"
 relatedRecipes:
   - "kubernetes-1-36-oci-volume-source"
   - "kubernetes-1-36-selinux-mount-labeling"
-  - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "kubernetes-gpu-sharing-mps-mig"
   - "distributed-training-tensorflow-pytorch-kubernetes"
   - "nccl-environment-variables-reference-kubernetes"
 ---

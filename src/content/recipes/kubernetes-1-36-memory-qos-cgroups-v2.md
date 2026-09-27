@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "advanced"
 relatedRecipes:
   - "kubernetes-resource-limits-cpu-memory-format"
-  - "oom-killed-troubleshooting"
+  - "kubernetes-oomkilled-troubleshooting"
   - "kubernetes-pod-priority-preemption"
 ---
 

@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "oc-adm-drain-dry-run-diagnostics"
   - "kubernetes-graceful-shutdown-guide"
-  - "kubernetes-taint-toleration"
+  - "kubernetes-taint-toleration-guide"
   - "kubernetes-startup-probe-slow-containers"
   - "kubernetes-request-limit-ranges"
   - "kubernetes-release-cycle-version-support"

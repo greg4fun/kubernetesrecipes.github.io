@@ -13,11 +13,10 @@ tags:
 difficulty: "advanced"
 timeToComplete: "45 minutes"
 relatedRecipes:
-  - "kubernetes-service-account-tokens"
+  - "kubernetes-service-account-token"
   - "kubernetes-oidc-authentication-guide"
   - "service-accounts-rbac"
   - "rbac-permission-denied-troubleshooting"
-  - "kubernetes-service-accounts-tokens"
   - "gke-oidc-issuer-workload-identity"
 ---
 

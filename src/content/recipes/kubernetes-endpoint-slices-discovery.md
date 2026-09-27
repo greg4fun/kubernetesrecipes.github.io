@@ -14,7 +14,7 @@ tags:
   - "networking"
   - "cka"
 relatedRecipes:
-  - "kubernetes-service-types-explained"
+  - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
   - "coredns-troubleshooting"
   - "kubernetes-ingress-nginx-guide"
   - "dns-policies-configuration"

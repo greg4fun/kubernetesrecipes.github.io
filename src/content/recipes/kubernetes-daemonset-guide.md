@@ -16,10 +16,10 @@ tags:
   - "cka"
 relatedRecipes:
   - "kubernetes-daemonset-update-strategies"
-  - "kubernetes-taints-tolerations-guide"
+  - "kubernetes-taint-toleration-guide"
   - "kubernetes-efk-logging-stack"
   - "kubernetes-prometheus-monitoring-guide"
-  - "kubernetes-topology-spread-constraints"
+  - "pod-topology-constraints"
   - "kubernetes-service-account-guide"
   - "kubernetes-headless-service"
 ---

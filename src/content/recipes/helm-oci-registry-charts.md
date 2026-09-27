@@ -1,161 +1,273 @@
 ---
-title: "Helm OCI Registry for Charts Explained"
-description: "Store and manage Helm charts in OCI-compliant registries like GHCR, ECR, ACR, and Quay. Push, pull, and version charts using standard container registries."
-publishDate: "2026-04-20"
-author: "Luca Berton"
+title: "Helm OCI Registry: Push, Pull and Install Charts"
+description: "Push, pull and install Helm charts from OCI registries (GHCR, ECR, ACR, Harbor): helm registry login, helm push, Argo CD and Flux OCI sources, CI release."
 category: "helm"
 difficulty: "intermediate"
-timeToComplete: "15 minutes"
-kubernetesVersion: "1.28+"
-tags:
-  - helm
-  - oci
-  - registry
-  - charts
-  - ghcr
+publishDate: "2026-04-07"
+tags: ["helm", "oci", "registry", "ghcr", "chart-distribution", "harbor", "ecr"]
+author: "Luca Berton"
 relatedRecipes:
+  - "helm-sprig-cat-function"
+  - "kubernetes-cluster-autoscaler-advanced"
+  - "karpenter-node-autoscaling"
+  - "kubeflow-operator-platform"
   - "helm-values-override-patterns"
   - "helm-rollback-history-guide"
+  - "helm-library-charts"
+  - "kubernetes-helm-chart-testing"
+  - "kubernetes-helm-vs-kustomize"
+  - "argocd-gitops"
+  - "flux-gitops"
 ---
 
-> 💡 **Quick Answer:** Use `helm push mychart-1.0.0.tgz oci://ghcr.io/myorg/charts` to store charts in OCI registries. Pull with `helm pull oci://ghcr.io/myorg/charts/mychart --version 1.0.0`. Install directly: `helm install myrelease oci://ghcr.io/myorg/charts/mychart --version 1.0.0`. No `helm repo add` needed — OCI registries replace traditional chart repos.
+> 💡 **Quick Answer:** Since Helm 3.8 OCI support is GA: `helm registry login ghcr.io`, `helm package ./my-chart`, `helm push my-chart-1.0.0.tgz oci://ghcr.io/myorg/charts`, then `helm install my-release oci://ghcr.io/myorg/charts/my-chart --version 1.0.0`. There is no `helm repo add` / `index.yaml` for OCI — you reference the full `oci://` URL every time. Works with GHCR, ECR, ACR, GAR, Harbor, Quay and Artifactory.
+>
+> **Gotcha:** The chart **name and version come from Chart.yaml**; the push URL is only the namespace (`oci://ghcr.io/myorg/charts`, not `.../charts/my-chart`).
 
 ## The Problem
 
-Traditional Helm chart repositories (index.yaml-based) require dedicated infrastructure, don't support fine-grained access control, and lack the mature tooling of container registries. You want to use the same registry for images AND charts.
+Traditional Helm chart repositories (ChartMuseum, GitHub Pages `index.yaml`) are separate infrastructure to maintain. OCI registries (the same ones storing your container images) now support Helm charts natively — one registry for everything, with built-in auth, replication, and vulnerability scanning.
 
 ## The Solution
 
-### Login to OCI Registry
+### Push Charts to OCI Registries
 
 ```bash
-# GitHub Container Registry
-echo $GITHUB_TOKEN | helm registry login ghcr.io -u USERNAME --password-stdin
+# Package the chart
+helm package ./my-chart
+# Creates: my-chart-1.0.0.tgz
 
-# AWS ECR
-aws ecr get-login-password | helm registry login AWS_ACCOUNT.dkr.ecr.REGION.amazonaws.com --password-stdin
+# Login to registry (stdin keeps the token out of shell history)
+echo "$GITHUB_TOKEN" | helm registry login ghcr.io -u myuser --password-stdin
+# ECR: aws ecr get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin 123456789.dkr.ecr.us-east-1.amazonaws.com
+# ACR: az acr login --name myregistry   (or helm registry login myregistry.azurecr.io)
+# Quay: echo "$QUAY_TOKEN" | helm registry login quay.io -u "$QUAY_USER" --password-stdin
 
-# Azure Container Registry
-helm registry login myregistry.azurecr.io -u $SP_ID -p $SP_SECRET
+# Push to GHCR
+helm push my-chart-1.0.0.tgz oci://ghcr.io/myorg/charts
 
-# Quay.io
-helm registry login quay.io -u $QUAY_USER -p $QUAY_TOKEN
+# Push to ECR (the repository <namespace>/<chart-name> must exist first)
+aws ecr create-repository --repository-name charts/my-chart
+helm push my-chart-1.0.0.tgz oci://123456789.dkr.ecr.us-east-1.amazonaws.com/charts
+
+# Push to ACR
+helm push my-chart-1.0.0.tgz oci://myregistry.azurecr.io/charts
+
+# Push to Harbor
+helm push my-chart-1.0.0.tgz oci://harbor.example.com/charts
 ```
 
-### Package and Push
+### Install from OCI
 
 ```bash
-# Package chart
-helm package ./mychart
-# Creates: mychart-1.0.0.tgz
-
-# Push to OCI registry
-helm push mychart-1.0.0.tgz oci://ghcr.io/myorg/charts
-
-# Push with specific tag
-helm push mychart-1.0.0.tgz oci://ghcr.io/myorg/charts
-# Chart stored at: ghcr.io/myorg/charts/mychart:1.0.0
-```
-
-### Pull and Install
-
-```bash
-# Pull chart archive
-helm pull oci://ghcr.io/myorg/charts/mychart --version 1.0.0
-
 # Install directly from OCI
-helm install myrelease oci://ghcr.io/myorg/charts/mychart --version 1.0.0
+helm install my-release oci://ghcr.io/myorg/charts/my-chart --version 1.0.0
 
-# Install with values
-helm install myrelease oci://ghcr.io/myorg/charts/mychart \
-  --version 1.0.0 \
-  --values production-values.yaml
+# Pull locally first
+helm pull oci://ghcr.io/myorg/charts/my-chart --version 1.0.0
 
-# Template (dry run)
-helm template myrelease oci://ghcr.io/myorg/charts/mychart --version 1.0.0
+# Show chart info
+helm show chart oci://ghcr.io/myorg/charts/my-chart --version 1.0.0
+helm show values oci://ghcr.io/myorg/charts/my-chart --version 1.0.0
+helm show readme oci://ghcr.io/myorg/charts/my-chart --version 1.0.0
+
+# Template without installing
+helm template my-release oci://ghcr.io/myorg/charts/my-chart --version 1.0.0
+
+# Pin by digest (immutable) — the digest is printed by helm push
+helm install my-release oci://ghcr.io/myorg/charts/my-chart@sha256:<digest>
 ```
 
-### Show Chart Info
+### OCI Charts as Dependencies
+
+```yaml
+# Chart.yaml
+dependencies:
+  - name: common
+    version: "2.x.x"
+    repository: "oci://ghcr.io/myorg/charts"
+```
 
 ```bash
-# View chart metadata
-helm show chart oci://ghcr.io/myorg/charts/mychart --version 1.0.0
-
-# View default values
-helm show values oci://ghcr.io/myorg/charts/mychart --version 1.0.0
-
-# View README
-helm show readme oci://ghcr.io/myorg/charts/mychart --version 1.0.0
+helm dependency update ./my-app   # pulls into charts/ — no helm repo add needed
 ```
 
-## CI/CD Pipeline (GitHub Actions)
+### ArgoCD with OCI Helm Charts
+
+`repoURL` has **no** `oci://` prefix for Helm-type sources; private registries need a repository Secret with `enableOCI`:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ghcr-charts
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  type: helm
+  name: ghcr-charts
+  url: ghcr.io/myorg/charts
+  enableOCI: "true"
+  username: myuser
+  password: <token>
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app
+  namespace: argocd
+spec:
+  source:
+    chart: my-chart
+    repoURL: ghcr.io/myorg/charts
+    targetRevision: 1.0.0
+    helm:
+      values: |
+        replicaCount: 3
+        image:
+          tag: v2.0.0
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: production
+```
+
+### Flux with OCI Helm Charts
+
+```yaml
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: my-charts
+  namespace: flux-system
+spec:
+  type: oci
+  interval: 5m
+  url: oci://ghcr.io/myorg/charts
+  secretRef:
+    name: ghcr-credentials
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: my-app
+  namespace: production
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: my-chart
+      version: "1.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: my-charts
+        namespace: flux-system
+```
+
+### CI/CD Release Pipeline
+
+```bash
+#!/bin/bash
+# release-chart.sh — Automated OCI chart release
+set -euo pipefail
+
+CHART_DIR="$1"
+REGISTRY="oci://ghcr.io/myorg/charts"
+
+# Get version from Chart.yaml
+VERSION=$(grep '^version:' "$CHART_DIR/Chart.yaml" | awk '{print $2}')
+CHART_NAME=$(grep '^name:' "$CHART_DIR/Chart.yaml" | awk '{print $2}')
+
+echo "Releasing $CHART_NAME v$VERSION to $REGISTRY"
+
+# Lint
+helm lint "$CHART_DIR" --strict
+
+# Package
+helm package "$CHART_DIR"
+
+# Push
+helm push "${CHART_NAME}-${VERSION}.tgz" "$REGISTRY"
+
+# Verify
+helm show chart "$REGISTRY/$CHART_NAME" --version "$VERSION"
+
+echo "Released $CHART_NAME v$VERSION"
+```
+
+GitHub Actions on tag push (GHCR, no PAT needed):
 
 ```yaml
 name: Publish Helm Chart
 on:
   push:
     tags: ['v*']
-
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       packages: write
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Install Helm
-        uses: azure/setup-helm@v4
-      
-      - name: Login to GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
-      
-      - name: Package chart
-        run: helm package ./charts/mychart
-      
-      - name: Push chart
-        run: helm push mychart-*.tgz oci://ghcr.io/${{ github.repository_owner }}/charts
+      - uses: azure/setup-helm@v4
+      - run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
+      - run: helm package ./charts/my-chart
+      - run: helm push my-chart-*.tgz oci://ghcr.io/${{ github.repository_owner }}/charts
 ```
 
-## OCI as Helm Dependency
-
-```yaml
-# Chart.yaml
-dependencies:
-  - name: postgresql
-    version: "15.5.0"
-    repository: "oci://registry-1.docker.io/bitnamicharts"
-  - name: redis
-    version: "19.0.0"
-    repository: "oci://registry-1.docker.io/bitnamicharts"
-```
-
-```bash
-helm dependency update ./mychart
+```mermaid
+graph TD
+    A[helm package] --> B[my-chart-1.0.0.tgz]
+    B --> C[helm push to OCI registry]
+    C --> D[GHCR / ECR / ACR / Harbor]
+    D --> E[ArgoCD / Flux / helm install]
+    D --> F[Vulnerability scanning]
+    D --> G[Cross-region replication]
 ```
 
 ## Common Issues
 
 | Issue | Cause | Fix |
 |-------|-------|-----|
-| `unauthorized: authentication required` | Not logged in | Run `helm registry login` first |
-| `chart metadata name mismatch` | Chart.yaml name ≠ filename | Ensure `name` in Chart.yaml matches |
-| `version already exists` | Pushing same version twice | Bump version or use `--force` (if supported) |
-| Can't list charts | OCI has no `index.yaml` | Use registry UI or API to browse |
-| `helm repo add` doesn't work | OCI doesn't use repo protocol | Use `oci://` prefix directly |
+| 401 Unauthorized | Token expired | `helm registry login` with fresh token |
+| `not found` on install | Wrong OCI URL format | `oci://<registry>/<namespace>/<chart>` + `--version`; no `/v2/` path |
+| Chart lands at `.../my-chart/my-chart` | Chart name included in push URL | Push to the namespace only; name comes from Chart.yaml |
+| `helm repo add` fails with oci:// | OCI registries have no index.yaml | Skip `repo add`; use the full `oci://` URL |
+| ArgoCD can't pull | Missing repo Secret or `enableOCI` | Add a repository Secret with `enableOCI: "true"`, `repoURL` without `oci://` |
+| ECR `name unknown` | Repository not pre-created | `aws ecr create-repository --repository-name charts/<chart>` |
+| `chart metadata name mismatch` / wrong path | `name` in Chart.yaml differs from the package file name | Repackage; don't rename `.tgz` files by hand |
+| Pushed same version, clients see old chart | Tag overwritten; clients cached the digest | Never re-push a version; enable tag immutability in the registry |
 
 ## Best Practices
 
-1. **Use semantic versioning** — OCI tags are the chart version
-2. **Sign charts with cosign** — `cosign sign ghcr.io/myorg/charts/mychart:1.0.0`
-3. **Use GitHub Packages for open source** — Free for public repos
-4. **Mirror public charts** — Pull from upstream OCI and push to your registry
-5. **Don't use `latest` tag** — Always pin chart versions in production
+- **One registry for images and charts** — simplifies auth and management
+- **Immutable versions** — most registries allow overwriting a tag by default; turn on tag immutability (ECR, Harbor, ACR) and bump the version instead
+- **Sign charts** with cosign for supply chain security
+- **Use digest pinning** in production ArgoCD/Flux manifests
+- **Automate releases** in CI — no manual `helm push`
 
 ## Key Takeaways
 
-- OCI registries replace traditional `index.yaml` Helm repositories
-- Same registry hosts both container images and Helm charts
-- No `helm repo add/update` needed — reference charts directly with `oci://`
-- All major registries support OCI charts: GHCR, ECR, ACR, Quay, Docker Hub
-- CI/CD pipelines push charts alongside images for atomic releases
+- OCI registries replace ChartMuseum as the standard for Helm chart distribution
+- Same auth, replication, and scanning as container images
+- ArgoCD and Flux both support OCI Helm sources natively
+- Enable tag immutability and pin digests to prevent accidental overwrites
+
+## Frequently Asked Questions
+
+### Can I use `helm repo add` with an OCI registry?
+
+No. `helm repo add` expects an HTTP repository with `index.yaml`. OCI charts are referenced directly: `helm install x oci://registry/namespace/chart --version 1.2.3`, and as `repository: "oci://registry/namespace"` in Chart.yaml dependencies.
+
+### Which Helm version supports OCI?
+
+OCI support became stable (no `HELM_EXPERIMENTAL_OCI`) in Helm 3.8.0. Any current Helm 3.x or 4.x release supports push, pull, install, template and dependencies from OCI.
+
+### How do I list chart versions in an OCI registry?
+
+Helm has no search for OCI. Use the registry's UI/API, `oras repo tags ghcr.io/myorg/charts/my-chart`, or `crane ls`.
+
+### How do I sign and verify OCI charts?
+
+Sign the pushed artifact with cosign (`cosign sign ghcr.io/myorg/charts/my-chart@sha256:<digest>`) and verify in CI or with an admission policy (Kyverno, Sigstore policy-controller). Flux can verify cosign signatures on `OCIRepository`/`HelmRepository` sources.

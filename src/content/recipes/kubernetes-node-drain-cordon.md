@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Node Drain Cordon Guide"
-description: "Safely drain and cordon Kubernetes nodes for maintenance. Graceful pod eviction, PDB-aware drains, force drain, and maintenance window procedures."
+title: "kubectl cordon, drain and uncordon Nodes"
+description: "Safely cordon, drain and uncordon Kubernetes nodes for maintenance: drain flags, PDB-blocked drains, bare pods, and a maintenance script."
 publishDate: "2026-04-29"
 author: "Luca Berton"
 category: "deployments"
@@ -10,15 +10,23 @@ kubernetesVersion: "1.28+"
 tags:
   - "node-drain"
   - "cordon"
+  - "uncordon"
+  - "node-maintenance"
   - "maintenance"
   - "eviction"
   - "operations"
 relatedRecipes:
-  - "kubernetes-pod-disruption-budget"
+  - "pod-disruption-budget-config"
+  - "pdb-allowed-disruptions-zero"
+  - "openshift-node-cordon-uncordon"
+  - "kubernetes-taint-toleration-guide"
+  - "debug-pod-eviction-reasons"
   - "kubernetes-rolling-update-strategy"
 ---
 
 > 💡 **Quick Answer:** `kubectl cordon <node>` marks a node unschedulable (no new pods), `kubectl drain <node>` evicts all pods and cordons in one step. Always drain with `--ignore-daemonsets --delete-emptydir-data` for clean maintenance. Uncordon with `kubectl uncordon <node>` when maintenance is complete.
+>
+> **Gotcha:** Drain uses the Eviction API, so PodDisruptionBudgets can hold it indefinitely — always pass `--timeout`. On OpenShift use `oc adm cordon/drain/uncordon` (see [OpenShift node cordon/uncordon](/recipes/configuration/openshift-node-cordon-uncordon/)).
 
 ## The Problem
 
@@ -56,11 +64,30 @@ kubectl drain worker-3 \
   --grace-period=60 \
   --timeout=300s
 
-# Dry run first
-kubectl drain worker-3 --dry-run=client \
+# Dry run first (server-side: also checks what the API would do)
+kubectl drain worker-3 --dry-run=server \
   --ignore-daemonsets \
   --delete-emptydir-data
 ```
+
+### Safe Maintenance Procedure
+
+```bash
+# 1. What runs on the node?
+kubectl get pods -A --field-selector spec.nodeName=worker-3 -o wide
+
+# 2. Will any PDB block the drain? (ALLOWED DISRUPTIONS must be > 0)
+kubectl get pdb -A
+
+# 3. Drain, do the maintenance, uncordon
+kubectl drain worker-3 --ignore-daemonsets --delete-emptydir-data --timeout=600s
+kubectl uncordon worker-3
+
+# 4. Confirm the node is schedulable again
+kubectl get node worker-3        # STATUS: Ready (no SchedulingDisabled)
+```
+
+Uncordoning doesn't move evicted pods back — the node fills up again only as new pods are created (rollouts, scaling). Use the descheduler if you need active rebalancing.
 
 ### Drain Flags
 
@@ -73,6 +100,9 @@ kubectl drain worker-3 --dry-run=client \
 | `--force` | Delete pods not managed by a controller (bare pods) |
 | `--pod-selector=label` | Only evict pods matching the selector |
 | `--disable-eviction` | Use delete instead of eviction API (bypasses PDB) |
+| `--dry-run=server` | Preview evictions without changing anything |
+
+`--force` does **not** bypass PDBs; only `--disable-eviction` does.
 
 ### Maintenance Window Script
 
@@ -125,6 +155,10 @@ A PodDisruptionBudget is blocking eviction. Wait for other pods to become ready,
 
 Bare pods (not from a Deployment/StatefulSet) won't be rescheduled. Use `--force` to delete them, but understand they're gone permanently.
 
+**"cannot delete Pods with local storage"**
+
+The pod uses `emptyDir`. Add `--delete-emptydir-data` (the data is lost; it's scratch space by definition).
+
 **Drain takes forever**
 
 A pod has a long `terminationGracePeriodSeconds` or a PreStop hook. Use `--grace-period=30` to override, or investigate the stuck pod.
@@ -132,7 +166,7 @@ A pod has a long `terminationGracePeriodSeconds` or a PreStop hook. Use `--grace
 ## Best Practices
 
 - **Always drain before maintenance** — don't just power off nodes
-- **Dry run first** — `--dry-run=client` shows what would be evicted
+- **Dry run first** — `--dry-run=server` shows what would be evicted
 - **Set PDBs on all production workloads** — prevents mass eviction
 - **Drain one node at a time** — maintain cluster capacity
 - **Use `--timeout`** — prevent infinite waits from stuck pods
@@ -145,3 +179,22 @@ A pod has a long `terminationGracePeriodSeconds` or a PreStop hook. Use `--grace
 - PDBs can block drains — by design, to protect availability
 - Always `uncordon` after maintenance to restore scheduling
 - Drain one node at a time during rolling maintenance windows
+
+## Frequently Asked Questions
+
+### What is the difference between cordon and drain?
+
+`kubectl cordon` only marks the node unschedulable (`spec.unschedulable: true`); running pods stay. `kubectl drain` cordons the node and then evicts its pods (except DaemonSet pods and mirror pods) so controllers recreate them elsewhere.
+
+### What does uncordon do?
+
+`kubectl uncordon <node>` clears `spec.unschedulable`, so the scheduler can place new pods on the node again. It doesn't bring back pods that were evicted.
+
+### Why is kubectl drain hanging?
+
+Usually a PodDisruptionBudget allows 0 disruptions (single replica, `minAvailable` equal to replicas, or unready pods), or a pod has a long termination grace period. Check `kubectl get pdb -A`, scale the workload up, or fix unhealthy pods. See [PDB allowed disruptions 0](/recipes/troubleshooting/pdb-allowed-disruptions-zero/).
+
+### Does drain evict DaemonSet pods?
+
+No. DaemonSet pods would be recreated on the same node immediately, so drain refuses to proceed unless you pass `--ignore-daemonsets`, which leaves them running.
+

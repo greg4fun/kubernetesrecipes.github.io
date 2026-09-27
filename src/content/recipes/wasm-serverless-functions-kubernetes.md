@@ -7,7 +7,7 @@ publishDate: "2026-04-07"
 tags: ["wasm", "serverless", "keda", "functions", "scale-to-zero"]
 author: "Luca Berton"
 relatedRecipes:
-  - "kubernetes-native-sidecar-containers-guide"
+  - "kubernetes-sidecar-patterns"
   - "multi-cluster-management-kubernetes"
   - "kubernetes-local-development"
   - "kubernetes-kind-local-development"

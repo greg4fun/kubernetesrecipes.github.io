@@ -1,6 +1,6 @@
 ---
-title: "CSI Volume Snapshots and Restore"
-description: "Create and restore volume snapshots using CSI VolumeSnapshot API. Configure VolumeSnapshotClass, take point-in-time backups, and clone PVCs from snapshots."
+title: "Kubernetes CSI VolumeSnapshot: Create and Restore"
+description: "Create and restore Kubernetes CSI volume snapshots: snapshot controller, VolumeSnapshotClass, restore to a new PVC, PVC cloning, scheduled snapshots."
 publishDate: "2026-04-20"
 author: "Luca Berton"
 category: "storage"
@@ -13,7 +13,11 @@ tags:
   - storage
   - backup
   - restore
+  - volumesnapshot
 relatedRecipes:
+  - "kubernetes-1-36-volume-group-snapshot"
+  - "kubernetes-1-36-csi-differential-snapshots"
+  - "kubernetes-velero-snapshot-locations"
   - "velero-kubernetes-backup-disaster-recovery"
   - "kubernetes-storage-best-practices"
   - "kubernetes-fsgroupchangepolicy"
@@ -30,12 +34,17 @@ You need point-in-time backups of persistent volumes for disaster recovery, pre-
 ### Prerequisites
 
 ```bash
-# Install snapshot CRDs and controller (if not already present)
-kubectl apply -f https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/master/client/config/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/master/client/config/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/master/client/config/crd/snapshot.storage.k8s.io_volumesnapshots.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/master/deploy/kubernetes/snapshot-controller/setup-snapshot-controller.yaml
+# Already installed? (EKS/GKE/AKS add-ons and OpenShift ship it)
+kubectl get crd volumesnapshots.snapshot.storage.k8s.io
+kubectl get pods -A | grep snapshot-controller
+
+# Otherwise install CRDs + snapshot-controller from a pinned release
+REPO=https://github.com/kubernetes-csi/external-snapshotter
+kubectl kustomize "$REPO/client/config/crd?ref=v8.2.0" | kubectl apply -f -
+kubectl kustomize "$REPO/deploy/kubernetes/snapshot-controller?ref=v8.2.0" | kubectl apply -f -
 ```
+
+The CSI driver itself must also run the `csi-snapshotter` sidecar in its controller pod — that's what actually calls the storage backend.
 
 ### VolumeSnapshotClass
 
@@ -88,31 +97,21 @@ spec:
     apiGroup: snapshot.storage.k8s.io
 ```
 
-## Pre-Snapshot Hook (Quiesce Application)
+## Application Consistency
 
-Crash-consistent snapshots are fine for most apps, but databases need a quiesce step first to guarantee an application-consistent restore:
+A CSI snapshot is crash-consistent: equivalent to pulling the power cord. Databases with a write-ahead log (PostgreSQL, MySQL/InnoDB) recover from that **if data and WAL live on the same volume**. When they span volumes, snapshot them atomically with a [VolumeGroupSnapshot](/recipes/storage/kubernetes-1-36-volume-group-snapshot/), or quiesce first:
 
-```yaml
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: pre-snapshot-quiesce
-spec:
-  template:
-    spec:
-      containers:
-        - name: quiesce
-          image: bitnami/postgresql:15
-          command:
-            - sh
-            - -c
-            - |
-              PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -c "SELECT pg_start_backup('snapshot');"
-          envFrom:
-            - secretRef:
-                name: db-credentials
-      restartPolicy: Never
+```bash
+# Flush dirty pages to shorten crash recovery on restore
+kubectl exec -n production postgres-0 -- psql -U postgres -c "CHECKPOINT;"
+
+# Or freeze the filesystem for the duration of the snapshot (needs privileges; keep it short)
+kubectl exec -n production postgres-0 -- fsfreeze -f /var/lib/postgresql/data
+# ...create VolumeSnapshot, wait for readyToUse...
+kubectl exec -n production postgres-0 -- fsfreeze -u /var/lib/postgresql/data
 ```
+
+For hands-off pre/post hooks, use Velero's CSI snapshot integration with `pre.hook.backup.velero.io/command` annotations. Note `pg_start_backup()` was renamed `pg_backup_start()` in PostgreSQL 15 and only holds while its session stays open — it doesn't work from a one-shot `psql -c`.
 
 ## Automated Snapshot CronJob
 
@@ -160,6 +159,8 @@ spec:
 
 ## Clone a PVC (Without Snapshot)
 
+Same namespace, same StorageClass (driver), size ≥ source:
+
 ```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -176,6 +177,8 @@ spec:
     name: postgres-data      # Source PVC
     kind: PersistentVolumeClaim
 ```
+
+Restoring or cloning across namespaces needs `dataSourceRef.namespace` plus a `ReferenceGrant` and the alpha `CrossNamespaceVolumeDataSource` feature gate — in practice, most teams restore in the source namespace or use Velero.
 
 ## Verify Snapshot Status
 
@@ -194,15 +197,15 @@ kubectl get volumesnapshot -A --sort-by=.metadata.creationTimestamp
 
 ## Verify CSI Driver Support
 
-Not every CSI driver supports snapshots — check before relying on the feature:
+Not every CSI driver supports snapshots (hostPath/local-path and most NFS provisioners don't). There's no field on `CSIDriver` for it — check for a `csi-snapshotter` sidecar and a matching VolumeSnapshotClass:
 
 ```bash
-kubectl get csidrivers -o custom-columns=\
-NAME:.metadata.name,\
-SNAPSHOT:.spec.volumeLifecycleModes
-
-kubectl get volumesnapshotclasses
+kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.name}: {.spec.containers[*].name}{"\n"}{end}' | grep csi-snapshotter
+kubectl get volumesnapshotclasses -o custom-columns=NAME:.metadata.name,DRIVER:.driver,POLICY:.deletionPolicy
+kubectl get storageclass -o custom-columns=NAME:.metadata.name,PROVISIONER:.provisioner
 ```
+
+The VolumeSnapshotClass `driver` must equal the PVC's StorageClass `provisioner`.
 
 ## Common Issues
 
@@ -210,7 +213,8 @@ kubectl get volumesnapshotclasses
 |-------|-------|-----|
 | `snapshot controller not found` | CRDs/controller not installed | Install snapshot-controller |
 | `driver does not support snapshots` | CSI driver limitation | Check driver capabilities |
-| Snapshot stuck in `pending` | Driver can't snapshot mounted volume | Some drivers require unmount |
+| Snapshot never `readyToUse` | Backend still uploading, or driver error | `kubectl describe volumesnapshot` and check `volumesnapshotcontent` events / `csi-snapshotter` logs |
+| Restore PVC stuck `Pending` | Snapshot not ready, different driver, or `WaitForFirstConsumer` with no pod yet | Check `readyToUse`, driver match; create the consuming pod |
 | Restore PVC wrong size | Must match or exceed snapshot size | Set storage ≥ `restoreSize` |
 | `VolumeSnapshotClass not found` | No default class set | Create and annotate as default |
 
@@ -229,3 +233,22 @@ kubectl get volumesnapshotclasses
 - Restore creates a new PVC pre-populated with snapshot data
 - Automate with CronJobs and implement retention policies
 - PVC cloning (dataSource: PVC) works without snapshots but is less flexible
+
+## Frequently Asked Questions
+
+### How do I restore a PVC from a VolumeSnapshot?
+
+Create a new PVC with `dataSource: {kind: VolumeSnapshot, apiGroup: snapshot.storage.k8s.io, name: <snapshot>}`, a StorageClass using the same CSI driver, and `storage` ≥ the snapshot's `restoreSize`. You can't restore in place — point the workload at the new PVC.
+
+### Are Kubernetes volume snapshots backups?
+
+Not by themselves. On most clouds the snapshot lives in the same provider account/region, and with `deletionPolicy: Delete` it disappears when the VolumeSnapshot is deleted. Combine with Velero (or driver-level copy-to-region) for off-site backups.
+
+### What is the difference between VolumeSnapshot and VolumeSnapshotContent?
+
+`VolumeSnapshot` is the namespaced request (like a PVC); `VolumeSnapshotContent` is the cluster-scoped object representing the actual backend snapshot (like a PV). Pre-provisioned snapshots are imported by creating the content object with a `snapshotHandle`.
+
+### Does taking a snapshot stop my application?
+
+No. Snapshots are taken online; the result is crash-consistent. Quiesce or checkpoint the application first if you need application consistency.
+

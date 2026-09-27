@@ -19,7 +19,7 @@ relatedRecipes:
   - "statefulset-management"
   - "kubernetes-headless-service"
   - "kubernetes-service-dns-resolution"
-  - "cloudnativepg-postgresql-operator-kubernetes"
+  - "cnpg-postgresql-operator"
   - "kubernetes-persistent-volume-claims"
   - "kubernetes-persistent-volume-reclaim-policy"
   - "kubernetes-service-types-loadbalancer-guide"

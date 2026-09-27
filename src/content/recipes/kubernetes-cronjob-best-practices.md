@@ -19,7 +19,7 @@ relatedRecipes:
   - "cronjob-concurrency-policy"
   - "kubernetes-job-cronjob-guide"
   - "kubernetes-job-ttl-cleanup"
-  - "kubernetes-resource-limits-requests"
+  - "kubernetes-resource-requests-limits"
   - "kubernetes-serviceaccount-guide"
   - "kubernetes-rbac-role-rolebinding"
   - "secrets-management-best-practices"

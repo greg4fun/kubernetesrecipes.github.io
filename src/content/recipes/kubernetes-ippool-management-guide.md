@@ -18,7 +18,7 @@ relatedRecipes:
   - "create-nv-ipam-ippool"
   - "kubernetes-metallb-bare-metal-lb"
   - "sriov-device-plugin-pf-flag-kubernetes"
-  - "kubernetes-service-types-explained"
+  - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
 ---
 
 > 💡 **Quick Answer:** IPPools define ranges of IP addresses that Kubernetes allocates to pods, secondary interfaces, or LoadBalancer Services. Use **Whereabouts** for secondary network IPAM (Multus), **NV-IPAM** for NVIDIA GPU networking, **Calico IPPool** for pod CIDR management, and **MetalLB IPAddressPool** for bare-metal LoadBalancer IPs. Each solves a different IPAM layer.

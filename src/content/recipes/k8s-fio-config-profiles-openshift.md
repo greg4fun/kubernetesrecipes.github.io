@@ -10,7 +10,7 @@ relatedRecipes:
   - "distributed-fio-kubernetes-openshift"
   - "nfsordma-troubleshooting-performance"
   - "kubernetes-storage-best-practices"
-  - "kubernetes-pvc-guide"
+  - "kubernetes-persistent-volume-guide"
 ---
 
 > 💡 **Quick Answer:** Benchmark OpenShift and Kubernetes storage using fio with YAML config profiles for random and sequential I/O patterns. Automate distributed fio testing with reusable configuration files.

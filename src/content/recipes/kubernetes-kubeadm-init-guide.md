@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-kubeadm-upgrade-guide"
   - "kubernetes-certificate-management"
   - "kubernetes-kubelet-configuration"
-  - "kubernetes-etcd-backup-guide"
+  - "etcd-backup-restore-kubernetes"
 ---
 
 > 💡 **Quick Answer:** `kubeadm init --pod-network-cidr=10.244.0.0/16` bootstraps the control plane. Then install a CNI: `kubectl apply -f calico.yaml`. Join workers: `kubeadm join <cp-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>`. For HA: add `--control-plane-endpoint` with a load balancer and join additional control planes with `--control-plane`.

@@ -16,7 +16,7 @@ tags:
 relatedRecipes:
   - "kubernetes-persistent-volume-guide"
   - "kubernetes-csi-driver-guide"
-  - "kubernetes-sidecar-containers"
+  - "kubernetes-sidecar-patterns"
 ---
 
 > 💡 **Quick Answer:** `emptyDir: {}` creates a temporary directory that exists as long as the pod runs — perfect for scratch space, caches, and sharing data between containers. `emptyDir: {medium: Memory}` uses tmpfs (RAM-backed, faster). `hostPath` mounts a file or directory from the host node — use sparingly due to security risks. Both are ephemeral: data is lost when the pod is deleted.

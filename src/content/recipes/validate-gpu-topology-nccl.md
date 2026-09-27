@@ -10,7 +10,6 @@ prerequisites:
   - "nvidia-smi and lspci available"
 relatedRecipes:
   - "nccl-p2p-latency-diagnostics"
-  - "nccl-test-benchmark-kubernetes"
   - "run-nccl-tests-kubernetes"
 tags:
   - nccl

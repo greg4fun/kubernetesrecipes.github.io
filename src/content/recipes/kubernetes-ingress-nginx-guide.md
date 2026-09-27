@@ -15,7 +15,7 @@ tags:
   - "cka"
 relatedRecipes:
   - "kubernetes-gateway-api"
-  - "kubernetes-service-types-explained"
+  - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
   - "nginx-ingress-limit-burst-multiplier"
   - "kubernetes-rate-limiting-gateway-api"
 ---

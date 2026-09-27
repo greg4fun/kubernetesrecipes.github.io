@@ -23,8 +23,8 @@ relatedRecipes:
   - "pod-lifecycle-hooks"
   - "kubernetes-liveness-readiness-startup-probes"
   - "kubernetes-rolling-update-strategy"
-  - "kubernetes-pod-disruption-budget-guide"
-  - "kubernetes-sidecar-containers"
+  - "pod-disruption-budget-config"
+  - "kubernetes-sidecar-patterns"
   - "fix-502-bad-gateway-kubernetes"
 ---
 

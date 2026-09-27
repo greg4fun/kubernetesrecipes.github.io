@@ -14,7 +14,7 @@ tags:
   - "disaster-recovery"
   - "cka"
 relatedRecipes:
-  - "kubernetes-etcd-backup-guide"
+  - "etcd-backup-restore-kubernetes"
   - "kubernetes-kubeadm-init-guide"
   - "kubernetes-certificate-management"
 ---

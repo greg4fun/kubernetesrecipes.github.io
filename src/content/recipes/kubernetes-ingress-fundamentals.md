@@ -14,7 +14,7 @@ tags:
   - "routing"
   - "networking"
 relatedRecipes:
-  - "kubernetes-service-types-explained"
+  - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
   - "openshift-routes-vs-ingress"
   - "nginx-ingress-limit-burst-multiplier"
   - "kubernetes-ingress-nginx-guide"

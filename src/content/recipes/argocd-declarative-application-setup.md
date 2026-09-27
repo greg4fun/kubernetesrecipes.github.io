@@ -12,7 +12,7 @@ prerequisites:
 relatedRecipes:
   - "pod-lifecycle-hooks"
   - "pod-disruption-budget-config"
-  - "kubernetes-multi-container-pod-patterns"
+  - "kubernetes-multi-container-patterns"
   - "kubernetes-readiness-liveness-startup"
   - "kubernetes-leases"
   - "deployment-strategies"

@@ -15,7 +15,7 @@ tags:
   - "ai-observability"
 relatedRecipes:
   - "kubernetes-pod-resource-monitoring-grafana"
-  - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "kubernetes-gpu-sharing-mps-mig"
   - "cilium-hubble-observability-guide"
 ---
 

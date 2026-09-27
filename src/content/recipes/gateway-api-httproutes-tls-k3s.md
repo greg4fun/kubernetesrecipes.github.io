@@ -9,7 +9,7 @@ timeToComplete: "20 minutes"
 kubernetesVersion: "1.31+"
 tags: ["gateway-api", "httproute", "tls", "cilium", "k3s", "ingress"]
 relatedRecipes:
-  - "kubernetes-service-types-explained"
+  - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
   - "kubernetes-ingress-path-routing"
   - "cilium-ebpf-gateway-api-hubble-k3s"
   - "certmanager-ovh-dns01-wildcard-tls"

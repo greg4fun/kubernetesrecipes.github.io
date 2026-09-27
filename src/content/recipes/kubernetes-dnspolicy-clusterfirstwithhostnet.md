@@ -9,7 +9,7 @@ timeToComplete: "10 minutes"
 kubernetesVersion: "1.21+"
 tags: ["dns", "dnspolicy", "hostnetwork", "resolv-conf", "coredns", "networking"]
 relatedRecipes:
-  - "kubernetes-service-types-explained"
+  - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
   - "kubernetes-ingress-path-routing"
   - "kubernetes-network-policy-recipes"
 ---

@@ -14,7 +14,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "chaos-mesh-fault-injection-kubernetes"
-  - "kubernetes-pod-disruption-budget"
+  - "pod-disruption-budget-config"
   - "kubernetes-readiness-probe-guide"
   - "kubernetes-hpa-custom-metrics-guide"
   - "kubernetes-rbac-least-privilege"

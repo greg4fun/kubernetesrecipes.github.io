@@ -20,10 +20,10 @@ relatedRecipes:
   - "kubernetes-job-completion-parallelism"
   - "kubernetes-job-completion-patterns"
   - "kubernetes-job-ttl-cleanup"
-  - "kubernetes-sidecar-containers"
+  - "kubernetes-sidecar-patterns"
   - "kubernetes-init-containers-patterns-examples"
-  - "kubernetes-resource-quotas-limitranges"
-  - "kubernetes-pod-priority-preemption-scheduling"
+  - "kubernetes-resource-quota-limitrange"
+  - "kubernetes-pod-priority-preemption"
   - "kubernetes-operator-pattern"
   - "ai-batch-processing-volcano"
 ---
@@ -149,7 +149,7 @@ spec:
 
 ## Jobs with Sidecars
 
-A regular sidecar container (proxy, log shipper) keeps the pod running and the Job never completes. Declare it as a native sidecar — `initContainers` with `restartPolicy: Always` — and it's stopped automatically when the main container exits. See [sidecar containers](/recipes/configuration/kubernetes-sidecar-containers/).
+A regular sidecar container (proxy, log shipper) keeps the pod running and the Job never completes. Declare it as a native sidecar — `initContainers` with `restartPolicy: Always` — and it's stopped automatically when the main container exits. See [sidecar containers](/recipes/configuration/kubernetes-sidecar-patterns/).
 
 ## CronJob
 

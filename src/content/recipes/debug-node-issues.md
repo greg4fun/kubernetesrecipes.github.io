@@ -9,7 +9,6 @@ relatedRecipes:
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-oomkilled-troubleshooting"
   - "imagepullbackoff-troubleshooting"
-  - "debug-imagepullbackoff"
 tags: ["nodes", "debugging", "troubleshooting", "kubelet", "resources"]
 ---
 

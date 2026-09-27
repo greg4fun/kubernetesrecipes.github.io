@@ -15,7 +15,7 @@ tags:
   - mtls
   - observability
 relatedRecipes:
-  - "kubernetes-service-types-explained"
+  - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
   - "kubernetes-ingress-path-routing"
 ---
 

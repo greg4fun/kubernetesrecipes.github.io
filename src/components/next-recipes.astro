@@ -42,9 +42,9 @@ const currentTags: string[] = currentRecipe?.data?.tags || [];
 const suggestedProgression: Record<string, string[]> = {
   "kubernetes-rolling-update-strategy": ["blue-green-deployment", "canary-deployments"],
   "blue-green-deployment": ["canary-deployments", "argocd-gitops-deployment"],
-  "canary-deployments": ["argocd-gitops-deployment", "flux-gitops-continuous-delivery"],
+  "canary-deployments": ["argocd-gitops-deployment", "flux-gitops"],
   "kubernetes-job-cronjob-guide": ["horizontal-pod-autoscaler", "pod-disruption-budgets"],
-  "service-accounts-rbac": ["pod-security-standards", "network-policies"],
+  "service-accounts-rbac": ["pod-security-standards", "kubernetes-networkpolicy-guide"],
   "pod-security-standards": ["secrets-management-best-practices", "network-policies-advanced"],
   "prometheus-monitoring-setup": ["grafana-kubernetes-dashboards", "alertmanager-configuration"],
   "grafana-kubernetes-dashboards": ["alertmanager-configuration", "distributed-tracing-jaeger"],

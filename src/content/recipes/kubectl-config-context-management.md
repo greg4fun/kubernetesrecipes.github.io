@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-rbac-guide"
   - "kubernetes-oidc-enterprise-sso"
   - "cluster-api-infrastructure-as-code"
-  - "kubernetes-service-accounts-tokens"
+  - "kubernetes-service-account-token"
 ---
 
 > 💡 **Quick Answer:** `kubectl config get-contexts` lists all contexts. `kubectl config use-context <name>` switches. `kubectl config delete-context <name>` removes a stale context. Merge multiple kubeconfigs with `KUBECONFIG=file1:file2 kubectl config view --flatten > merged.yaml`. Contexts are stored in `~/.kube/config` by default.

@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-gpu-sharing-mps-mig"
   - "kubernetes-gpu-node-provisioning"
   - "kubernetes-ai-cost-management"
-  - "nccl-test-benchmark-kubernetes"
+  - "run-nccl-tests-kubernetes"
   - "vllm-ascend-npu-inference-kubernetes"
   - "kubernetes-ai-gateway-inference-extension"
   - "nvidia-dynamo-distributed-inference-kubernetes"

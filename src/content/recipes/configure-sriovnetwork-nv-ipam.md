@@ -18,7 +18,6 @@ relatedRecipes:
   - "openshift-sriov-vf-creation"
   - "agent-config-device-by-path"
   - "coredns-configuration"
-  - "kubernetes-dns-policy-configuration"
   - "dns-policies-configuration"
   - "kubernetes-dns-configuration"
   - "kubernetes-endpointslices"

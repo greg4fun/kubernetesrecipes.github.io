@@ -9,7 +9,7 @@ tags: ["rbac", "service-accounts", "security", "authorization", "least-privilege
 relatedRecipes:
   - "kubernetes-rbac-role-clusterrole"
   - "kubernetes-rbac-least-privilege"
-  - "kubernetes-service-accounts-tokens"
+  - "kubernetes-service-account-token"
   - "kubernetes-service-accounts-workload-identity"
   - "pod-security-standards"
   - "kubernetes-namespace-guide"

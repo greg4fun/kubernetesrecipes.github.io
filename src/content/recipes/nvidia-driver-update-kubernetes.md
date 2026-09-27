@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "nvidia-gpu-operator-install"
   - "kubernetes-gpu-operator-advanced-config"
-  - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "kubernetes-gpu-sharing-mps-mig"
 ---
 
 > 💡 **Quick Answer:** Safely update NVIDIA GPU drivers on Kubernetes nodes. Rolling updates, drain strategy, driver compatibility matrix, and GPU Operator upgrades.

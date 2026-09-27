@@ -12,7 +12,7 @@ publishDate: "2026-05-06"
 author: "Luca Berton"
 difficulty: "beginner"
 relatedRecipes:
-  - "kubernetes-persistent-volumes-guide"
+  - "kubernetes-persistent-volume-guide"
   - "kubernetes-init-containers-patterns-examples"
   - "openshift-oc-cp-file-copy"
 ---

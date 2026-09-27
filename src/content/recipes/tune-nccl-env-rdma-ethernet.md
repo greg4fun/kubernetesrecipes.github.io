@@ -17,7 +17,6 @@ relatedRecipes:
   - "databases-kubernetes-memory-overcommit"
   - "run-nccl-tests-kubernetes"
   - "debug-nccl-timeouts-kubernetes"
-  - "nccl-test-benchmark-kubernetes"
 tags:
   - nccl
   - rdma

@@ -17,7 +17,6 @@ tags:
   - "cka"
 relatedRecipes:
   - "velero-kubernetes-backup-disaster-recovery"
-  - "kubernetes-etcd-backup-guide"
   - "kubernetes-etcd-performance-tuning"
   - "kubernetes-disaster-recovery-enterprise"
   - "kubernetes-cluster-upgrade"
@@ -46,6 +45,16 @@ ETCDCTL_API=3 etcdctl snapshot save /backup/etcd-$(date +%Y%m%d-%H%M).db \
 
 # Verify (etcd 3.5+: etcdutl; etcdctl snapshot status is deprecated and removed in 3.6)
 etcdutl snapshot status /backup/etcd-*.db --write-out=table
+```
+
+Cert paths and the data dir differ between installers — read them from the etcd static pod manifest instead of guessing (a common CKA step):
+
+```bash
+grep -E "cert-file|key-file|trusted-ca-file|data-dir|listen-client-urls" /etc/kubernetes/manifests/etcd.yaml
+# --cert-file=/etc/kubernetes/pki/etcd/server.crt
+# --key-file=/etc/kubernetes/pki/etcd/server.key
+# --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
+# --data-dir=/var/lib/etcd
 ```
 
 Also copy `/etc/kubernetes/pki` and `/etc/kubernetes/*.conf` — a snapshot without the CA and certs means regenerating every kubeconfig.

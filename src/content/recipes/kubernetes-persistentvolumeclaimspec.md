@@ -13,7 +13,7 @@ tags:
   - "persistent-volumes"
   - "storageclass"
 relatedRecipes:
-  - "kubernetes-persistent-volumes-guide"
+  - "kubernetes-persistent-volume-guide"
   - "pvc-pending-troubleshooting"
 ---
 

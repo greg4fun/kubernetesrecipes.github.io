@@ -15,7 +15,7 @@ relatedRecipes:
   - "kubernetes-1-36-oci-volume-source"
   - "kubernetes-1-36-selinux-mount-labeling"
   - "kubernetes-gateway-api"
-  - "kubernetes-service-types-explained"
+  - "kubernetes-service-types-clusterip-nodeport-loadbalancer"
   - "kubernetes-load-balancing"
 ---
 

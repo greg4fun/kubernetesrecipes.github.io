@@ -9,7 +9,7 @@ author: "Luca Berton"
 relatedRecipes:
   - "secrets-management-best-practices"
   - "kubernetes-nodeport"
-  - "kubernetes-pvc-guide"
+  - "kubernetes-persistent-volume-guide"
   - "kubernetes-commands"
 ---
 

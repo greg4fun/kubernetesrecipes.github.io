@@ -41,9 +41,9 @@ The fastest-growing section. From deploying a single model to managing multi-ten
 - **Model Deployment** — [Deploy Llama 2 70B](/recipes/ai/deploy-llama2-70b-kubernetes/), [Phi-4](/recipes/ai/deploy-phi4-kubernetes/), [Whisper](/recipes/ai/deploy-whisper-kubernetes/), [Stable Diffusion XL](/recipes/ai/deploy-stable-diffusion-xl-kubernetes/), and 10+ more models with production-ready manifests
 - **Inference Serving** — [Triton + vLLM](/recipes/ai/triton-vllm-kubernetes/), [TensorRT-LLM](/recipes/ai/triton-tensorrt-llm-kubernetes/), [multi-model serving](/recipes/ai/triton-multi-model-serving/), [autoscaling on GPU metrics](/recipes/ai/triton-autoscaling-gpu-metrics/)
 - **Model Storage** — [hostPath vs PVC patterns](/recipes/ai/model-storage-hostpath-pvc/) for fast model loading with NVMe caching
-- **Benchmarking** — [AIPerf](/recipes/ai/aiperf-benchmark-llm-kubernetes/) and [GenAI-Perf](/recipes/ai/genai-perf-benchmark-llm/) for TTFT, ITL, and throughput measurement
+- **Benchmarking** — [AIPerf](/recipes/ai/aiperf-benchmark-llm-kubernetes/) and [GenAI-Perf](/recipes/ai/genai-perf-nvidia-inference-benchmarking/) for TTFT, ITL, and throughput measurement
 - **Training** — [NeMo training](/recipes/ai/nvidia-nemo-training-kubernetes/), [distributed training with Kubeflow](/recipes/ai/kubeflow-distributed-training/), [MPI Operator](/recipes/ai/mpi-operator-kubernetes/)
-- **Multi-Tenant GPU** — [namespace isolation](/recipes/security/multi-tenant-gpu-namespace-isolation/), [ResourceQuotas](/recipes/configuration/resourcequota-limitrange-gpu/), [time-slicing vs MIG](/recipes/ai/timeslicing-mig-full-gpu/), [chargeback monitoring](/recipes/observability/gpu-tenant-monitoring-chargeback/)
+- **Multi-Tenant GPU** — [namespace isolation](/recipes/security/multi-tenant-gpu-namespace-isolation/), [ResourceQuotas](/recipes/configuration/resourcequota-limitrange-gpu/), [time-slicing vs MIG](/recipes/ai/kubernetes-gpu-sharing-mps-mig/), [chargeback monitoring](/recipes/observability/gpu-tenant-monitoring-chargeback/)
 
 ### NVIDIA Networking (20+ recipes)
 
@@ -72,10 +72,10 @@ Complete ArgoCD coverage from basic setup to multi-cluster fleet management:
 
 The foundation — battle-tested patterns for every cluster:
 
-- **Troubleshooting** — [CrashLoopBackOff](/recipes/troubleshooting/debug-crashloopbackoff/), [OOMKilled](/recipes/troubleshooting/debug-oom-killed/), [ImagePullBackOff](/recipes/troubleshooting/debug-imagepullbackoff/), [DNS issues](/recipes/troubleshooting/debug-dns-issues/), [scheduling failures](/recipes/troubleshooting/debug-scheduling-failures/)
+- **Troubleshooting** — [CrashLoopBackOff](/recipes/troubleshooting/debug-crashloopbackoff/), [OOMKilled](/recipes/troubleshooting/debug-oom-killed/), [ImagePullBackOff](/recipes/troubleshooting/imagepullbackoff-troubleshooting/), [DNS issues](/recipes/troubleshooting/debug-dns-issues/), [scheduling failures](/recipes/troubleshooting/debug-scheduling-failures/)
 - **Autoscaling** — [HPA](/recipes/autoscaling/horizontal-pod-autoscaler/), [VPA](/recipes/autoscaling/vertical-pod-autoscaler/), [Cluster Autoscaler](/recipes/autoscaling/cluster-autoscaler/), [KEDA](/recipes/autoscaling/keda-event-driven-autoscaling/)
 - **Deployments** — [rolling updates](/recipes/deployments/kubernetes-rolling-update-strategy/), [canary](/recipes/deployments/canary-deployments/), [blue-green](/recipes/deployments/blue-green-deployment/), [probes](/recipes/deployments/liveness-readiness-probes/)
-- **Security** — [NetworkPolicies](/recipes/networking/network-policies/), [Pod Security](/recipes/security/pod-security-standards/), [RBAC](/recipes/security/service-accounts-rbac/), [secrets management](/recipes/configuration/configmap-secrets-management/)
+- **Security** — [NetworkPolicies](/recipes/networking/kubernetes-networkpolicy-guide/), [Pod Security](/recipes/security/pod-security-standards/), [RBAC](/recipes/security/service-accounts-rbac/), [secrets management](/recipes/configuration/configmap-secrets-management/)
 
 ## What's Next
 

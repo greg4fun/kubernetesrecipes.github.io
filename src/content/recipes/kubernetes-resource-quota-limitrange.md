@@ -1,6 +1,6 @@
 ---
-title: "K8s ResourceQuota and LimitRange Guide"
-description: "Configure Kubernetes ResourceQuota and LimitRange for namespace resource management. CPU and memory quotas, pod count limits, and default container limits."
+title: "Kubernetes ResourceQuota and LimitRange Examples"
+description: "Kubernetes ResourceQuota and LimitRange YAML: namespace CPU/memory/GPU quotas, object counts, storage-class and priority scopes, default container limits."
 publishDate: "2026-05-02"
 author: "Luca Berton"
 category: "configuration"
@@ -13,11 +13,15 @@ tags:
   - "multi-tenancy"
   - "configuration"
   - "cka"
+  - "governance"
 relatedRecipes:
-  - "resource-limits-requests"
+  - "resource-quota-exceeded-error"
+  - "resourcequota-limitrange-gpu"
+  - "kubernetes-multi-tenancy-enterprise"
+  - "kubernetes-resource-requests-limits"
   - "kubernetes-namespace-guide"
   - "kubernetes-vertical-pod-autoscaler-vpa"
-  - "kubernetes-projected-volumes-guide"
+  - "kubernetes-projected-volumes"
   - "kubernetes-qos-classes-guide"
 ---
 
@@ -66,6 +70,13 @@ spec:
     # Per StorageClass
     fast-ssd.storageclass.storage.k8s.io/requests.storage: 100Gi
     fast-ssd.storageclass.storage.k8s.io/persistentvolumeclaims: "10"
+
+    # Extended resources (GPUs): only the requests. prefix is allowed
+    requests.nvidia.com/gpu: "4"
+
+    # Any namespaced object type via count/<resource>.<group>
+    count/deployments.apps: "20"
+    count/jobs.batch: "50"
 ```
 
 ```bash
@@ -107,6 +118,8 @@ spec:
     min:                # Minimum allowed
       cpu: 50m
       memory: 64Mi
+    maxLimitRequestRatio:   # limit may be at most 4x the request
+      cpu: "4"
   
   # Pod-level constraints
   - type: Pod
@@ -197,9 +210,13 @@ kubectl get resourcequota -A
 
 Namespace quota reached. Check: `kubectl describe resourcequota -n <ns>`. Request increase or optimize resource requests.
 
-**Pod rejected: "must specify requests" with ResourceQuota**
+**Pod rejected: "must specify limits.cpu,requests.cpu..."**
 
-When ResourceQuota sets compute limits, ALL containers must specify requests. Add LimitRange to provide defaults.
+For every compute resource the quota tracks (`requests.cpu`, `limits.memory`, ...), each container must set that value. Add a LimitRange with `default`/`defaultRequest` so pods without specs get them injected. Full error walkthrough: [ResourceQuota exceeded](/recipes/troubleshooting/resource-quota-exceeded-error/).
+
+**Deployment shows fewer ready replicas, no pod errors**
+
+Quota rejections happen at pod creation by the ReplicaSet controller, so the Deployment looks fine. Check `kubectl describe rs <rs>` or `kubectl get events -n <ns> --field-selector reason=FailedCreate`.
 
 **LimitRange defaults not applied to existing pods**
 
@@ -217,6 +234,25 @@ LimitRange only applies to NEW pods. Existing pods keep their original specs. Re
 
 - ResourceQuota caps total resources and object counts per namespace
 - LimitRange sets per-container defaults, min, and max constraints
-- When ResourceQuota is set, ALL pods must have resource requests
+- For every compute resource a quota tracks, each pod must specify it (LimitRange can inject defaults)
 - LimitRange auto-injects defaults for pods without explicit requests
 - Monitor quota usage with `kubectl describe resourcequota` or Prometheus
+
+## Frequently Asked Questions
+
+### What is the difference between ResourceQuota and LimitRange?
+
+ResourceQuota caps the *total* consumption and object counts of a namespace. LimitRange applies *per object* (container, pod, PVC): it injects default requests/limits and enforces min/max. Quota says "this team gets 10 CPUs"; LimitRange says "no container over 4 CPUs, default 500m".
+
+### Does ResourceQuota apply to existing pods?
+
+No. Quota is enforced at admission, so creating a quota never evicts running pods — usage is simply recorded, and new pods are rejected while usage is over the hard limit. The same goes for LimitRange defaults: only new pods get them.
+
+### How do I set a GPU quota per namespace?
+
+Use `requests.nvidia.com/gpu: "4"` under `spec.hard`. Extended resources can't be overcommitted, so the `limits.` form isn't allowed. See [GPU ResourceQuota and LimitRange](/recipes/configuration/resourcequota-limitrange-gpu/).
+
+### How do I check how much quota is left?
+
+`kubectl describe resourcequota -n <ns>` shows Used vs Hard for each resource. In Prometheus, `kube_resourcequota{type="used"} / kube_resourcequota{type="hard"}` from kube-state-metrics.
+

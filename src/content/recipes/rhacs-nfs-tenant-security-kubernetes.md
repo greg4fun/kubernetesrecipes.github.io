@@ -17,7 +17,7 @@ tags:
 relatedRecipes:
   - "nfs-tenant-segregation-kubernetes"
   - "kubernetes-multi-tenancy-enterprise"
-  - "kubernetes-network-policy-guide"
+  - "kubernetes-networkpolicy-guide"
   - "edr-flexera-kubernetes-agents"
 ---
 

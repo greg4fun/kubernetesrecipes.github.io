@@ -11,7 +11,6 @@ prerequisites:
   - "Target workload namespace created"
   - "SriovNetwork using nv-ipam"
 relatedRecipes:
-  - "kubernetes-dns-policy-configuration"
   - "kubernetes-endpointslices"
   - "kubernetes-dns-configuration"
   - "dns-policies-configuration"

@@ -15,7 +15,7 @@ tags:
 relatedRecipes:
   - "nvidia-gpu-operator-install"
   - "kubernetes-gpu-operator-advanced-config"
-  - "gpu-sharing-mig-timeslicing-kubernetes"
+  - "kubernetes-gpu-sharing-mps-mig"
   - "cuda-out-of-memory-kubernetes"
 ---
 

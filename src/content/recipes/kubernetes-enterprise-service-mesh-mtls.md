@@ -15,7 +15,7 @@ timeToComplete: "50 minutes"
 relatedRecipes:
   - "kubernetes-multi-cluster-service-mesh"
   - "kubernetes-istio-traffic-management"
-  - "network-policies"
+  - "kubernetes-networkpolicy-guide"
   - "kubernetes-load-balancing"
   - "service-mesh-sidecar-troubleshooting"
   - "kubernetes-monitoring-guide"

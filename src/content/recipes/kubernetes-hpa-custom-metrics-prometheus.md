@@ -10,7 +10,7 @@ kubernetesVersion: "1.25+"
 tags: ["hpa", "autoscaling", "prometheus", "custom-metrics", "prometheus-adapter"]
 relatedRecipes:
   - "kubernetes-hpa-cpu-memory-guide"
-  - "kubernetes-cluster-autoscaler-guide"
+  - "kubernetes-cluster-autoscaler-configuration"
   - "horizontal-pod-autoscaler"
 ---
 

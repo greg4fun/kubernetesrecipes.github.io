@@ -16,7 +16,7 @@ relatedRecipes:
   - "kubernetes-graceful-shutdown-guide"
   - "crashloopbackoff-troubleshooting"
   - "kubernetes-readiness-probe-guide"
-  - "kubernetes-pod-priority-preemption-scheduling"
+  - "kubernetes-pod-priority-preemption"
 tags:
   - cronjob
   - concurrency

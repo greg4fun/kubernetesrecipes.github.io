@@ -18,7 +18,6 @@ relatedRecipes:
   - "identify-mellanox-nic-models"
   - "troubleshoot-no-supported-nic-selected"
   - "verify-ovn-underlay-interface"
-  - "debug-imagepullbackoff"
   - "kubernetes-oomkilled-troubleshooting"
   - "debug-scheduling-failures"
   - "kubernetes-debug-pods"

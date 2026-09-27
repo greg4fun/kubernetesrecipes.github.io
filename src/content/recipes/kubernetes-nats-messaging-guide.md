@@ -15,7 +15,7 @@ tags:
   - "microservices"
 relatedRecipes:
   - "kubernetes-dapr-microservices-guide"
-  - "kubernetes-keda-autoscaling-guide"
+  - "kubernetes-keda-event-driven-autoscaling"
   - "kubernetes-knative-serverless-guide"
 ---
 

@@ -14,7 +14,7 @@ tags:
   - "multi-tenant"
 relatedRecipes:
   - "gpu-tenant-monitoring-chargeback"
-  - "genai-perf-benchmark-llm"
+  - "genai-perf-nvidia-inference-benchmarking"
   - "triton-autoscaling-gpu-metrics"
   - "multi-tenant-gpu-namespace-isolation"
   - "priorityclasses-gpu-workloads"

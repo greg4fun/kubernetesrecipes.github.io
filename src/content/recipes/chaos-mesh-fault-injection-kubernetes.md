@@ -13,7 +13,7 @@ author: "Luca Berton"
 difficulty: "intermediate"
 relatedRecipes:
   - "litmus-chaos-engineering-kubernetes"
-  - "kubernetes-pod-disruption-budget"
+  - "pod-disruption-budget-config"
   - "network-policy-debug-connectivity"
   - "kubernetes-oomkilled-troubleshooting"
 ---

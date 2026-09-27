@@ -10,7 +10,7 @@ prerequisites:
   - "kubectl configured to access your cluster"
 relatedRecipes:
   - "pvc-pending-troubleshooting"
-  - "csi-snapshot-restore-guide"
+  - "kubernetes-csi-snapshots-restore"
   - "csi-storage-performance-fio-kubernetes-job"
 tags:
   - storage

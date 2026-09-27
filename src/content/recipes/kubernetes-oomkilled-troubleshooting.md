@@ -16,9 +16,9 @@ tags:
   - "vpa"
 relatedRecipes:
   - "kubernetes-resource-requests-limits"
-  - "kubernetes-vertical-pod-autoscaler-guide"
+  - "kubernetes-vertical-pod-autoscaler-vpa"
   - "crashloopbackoff-troubleshooting"
-  - "oom-killed-troubleshooting"
+  - "kubernetes-qos-classes-guide"
   - "kubectl-exec-into-pod"
 ---
 
@@ -86,6 +86,17 @@ env:
       -XX:HeapDumpPath=/tmp/heapdump.hprof
 ```
 
+`-Xmx` equal to the limit guarantees an OOMKill: the JVM needs memory beyond the heap. Budget for a 1Gi limit:
+
+| Component | Typical size |
+|-----------|-------------|
+| Heap (`-Xmx` / `MaxRAMPercentage=75`) | ~768Mi |
+| Metaspace (cap with `-XX:MaxMetaspaceSize`) | 100-200Mi |
+| Thread stacks | ~1Mi per thread |
+| Code cache, GC structures, direct/NIO buffers | 100-200Mi |
+
+`-XX:+UseContainerSupport` is on by default since JDK 10 / 8u191 — adding it is harmless but not a fix.
+
 ```yaml
 # Node.js: cap the V8 heap below the container's memory limit
 env:
@@ -100,6 +111,16 @@ env:
     value: "1"
   - name: MALLOC_TRIM_THRESHOLD_
     value: "65536"
+```
+
+### Find the Leak
+
+```bash
+kubectl top pod myapp-pod --containers    # repeat over time, or graph container_memory_working_set_bytes
+# Go:     kubectl port-forward pod/myapp-pod 6060 && go tool pprof http://localhost:6060/debug/pprof/heap
+# Java:   kubectl exec myapp-pod -- jcmd 1 GC.heap_dump /tmp/heap.hprof && kubectl cp myapp-pod:/tmp/heap.hprof ./heap.hprof
+# Python: tracemalloc snapshots, or py-spy / memray in an ephemeral debug container
+# Node:   --heapsnapshot-signal=SIGUSR2, then kubectl exec ... kill -USR2 1
 ```
 
 ### Alert Before the Kill, Not After
@@ -177,6 +198,14 @@ graph TD
 | Unbounded cache | Add a size limit and LRU eviction |
 | Node memory exhaustion | Add nodes, or set namespace ResourceQuotas |
 
+**OOMKilled but `kubectl top` shows low usage** — the spike happened between metrics-server scrapes (~15-60s). Use `container_memory_working_set_bytes` in Prometheus, or `max_over_time(...[1h])`.
+
+**OOMKilled immediately on startup** — the limit is below the app's startup footprint (JVM init, model loading, large caches warmed at boot). Raise the limit or lazy-load.
+
+**Pod `Evicted`, not OOMKilled** — that's kubelet node-pressure eviction (`memory.available` below the eviction threshold), not the OOM killer. Check `kubectl describe node` Conditions (`MemoryPressure`) and fix requests so the node isn't overcommitted.
+
+**VPA fights HPA** — don't let both act on the same resource. Scale on CPU/custom metrics with HPA and restrict VPA to memory with `controlledResources: ["memory"]`.
+
 ## Frequently Asked Questions
 
 ### Why is OOMKilled exit code 137?
@@ -187,6 +216,12 @@ A container OOMKill means it hit its own cgroup memory limit. A node-level OOM m
 
 ### How do I debug OOMKilled errors in Kubernetes?
 Find the container with `kubectl describe pod`, compare its working set (`kubectl top pod --containers` or `container_memory_working_set_bytes`) against the limit over time, check runtime heap flags, and take a heap dump or profile (pprof, jmap, tracemalloc) if usage grows without bound.
+
+### Why does memory get OOMKilled but CPU doesn't?
+CPU is compressible: exceeding a CPU limit throttles the container. Memory isn't: the only way to enforce a memory limit is to kill a process.
+
+### How much above -Xmx should the container limit be?
+Roughly heap + metaspace + ~1Mi per thread + 100-200Mi native. In practice, set `-XX:MaxRAMPercentage=75` and let the JVM compute the heap from the limit.
 
 ### Should memory limits equal requests?
 For latency-critical or stateful workloads, yes — `requests == limits` gives the Guaranteed QoS class and prevents node overcommit. For bursty stateless apps, a limit 1.5-2x the request is a common compromise.

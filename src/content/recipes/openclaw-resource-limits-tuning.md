@@ -17,7 +17,7 @@ relatedRecipes:
   - "horizontal-pod-autoscaler"
   - "openclaw-kubernetes-deployment"
   - "openclaw-ha-kubernetes"
-  - "resource-limits-requests"
+  - "kubernetes-resource-requests-limits"
   - "kubernetes-vertical-pod-autoscaler-vpa"
 ---
 

@@ -16,7 +16,7 @@ relatedRecipes:
   - "agentic-ai-multiagent-kubernetes"
   - "nvidia-dynamo-distributed-inference-kubernetes"
   - "ai-supercomputing-kubernetes-gpu-clusters"
-  - "kubernetes-pod-topology-spread-constraints"
+  - "pod-topology-constraints"
   - "ai-infrastructure-cost-optimization-kubernetes"
 ---
 

@@ -16,7 +16,7 @@ tags:
   - "pf"
 relatedRecipes:
   - "nccl-sriov-gds-pytorch-kubernetes"
-  - "kubernetes-taints-tolerations-guide"
+  - "kubernetes-taint-toleration-guide"
 ---
 
 > 💡 **Quick Answer:** The SR-IOV Network Device Plugin can flag Physical Functions (PFs) as allocatable resources alongside or instead of VFs. Set `"isRdma": true` on the PF resource pool to expose the PF's RDMA device directly, or use the `"pfNames"` selector to target specific PFs. This is critical for single-tenant GPU clusters where pods need the full PF bandwidth for GPUDirect RDMA without VF overhead.

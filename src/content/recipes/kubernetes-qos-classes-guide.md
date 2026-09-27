@@ -14,9 +14,9 @@ tags:
   - "configuration"
   - "cka"
 relatedRecipes:
-  - "resource-limits-requests"
+  - "kubernetes-resource-requests-limits"
   - "kubernetes-resource-quota-limitrange"
-  - "kubernetes-priority-preemption-guide"
+  - "kubernetes-pod-priority-preemption"
   - "kubernetes-oomkilled-troubleshooting"
 ---
 

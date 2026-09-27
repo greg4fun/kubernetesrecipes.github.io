@@ -13,7 +13,7 @@ tags:
   - "multi-tenant"
   - "openshift"
 relatedRecipes:
-  - "timeslicing-mig-full-gpu"
+  - "kubernetes-gpu-sharing-mps-mig"
   - "kai-scheduler-gpu-sharing"
   - "resourcequota-limitrange-gpu"
   - "priorityclasses-gpu-workloads"
