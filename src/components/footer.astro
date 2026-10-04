@@ -1,3 +1,7 @@
+---
+import { UDIENZA_FOOTER_HREF } from "../utils/udienza.mjs";
+---
+
 <footer class="my-20">
   <p class="text-center text-sm text-slate-500">
     Copyright © {new Date().getFullYear()} 
@@ -8,7 +12,7 @@
     <a href="https://stencel.io/" target="_blank" rel="noopener" class="hover:underline">
       Grzegorz Stencel
     </a>.
-    All rights reserved. | <a href="/contact/" class="hover:underline">Contact</a>
+    All rights reserved. | <a href="/contact/" class="hover:underline">Contact</a> | <a href={UDIENZA_FOOTER_HREF} target="_blank" rel="noopener" class="hover:underline">Udienza</a>
   </p>
 </footer>
 

@@ -1,0 +1,31 @@
+---
+// Udienza banner for hand-written pages (the home page). Recipes and blog
+// posts get the same markup from src/plugins/rehype-udienza-banner.mjs.
+import {
+  UDIENZA_ALT,
+  UDIENZA_CLASS,
+  UDIENZA_LABEL,
+  UDIENZA_SQUARE,
+  UDIENZA_WIDE,
+  udienzaHref,
+} from "../utils/udienza.mjs";
+
+const { placement = "page_top" } = Astro.props;
+---
+
+<aside class={UDIENZA_CLASS.aside} aria-label={UDIENZA_LABEL}>
+  <a href={udienzaHref(placement)} target="_blank" rel="noopener" class={UDIENZA_CLASS.a}>
+    <picture>
+      <source media="(max-width: 640px)" srcset={UDIENZA_SQUARE} />
+      <img
+        src={UDIENZA_WIDE}
+        alt={UDIENZA_ALT}
+        width="1200"
+        height="300"
+        loading="eager"
+        decoding="async"
+        class={UDIENZA_CLASS.img}
+      />
+    </picture>
+  </a>
+</aside>
