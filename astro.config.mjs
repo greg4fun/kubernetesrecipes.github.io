@@ -3,6 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
+import rehypeUdienzaBanner from "./src/plugins/rehype-udienza-banner.mjs";
 
 
 // Redirect stub pages to exclude from the sitemap. These exist as thin
@@ -311,6 +312,10 @@ export default defineConfig({
   site: "https://kubernetes.recipes",
   base: "/",
   trailingSlash: "always",
+  markdown: {
+    // Udienza banner after the first paragraph of recipes and posts (build time).
+    rehypePlugins: [rehypeUdienzaBanner],
+  },
   integrations: [
     mdx(),
     sitemap({
