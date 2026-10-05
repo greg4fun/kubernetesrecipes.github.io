@@ -12,6 +12,7 @@ import LatestRecipes from "@components/latest-recipes.astro";
 import Carousel from "@components/carousel.astro";
 import VideoSection from "@components/video-section.astro";
 import CoursesSection from "@components/courses-section.astro";
+import AgntConBanner from "@components/agntcon-banner.astro";
 import UdienzaBanner from "@components/udienza-banner.astro";
 import Layout from "@layouts/Layout.astro";
 
@@ -58,6 +59,7 @@ const bookLd = JSON.stringify({
   <script type="application/ld+json" set:html={bookLd} />
   <Container>
     <Hero />
+    <AgntConBanner eager />
     <UdienzaBanner placement="home_top" />
   </Container>
   <Container>

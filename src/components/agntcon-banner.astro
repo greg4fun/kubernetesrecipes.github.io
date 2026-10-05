@@ -1,0 +1,64 @@
+---
+// AGNTCon + MCPCon North America 2026 (Oct 22-23, San Jose) with Luca's 25%
+// discount code. Images are hosted centrally on lucaberton.com (CSP img-src
+// already allows https:). Clicking copies LUCA25 (best effort, never blocks
+// navigation) and goes to the Linux Foundation registration page; the code is
+// not passed in the URL because no such parameter is documented.
+// Remove after the event (Oct 23, 2026).
+interface Props {
+  eager?: boolean;
+  class?: string;
+}
+const { eager = false, class: className = "" } = Astro.props;
+const REGISTER_URL = "https://register.linuxfoundation.org/agntcon-mcpcon-na-2026";
+const CODE = "LUCA25";
+const IMG = "https://lucaberton.com/promo/agntcon-na-2026";
+const alt = "AGNTCon and MCPCon North America 2026, October 22–23, San Jose — save 25% with code LUCA25";
+---
+
+<aside class={`agntcon-banner not-prose my-6 mx-auto max-w-[735px] px-4 sm:px-0 ${className}`} aria-label="AGNTCon + MCPCon North America 2026 discount">
+  <a href={REGISTER_URL} class="block overflow-hidden rounded-xl shadow-md" data-agntcon-code={CODE}>
+    <picture>
+      <source media="(max-width: 640px)" type="image/webp" srcset={`${IMG}/card-800.webp 800w, ${IMG}/card-1200.webp 1200w`} sizes="100vw" width="1672" height="941" />
+      <source media="(max-width: 640px)" srcset={`${IMG}/card.jpg`} width="1672" height="941" />
+      <source type="image/webp" srcset={`${IMG}/wide.webp`} width="1200" height="300" />
+      <img
+        src={`${IMG}/wide.jpg`}
+        width="1200"
+        height="300"
+        alt={alt}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+        class="block h-auto w-full"
+      />
+    </picture>
+  </a>
+  <p class="mt-2 text-center text-sm text-slate-600">
+    Save 25% — use code <code class="rounded bg-slate-100 px-1.5 py-0.5 font-semibold text-slate-900">LUCA25</code> at checkout
+    <span class="agntcon-copied ml-1 font-medium text-green-700" role="status" aria-live="polite"></span>
+  </p>
+</aside>
+
+<script>
+  // Copy the code, then navigate. Navigation never depends on the clipboard:
+  // it waits at most 300 ms for the copy and goes anyway if it fails or is
+  // blocked. Modified clicks (new tab, middle click) keep the browser default.
+  document.querySelectorAll<HTMLAnchorElement>("a[data-agntcon-code]").forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const code = a.dataset.agntconCode ?? "";
+      const status = a.parentElement?.querySelector(".agntcon-copied");
+      let copy: Promise<void> | undefined;
+      try {
+        copy = navigator.clipboard?.writeText(code).then(() => {
+          if (status) status.textContent = `${code} copied — paste it at checkout`;
+        });
+      } catch {
+        copy = undefined;
+      }
+      if (!copy || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      const go = () => window.location.assign(a.href);
+      Promise.race([copy, new Promise((r) => setTimeout(r, 300))]).then(go, go);
+    });
+  });
+</script>
