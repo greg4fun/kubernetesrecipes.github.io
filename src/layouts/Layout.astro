@@ -4,6 +4,7 @@ import Footer from "@components/footer.astro";
 import NewsletterPopup from "@components/newsletter-popup.astro";
 import Navbar from "@components/navbar/navbar.astro";
 import AnnouncementBanner from "@components/announcement-banner.astro";
+import AgntConBanner from "@components/agntcon-banner.astro";
 import "@fontsource-variable/inter/index.css";
 import "@fontsource-variable/bricolage-grotesque";
 import "../styles/global.css";
@@ -526,6 +527,7 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
   <body>
     <AnnouncementBanner {...announcementConfig} />
     <Navbar />
+    {pathname !== "/" && <AgntConBanner />}
     <slot />
     <Footer />
     <NewsletterPopup />
