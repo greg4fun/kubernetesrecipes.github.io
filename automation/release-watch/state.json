@@ -1,1 +1,5 @@
-{}
+{
+  "kubernetes/kubernetes": "v1.37.1",
+  "helm/helm": "v4.3.0",
+  "cert-manager/cert-manager": "v1.21.2"
+}
