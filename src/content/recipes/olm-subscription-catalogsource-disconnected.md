@@ -1,5 +1,5 @@
 ---
-title: "Fix OLM Subscription ResolutionFailed in Disconnected OpenShift"
+title: "Fix OLM ResolutionFailed in Disconnected OpenShift"
 description: "Fix ConstraintsNotSatisfiable and UnhealthyCatalogSourceFound errors when an OLM Subscription references a catalog that doesn't exist in your mirrored cluster."
 publishDate: "2026-07-06"
 author: "Luca Berton"

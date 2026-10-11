@@ -72,9 +72,9 @@ Complete ArgoCD coverage from basic setup to multi-cluster fleet management:
 
 The foundation — battle-tested patterns for every cluster:
 
-- **Troubleshooting** — [CrashLoopBackOff](/recipes/troubleshooting/debug-crashloopbackoff/), [OOMKilled](/recipes/troubleshooting/debug-oom-killed/), [ImagePullBackOff](/recipes/troubleshooting/imagepullbackoff-troubleshooting/), [DNS issues](/recipes/troubleshooting/debug-dns-issues/), [scheduling failures](/recipes/troubleshooting/debug-scheduling-failures/)
-- **Autoscaling** — [HPA](/recipes/autoscaling/horizontal-pod-autoscaler/), [VPA](/recipes/autoscaling/vertical-pod-autoscaler/), [Cluster Autoscaler](/recipes/autoscaling/cluster-autoscaler/), [KEDA](/recipes/autoscaling/keda-event-driven-autoscaling/)
-- **Deployments** — [rolling updates](/recipes/deployments/kubernetes-rolling-update-strategy/), [canary](/recipes/deployments/canary-deployments/), [blue-green](/recipes/deployments/blue-green-deployment/), [probes](/recipes/deployments/liveness-readiness-probes/)
+- **Troubleshooting** — [CrashLoopBackOff](/recipes/troubleshooting/crashloopbackoff-troubleshooting/), [OOMKilled](/recipes/troubleshooting/kubernetes-oomkilled-troubleshooting/), [ImagePullBackOff](/recipes/troubleshooting/imagepullbackoff-troubleshooting/), [DNS issues](/recipes/troubleshooting/dns-resolution-failure-pods/), [scheduling failures](/recipes/troubleshooting/debug-scheduling-failures/)
+- **Autoscaling** — [HPA](/recipes/autoscaling/horizontal-pod-autoscaler/), [VPA](/recipes/autoscaling/kubernetes-vertical-pod-autoscaler-vpa/), [Cluster Autoscaler](/recipes/autoscaling/kubernetes-cluster-autoscaler-configuration/), [KEDA](/recipes/autoscaling/kubernetes-keda-event-driven-autoscaling/)
+- **Deployments** — [rolling updates](/recipes/deployments/kubernetes-rolling-update-strategy/), [canary](/recipes/deployments/canary-deployments/), [blue-green](/recipes/deployments/kubernetes-blue-green-deployment/), [probes](/recipes/deployments/kubernetes-readiness-probe-guide/)
 - **Security** — [NetworkPolicies](/recipes/networking/kubernetes-networkpolicy-guide/), [Pod Security](/recipes/security/pod-security-standards/), [RBAC](/recipes/security/service-accounts-rbac/), [secrets management](/recipes/configuration/configmap-secrets-management/)
 
 ## What's Next
