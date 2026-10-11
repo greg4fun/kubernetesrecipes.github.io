@@ -206,7 +206,7 @@ spec:
                   - NVIDIA-H100-SXM5-80GB
 ```
 
-If using KAI Scheduler, it can automatically detect and prefer NVLink topologies. See [KAI Scheduler Topology-Aware Placement](/recipes/ai/kai-scheduler-topology-aware/).
+If using KAI Scheduler, it can automatically detect and prefer NVLink topologies. See [KAI Scheduler Topology-Aware Placement](/recipes/ai/kubernetes-1-36-topology-aware-scheduling/).
 
 ## Verify Multi-GPU Setup
 
@@ -263,4 +263,4 @@ The 1.2× factor accounts for KV cache and activation memory.
 - [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
 - [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
 - [Install NVIDIA GPU Operator](/recipes/ai/nvidia-gpu-operator-install/)
-- [KAI Scheduler Topology-Aware Placement](/recipes/ai/kai-scheduler-topology-aware/)
+- [KAI Scheduler Topology-Aware Placement](/recipes/ai/kubernetes-1-36-topology-aware-scheduling/)

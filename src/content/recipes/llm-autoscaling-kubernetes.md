@@ -266,4 +266,4 @@ kubectl get events -n ai-inference --sort-by=.lastTimestamp | grep -i "scal"
 - [Deploy Mistral with vLLM](/recipes/ai/deploy-mistral-vllm-kubernetes/)
 - [Deploy Mistral with NVIDIA NIM](/recipes/ai/deploy-mistral-nvidia-nim/)
 - [Install NVIDIA GPU Operator](/recipes/ai/nvidia-gpu-operator-install/)
-- [Cluster Autoscaler](/recipes/autoscaling/cluster-autoscaler/)
+- [Cluster Autoscaler](/recipes/autoscaling/kubernetes-cluster-autoscaler-configuration/)

@@ -155,7 +155,7 @@ dmesg | grep -i peer_memory   # should show "registered", not "Unknown symbol"
 
 ## Modern Alternative: Skip the Module Entirely
 
-If you are on the **open** GPU kernel module with Linux 5.12+ and Turing-or-newer GPUs, you can avoid `nvidia-peermem` altogether by using the **DMA-BUF** GPUDirect RDMA path. It needs no peer-memory module, makes OFED optional, and ends the per-kernel rebuild cycle that causes this error. See [Switch GPUDirect RDMA from nvidia-peermem to DMA-BUF](/recipes/networking/switch-gpudirect-rdma-dma-buf/).
+If you are on the **open** GPU kernel module with Linux 5.12+ and Turing-or-newer GPUs, you can avoid `nvidia-peermem` altogether by using the **DMA-BUF** GPUDirect RDMA path. It needs no peer-memory module, makes OFED optional, and ends the per-kernel rebuild cycle that causes this error. See [Switch GPUDirect RDMA from nvidia-peermem to DMA-BUF](/recipes/ai/nvidia-peermem-gpudirect-rdma-k8s/).
 
 ## Frequently Asked Questions
 

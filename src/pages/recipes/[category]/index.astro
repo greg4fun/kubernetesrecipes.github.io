@@ -159,7 +159,7 @@ const collectionStructuredData = {
                 <span class="time-badge">⏱ {recipe.data.timeToComplete}</span>
               )}
             </div>
-            <h3>{recipe.data.title}</h3>
+            <h2>{recipe.data.title}</h2>
             <p>{recipe.data.description}</p>
             <div class="cat-card-tags">
               {(recipe.data.tags || []).slice(0, 4).map((tag: string) => (
@@ -204,8 +204,8 @@ const collectionStructuredData = {
     .diff-intermediate { background: #fef9c3; color: #a16207; }
     .diff-advanced { background: #fee2e2; color: #dc2626; }
     .time-badge { font-size: 0.7rem; color: #94a3b8; }
-    .cat-card h3 { font-size: 0.92rem; font-weight: 700; margin: 0 0 0.3rem; color: #1e293b; line-height: 1.3; }
-    .cat-card:hover h3 { color: #2563eb; }
+    .cat-card h2 { font-size: 0.92rem; font-weight: 700; margin: 0 0 0.3rem; color: #1e293b; line-height: 1.3; }
+    .cat-card:hover h2 { color: #2563eb; }
     .cat-card p {
       font-size: 0.8rem; color: #64748b; line-height: 1.4; margin: 0 0 0.5rem;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
