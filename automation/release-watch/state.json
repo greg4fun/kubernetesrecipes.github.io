@@ -1,5 +1,8 @@
 {
   "kubernetes/kubernetes": "v1.37.1",
   "helm/helm": "v4.3.0",
-  "cert-manager/cert-manager": "v1.21.2"
+  "cert-manager/cert-manager": "v1.21.2",
+  "argoproj/argo-cd": "v3.5.4",
+  "kubernetes-sigs/gateway-api": "v1.6.3",
+  "cilium/cilium": "v1.20.2"
 }
