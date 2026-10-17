@@ -9,5 +9,8 @@
   "kubernetes-sigs/kustomize": "kustomize/v5.8.3",
   "prometheus-operator/prometheus-operator": "v0.94.1",
   "kyverno/kyverno": "v1.19.1",
-  "kubernetes-sigs/kueue": "v0.20.2"
+  "kubernetes-sigs/kueue": "v0.20.2",
+  "envoyproxy/gateway": "v1.9.2",
+  "kubernetes-sigs/karpenter": "v1.14.2",
+  "external-secrets/external-secrets": "helm-chart-2.13.0"
 }
