@@ -11,6 +11,7 @@
   "kyverno/kyverno": "v1.19.1",
   "kubernetes-sigs/kueue": "v0.20.2",
   "envoyproxy/gateway": "v1.9.2",
-  "kubernetes-sigs/karpenter": "v1.14.2",
-  "external-secrets/external-secrets": "helm-chart-2.13.0"
+  "kubernetes-sigs/karpenter": "v1.15.1",
+  "external-secrets/external-secrets": "helm-chart-2.14.0",
+  "containerd/containerd": "v2.4.2"
 }
