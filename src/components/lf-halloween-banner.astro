@@ -1,0 +1,66 @@
+---
+// Linux Foundation Halloween flash promo: 35% off training and certifications
+// sitewide on Oct 28-29, 2026 with Luca's personal code TREATS35LUCA. Images
+// are hosted centrally on lucaberton.com (CSP img-src already allows https:).
+// The promo runs on each visitor's local date, so the banner is rendered
+// hidden and the inline script right after it shows it only on Oct 28-29 in
+// the visitor's time zone (before first paint, no layout shift). Builds after
+// the last time zone has left Oct 29 render nothing. The link is the Awin
+// tracking link from the LF announcement. Clicking copies TREATS35LUCA (best
+// effort, never blocks navigation) and then follows it.
+// Remove after the promo (Oct 29, 2026).
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+const HREF = "https://www.awin1.com/cread.php?awinmid=85919&awinaffid=1937397&ued=https%3A%2F%2Ftraining.linuxfoundation.org%2Foctober-2026-flash%2F";
+const CODE = "TREATS35LUCA";
+const IMG = "https://lucaberton.com/promo/lf-halloween-2026";
+const alt = "Linux Foundation Halloween flash sale, October 28–29: 35% off all training and certifications with code TREATS35LUCA";
+const live = Date.now() < Date.parse("2026-10-30T12:00:00Z");
+---
+
+{live && (
+  <>
+    <aside hidden data-lf-promo class={`lf-promo-banner not-prose my-6 mx-auto max-w-[735px] px-4 sm:px-0 ${className}`} aria-label="Linux Foundation training: 35% off on October 28–29">
+      <a href={HREF} rel="nofollow sponsored noopener" class="block overflow-hidden rounded-xl shadow-md" data-lf-promo-code={CODE}>
+        <picture>
+          <source media="(max-width: 640px)" type="image/webp" srcset={`${IMG}/card-800.webp 800w, ${IMG}/card-1200.webp 1200w`} sizes="100vw" width="1595" height="829" />
+          <source media="(max-width: 640px)" srcset={`${IMG}/card.jpg`} width="1595" height="829" />
+          <source type="image/webp" srcset={`${IMG}/wide.webp`} width="1200" height="300" />
+          <img src={`${IMG}/wide.jpg`} width="1200" height="300" alt={alt} loading="lazy" decoding="async" class="block h-auto w-full" />
+        </picture>
+      </a>
+      <p class="mt-2 text-center text-sm text-slate-600">
+        35% off Linux Foundation training and certifications, Oct 28–29 — use code <code class="rounded bg-slate-100 px-1.5 py-0.5 font-semibold text-slate-900">{CODE}</code> at checkout
+        <span class="lf-promo-copied ml-1 font-medium text-green-700" role="status" aria-live="polite"></span>
+        <span class="block text-xs text-slate-500">Affiliate link: Luca earns a commission on purchases made with this code.</span>
+      </p>
+    </aside>
+    <script is:inline>(function(){var n=new Date();if(n>=new Date(2026,9,28)&&n<new Date(2026,9,30))document.querySelectorAll("[data-lf-promo]").forEach(function(e){e.hidden=false})})()</script>
+  </>
+)}
+
+<script>
+  // Copy the code, then navigate. Navigation never depends on the clipboard:
+  // it waits at most 300 ms for the copy and goes anyway if it fails or is
+  // blocked. Modified clicks (new tab, middle click) keep the browser default.
+  document.querySelectorAll<HTMLAnchorElement>("a[data-lf-promo-code]").forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const code = a.dataset.lfPromoCode ?? "";
+      const status = a.parentElement?.querySelector(".lf-promo-copied");
+      let copy: Promise<void> | undefined;
+      try {
+        copy = navigator.clipboard?.writeText(code).then(() => {
+          if (status) status.textContent = `${code} copied — paste it at checkout`;
+        });
+      } catch {
+        copy = undefined;
+      }
+      if (!copy || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      const go = () => window.location.assign(a.href);
+      Promise.race([copy, new Promise((r) => setTimeout(r, 300))]).then(go, go);
+    });
+  });
+</script>
