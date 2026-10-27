@@ -2,11 +2,11 @@
 // Linux Foundation Halloween flash promo: 35% off training and certifications
 // sitewide on Oct 28-29, 2026 with Luca's personal code TREATS35LUCA. Images
 // are hosted centrally on lucaberton.com (CSP img-src already allows https:).
-// The promo runs on each visitor's local date: the inline script before the
-// banner flags <html> on Oct 28-29 in the visitor's time zone while the page
-// is still being parsed, so the banner is laid out visible from the start (no
-// layout shift); otherwise the CSS keeps it hidden. Builds after
-// the last time zone has left Oct 29 render nothing. The link is the Awin
+// The promo starts on Oct 28 in each visitor's time zone and ends on Oct 29
+// at 23:59 UTC (the Awin terms). The inline script before the banner flags
+// <html> in that window while the page is still being parsed, so the banner is
+// laid out visible from the start (no layout shift); otherwise the CSS keeps
+// it hidden. Builds after the promo ends render nothing. The link is the Awin
 // tracking link from the LF announcement. Clicking copies TREATS35LUCA (best
 // effort, never blocks navigation) and then follows it.
 // Remove after the promo (Oct 29, 2026).
@@ -18,13 +18,13 @@ const HREF = "https://www.awin1.com/cread.php?awinmid=85919&awinaffid=1937397&ue
 const CODE = "TREATS35LUCA";
 const IMG = "https://lucaberton.com/promo/lf-halloween-2026";
 const alt = "Linux Foundation Halloween flash sale, October 28–29: 35% off all training and certifications with code TREATS35LUCA";
-const live = Date.now() < Date.parse("2026-10-30T12:00:00Z");
+const live = Date.now() < Date.parse("2026-10-30T00:00:00Z");
 ---
 
 {live && (
   <>
     <style is:inline>html:not([data-lf-promo-on]) [data-lf-promo]{display:none}</style>
-    <script is:inline>(function(){var n=new Date();if(n>=new Date(2026,9,28)&&n<new Date(2026,9,30))document.documentElement.setAttribute("data-lf-promo-on","")})()</script>
+    <script is:inline>(function(){var n=new Date();if(n>=new Date(2026,9,28)&&n<Date.UTC(2026,9,30))document.documentElement.setAttribute("data-lf-promo-on","")})()</script>
     <aside data-lf-promo class={`lf-promo-banner not-prose my-6 mx-auto max-w-[735px] px-4 sm:px-0 ${className}`} aria-label="Linux Foundation training: 35% off on October 28–29">
       <a href={HREF} rel="nofollow sponsored noopener" class="block overflow-hidden rounded-xl shadow-md" data-lf-promo-code={CODE}>
         <picture>
