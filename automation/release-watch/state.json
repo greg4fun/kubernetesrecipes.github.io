@@ -16,5 +16,8 @@
   "containerd/containerd": "v2.4.2",
   "etcd-io/etcd": "v3.7.3",
   "kubernetes-sigs/kind": "v0.33.0",
-  "kubernetes/minikube": "v1.39.0"
+  "kubernetes/minikube": "v1.39.0",
+  "k3s-io/k3s": "v1.37.1+k3s1",
+  "derailed/k9s": "v0.51.0",
+  "fluxcd/flux2": "v2.10.0"
 }
