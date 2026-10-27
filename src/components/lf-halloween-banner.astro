@@ -2,9 +2,10 @@
 // Linux Foundation Halloween flash promo: 35% off training and certifications
 // sitewide on Oct 28-29, 2026 with Luca's personal code TREATS35LUCA. Images
 // are hosted centrally on lucaberton.com (CSP img-src already allows https:).
-// The promo runs on each visitor's local date, so the banner is rendered
-// hidden and the inline script right after it shows it only on Oct 28-29 in
-// the visitor's time zone (before first paint, no layout shift). Builds after
+// The promo runs on each visitor's local date: the inline script before the
+// banner flags <html> on Oct 28-29 in the visitor's time zone while the page
+// is still being parsed, so the banner is laid out visible from the start (no
+// layout shift); otherwise the CSS keeps it hidden. Builds after
 // the last time zone has left Oct 29 render nothing. The link is the Awin
 // tracking link from the LF announcement. Clicking copies TREATS35LUCA (best
 // effort, never blocks navigation) and then follows it.
@@ -22,7 +23,9 @@ const live = Date.now() < Date.parse("2026-10-30T12:00:00Z");
 
 {live && (
   <>
-    <aside hidden data-lf-promo class={`lf-promo-banner not-prose my-6 mx-auto max-w-[735px] px-4 sm:px-0 ${className}`} aria-label="Linux Foundation training: 35% off on October 28–29">
+    <style is:inline>html:not([data-lf-promo-on]) [data-lf-promo]{display:none}</style>
+    <script is:inline>(function(){var n=new Date();if(n>=new Date(2026,9,28)&&n<new Date(2026,9,30))document.documentElement.setAttribute("data-lf-promo-on","")})()</script>
+    <aside data-lf-promo class={`lf-promo-banner not-prose my-6 mx-auto max-w-[735px] px-4 sm:px-0 ${className}`} aria-label="Linux Foundation training: 35% off on October 28–29">
       <a href={HREF} rel="nofollow sponsored noopener" class="block overflow-hidden rounded-xl shadow-md" data-lf-promo-code={CODE}>
         <picture>
           <source media="(max-width: 640px)" type="image/webp" srcset={`${IMG}/card-800.webp 800w, ${IMG}/card-1200.webp 1200w`} sizes="100vw" width="1595" height="829" />
@@ -37,7 +40,6 @@ const live = Date.now() < Date.parse("2026-10-30T12:00:00Z");
         <span class="block text-xs text-slate-500">Affiliate link: Luca earns a commission on purchases made with this code.</span>
       </p>
     </aside>
-    <script is:inline>(function(){var n=new Date();if(n>=new Date(2026,9,28)&&n<new Date(2026,9,30))document.querySelectorAll("[data-lf-promo]").forEach(function(e){e.hidden=false})})()</script>
   </>
 )}
 
