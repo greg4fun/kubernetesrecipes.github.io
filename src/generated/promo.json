@@ -1,0 +1,28 @@
+{
+  "id": "lf-halloween-2026",
+  "start": "2026-10-28",
+  "end": "2026-10-30T00:00:00.000Z",
+  "href": "https://www.awin1.com/cread.php?awinmid=85919&awinaffid=1937397&ued=https%3A%2F%2Ftraining.linuxfoundation.org%2Foctober-2026-flash%2F",
+  "code": "TREATS35LUCA",
+  "alt": "Linux Foundation Halloween flash sale, October 28–29: 35% off all training and certifications with code TREATS35LUCA",
+  "caption": "35% off Linux Foundation training and certifications, Oct 28–29",
+  "disclosure": "Affiliate link: Luca earns a commission on purchases made with this code.",
+  "image": {
+    "base": "https://lucaberton.com/promo/lf-halloween-2026",
+    "wide": {
+      "width": 1200,
+      "height": 300
+    },
+    "card": {
+      "width": 1595,
+      "height": 829
+    }
+  },
+  "tracking": {
+    "campaign": "lf-halloween-2026",
+    "company": "linux_foundation",
+    "offerId": "lf_halloween_2026_treats35luca"
+  },
+  "script": "(function(){var n=Date.now();if(n>=new Date(2026,9,28).getTime()&&n<1793318400000)document.documentElement.setAttribute(\"data-promo-on\",\"\")})()",
+  "css": "html:not([data-promo-on]) [data-promo]{display:none}"
+}

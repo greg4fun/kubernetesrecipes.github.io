@@ -1,0 +1,75 @@
+---
+// Sponsored banner, the same campaign on all of Luca's sites. It renders
+// src/generated/promo.json, which scripts/sync-promo.mjs writes at the start of
+// every build from lucaberton.com/promo/promos.json (source and how-to: the
+// lucaberton.com repo, docs/promo-banners.md). Images are hosted centrally on
+// lucaberton.com (CSP img-src already allows https:).
+// Shown only inside the campaign window on the visitor's clock: the inline
+// script before the banner flags <html> while the page is parsed (no layout
+// shift); otherwise the CSS keeps it hidden. Clicking copies the code (best
+// effort, never blocks navigation) and then follows the link.
+import promoJson from "../generated/promo.json";
+
+interface Promo {
+  id: string;
+  href: string;
+  code: string | null;
+  alt: string;
+  caption: string;
+  disclosure: string | null;
+  image: { base: string; wide: { width: number; height: number }; card: { width: number; height: number } };
+  script: string;
+  css: string;
+}
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+const promo = promoJson as unknown as Promo | null;
+const img = promo?.image;
+---
+
+{promo && img && (
+  <>
+    <Fragment set:html={`<style>${promo.css}</style><script>${promo.script}</script>`} />
+    <aside data-promo class={`promo-banner not-prose my-6 mx-auto max-w-[735px] px-4 sm:px-0 ${className}`} aria-label={promo.caption}>
+      <a href={promo.href} rel="nofollow sponsored noopener" class="block overflow-hidden rounded-xl shadow-md" data-promo-code={promo.code ?? undefined}>
+        <picture>
+          <source media="(max-width: 640px)" type="image/webp" srcset={`${img.base}/card-800.webp 800w, ${img.base}/card-1200.webp 1200w`} sizes="100vw" width={img.card.width} height={img.card.height} />
+          <source media="(max-width: 640px)" srcset={`${img.base}/card.jpg`} width={img.card.width} height={img.card.height} />
+          <source type="image/webp" srcset={`${img.base}/wide.webp`} width={img.wide.width} height={img.wide.height} />
+          <img src={`${img.base}/wide.jpg`} width={img.wide.width} height={img.wide.height} alt={promo.alt} loading="lazy" decoding="async" class="block h-auto w-full" />
+        </picture>
+      </a>
+      <p class="mt-2 text-center text-sm text-slate-600">
+        {promo.caption}{promo.code && <> — use code <code class="rounded bg-slate-100 px-1.5 py-0.5 font-semibold text-slate-900">{promo.code}</code> at checkout</>}
+        <span class="promo-copied ml-1 font-medium text-green-700" role="status" aria-live="polite"></span>
+        {promo.disclosure && <span class="block text-xs text-slate-500">{promo.disclosure}</span>}
+      </p>
+    </aside>
+  </>
+)}
+
+<script>
+  // Copy the code, then navigate. Navigation never depends on the clipboard:
+  // it waits at most 300 ms for the copy and goes anyway if it fails or is
+  // blocked. Modified clicks (new tab, middle click) keep the browser default.
+  document.querySelectorAll<HTMLAnchorElement>("a[data-promo-code]").forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const code = a.dataset.promoCode ?? "";
+      const status = a.parentElement?.querySelector(".promo-copied");
+      let copy: Promise<void> | undefined;
+      try {
+        copy = navigator.clipboard?.writeText(code).then(() => {
+          if (status) status.textContent = `${code} copied — paste it at checkout`;
+        });
+      } catch {
+        copy = undefined;
+      }
+      if (!copy || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      const go = () => window.location.assign(a.href);
+      Promise.race([copy, new Promise((r) => setTimeout(r, 300))]).then(go, go);
+    });
+  });
+</script>
