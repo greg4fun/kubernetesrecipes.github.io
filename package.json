@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/sync-promo.mjs kubernetes.recipes && astro build",
     "postbuild": "python3 scripts/verify-sitemap.py && python3 scripts/verify-gsc.py",
     "preview": "astro preview",
     "astro": "astro",

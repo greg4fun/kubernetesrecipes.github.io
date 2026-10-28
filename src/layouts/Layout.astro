@@ -4,7 +4,7 @@ import Footer from "@components/footer.astro";
 import NewsletterPopup from "@components/newsletter-popup.astro";
 import Navbar from "@components/navbar/navbar.astro";
 import AnnouncementBanner from "@components/announcement-banner.astro";
-import LfHalloweenBanner from "@components/lf-halloween-banner.astro";
+import PromoBanner from "@components/promo-banner.astro";
 import "@fontsource-variable/inter/index.css";
 import "@fontsource-variable/bricolage-grotesque";
 import "../styles/global.css";
@@ -527,7 +527,7 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
   <body>
     <AnnouncementBanner {...announcementConfig} />
     <Navbar />
-    {pathname !== "/" && <LfHalloweenBanner />}
+    {pathname !== "/" && <PromoBanner />}
     <slot />
     <Footer />
     <NewsletterPopup />
