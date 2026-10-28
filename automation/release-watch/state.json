@@ -19,5 +19,8 @@
   "kubernetes/minikube": "v1.39.0",
   "k3s-io/k3s": "v1.37.1+k3s1",
   "derailed/k9s": "v0.51.0",
-  "fluxcd/flux2": "v2.10.0"
+  "fluxcd/flux2": "v2.10.0",
+  "tektoncd/pipeline": "v1.17.1",
+  "kedacore/keda": "v2.21.0",
+  "kubernetes-sigs/metrics-server": "v0.9.0"
 }
