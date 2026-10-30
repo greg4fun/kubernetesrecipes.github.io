@@ -3,7 +3,7 @@
   "helm/helm": "v4.3.1",
   "cert-manager/cert-manager": "v1.21.2",
   "argoproj/argo-cd": "v3.5.4",
-  "kubernetes-sigs/gateway-api": "v1.6.3",
+  "kubernetes-sigs/gateway-api": "v1.7.0",
   "cilium/cilium": "v1.20.2",
   "istio/istio": "1.31.1",
   "kubernetes-sigs/kustomize": "kustomize/v5.8.3",
@@ -20,10 +20,11 @@
   "k3s-io/k3s": "v1.37.1+k3s1",
   "derailed/k9s": "v0.51.0",
   "fluxcd/flux2": "v2.10.0",
-  "tektoncd/pipeline": "v1.17.1",
+  "tektoncd/pipeline": "v1.18.0",
   "kedacore/keda": "v2.21.0",
   "kubernetes-sigs/metrics-server": "v0.9.0",
   "vmware-tanzu/velero": "v1.18.4",
   "falcosecurity/falco": "0.45.1",
-  "kubernetes-sigs/external-dns": "v0.24.0"
+  "kubernetes-sigs/external-dns": "v0.24.0",
+  "kubernetes-sigs/cluster-api": "v1.14.3"
 }
