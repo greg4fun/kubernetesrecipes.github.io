@@ -26,5 +26,8 @@
   "vmware-tanzu/velero": "v1.18.4",
   "falcosecurity/falco": "0.45.1",
   "kubernetes-sigs/external-dns": "v0.24.0",
-  "kubernetes-sigs/cluster-api": "v1.14.3"
+  "kubernetes-sigs/cluster-api": "v1.14.3",
+  "metallb/metallb": "metallb-chart-0.16.1",
+  "rook/rook": "v1.21.1",
+  "longhorn/longhorn": "v1.13.0"
 }
