@@ -1,14 +1,23 @@
 ---
+// Merged into the recipe at `to`. Title and description are that recipe's
+// frontmatter, so the stub has an H1 and a meta description while it redirects.
 const to = "/recipes/ai/kubernetes-1-36-topology-aware-scheduling/";
+const title = "Kubernetes 1.36 Topology-Aware Scheduling";
+const description = "Use topology-aware workload scheduling in Kubernetes 1.36 to place Pods on nodes with optimal GPU, NUMA, and network topology for ML training.";
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Redirecting…</title>
+    <title>{title}</title>
+    <meta name="description" content={description} />
     <link rel="canonical" href={`https://kubernetes.recipes${to}`} />
     <meta http-equiv="refresh" content={`0; url=${to}`} />
     <script is:inline define:vars={{ to }}>window.location.replace(to);</script>
   </head>
-  <body><p>This page has moved to <a href={to}>{to}</a>.</p></body>
+  <body>
+    <h1>{title}</h1>
+    <p>{description}</p>
+    <p>This recipe has moved to <a href={to}>{title}</a>.</p>
+  </body>
 </html>
