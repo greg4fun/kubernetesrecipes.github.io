@@ -1,8 +1,17 @@
 # kubernetes.recipes — Complete Recipe Index
 
-> 1111 Kubernetes recipes and guides
+> 1150 Kubernetes recipes and guides
 
-## AI & GPU (215 recipes)
+This site's role: Kubernetes and OpenShift how-tos, error fixes and GPU/AI-on-Kubernetes recipes (GPU Operator, NCCL, RDMA, LLM inference benchmarks), each with copy-paste YAML and commands. Companion to the book Kubernetes Recipes (Apress) by Luca Berton and Grzegorz Stencel.
+
+## Related sites
+
+- [lucaberton.com](https://lucaberton.com/): Luca Berton's personal site: biography, books, talks and articles on AI platform engineering and AI coding tools.
+- [Open Empower](https://www.openempower.com/): Luca Berton's company (he is founder and CEO): AI governance, assessments and AI/Kubernetes platform engineering for regulated enterprises.
+- [CopyPasteLearn](https://www.copypastelearn.com/): Hands-on courses with labs on DevOps, automation, platform engineering and AI tools.
+- [Udienza](https://www.udienza.com/): Video podcast of interviews with open source maintainers, founders and conference speakers, hosted by Luca Berton.
+
+## AI & GPU (216 recipes)
 
 - [Agentic AI and Multi-Agent Systems](https://kubernetes.recipes/recipes/ai/agentic-ai-multiagent-kubernetes/): Deploy autonomous AI agents and multi-agent orchestration on Kubernetes. LangGraph, CrewAI, AutoGen, tool-calling agents, agent-to-agent communication.
 - [Volcano Job minAvailable Gang Scheduling](https://kubernetes.recipes/recipes/ai/ai-batch-processing-volcano/): Configure Volcano job minAvailable for gang scheduling on Kubernetes. Batch AI training, fair-share queues, job plugins, and GPU preemption guide.
@@ -109,6 +118,7 @@
 - [Kubernetes Topology Manager for GPU and NUMA Alignment](https://kubernetes.recipes/recipes/ai/kubernetes-topology-manager-gpu-numa/): Configure Kubernetes Topology Manager to align CPU, GPU, and NIC allocations on the same NUMA node. Covers policies, kubelet config, and GPU performance tuning.
 - [Kueue for Batch Jobs and GPU Queues](https://kubernetes.recipes/recipes/ai/kueue-batch-gpu-jobs-kubernetes/): Use Kueue to manage batch job queues on Kubernetes. GPU quota, fair sharing, priority queues, ML training workloads, and multi-tenant cluster scheduling.
 - [Kueue Job Queuing Fair Sharing Kubernetes](https://kubernetes.recipes/recipes/ai/kueue-job-queuing-kubernetes/): Implement fair-share GPU job queuing with Kueue on Kubernetes. ClusterQueues, LocalQueues, ResourceFlavors, and cohort-based borrowing for multi-team AI cl.
+- [Kueue v0.20.2: What's New and How to Upgrade](https://kubernetes.recipes/recipes/ai/kueue-v0-20-2-what-s-new-and-how-to-upgrade/): Kueue v0.20.2 patch release notes: KueueViz pod-group dashboard, quota bypass fix, metrics leaks fixed, and upgrade steps.
 - [LeaderWorkerSet (LWS) on Kubernetes and OpenShift](https://kubernetes.recipes/recipes/ai/leaderworkerset-operator/): Deploy LeaderWorkerSet on Kubernetes or OpenShift for multi-node LLM inference and distributed training: install, vLLM example, env vars, restart policy.
 - [Llama 2 70B Parameters & Memory: FP16 140GB](https://kubernetes.recipes/recipes/ai/llama-70b-model-size-gpu-requirements/): Llama 2 70B requires 140GB VRAM in FP16 (70B params × 2 bytes). FP8 uses 70GB, INT4 uses 35GB. Complete GPU options and Kubernetes deployment guide.
 - [Llama Stack on Kubernetes with NVIDIA NIM](https://kubernetes.recipes/recipes/ai/llama-stack-kubernetes-nim/): Deploy Meta Llama Stack on Kubernetes for unified inference, RAG, agents, and safety APIs using NVIDIA NIM as the inference backend.
@@ -220,10 +230,12 @@
 - [Deploy vLLM OpenAI Container on Kubernetes](https://kubernetes.recipes/recipes/ai/vllm-openai-container-kubernetes/): Deploy the vLLM OpenAI-compatible server container on Kubernetes. Pull ghcr.io/vllm-project/vllm-openai, configure GPU resources, model loading.
 - [Weights and Biases Experiment Tracking on Kubernetes](https://kubernetes.recipes/recipes/ai/weights-and-biases-experiment-tracking-kubernetes/): Deploy Weights & Biases (W&B) on Kubernetes for ML experiment tracking, model registry, and hyperparameter sweeps. Self-hosted W&B Server, agent-based
 
-## Autoscaling (30 recipes)
+## Autoscaling (33 recipes)
 
 - [Kubernetes HPA: Set Max Replicas and Scale](https://kubernetes.recipes/recipes/autoscaling/horizontal-pod-autoscaler/): Configure Kubernetes HPA (autoscaling/v2): averageUtilization, set or change maxReplicas, CPU, memory and custom metrics, and scaling behavior.
 - [Karpenter Node Autoscaling on EKS (v1 API)](https://kubernetes.recipes/recipes/autoscaling/karpenter-node-autoscaling/): Install Karpenter v1 on EKS: NodePools, EC2NodeClass, spot fallback, consolidation, GPU pools, and how it compares to Cluster Autoscaler.
+- [Karpenter v1.14.2: What's New (Patch Release Notes & Upgrade Guide)](https://kubernetes.recipes/recipes/autoscaling/karpenter-v1-14-2-what-s-new-patch-release-notes-upgrade-guide/): Karpenter v1.14.2 patch release fixes NodeRepair label sync and capacity buffer workload watching. Upgrade steps and verification included.
+- [Karpenter v1.15.1: What's New and How to Upgrade](https://kubernetes.recipes/recipes/autoscaling/karpenter-v1-15-1-what-s-new-and-how-to-upgrade/): Karpenter v1.15.1 is a chores-only cherrypick release; see what changed and how to safely upgrade from v1.14.2.
 - [KEDA vs HPA: Event-Driven Autoscaling Explained](https://kubernetes.recipes/recipes/autoscaling/keda-vs-hpa-autoscaling-comparison/): Compare KEDA and HPA for Kubernetes autoscaling. Scale on Kafka lag, Prometheus metrics, queue depth, cron, and custom events. KEDA vs HPA decision guide.
 - [Advanced Cluster Autoscaler Config & Tuning](https://kubernetes.recipes/recipes/autoscaling/kubernetes-cluster-autoscaler-advanced/): Fine-tune the Kubernetes Cluster Autoscaler with expanders, priority-based scaling, mixed instance policies, and GPU node pool autoscaling for production c.
 - [Kubernetes Cluster Autoscaler: Setup and Tuning](https://kubernetes.recipes/recipes/autoscaling/kubernetes-cluster-autoscaler-configuration/): Install and tune Kubernetes Cluster Autoscaler on EKS, GKE and AKS: scale-down flags, expanders, max-node-provision-time, GPU scale-to-zero.
@@ -252,8 +264,9 @@
 - [OpenClaw Resource Limits and Tuning](https://kubernetes.recipes/recipes/autoscaling/openclaw-resource-limits-tuning/): Size CPU, memory, and storage for OpenClaw on Kubernetes. Tuning profiles for light usage, browser automation, and production deployments.
 - [Virtual Kubelet for Serverless K8s Scaling](https://kubernetes.recipes/recipes/autoscaling/virtual-kubelet-serverless-scaling/): Deploy Virtual Kubelet to burst Kubernetes workloads to serverless backends like Azure ACI, AWS Fargate, and Hashicorp Nomad for infinite scaling.
 - [Install VPA with hack/vpa-up.sh Script](https://kubernetes.recipes/recipes/autoscaling/vpa-hack-vpa-up-sh-install-kubernetes/): Install Kubernetes Vertical Pod Autoscaler using hack/vpa-up.sh from the official repository. VPA components, prerequisites, and troubleshooting guide.
+- [What's New in KEDA v2.21.0 - Breaking Changes and Upgrade Guide](https://kubernetes.recipes/recipes/autoscaling/what-s-new-in-keda-v2-21-0-breaking-changes-and-upgrade-guide/): KEDA 2.21.0 fixes CVE-2026-77524, changes Azure Pipelines and Temporal scalers, and adds new scalers. Upgrade steps included.
 
-## Configuration (160 recipes)
+## Configuration (161 recipes)
 
 - [Air-Gap OpenShift Upgrade oc-mirror OSUS](https://kubernetes.recipes/recipes/configuration/airgap-openshift-upgrade-oc-mirror-osus/): Upgrade air-gapped OpenShift with oc-mirror and OSUS. Mirror release payloads and Cincinnati graph, configure IDMS, and drive CVO upgrades.
 - [Cincinnati Graph OpenShift Upgrades](https://kubernetes.recipes/recipes/configuration/cincinnati-graph-openshift-upgrades/): Understand Cincinnati upgrade graph for OpenShift. Query graph endpoints, decode channels, blocked edges, conditional updates, and debug upgrade paths.
@@ -376,6 +389,7 @@
 - [Kubernetes Sidecar Containers: Native Sidecars & Patterns](https://kubernetes.recipes/recipes/configuration/kubernetes-sidecar-patterns/): Kubernetes sidecar containers: native sidecars (initContainers + restartPolicy Always), startup/shutdown order, logging, Envoy, TLS proxy, Jobs, resources.
 - [Kubernetes Startup Probes for Slow Containers](https://kubernetes.recipes/recipes/configuration/kubernetes-startup-probe-slow-containers/): Configure Kubernetes startup probes for containers with long initialization. Separate startup from liveness checks, failureThreshold tuning.
 - [Kubernetes Taints and Tolerations Guide](https://kubernetes.recipes/recipes/configuration/kubernetes-taint-toleration-guide/): Kubernetes taints and tolerations: kubectl taint syntax, NoSchedule vs NoExecute, tolerationSeconds, built-in taints, and dedicating GPU nodes.
+- [Kustomize v5.8.3: What's New (Dependency Cleanup, No Functional Changes)](https://kubernetes.recipes/recipes/configuration/kustomize-v5-8-3-what-s-new-dependency-cleanup-no-functional-changes/): Kustomize v5.8.3 is a maintenance release that trims dependencies for kubectl integration. No functional or CLI changes.
 - [When to Use Kustomize vs Helm](https://kubernetes.recipes/recipes/configuration/kustomize-vs-helm-comparison/): Choose between Kustomize and Helm for Kubernetes. Learn when to use each tool, key trade-offs, and how to combine both for optimal configuration management.
 - [Inspect MachineConfig Annotations on Nodes](https://kubernetes.recipes/recipes/configuration/machineconfig-annotation-inspection/): Read and interpret MachineConfig annotations on OpenShift nodes. Check desired vs current config, node state, and rendered config hashes to diagnose MCP issues.
 - [Configure NTP Chrony via MachineConfig](https://kubernetes.recipes/recipes/configuration/machineconfig-chrony-ntp/): Set custom NTP servers on OpenShift RHCOS nodes using MachineConfig. Fix time drift, configure chrony, and verify time synchronization across your cluster.
@@ -416,7 +430,7 @@
 - [Switch to Open NVIDIA Kernel Modules on OpenShift](https://kubernetes.recipes/recipes/configuration/switch-proprietary-to-open-kernel-modules/): Step-by-step guide to migrate the NVIDIA GPU Operator from proprietary to open kernel modules on OpenShift, enabling DMA-BUF and GPUDirect Storage support.
 - [NCCL Env Vars: Force InfiniBand/RoCE and GDR](https://kubernetes.recipes/recipes/configuration/tune-nccl-env-rdma-ethernet/): Force NCCL onto InfiniBand or RoCE instead of TCP sockets: set NCCL_IB_HCA, NCCL_SOCKET_IFNAME, NCCL_IB_GID_INDEX and NCCL_NET_GDR_LEVEL on Kubernetes.
 
-## Deployments (182 recipes)
+## Deployments (190 recipes)
 
 - [How to Implement A/B Testing with Kubernetes](https://kubernetes.recipes/recipes/deployments/ab-testing-kubernetes/): Route traffic between application versions for A/B testing. Use service mesh, ingress, and custom routing rules to validate features with real users.
 - [Air-Gapped Image Import for OpenShift Clusters](https://kubernetes.recipes/recipes/deployments/air-gapped-image-import-openshift/): Import container images into disconnected OpenShift clusters. Use podman save/load and internal registries when DNS and TLS block external pulls.
@@ -485,6 +499,7 @@
 - [Install Kubernetes on Rocky Linux](https://kubernetes.recipes/recipes/deployments/install-kubernetes-rocky-linux/): Step-by-step guide to install Kubernetes on Rocky Linux with kubeadm. Covers containerd, kubeadm init, CNI setup, and worker node joining for Rocky Linux 8/9.
 - [Install Kubernetes on SUSE SLES](https://kubernetes.recipes/recipes/deployments/install-kubernetes-suse-sles/): Step-by-step guide to install Kubernetes on SUSE SLES with kubeadm. Covers containerd, kubeadm init, CNI setup, and worker node joining for SLES 15.
 - [Install Kubernetes on Ubuntu: Setup Guide](https://kubernetes.recipes/recipes/deployments/install-kubernetes-ubuntu/): Step-by-step guide to install Kubernetes on Ubuntu with kubeadm. Covers containerd, kubeadm init, CNI setup, and worker node joining for Ubuntu 22.04/24.04.
+- [K3s v1.37.1+k3s1: What's New and How to Upgrade](https://kubernetes.recipes/recipes/deployments/k3s-v1-37-1-k3s1-what-s-new-and-how-to-upgrade/): K3s v1.37.1+k3s1 bumps Kubernetes to 1.37.1, hardens the supervisor API, and fixes etcd snapshot restore. Upgrade steps and verification included.
 - [Kairos k3s on Hetzner CPX42: Immutable Bootstrap](https://kubernetes.recipes/recipes/deployments/kairos-k3s-hetzner-immutable-bootstrap/): Deploy an immutable Kairos-based k3s cluster on Hetzner Cloud CPX42. Automated provisioning with cloud-init, immutable OS upgrades.
 - [kubectl get pods: Output Formats Guide](https://kubernetes.recipes/recipes/deployments/kubectl-get-pods-examples/): Master kubectl get pods with output formats, label selectors, field selectors, and custom columns. Wide output, JSON, YAML, and jsonpath examples.
 - [kubectl rollout restart Deployment](https://kubernetes.recipes/recipes/deployments/kubectl-rollout-restart-deployment/): Restart Kubernetes Deployments, StatefulSets, and DaemonSets with kubectl rollout restart. Zero-downtime rolling restart without changing pod spec.
@@ -600,8 +615,15 @@
 - [Serverless Functions with WebAssembly](https://kubernetes.recipes/recipes/deployments/wasm-serverless-functions-kubernetes/): Build serverless functions using WebAssembly on Kubernetes with Fermyon Cloud, KEDA, and SpinKube. Achieve sub-millisecond scale-to-zero with Wasm cold starts.
 - [WASI and containerd Wasm Shims on Kubernetes](https://kubernetes.recipes/recipes/deployments/wasm-wasi-containerd-kubernetes/): Run WebAssembly workloads using containerd Wasm shims with WASI support on Kubernetes. Configure runwasi, wasmtime, and WasmEdge as container runtimes.
 - [Run WebAssembly Workloads on Kubernetes](https://kubernetes.recipes/recipes/deployments/wasm-workloads-kubernetes/): Deploy WASM workloads on Kubernetes using SpinKube and containerd-shim. Sub-millisecond cold starts, polyglot runtimes, and sandboxed edge computing.
+- [What's New in Cluster API v1.14.3 (Kubernetes Cluster Lifecycle Management)](https://kubernetes.recipes/recipes/deployments/what-s-new-in-cluster-api-v1-14-3-kubernetes-cluster-lifecycle-management/): Cluster API v1.14.3 patch release: KCP/etcd and owner-reference bug fixes, expanded K8s support up to v1.37, upgrade steps with clusterctl.
+- [What's New in Flux v2.10.0: GitOps Toolkit Upgrade Guide](https://kubernetes.recipes/recipes/deployments/what-s-new-in-flux-v2-10-0-gitops-toolkit-upgrade-guide/): Flux v2.10.0 adds object identity GA, SPIFFE mTLS, notification v1 APIs, OCIRepository charts. Covers breaking changes and upgrade steps.
+- [What's New in kind v0.33.0: Kubernetes 1.37 Default and Key Fixes](https://kubernetes.recipes/recipes/deployments/what-s-new-in-kind-v0-33-0-kubernetes-1-37-default-and-key-fixes/): kind v0.33.0 defaults to Kubernetes 1.37.0 nodes, fixes Docker proxy handling and LB config persistence, plus local-path-provisioner tweaks.
+- [What's New in Kubernetes v1.37.1: Patch Release Upgrade Guide](https://kubernetes.recipes/recipes/deployments/what-s-new-in-kubernetes-v1-37-1-patch-release-upgrade-guide/): Kubernetes v1.37.1 is a patch release with thin release notes; covers upgrade steps, verification, and where to find real changelog details.
+- [What's New in KubeVirt v1.9.1: Bug Fixes, PCI Hotplug Protection, and Upgrade Guide](https://kubernetes.recipes/recipes/deployments/what-s-new-in-kubevirt-v1-9-1-bug-fixes-pci-hotplug-protection-and-upgrade-guide/): KubeVirt v1.9.1 release notes: 83 fixes incl. PCI hotplug protection, GPU detection, live migration stability, and upgrade steps.
+- [What's New in minikube v1.39.0: containerd Default, Kubernetes 1.37, Traefik Addon](https://kubernetes.recipes/recipes/deployments/what-s-new-in-minikube-v1-39-0-containerd-default-kubernetes-1-37-traefik-addon/): minikube v1.39.0 switches default runtime to containerd, adds K8s 1.36/1.37 support and a Traefik ingress addon.
+- [What's New in Tekton Pipelines v1.18.0: Upgrade Guide for Kubernetes CI/CD](https://kubernetes.recipes/recipes/deployments/what-s-new-in-tekton-pipelines-v1-18-0-upgrade-guide-for-kubernetes-ci-cd/): Tekton Pipelines v1.18.0 adds step onError continueAndFail, immutable controller labels, and bundle/image fixes. Upgrade steps included.
 
-## Helm (38 recipes)
+## Helm (40 recipes)
 
 - [ArgoCD App of Apps with Helm Values](https://kubernetes.recipes/recipes/helm/argocd-app-of-apps-helm-values/): Use the ArgoCD App of Apps pattern with Helm value overrides per environment, enabling templated Application manifests and DRY multi-environment configurations.
 - [Helm before-hook-creation Hook](https://kubernetes.recipes/recipes/helm/helm-before-hook-creation/): Use Helm before-hook-creation for database migrations and pre-install checks. Complete hook lifecycle, delete policies, and ordering.
@@ -641,14 +663,17 @@
 - [Helm Chart Testing CI/CD Guide](https://kubernetes.recipes/recipes/helm/kubernetes-helm-chart-testing/): Test Helm charts with helm test, helm lint, chart-testing, and conftest. Unit tests, integration tests, and CI/CD pipeline integration for chart quality.
 - [Helm vs Kustomize: Which to Use](https://kubernetes.recipes/recipes/helm/kubernetes-helm-vs-kustomize/): Compare Helm and Kustomize for Kubernetes configuration management. Covers templating vs overlays, use cases, pros and cons, and when to use both together.
 - [OpenClaw Helm Chart with Chromium Sidecar](https://kubernetes.recipes/recipes/helm/openclaw-helm-chart-chromium/): Deploy OpenClaw using the community Helm chart with Chromium browser sidecar for web automation, declarative skill installation, and custom values overlays.
+- [What's New in Helm v4.3.0: Key Features and Upgrade Guide](https://kubernetes.recipes/recipes/helm/what-s-new-in-helm-v4-3-0-key-features-and-upgrade-guide/): Helm v4.3.0 adds duration functions, rollback descriptions, ownership checks, and faster status computation. Upgrade steps and verification included.
+- [What's New in Helm v4.3.1: Patch Release Upgrade Guide](https://kubernetes.recipes/recipes/helm/what-s-new-in-helm-v4-3-1-patch-release-upgrade-guide/): Helm v4.3.1 patch release notes: CRD wait fix for hooks, linter bump, and safe upgrade steps for operators.
 
-## Networking (143 recipes)
+## Networking (151 recipes)
 
 - [Configure SR-IOV agent-config.yaml Device by Path](https://kubernetes.recipes/recipes/networking/agent-config-device-by-path/): Use agent-config.yaml to select network devices by PCI path for SR-IOV VF creation, ensuring deterministic NIC targeting across OpenShift nodes.
 - [cert-manager Cloudflare DNS01 K8s](https://kubernetes.recipes/recipes/networking/cert-manager-cloudflare-dns01-k8s/): Configure cert-manager with Cloudflare DNS01 challenge for wildcard TLS certificates on Kubernetes. API token secret, ClusterIssuer, and auto-renewal.
 - [Cilium ClusterMesh Multi-Cluster](https://kubernetes.recipes/recipes/networking/cilium-clustermesh-multicluster/): Connect multiple K8s clusters with Cilium ClusterMesh. Shared services, global service discovery, and cross-cluster network policies.
 - [Cilium eBPF Gateway API Hubble k3s](https://kubernetes.recipes/recipes/networking/cilium-ebpf-gateway-api-hubble-k3s/): Install Cilium with eBPF dataplane, Gateway API support, and Hubble observability on k3s. Replace kube-proxy with eBPF, configure GatewayClass.
 - [Cilium Service Mesh: eBPF-Powered Kubernetes](https://kubernetes.recipes/recipes/networking/cilium-service-mesh-kubernetes/): Deploy Cilium service mesh on Kubernetes with eBPF. Sidecar-free mTLS, L7 traffic management, network policies, Hubble observability, and Gateway API support.
+- [Cilium v1.20.2: What's New and How to Upgrade](https://kubernetes.recipes/recipes/networking/cilium-v1-20-2-what-s-new-and-how-to-upgrade/): Cilium v1.20.2 patch release: Gateway API hostNetwork node selector plus 30+ bugfixes for IPAM, BGP, ClusterMesh, and more.
 - [Configure GPUDirect RDMA with NVIDIA GPU Operator](https://kubernetes.recipes/recipes/networking/configure-gpudirect-rdma-gpu-operator/): Set up GPUDirect RDMA on Kubernetes using the NVIDIA GPU Operator with either DMA-BUF or legacy nvidia-peermem, including Network Operator integration.
 - [Configure SriovNetwork with NVIDIA nv-ipam](https://kubernetes.recipes/recipes/networking/configure-sriovnetwork-nv-ipam/): Create a SriovNetwork resource that auto-generates a Multus NetworkAttachmentDefinition using nv-ipam for high-performance SR-IOV secondary interfaces.
 - [How to Configure Kubernetes Cluster DNS](https://kubernetes.recipes/recipes/networking/coredns-configuration/): Customize CoreDNS configuration for your cluster. Add custom DNS entries, configure forwarding, and optimize DNS resolution.
@@ -787,8 +812,15 @@
 - [Validate GPUDirect RDMA Performance DMA-BUF](https://kubernetes.recipes/recipes/networking/validate-gpudirect-rdma-performance/): Run ib_write_bw with CUDA DMA-BUF to verify GPUDirect RDMA data transfer rates between GPU pods and validate network operator configuration.
 - [Verify Which Interface Carries OVN Underlay](https://kubernetes.recipes/recipes/networking/verify-ovn-underlay-interface/): Confirm the actual OVN underlay network path by checking ovn-encap-ip, bridge port ownership, and physical route associations on Kubernetes nodes.
 - [VT-x vs VT-d vs SR-IOV Explained](https://kubernetes.recipes/recipes/networking/virtualization-vt-x-vs-vt-d-vs-sriov/): Understand the difference between CPU virtualization (VT-x/SVM), I/O virtualization (VT-d/AMD-Vi/IOMMU), and SR-IOV. Which to enable or disable for GPU
+- [What's New in Envoy Gateway v1.9.2 - Upgrade Guide](https://kubernetes.recipes/recipes/networking/what-s-new-in-envoy-gateway-v1-9-2-upgrade-guide/): Envoy Gateway v1.9.2 release notes are thin on detail; how to check the full changelog, upgrade via Helm, and verify your install.
+- [What's New in ExternalDNS v0.24.0: Breaking Changes and Upgrade Guide](https://kubernetes.recipes/recipes/networking/what-s-new-in-externaldns-v0-24-0-breaking-changes-and-upgrade-guide/): ExternalDNS v0.24.0 upgrade guide: TCPRoute v1, admission-validated CRDs, multi-namespace support, and breaking changes.
+- [What's New in Gateway API v1.6.3: Conformance Test Fixes and Build Updates](https://kubernetes.recipes/recipes/networking/what-s-new-in-gateway-api-v1-6-3-conformance-test-fixes-and-build-updates/): Gateway API v1.6.3 release notes summary: conformance test fixes for TCPRoute/UDPRoute, build tooling updates, and upgrade steps.
+- [What's New in Gateway API v1.7.0: HTTPRoute Retries Go Stable](https://kubernetes.recipes/recipes/networking/what-s-new-in-gateway-api-v1-7-0-httproute-retries-go-stable/): Gateway API v1.7.0 promotes HTTPRoute retries to Standard, adds 5 experimental GEPs, and ships breaking changes to SessionPersistence and XBackend CRDs.
+- [What's New in Istio 1.31.1: Upgrade Guide for Operators](https://kubernetes.recipes/recipes/networking/what-s-new-in-istio-1-31-1-upgrade-guide-for-operators/): Istio 1.31.1 patch release overview: what changed, how to upgrade with istioctl/helm, and how to verify your mesh.
+- [What's New in MetalLB Helm Chart 0.16.1](https://kubernetes.recipes/recipes/networking/what-s-new-in-metallb-helm-chart-0-16-1/): MetalLB Helm chart 0.16.1 release notes are thin; practical upgrade steps, verification, and link to full changelog for operators.
+- [What's New in Traefik v3.7.17: Upgrade Guide for Kubernetes Operators](https://kubernetes.recipes/recipes/networking/what-s-new-in-traefik-v3-7-17-upgrade-guide-for-kubernetes-operators/): Traefik v3.7.17 patch release: NTLM/Kerberos connection leak fixes, Gateway API status fix, new header-values limit flag, and dependency CVE bumps.
 
-## Observability (49 recipes)
+## Observability (52 recipes)
 
 - [Alertmanager on Kubernetes: Helm Setup and Config](https://kubernetes.recipes/recipes/observability/alertmanager-configuration/): Set up Alertmanager on Kubernetes with the kube-prometheus-stack Helm chart: routes, matchers, Slack/PagerDuty/email receivers, inhibition, silences, testing.
 - [Cilium Hubble Observability Guide](https://kubernetes.recipes/recipes/observability/cilium-hubble-observability-guide/): Monitor Kubernetes network flows with Cilium Hubble. CLI usage, Hubble UI, flow filtering, DNS visibility, and L7 HTTP observability.
@@ -839,12 +871,16 @@
 - [OpenTelemetry Complete Setup on Kubernetes](https://kubernetes.recipes/recipes/observability/opentelemetry-kubernetes-observability/): Deploy OpenTelemetry Collector, auto-instrumentation, and exporters on Kubernetes. Unified traces, metrics, and logs pipeline to Jaeger, Prometheus, and Loki.
 - [Run:ai Observability with OpenTelemetry](https://kubernetes.recipes/recipes/observability/runai-observability-opentelemetry-openshift/): Configure Run:ai observability on OpenShift with OpenTelemetry Collector, Prometheus receivers, metrics enrichment, OAuth2 export, and GPU metric collection
 - [Thanos Receive Memory Sizing Guide](https://kubernetes.recipes/recipes/observability/thanos-receive-memory-sizing/): Calculate correct memory limits for Thanos Receive based on WAL segments, active series, retention, and ingestion rate. Prevent OOMKill crash loops
+- [What's New in K9s v0.51.0: Performance Fixes, Plugin Inputs, and OSC52 Clipboard Support](https://kubernetes.recipes/recipes/observability/what-s-new-in-k9s-v0-51-0-performance-fixes-plugin-inputs-and-osc52-clipboard-support/): K9s v0.51.0 release notes: QPS bump to 50, metrics pagination fix, plugin input fields, PVC resize plugin, and upgrade steps.
+- [What's New in Metrics Server v0.9.0: Upgrade Guide for Kubernetes Operators](https://kubernetes.recipes/recipes/observability/what-s-new-in-metrics-server-v0-9-0-upgrade-guide-for-kubernetes-operators/): Metrics Server v0.9.0 brings a readiness bug fix, quieter node-scrape logging, and CVE patches. Upgrade steps and verification included.
+- [What's New in OpenTelemetry Operator v0.162.0](https://kubernetes.recipes/recipes/observability/what-s-new-in-opentelemetry-operator-v0-162-0/): OpenTelemetry Operator v0.162.0: NodeJS auto-instrumentation upgrade block, PHP/Ruby support, TLS curve_preferences, RBAC and CA bug fixes.
 
-## Security (131 recipes)
+## Security (140 recipes)
 
 - [AI ML Security and Compliance Kubernetes](https://kubernetes.recipes/recipes/security/ai-ml-security-compliance-kubernetes/): Secure AI and ML workloads on Kubernetes with model encryption, data governance, audit logging, network isolation for training jobs.
 - [AI Security Platforms on Kubernetes](https://kubernetes.recipes/recipes/security/ai-security-platform-kubernetes/): Secure AI workloads on Kubernetes. Model supply chain security, prompt injection defense, LLM output filtering, AI RBAC, GPU isolation.
 - [How to Configure Kubernetes API Access Control](https://kubernetes.recipes/recipes/security/api-access-control/): Set up secure API server access with authentication and authorization. Configure RBAC, API groups, and audit logging for cluster security.
+- [cert-manager v1.21.2: Security Patch Release Notes and Upgrade Guide](https://kubernetes.recipes/recipes/security/cert-manager-v1-21-2-security-patch-release-notes-and-upgrade-guide/): cert-manager v1.21.2 fixes ACME/Vault response-body leaks, webhook panics, and bumps Go/gRPC for security CVEs. All users should upgrade.
 - [Fix Kubernetes Certificate Expiry Issues](https://kubernetes.recipes/recipes/security/certificate-expiry-troubleshooting/): Debug and renew expired Kubernetes certificates for API server, kubelet, and etcd. Covers kubeadm cert renewal, OpenShift auto-rotation, and monitoring expiry.
 - [cert-manager OVH DNS-01 Wildcard TLS](https://kubernetes.recipes/recipes/security/certmanager-ovh-dns01-wildcard-tls/): Configure cert-manager with OVH DNS-01 challenge for automated wildcard TLS certificates on k3s. Let's Encrypt production certificates with zero downtime r.
 - [Hardware Attestation for Kubernetes Workloads](https://kubernetes.recipes/recipes/security/confidential-computing-attestation-kubernetes/): Implement remote attestation for Kubernetes workloads. Verify TEE integrity with attestation services, release secrets to verified enclaves.
@@ -863,6 +899,7 @@
 - [Digital Provenance and Content Authenticity](https://kubernetes.recipes/recipes/security/digital-provenance-content-authenticity-kubernetes/): Implement digital provenance on Kubernetes with C2PA content credentials. Verify AI-generated content, sign media pipelines.
 - [EDR Flexera Agents Kubernetes Deploy](https://kubernetes.recipes/recipes/security/edr-flexera-kubernetes-agents/): Deploy EDR and Flexera agents on Kubernetes with DaemonSets. Priority classes, host path access, exclusion paths, and security agent lifecycle.
 - [External Secrets Operator: Vault, AWS, Azure, GCP](https://kubernetes.recipes/recipes/security/external-secrets-operator/): Install External Secrets Operator and sync secrets from HashiCorp Vault, AWS Secrets Manager, Azure Key Vault or GCP into Kubernetes Secrets, with templates.
+- [External Secrets Operator helm-chart-2.14.0: What's New and Upgrade Guide](https://kubernetes.recipes/recipes/security/external-secrets-operator-helm-chart-2-14-0-what-s-new-and-upgrade-guide/): Release notes for External Secrets Operator helm-chart-2.14.0 are thin; here's how to safely check changes and upgrade via Helm.
 - [External Secrets Operator on OpenShift](https://kubernetes.recipes/recipes/security/external-secrets-operator-openshift/): Manage Kubernetes secrets from external vaults using External Secrets Operator on OpenShift. Covers ExternalSecret CRD, SecretStore configuration, and GitOps
 - [Falco Runtime Security for Kubernetes](https://kubernetes.recipes/recipes/security/falco-runtime-security/): Deploy Falco for Kubernetes runtime threat detection: modern eBPF install, default rules, custom rules, Falcosidekick alert routing and automated response.
 - [GKE OIDC Issuer Workload Identity](https://kubernetes.recipes/recipes/security/gke-oidc-issuer-workload-identity/): Enable OIDC issuer on GKE with --enable-oidc-issuer. Configure workload identity federation for cross-cloud auth and external IdP integration.
@@ -955,6 +992,7 @@
 - [Kubernetes Pod Security Standards (PSS/PSA)](https://kubernetes.recipes/recipes/security/pod-security-standards/): Enforce Kubernetes Pod Security Standards with Pod Security Admission: privileged, baseline and restricted levels, namespace labels, rollout and exemptions.
 - [Post-Quantum Cryptography on Kubernetes](https://kubernetes.recipes/recipes/security/post-quantum-cryptography-kubernetes/): Prepare Kubernetes clusters for post-quantum cryptography. NIST PQC standards, hybrid TLS certificates, quantum-safe mTLS, Istio/Cilium integration.
 - [Preemptive Cybersecurity on Kubernetes](https://kubernetes.recipes/recipes/security/preemptive-cybersecurity-kubernetes/): Implement preemptive cybersecurity on Kubernetes. Threat prediction, automated vulnerability patching, runtime behavior analysis, CNAPP.
+- [Prometheus Operator v0.94.1: What's New and Upgrade Guide](https://kubernetes.recipes/recipes/security/prometheus-operator-v0-94-1-what-s-new-and-upgrade-guide/): Prometheus Operator v0.94.1 fixes a ClusterRole RBAC bug affecting owner-reference finalizer updates. Upgrade steps and verification included.
 - [Quay Default Permissions for Robot Accounts](https://kubernetes.recipes/recipes/security/quay-default-permissions-robot/): Configure Quay Registry default permissions to auto-grant read access to robot accounts on every new repository. API and team patterns.
 - [Fix RBAC Permission Denied Errors](https://kubernetes.recipes/recipes/security/rbac-permission-denied-troubleshooting/): Debug RBAC forbidden and unauthorized errors in Kubernetes. Covers ClusterRole vs Role scope and service account permissions.
 - [RHACS CI/CD Pipeline Integration](https://kubernetes.recipes/recipes/security/rhacs-cicd-pipeline-integration/): Integrate Red Hat Advanced Cluster Security into CI/CD pipelines with roxctl for image scanning, policy checks, and deployment validation.
@@ -972,9 +1010,15 @@
 - [Sovereign Air-Gapped Kubernetes Clusters](https://kubernetes.recipes/recipes/security/sovereign-air-gapped-kubernetes-clusters/): Deploy sovereign and air-gapped Kubernetes clusters. Offline installation, private registry mirrors, disconnected GitOps, sovereign cloud.
 - [Ubuntu 26.04 LTS K8s Node Hardening](https://kubernetes.recipes/recipes/security/ubuntu-2604-kubernetes-sudo-rs/): Harden Kubernetes nodes with Ubuntu 26.04 LTS Resolute Raccoon. sudo-rs Rust rewrite, APT rollback, Kernel 7.0 TDX, ROCm GPU, and secure base images.
 - [Update CA Certificates in Kubernetes](https://kubernetes.recipes/recipes/security/update-ca-certificates-kubernetes/): Rotate and update Certificate Authority (CA) certificates in Kubernetes clusters including kube-apiserver, etcd, kubelet, and custom CA bundles for TLS.
+- [What's New in Argo CD v3.5.4: Critical Security Patch Release](https://kubernetes.recipes/recipes/security/what-s-new-in-argo-cd-v3-5-4-critical-security-patch-release/): Argo CD v3.5.4 fixes multiple critical CVEs in repo-server (Kustomize, Jsonnet, OCI) plus upgrade steps and verification.
+- [What's New in containerd v2.4.2: Security Patches and Hardening](https://kubernetes.recipes/recipes/security/what-s-new-in-containerd-v2-4-2-security-patches-and-hardening/): containerd 2.4.2 patch release fixes 3 CVEs, hardens CRI log handling, seccomp, and image pulls. Upgrade steps and verification included.
+- [What's New in External Secrets Operator Helm Chart 2.13.0](https://kubernetes.recipes/recipes/security/what-s-new-in-external-secrets-operator-helm-chart-2-13-0/): Release notes for ESO helm-chart-2.13.0 are thin; practical helm upgrade steps and verification for operators.
+- [What's New in Falco v0.45.1: Bug Fix Release for Kubernetes Runtime Security](https://kubernetes.recipes/recipes/security/what-s-new-in-falco-v0-45-1-bug-fix-release-for-kubernetes-runtime-security/): Falco 0.45.1 patches eBPF packaging, file_output keep_alive, and a metrics race condition. Upgrade steps and verification included.
+- [What's New in Kyverno v1.19.1: CVE Fixes and Policy Hardening](https://kubernetes.recipes/recipes/security/what-s-new-in-kyverno-v1-19-1-cve-fixes-and-policy-hardening/): Kyverno v1.19.1 patches two Go CVEs, a PolicyException bypass, and hardens apiCall.service egress—upgrade steps and checks.
+- [What's New in Tekton Pipelines v1.17.1](https://kubernetes.recipes/recipes/security/what-s-new-in-tekton-pipelines-v1-17-1/): Patch release for Tekton Pipelines v1.17.1: Go 1.27.3 CVE fix, install/upgrade commands, and image attestation verification.
 - [How to Use Workload Identity for Cloud Access](https://kubernetes.recipes/recipes/security/workload-identity-cloud-access/): Securely access cloud services from Kubernetes pods without static credentials. Configure Workload Identity for AWS, Azure, and GCP with IRSA, Workload.
 
-## Storage (58 recipes)
+## Storage (62 recipes)
 
 - [Access Zones on Scale-Out NAS for Kubernetes](https://kubernetes.recipes/recipes/storage/access-zones-scaleout-nas-kubernetes/): Configure access zones on scale-out NAS (Dell PowerScale/Isilon) for Kubernetes persistent storage. Multi-tenant isolation, CSI driver setup.
 - [CNPG Disaster Recovery and Replication](https://kubernetes.recipes/recipes/storage/cnpg-disaster-recovery/): Set up cross-region PostgreSQL disaster recovery with CloudNativePG using replica clusters, WAL shipping, and automated failover.
@@ -984,6 +1028,7 @@
 - [emptyDir Volumes: Sharing, Lifecycle, and Memory-Backed](https://kubernetes.recipes/recipes/storage/emptydir-volume-sharing-lifecycle-memory-backed/): Master emptyDir volumes for CKA/CKAD exam prep. Share data between containers, understand volume lifecycle across restarts vs Pod deletion, and configure
 - [Enable GPUDirect Storage on OpenShift](https://kubernetes.recipes/recipes/storage/enable-gpudirect-storage-openshift/): Configure GPUDirect Storage (GDS) with the NVIDIA GPU Operator on OpenShift, including the Open Kernel Module requirement and nvidia-fs verification.
 - [etcd Backup and Restore: Kubernetes and OpenShift](https://kubernetes.recipes/recipes/storage/etcd-backup-restore-kubernetes/): Back up and restore etcd on kubeadm and OpenShift: etcdctl/etcdutl snapshots, cluster-backup.sh, automated CronJobs to S3, test restores, and DR steps.
+- [etcd v3.7.3 for Kubernetes: What's New and How to Upgrade Safely](https://kubernetes.recipes/recipes/storage/etcd-v3-7-3-for-kubernetes-what-s-new-and-how-to-upgrade-safely/): Patch release etcd v3.7.3 for Kubernetes' control-plane datastore: upgrade steps, backup commands, and verification for operators.
 - [Fio NFS Benchmark on OpenShift Nodes](https://kubernetes.recipes/recipes/storage/fio-nfs-benchmark-openshift/): Run fio NFS storage benchmarks on OpenShift using parallel pods with hostPath mounts. Measure IOPS, bandwidth, and latency across multiple NFS endpoints.
 - [PScale NFS and SMB Storage Benchmarking](https://kubernetes.recipes/recipes/storage/fio-pscale-nfs-smb-benchmark-kubernetes/): Benchmark NFS and SMB storage performance on Kubernetes using fio clients in Pods. Covers multi-client parallel testing, bandwidth measurement, and IOPS
 - [GPU Operator GDS with NVMe and NFS RDMA](https://kubernetes.recipes/recipes/storage/gds-nvme-nfs-rdma/): Configure GPUDirect Storage for local NVMe drives and NFS over RDMA in Kubernetes, including cuFile verification and performance benchmarking.
@@ -1034,6 +1079,9 @@
 - [How to Deploy Stateful Applications](https://kubernetes.recipes/recipes/storage/stateful-applications/): Run stateful workloads on Kubernetes with StatefulSets. Manage stable identities, persistent storage, and ordered deployment for databases and caches.
 - [How to Deploy MySQL with StatefulSet](https://kubernetes.recipes/recipes/storage/statefulset-mysql/): Deploy a production-ready MySQL database on Kubernetes using StatefulSet. Learn persistent storage, headless services, and backup strategies.
 - [Velero Kubernetes Backup, Restore and Schedules](https://kubernetes.recipes/recipes/storage/velero-kubernetes-backup-disaster-recovery/): Velero backup and disaster recovery for Kubernetes: install on S3/MinIO, velero backup create, schedules with TTL, PV snapshots vs Kopia, restore, migration.
+- [Velero v1.18.4: What's New and How to Upgrade](https://kubernetes.recipes/recipes/storage/velero-v1-18-4-what-s-new-and-how-to-upgrade/): Velero v1.18.4 patches a backup-queue deadlock bug. Minimal changelog — upgrade steps, verification, and notes for operators.
+- [What's New in Longhorn v1.13.0: V2 Data Engine Live Upgrade & Breaking K8s v1.34 Requirement](https://kubernetes.recipes/recipes/storage/what-s-new-in-longhorn-v1-13-0-v2-data-engine-live-upgrade-breaking-k8s-v1-34-requirement/): Longhorn v1.13.0 adds V2 live upgrade, full interrupt mode, and requires Kubernetes v1.34+. Upgrade steps and gotchas inside.
+- [What's New in Rook v1.21.1: Ceph Operator Patch Release Guide](https://kubernetes.recipes/recipes/storage/what-s-new-in-rook-v1-21-1-ceph-operator-patch-release-guide/): Rook v1.21.1 patch release: msgr2 security enforcement, nvmeof improvements, OSD fixes, and Helm upgrade steps for Ceph on Kubernetes.
 
 ## Troubleshooting (105 recipes)
 

@@ -8,6 +8,7 @@ import ReadingProgress from "@components/reading-progress.astro";
 import TocSidebar from "@components/toc-sidebar.astro";
 import ShareButtons from "@components/share-buttons.astro";
 import AuthorCard from "@components/author-card.astro";
+import { KUBERNETES_RECIPES, authorEntity } from "../../../utils/entities.mjs";
 
 // Category display names
 const categoryNames: Record<string, string> = {
@@ -82,26 +83,9 @@ const jsonLd = {
   },
   "datePublished": recipe.data.publishDate.toISOString(),
   "dateModified": (recipe.data.updatedDate || recipe.data.publishDate).toISOString(),
-  "author": {
-    "@type": "Person",
-    "name": recipe.data.author || "Luca Berton",
-    "url": "https://www.lucaberton.com",
-    "jobTitle": "NVIDIA Solutions Architect",
-    "sameAs": [
-      "https://www.linkedin.com/in/lucaberton",
-      "https://github.com/lucab85",
-      "https://x.com/lucaborton"
-    ]
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Kubernetes Recipes",
-    "url": "https://kubernetes.recipes",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://kubernetes.recipes/favicon.svg"
-    }
-  },
+  // One identity across Luca's sites: see src/utils/entities.mjs.
+  "author": authorEntity(recipe.data.author),
+  "publisher": KUBERNETES_RECIPES,
   "mainEntityOfPage": articleUrl,
   "articleSection": categoryName,
   "wordCount": wordCount,

@@ -3,6 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
 import Cta from "@components/cta.astro";
+import { LUCA_BERTON } from "../utils/entities.mjs";
 import { Picture } from "astro:assets";
 import luca from "assets/luca.webp";
 import grzegorz from "assets/grzegorz.jpg";
@@ -25,20 +26,11 @@ const profileStructuredData = {
   "isPartOf": { "@type": "WebSite", "@id": `${SITE}#website` },
   "about": [
     {
-      "@type": "Person",
-      "@id": `${SITE}/authors#luca-berton`,
-      "name": "Luca Berton",
-      "jobTitle": "IT Infrastructure Expert",
+      // Canonical Person shared with Luca's other sites (src/utils/entities.mjs).
+      ...LUCA_BERTON,
       "description": "IT Infrastructure Expert with over 15 years of experience, specializing in Infrastructure Hardening and Automation. Author of Ansible for VMware by Examples and Ansible for Kubernetes by Examples, and creator of the Ansible Pilot project.",
       "image": new URL(luca.src, SITE).toString(),
-      "url": "https://lucaberton.com/",
-      "knowsAbout": ["Kubernetes", "Ansible", "Infrastructure Automation", "Linux", "Container Orchestration"],
-      "sameAs": [
-        "https://lucaberton.com/",
-        "https://www.copypastelearn.com/",
-        "https://www.linkedin.com/in/lucaberton",
-        "https://github.com/lucab85"
-      ]
+      "knowsAbout": ["Kubernetes", "Ansible", "Infrastructure Automation", "Linux", "Container Orchestration"]
     },
     {
       "@type": "Person",

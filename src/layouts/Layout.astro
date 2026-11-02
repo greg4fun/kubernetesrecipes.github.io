@@ -5,6 +5,7 @@ import NewsletterPopup from "@components/newsletter-popup.astro";
 import Navbar from "@components/navbar/navbar.astro";
 import AnnouncementBanner from "@components/announcement-banner.astro";
 import PromoBanner from "@components/promo-banner.astro";
+import { KUBERNETES_RECIPES, LUCA_BERTON, authorEntity } from "../utils/entities.mjs";
 import "@fontsource-variable/inter/index.css";
 import "@fontsource-variable/bricolage-grotesque";
 import "../styles/global.css";
@@ -99,22 +100,8 @@ const articleStructuredData = (type === "article" && !isRecipeDetailPage) ? {
   },
   "datePublished": publishDate?.toISOString(),
   "dateModified": lastModified.toISOString(),
-  "author": {
-    "@type": "Person",
-    "name": author,
-    "url": `${siteUrl}/authors`
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": siteName,
-    "url": siteUrl,
-    "logo": {
-      "@type": "ImageObject",
-      "url": `${siteUrl}/favicon.svg`,
-      "width": 512,
-      "height": 512
-    }
-  },
+  "author": authorEntity(author),
+  "publisher": KUBERNETES_RECIPES,
   "keywords": tags.join(", "),
   "articleSection": "Technology",
   "inLanguage": "en-US",
@@ -130,11 +117,7 @@ const websiteStructuredData = type === "website" ? {
   "name": siteName,
   "description": description,
   "url": siteUrl,
-  "publisher": {
-    "@type": "Organization",
-    "name": siteName,
-    "@id": `${siteUrl}#organization`
-  },
+  "publisher": { "@id": KUBERNETES_RECIPES["@id"] },
   "potentialAction": {
     "@type": "SearchAction",
     "target": {
@@ -154,16 +137,7 @@ const bookStructuredData = {
   "name": "Kubernetes Recipes",
   "alternateName": "Kubernetes Recipe Book",
   "author": [
-    {
-      "@type": "Person",
-      "name": "Luca Berton",
-      "url": `${siteUrl}/authors`,
-      "sameAs": [
-        "https://twitter.com/lucab85",
-        "https://linkedin.com/in/lucaberton",
-        "https://github.com/lucab85"
-      ]
-    },
+    LUCA_BERTON,
     {
       "@type": "Person", 
       "name": "Grzegorz Stencel",
@@ -201,34 +175,20 @@ const bookStructuredData = {
 };
 
 // Organization structured data
+// Same @id, name and parent as the recipe publisher (src/utils/entities.mjs).
+// Personal profiles belong to the Person, not here; github.com/kubernetesrecipes
+// was a 404.
 const organizationStructuredData = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": `${siteUrl}#organization`,
-  "name": siteName,
-  "url": siteUrl,
-  "logo": {
-    "@type": "ImageObject",
-    "url": `${siteUrl}/favicon.svg`,
-    "width": 512,
-    "height": 512
-  },
+  ...KUBERNETES_RECIPES,
   "description": "A practical guide to Kubernetes container orchestration with real-world recipes and best practices.",
-  "sameAs": [
-    "https://twitter.com/lucab85",
-    "https://github.com/kubernetesrecipes",
-    "https://linkedin.com/in/lucaberton"
-  ],
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "customer support",
     "url": `${siteUrl}/contact`,
     "availableLanguage": "English"
   },
-  "founder": {
-    "@type": "Person",
-    "name": "Luca Berton"
-  }
+  "founder": LUCA_BERTON
 };
 
 // Breadcrumb structured data (dynamic based on URL path)
@@ -448,6 +408,41 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
           })(window, document, "clarity", "script", "v5mvt15y9u");
         }, 1500);
       });
+    </script>
+    <!-- Conversion events for GA4 (marked as key events in GA4 admin):
+         newsletter_signup: a valid submit of a Kit (ConvertKit) form, such as the newsletter popup;
+         book_click: a click on any link to the book on Amazon, Springer or Apress.
+         Both go through the gtag() set up above; hits before it loads are skipped. -->
+    <script is:inline>
+      (function () {
+        function track(name, params) {
+          if (typeof window.gtag !== 'function') return;
+          params.transport_type = 'beacon';
+          window.gtag('event', name, params);
+        }
+        var BOOK_HOST = /(^|\.)(amzn\.to|amazon\.[a-z]{2,3}(\.[a-z]{2})?|springer\.com|apress\.com)$/i;
+        document.addEventListener('click', function (e) {
+          var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+          if (!a) return;
+          var url;
+          try { url = new URL(a.href, location.href); } catch (err) { return; }
+          if (!BOOK_HOST.test(url.hostname)) return;
+          track('book_click', {
+            link_url: url.href,
+            link_text: (a.textContent || a.getAttribute('aria-label') || '').trim().slice(0, 100),
+          });
+        }, true);
+        // Capture phase, before Kit's script takes over the submit. The browser only
+        // fires submit once the required email field is valid.
+        document.addEventListener('submit', function (e) {
+          var form = e.target && e.target.closest ? e.target.closest('form[data-sv-form]') : null;
+          if (!form) return;
+          track('newsletter_signup', {
+            form_id: form.getAttribute('data-sv-form'),
+            method: 'kit',
+          });
+        }, true);
+      })();
     </script>
     <meta name="google-site-verification" content="9cz9zIJrUCY3p9QQOW8TjKiM329bHY1iwwsLNyvx51w" />
     

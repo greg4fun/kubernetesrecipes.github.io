@@ -15,6 +15,7 @@ import CoursesSection from "@components/courses-section.astro";
 import PromoBanner from "@components/promo-banner.astro";
 import UdienzaBanner from "@components/udienza-banner.astro";
 import Layout from "@layouts/Layout.astro";
+import { LUCA_BERTON } from "../utils/entities.mjs";
 
 const websiteLd = JSON.stringify({
   "@context": "https://schema.org",
@@ -22,11 +23,7 @@ const websiteLd = JSON.stringify({
   "name": "Kubernetes Recipes",
   "url": "https://kubernetes.recipes",
   "description": "Production-Ready Container Patterns — 1,100+ copy-paste Kubernetes and OpenShift recipes for platform and GPU/AI infrastructure engineers",
-  "author": {
-    "@type": "Person",
-    "name": "Luca Berton",
-    "url": "https://www.lucaberton.com"
-  },
+  "author": LUCA_BERTON,
   "potentialAction": {
     "@type": "SearchAction",
     "target": "https://kubernetes.recipes/recipes/?q={search_term_string}",
@@ -38,10 +35,7 @@ const bookLd = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Book",
   "name": "Kubernetes Recipes",
-  "author": {
-    "@type": "Person",
-    "name": "Luca Berton"
-  },
+  "author": LUCA_BERTON,
   "publisher": {
     "@type": "Organization",
     "name": "Apress"

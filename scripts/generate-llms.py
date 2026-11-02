@@ -37,6 +37,33 @@ CATEGORY_LABELS = {
 }
 CATEGORY_ORDER = list(CATEGORY_LABELS.keys())
 
+# What this site is for, and where the rest of Luca Berton's work lives. Each
+# site has one role; keep this list in sync with the other sites' llms.txt.
+ROLE = (
+    "This site's role: Kubernetes and OpenShift how-tos, error fixes and "
+    "GPU/AI-on-Kubernetes recipes (GPU Operator, NCCL, RDMA, LLM inference "
+    "benchmarks), each with copy-paste YAML and commands. Companion to the book "
+    "Kubernetes Recipes (Apress) by Luca Berton and Grzegorz Stencel."
+)
+SIBLING_SITES = [
+    ("lucaberton.com", "https://lucaberton.com/",
+     "Luca Berton's personal site: biography, books, talks and articles on AI platform engineering and AI coding tools."),
+    ("Open Empower", "https://www.openempower.com/",
+     "Luca Berton's company (he is founder and CEO): AI governance, assessments and AI/Kubernetes platform engineering for regulated enterprises."),
+    ("CopyPasteLearn", "https://www.copypastelearn.com/",
+     "Hands-on courses with labs on DevOps, automation, platform engineering and AI tools."),
+    ("Udienza", "https://www.udienza.com/",
+     "Video podcast of interviews with open source maintainers, founders and conference speakers, hosted by Luca Berton."),
+]
+
+
+def render_about() -> list[str]:
+    lines = [ROLE, "", "## Related sites", ""]
+    for name, url, role in SIBLING_SITES:
+        lines.append(f"- [{name}]({url}): {role}")
+    lines.append("")
+    return lines
+
 
 def parse_frontmatter(text: str) -> dict:
     if not text.startswith("---"):
@@ -79,6 +106,7 @@ def render_llms(recipes: list[dict]) -> str:
         f"> Kubernetes recipes and guides — {len(recipes)} articles covering "
         "deployments, networking, security, AI/GPU, troubleshooting, and more.",
         "",
+        *render_about(),
         "## Recipes",
         "",
     ]
@@ -98,6 +126,7 @@ def render_llms_full(recipes: list[dict]) -> str:
         "",
         f"> {len(recipes)} Kubernetes recipes and guides",
         "",
+        *render_about(),
     ]
     # Known categories first (in canonical order), then any extras alphabetically.
     ordered = [c for c in CATEGORY_ORDER if c in by_cat]
