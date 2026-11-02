@@ -29,5 +29,8 @@
   "kubernetes-sigs/cluster-api": "v1.14.3",
   "metallb/metallb": "metallb-chart-0.16.1",
   "rook/rook": "v1.21.1",
-  "longhorn/longhorn": "v1.13.0"
+  "longhorn/longhorn": "v1.13.0",
+  "traefik/traefik": "v3.7.17",
+  "kubevirt/kubevirt": "v1.9.1",
+  "open-telemetry/opentelemetry-operator": "v0.162.0"
 }
