@@ -22,8 +22,9 @@ export const LUCA_BERTON = {
   "sameAs": [
     "https://www.linkedin.com/in/lucaberton/",
     "https://github.com/lucab85",
-    "https://bsky.app/profile/lucaberton.com",
+    "https://bsky.app/profile/lucaberton.bsky.social",
     "https://www.youtube.com/@BertonLuca",
+    "https://x.com/TheLucaBerton",
   ],
 };
 
