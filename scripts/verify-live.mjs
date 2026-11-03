@@ -39,7 +39,8 @@
  * - Links to sister sites carry no utm_* parameters (robots.txt blocks them).
  * - A sitemap sample answers 200 directly, with a title, a self-host canonical
  *   and a description of sane length.
- * - Share images: og:image exists on the home page and articles, loads, is at
+ * - Share images: og:image exists on the home page and articles, loads, is not
+ *   SVG (9 copypastelearn.com course pages shared with no picture), is at
  *   least 200x200 (1200x630 recommended) and is not smaller than its
  *   og:image:width/height claim (terraformpilot.com sent its 150x51 header logo
  *   as a "1200x630" card for months).
@@ -393,6 +394,9 @@ async function pool(items, n, fn) { const q = [...items]; await Promise.all(Arra
     const r = await getBytes(url);
     if (r.status !== 200) { rec('FAIL', 'og:image unreachable', `${url} -> ${r.status || r.error}`, where); return; }
     if (!/^image\//i.test(r.type)) rec('WARN', 'og:image content-type', `${url}: ${r.type || 'none'}`, where);
+    // Facebook, LinkedIn and X render neither SVG nor (reliably) AVIF share images.
+    if (/svg/i.test(r.type) || /\.svg(\?|$)/i.test(url)) { rec('FAIL', 'og:image is SVG', `${url}: social networks show no picture`, where); return; }
+    if (/avif/i.test(r.type) || /\.avif(\?|$)/i.test(url)) rec('WARN', 'og:image is AVIF', `${url}: not every network renders it; use PNG or JPEG`, where);
     const size = imageSize(r.buf);
     if (!size) { rec('INFO', 'og:image size', `not measured (format): ${url}`, where); return; }
     const [w, hgt] = size;
