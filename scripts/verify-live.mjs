@@ -59,8 +59,12 @@ const PERSON_SAMEAS_REQUIRED = ['https://x.com/TheLucaBerton', 'https://www.yout
 const FORBIDDEN = [
   'x.com/lucaborton', 'twitter.com/lucaborton', 'twitter.com/lucab85', 'x.com/lucab85', 'x.com/lberton',
   '@yourlinuxsa', 'twitter.com/yourlinuxsa', 'youtube.com/@LucaBerton', 'bsky.app/profile/lucaberton.com',
-  'Principal Consultant', 'day job is at Red Hat',
+  'day job is at Red Hat',
 ];
+// Luca's former title fails only when it is said about him: posts quote other
+// people's titles too ("Rajveer Singh, Red Hat Associate Principal Consultant").
+// His JSON-LD jobTitle is checked separately (Person jobTitle).
+const FORMER_TITLE_ABOUT_LUCA = /Luca(?: Berton)?\b[^.<]{0,80}Principal Consultant|Principal Consultant[^.<]{0,20}Luca Berton/;
 const AI_BOTS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'PerplexityBot', 'Google-Extended'];
 const SISTERS = ['lucaberton.com', 'openempower.com', 'ansiblebyexample.com', 'ansiblepilot.com',
   'terraformpilot.com', 'kubernetes.recipes', 'udienza.com', 'copypastelearn.com'];
@@ -128,6 +132,7 @@ function checkPage(label, page, { isArticle = false } = {}) {
   const canon = canonicalOf(h);
   if (canon) { try { const ch = new URL(canon, page.url).host; if (ch !== host) rec(cfg.allowForeignCanonical ? 'WARN' : 'FAIL', `${label}: canonical host`, canon); } catch { rec('WARN', `canonical`, canon, label); } }
   for (const s of FORBIDDEN.concat(cfg.forbid || [])) if (h.includes(s)) rec('FAIL', `forbidden "${s}"`, '', label);
+  if (FORMER_TITLE_ABOUT_LUCA.test(h)) rec('FAIL', `forbidden "Principal Consultant"`, 'as Luca\'s title', label);
   const creator = metaOf(h, 'twitter:creator');
   if (creator && creator !== '@TheLucaBerton') rec('FAIL', `twitter:creator`, creator, label);
   const site = metaOf(h, 'twitter:site');
