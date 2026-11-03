@@ -41,7 +41,7 @@ const img = promo?.image;
           <img src={`${img.base}/wide.jpg`} width={img.wide.width} height={img.wide.height} alt={promo.alt} loading="lazy" decoding="async" class="block h-auto w-full" />
         </picture>
       </a>
-      <p class="mt-2 text-center text-sm text-slate-600">
+      <p class="mx-auto mt-2 max-w-prose text-center text-sm text-slate-600">
         {promo.caption}{promo.code && <> — use code <code class="rounded bg-slate-100 px-1.5 py-0.5 font-semibold text-slate-900">{promo.code}</code> at checkout</>}
         <span class="promo-copied ml-1 font-medium text-green-700" role="status" aria-live="polite"></span>
         {promo.disclosure && <span class="block text-xs text-slate-500">{promo.disclosure}</span>}

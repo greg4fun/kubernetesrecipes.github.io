@@ -265,7 +265,7 @@ const breadcrumbLd = {
                 <img src="/book/cover-sm.jpg" alt="Kubernetes Recipes book cover" width="80" height="106" class="rounded-md shadow-md" loading="lazy" />
               </a>
               <div>
-                <p class="text-xs font-semibold uppercase tracking-wider text-blue-500 mb-1">Recommended</p>
+                <p class="text-xs font-semibold uppercase tracking-wider text-blue-600 mb-1">Recommended</p>
                 <a href="https://amzn.to/3DzC8QA" target="_blank" rel="noopener" class="text-lg font-bold text-slate-900 hover:text-blue-600 transition-colors">
                   Kubernetes Recipes — The Complete Book
                 </a>
@@ -288,7 +288,7 @@ const breadcrumbLd = {
             <div class="flex items-start gap-4">
               <span class="text-3xl shrink-0">🎓</span>
               <div>
-                <p class="text-xs font-semibold uppercase tracking-wider text-purple-500 mb-1">Learn by Doing</p>
+                <p class="text-xs font-semibold uppercase tracking-wider text-purple-600 mb-1">Learn by Doing</p>
                 <a href="https://www.copypastelearn.com" target="_blank" rel="noopener" class="text-lg font-bold text-slate-900 hover:text-purple-600 transition-colors">
                   CopyPasteLearn — Hands-on Cloud & DevOps Courses
                 </a>
@@ -398,6 +398,18 @@ const breadcrumbLd = {
     line-height: 1.7;
   }
 
+  /* github-dark comments (#6A737D) are 3.0:1 on the #1e293b block background
+     above; GitHub's current dark comment grey is 4.8:1 */
+  .recipe-content :global(pre span[style*="#6A737D" i]) {
+    color: #8b949e !important;
+  }
+
+  /* Keep running text near 65ch (about 75 characters a line); code blocks,
+     tables and images keep the full column width */
+  .recipe-content > :global(:is(p, ul, ol, blockquote):not(:has(img))) {
+    max-width: 65ch;
+  }
+
   /* Code block header with language badge and copy button */
   .recipe-content :global(.code-block-wrapper) {
     position: relative;
@@ -438,7 +450,7 @@ const breadcrumbLd = {
     padding: 0.375rem 0.75rem;
     font-size: 0.75rem;
     font-weight: 500;
-    color: #94a3b8;
+    color: #cbd5e1;
     background: #334155;
     border: none;
     border-radius: 0.375rem;
