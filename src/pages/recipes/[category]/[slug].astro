@@ -404,10 +404,11 @@ const breadcrumbLd = {
     color: #8b949e !important;
   }
 
-  /* Keep running text near 65ch (about 75 characters a line); code blocks,
-     tables and images keep the full column width */
+  /* Keep running text near 75 characters a line; code blocks, tables and
+     images keep the full column width. In em, not ch: Bricolage's "0" is
+     wide next to its average letter, so 65ch came out at ~88 characters. */
   .recipe-content > :global(:is(p, ul, ol, blockquote):not(:has(img))) {
-    max-width: 65ch;
+    max-width: 34em;
   }
 
   /* Code block header with language badge and copy button */
