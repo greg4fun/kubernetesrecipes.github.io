@@ -1,0 +1,30 @@
+{
+  "site": "kubernetes.recipes",
+  "base": "https://kubernetes.recipes",
+  "role": "Kubernetes and GPU/AI-on-Kubernetes how-tos",
+  "sitemaps": [
+    "https://kubernetes.recipes/sitemap-index.xml"
+  ],
+  "articlePrefix": "/recipes/",
+  "identity": {
+    "person": true,
+    "org": true
+  },
+  "social": {
+    "siteHandles": [
+      "@TheLucaBerton"
+    ]
+  },
+  "analytics": {
+    "gaId": "G-CCC31PP3QS",
+    "inHtml": true
+  },
+  "llms": {
+    "mustInclude": [
+      "lucaberton.com"
+    ]
+  },
+  "sample": 20,
+  "titleMax": 70,
+  "$comment": "Expectations for scripts/verify-live.mjs (shared engine). Decisions of Nov 2, 2026: one role per site, one Person/Organization identity, X @TheLucaBerton, YouTube @BertonLuca, AI crawlers allowed."
+}
