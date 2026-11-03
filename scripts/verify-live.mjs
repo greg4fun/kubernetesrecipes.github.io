@@ -11,11 +11,14 @@
  *   node scripts/verify-live.mjs --sample 50     # bigger sitemap sample
  *   node scripts/verify-live.mjs --config path/to/config.json --json
  *
+ *   node scripts/verify-live.mjs --repo ../site  # repo checks against another checkout
+ *
  * Config keys: site, base, role, sitemaps, articlePrefix, articleExclude, articleType,
  * identity {person, org}, social {siteHandles}, analytics {gaId, inHtml}, llms
  * {mustInclude, forbid}, redirects [{from,to,status}], pages [{path,titleIncludes,
  * mustInclude,article}], home {titleIncludes}, allowBlockedBots, forbid,
- * allowForeignCanonical, titleMax, sample.
+ * allowForeignCanonical, titleMax, sample, redirectsFile, fresh [{dir, url (with
+ * {slug} and {category}), date (key or keys), draft, newest, indexable}].
  *
  * Exit code 1 when any check FAILs; WARNs never fail the run.
  *
@@ -36,7 +39,27 @@
  * - Links to sister sites carry no utm_* parameters (robots.txt blocks them).
  * - A sitemap sample answers 200 directly, with a title, a self-host canonical
  *   and a description of sane length.
+ * - Share images: og:image exists on the home page and articles, loads, is at
+ *   least 200x200 (1200x630 recommended) and is not smaller than its
+ *   og:image:width/height claim (terraformpilot.com sent its 150x51 header logo
+ *   as a "1200x630" card for months).
+ * - Articles carry their real publish date: when half the sampled articles share
+ *   one datePublished, it is a placeholder (ansiblebyexample.com dated 1,470
+ *   articles 2024-01-01 because its generator ignored `date:`).
+ * - Links to the sister sites resolve (no 404s between our own sites).
+ *
+ * Repo checks (run from the repo root, or pass --repo <dir>; skipped otherwise):
+ * - Every explicit rule in static/_redirects (or cfg.redirectsFile) is live and
+ *   lands on a 200 page in one hop: a renamed or deleted target turns a fixed
+ *   404 back into a 404.
+ * - Newest content is live (cfg.fresh): the newest dated posts in the repo answer
+ *   200, so a merge whose deploy was skipped shows up (lucaberton.com #338 sat
+ *   behind a failed build validator for six hours while its post returned 404).
+ *   A post committed less than 2 h ago only warns: its deploy may be running.
+ * - Workflows that deploy have a concurrency group (two kubernetes.recipes merges
+ *   a minute apart deployed out of order and put the older build back live).
  */
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -50,6 +73,7 @@ const here = path.dirname(new URL(import.meta.url).pathname);
 const cfgPath = typeof args.config === 'string' ? args.config : path.join(here, 'verify-live.config.json');
 const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
 const SAMPLE = Number(args.sample || cfg.sample || 20);
+const REPO = path.resolve(typeof args.repo === 'string' ? args.repo : '.');
 
 // Shared across the group — change here, then copy this file to every repo.
 const PERSON_ID = 'https://lucaberton.com/#person';
@@ -73,6 +97,9 @@ const GROUP_GA_IDS = ['G-M9Q5F672JT', 'G-77NY6462EC', 'G-YFX4FP055Q', 'G-Q0V9R2Z
 
 const results = [];
 const utmLinks = [];
+const ogImages = new Map(); // absolute image URL -> { pages, w, h } as declared by the tags
+const articleDates = []; // { label, date } from article JSON-LD
+const groupLinks = new Map(); // link to a sister site -> first page it was seen on
 const rec = (level, check, detail = '', page = '') => results.push({ level, check, detail, page });
 const base = cfg.base.replace(/\/$/, '');
 const host = new URL(base).host;
@@ -92,6 +119,82 @@ async function get(url, { follow = true } = {}) {
     return { status: 0, url, error: String(e.message || e), body: '' };
   } finally {
     clearTimeout(t);
+  }
+}
+
+async function getBytes(url) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 25000);
+  try {
+    const r = await fetch(url, { signal: ctrl.signal, headers: { 'user-agent': 'Mozilla/5.0 (compatible; group-verify-live/1.0; +https://lucaberton.com)' } });
+    return { status: r.status, type: r.headers.get('content-type') || '', buf: Buffer.from(await r.arrayBuffer()) };
+  } catch (e) {
+    return { status: 0, type: '', buf: Buffer.alloc(0), error: String(e.message || e) };
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+// [width, height] of a PNG, GIF, WebP or JPEG; null for anything else (AVIF, SVG).
+function imageSize(b) {
+  if (b.length > 24 && b.readUInt32BE(0) === 0x89504e47) return [b.readUInt32BE(16), b.readUInt32BE(20)];
+  if (b.length > 10 && b.toString('ascii', 0, 3) === 'GIF') return [b.readUInt16LE(6), b.readUInt16LE(8)];
+  if (b.length > 30 && b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP') {
+    const kind = b.toString('ascii', 12, 16);
+    if (kind === 'VP8X') return [1 + b.readUIntLE(24, 3), 1 + b.readUIntLE(27, 3)];
+    if (kind === 'VP8 ') return [b.readUInt16LE(26) & 0x3fff, b.readUInt16LE(28) & 0x3fff];
+    if (kind === 'VP8L') { const v = b.readUInt32LE(21); return [(v & 0x3fff) + 1, ((v >> 14) & 0x3fff) + 1]; }
+  }
+  if (b.length > 4 && b[0] === 0xff && b[1] === 0xd8) {
+    let i = 2;
+    while (i + 9 < b.length) {
+      if (b[i] !== 0xff) { i++; continue; }
+      const m = b[i + 1];
+      if (m === 0xff) { i++; continue; }
+      if (m === 0x01 || (m >= 0xd0 && m <= 0xd8)) { i += 2; continue; }
+      if (m >= 0xc0 && m <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(m)) return [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)];
+      i += 2 + b.readUInt16BE(i + 2);
+    }
+  }
+  return null;
+}
+
+// Follows redirects by hand so the number of hops is known.
+async function follow(url, max = 5) {
+  let u = url;
+  for (let hops = 0; ; hops++) {
+    const r = await get(u, { follow: false });
+    if (r.status >= 300 && r.status < 400 && r.location && hops < max) { u = new URL(r.location, u).href; continue; }
+    return { status: r.status, url: u, hops, error: r.error };
+  }
+}
+
+// Top-level scalar keys of a Markdown file's YAML frontmatter (enough for dates, slugs, flags).
+function frontmatter(text) {
+  const fm = {};
+  const m = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!m) return fm;
+  for (const line of m[1].split(/\r?\n/)) {
+    const kv = line.match(/^([A-Za-z_][\w-]*):\s*(.+)$/);
+    if (kv) fm[kv[1]] = kv[2].replace(/\s+#.*$/, '').trim().replace(/^(["'])(.*)\1$/, '$2');
+  }
+  return fm;
+}
+
+// The group's sites turn file names into URLs in different ways; try each.
+function slugCandidates(fm, file) {
+  const base = path.basename(file).replace(/\.mdx?$/i, '');
+  const dashed = base.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); // ansiblepilot: "aap-2-7"
+  const stripped = base.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); // ansiblebyexample: "2220"
+  return [...new Set([fm.slug, base, dashed, stripped].filter(Boolean))];
+}
+
+function commitAgeHours(file) {
+  try {
+    const t = Number(execFileSync('git', ['log', '-1', '--format=%ct', '--', file], { cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim());
+    return t ? (Date.now() / 1000 - t) / 3600 : null;
+  } catch {
+    return null;
   }
 }
 
@@ -145,6 +248,25 @@ function checkPage(label, page, { isArticle = false } = {}) {
       break;
     }
   }
+  // Links to the sister sites, checked once each after the sample.
+  for (const m of h.matchAll(/href\s*=\s*["']([^"'#]+)/gi)) {
+    let u; try { u = new URL(decode(m[1]), page.url); } catch { continue; }
+    if (!/^https?:$/.test(u.protocol) || u.host === host || !SISTERS.some((d) => u.host === d || u.host.endsWith('.' + d))) continue;
+    if (!groupLinks.has(u.href) && groupLinks.size < 400) groupLinks.set(u.href, label);
+  }
+  // Share image, measured once per image after the sample.
+  const og = metaOf(h, 'og:image');
+  if (!og) { if (label === 'home' || isArticle) rec('FAIL', 'og:image', 'missing', label); }
+  else {
+    let abs; try { abs = new URL(og, page.url).href; } catch { abs = null; }
+    if (!abs) rec('FAIL', 'og:image', `not a URL: ${og}`, label);
+    else {
+      if (!/^https?:\/\//i.test(og)) rec('WARN', 'og:image', `relative URL ${og} (crawlers expect an absolute one)`, label);
+      const seen = ogImages.get(abs) || { pages: [], w: metaOf(h, 'og:image:width'), h: metaOf(h, 'og:image:height') };
+      seen.pages.push(label);
+      ogImages.set(abs, seen);
+    }
+  }
   // Analytics: own ID present (or the tag script for client-loaded GA), no other group site's ID.
   if (cfg.analytics?.gaId) {
     const own = cfg.analytics.gaId;
@@ -166,6 +288,12 @@ function checkPage(label, page, { isArticle = false } = {}) {
     if (cfg.identity?.person && (isArticle || label === 'home') && !ids.has(PERSON_ID) && !h.includes(PERSON_ID)) rec('FAIL', `Person @id`, `no reference to ${PERSON_ID}`, label);
     if (cfg.identity?.org && label === 'home' && !h.includes(ORG_ID)) rec('FAIL', `Organization @id`, `no reference to ${ORG_ID}`, label);
     if (isArticle && cfg.articleType && !nodes.some((n) => types(n).includes(cfg.articleType))) rec('FAIL', `${cfg.articleType} markup`, 'missing', label);
+    const art = isArticle && nodes.find((n) => n.datePublished && types(n).some((t) => /Article|BlogPosting|Posting/.test(t)));
+    if (art) {
+      const d = String(art.datePublished).slice(0, 10);
+      articleDates.push({ label, date: d });
+      if (Date.parse(d) > Date.now() + 36 * 3600 * 1000) rec('FAIL', 'datePublished in the future', d, label);
+    }
   } else if (cfg.identity?.person && (isArticle || label === 'home')) rec('FAIL', `JSON-LD`, 'none found', label);
 }
 
@@ -257,6 +385,125 @@ async function pool(items, n, fn) { const q = [...items]; await Promise.all(Arra
     const rb = await get(`https://${t}/robots.txt`);
     const blocks = /^\s*disallow:[^\n]*utm_/im.test(rb.body);
     rec(blocks ? 'FAIL' : 'WARN', `utm links to ${t}`, `${ls.length} page(s), e.g. ${ls[0].href}${blocks ? ' — blocked by its robots.txt' : ''}`, ls[0].page);
+  }
+
+  // Share images: loadable, big enough, and the size the tags claim.
+  await pool([...ogImages.entries()].slice(0, 20), 4, async ([url, info]) => {
+    const where = info.pages[0];
+    const r = await getBytes(url);
+    if (r.status !== 200) { rec('FAIL', 'og:image unreachable', `${url} -> ${r.status || r.error}`, where); return; }
+    if (!/^image\//i.test(r.type)) rec('WARN', 'og:image content-type', `${url}: ${r.type || 'none'}`, where);
+    const size = imageSize(r.buf);
+    if (!size) { rec('INFO', 'og:image size', `not measured (format): ${url}`, where); return; }
+    const [w, hgt] = size;
+    if (w < 200 || hgt < 200) rec('FAIL', 'og:image too small', `${url} is ${w}x${hgt}; share cards need 1200x630`, where);
+    else if (w < 1200 || hgt < 627) rec('WARN', 'og:image under 1200x630', `${url} is ${w}x${hgt}`, where);
+    // Tags may understate a bigger file of the same shape; they must not promise more than the file has.
+    const tw = Number(info.w), th = Number(info.h);
+    if (tw > 0 && th > 0) {
+      if (w < tw - 2 || hgt < th - 2) rec('FAIL', 'og:image smaller than its tags', `${url}: tags say ${tw}x${th}, the file is ${w}x${hgt}`, where);
+      else if (Math.abs(w / hgt - tw / th) / (tw / th) > 0.1) rec('WARN', 'og:image shape differs from its tags', `${url}: tags say ${tw}x${th}, the file is ${w}x${hgt}`, where);
+    }
+  });
+  rec('INFO', 'og:image', `${Math.min(ogImages.size, 20)} image(s) measured`);
+
+  // A shared datePublished across most sampled articles is a generator default, not a date.
+  if (articleDates.length >= 4) {
+    const counts = {};
+    for (const d of articleDates) counts[d.date] = (counts[d.date] || 0) + 1;
+    const [top, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+    if (n >= 3 && n / articleDates.length >= 0.5) rec('FAIL', 'datePublished placeholder', `${n} of ${articleDates.length} sampled articles say ${top}`, articleDates.find((d) => d.date === top).label);
+  }
+
+  // Links between our own sites.
+  const links = [...groupLinks.entries()].map((e) => [Math.random(), e]).sort((a, b) => a[0] - b[0]).slice(0, 60).map((x) => x[1]);
+  let linksOk = 0;
+  await pool(links, 6, async ([url, where]) => {
+    const r = await follow(url);
+    if (r.status === 200) { linksOk++; if (r.hops > 1) rec('WARN', 'sister link redirects more than once', `${url} -> ${r.url} (${r.hops} hops)`, where); }
+    else if (r.status === 404 || r.status === 410 || r.status >= 500) rec('FAIL', 'broken link to a sister site', `${url} -> ${r.status}`, where);
+    else rec('WARN', 'sister link not checked', `${url} -> ${r.status || r.error}`, where);
+  });
+  rec('INFO', 'sister links', `${linksOk}/${links.length} answered 200 (of ${groupLinks.size} found)`);
+
+  // Repo checks: only when run from (or pointed at) a checkout of this site.
+  const isRepo = fs.existsSync(path.join(REPO, 'package.json')) || fs.existsSync(path.join(REPO, '.git'));
+  if (!isRepo) rec('INFO', 'repo checks', `skipped: ${REPO} is not a checkout (run from the repo root or pass --repo)`);
+  else {
+    // Redirect rules from the repo are live and land on a real page in one hop.
+    const rf = path.join(REPO, cfg.redirectsFile || 'static/_redirects');
+    if (fs.existsSync(rf)) {
+      const rules = [];
+      const seen = new Set();
+      for (const line of fs.readFileSync(rf, 'utf8').split('\n')) {
+        const [from, to, code = '301'] = line.trim().split(/\s+/);
+        if (!from || from.startsWith('#') || !to || /[*:]/.test(from) || !/^30[1278]!?$/.test(code)) continue; // wildcards, placeholders, rewrites
+        const key = from.replace(/\/$/, '');
+        if (seen.has(key)) continue;
+        seen.add(key);
+        rules.push({ from, to });
+      }
+      await pool(rules, 8, async (r) => {
+        const res = await get(base + r.from, { follow: false });
+        if (res.status === 200) return; // a real page answers there; build-vercel-config drops such rules on purpose
+        if (!(res.status >= 300 && res.status < 400)) { rec('FAIL', 'redirect rule not live', `${r.from} -> ${res.status || res.error}`); return; }
+        const loc = new URL(res.location, base + r.from).href;
+        const want = new URL(r.to, base + '/').href;
+        if (loc.replace(/\/$/, '') !== want.replace(/\/$/, '')) rec('WARN', 'redirect rule goes elsewhere', `${r.from} -> ${loc}, the file says ${r.to}`);
+        const fin = await follow(loc);
+        if (fin.status !== 200) rec('FAIL', 'redirect rule lands on an error', `${r.from} -> ${loc} -> ${fin.status || fin.error}`);
+        else if (fin.hops > 0) rec('WARN', 'redirect chain', `${r.from} -> ${loc} -> ${fin.url}`);
+      });
+      rec('INFO', 'redirect rules', `${rules.length} explicit rule(s) in ${path.relative(REPO, rf)} checked`);
+    }
+
+    // The newest dated content in the repo is live.
+    for (const src of cfg.fresh || []) {
+      const dir = path.join(REPO, src.dir);
+      if (!fs.existsSync(dir)) { rec('WARN', 'newest content', `${src.dir} not found`); continue; }
+      const keys = [].concat(src.date || 'date');
+      const items = [];
+      for (const f of fs.readdirSync(dir)) {
+        if (!/\.mdx?$/i.test(f)) continue;
+        const fm = frontmatter(fs.readFileSync(path.join(dir, f), 'utf8').slice(0, 8000));
+        if (String(fm[src.draft || 'draft']) === 'true') continue;
+        const ds = keys.map((k) => fm[k]).find(Boolean);
+        const t = ds ? Date.parse(ds) : NaN;
+        if (Number.isFinite(t) && t <= Date.now()) items.push({ f, fm, ds, t });
+      }
+      items.sort((a, b) => b.t - a.t);
+      const newest = items.slice(0, src.newest || 3);
+      for (const it of newest) {
+        const tried = [];
+        let live = null;
+        for (const s of slugCandidates(it.fm, it.f)) {
+          const p = src.url.replace('{slug}', encodeURIComponent(s)).replace('{category}', encodeURIComponent(String(it.fm.category || '').toLowerCase()));
+          tried.push(p);
+          const r = await get(base + p);
+          if (r.status === 200 && new URL(r.url).pathname !== '/') { live = { p, r }; break; }
+        }
+        const where = `${src.dir}/${it.f}`;
+        if (!live) {
+          const age = commitAgeHours(path.join(src.dir, it.f));
+          const fresh = age != null && age < 2;
+          rec(fresh ? 'WARN' : 'FAIL', 'newest content not live', `${it.f} (${it.ds}); tried ${tried.join(', ')}${fresh ? `; committed ${Math.round(age * 60)} min ago, the deploy may still be running` : ''}`, where);
+        } else if (src.indexable && /noindex/i.test(metaOf(live.r.body, 'robots') || '')) {
+          rec('FAIL', 'newest content still noindex', `${live.p} (${it.ds}) is due but still noindex: the site was not rebuilt`, where);
+        }
+      }
+      rec('INFO', `newest content in ${src.dir}`, `${newest.length} newest checked`);
+    }
+
+    // Deploy workflows must deploy one at a time, in push order.
+    const wf = path.join(REPO, '.github', 'workflows');
+    if (fs.existsSync(wf)) {
+      for (const f of fs.readdirSync(wf).filter((x) => /\.ya?ml$/.test(x))) {
+        const y = fs.readFileSync(path.join(wf, f), 'utf8');
+        // Case-sensitive on purpose: CLI commands, not step names like "Wait for Vercel deploy".
+        const deploys = /actions\/deploy-pages|\bvercel\s+(?:deploy|--prod)\b|amondnet\/vercel-action|peaceiris\/actions-gh-pages|cloudflare\/pages-action|\bwrangler\s+(?:pages\s+)?deploy\b|\bnetlify\s+deploy\b/.test(y);
+        if (deploys && !/^\s*concurrency:/m.test(y)) rec('FAIL', 'deploy workflow without concurrency', `${f}: two quick merges can deploy out of order`);
+      }
+    }
   }
 
   // Report
