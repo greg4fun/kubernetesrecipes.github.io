@@ -14,6 +14,14 @@ permissions:
   pages: write
   id-token: write
 
+# One deployment at a time, in push order. Without this, two pushes a minute
+# apart raced: on Nov 3, 2026 the older run (#69) finished deploying after the
+# newer one (#70) and put the older build back live. cancel-in-progress stays
+# false so a queued deploy is never dropped mid-way (GitHub's Pages template).
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   validate:
     runs-on: ubuntu-latest
