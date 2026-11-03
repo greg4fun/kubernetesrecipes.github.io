@@ -53,7 +53,7 @@ const categories = Object.keys(CATEGORY_META)
       >
         <span>{CATEGORY_META[c].icon}</span>
         {CATEGORY_META[c].label}
-        <span class="text-slate-400">{counts[c]}</span>
+        <span class="text-slate-500">{counts[c]}</span>
       </a>
     ))}
   </div>
@@ -73,7 +73,7 @@ const categories = Object.keys(CATEGORY_META)
         </h3>
         <p class="text-sm text-slate-500 mt-2 line-clamp-2">{recipe.data.description}</p>
         {recipe.data.difficulty && (
-          <span class="inline-block mt-3 text-xs text-slate-400 capitalize">{recipe.data.difficulty}</span>
+          <span class="inline-block mt-3 text-xs text-slate-500 capitalize">{recipe.data.difficulty}</span>
         )}
       </a>
     ))}
