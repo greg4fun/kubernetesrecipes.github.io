@@ -2,7 +2,7 @@
   "kubernetes/kubernetes": "v1.37.1",
   "helm/helm": "v4.3.1",
   "cert-manager/cert-manager": "v1.21.2",
-  "argoproj/argo-cd": "v3.5.4",
+  "argoproj/argo-cd": "v3.6.0",
   "kubernetes-sigs/gateway-api": "v1.7.0",
   "cilium/cilium": "v1.20.2",
   "istio/istio": "1.31.1",
@@ -35,5 +35,6 @@
   "open-telemetry/opentelemetry-operator": "v0.162.0",
   "kserve/kserve": "v0.21.0",
   "ray-project/kuberay": "v1.7.1",
-  "NVIDIA/gpu-operator": "v26.7.2"
+  "NVIDIA/gpu-operator": "v26.7.2",
+  "kubeflow/kubeflow": "redirect"
 }
