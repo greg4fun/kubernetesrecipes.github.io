@@ -27,7 +27,7 @@
   "falcosecurity/falco": "0.45.1",
   "kubernetes-sigs/external-dns": "v0.24.0",
   "kubernetes-sigs/cluster-api": "v1.14.3",
-  "metallb/metallb": "metallb-chart-0.16.1",
+  "metallb/metallb": "v0.16.2",
   "rook/rook": "v1.21.1",
   "longhorn/longhorn": "v1.13.0",
   "traefik/traefik": "v3.7.17",
