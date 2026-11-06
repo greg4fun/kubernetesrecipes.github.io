@@ -18,7 +18,7 @@
  * {mustInclude, forbid}, redirects [{from,to,status}], pages [{path,titleIncludes,
  * mustInclude,article}], home {titleIncludes}, allowBlockedBots, forbid,
  * allowForeignCanonical, titleMax, sample, redirectsFile, fresh [{dir, url (with
- * {slug} and {category}), date (key or keys), draft, newest, indexable}].
+ * {slug} and {category}), date (key or keys), draft, newest, indexable}], index {path}.
  *
  * Exit code 1 when any check FAILs; WARNs never fail the run.
  *
@@ -48,6 +48,12 @@
  *   one datePublished, it is a placeholder (ansiblebyexample.com dated 1,470
  *   articles 2024-01-01 because its generator ignored `date:`).
  * - Links to the sister sites resolve (no 404s between our own sites).
+ * - A–Z index (cfg.index.path): linked from the home page's server HTML, each page under
+ *   the ~1,000 links crawlers read per page, together covering >= 98% of the sitemap's
+ *   articles (paginated listings left 107-876 articles 5-16 clicks deep, Nov 2026). Any
+ *   sampled page with 1,000+ links warns.
+ * - No script on the home page is blocked by the Content-Security-Policy (fetched as a
+ *   browser: Cloudflare's beacon, injected only for browsers, was blocked on lucaberton.com).
  *
  * Repo checks (run from the repo root, or pass --repo <dir>; skipped otherwise):
  * - Every explicit rule in static/_redirects (or cfg.redirectsFile) is live and
@@ -115,7 +121,7 @@ async function get(url, { follow = true } = {}) {
       headers: { 'user-agent': 'Mozilla/5.0 (compatible; group-verify-live/1.0; +https://lucaberton.com)' },
     });
     const body = follow ? await r.text() : '';
-    return { status: r.status, url: r.url, location: r.headers.get('location'), redirected: r.redirected, body };
+    return { status: r.status, url: r.url, location: r.headers.get('location'), redirected: r.redirected, headers: r.headers, body };
   } catch (e) {
     return { status: 0, url, error: String(e.message || e), body: '' };
   } finally {
@@ -249,6 +255,10 @@ function checkPage(label, page, { isArticle = false } = {}) {
       break;
     }
   }
+  // Crawlers stop reading links after about 1,000 on a page (OpenSEO counted exactly 1,000 on
+  // ansiblepilot.com/articles, so ~600 older articles fell 5-11 clicks deep, Nov 2026).
+  const linkCount = (h.match(/<a\s[^>]*href\s*=/gi) || []).length;
+  if (linkCount >= 1000) rec('WARN', 'page has 1,000+ links', `${linkCount} links: crawlers stop reading around 1,000`, label);
   // Links to the sister sites, checked once each after the sample.
   for (const m of h.matchAll(/href\s*=\s*["']([^"'#]+)/gi)) {
     let u; try { u = new URL(decode(m[1]), page.url); } catch { continue; }
@@ -364,7 +374,10 @@ async function pool(items, n, fn) { const q = [...items]; await Promise.all(Arra
   urls = urls.filter((u) => { try { return new URL(u).host === host; } catch { return false; } });
   const foreign = (await sitemapUrls()).length - urls.length;
   if (foreign > 0) rec('WARN', 'sitemap', `${foreign} URLs on another host`);
-  const articles = prefix ? urls.filter((u) => { const p = new URL(u).pathname; return p.startsWith(prefix) && !(cfg.articleExclude || []).some((x) => p.startsWith(x)); }) : [];
+  // The prefix root (/blog/) and numbered listing pages (/blog/10/) are listings, not articles.
+  const isArticlePath = (p) => !!prefix && p.startsWith(prefix) && p.replace(/\/$/, '') !== prefix.replace(/\/$/, '')
+    && !/\/\d+\/?$/.test(p) && !(cfg.articleExclude || []).some((x) => p.startsWith(x));
+  const articles = prefix ? urls.filter((u) => isArticlePath(new URL(u).pathname)) : [];
   const pick = (arr, n) => arr.map((u) => [Math.random(), u]).sort((a, b) => a[0] - b[0]).slice(0, n).map((x) => x[1]);
   const sample = [...new Set([...pick(articles, Math.ceil(SAMPLE * 0.7)), ...pick(urls, SAMPLE)])].slice(0, SAMPLE);
   let ok = 0;
@@ -374,7 +387,7 @@ async function pool(items, n, fn) { const q = [...items]; await Promise.all(Arra
     if (res.status !== 200) { rec('FAIL', `sitemap URL ${label}`, `status ${res.status}`); return; }
     if (res.redirected && res.url.replace(/\/$/, '') !== u.replace(/\/$/, '')) rec('WARN', `sitemap URL ${label}`, `redirects to ${res.url}`);
     ok++;
-    checkPage(label, res, { isArticle: !!prefix && label.startsWith(prefix) && !(cfg.articleExclude || []).some((x) => label.startsWith(x)) });
+    checkPage(label, res, { isArticle: isArticlePath(label) });
   });
   rec('INFO', 'sitemap sample', `${ok}/${sample.length} answered 200 (from ${urls.length} URLs)`);
 
@@ -429,6 +442,74 @@ async function pool(items, n, fn) { const q = [...items]; await Promise.all(Arra
     else rec('WARN', 'sister link not checked', `${url} -> ${r.status || r.error}`, where);
   });
   rec('INFO', 'sister links', `${linksOk}/${links.length} answered 200 (of ${groupLinks.size} found)`);
+
+  // A–Z index (cfg.index.path): linked from the home page's HTML, every index page under the
+  // ~1,000-link reading limit, and together they reach (almost) every article in the sitemap.
+  // Without it, paginated listings left 107-876 articles 5-16 clicks deep (Nov 2026 audits).
+  if (cfg.index?.path && home.status === 200) {
+    const norm = (u) => { try { const x = new URL(decode(u), base + '/'); return (x.origin + x.pathname).replace(/\/$/, ''); } catch { return null; } };
+    const hrefsOf = (html) => [...html.matchAll(/<a\s[^>]*href\s*=\s*["']?([^"'\s>]+)/gi)].map((m) => norm(m[1])).filter(Boolean);
+    const first = norm(cfg.index.path);
+    if (!hrefsOf(home.body).includes(first)) rec('FAIL', 'A–Z index not linked from the home page HTML', `${cfg.index.path}: crawlers that do not run JavaScript cannot reach it`);
+    const queue = [first];
+    const seenPages = new Set(queue);
+    const linked = new Set();
+    let fetched = 0;
+    while (queue.length && fetched < 40) {
+      const u = queue.shift();
+      fetched++;
+      const r = await get(u);
+      if (r.status !== 200) { rec('FAIL', 'A–Z index page', `${u} -> ${r.status || r.error}`); continue; }
+      const hrefs = hrefsOf(r.body);
+      if (hrefs.length >= 1000) rec('FAIL', 'A–Z index page too long', `${u}: ${hrefs.length} links; crawlers stop reading around 1,000`);
+      for (const x of hrefs) {
+        linked.add(x);
+        if (x.startsWith(first + '/') && /\/\d+$/.test(x) && !seenPages.has(x)) { seenPages.add(x); queue.push(x); }
+      }
+    }
+    const inSitemap = articles.map(norm).filter((a) => a && a !== first && !a.startsWith(first + '/'));
+    const missing = inSitemap.filter((a) => !linked.has(a));
+    const share = 1 - missing.length / Math.max(1, inSitemap.length);
+    rec(share >= 0.98 ? 'INFO' : 'FAIL', 'A–Z index coverage',
+      `${(share * 100).toFixed(1)}% of ${inSitemap.length} sitemap articles in ${fetched} index page(s)` + (missing.length ? `; not in the index, e.g. ${missing.slice(0, 3).join(', ')}` : ''));
+  }
+
+  // Scripts the Content-Security-Policy blocks. Fetched as a browser: Cloudflare injects its
+  // Web Analytics beacon only for browser-like requests, and lucaberton.com's CSP (set at the
+  // edge) blocked it on every page (Lighthouse "errors in console", Nov 2026).
+  {
+    let r = null;
+    try {
+      r = await fetch(base + '/', { headers: {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36',
+        accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      } });
+    } catch { /* network errors are reported by the home check */ }
+    const csp = r?.headers.get('content-security-policy');
+    if (r && csp) {
+      const html = await r.text();
+      const dirs = {};
+      for (const part of csp.split(';')) { const [k, ...v] = part.trim().split(/\s+/); if (k) dirs[k.toLowerCase()] = v; }
+      const allowed = dirs['script-src-elem'] || dirs['script-src'] || dirs['default-src'] || [];
+      const allows = (u) => allowed.some((t) => {
+        if (t === '*' || t === `${u.protocol}`) return true;
+        const src = t.replace(/^'|'$/g, '');
+        if (!/[.:]/.test(src) || src.startsWith('nonce-') || src.startsWith('sha')) return false;
+        const m = src.match(/^(?:(https?):\/\/)?([^/]+)(\/.*)?$/);
+        if (!m) return false;
+        const [, scheme, hostPat, path] = m;
+        if (scheme && `${scheme}:` !== u.protocol) return false;
+        const hostOk = hostPat.startsWith('*.') ? u.host.endsWith(hostPat.slice(1)) : u.host === hostPat;
+        return hostOk && (!path || path === '/' || u.pathname.startsWith(path));
+      });
+      const scripts = [...html.matchAll(/<script\b[^>]*\bsrc\s*=\s*["']?([^"'\s>]+)/gi)]
+        .map((m) => { try { return new URL(decode(m[1]), base + '/'); } catch { return null; } })
+        .filter((u) => u && u.host !== host);
+      for (const u of new Map(scripts.map((x) => [x.origin, x])).values()) {
+        if (!allows(u)) rec('FAIL', 'script blocked by the CSP', `${u.origin} is loaded by the home page but not allowed by script-src`);
+      }
+    }
+  }
 
   // Repo checks: only when run from (or pointed at) a checkout of this site.
   const isRepo = fs.existsSync(path.join(REPO, 'package.json')) || fs.existsSync(path.join(REPO, '.git'));
