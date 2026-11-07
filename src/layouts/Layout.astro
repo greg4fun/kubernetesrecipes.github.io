@@ -411,7 +411,8 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
     </script>
     <!-- Conversion events for GA4 (marked as key events in GA4 admin):
          newsletter_signup: a valid submit of a Kit (ConvertKit) form, such as the newsletter popup;
-         book_click: a click on any link to the book on Amazon, Springer or Apress.
+         book_click: a click on any link to the book on Amazon, Springer or Apress;
+         affiliate_click: a click on a link marked data-affiliate (company, offer_id).
          Both go through the gtag() set up above; hits before it loads are skipped. -->
     <script is:inline>
       (function () {
@@ -426,6 +427,15 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
           if (!a) return;
           var url;
           try { url = new URL(a.href, location.href); } catch (err) { return; }
+          var company = a.getAttribute('data-affiliate');
+          if (company) {
+            track('affiliate_click', {
+              company: company,
+              offer_id: a.getAttribute('data-offer-id') || '',
+              link_url: url.href,
+            });
+            return;
+          }
           if (!BOOK_HOST.test(url.hostname)) return;
           track('book_click', {
             link_url: url.href,

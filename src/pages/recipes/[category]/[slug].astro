@@ -4,6 +4,7 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import NextRecipes from "@components/next-recipes.astro";
 import CourseCta from "@components/course-cta.astro";
+import CertCta from "@components/cert-cta.astro";
 import ReadingProgress from "@components/reading-progress.astro";
 import TocSidebar from "@components/toc-sidebar.astro";
 import ShareButtons from "@components/share-buttons.astro";
@@ -262,18 +263,18 @@ const breadcrumbLd = {
         <div class="mid-content-cta my-8 not-prose">
           <div class="rounded-xl border border-blue-200 bg-blue-50/50 p-5 md:p-6">
             <div class="flex items-start gap-4">
-              <a href="https://amzn.to/3DzC8QA" target="_blank" rel="noopener" class="shrink-0">
+              <a href="https://amzn.to/3DzC8QA" target="_blank" rel="sponsored noopener" class="shrink-0">
                 <img src="/book/cover-sm.jpg" alt="Kubernetes Recipes book cover" width="80" height="106" class="rounded-md shadow-md" loading="lazy" />
               </a>
               <div>
                 <p class="text-xs font-semibold uppercase tracking-wider text-blue-600 mb-1">Recommended</p>
-                <a href="https://amzn.to/3DzC8QA" target="_blank" rel="noopener" class="text-lg font-bold text-slate-900 hover:text-blue-600 transition-colors">
+                <a href="https://amzn.to/3DzC8QA" target="_blank" rel="sponsored noopener" class="text-lg font-bold text-slate-900 hover:text-blue-600 transition-colors">
                   Kubernetes Recipes — The Complete Book
                 </a>
                 <p class="text-sm text-slate-600 mt-1 leading-relaxed">
                   100+ production-ready patterns with detailed explanations, best practices, and copy-paste YAML. Everything in one place.
                 </p>
-                <a href="https://amzn.to/3DzC8QA" target="_blank" rel="noopener" class="inline-flex items-center gap-1 mt-2 text-sm font-semibold text-blue-600 hover:text-blue-700">
+                <a href="https://amzn.to/3DzC8QA" target="_blank" rel="sponsored noopener" class="inline-flex items-center gap-1 mt-2 text-sm font-semibold text-blue-600 hover:text-blue-700">
                   Get the Book →
                 </a>
               </div>
@@ -320,6 +321,9 @@ const breadcrumbLd = {
         </div>
       )}
 
+      <!-- Linux Foundation certification matching the recipe category -->
+      <CertCta category={recipe.data.category} />
+
       <!-- Author Bio Card -->
       <AuthorCard author={recipe.data.author} />
 
@@ -341,7 +345,7 @@ const breadcrumbLd = {
       <!-- CTA -->
       <div class="mt-12 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8">
         <div class="flex flex-col md:flex-row items-center gap-6 max-w-2xl mx-auto">
-          <a href="https://amzn.to/3DzC8QA" target="_blank" rel="noopener" class="shrink-0">
+          <a href="https://amzn.to/3DzC8QA" target="_blank" rel="sponsored noopener" class="shrink-0">
             <img src="/book/cover-sm.jpg" alt="Kubernetes Recipes book cover" width="120" height="160" class="rounded-lg shadow-lg" loading="lazy" />
           </a>
           <div class="text-center md:text-left">
@@ -353,7 +357,7 @@ const breadcrumbLd = {
               <a 
                 href="https://amzn.to/3DzC8QA" 
                 target="_blank"
-                rel="noopener"
+                rel="sponsored noopener"
                 class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
               >
                 Get the Book →

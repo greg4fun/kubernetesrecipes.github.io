@@ -1,0 +1,100 @@
+---
+/**
+ * Linux Foundation certification box at the end of a recipe.
+ *
+ * Kubernetes readers are the people who sit the CKA, CKAD and CKS, so each
+ * recipe category points to the exam that tests the same skills. Links go
+ * through the Awin affiliate programme (Linux Foundation, merchant 85919):
+ * the site earns a commission on purchases, so the box carries a disclosure
+ * and rel="sponsored". AI recipes get no box: no LF exam matches them.
+ *
+ * Clicks fire the GA4 event affiliate_click (see Layout.astro).
+ */
+export interface Props {
+  category?: string;
+}
+
+const { category = "" } = Astro.props;
+
+const AWIN = "https://www.awin1.com/cread.php?awinmid=85919&awinaffid=1937397&ued=";
+const lf = (path: string) =>
+  AWIN + encodeURIComponent(`https://training.linuxfoundation.org/certification/${path}/`);
+
+interface Cert {
+  id: string;
+  name: string;
+  short: string;
+  url: string;
+}
+
+const CKA: Cert = { id: "cka", name: "Certified Kubernetes Administrator", short: "CKA", url: lf("certified-kubernetes-administrator-cka") };
+const CKAD: Cert = { id: "ckad", name: "Certified Kubernetes Application Developer", short: "CKAD", url: lf("certified-kubernetes-application-developer-ckad") };
+const CKS: Cert = { id: "cks", name: "Certified Kubernetes Security Specialist", short: "CKS", url: lf("certified-kubernetes-security-specialist") };
+
+interface Pitch {
+  cert: Cert;
+  line: string;
+  also?: Cert;
+  note?: string;
+}
+
+const PITCH: Record<string, Pitch> = {
+  troubleshooting: { cert: CKA, line: "Fixing a broken cluster under time pressure is exactly what the CKA tests, along with networking, storage and cluster configuration." },
+  networking: { cert: CKA, line: "Services, ingress, DNS and network policies are core CKA skills, along with troubleshooting, storage and cluster configuration." },
+  storage: { cert: CKA, line: "Persistent volumes, claims and storage classes are part of the CKA, along with troubleshooting, networking and cluster configuration." },
+  configuration: { cert: CKA, line: "Cluster configuration, workloads and troubleshooting from the command line are what the CKA tests." },
+  autoscaling: { cert: CKA, line: "Scheduling, scaling and keeping workloads healthy are part of the CKA, along with troubleshooting and networking." },
+  observability: { cert: CKA, line: "Reading logs, events and metrics to find a fault is a large part of the CKA's troubleshooting tasks." },
+  deployments: { cert: CKAD, line: "Deployments, rollouts, probes and configuration for applications are what the CKAD tests." },
+  helm: { cert: CKAD, line: "Packaging and deploying applications, Helm included, is part of the CKAD." },
+  security: {
+    cert: CKS,
+    line: "Hardening clusters, RBAC, network policies, supply-chain security and runtime security are what the CKS tests.",
+    also: CKA,
+    note: "The CKS requires a passed CKA.",
+  },
+};
+
+const pitch = PITCH[category.toLowerCase()];
+const trackAttrs = (cert: Cert) => ({
+  "data-affiliate": "linux_foundation",
+  "data-offer-id": `lf_${cert.id}`,
+});
+---
+
+{pitch && (
+  <aside class="mt-8 mb-4 not-prose" aria-label={`${pitch.cert.short} certification`} data-cert-cta={pitch.cert.id}>
+    <div class="rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-sky-50 p-6">
+      <p class="text-xs uppercase tracking-wider text-emerald-700 font-semibold mb-2">🎓 Turn this skill into a certification</p>
+      <p class="text-lg font-bold text-slate-900">{pitch.cert.name} ({pitch.cert.short})</p>
+      <p class="text-sm text-slate-700 mt-2 leading-relaxed">
+        {pitch.line} The exam is online, proctored and hands-on: 2 hours of tasks in a live cluster, with Killer.sh simulator sessions to practise first.{pitch.note && ` ${pitch.note}`}
+      </p>
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <a
+          href={pitch.cert.url}
+          target="_blank"
+          rel="sponsored noopener"
+          {...trackAttrs(pitch.cert)}
+          class="inline-flex items-center gap-1 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
+        >
+          See the {pitch.cert.short} exam →
+        </a>
+        {pitch.also && (
+          <a
+            href={pitch.also.url}
+            target="_blank"
+            rel="sponsored noopener"
+            {...trackAttrs(pitch.also)}
+            class="text-sm font-semibold text-emerald-700 hover:text-emerald-800 underline"
+          >
+            Start with the {pitch.also.short}
+          </a>
+        )}
+      </div>
+      <p class="text-xs text-slate-600 mt-3">
+        Affiliate link: Kubernetes Recipes earns a commission from the Linux Foundation if you buy, at no extra cost to you.
+      </p>
+    </div>
+  </aside>
+)}

@@ -1,0 +1,39 @@
+{
+  "site": {
+    "base": "https://kubernetes.recipes",
+    "disclosure": "Kubernetes Recipes earns from qualifying purchases"
+  },
+  "programmes": {
+    "awin": { "hosts": ["awin1.com"], "id": "1937397", "idParams": ["awinaffid", "r"] },
+    "hostinger": { "hosts": ["hostinger.com"], "requireParam": "REFERRALCODE", "id": "Q65DLUCANCD1", "idParams": ["REFERRALCODE"] },
+    "amazon": { "hosts": ["amzn.to"] }
+  },
+  "pages": [
+    {
+      "path": "/recipes/troubleshooting/imagepullbackoff-troubleshooting/",
+      "offers": [
+        { "programme": "awin", "target": "certified-kubernetes-administrator-cka", "min": 1, "max": 1, "attr": "data-affiliate=linux_foundation" },
+        { "programme": "amazon", "min": 1 }
+      ]
+    },
+    {
+      "path": "/recipes/networking/kubernetes-rate-limiting-guide/",
+      "offers": [{ "programme": "awin", "target": "certified-kubernetes-administrator-cka", "min": 1, "max": 1, "attr": "data-affiliate=linux_foundation" }]
+    },
+    {
+      "path": "/recipes/security/custom-ca-kubernetes/",
+      "offers": [
+        { "programme": "awin", "target": "certified-kubernetes-security-specialist", "min": 1, "max": 1, "attr": "data-affiliate=linux_foundation" },
+        { "programme": "awin", "target": "certified-kubernetes-administrator-cka", "min": 1, "max": 1, "attr": "data-affiliate=linux_foundation" }
+      ]
+    },
+    {
+      "path": "/recipes/deployments/kubernetes-graceful-shutdown-guide/",
+      "offers": [{ "programme": "awin", "target": "certified-kubernetes-application-developer-ckad", "min": 1, "max": 1, "attr": "data-affiliate=linux_foundation" }]
+    },
+    {
+      "path": "/recipes/ai/hermes-agent-self-hosted-kubernetes/",
+      "offers": [{ "programme": "awin", "target": "training.linuxfoundation.org/certification", "min": 0, "max": 0 }]
+    }
+  ]
+}
