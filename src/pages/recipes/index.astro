@@ -163,7 +163,7 @@ const collectionStructuredData = {
 
         <!-- Sort -->
         <div class="sort-bar">
-          <select id="sort-select">
+          <select id="sort-select" aria-label="Sort recipes">
             <option value="newest">Newest first</option>
             <option value="oldest">Oldest first</option>
             <option value="az">A → Z</option>
@@ -380,9 +380,11 @@ const collectionStructuredData = {
       activeFiltersEl.style.display = hasFilters ? "" : "none";
       activeChipsEl.innerHTML = "";
       [...filters.categories, ...filters.difficulty, ...filters.tags].forEach(f => {
-        const chip = document.createElement("span");
+        const chip = document.createElement("button");
+        chip.type = "button";
         chip.className = "filter-chip";
         chip.textContent = f;
+        chip.setAttribute("aria-label", `Remove filter: ${f}`);
         chip.addEventListener("click", () => {
           filters.categories = filters.categories.filter(x => x !== f);
           filters.difficulty = filters.difficulty.filter(x => x !== f);
@@ -394,9 +396,11 @@ const collectionStructuredData = {
         activeChipsEl.appendChild(chip);
       });
       if (filters.query) {
-        const chip = document.createElement("span");
+        const chip = document.createElement("button");
+        chip.type = "button";
         chip.className = "filter-chip";
         chip.textContent = `"${filters.query}"`;
+        chip.setAttribute("aria-label", `Remove search: ${filters.query}`);
         chip.addEventListener("click", () => { filters.query = ""; searchInput.value = ""; currentPage = 1; applyFilters(); });
         activeChipsEl.appendChild(chip);
       }
@@ -434,6 +438,7 @@ const collectionStructuredData = {
           const btn = document.createElement("button");
           btn.textContent = p;
           btn.className = "page-btn" + (p === currentPage ? " active" : "");
+          if (p === currentPage) btn.setAttribute("aria-current", "page");
           btn.addEventListener("click", () => { currentPage = p; applyFilters(); scrollToGrid(); });
           paginationEl.appendChild(btn);
         }
@@ -556,14 +561,16 @@ const collectionStructuredData = {
       padding: 0.5rem 0; flex-wrap: wrap; margin-top: 0.5rem;
     }
     .active-label { font-size: 0.8rem; color: #64748b; font-weight: 500; }
-    .filter-chip {
+    /* Chips and page buttons are created by the script above, so they lack this
+       page's data-astro-cid attribute: :global() lets these rules reach them. */
+    #active-filter-chips :global(.filter-chip) {
       display: inline-flex; align-items: center;
-      padding: 0.2rem 0.5rem; border-radius: 6px;
-      background: #eff6ff; color: #2563eb; font-size: 0.78rem;
+      padding: 0.2rem 0.5rem; border-radius: 6px; border: none;
+      background: #eff6ff; color: #2563eb; font-size: 0.78rem; font-family: inherit;
       cursor: pointer; font-weight: 500;
     }
-    .filter-chip:hover { background: #dbeafe; }
-    .filter-chip::after { content: "×"; margin-left: 0.3rem; font-weight: 700; }
+    #active-filter-chips :global(.filter-chip:hover) { background: #dbeafe; }
+    #active-filter-chips :global(.filter-chip::after) { content: "×"; margin-left: 0.3rem; font-weight: 700; }
     .clear-all {
       border: none; background: none; color: #ef4444;
       font-size: 0.78rem; cursor: pointer; font-weight: 500;
@@ -639,15 +646,15 @@ const collectionStructuredData = {
       display: flex; justify-content: center; align-items: center;
       gap: 0.35rem; padding: 1.5rem 0 0.5rem; flex-wrap: wrap;
     }
-    .page-btn {
+    .pagination :global(.page-btn) {
       padding: 0.4rem 0.75rem; border-radius: 8px; border: 1px solid #e2e8f0;
       background: #fff; cursor: pointer; font-size: 0.85rem; font-weight: 500;
       color: #475569; transition: all 0.15s;
     }
-    .page-btn:hover:not(.disabled):not(.active) { border-color: #3b82f6; color: #2563eb; background: #f8fafc; }
-    .page-btn.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
-    .page-btn.disabled { opacity: 0.4; cursor: not-allowed; }
-    .page-dots { color: #94a3b8; padding: 0 0.25rem; }
+    .pagination :global(.page-btn:hover:not(.disabled):not(.active)) { border-color: #3b82f6; color: #2563eb; background: #f8fafc; }
+    .pagination :global(.page-btn.active) { background: #2563eb; color: #fff; border-color: #2563eb; }
+    .pagination :global(.page-btn.disabled) { opacity: 0.4; cursor: not-allowed; }
+    .pagination :global(.page-dots) { color: #94a3b8; padding: 0 0.25rem; }
 
     /* No results */
     .no-results { text-align: center; padding: 4rem 0; }

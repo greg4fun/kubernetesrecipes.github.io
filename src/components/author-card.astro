@@ -74,9 +74,10 @@ const { author } = Astro.props;
   }
   .author-bio a {
     color: #2563eb;
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
-  .author-bio a:hover { text-decoration: underline; }
+  .author-bio a:hover { text-decoration-thickness: 2px; }
   .author-links {
     display: flex;
     gap: 0.75rem;
