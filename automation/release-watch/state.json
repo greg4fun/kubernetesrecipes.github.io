@@ -5,7 +5,7 @@
   "argoproj/argo-cd": "v3.6.0",
   "kubernetes-sigs/gateway-api": "v1.7.0",
   "cilium/cilium": "v1.20.2",
-  "istio/istio": "1.31.1",
+  "istio/istio": "1.32.0",
   "kubernetes-sigs/kustomize": "kustomize/v5.8.3",
   "prometheus-operator/prometheus-operator": "v0.95.1",
   "kyverno/kyverno": "v1.19.1",
