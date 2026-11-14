@@ -1,5 +1,5 @@
 ---
-title: "What's New in Prometheus Operator v0.95.1 (Maintenance Release)"
+title: "Prometheus Operator v0.95.1: Maintenance Release"
 description: "Prometheus Operator v0.95.1 is a maintenance release fixing broken v0.95.0 image publishing. Upgrade steps and verification for operators."
 publishDate: "2026-11-07"
 author: "Luca Berton"

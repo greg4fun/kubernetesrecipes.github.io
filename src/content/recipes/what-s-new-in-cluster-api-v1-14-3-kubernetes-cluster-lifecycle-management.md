@@ -1,5 +1,5 @@
 ---
-title: "What's New in Cluster API v1.14.3 (Kubernetes Cluster Lifecycle Management)"
+title: "Cluster API v1.14.3: What's New in Cluster Lifecycle"
 description: "Cluster API v1.14.3 patch release: KCP/etcd and owner-reference bug fixes, expanded K8s support up to v1.37, upgrade steps with clusterctl."
 publishDate: "2026-10-30"
 author: "Luca Berton"

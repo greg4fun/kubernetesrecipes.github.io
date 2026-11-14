@@ -1,5 +1,5 @@
 ---
-title: "What's New in kind v0.33.0: Kubernetes 1.37 Default and Key Fixes"
+title: "kind v0.33.0: Kubernetes 1.37 Default and Key Fixes"
 description: "kind v0.33.0 defaults to Kubernetes 1.37.0 nodes, fixes Docker proxy handling and LB config persistence, plus local-path-provisioner tweaks."
 publishDate: "2026-10-25"
 author: "Luca Berton"

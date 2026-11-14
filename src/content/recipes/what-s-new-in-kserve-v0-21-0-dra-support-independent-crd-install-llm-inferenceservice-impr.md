@@ -1,5 +1,5 @@
 ---
-title: "What's New in KServe v0.21.0: DRA Support, Independent CRD Install & LLM InferenceService Improvements"
+title: "What's New in KServe v0.21.0: DRA Support and CRD Install"
 description: "KServe v0.21.0 adds DRA resourceClaims, independent CRD installation, TLS security profile integration, and several LLMInferenceService fixes."
 publishDate: "2026-11-03"
 author: "Luca Berton"

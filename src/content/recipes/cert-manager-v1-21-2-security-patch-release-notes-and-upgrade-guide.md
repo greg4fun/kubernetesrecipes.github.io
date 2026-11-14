@@ -1,5 +1,5 @@
 ---
-title: "cert-manager v1.21.2: Security Patch Release Notes and Upgrade Guide"
+title: "cert-manager v1.21.2: Security Patch and Upgrade Guide"
 description: "cert-manager v1.21.2 fixes ACME/Vault response-body leaks, webhook panics, and bumps Go/gRPC for security CVEs. All users should upgrade."
 publishDate: "2026-10-11"
 author: "Luca Berton"

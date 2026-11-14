@@ -1,5 +1,5 @@
 ---
-title: "What's New in Metrics Server v0.9.0: Upgrade Guide for Kubernetes Operators"
+title: "Metrics Server v0.9.0: What's New and Upgrade Guide"
 description: "Metrics Server v0.9.0 brings a readiness bug fix, quieter node-scrape logging, and CVE patches. Upgrade steps and verification included."
 publishDate: "2026-10-28"
 author: "Luca Berton"

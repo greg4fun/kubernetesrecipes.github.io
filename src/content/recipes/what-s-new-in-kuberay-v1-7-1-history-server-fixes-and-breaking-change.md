@@ -1,5 +1,5 @@
 ---
-title: "What's New in KubeRay v1.7.1: History Server Fixes and Breaking Change"
+title: "KubeRay v1.7.1: History Server Fixes, Breaking Change"
 description: "KubeRay v1.7.1 patch release: History Server log loss fix, memory reduction, and live-cluster proxying disabled by default."
 publishDate: "2026-11-03"
 author: "Luca Berton"

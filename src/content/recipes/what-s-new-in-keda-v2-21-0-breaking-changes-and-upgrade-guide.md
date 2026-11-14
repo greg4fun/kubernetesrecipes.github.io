@@ -1,5 +1,5 @@
 ---
-title: "What's New in KEDA v2.21.0 - Breaking Changes and Upgrade Guide"
+title: "KEDA v2.21.0: Breaking Changes and Upgrade Guide"
 description: "KEDA 2.21.0 fixes CVE-2026-77524, changes Azure Pipelines and Temporal scalers, and adds new scalers. Upgrade steps included."
 publishDate: "2026-10-28"
 author: "Luca Berton"

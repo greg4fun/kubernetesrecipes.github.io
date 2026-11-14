@@ -1,5 +1,5 @@
 ---
-title: "What's New in KubeVirt v1.9.1: Bug Fixes, PCI Hotplug Protection, and Upgrade Guide"
+title: "KubeVirt v1.9.1: Bug Fixes and PCI Hotplug Protection"
 description: "KubeVirt v1.9.1 release notes: 83 fixes incl. PCI hotplug protection, GPU detection, live migration stability, and upgrade steps."
 publishDate: "2026-11-02"
 author: "Luca Berton"

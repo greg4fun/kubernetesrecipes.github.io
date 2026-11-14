@@ -1,5 +1,5 @@
 ---
-title: "What's New in Traefik v3.7.17: Upgrade Guide for Kubernetes Operators"
+title: "Traefik v3.7.17: What's New and Upgrade Guide"
 description: "Traefik v3.7.17 patch release: NTLM/Kerberos connection leak fixes, Gateway API status fix, new header-values limit flag, and dependency CVE bumps."
 publishDate: "2026-11-02"
 author: "Luca Berton"

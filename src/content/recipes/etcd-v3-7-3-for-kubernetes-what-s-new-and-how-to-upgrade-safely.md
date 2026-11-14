@@ -1,5 +1,5 @@
 ---
-title: "etcd v3.7.3 for Kubernetes: What's New and How to Upgrade Safely"
+title: "etcd v3.7.3 for Kubernetes: What's New, Safe Upgrade"
 description: "Patch release etcd v3.7.3 for Kubernetes' control-plane datastore: upgrade steps, backup commands, and verification for operators."
 publishDate: "2026-10-25"
 author: "Luca Berton"

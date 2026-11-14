@@ -1,5 +1,5 @@
 ---
-title: "What's New in Envoy Gateway v1.10.0: Upgrade Guide for Kubernetes Operators"
+title: "Envoy Gateway v1.10.0: What's New and Upgrade Guide"
 description: "Envoy Gateway v1.10.0 adds PDB eviction policy, graceful shutdown tuning, Lua filter whitelisting and ClusterSettings fixes, with upgrade and check steps."
 publishDate: "2026-11-07"
 author: "Luca Berton"

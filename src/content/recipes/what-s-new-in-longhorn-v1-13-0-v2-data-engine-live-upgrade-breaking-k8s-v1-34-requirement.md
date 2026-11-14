@@ -1,5 +1,5 @@
 ---
-title: "What's New in Longhorn v1.13.0: V2 Data Engine Live Upgrade & Breaking K8s v1.34 Requirement"
+title: "Longhorn v1.13.0: V2 Engine Live Upgrade, Needs K8s v1.34"
 description: "Longhorn v1.13.0 adds V2 live upgrade, full interrupt mode, and requires Kubernetes v1.34+. Upgrade steps and gotchas inside."
 publishDate: "2026-11-01"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "What's New in ExternalDNS v0.24.0: Breaking Changes and Upgrade Guide"
+title: "ExternalDNS v0.24.0: Breaking Changes and Upgrade Guide"
 description: "ExternalDNS v0.24.0 upgrade guide: TCPRoute v1, admission-validated CRDs, multi-namespace support, and breaking changes."
 publishDate: "2026-10-29"
 author: "Luca Berton"
