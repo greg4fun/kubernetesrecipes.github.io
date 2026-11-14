@@ -1,5 +1,5 @@
 ---
-title: "Kustomize v5.8.3: What's New (Dependency Cleanup, No Functional Changes)"
+title: "Kustomize v5.8.3: Dependency Cleanup, No Functional Changes"
 description: "Kustomize v5.8.3 is a maintenance release that trims dependencies for kubectl integration. No functional or CLI changes."
 publishDate: "2026-10-15"
 author: "Luca Berton"

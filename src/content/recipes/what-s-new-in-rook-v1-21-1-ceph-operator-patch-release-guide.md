@@ -1,5 +1,5 @@
 ---
-title: "What's New in Rook v1.21.1: Ceph Operator Patch Release Guide"
+title: "Rook v1.21.1: Ceph Operator Patch Release Guide"
 description: "Rook v1.21.1 patch release: msgr2 security enforcement, nvmeof improvements, OSD fixes, and Helm upgrade steps for Ceph on Kubernetes."
 publishDate: "2026-11-01"
 author: "Luca Berton"

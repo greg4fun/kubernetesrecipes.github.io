@@ -1,5 +1,5 @@
 ---
-title: "What's New in Falco v0.45.1: Bug Fix Release for Kubernetes Runtime Security"
+title: "Falco v0.45.1: Bug Fix Release for Runtime Security"
 description: "Falco 0.45.1 patches eBPF packaging, file_output keep_alive, and a metrics race condition. Upgrade steps and verification included."
 publishDate: "2026-10-29"
 author: "Luca Berton"

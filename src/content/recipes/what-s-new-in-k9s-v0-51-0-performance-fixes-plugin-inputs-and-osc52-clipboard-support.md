@@ -1,5 +1,5 @@
 ---
-title: "What's New in K9s v0.51.0: Performance Fixes, Plugin Inputs, and OSC52 Clipboard Support"
+title: "K9s v0.51.0: Performance Fixes, Plugin Inputs, OSC52"
 description: "K9s v0.51.0 release notes: QPS bump to 50, metrics pagination fix, plugin input fields, PVC resize plugin, and upgrade steps."
 publishDate: "2026-10-27"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "What's New in MetalLB v0.16.2: Upgrade Guide for Kubernetes Operators"
+title: "MetalLB v0.16.2: What's New and Upgrade Guide"
 description: "MetalLB v0.16.2 patch release overview: upgrade steps, verification, and what to check before updating your bare-metal LoadBalancer."
 publishDate: "2026-11-05"
 author: "Luca Berton"

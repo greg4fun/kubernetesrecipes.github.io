@@ -1,5 +1,5 @@
 ---
-title: "What's New in Argo CD v3.5.4: Critical Security Patch Release"
+title: "Argo CD v3.5.4: Critical Security Patch Release"
 description: "Argo CD v3.5.4 fixes multiple critical CVEs in repo-server (Kustomize, Jsonnet, OCI) plus upgrade steps and verification."
 publishDate: "2026-10-12"
 author: "Luca Berton"

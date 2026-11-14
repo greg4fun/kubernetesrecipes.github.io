@@ -1,5 +1,5 @@
 ---
-title: "What's New in Gateway API v1.7.0: HTTPRoute Retries Go Stable"
+title: "Gateway API v1.7.0: HTTPRoute Retries Go Stable"
 description: "Gateway API v1.7.0 promotes HTTPRoute retries to Standard, adds 5 experimental GEPs, and ships breaking changes to SessionPersistence and XBackend CRDs."
 publishDate: "2026-10-30"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "What's New in OpenTelemetry Operator v0.163.0: TLS Hardening, Auto-Instrumentation Fixes, and OpAMP Improvements"
+title: "OpenTelemetry Operator v0.163.0: TLS Hardening and Fixes"
 description: "OpenTelemetry Operator v0.163.0 adds Target Allocator TLS controls, bundle related images, and fixes OpAMP, nginx auto-instrumentation and ConfigMap bugs."
 publishDate: "2026-11-12"
 author: "Luca Berton"

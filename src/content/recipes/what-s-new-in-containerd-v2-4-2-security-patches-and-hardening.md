@@ -1,5 +1,5 @@
 ---
-title: "What's New in containerd v2.4.2: Security Patches and Hardening"
+title: "containerd v2.4.2: Security Patches and Hardening"
 description: "containerd 2.4.2 patch release fixes 3 CVEs, hardens CRI log handling, seccomp, and image pulls. Upgrade steps and verification included."
 publishDate: "2026-10-24"
 author: "Luca Berton"

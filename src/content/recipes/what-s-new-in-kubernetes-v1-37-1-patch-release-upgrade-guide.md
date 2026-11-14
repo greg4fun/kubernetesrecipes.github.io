@@ -1,5 +1,5 @@
 ---
-title: "What's New in Kubernetes v1.37.1: Patch Release Upgrade Guide"
+title: "Kubernetes v1.37.1: Patch Release Upgrade Guide"
 description: "Kubernetes v1.37.1 is a patch release with thin release notes; covers upgrade steps, verification, and where to find real changelog details."
 publishDate: "2026-10-11"
 author: "Luca Berton"

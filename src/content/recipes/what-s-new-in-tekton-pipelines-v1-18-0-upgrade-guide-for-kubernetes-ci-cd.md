@@ -1,5 +1,5 @@
 ---
-title: "What's New in Tekton Pipelines v1.18.0: Upgrade Guide for Kubernetes CI/CD"
+title: "Tekton Pipelines v1.18.0: What's New and Upgrade Guide"
 description: "Tekton Pipelines v1.18.0 adds step onError continueAndFail, immutable controller labels, and bundle/image fixes. Upgrade steps included."
 publishDate: "2026-10-30"
 author: "Luca Berton"

@@ -1,5 +1,5 @@
 ---
-title: "What's New in Gateway API v1.6.3: Conformance Test Fixes and Build Updates"
+title: "Gateway API v1.6.3: Conformance Test Fixes"
 description: "Gateway API v1.6.3 release notes summary: conformance test fixes for TCPRoute/UDPRoute, build tooling updates, and upgrade steps."
 publishDate: "2026-10-12"
 author: "Luca Berton"

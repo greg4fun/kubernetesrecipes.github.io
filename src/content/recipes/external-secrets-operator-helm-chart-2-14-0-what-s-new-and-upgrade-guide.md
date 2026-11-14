@@ -1,5 +1,5 @@
 ---
-title: "External Secrets Operator helm-chart-2.14.0: What's New and Upgrade Guide"
+title: "External Secrets Operator Helm Chart 2.14.0 Upgrade"
 description: "Release notes for External Secrets Operator helm-chart-2.14.0 are thin; here's how to safely check changes and upgrade via Helm."
 publishDate: "2026-10-24"
 author: "Luca Berton"

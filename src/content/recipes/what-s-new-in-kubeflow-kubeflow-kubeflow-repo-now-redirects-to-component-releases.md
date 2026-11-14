@@ -1,5 +1,5 @@
 ---
-title: "What's New in Kubeflow: kubeflow/kubeflow Repo Now Redirects to Component Releases"
+title: "What's New in Kubeflow: Repo Redirects to Component Releases"
 description: "Kubeflow's main repo no longer ships release notes; track SDK, Notebooks, Trainer, Katib, Pipelines and more individually."
 publishDate: "2026-11-04"
 author: "Luca Berton"

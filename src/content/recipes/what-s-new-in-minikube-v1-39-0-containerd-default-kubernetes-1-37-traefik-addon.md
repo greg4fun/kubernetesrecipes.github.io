@@ -1,5 +1,5 @@
 ---
-title: "What's New in minikube v1.39.0: containerd Default, Kubernetes 1.37, Traefik Addon"
+title: "minikube v1.39.0: containerd Default and Kubernetes 1.37"
 description: "minikube v1.39.0 switches default runtime to containerd, adds K8s 1.36/1.37 support and a Traefik ingress addon."
 publishDate: "2026-10-25"
 author: "Luca Berton"

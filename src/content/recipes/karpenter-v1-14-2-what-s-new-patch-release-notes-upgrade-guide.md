@@ -1,5 +1,5 @@
 ---
-title: "Karpenter v1.14.2: What's New (Patch Release Notes & Upgrade Guide)"
+title: "Karpenter v1.14.2: Patch Release Notes and Upgrade Guide"
 description: "Karpenter v1.14.2 patch release fixes NodeRepair label sync and capacity buffer workload watching. Upgrade steps and verification included."
 publishDate: "2026-10-17"
 author: "Luca Berton"
