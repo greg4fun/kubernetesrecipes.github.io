@@ -380,8 +380,13 @@ export default defineConfig({
     (await import("astro-compress")).default({
       CSS: true,  // Astro-compress for minify
       HTML: {
+        // Keep attribute quotes and order. The astro-compress defaults
+        // (removeAttributeQuotes, sortAttributes) turned the share tags into
+        // <meta content=https://... property=og:image>, which WhatsApp does
+        // not read: links shared there showed no image.
         "html-minifier-terser": {
-          removeAttributeQuotes: true,
+          removeAttributeQuotes: false,
+          sortAttributes: false,
         },
       },
       Image: false,
