@@ -10,6 +10,7 @@ import TocSidebar from "@components/toc-sidebar.astro";
 import ShareButtons from "@components/share-buttons.astro";
 import AuthorCard from "@components/author-card.astro";
 import { KUBERNETES_RECIPES, authorEntity } from "../../../utils/entities.mjs";
+import { copyPasteLearnCourseKey } from "../../../utils/copypastelearn.mjs";
 
 // Category display names
 const categoryNames: Record<string, string> = {
@@ -42,6 +43,14 @@ const { Content } = await recipe.render();
 const allRecipes = await getCollection("recipes", ({ data }) => !data.draft);
 
 const categoryName = categoryNames[recipe.data.category] || recipe.data.category;
+
+// AI and observability recipes show one card for a specific video course after
+// the content (course-cta.astro). They skip the general CopyPasteLearn card in
+// the middle of the content, so the recipe carries one course card, not two.
+const hasVideoCourseCard = copyPasteLearnCourseKey({
+  category: recipe.data.category,
+  tags: recipe.data.tags,
+}) !== null;
 
 // Difficulty colors
 const difficultyColors = {
@@ -283,7 +292,8 @@ const breadcrumbLd = {
         </div>
       </template>
 
-      <!-- Mid-content CopyPasteLearn CTA (injected after 5th h2) -->
+      <!-- Mid-content CopyPasteLearn CTA (injected after 5th h2); not on recipes with a video course card -->
+      {!hasVideoCourseCard && (
       <template id="mid-course-template">
         <div class="mid-content-cta my-8 not-prose">
           <div class="rounded-xl border border-purple-200 bg-purple-50/50 p-5 md:p-6">
@@ -305,6 +315,7 @@ const breadcrumbLd = {
           </div>
         </div>
       </template>
+      )}
 
       <!-- Tags -->
       {recipe.data.tags.length > 0 && (
