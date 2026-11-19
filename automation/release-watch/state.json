@@ -31,7 +31,7 @@
   "rook/rook": "v1.21.1",
   "longhorn/longhorn": "v1.13.0",
   "traefik/traefik": "v3.7.17",
-  "kubevirt/kubevirt": "v1.9.1",
+  "kubevirt/kubevirt": "v1.10.0",
   "open-telemetry/opentelemetry-operator": "v0.163.0",
   "kserve/kserve": "v0.21.0",
   "ray-project/kuberay": "v1.7.1",
