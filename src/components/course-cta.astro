@@ -2,7 +2,14 @@
 /**
  * Contextual course recommendations based on recipe category/tags.
  * Links to CopyPasteLearn.com courses.
+ *
+ * AI and observability recipes show ONE card for the matching video course
+ * (src/utils/copypastelearn.mjs) instead of the general block below, so a
+ * recipe never carries two CopyPasteLearn cards. Every other recipe keeps the
+ * general block unchanged.
  */
+import { copyPasteLearnCourseFor } from "../utils/copypastelearn.mjs";
+
 export interface Props {
   category?: string;
   tags?: string[];
@@ -10,6 +17,12 @@ export interface Props {
 }
 
 const { category = "", tags = [], slug = "" } = Astro.props;
+
+const videoCourse = copyPasteLearnCourseFor({ category, tags });
+// One string, so the HTML minifier cannot drop the spaces between the parts.
+const videoCourseText = videoCourse
+  ? `${videoCourse.description} ${videoCourse.format} The first lesson is free, no signup required.`
+  : "";
 
 const allTags = tags.map(t => t.toLowerCase());
 const cat = category.toLowerCase();
@@ -86,9 +99,31 @@ if (courses.length === 0) {
   }
 }
 
-// Limit to 2 courses max
-const displayCourses = courses.slice(0, 2);
+// Limit to 2 courses max. None when the recipe has its own video course card.
+const displayCourses = videoCourse ? [] : courses.slice(0, 2);
 ---
+
+{videoCourse && (
+  <aside class="mt-8 mb-4 not-prose" aria-label="Video course on CopyPasteLearn" data-cpl-course={videoCourse.key}>
+    <div class="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl p-6">
+      <p class="text-xs uppercase tracking-wider text-slate-600 font-semibold mb-2">
+        🎓 Video course by Luca Berton on CopyPasteLearn
+      </p>
+      <p class="text-lg font-bold text-slate-900">{videoCourse.title}</p>
+      <p class="text-sm text-slate-700 mt-2 leading-relaxed">{videoCourseText}</p>
+      <div class="mt-4">
+        <a
+          href={videoCourse.url}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+        >
+          Start the free lesson →
+        </a>
+      </div>
+    </div>
+  </aside>
+)}
 
 {displayCourses.length > 0 && (
   <div class="mt-8 mb-4 not-prose">
