@@ -413,7 +413,9 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
          newsletter_signup: a valid submit of a Kit (ConvertKit) form, such as the newsletter popup;
          book_click: a click on any link to the book on Amazon, Springer or Apress;
          affiliate_click: a click on a link marked data-affiliate (company, offer_id).
-         Both go through the gtag() set up above; hits before it loads are skipped. -->
+         course_click (not a key event): a click on a link inside a CopyPasteLearn
+         card, marked data-cpl-course (course, placement).
+         All go through the gtag() set up above; hits before it loads are skipped. -->
     <script is:inline>
       (function () {
         function track(name, params) {
@@ -432,6 +434,15 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
             track('affiliate_click', {
               company: company,
               offer_id: a.getAttribute('data-offer-id') || '',
+              link_url: url.href,
+            });
+            return;
+          }
+          var card = a.closest('[data-cpl-course]');
+          if (card) {
+            track('course_click', {
+              course: card.getAttribute('data-cpl-course'),
+              placement: card.getAttribute('data-cpl-placement') || '',
               link_url: url.href,
             });
             return;

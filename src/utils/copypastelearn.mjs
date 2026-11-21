@@ -2,12 +2,15 @@
 // and which recipes show them. THE ONE PLACE TO EDIT.
 //
 // Only courses that are live there with video. Titles and descriptions are the
-// ones on each course page (copied Nov 18, 2026). No prices, ratings, student
-// counts or lab promises: they go stale.
+// ones on each course page (kagent and otel-agents copied Nov 18, 2026, the
+// others Nov 21, 2026; the Hermes description is shortened from its "What
+// you'll learn" list). No prices, ratings, student counts or lab promises:
+// they go stale.
 //
 // Own product, not an affiliate offer: the card (course-cta.astro) carries no
 // data-affiliate attribute, so it never fires `affiliate_click`, and its link
-// is a normal followed link (no rel="sponsored" or "nofollow").
+// is a normal followed link (no rel="sponsored" or "nofollow"). A click on a
+// link inside [data-cpl-course] fires `course_click` (Layout.astro).
 
 export const COPYPASTELEARN_COURSES = {
   kagent: {
@@ -24,18 +27,63 @@ export const COPYPASTELEARN_COURSES = {
     format: "6 video lessons.",
     path: "/courses/observe-and-debug-ai-agents-with-opentelemetry",
   },
+  "llm-d": {
+    title: "llm-d Distributed Inference Without GPUs",
+    description:
+      "Use a Kubernetes simulation to observe how llm-d routes, queues, and scales inference requests, then compare the simulator with a GPU serving setup.",
+    format: "6 video lessons.",
+    path: "/courses/llm-d-distributed-inference",
+  },
+  hermes: {
+    title: "A personal AI agent on your Mac with Hermes Agent",
+    description:
+      "Install Hermes Agent on your Mac, connect it to a local Ollama model, then add approvals, skills, memory, an MCP server and scheduled tasks.",
+    format: "6 video lessons.",
+    path: "/courses/hermes-agent",
+  },
+  openclaw: {
+    title: "OpenClaw: Your First AI Agent",
+    description:
+      "Deploy OpenClaw locally or on a small VPS, add real tools, create one reusable automation, and apply essential security guardrails.",
+    format: "7 video lessons.",
+    path: "/courses/openclaw-agent",
+  },
+  dapr: {
+    title: "Build Durable AI Agents with Dapr Agents",
+    description:
+      "Agents that survive restarts: workflows, state and pub/sub with Dapr Agents, from the first agent to a multi-agent system.",
+    format: "6 video lessons.",
+    path: "/courses/build-durable-ai-agents-with-dapr-agents",
+  },
 };
 
-// Tags that mark an AI, LLM or agent recipe filed under another category.
+// A recipe about one of these tools gets the course about that tool, whatever
+// its category. First match wins, in this order.
+const TOOL_TAGS = [
+  ["hermes", new Set(["hermes", "hermes-agent"])],
+  ["openclaw", new Set(["openclaw"])],
+  ["dapr", new Set(["dapr", "dapr-agents"])],
+  ["llm-d", new Set(["llm-d"])],
+];
+
+// Tags that mark an agent recipe: the kagent course.
 // "mcp" is NOT here on purpose: on this site it means MachineConfigPool
 // (OpenShift), not Model Context Protocol. "agent" and "agents" alone are not
 // here either: they also tag node agents and the agent-based installer.
-// Loose tags such as "inference" or "machine-learning" are left out too: a
-// recipe that only mentions them in passing keeps the general course block.
-const AI_TAGS = new Set([
-  "ai", "ai-workloads", "llm", "llms", "genai", "generative-ai",
-  "ai-agent", "ai-agents", "agentic-ai", "multi-agent", "kagent",
+const AGENT_TAGS = new Set(["ai-agent", "ai-agents", "agentic-ai", "multi-agent", "kagent"]);
+
+// Tags that mark a recipe about serving a model: the llm-d course. "inference"
+// alone counts only inside the AI category (see copyPasteLearnCourseKey): a
+// recipe filed elsewhere that mentions it in passing keeps the general block.
+const SERVING_TAGS = new Set([
+  "vllm", "llm-serving", "model-serving", "distributed-inference", "inference-optimization",
+  "kserve", "triton", "tensorrt-llm", "nvidia-nim", "kv-cache",
 ]);
+
+// Tags that mark an AI or LLM recipe filed under another category. Loose tags
+// such as "machine-learning" are left out: those recipes keep the general
+// course block.
+const AI_TAGS = new Set(["ai", "ai-workloads", "llm", "llms", "genai", "generative-ai"]);
 
 // Tags that mark a tracing recipe filed under another category. "monitoring"
 // and "observability" alone are too loose there (a DaemonSet guide has them).
@@ -43,19 +91,39 @@ const TRACING_TAGS = new Set(["tracing", "distributed-tracing", "opentelemetry",
 
 /**
  * The course key for one recipe, or null (the recipe then keeps the general
- * course block). The category decides first: every AI recipe and every
- * observability recipe gets its course. Recipes filed elsewhere match by tag,
- * AI before tracing; OpenClaw recipes among them keep their OpenClaw course.
+ * course block). The topic decides first: a recipe about one tool, about
+ * agents or about model serving gets that course. Then the category: every
+ * other AI recipe gets the kagent course and every other observability recipe
+ * the OpenTelemetry course. Recipes filed elsewhere match by tag, AI before
+ * tracing.
  */
 export function copyPasteLearnCourseKey({ category = "", tags = [] } = {}) {
   const cat = String(category).toLowerCase();
   const t = (tags || []).map((x) => String(x).toLowerCase());
-  if (cat === "ai") return "kagent";
+  for (const [key, set] of TOOL_TAGS) {
+    if (t.some((x) => set.has(x))) return key;
+  }
+  if (t.some((x) => AGENT_TAGS.has(x))) return "kagent";
+  if (t.some((x) => SERVING_TAGS.has(x))) return "llm-d";
+  if (cat === "ai") return t.includes("inference") ? "llm-d" : "kagent";
   if (cat === "observability") return "otel-agents";
-  if (t.includes("openclaw")) return null;
   if (t.some((x) => AI_TAGS.has(x))) return "kagent";
   if (t.some((x) => TRACING_TAGS.has(x))) return "otel-agents";
   return null;
+}
+
+/**
+ * A CopyPasteLearn URL with the group's campaign tags. `content` says which
+ * card the click came from: a course key, or a name such as "general-mid".
+ */
+export function copyPasteLearnUrl(path, content) {
+  const params = new URLSearchParams({
+    utm_source: "kubernetes.recipes",
+    utm_medium: "referral",
+    utm_campaign: "group-crosslink",
+    utm_content: content,
+  });
+  return `https://www.copypastelearn.com${path}?${params}`;
 }
 
 /** Course data plus its tagged URL, or null. */
@@ -63,11 +131,5 @@ export function copyPasteLearnCourseFor(recipe) {
   const key = copyPasteLearnCourseKey(recipe);
   if (!key) return null;
   const course = COPYPASTELEARN_COURSES[key];
-  const params = new URLSearchParams({
-    utm_source: "kubernetes.recipes",
-    utm_medium: "referral",
-    utm_campaign: "group-crosslink",
-    utm_content: key,
-  });
-  return { key, ...course, url: `https://www.copypastelearn.com${course.path}?${params}` };
+  return { key, ...course, url: copyPasteLearnUrl(course.path, key) };
 }

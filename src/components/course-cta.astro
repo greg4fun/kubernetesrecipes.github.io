@@ -3,12 +3,12 @@
  * Contextual course recommendations based on recipe category/tags.
  * Links to CopyPasteLearn.com courses.
  *
- * AI and observability recipes show ONE card for the matching video course
- * (src/utils/copypastelearn.mjs) instead of the general block below, so a
- * recipe never carries two CopyPasteLearn cards. Every other recipe keeps the
- * general block unchanged.
+ * Recipes with a matching video course (AI, agents, model serving,
+ * observability: src/utils/copypastelearn.mjs) show ONE card for that course
+ * instead of the general block below, so a recipe never carries two
+ * CopyPasteLearn cards. Every other recipe keeps the general block.
  */
-import { copyPasteLearnCourseFor } from "../utils/copypastelearn.mjs";
+import { copyPasteLearnCourseFor, copyPasteLearnUrl } from "../utils/copypastelearn.mjs";
 
 export interface Props {
   category?: string;
@@ -30,6 +30,7 @@ const s = slug.toLowerCase();
 
 // Determine which courses are relevant
 interface Course {
+  key: string;
   url: string;
   title: string;
   description: string;
@@ -38,20 +39,11 @@ interface Course {
 
 const courses: Course[] = [];
 
-// OpenClaw course — for openclaw recipes
-if (s.includes("openclaw") || allTags.includes("openclaw")) {
-  courses.push({
-    url: "https://www.copypastelearn.com/courses/openclaw-agent",
-    title: "OpenClaw Agent Mastery",
-    description: "Build and deploy AI agents with OpenClaw — hands-on course with real-world projects.",
-    emoji: "🤖",
-  });
-}
-
 // MLflow/MLOps course — for AI, ML, training, inference recipes
 if (cat === "ai" || allTags.some(t => ["mlflow", "mlops", "training", "inference", "gpu", "distributed-training", "fine-tuning", "llm"].includes(t))) {
   courses.push({
-    url: "https://www.copypastelearn.com/courses/mlflow-kubernetes-mlops",
+    key: "mlflow",
+    url: copyPasteLearnUrl("/courses/mlflow-kubernetes-mlops", "mlflow"),
     title: "MLflow on Kubernetes — MLOps",
     description: "Master ML lifecycle management with MLflow on Kubernetes — tracking, registry, and deployment.",
     emoji: "🧪",
@@ -61,7 +53,8 @@ if (cat === "ai" || allTags.some(t => ["mlflow", "mlops", "training", "inference
 // Terraform course — for infrastructure, cluster setup, cloud recipes
 if (allTags.some(t => ["terraform", "infrastructure", "iac", "cluster-setup", "cloud", "eks", "gke", "aks"].includes(t)) || s.includes("terraform")) {
   courses.push({
-    url: "https://www.copypastelearn.com/courses/terraform-beginners",
+    key: "terraform",
+    url: copyPasteLearnUrl("/courses/terraform-beginners", "terraform"),
     title: "Terraform for Beginners",
     description: "Learn infrastructure as code with Terraform — provision Kubernetes clusters and cloud resources.",
     emoji: "🏗️",
@@ -71,7 +64,8 @@ if (allTags.some(t => ["terraform", "infrastructure", "iac", "cluster-setup", "c
 // Ansible course — for configuration, automation, deployment recipes
 if (allTags.some(t => ["ansible", "automation", "configuration-management"].includes(t)) || cat === "configuration" || s.includes("ansible")) {
   courses.push({
-    url: "https://www.copypastelearn.com/courses/ansible-quickstart",
+    key: "ansible",
+    url: copyPasteLearnUrl("/courses/ansible-quickstart", "ansible"),
     title: "Ansible Quickstart",
     description: "Automate Kubernetes node configuration and cluster bootstrapping with Ansible.",
     emoji: "⚡",
@@ -83,7 +77,8 @@ if (courses.length === 0) {
   // Show MLflow for AI-adjacent or Terraform for infra-adjacent
   if (["autoscaling", "observability", "networking"].includes(cat)) {
     courses.push({
-      url: "https://www.copypastelearn.com/courses/terraform-beginners",
+      key: "terraform",
+    url: copyPasteLearnUrl("/courses/terraform-beginners", "terraform"),
       title: "Terraform for Beginners",
       description: "Provision the infrastructure behind your Kubernetes clusters with Terraform.",
       emoji: "🏗️",
@@ -91,7 +86,8 @@ if (courses.length === 0) {
   }
   if (["security", "storage", "deployments", "helm"].includes(cat)) {
     courses.push({
-      url: "https://www.copypastelearn.com/courses/ansible-quickstart",
+      key: "ansible",
+    url: copyPasteLearnUrl("/courses/ansible-quickstart", "ansible"),
       title: "Ansible Quickstart",
       description: "Automate cluster bootstrapping and node configuration with Ansible.",
       emoji: "⚡",
@@ -104,7 +100,7 @@ const displayCourses = videoCourse ? [] : courses.slice(0, 2);
 ---
 
 {videoCourse && (
-  <aside class="mt-8 mb-4 not-prose" aria-label="Video course on CopyPasteLearn" data-cpl-course={videoCourse.key}>
+  <aside class="mt-8 mb-4 not-prose" aria-label="Video course on CopyPasteLearn" data-cpl-course={videoCourse.key} data-cpl-placement="video-course">
     <div class="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl p-6">
       <p class="text-xs uppercase tracking-wider text-slate-600 font-semibold mb-2">
         🎓 Video course by Luca Berton on CopyPasteLearn
@@ -137,6 +133,8 @@ const displayCourses = videoCourse ? [] : courses.slice(0, 2);
             href={course.url}
             target="_blank"
             rel="noopener"
+            data-cpl-course={course.key}
+            data-cpl-placement="general-block"
             class="flex items-start gap-3 bg-white rounded-lg p-4 border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group"
           >
             <span class="text-2xl">{course.emoji}</span>
@@ -153,7 +151,7 @@ const displayCourses = videoCourse ? [] : courses.slice(0, 2);
         ))}
       </div>
       <p class="text-xs text-slate-600 mt-3 text-center">
-        Courses by <a href="https://www.copypastelearn.com/" target="_blank" rel="noopener" class="underline hover:text-blue-500">CopyPasteLearn.com</a> — Learn IT by Doing
+        Courses by <a href={copyPasteLearnUrl("/", "general-block")} target="_blank" rel="noopener" data-cpl-course="home" data-cpl-placement="general-block" class="underline hover:text-blue-500">CopyPasteLearn.com</a> — Learn IT by Doing
       </p>
     </div>
   </div>

@@ -10,7 +10,7 @@ import TocSidebar from "@components/toc-sidebar.astro";
 import ShareButtons from "@components/share-buttons.astro";
 import AuthorCard from "@components/author-card.astro";
 import { KUBERNETES_RECIPES, authorEntity } from "../../../utils/entities.mjs";
-import { copyPasteLearnCourseKey } from "../../../utils/copypastelearn.mjs";
+import { copyPasteLearnCourseKey, copyPasteLearnUrl } from "../../../utils/copypastelearn.mjs";
 
 // Category display names
 const categoryNames: Record<string, string> = {
@@ -44,13 +44,14 @@ const allRecipes = await getCollection("recipes", ({ data }) => !data.draft);
 
 const categoryName = categoryNames[recipe.data.category] || recipe.data.category;
 
-// AI and observability recipes show one card for a specific video course after
-// the content (course-cta.astro). They skip the general CopyPasteLearn card in
-// the middle of the content, so the recipe carries one course card, not two.
+// Recipes with a matching video course show one card for it after the content
+// (course-cta.astro). They skip the general CopyPasteLearn card in the middle
+// of the content, so the recipe carries one course card, not two.
 const hasVideoCourseCard = copyPasteLearnCourseKey({
   category: recipe.data.category,
   tags: recipe.data.tags,
 }) !== null;
+const midCourseUrl = copyPasteLearnUrl("/", "general-mid");
 
 // Difficulty colors
 const difficultyColors = {
@@ -295,19 +296,19 @@ const breadcrumbLd = {
       <!-- Mid-content CopyPasteLearn CTA (injected after 5th h2); not on recipes with a video course card -->
       {!hasVideoCourseCard && (
       <template id="mid-course-template">
-        <div class="mid-content-cta my-8 not-prose">
+        <div class="mid-content-cta my-8 not-prose" data-cpl-course="home" data-cpl-placement="general-mid">
           <div class="rounded-xl border border-purple-200 bg-purple-50/50 p-5 md:p-6">
             <div class="flex items-start gap-4">
               <span class="text-3xl shrink-0">🎓</span>
               <div>
                 <p class="text-xs font-semibold uppercase tracking-wider text-purple-600 mb-1">Learn by Doing</p>
-                <a href="https://www.copypastelearn.com" target="_blank" rel="noopener" class="text-lg font-bold text-slate-900 hover:text-purple-600 transition-colors">
+                <a href={midCourseUrl} target="_blank" rel="noopener" class="text-lg font-bold text-slate-900 hover:text-purple-600 transition-colors">
                   CopyPasteLearn — Hands-on Cloud & DevOps Courses
                 </a>
                 <p class="text-sm text-slate-600 mt-1 leading-relaxed">
                   Master Kubernetes, Ansible, Terraform, and MLOps with interactive, copy-paste-run lessons. Start free.
                 </p>
-                <a href="https://www.copypastelearn.com" target="_blank" rel="noopener" class="inline-flex items-center gap-1 mt-2 text-sm font-semibold text-purple-600 hover:text-purple-700">
+                <a href={midCourseUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-1 mt-2 text-sm font-semibold text-purple-600 hover:text-purple-700">
                   Browse Courses →
                 </a>
               </div>
