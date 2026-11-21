@@ -7,8 +7,12 @@
  * observability: src/utils/copypastelearn.mjs) show ONE card for that course
  * instead of the general block below, so a recipe never carries two
  * CopyPasteLearn cards. Every other recipe keeps the general block.
+ *
+ * The general block links only courses whose free lesson has video. The MLflow
+ * and Terraform courses do not, so their places are taken by "MLOps on Your
+ * Mac" and "Kubernetes on your Mac" (data in copypastelearn.mjs).
  */
-import { copyPasteLearnCourseFor, copyPasteLearnUrl } from "../utils/copypastelearn.mjs";
+import { COPYPASTELEARN_COURSES, copyPasteLearnCourseFor, copyPasteLearnUrl } from "../utils/copypastelearn.mjs";
 
 export interface Props {
   category?: string;
@@ -39,26 +43,25 @@ interface Course {
 
 const courses: Course[] = [];
 
-// MLflow/MLOps course — for AI, ML, training, inference recipes
+// A general-block card for a course in copypastelearn.mjs. The key is also the
+// utm_content value and the data-cpl-course attribute.
+const catalog = COPYPASTELEARN_COURSES as Record<string, { title: string; description: string; path: string }>;
+const catalogCourse = (key: string, emoji: string): Course => ({
+  key,
+  url: copyPasteLearnUrl(catalog[key].path, key),
+  title: catalog[key].title,
+  description: catalog[key].description,
+  emoji,
+});
+
+// MLOps course — for AI, ML, training, inference recipes
 if (cat === "ai" || allTags.some(t => ["mlflow", "mlops", "training", "inference", "gpu", "distributed-training", "fine-tuning", "llm"].includes(t))) {
-  courses.push({
-    key: "mlflow",
-    url: copyPasteLearnUrl("/courses/mlflow-kubernetes-mlops", "mlflow"),
-    title: "MLflow on Kubernetes — MLOps",
-    description: "Master ML lifecycle management with MLflow on Kubernetes — tracking, registry, and deployment.",
-    emoji: "🧪",
-  });
+  courses.push(catalogCourse("mlops-mac", "🧪"));
 }
 
-// Terraform course — for infrastructure, cluster setup, cloud recipes
+// Kubernetes on your Mac course — for infrastructure, cluster setup, cloud recipes
 if (allTags.some(t => ["terraform", "infrastructure", "iac", "cluster-setup", "cloud", "eks", "gke", "aks"].includes(t)) || s.includes("terraform")) {
-  courses.push({
-    key: "terraform",
-    url: copyPasteLearnUrl("/courses/terraform-beginners", "terraform"),
-    title: "Terraform for Beginners",
-    description: "Learn infrastructure as code with Terraform — provision Kubernetes clusters and cloud resources.",
-    emoji: "🏗️",
-  });
+  courses.push(catalogCourse("kubernetes-mac", "☸️"));
 }
 
 // Ansible course — for configuration, automation, deployment recipes
@@ -74,15 +77,9 @@ if (allTags.some(t => ["ansible", "automation", "configuration-management"].incl
 
 // If no specific match, show a general selection (max 2)
 if (courses.length === 0) {
-  // Show MLflow for AI-adjacent or Terraform for infra-adjacent
+  // Kubernetes on your Mac for cluster-adjacent, Ansible for operations-adjacent
   if (["autoscaling", "observability", "networking"].includes(cat)) {
-    courses.push({
-      key: "terraform",
-    url: copyPasteLearnUrl("/courses/terraform-beginners", "terraform"),
-      title: "Terraform for Beginners",
-      description: "Provision the infrastructure behind your Kubernetes clusters with Terraform.",
-      emoji: "🏗️",
-    });
+    courses.push(catalogCourse("kubernetes-mac", "☸️"));
   }
   if (["security", "storage", "deployments", "helm"].includes(cat)) {
     courses.push({
