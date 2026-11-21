@@ -1,7 +1,20 @@
 ---
 /**
  * Homepage courses section promoting CopyPasteLearn.com courses.
+ * Only courses whose free lesson has video. The titles and descriptions of
+ * the two catalog entries come from src/utils/copypastelearn.mjs.
  */
+import { COPYPASTELEARN_COURSES } from "../utils/copypastelearn.mjs";
+
+const catalog = COPYPASTELEARN_COURSES as Record<string, { title: string; description: string; path: string }>;
+const catalogCourse = (key: string, emoji: string, tag: string) => ({
+  url: `https://www.copypastelearn.com${catalog[key].path}`,
+  title: catalog[key].title,
+  description: catalog[key].description,
+  emoji,
+  tag,
+});
+
 const courses = [
   {
     url: "https://www.copypastelearn.com/courses/openclaw-agent",
@@ -10,20 +23,8 @@ const courses = [
     emoji: "🤖",
     tag: "AI Agents",
   },
-  {
-    url: "https://www.copypastelearn.com/courses/mlflow-kubernetes-mlops",
-    title: "MLflow on Kubernetes",
-    description: "Master the ML lifecycle — experiment tracking, model registry, and K8s deployment.",
-    emoji: "🧪",
-    tag: "MLOps",
-  },
-  {
-    url: "https://www.copypastelearn.com/courses/terraform-beginners",
-    title: "Terraform for Beginners",
-    description: "Provision Kubernetes clusters and cloud infrastructure with infrastructure as code.",
-    emoji: "🏗️",
-    tag: "IaC",
-  },
+  catalogCourse("mlops-mac", "🧪", "MLOps"),
+  catalogCourse("kubernetes-mac", "☸️", "Kubernetes"),
   {
     url: "https://www.copypastelearn.com/courses/ansible-quickstart",
     title: "Ansible Quickstart",
