@@ -1,7 +1,8 @@
 ---
 // Newsletter popup using Kit.com (ConvertKit) form
 // Form ID: 9965628
-// Appears once per visitor after 8 seconds or 40% scroll
+// Appears once per visitor after 30 seconds or 60% scroll, and never while a
+// CopyPasteLearn course card ([data-cpl-course]) is in the viewport
 ---
 
 <div id="newsletter-popup" class="newsletter-overlay" aria-hidden="true" role="dialog" aria-label="Newsletter signup">
@@ -172,15 +173,50 @@
     if (e.key === 'Escape' && shown) dismiss();
   });
 
-  // Trigger: 8s delay OR 40% scroll, whichever first
-  var timer = setTimeout(show, 8000);
-  window.addEventListener('scroll', function onScroll() {
-    var scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-    if (scrollPct > 0.4) {
-      show();
-      window.removeEventListener('scroll', onScroll);
-      clearTimeout(timer);
+  // True while a CopyPasteLearn course card ([data-cpl-course]) is in the
+  // viewport. The cards are looked up on every call, because a recipe page
+  // inserts its mid-content card after load. Elements without a box (hidden,
+  // or inside a <template>) do not count.
+  function courseCardInView() {
+    var cards = document.querySelectorAll('[data-cpl-course]');
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    var vw = window.innerWidth || document.documentElement.clientWidth;
+    for (var i = 0; i < cards.length; i++) {
+      var r = cards[i].getBoundingClientRect();
+      if (r.width === 0 && r.height === 0) continue;
+      if (r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw) return true;
     }
-  });
+    return false;
+  }
+
+  // Trigger: 30s on the page OR 60% scroll, whichever first. The popup must
+  // not cover a course card: when the trigger fires while a card is in the
+  // viewport, the popup waits and opens as soon as no card is visible.
+  var due = false;
+
+  function openWhenClear() {
+    if (shown || courseCardInView()) return;
+    show();
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onScroll);
+  }
+
+  function onScroll() {
+    if (!due) {
+      var scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+      if (scrollPct > 0.6) {
+        due = true;
+        clearTimeout(timer);
+      }
+    }
+    if (due) openWhenClear();
+  }
+
+  var timer = setTimeout(function() {
+    due = true;
+    openWhenClear();
+  }, 30000);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
 })();
 </script>

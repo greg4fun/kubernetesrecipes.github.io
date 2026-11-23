@@ -1,11 +1,15 @@
 // Luca's own video courses on CopyPasteLearn (https://www.copypastelearn.com)
 // and which recipes show them. THE ONE PLACE TO EDIT.
 //
-// Only courses that are live there with video. Titles and descriptions are the
+// Only courses that are live there with video: a course whose free lesson has
+// no video is not linked from this site, neither from a recipe card nor from
+// the general block or the homepage list. Titles and descriptions are the
 // ones on each course page (kagent and otel-agents copied Nov 18, 2026, the
-// others Nov 21, 2026; the Hermes description is shortened from its "What
-// you'll learn" list). No prices, ratings, student counts or lab promises:
-// they go stale.
+// others Nov 21, 2026, including mcp-server, goose, mlops-mac and
+// kubernetes-mac, added that day; the Hermes description is shortened from
+// its "What you'll learn" list and the Kubernetes on your Mac one from the
+// first sentences of its description). No prices, ratings, student counts or
+// lab promises: they go stale.
 //
 // Own product, not an affiliate offer: the card (course-cta.astro) carries no
 // data-affiliate attribute, so it never fires `affiliate_click`, and its link
@@ -55,6 +59,36 @@ export const COPYPASTELEARN_COURSES = {
     format: "6 video lessons.",
     path: "/courses/build-durable-ai-agents-with-dapr-agents",
   },
+  "mcp-server": {
+    title: "Build and Secure an MCP Server",
+    description:
+      "Build a real MCP server in Python with the official SDK, serve it over HTTP, add authentication and hardening, then deploy it to a kagent cluster.",
+    format: "6 video lessons.",
+    path: "/courses/build-and-secure-an-mcp-server",
+  },
+  goose: {
+    title: "Run Coding Agents in Production with goose and AGENTS.md",
+    description:
+      "Install goose, teach it your project's rules with AGENTS.md, then run it the way a team does: recipes, CI, guardrails and a record of what it did.",
+    format: "6 video lessons.",
+    path: "/courses/coding-agents-in-production-goose-agents-md",
+  },
+  // The two below have no tag rule. They are the courses of the general block
+  // (course-cta.astro) and of the homepage list (courses-section.astro).
+  "mlops-mac": {
+    title: "MLOps on Your Mac: Experiments, Model Registry and Trust",
+    description:
+      "Follow a model from its first training run through registration, deployment, and monitoring, with checks before promotion.",
+    format: "6 video lessons.",
+    path: "/courses/mlops-on-your-mac",
+  },
+  "kubernetes-mac": {
+    title: "Kubernetes on your Mac",
+    description:
+      "Build a multi-node Kubernetes cluster on your Apple Silicon Mac using kind, install applications with Helm and reach them using ingress or Gateway.",
+    format: "6 video lessons.",
+    path: "/courses/kubernetes-on-your-mac",
+  },
 };
 
 // A recipe about one of these tools gets the course about that tool, whatever
@@ -64,6 +98,11 @@ const TOOL_TAGS = [
   ["openclaw", new Set(["openclaw"])],
   ["dapr", new Set(["dapr", "dapr-agents"])],
   ["llm-d", new Set(["llm-d"])],
+  // Model Context Protocol. The plain "mcp" tag is NOT here (see AGENT_TAGS).
+  // Tool tags are checked before AGENT_TAGS, so an MCP recipe that also has
+  // the "kagent" tag gets this course and not the kagent one.
+  ["mcp-server", new Set(["model-context-protocol", "mcp-server"])],
+  ["goose", new Set(["goose", "agents-md"])],
 ];
 
 // Tags that mark an agent recipe: the kagent course.
