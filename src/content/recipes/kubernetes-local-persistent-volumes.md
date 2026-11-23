@@ -181,7 +181,7 @@ ssh node1 'sudo rm -rf /mnt/disks/ssd1/*'
 - **Always use `WaitForFirstConsumer`** — without it, a PV can bind to a PVC before the scheduler has decided which node the pod will run on, potentially binding on the wrong node
 - **Only use local PVs for workloads with their own replication** (distributed databases, Cassandra, etc.) — a local PV is a single point of failure for anything else
 - **Automate PV creation with the local static provisioner** once you're managing more than a handful of disks — hand-written PVs don't scale
-- **Use pod anti-affinity to spread replicas across nodes** — this is your actual protection against node loss, not the volume itself
+- **Use [pod anti-affinity](/recipes/deployments/kubernetes-pod-affinity-antiaffinity/) to spread replicas across nodes** — this is your actual protection against node loss, not the volume itself
 - **Plan node maintenance carefully** — draining a node with local volumes doesn't move the data; coordinate with replica counts before draining
 
 ## Key Takeaways

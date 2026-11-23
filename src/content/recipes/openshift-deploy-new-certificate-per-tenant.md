@@ -89,7 +89,7 @@ oc logs deployment/router-tenant-a -n openshift-ingress --tail=100
 
 ## Rollback
 
-If validation fails, re-apply previous tenant secret material and repeat rollout restart only for that tenant router.
+If validation fails, re-apply previous tenant secret material and repeat [rollout restart](/recipes/deployments/kubectl-rollout-restart-deployment/) only for that tenant router.
 
 ## Production Tips
 

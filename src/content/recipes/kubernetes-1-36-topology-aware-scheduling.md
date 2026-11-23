@@ -157,7 +157,7 @@ kubectl get nodes -l nvidia.com/gpu-fabric=nvswitch-domain-1 \
 
 ### Alternative Available Today: KAI Scheduler
 
-Kubernetes 1.36's native `TopologyPolicy` is new; if you're not yet on 1.36 or want topology awareness now, NVIDIA's KAI Scheduler provides the same capability via its own PodGroup CRD:
+Kubernetes 1.36's native `TopologyPolicy` is new; if you're not yet on 1.36 or want topology awareness now, NVIDIA's [KAI Scheduler](/recipes/ai/kai-scheduler-installation/) provides the same capability via its own PodGroup CRD:
 
 ```bash
 helm upgrade -i kai-scheduler oci://ghcr.io/nvidia/kai-scheduler/kai-scheduler \

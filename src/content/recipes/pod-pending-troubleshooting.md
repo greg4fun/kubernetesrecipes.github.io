@@ -103,7 +103,7 @@ Check `PodDisruptionBudget` — it can block scheduling during rolling updates.
 - **Always set resource requests** — without them the scheduler can't make accurate decisions
 - **Use `kubectl describe` first** — the events section is the single best debugging tool for Pending pods
 - **Monitor cluster capacity** with `kubectl top nodes` to catch exhaustion early
-- **Use pod topology spread constraints** to distribute pods evenly across nodes
+- **Use [pod topology spread constraints](/recipes/deployments/pod-topology-constraints/)** to distribute pods evenly across nodes
 
 ## Key Takeaways
 

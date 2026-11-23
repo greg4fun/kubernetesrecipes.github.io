@@ -272,7 +272,7 @@ graph TD
 
 ## Common Issues
 
-- **Build fails: kernel-core not found** — DTK image version must match the target OCP version exactly; use `oc adm release info` to get the correct DTK
+- **Build fails: kernel-core not found** — DTK image version must match the target [OCP version](/recipes/configuration/openshift-support-lifecycle-version-matrix/) exactly; use `oc adm release info` to get the correct DTK
 - **Module load fails on node** — kernel version mismatch; rebuild against the current running kernel; check `uname -r` on nodes
 - **MOFED install.pl errors** — ensure DTK has all build deps; add `--without-fw-update` to skip firmware
 - **Disconnected build: DTK pull fails** — mirror DTK image first via `oc mirror` or `skopeo copy`

@@ -534,7 +534,7 @@ kubectl get revisions -n production
 
 ## Key Takeaways
 
-- Knative has its own ingress — it doesn't use Kubernetes Ingress resources
+- Knative has its own ingress — it doesn't use [Kubernetes Ingress](/recipes/networking/kubernetes-ingress-complete-guide/) resources
 - Three networking options: Kourier (light), Istio (mesh), Contour (Gateway API)
 - Custom domains via `config-domain` ConfigMap + wildcard DNS record
 - Auto-TLS with cert-manager gives every service HTTPS with zero config

@@ -269,7 +269,7 @@ VFs are still created and consuming PF bandwidth. Set `numVfs: 0` in the SR-IOV 
 
 **"resource already allocated" error**
 
-PF is a single resource — only one pod can claim it exclusively. For shared access, use the RDMA shared device plugin instead.
+PF is a single resource — only one pod can claim it exclusively. For shared access, use the [RDMA shared device plugin](/recipes/networking/shared-rdma-device-plugin-kubernetes/) instead.
 
 ## Best Practices
 

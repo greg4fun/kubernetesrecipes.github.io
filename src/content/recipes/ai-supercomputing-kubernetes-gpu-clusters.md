@@ -260,7 +260,7 @@ spec:
 
 - AI supercomputing on K8s: GPU Operator + Network Operator + topology-aware scheduler
 - LeaderWorkerSet manages multi-node training jobs (leader + workers)
-- NCCL environment variables are critical for communication performance
+- [NCCL environment variables](/recipes/ai/nccl-environment-variables-reference-kubernetes/) are critical for communication performance
 - GPUDirect RDMA requires open kernel modules (\`useOpenKernelModules: true\`)
 - Topology-aware placement keeps pods near each other (same rack, same NVLink domain)
 - 2026 trend: Kubernetes replacing SLURM as the AI supercomputing orchestrator

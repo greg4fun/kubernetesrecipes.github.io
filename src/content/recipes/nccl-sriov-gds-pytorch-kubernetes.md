@@ -569,4 +569,4 @@ On OpenShift, this requires a custom SCC (not `restricted-v2`).
 - SR-IOV `deviceType: netdevice` (not `vfio-pci`) is mandatory for RDMA verbs
 - `IPC_LOCK` capability is required for RDMA memory registration — use custom SCC on OpenShift
 - Verify with `NCCL_DEBUG=INFO`: look for `NET/IB` (good) not `NET/Socket` (TCP fallback)
-- The complete stack: IOMMU → GPU Operator (open modules + GDS) → SR-IOV → PFC/ECN → NCCL env vars → torchrun
+- The complete stack: IOMMU → GPU Operator (open modules + GDS) → SR-IOV → PFC/ECN → [NCCL env vars](/recipes/ai/nccl-environment-variables-reference-kubernetes/) → torchrun

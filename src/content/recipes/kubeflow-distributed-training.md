@@ -28,7 +28,7 @@ Training large language models (10B+ parameters) requires distributing work acro
 
 ## The Solution
 
-Kubeflow Training Operator with PyTorchJob handles multi-node coordination. Combined with NCCL over RDMA for fast gradient sync and shared NFSoRDMA storage for checkpoints, you get a production training platform.
+[Kubeflow Training Operator](/recipes/ai/kubeflow-training-operator/) with PyTorchJob handles multi-node coordination. Combined with NCCL over RDMA for fast gradient sync and shared NFSoRDMA storage for checkpoints, you get a production training platform.
 
 ### Multi-Node PyTorchJob with NCCL over RDMA
 

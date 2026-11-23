@@ -42,7 +42,7 @@ Pods need to access cloud services (S3, Azure Storage, GCS, databases, etc.) but
 
 ## The Solution
 
-Use Workload Identity to allow pods to authenticate to cloud providers using their Kubernetes service account identity. The cloud provider trusts the Kubernetes OIDC issuer, eliminating the need for static credentials.
+Use Workload Identity to allow pods to authenticate to cloud providers using their Kubernetes service account identity. The cloud provider trusts the [Kubernetes OIDC](/recipes/security/kubernetes-oidc-authentication-guide/) issuer, eliminating the need for static credentials.
 
 ## How Workload Identity Works
 

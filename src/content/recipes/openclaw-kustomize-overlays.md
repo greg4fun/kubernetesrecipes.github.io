@@ -370,7 +370,7 @@ kubectl create secret generic openclaw-secrets \
 
 ## Key Takeaways
 
-- Kustomize overlays keep environment-specific config separate from shared base manifests
+- [Kustomize overlays](/recipes/configuration/kubernetes-kustomize-overlays-guide/) keep environment-specific config separate from shared base manifests
 - Use `namePrefix` and `namespace` to isolate dev/staging/production completely
 - Pin container image tags in production, use `latest` only in dev
 - Integrate with ArgoCD by pointing Application resources at overlay directories

@@ -183,7 +183,7 @@ ports:
 ## Best Practices
 
 - **Always `quote` after `join`** — YAML annotations and values need quoting
-- **Use `","` for standard CSV** — most K8s annotations expect comma-separated
+- **Use `","` for standard CSV** — most [K8s annotations](/recipes/configuration/kubernetes-annotations-guide/) expect comma-separated
 - **Use `";"` for URLs** — URLs contain commas, so use semicolons
 - **Build lists with `append`** — for conditional list construction
 - **Provide `default` for empty lists** — avoid empty annotation values

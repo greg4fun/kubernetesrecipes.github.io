@@ -103,7 +103,7 @@ graph TD
 
 **Topology-aware routing sends all traffic to one zone**
 
-If zone capacity is imbalanced (10 pods in zone A, 2 in zone B), Kubernetes falls back to cluster-wide routing. Ensure even pod distribution with topology spread constraints.
+If zone capacity is imbalanced (10 pods in zone A, 2 in zone B), Kubernetes falls back to cluster-wide routing. Ensure even pod distribution with [topology spread constraints](/recipes/deployments/pod-topology-constraints/).
 
 **EndpointSlice not updating — stale endpoints**
 

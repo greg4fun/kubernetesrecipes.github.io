@@ -210,7 +210,7 @@ With `requiredDuringScheduling` anti-affinity on hostname, you need at least as 
 - **`nodeSelector` for simple cases** — GPU nodes, SSD nodes
 - **`nodeAffinity` for complex rules** — multiple values, preferences
 - **`podAntiAffinity` for HA** — spread replicas across nodes/zones
-- **`topologySpreadConstraints` over pod anti-affinity** — more granular control
+- **`topologySpreadConstraints` over [pod anti-affinity](/recipes/deployments/kubernetes-pod-affinity-antiaffinity/)** — more granular control
 - **Use `preferred` over `required`** when possible — keeps scheduling flexible
 
 ## Key Takeaways

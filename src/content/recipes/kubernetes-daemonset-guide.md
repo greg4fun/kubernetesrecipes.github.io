@@ -216,7 +216,7 @@ spec:
 | Update | Rolling per-node | Rolling per-replica |
 | Use case | Node agents | Application workloads |
 
-A Deployment with pod anti-affinity only approximates this: it doesn't grow with new nodes and leaves pods Pending when replicas exceed nodes.
+A Deployment with [pod anti-affinity](/recipes/deployments/kubernetes-pod-affinity-antiaffinity/) only approximates this: it doesn't grow with new nodes and leaves pods Pending when replicas exceed nodes.
 
 ### Manage DaemonSets
 

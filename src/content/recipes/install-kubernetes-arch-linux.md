@@ -120,7 +120,7 @@ graph TD
 - **Swap not disabled** — kubeadm refuses to init with swap on
 - **Containerd not using systemd cgroup** — causes kubelet crashes
 - **Firewall blocking ports** — control plane needs 6443, 2379-2380, 10250-10252
-- **Wrong CNI CIDR** — must match `--pod-network-cidr` in kubeadm init
+- **Wrong CNI CIDR** — must match `--pod-network-cidr` in [kubeadm init](/recipes/configuration/kubernetes-kubeadm-init-guide/)
 
 ## Best Practices
 

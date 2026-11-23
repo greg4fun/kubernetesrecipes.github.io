@@ -479,7 +479,7 @@ grep "Avg bus bandwidth" nccl-prod-*.log
 ## Common Issues
 
 ### "WARNING: /dev/infiniband is missing. RDMA will not work."
-- **Cause**: Pod doesn't request `rdma/rdma_shared_device_a`; or RDMA device plugin not deployed
+- **Cause**: Pod doesn't request `rdma/rdma_shared_device_a`; or [RDMA device plugin](/recipes/networking/shared-rdma-device-plugin-kubernetes/) not deployed
 - **Fix**: Add RDMA resource request to worker pods; deploy shared RDMA device plugin
 
 ### "WARNING: nvidia-smi not found" in launcher

@@ -203,7 +203,7 @@ Both evict through the Eviction API, so PDBs are respected automatically — no 
 1. **Every production workload with 2+ replicas gets a PDB**
 2. **Default to `maxUnavailable: 1`**; use `minAvailable` for quorum
 3. **Never set `minAvailable` equal to replicas** — blocks every drain and upgrade
-4. **Spread replicas** with topology spread constraints or anti-affinity so one drain touches one replica
+4. **Spread replicas** with [topology spread constraints](/recipes/deployments/pod-topology-constraints/) or anti-affinity so one drain touches one replica
 5. **Set `unhealthyPodEvictionPolicy: AlwaysAllow`** unless the app needs unready pods protected
 6. **Alert on `kube_poddisruptionbudget_status_pod_disruptions_allowed == 0`** before maintenance windows
 

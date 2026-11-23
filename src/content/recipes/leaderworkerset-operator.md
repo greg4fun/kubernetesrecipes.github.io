@@ -273,7 +273,7 @@ For topology-aware placement, the `leaderworkerset.sigs.k8s.io/exclusive-topolog
 
 ## Gang Scheduling
 
-LWS creates a group's pods together but does not by itself guarantee all-or-nothing placement: with too few free GPUs you can get a leader running and workers Pending. Put a gang-aware admission/scheduler in front — Kueue (supports LWS), Volcano, or KAI Scheduler — or see [gang scheduling in Kubernetes 1.36](/recipes/ai/kubernetes-1-36-gang-scheduling/).
+LWS creates a group's pods together but does not by itself guarantee all-or-nothing placement: with too few free GPUs you can get a leader running and workers Pending. Put a gang-aware admission/scheduler in front — Kueue (supports LWS), Volcano, or [KAI Scheduler](/recipes/ai/kai-scheduler-installation/) — or see [gang scheduling in Kubernetes 1.36](/recipes/ai/kubernetes-1-36-gang-scheduling/).
 
 ## Operate
 

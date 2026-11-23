@@ -218,7 +218,7 @@ It's designed for bootstrapping. After your first cluster is running, deploy pro
 
 - **Use a DNS FQDN** — `--quayHostname` doesn't support bare IP addresses
 - **Trust the CA early** — distribute the rootCA.pem to all bastion and cluster nodes before mirroring
-- **Plan storage for your full upgrade path** — each OCP version adds ~5-10 GB of images
+- **Plan storage for your full upgrade path** — each [OCP version](/recipes/configuration/openshift-support-lifecycle-version-matrix/) adds ~5-10 GB of images
 - **Keep credentials secure** — the init password is printed only at install time
 - **Migrate to production Quay** — mirror-registry is for bootstrapping, not long-term use
 - **Back up before upgrading** — v1→v2 migration can cause downtime

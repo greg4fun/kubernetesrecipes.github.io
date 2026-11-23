@@ -471,7 +471,7 @@ sudo etcdctl snapshot restore /tmp/etcd-backup-YYYYMMDD.db \
 1. **Check expiration monthly** — Set up a CronJob or Prometheus alert
 2. **Back up before renewing** — Always snapshot etcd and copy `/etc/kubernetes/pki` before any cert operation
 3. **Renew 30+ days before expiry** — Don't wait until certs expire
-4. **Enable kubelet cert auto-rotation** — Set `rotateCertificates: true` in kubelet config
+4. **Enable kubelet cert auto-rotation** — Set `rotateCertificates: true` in [kubelet config](/recipes/configuration/kubernetes-kubelet-configuration/)
 5. **Use cert-manager for workload certs** — Don't manually manage TLS for ingress and services
 6. **Plan CA rotation during maintenance windows** — It requires restarting all control plane components
 7. **Test in staging first** — Practice cert rotation on a non-production cluster

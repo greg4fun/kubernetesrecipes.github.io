@@ -337,7 +337,7 @@ graph TD
 ## Common Issues
 
 - **Mount fails with `proto=rdma`** — node must have RDMA kernel modules loaded (`rdma_cm`, `ib_core`); verify with `lsmod | grep rdma`
-- **PVC stuck Pending** — check label selectors match between PV and PVC; verify PV is `Available` not `Released`
+- **[PVC stuck Pending](/recipes/troubleshooting/pvc-pending-troubleshooting/)** — check label selectors match between PV and PVC; verify PV is `Available` not `Released`
 - **Slow performance despite RDMA** — check `nconnect` value; verify jumbo frames (MTU 9000) end-to-end; check `noatime` for read-heavy workloads
 - **Permission denied on mount** — NFS server exports must allow the node IPs; check `/etc/exports` on NFS server
 - **Pod scheduled on non-RDMA node** — add `nodeSelector` with `feature.node.kubernetes.io/rdma: "true"` to ensure RDMA-capable placement

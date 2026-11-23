@@ -227,7 +227,7 @@ kubectl logs -n falco -l app.kubernetes.io/name=falco -c falco --tail=20 | grep 
 
 **Too many alerts** — add rule exceptions (above), raise `minimumpriority` per output, and disable rules you don't need with `- rule: X` / `enabled: false`.
 
-**No Kubernetes metadata (`k8s.pod.name=<NA>`)** — Falco reads pod metadata from the container runtime socket; make sure the chart's `collectors` point at your runtime (containerd vs CRI-O).
+**No Kubernetes metadata (`k8s.pod.name=<NA>`)** — Falco reads pod metadata from the container runtime socket; make sure the chart's `collectors` point at your runtime ([containerd vs CRI-O](/recipes/configuration/kubernetes-container-runtime-guide/)).
 
 **Performance** — modern eBPF typically costs ~1–2% CPU per node; heavy syscall workloads cost more. Set requests/limits and watch Falco's own `falcosecurity_falco_*` metrics.
 

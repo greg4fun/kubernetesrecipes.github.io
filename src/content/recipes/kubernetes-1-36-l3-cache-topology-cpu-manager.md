@@ -118,7 +118,7 @@ kubectl exec latency-sensitive -- lstopo --of txt
 
 ### No performance improvement
 - **Cause**: Workload is memory-bandwidth bound, not cache-bound
-- **Fix**: L3 alignment helps cache-sensitive workloads; memory-bound workloads need NUMA alignment instead
+- **Fix**: L3 alignment helps cache-sensitive workloads; memory-bound workloads need [NUMA alignment](/recipes/ai/kubernetes-topology-manager-gpu-numa/) instead
 
 ### Feature gate not recognized
 - **Cause**: Kubernetes version < 1.36

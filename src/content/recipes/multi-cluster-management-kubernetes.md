@@ -268,7 +268,7 @@ Via a multi-cluster mesh or CNI: Istio multi-primary/primary-remote, Cilium Clus
 
 ## Key Takeaways
 
-- Start with kubectl contexts, graduate to ArgoCD/Flux for automation
+- Start with [kubectl contexts](/recipes/configuration/kubectl-config-context-management/), graduate to ArgoCD/Flux for automation
 - Management cluster pattern: one cluster manages the fleet's lifecycle and deployments
 - Cluster API provisions clusters declaratively; ArgoCD deploys apps declaratively
 - Label clusters consistently for ApplicationSet generators

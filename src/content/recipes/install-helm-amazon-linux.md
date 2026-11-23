@@ -143,7 +143,7 @@ Helm uses your kubeconfig. Ensure `kubectl get nodes` works first. For EKS: `aws
 
 **Helm 2 vs Helm 3 confusion**
 
-Helm 3 has no Tiller server component. If you see Tiller errors, you have Helm 2 installed. Remove it and install Helm 3:
+Helm 3 has no Tiller server component. If you see Tiller errors, you have Helm 2 installed. Remove it and [install Helm](/recipes/helm/install-helm-rhel/) 3:
 ```bash
 sudo rm /usr/local/bin/helm
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash

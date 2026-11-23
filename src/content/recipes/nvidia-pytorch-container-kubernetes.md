@@ -240,5 +240,5 @@ Network interface selection wrong. Set `NCCL_SOCKET_IFNAME` to your pod network 
 - `nvcr.io/nvidia/pytorch:YY.MM-py3` containers include CUDA, cuDNN, NCCL, and PyTorch pre-built
 - Pin versions (e.g., `24.07-py3`) for reproducible training
 - Always mount `/dev/shm` as emptyDir Memory for DataLoader workers
-- Multi-node requires NCCL env vars (NCCL_SOCKET_IFNAME, NCCL_IB_DISABLE)
+- Multi-node requires [NCCL env vars](/recipes/ai/nccl-environment-variables-reference-kubernetes/) (NCCL_SOCKET_IFNAME, NCCL_IB_DISABLE)
 - Check GPU driver version compatibility before deploying

@@ -115,7 +115,7 @@ Check for taints: `kubectl describe node worker-1 | grep Taints`. The node may h
 - **Set eviction thresholds** appropriately for your workload: `--eviction-hard=memory.available<500Mi,nodefs.available<10%`
 - **Auto-approve CSRs** in clusters with frequent node cycling
 - **Pre-pull critical images** to avoid disk pressure from large image pulls
-- **Use node problem detector** for early warning on hardware/kernel issues
+- **Use [node problem detector](/recipes/observability/node-problem-detector/)** for early warning on hardware/kernel issues
 
 ## Key Takeaways
 

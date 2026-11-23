@@ -139,7 +139,7 @@ spec:
 
 ### Step 4: PyTorchJob with SR-IOV VFs
 
-For production training, use the Kubeflow Training Operator:
+For production training, use the [Kubeflow Training Operator](/recipes/ai/kubeflow-training-operator/):
 
 ```yaml
 apiVersion: kubeflow.org/v1
@@ -274,5 +274,5 @@ kubectl get sriovnetworknodestates -n nvidia-network-operator -o yaml
 
 - SR-IOV VFs with RDMA provide bare-metal networking performance for distributed AI training
 - Attach VFs to pods via Multus annotations and resource requests
-- Configure NCCL environment variables to use RDMA instead of TCP
+- Configure [NCCL environment variables](/recipes/ai/nccl-environment-variables-reference-kubernetes/) to use RDMA instead of TCP
 - GPUDirect RDMA enables direct GPU-to-GPU transfers across nodes via the NIC

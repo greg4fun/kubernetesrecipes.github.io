@@ -30,7 +30,7 @@ You need to mount NFS shares directly on OpenShift worker nodes (e.g., for fio b
 
 - The mount command appears to succeed
 - `mount | grep nfs` shows nothing
-- The mount disappears when the debug pod exits
+- The mount disappears when the [debug pod](/recipes/troubleshooting/kubernetes-debug-pods/) exits
 - Pods using `hostPath` to the mount point see empty directories
 
 **This is by design.** OpenShift 4.x blocks host mount operations from debug pods for security. The mount syscall executes inside the container namespace and is destroyed with the pod.

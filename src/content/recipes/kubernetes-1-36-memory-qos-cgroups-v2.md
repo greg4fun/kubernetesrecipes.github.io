@@ -152,7 +152,7 @@ Memory Usage Timeline:
 
 ### Memory throttling too aggressive
 - **Cause**: `memoryThrottlingFactor` too low
-- **Fix**: Increase from 0.9 to 0.95 in kubelet config
+- **Fix**: Increase from 0.9 to 0.95 in [kubelet config](/recipes/configuration/kubernetes-kubelet-configuration/)
 
 ### Container OOM killed without throttling
 - **Cause**: Memory spike too fast to throttle (bypasses `memory.high`)

@@ -226,4 +226,4 @@ export MPI_HOSTFILE="/tmp/mpi-hostfile"
 - Disable UCC + HCOLL to prevent MPI from touching GPU data
 - `NCCL_SOCKET_IFNAME=net1` is mandatory for NCCL to find SR-IOV interface
 - DNS resolution only works on eth0 — MPI hostfile relies on pod network
-- Forward all NCCL environment variables from launcher to workers via mpirun `-x`
+- Forward all [NCCL environment variables](/recipes/ai/nccl-environment-variables-reference-kubernetes/) from launcher to workers via mpirun `-x`

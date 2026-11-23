@@ -222,7 +222,7 @@ lspci 2>/dev/null | grep -c "Virtual Function"
 
 ### Disabled VT-d but SR-IOV stopped working
 - **Cause**: SR-IOV requires IOMMU for VF DMA translation — this is expected
-- **Fix**: Choose one: VT-d on (with ACS override) for SR-IOV, or VT-d off (use host NIC)
+- **Fix**: Choose one: VT-d on (with [ACS override](/recipes/ai/disable-acs-pcie-gpu-direct-p2p/)) for SR-IOV, or VT-d off (use host NIC)
 
 ### Containers broken after disabling VT-x
 - **Cause**: Kata Containers or gVisor require hardware virtualization

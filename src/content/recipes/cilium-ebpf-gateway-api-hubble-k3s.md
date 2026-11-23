@@ -206,7 +206,7 @@ hubble observe --follow --type trace
 ## Key Takeaways
 
 - Cilium provides CNI + kube-proxy replacement + ingress controller + observability in one component
-- Gateway API is the future of Kubernetes ingress — Cilium implements it natively
+- Gateway API is the future of [Kubernetes ingress](/recipes/networking/kubernetes-ingress-complete-guide/) — Cilium implements it natively
 - Hubble gives you Wireshark-level visibility without packet captures
 - eBPF eliminates iptables overhead — critical for high-throughput workloads
 - Single Helm install replaces Flannel + kube-proxy + Traefik + NetworkPolicy controller

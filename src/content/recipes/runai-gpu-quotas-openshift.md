@@ -199,5 +199,5 @@ graph TD
 - `deservedGpus` = guaranteed minimum; `maxAllowedGpus` = ceiling with borrowing
 - Over-quota jobs are preemptible — fairness enforced automatically
 - Departments provide hierarchical quota management for multiple teams
-- KAI Scheduler is the open-source successor to Run:AI's scheduler
+- [KAI Scheduler](/recipes/ai/kai-scheduler-installation/) is the open-source successor to Run:AI's scheduler
 - Typical result: GPU utilization jumps from 30-50% to 70-90% with fair sharing

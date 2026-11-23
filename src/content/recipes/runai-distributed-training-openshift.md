@@ -28,7 +28,7 @@ Launching distributed training on OpenShift manually requires:
 - Creating headless Services for worker discovery
 - Managing environment variables (RANK, MASTER_ADDR, MASTER_PORT) per Pod
 - Configuring SR-IOV / Mellanox RDMA network attachments
-- Handling security contexts (non-root UID/GID for OpenShift SCC)
+- Handling security contexts (non-root UID/GID for [OpenShift SCC](/recipes/security/openshift-scc-security-context-constraints/))
 - Coordinating shared storage mounts across workers
 
 Run:ai abstracts all of this into a single CLI command.

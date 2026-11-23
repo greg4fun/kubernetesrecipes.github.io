@@ -296,7 +296,7 @@ graph TD
 ## Common Issues
 
 - **RoCE PFC storms** — misconfigured PFC causes network-wide pause frames; verify ECN is enabled alongside PFC
-- **NCCL falls back to TCP despite IB available** — check `NCCL_IB_DISABLE=0`; verify `ibstat` shows Active ports; check RDMA device plugin
+- **NCCL falls back to TCP despite IB available** — check `NCCL_IB_DISABLE=0`; verify `ibstat` shows Active ports; check [RDMA device plugin](/recipes/networking/shared-rdma-device-plugin-kubernetes/)
 - **GPU Direct RDMA not working** — requires `NCCL_NET_GDR_LEVEL=5` and `nvidia-peermem` kernel module loaded
 - **InfiniBand subnet manager missing** — IB fabric needs exactly one SM; deploy OpenSM or use NVIDIA UFM
 - **RoCE performance worse than expected** — verify PFC is not dropping frames (`ethtool -S | grep pause`); check ECN marks
