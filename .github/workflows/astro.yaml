@@ -32,6 +32,12 @@ jobs:
       - name: Verify internal links
         run: python3 scripts/verify-links.py
 
+      - name: Check internal links added to existing posts
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          STRICT_INTERNAL_LINKS: ${{ startsWith(github.head_ref || github.ref_name, 'internal-links/') || contains(github.event.head_commit.message, '[internal-links]') }}
+        run: node scripts/check-new-internal-links.cjs --content src/content/recipes --url '/recipes/{fm_category}/{stem}/'
+
       - name: Validate recipe content (schema, links, meta descriptions)
         # Gates on schema errors, broken internal links, and SEO-critical
         # issues — including over-long meta descriptions (audit: "Meta
