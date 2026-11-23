@@ -180,7 +180,7 @@ graph TD
 - **Workers stuck Pending** — insufficient GPU resources; check `kubectl describe node | grep gpu` and reduce worker count
 - **NCCL timeout** — workers can't communicate; verify NetworkPolicy allows pod-to-pod traffic; check NCCL_SOCKET_IFNAME
 - **Master pod CrashLoopBackOff** — training script error; check `kubectl logs` for Python traceback
-- **OpenShift SCC issues** — Training Operator may need `anyuid` SCC; add to service account
+- **[OpenShift SCC](/recipes/security/openshift-scc-security-context-constraints/) issues** — Training Operator may need `anyuid` SCC; add to service account
 - **Job stuck in Running after completion** — some training scripts don't exit cleanly; add proper `sys.exit(0)` after training
 
 ## Best Practices

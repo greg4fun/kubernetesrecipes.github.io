@@ -128,7 +128,7 @@ kubectl get pods -n kube-system | grep -E "api|etcd"
 ## Best Practices
 
 - **Set up node health monitoring** — alert on NotReady within 2 minutes
-- **Use node problem detector** for proactive issue detection
+- **Use [node problem detector](/recipes/observability/node-problem-detector/)** for proactive issue detection
 - **Ensure certificate auto-rotation is enabled** in kubelet config
 - **Monitor disk usage** — set alerts at 80% to prevent pressure
 - **Keep container runtime updated** — runtime bugs cause kubelet failures

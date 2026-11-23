@@ -211,7 +211,7 @@ Adjust to your fabric:
 - `NCCL_IB_HCA` — list the RDMA devices you expect NCCL to use (`ibv_devices` in a worker).
 - `NCCL_SOCKET_IFNAME` — the interface for NCCL's bootstrap/out-of-band traffic; `btl_tcp_if_include` does the same for MPI.
 - Resource names (`nvidia.com/rdma_sriov`, shared RDMA device plugins, `openshift.io/...` on OpenShift) come from your Network Operator/SR-IOV configuration.
-- Pin workers to the node pair under test with `nodeSelector`/affinity and one worker per node (pod anti-affinity).
+- Pin workers to the node pair under test with `nodeSelector`/affinity and one worker per node ([pod anti-affinity](/recipes/deployments/kubernetes-pod-affinity-antiaffinity/)).
 
 See [NCCL environment variables](/recipes/ai/nccl-environment-variables-reference-kubernetes/) for the full set, and [RoCE validation with MPIJob](/recipes/ai/nccl-roce-validation-mpijob-kubernetes/) for a production-grade validation harness.
 

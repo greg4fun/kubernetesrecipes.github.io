@@ -104,7 +104,7 @@ graph TD
 
 ### Can I use both?
 
-Yes! Common pattern: use Helm charts for third-party apps (Prometheus, nginx), Kustomize overlays for your own apps. ArgoCD and Flux support both natively.
+Yes! Common pattern: use Helm charts for third-party apps (Prometheus, nginx), [Kustomize overlays](/recipes/configuration/kubernetes-kustomize-overlays-guide/) for your own apps. ArgoCD and Flux support both natively.
 
 ## Common Issues
 

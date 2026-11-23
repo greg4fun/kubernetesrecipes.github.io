@@ -152,7 +152,7 @@ If you see both TLS and DNS errors alternating, your network blocks external DNS
 - Or use the offline import method above
 
 ### Wrong CA file installed
-If you installed your internal Quay registry's CA (`quay-ca.crt`) but the error persists for `registry.redhat.io`, you have the wrong CA. The TLS error is from the **corporate proxy**, not from your internal registry. Extract the proxy CA from your browser instead.
+If you installed your internal [Quay registry](/recipes/deployments/quay-registry-kubernetes-guide/)'s CA (`quay-ca.crt`) but the error persists for `registry.redhat.io`, you have the wrong CA. The TLS error is from the **corporate proxy**, not from your internal registry. Extract the proxy CA from your browser instead.
 
 ### 502 Bad Gateway from internal registry
 This means the image doesn't exist in your internal registry. You need to push it there first using the offline import method.

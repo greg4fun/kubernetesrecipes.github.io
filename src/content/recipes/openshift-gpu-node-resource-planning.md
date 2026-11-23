@@ -207,7 +207,7 @@ If sum(actual usage) > allocatable → OOM kills start
 
 ### Node eviction due to memory pressure
 - **Cause**: Infra Pods exceeding limits during spikes
-- **Fix**: Set `system-reserved` in kubelet config; use `eviction-hard` thresholds
+- **Fix**: Set `system-reserved` in [kubelet config](/recipes/configuration/kubernetes-kubelet-configuration/); use `eviction-hard` thresholds
 
 ### SR-IOV device plugin using 1.6Gi
 - **Cause**: Normal for managing many VFs (64+ per NIC)

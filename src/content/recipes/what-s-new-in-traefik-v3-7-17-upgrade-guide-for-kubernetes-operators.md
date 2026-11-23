@@ -97,7 +97,7 @@ kubectl get gateway <name> -o yaml | grep -A5 conditions
 
 ## Common Issues
 
-- **NTLM/Kerberos backends still leaking connections after upgrade**: confirm the Deployment actually rolled to `v3.7.17` (image digest can be cached); force a rollout restart with `kubectl rollout restart deployment/traefik -n traefik`.
+- **NTLM/Kerberos backends still leaking connections after upgrade**: confirm the Deployment actually rolled to `v3.7.17` (image digest can be cached); force a [rollout restart](/recipes/deployments/kubectl-rollout-restart-deployment/) with `kubectl rollout restart deployment/traefik -n traefik`.
 - **Gateway status still being overwritten**: this fix only applies to conditions *owned by other controllers*; conditions Traefik itself manages are still updated normally — check the `controllerName` field in the condition.
 - **HTTP/3 clients disconnecting**: re-test after the quic-go v0.64.1 bump; report regressions upstream with the specific quic-go version noted.
 - **Secrets not resolving in middlewares after fix**: double-check Secret namespace and RBAC — the fix corrects resolution logic but does not grant new permissions; Traefik's ServiceAccount still needs `get`/`list`/`watch` on `secrets` in the relevant namespaces.

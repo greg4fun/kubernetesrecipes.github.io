@@ -491,7 +491,7 @@ runai inference distributed submit my-large-model \
 
 - `runai inference distributed submit` orchestrates multi-GPU vLLM deployment with one command
 - NCCL auto-discovers NVLink (123.6 GB/s) for intra-node GPU communication
-- GPUDirect RDMA requires: Multus secondary NIC + RDMA shared device plugin + NCCL_SOCKET_IFNAME
+- GPUDirect RDMA requires: Multus secondary NIC + [RDMA shared device plugin](/recipes/networking/shared-rdma-device-plugin-kubernetes/) + NCCL_SOCKET_IFNAME
 - Air-gapped deployment: pre-load model to PVC, mirror image to internal registry, set offline flags
 - Read NCCL logs: `NET/IB` = RDMA ✅, `NET/Socket` = TCP fallback ❌, `P2P/CUMEM` = NVLink ✅
 - vLLM 0.18.0 auto-detects: dtype, quantization (FP8), architecture, enables chunked prefill + CUDAGraph

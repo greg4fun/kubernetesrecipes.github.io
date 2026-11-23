@@ -180,7 +180,7 @@ Namespace filter needs adjustment. Edit the dashboard variable to include your a
 
 ## Key Takeaways
 
-- Dashboard 6417 is the standard Kubernetes pod monitoring dashboard (10M+ downloads)
+- Dashboard 6417 is the standard [Kubernetes pod monitoring](/recipes/observability/kubernetes-pod-resource-monitoring-grafana/) dashboard (10M+ downloads)
 - Import via UI (ID 6417), API, or Helm values for GitOps
 - Requires Prometheus + kube-state-metrics + cAdvisor (kubelet) metrics
 - Customize with namespace/pod variable filters for large clusters

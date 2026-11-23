@@ -444,7 +444,7 @@ graph TD
 
 ## Best Practices
 
-- Always deploy 3+ instances for HA with pod anti-affinity across nodes
+- Always deploy 3+ instances for HA with [pod anti-affinity](/recipes/deployments/kubernetes-pod-affinity-antiaffinity/) across nodes
 - Enable continuous WAL archiving to S3/GCS from day one — not just scheduled backups
 - Use PgBouncer Pooler for connection management — prevents connection exhaustion
 - Separate read-write and read-only traffic via `app-db-rw` and `app-db-ro` services

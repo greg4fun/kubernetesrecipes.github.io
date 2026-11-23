@@ -220,7 +220,7 @@ digest: sha256:abc123...
 - **Use `condition` for anything a deployment might not need** — an in-cluster Redis vs. an external managed one, for example
 - **Use `alias` for multiple instances**, not copy-pasted charts — one dependency declaration, values scoped per alias
 - **Add a wait-for-dependency initContainer** for anything with a real startup order requirement — Helm installs subcharts, it doesn't sequence their readiness
-- **Keep global values (`global:`) for things every subchart needs** — image registry, image pull secrets, storage class — instead of repeating them per subchart
+- **Keep global values (`global:`) for things every subchart needs** — image registry, [image pull secrets](/recipes/configuration/image-pull-secrets/), storage class — instead of repeating them per subchart
 
 ## Key Takeaways
 

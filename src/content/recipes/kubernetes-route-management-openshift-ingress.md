@@ -368,7 +368,7 @@ spec:
 ## Key Takeaways
 
 - OpenShift Routes: built-in, simple, HAProxy-backed — use on OCP clusters
-- Kubernetes Ingress: cross-platform, controller-dependent annotations
+- [Kubernetes Ingress](/recipes/networking/kubernetes-ingress-complete-guide/): cross-platform, controller-dependent annotations
 - Gateway API: modern replacement with native traffic splitting, header routing, role separation
 - TLS: edge (router terminates), passthrough (pod terminates), re-encrypt (both)
 - Weighted backends enable canary deployments without service mesh

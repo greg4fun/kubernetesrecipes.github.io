@@ -156,7 +156,7 @@ Check label selectors match exactly. `kubectl get pods --show-labels` to verify 
 - **Hard affinity only for true co-location requirements** — cache + app on same node
 - **`topologyKey: kubernetes.io/hostname`** for node-level separation
 - **`topologyKey: topology.kubernetes.io/zone`** for zone-level separation
-- **Prefer topology spread constraints** for even distribution — more flexible than anti-affinity
+- **Prefer [topology spread constraints](/recipes/deployments/pod-topology-constraints/)** for even distribution — more flexible than anti-affinity
 
 ## Key Takeaways
 

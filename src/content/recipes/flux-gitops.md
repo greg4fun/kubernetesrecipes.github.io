@@ -221,7 +221,7 @@ fleet-infra/
     └── team-b/
 ```
 
-For per-environment differences keep an `apps/base/` plus `apps/staging/` and `apps/production/` Kustomize overlays, and point each cluster's `apps` Kustomization at its overlay path (`path: ./apps/production`).
+For per-environment differences keep an `apps/base/` plus `apps/staging/` and `apps/production/` [Kustomize overlays](/recipes/configuration/kubernetes-kustomize-overlays-guide/), and point each cluster's `apps` Kustomization at its overlay path (`path: ./apps/production`).
 
 Give each tenant Kustomization `serviceAccountName: team-a` so it applies with that team's RBAC only (and start the kustomize-controller with `--default-service-account` to enforce it).
 

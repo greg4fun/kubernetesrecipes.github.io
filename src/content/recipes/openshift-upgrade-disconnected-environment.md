@@ -460,7 +460,7 @@ The OSUS graph-data image may be cached. Restart the update-service pods. If not
 
 **Operators degraded after upgrade**
 
-Operator catalogs must also be updated to match the new OCP version. Apply the new `catalogSource` YAML from the oc-mirror output and wait for OLM to reconcile.
+Operator catalogs must also be updated to match the new [OCP version](/recipes/configuration/openshift-support-lifecycle-version-matrix/). Apply the new `catalogSource` YAML from the oc-mirror output and wait for OLM to reconcile.
 
 ## Best Practices
 

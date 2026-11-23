@@ -206,7 +206,7 @@ spec:
                   - NVIDIA-H100-SXM5-80GB
 ```
 
-If using KAI Scheduler, it can automatically detect and prefer NVLink topologies. See [KAI Scheduler Topology-Aware Placement](/recipes/ai/kubernetes-1-36-topology-aware-scheduling/).
+If using [KAI Scheduler](/recipes/ai/kai-scheduler-installation/), it can automatically detect and prefer NVLink topologies. See [KAI Scheduler Topology-Aware Placement](/recipes/ai/kubernetes-1-36-topology-aware-scheduling/).
 
 ## Verify Multi-GPU Setup
 

@@ -184,7 +184,7 @@ spec:
 
 ### Config state shows "failed"
 - **Cause**: Invalid MIG profile for the GPU model (e.g., requesting A100 profiles on T4)
-- **Fix**: Check supported profiles for your GPU: `nvidia-smi mig -lgip` (via debug pod)
+- **Fix**: Check supported profiles for your GPU: `nvidia-smi mig -lgip` (via [debug pod](/recipes/troubleshooting/kubernetes-debug-pods/))
 
 ### Node shows 0 MIG resources after reconfiguration
 - **Cause**: Device plugin hasn't re-enumerated after MIG change

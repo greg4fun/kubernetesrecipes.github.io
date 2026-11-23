@@ -173,7 +173,7 @@ Cluster running K8s < 1.25 or feature gate disabled. Upgrade cluster or use `--c
 
 Missing `--target` flag. Without it, the debug container gets its own PID namespace.
 
-**Node debug pod stays after exit**
+**Node [debug pod](/recipes/troubleshooting/kubernetes-debug-pods/) stays after exit**
 
 Cleanup manually: `kubectl get pods | grep node-debugger | kubectl delete pod`.
 

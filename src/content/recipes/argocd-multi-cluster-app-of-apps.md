@@ -293,7 +293,7 @@ name: dev-cert-manager
 ## Best Practices
 
 - **Prefix app names with cluster** — `prod-redis`, `dev-redis` to avoid conflicts
-- **Use Kustomize overlays** for cluster-specific configs — same base manifests, different parameters
+- **Use [Kustomize overlays](/recipes/configuration/kubernetes-kustomize-overlays-guide/)** for cluster-specific configs — same base manifests, different parameters
 - **Separate Projects per environment** — RBAC isolation between dev/staging/prod
 - **Use cluster labels** — `environment: production`, `region: us-east` for filtering
 - **Pin chart versions per environment** — staging gets new versions before production

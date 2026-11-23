@@ -138,7 +138,7 @@ Not enough GPUs available simultaneously. Check: `kubectl describe podgroup trai
 
 **Training pods scattered across racks — slow NCCL**
 
-Enable topology-aware scheduling. Label nodes with `topology.kubernetes.io/rack` and use topology spread constraints to co-locate training pods.
+Enable topology-aware scheduling. Label nodes with `topology.kubernetes.io/rack` and use [topology spread constraints](/recipes/deployments/pod-topology-constraints/) to co-locate training pods.
 
 ## Best Practices
 

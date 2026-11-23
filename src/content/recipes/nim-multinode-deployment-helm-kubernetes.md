@@ -61,7 +61,7 @@ kubectl create secret generic ngc-api \
   --from-literal=NGC_API_KEY=<your-ngc-key>
 ```
 
-**3. Create image pull secret for NGC registry:**
+**3. Create [image pull secret](/recipes/configuration/image-pull-secrets/) for NGC registry:**
 
 ```bash
 kubectl create secret docker-registry nvcr-imagepull \

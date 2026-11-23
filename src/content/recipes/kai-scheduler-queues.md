@@ -38,7 +38,7 @@ In multi-tenant GPU clusters, different teams compete for limited resources. Wit
 
 ## The Solution
 
-Use KAI Scheduler's hierarchical queues with configurable quotas, over-quota weights, and Dominant Resource Fairness (DRF) to ensure equitable resource distribution while maximizing cluster utilization.
+Use [KAI Scheduler](/recipes/ai/kai-scheduler-installation/)'s hierarchical queues with configurable quotas, over-quota weights, and Dominant Resource Fairness (DRF) to ensure equitable resource distribution while maximizing cluster utilization.
 
 ## Hierarchical Queue Architecture
 

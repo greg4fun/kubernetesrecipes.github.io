@@ -190,7 +190,7 @@ Writing to `/etc/fstab` via `chroot /host` **does** modify the host file. But:
 ## Key Takeaways
 
 - `oc debug node` + `chroot /host` + `mount` = mount in container namespace, not host
-- Mounts vanish when the debug pod exits — by design, not a bug
+- Mounts vanish when the [debug pod](/recipes/troubleshooting/kubernetes-debug-pods/) exits — by design, not a bug
 - MachineConfig with systemd mount units is the only supported persistent mount method
 - `nsenter -t 1 -m` can reach the host namespace but doesn't survive reboots
 - This affects ALL mount types: NFS, tmpfs, bind mounts, etc.

@@ -39,7 +39,7 @@ You need a quick, reliable point-to-point RDMA bandwidth measurement between two
 - Measure the impact of multiple QPs, inline size, or rate limiting
 - Select the correct RDMA device when a node exposes many SR-IOV VFs (`mlx5_0` … `mlx5_25`)
 
-While DOCA perftest handles multi-node orchestration, `ib_write_bw` remains the go-to quick diagnostic — it's pre-installed in most RDMA-capable containers and requires zero configuration files.
+While [DOCA perftest](/recipes/ai/doca-perftest-rdma-benchmark-kubernetes/) handles multi-node orchestration, `ib_write_bw` remains the go-to quick diagnostic — it's pre-installed in most RDMA-capable containers and requires zero configuration files.
 
 > **Note:** `--use_hugepages` (below) is a separate, unrelated flag — it backs the test's memory-registration buffer with HugePages to reduce TLB overhead at large message sizes. It doesn't touch GPU memory; for GPU-to-NIC testing use `--use_cuda` instead.
 
@@ -107,7 +107,7 @@ spec:
 
 ### Device Selection with SR-IOV
 
-On GPU nodes with SR-IOV, a pod can see dozens of VFs (`mlx5_0` through `mlx5_25` or more from a shared RDMA device plugin). Pick the wrong one and you benchmark an idle VF instead of the one carrying traffic:
+On GPU nodes with SR-IOV, a pod can see dozens of VFs (`mlx5_0` through `mlx5_25` or more from a shared [RDMA device plugin](/recipes/networking/shared-rdma-device-plugin-kubernetes/)). Pick the wrong one and you benchmark an idle VF instead of the one carrying traffic:
 
 ```bash
 # List available RDMA devices in the pod

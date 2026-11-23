@@ -191,7 +191,7 @@ Old Kubernetes version. VPA v1 API requires K8s 1.25+. For older clusters, use V
 
 OpenSSL not installed or wrong version. Install: `apt install openssl` or `brew install openssl`.
 
-**VPA recommender shows no recommendations**
+**[VPA recommender](/recipes/autoscaling/kubernetes-vpa-recommender-guide/) shows no recommendations**
 
 Needs at least 5 minutes of pod metrics. Check metrics-server is running: `kubectl top pods`.
 

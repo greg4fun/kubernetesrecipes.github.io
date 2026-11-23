@@ -69,7 +69,7 @@ oc apply -k scripts/k8s/manifests -n openclaw
 
 ### Create Route for External Access
 
-Instead of Kubernetes Ingress, use OpenShift Routes:
+Instead of [Kubernetes Ingress](/recipes/networking/kubernetes-ingress-complete-guide/), use OpenShift Routes:
 
 ```yaml
 apiVersion: route.openshift.io/v1

@@ -216,4 +216,4 @@ spec:
 - ClusterIP services resolve to virtual IP; headless services resolve to pod IPs
 - StatefulSet pods get stable DNS: `<pod-name>.<service>.<namespace>.svc.cluster.local`
 - ExternalName services are CNAME aliases to external DNS names
-- Always verify with `nslookup` from a debug pod when DNS issues occur
+- Always verify with `nslookup` from a [debug pod](/recipes/troubleshooting/kubernetes-debug-pods/) when DNS issues occur

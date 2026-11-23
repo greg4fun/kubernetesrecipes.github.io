@@ -369,7 +369,7 @@ graph TD
 ## Best Practices
 
 - Automate DOCA builds in CI/CD triggered by OCP release notifications
-- Build precompiled containers for N+1 OCP version before upgrading
+- Build precompiled containers for N+1 [OCP version](/recipes/configuration/openshift-support-lifecycle-version-matrix/) before upgrading
 - Use dedicated MCP for RDMA nodes — pause during upgrades to control rollout
 - Mirror DTK and DOCA images for disconnected clusters via IDMS
 - Test driver loading on a single node before rolling out cluster-wide

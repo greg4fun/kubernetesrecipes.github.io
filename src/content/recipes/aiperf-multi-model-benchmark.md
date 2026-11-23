@@ -39,7 +39,7 @@ publishDate: "2026-02-26"
 
 Choosing an inference backend means comparing apples to apples across:
 
-- **Frameworks** — vLLM vs Triton (TensorRT-LLM) vs HuggingFace TGI vs Ollama
+- **Frameworks** — [vLLM vs Triton](/recipes/ai/triton-inference-server-vs-vllm-comparison/) (TensorRT-LLM) vs HuggingFace TGI vs Ollama
 - **Models** — Llama 3 70B vs Mistral 8x7B vs Qwen 72B for your use case
 - **Quantization** — FP16 vs FP8 vs AWQ vs GPTQ — quality vs speed trade-off
 - **GPU hardware** — A100 vs H100 vs L40S cost/performance ratio

@@ -220,7 +220,7 @@ No, not by default — they're only base64-encoded. Enable encryption at rest on
 
 ### Do pods pick up ConfigMap changes automatically?
 
-Volume-mounted ConfigMaps and Secrets are refreshed by the kubelet within about a minute (unless mounted with `subPath`). Environment variables never change in a running container, so you need a rollout restart or a tool like Reloader.
+Volume-mounted ConfigMaps and Secrets are refreshed by the kubelet within about a minute (unless mounted with `subPath`). Environment variables never change in a running container, so you need a [rollout restart](/recipes/deployments/kubectl-rollout-restart-deployment/) or a tool like Reloader.
 
 ### What is the maximum size of a ConfigMap or Secret?
 

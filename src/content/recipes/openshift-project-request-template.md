@@ -31,7 +31,7 @@ In OpenShift, when developers create new projects, the default ServiceAccount ha
 - **Inconsistent** — some namespaces have secrets, others don't
 - **Not scalable** — manual steps don't work with hundreds of projects
 
-You need every new project to automatically include pull secrets for your private Quay registry.
+You need every new project to automatically include pull secrets for your private [Quay registry](/recipes/deployments/quay-registry-kubernetes-guide/).
 
 > **Note:** If you want *all* nodes and namespaces to pull immediately (including existing ones), use the [cluster-wide pull secret](/recipes/security/openshift-cluster-wide-pull-secret/) approach instead. Project Request Templates only affect **new** projects.
 

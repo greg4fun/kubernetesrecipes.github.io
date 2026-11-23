@@ -273,7 +273,7 @@ oc-mirror v2 doesn't infer dependencies. If Operator A requires Operator B, you 
 
 - **Disable default catalogs first** — prevents OLM from trying to reach the internet
 - **Use Manual install plan approval** — control when Operators upgrade in production
-- **Mirror the same catalog version as your OCP version** — v4.18 catalog for OCP 4.18
+- **Mirror the same catalog version as your [OCP version](/recipes/configuration/openshift-support-lifecycle-version-matrix/)** — v4.18 catalog for OCP 4.18
 - **Include all dependencies** explicitly — oc-mirror v2 doesn't resolve them automatically
 - **Set `registryPoll.interval: 30m`** — CatalogSource checks for new content periodically
 - **Test in non-production first** — mirror catalog, install Operators, verify before production

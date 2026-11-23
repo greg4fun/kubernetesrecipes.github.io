@@ -271,7 +271,7 @@ graph TD
 - Air-gap: mirror all images to local Quay before bootstrap
 - Store known-good version matrix in Git alongside configs
 - Enable auto-prune and self-heal for drift detection
-- Use Kustomize overlays for environment-specific patches (dev/staging/prod)
+- Use [Kustomize overlays](/recipes/configuration/kubernetes-kustomize-overlays-guide/) for environment-specific patches (dev/staging/prod)
 - Test changes in a dev overlay before promoting to prod
 
 ## Key Takeaways
