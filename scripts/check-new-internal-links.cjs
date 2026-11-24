@@ -97,9 +97,13 @@ function proseLines(text) {
   const [fm, body] = splitFm(text);
   const out = new Map();
   const baseLine = fm.split('\n').length - 1;
-  let code = false, para = 0, blank = true, jsx = 0;
+  let code = false, para = 0, blank = true, jsx = 0, esm = 0;
   body.split('\n').forEach((ln, i) => {
     const st = ln.trim();
+    if (esm || (!code && /^(import|export)\s/.test(st))) { // MDX import/export, possibly multi-line
+      esm = Math.max(0, esm + (ln.match(/[[{(]/g) || []).length - (ln.match(/[\]})]/g) || []).length);
+      blank = false; return;
+    }
     if (/^(```|~~~)/.test(st)) { code = !code; blank = false; return; }
     if (code) return;
     if (!st) { blank = true; return; }
