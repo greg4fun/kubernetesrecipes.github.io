@@ -34,7 +34,7 @@
   "kubevirt/kubevirt": "v1.10.0",
   "open-telemetry/opentelemetry-operator": "v0.164.0",
   "kserve/kserve": "v0.21.0",
-  "ray-project/kuberay": "v1.7.1",
+  "ray-project/kuberay": "v1.8.0",
   "NVIDIA/gpu-operator": "v26.7.2",
   "kubeflow/kubeflow": "redirect"
 }
