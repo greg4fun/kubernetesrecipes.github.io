@@ -5,6 +5,7 @@ import Container from "@components/container.astro";
 import NextRecipes from "@components/next-recipes.astro";
 import CourseCta from "@components/course-cta.astro";
 import CertCta from "@components/cert-cta.astro";
+import NewsletterInline from "@components/newsletter-inline.astro";
 import ReadingProgress from "@components/reading-progress.astro";
 import TocSidebar from "@components/toc-sidebar.astro";
 import ShareButtons from "@components/share-buttons.astro";
@@ -341,6 +342,9 @@ const breadcrumbLd = {
         title={recipe.data.title}
         tags={recipe.data.tags}
       />
+
+      <!-- Newsletter: the popup's Kit form, inline, on every recipe -->
+      <NewsletterInline placement="recipe-end" />
 
       <!-- Author Bio Card -->
       <AuthorCard author={recipe.data.author} />

@@ -410,8 +410,11 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
       });
     </script>
     <!-- Conversion events for GA4 (marked as key events in GA4 admin):
-         newsletter_signup: a valid submit of a Kit (ConvertKit) form, such as the newsletter popup;
-         book_click: a click on any link to the book on Amazon, Springer or Apress;
+         newsletter_signup: a valid submit of a Kit (ConvertKit) form: the newsletter popup
+         (form data-sv-form, placement "popup") or the inline form at the end of every
+         recipe (form data-kit-inline, newsletter-inline.astro, placement from data-placement);
+         book_click: a click on any link to the book on Amazon, Springer or Apress, or on a
+         link marked data-book (a Leanpub ebook: book, placement);
          affiliate_click: a click on a link marked data-affiliate (company, offer_id);
          enterprise_cta_click: a click on a link to an Open Empower service, marked
          data-enterprise-cta (offer, placement), such as the OpenShift upgrade review
@@ -432,6 +435,16 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
           if (!a) return;
           var url;
           try { url = new URL(a.href, location.href); } catch (err) { return; }
+          var book = a.getAttribute('data-book');
+          if (book) {
+            track('book_click', {
+              book: book,
+              placement: a.getAttribute('data-book-placement') || '',
+              link_url: url.href,
+              link_text: (a.textContent || '').trim().slice(0, 100),
+            });
+            return;
+          }
           var offer = a.getAttribute('data-enterprise-cta');
           if (offer) {
             track('enterprise_cta_click', {
@@ -468,11 +481,12 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
         // Capture phase, before Kit's script takes over the submit. The browser only
         // fires submit once the required email field is valid.
         document.addEventListener('submit', function (e) {
-          var form = e.target && e.target.closest ? e.target.closest('form[data-sv-form]') : null;
+          var form = e.target && e.target.closest ? e.target.closest('form[data-sv-form], form[data-kit-inline]') : null;
           if (!form) return;
           track('newsletter_signup', {
-            form_id: form.getAttribute('data-sv-form'),
+            form_id: form.getAttribute('data-sv-form') || form.getAttribute('data-kit-inline'),
             method: 'kit',
+            placement: form.getAttribute('data-placement') || 'popup',
           });
         }, true);
       })();
