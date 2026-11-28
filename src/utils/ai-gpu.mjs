@@ -69,17 +69,22 @@ export function isOpenShiftAiRecipe(recipe = {}) {
   return OPENSHIFT_AI_TITLE_RE.test(String(title));
 }
 
+// Leanpub coupon that tags sales from this site. It exists on both books at
+// full price (no discount, no end date): Leanpub does not report UTMs, so the
+// coupon is how its Sales page shows which site sold a copy.
+export const LEANPUB_COUPON = "kubernetesrecipes";
+
 export const LEANPUB_BOOKS = {
   "kubernetes-ai": {
     title: "Kubernetes AI",
     // From the book's Leanpub description.
     description:
       "A hands-on guide to running LLMs and GPU workloads on Kubernetes: inference, training, NVIDIA GPUs, storage, networking, security and operations.",
-    url: "https://leanpub.com/kubernetes-ai",
+    url: `https://leanpub.com/kubernetes-ai/c/${LEANPUB_COUPON}`,
   },
   "openshift-ai": {
     title: "OpenShift AI Platform Guide",
-    url: "https://leanpub.com/openshift-ai",
+    url: `https://leanpub.com/openshift-ai/c/${LEANPUB_COUPON}`,
   },
 };
 
