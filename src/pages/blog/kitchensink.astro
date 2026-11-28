@@ -1,0 +1,17 @@
+---
+// Astroship template sample post, removed Nov 28, 2026. The URL was live, so
+// it redirects to the homepage (GitHub Pages: no server-side 301).
+const to = "/";
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={`https://kubernetes.recipes${to}`} />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <script is:inline define:vars={{ to }}>window.location.replace(to);</script>
+  </head>
+  <body><p>This page has moved to <a href={to}>{to}</a>.</p></body>
+</html>
