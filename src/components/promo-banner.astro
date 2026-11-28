@@ -27,13 +27,34 @@ interface Props {
 const { class: className = "" } = Astro.props;
 const promo = promoJson as unknown as Promo | null;
 const img = promo?.image;
+
+// A campaign for our own CopyPasteLearn courses gets the group's campaign tags
+// when the central config gives a bare link, so GA4 on copypastelearn.com
+// credits the banner: utm_campaign is the campaign id, utm_content the
+// placement. Links that already carry utm_source, and every other host
+// (affiliate links included), are left exactly as configured.
+function withUtm(href: string, campaign: string): string {
+  let url: URL;
+  try {
+    url = new URL(href);
+  } catch {
+    return href;
+  }
+  if (!/(^|\.)copypastelearn\.com$/i.test(url.hostname) || url.searchParams.has("utm_source")) return href;
+  url.searchParams.set("utm_source", "kubernetes.recipes");
+  url.searchParams.set("utm_medium", "referral");
+  url.searchParams.set("utm_campaign", campaign);
+  url.searchParams.set("utm_content", "promo-banner");
+  return url.toString();
+}
+const href = promo ? withUtm(promo.href, promo.id) : "";
 ---
 
 {promo && img && (
   <>
     <Fragment set:html={`<style>${promo.css}</style><script>${promo.script}</script>`} />
     <aside data-promo class={`promo-banner not-prose my-6 mx-auto max-w-[735px] px-4 sm:px-0 ${className}`} aria-label={promo.caption}>
-      <a href={promo.href} rel="nofollow sponsored noopener" class="block overflow-hidden rounded-xl shadow-md" data-promo-code={promo.code ?? undefined}>
+      <a href={href} rel="nofollow sponsored noopener" class="block overflow-hidden rounded-xl shadow-md" data-promo-code={promo.code ?? undefined}>
         <picture>
           <source media="(max-width: 640px)" type="image/webp" srcset={`${img.base}/card-800.webp 800w, ${img.base}/card-1200.webp 1200w`} sizes="100vw" width={img.card.width} height={img.card.height} />
           <source media="(max-width: 640px)" srcset={`${img.base}/card.jpg`} width={img.card.width} height={img.card.height} />
