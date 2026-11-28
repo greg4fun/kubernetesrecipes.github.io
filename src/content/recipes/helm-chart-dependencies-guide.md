@@ -209,7 +209,7 @@ digest: sha256:abc123...
 
 | Issue | Cause | Fix |
 |-------|-------|-----|
-| `helm install` fails with "chart requires..." | Dependencies weren't downloaded | Run `helm dependency update` before install/package |
+| `helm install` fails with "found in Chart.yaml, but missing in charts/ directory: <dep>" | Dependencies weren't downloaded | Run `helm dependency build` (or `helm dependency update`) before install/package |
 | Subchart values not applying | Wrong key name in parent `values.yaml` | Key must match the dependency's `name` (or `alias` if set) |
 | Two instances of the same chart conflict | No `alias` set | Add `alias:` to each dependency entry and namespace values under the alias |
 | CI produces different versions than local | `Chart.lock` not committed | Commit `Chart.lock`; use `helm dependency build` (not `update`) in CI for reproducibility |

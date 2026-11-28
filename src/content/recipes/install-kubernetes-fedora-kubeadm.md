@@ -23,7 +23,7 @@ Installing Kubernetes on Fedora requires Fedora-specific steps:
 - dnf package manager (not apt)
 - SELinux is enforcing by default
 - firewalld is active
-- cgroups v2 is default (requires containerd ≥ 1.5)
+- cgroups v2 is default (containerd 1.4+ supports it; Kubernetes 1.36+ needs containerd 2.x anyway)
 
 ## The Solution
 
@@ -111,8 +111,8 @@ gpgkey=https://pkgs.k8s.io/core:/stable:/v1.33/rpm/repodata/repomd.xml.key
 exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
 EOF
 
-# Install
-sudo dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+# Install (Fedora 41+ uses DNF5)
+sudo dnf install -y kubelet kubeadm kubectl --setopt=disable_excludes=kubernetes
 
 # Enable kubelet (will start after kubeadm init)
 sudo systemctl enable kubelet
@@ -132,7 +132,7 @@ sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # Install CNI (Calico example)
-kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.1/manifests/calico.yaml
 
 # Verify
 kubectl get nodes
@@ -167,7 +167,7 @@ kubeadm token create --print-join-command
 
 1. **Use cgroups v2 with SystemdCgroup** — Fedora's default, most reliable
 2. **Keep SELinux enforcing** if possible — better security posture
-3. **Pin Kubernetes version** — avoid surprise upgrades with `--disableexcludes`
+3. **Pin Kubernetes version** — the repo's `exclude=` line blocks surprise upgrades; `disable_excludes` only lifts it for a deliberate install or upgrade
 4. **Use Cilium CNI on Fedora** — eBPF works well with Fedora's modern kernel
 5. **Automate with Ansible** — reproducible across multiple Fedora nodes
 

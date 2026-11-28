@@ -60,7 +60,7 @@ sudo systemctl restart containerd
 sudo systemctl enable containerd
 
 # Add Kubernetes repo
-sudo zypper addrepo --gpgcheck-strict --refresh https://pkgs.k8s.io/core:/stable:/v1.31/rpm/ kubernetes
+sudo zypper addrepo --gpgcheck-strict --refresh https://pkgs.k8s.io/core:/stable:/v1.37/rpm/ kubernetes
 
 # Install kubeadm, kubelet, kubectl
 sudo zypper install -y kubelet kubeadm kubectl
@@ -74,8 +74,8 @@ mkdir -p $HOME/.kube
 sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-# Install Calico CNI
-kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml
+# Install Calico CNI (manifest method; Calico recommends its Tigera operator for new clusters)
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.1/manifests/calico.yaml
 
 # Verify
 kubectl get nodes
@@ -102,9 +102,9 @@ sudo kubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-c
 ```bash
 kubectl get nodes -o wide
 # NAME          STATUS   ROLES           AGE   VERSION
-# control-01    Ready    control-plane   5m    v1.31.0
-# worker-01     Ready    <none>          2m    v1.31.0
-# worker-02     Ready    <none>          2m    v1.31.0
+# control-01    Ready    control-plane   5m    v1.37.3
+# worker-01     Ready    <none>          2m    v1.37.3
+# worker-02     Ready    <none>          2m    v1.37.3
 
 kubectl get pods -A
 ```
@@ -121,9 +121,9 @@ graph TD
 
 ## Common Issues
 
-- **Swap not disabled** — kubeadm refuses to init with swap on
+- **Swap not disabled** — kubeadm only warns, but the kubelet fails to start with swap on (`failSwapOn: true` by default), so `kubeadm init` times out waiting for it
 - **Containerd not using systemd cgroup** — causes kubelet crashes
-- **Firewall blocking ports** — control plane needs 6443, 2379-2380, 10250-10252
+- **Firewall blocking ports** — control plane needs 6443, 2379-2380, 10250, 10257, 10259
 - **Wrong CNI CIDR** — must match `--pod-network-cidr` in kubeadm init
 
 ## Best Practices

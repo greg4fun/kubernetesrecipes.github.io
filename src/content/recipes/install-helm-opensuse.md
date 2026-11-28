@@ -24,12 +24,12 @@ You need Helm installed on openSUSE (openSUSE Leap 15 / Tumbleweed) to manage Ku
 
 ```bash
 # Method 1: Official script (recommended)
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 
 # Method 2: zypper (if available)
 sudo zypper install helm
 # Or download binary:
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4
 chmod 700 get_helm.sh
 ./get_helm.sh
 
@@ -38,7 +38,6 @@ helm version
 
 # Add popular chart repos
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
 
@@ -50,7 +49,7 @@ echo 'source <(helm completion bash)' >> ~/.bashrc
 
 ```bash
 helm version
-# version.BuildInfo{Version:"v3.16.x", ...}
+# version.BuildInfo{Version:"v4.3.x", ...}
 
 # List installed releases
 helm list -A

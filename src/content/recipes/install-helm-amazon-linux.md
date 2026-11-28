@@ -24,12 +24,11 @@ You need Helm installed on Amazon Linux (Amazon Linux 2023) to manage Kubernetes
 
 ```bash
 # Method 1: Official script (recommended)
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 
-# Method 2: dnf/yum (via EPEL or Copr)
-sudo dnf install -y helm
-# Or download binary directly:
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+# Method 2: download the script, review it, then run it
+# (AL2023 has no binary-compatible EPEL, so there is no dnf package; use the script or Method 3)
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4
 chmod 700 get_helm.sh
 ./get_helm.sh
 
@@ -38,14 +37,13 @@ helm version
 
 # Add popular chart repos
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo add jetstack https://charts.jetstack.io
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
 # Install your first chart
-helm install my-nginx ingress-nginx/ingress-nginx \
-  --namespace ingress-nginx --create-namespace
+helm install cert-manager jetstack/cert-manager \
+  --namespace cert-manager --create-namespace --set crds.enabled=true
 
 # Shell completion
 echo 'source <(helm completion bash)' >> ~/.bashrc
@@ -56,7 +54,7 @@ source ~/.bashrc
 
 ```bash
 helm version
-# version.BuildInfo{Version:"v3.16.x", ...}
+# version.BuildInfo{Version:"v4.3.x", ...}
 
 # List installed releases
 helm list -A
@@ -81,7 +79,7 @@ For environments without internet access:
 
 ```bash
 # Download on a connected machine
-HELM_VERSION=v3.16.3
+HELM_VERSION=v4.3.2
 curl -fsSL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz
 
 # Transfer to Amazon Linux host, then:
@@ -103,10 +101,10 @@ helm version
 
 ```bash
 # Amazon Linux 2 (yum-based)
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 
 # Amazon Linux 2023 (dnf-based) — same script works
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 ```
 
 ### Configure Helm for EKS
@@ -143,10 +141,10 @@ Helm uses your kubeconfig. Ensure `kubectl get nodes` works first. For EKS: `aws
 
 **Helm 2 vs Helm 3 confusion**
 
-Helm 3 has no Tiller server component. If you see Tiller errors, you have Helm 2 installed. Remove it and [install Helm](/recipes/helm/install-helm-rhel/) 3:
+Helm 3 has no Tiller server component. If you see Tiller errors, you have Helm 2 installed. Remove it and [install Helm](/recipes/helm/install-helm-rhel/) 4:
 ```bash
 sudo rm /usr/local/bin/helm
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 ```
 
 **Repository not found or stale**
@@ -155,9 +153,9 @@ Always run `helm repo update` after adding repos and periodically to refresh cha
 
 **Permission denied on Amazon Linux**
 
-The install script needs root. Use `sudo` or run as root:
+The install script calls `sudo` itself to copy the binary to `/usr/local/bin` (`USE_SUDO=true` by default), so run it as a normal user with sudo rights instead of piping it to `sudo bash`:
 ```bash
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 ```
 
 ## Best Practices
@@ -173,5 +171,5 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo 
 - The official install script is the most reliable method on Amazon Linux (AL2 and AL2023)
 - Binary download works for air-gapped environments
 - Helm uses your kubeconfig — ensure kubectl works first
-- Add essential repos (bitnami, ingress-nginx, jetstack) after installation
+- Add essential repos (bitnami, jetstack, prometheus-community) after installation
 - Shell completion and the helm-diff plugin are must-haves for productivity
