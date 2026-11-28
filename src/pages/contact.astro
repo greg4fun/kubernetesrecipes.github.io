@@ -1,47 +1,74 @@
 ---
-import Contactform from "@components/contactform.astro";
+// Real contact routes only. The site has no contact mailbox and no form
+// backend (the template's web3forms form never had an access key), so each
+// topic points to a channel that already exists: the site's GitHub issues,
+// Luca's LinkedIn profile and Open Empower's booking page.
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
 import Layout from "@layouts/Layout.astro";
-import { Icon } from "astro-icon/components";
+
+const REPO_ISSUES = "https://github.com/greg4fun/kubernetesrecipes.github.io/issues";
+const LINKEDIN = "https://www.linkedin.com/in/lucaberton/";
+const OPEN_EMPOWER_CALL =
+  "https://www.openempower.com/book-a-call?utm_source=kubernetes.recipes&utm_medium=referral&utm_campaign=consulting&utm_content=contact-page";
 ---
 
-<Layout 
-  title="Contact" 
-  description="Get in touch with the Kubernetes Recipes team. Questions about the book, speaking engagements, or collaboration opportunities? We'd love to hear from you."
+<Layout
+  title="Contact"
+  description="Contact Luca Berton, co-author of Kubernetes Recipes (Apress), about the book, corrections to a recipe, or Kubernetes and OpenShift consulting with Open Empower."
 >
   <Container>
     <Sectionhead>
       <Fragment slot="title">Contact</Fragment>
-      <Fragment slot="desc">We are a here to help.</Fragment>
+      <Fragment slot="desc">Questions about the book, a correction, or help with your platform.</Fragment>
     </Sectionhead>
 
-    <div class="grid md:grid-cols-2 gap-10 mx-auto max-w-4xl mt-16">
-      <div>
-        <h2 class="font-medium text-2xl text-gray-800">Contact Astroship</h2>
-        <p class="text-lg leading-relaxed text-slate-500 mt-3">
-          Have something to say? We are here to help. Fill up the form or send
-          email or call phone.
+    <div class="mx-auto max-w-3xl mt-12 space-y-10 text-slate-700">
+      <section>
+        <h2 class="font-semibold text-2xl text-slate-900">Who runs this site</h2>
+        <p class="text-lg leading-relaxed mt-3">
+          Kubernetes Recipes is run by Luca Berton, co-author with Grzegorz Stencel of the book
+          <em>Kubernetes Recipes</em>, published by Apress. More about both authors on the
+          <a href="/authors/" class="text-blue-600 underline underline-offset-2">authors page</a>.
         </p>
-        <div class="mt-5">
-          <div class="flex items-center mt-2 space-x-2 text-gray-600">
-            <Icon class="text-gray-400 w-4 h-4" name="uil:map-marker" />
-            <span>1734 Sanfransico, CA 93063</span>
-          </div><div class="flex items-center mt-2 space-x-2 text-gray-600">
-            <Icon class="text-gray-400 w-4 h-4" name="uil:envelope" /><a
-              href="mailto:hello@astroshipstarter.com"
-              >hello@astroshipstarter.com</a
-            >
-          </div><div class="flex items-center mt-2 space-x-2 text-gray-600">
-            <Icon class="text-gray-400 w-4 h-4" name="uil:phone" /><a
-              href="tel:+1 (987) 4587 899">+1 (987) 4587 899</a
-            >
-          </div>
-        </div>
-      </div>
-      <div>
-        <Contactform />
-      </div>
+      </section>
+
+      <section>
+        <h2 class="font-semibold text-2xl text-slate-900">What to contact us about</h2>
+        <ul class="mt-4 space-y-5">
+          <li>
+            <p class="font-semibold text-slate-900">The book</p>
+            <p class="mt-1 leading-relaxed">
+              Where to buy it and the free Chapter 7 sample are on
+              <a href="/pricing/" class="text-blue-600 underline underline-offset-2">Get the book</a>.
+              For other questions about the book, send Luca a message on
+              <a href={LINKEDIN} target="_blank" rel="noopener" class="text-blue-600 underline underline-offset-2">LinkedIn</a>.
+            </p>
+          </li>
+          <li>
+            <p class="font-semibold text-slate-900">Corrections</p>
+            <p class="mt-1 leading-relaxed">
+              Found a mistake in a recipe, a command that no longer works or a broken link? Open an issue on the
+              <a href={REPO_ISSUES} target="_blank" rel="noopener" class="text-blue-600 underline underline-offset-2">site's GitHub repository</a>
+              with the page URL and what you saw.
+            </p>
+          </li>
+          <li>
+            <p class="font-semibold text-slate-900">Consulting</p>
+            <p class="mt-1 leading-relaxed">
+              Kubernetes, OpenShift and platform engineering work for teams goes through Open Empower, Luca's consulting company.
+              <a
+                href={OPEN_EMPOWER_CALL}
+                target="_blank"
+                rel="noopener"
+                data-enterprise-cta="consulting"
+                data-cta-placement="contact-page"
+                class="text-blue-600 underline underline-offset-2"
+              >Book a call with Open Empower</a>.
+            </p>
+          </li>
+        </ul>
+      </section>
     </div>
   </Container>
 </Layout>
