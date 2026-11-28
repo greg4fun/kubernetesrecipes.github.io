@@ -138,7 +138,7 @@ ArgoCD detects the change, syncs the ConfigMap, and the pod picks it up on next 
 
 ```yaml
 # Ensure secrets sync before deployment
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: openclaw-secrets

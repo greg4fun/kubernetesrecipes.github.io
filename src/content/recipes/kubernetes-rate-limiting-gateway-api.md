@@ -43,8 +43,7 @@ spec:
       kind: HTTPRoute
       name: api-route
   rateLimit:
-    type: Global
-    global:
+    global:               # needs Redis configured in envoy-gateway-config
       rules:
         - clientSelectors:
             - headers:
@@ -86,12 +85,10 @@ metadata:
     # Allowlist IPs exempt from rate limiting
     nginx.ingress.kubernetes.io/limit-whitelist: "10.0.0.0/8,172.16.0.0/12"
 
-    # Custom error response when rate limited
-    nginx.ingress.kubernetes.io/custom-http-errors: "429"
-
-    # Rate limit key (default: $binary_remote_addr)
-    # Use X-Forwarded-For behind load balancer:
-    nginx.ingress.kubernetes.io/limit-rate-after: "1m"
+    # Rejected requests get 503 by default. To return 429, set
+    # limit-req-status-code: "429" in the controller ConfigMap.
+    # Behind a load balancer, set use-forwarded-headers: "true" in the
+    # ConfigMap so the limit keys on the real client IP.
 spec:
   ingressClassName: nginx
   rules:
@@ -253,9 +250,10 @@ config:
   minute: 300
   hour: 5000
   policy: redis           # local | cluster | redis
-  redis_host: redis.infrastructure.svc
-  redis_port: 6379
-  redis_timeout: 2000
+  redis:
+    host: redis.infrastructure.svc
+    port: 6379
+    timeout: 2000
   limit_by: consumer      # consumer | credential | ip | header | path
   header_name: x-api-key  # When limit_by=header
 plugin: rate-limiting
@@ -334,5 +332,5 @@ HTTP 429 Too Many Requests response:
 - Gateway API: `BackendTrafficPolicy` with per-client selectors (IP, header, CIDR)
 - Istio: EnvoyFilter for local rate limits, external ratelimit service for global
 - Kong: `RateLimiting` plugin with Redis backend for cluster-wide consistency
-- Always return `429 Too Many Requests` with `Retry-After` header
+- Always return `429 Too Many Requests` with `Retry-After` header (ingress-nginx returns 503 unless you set `limit-req-status-code: "429"` in its ConfigMap)
 - Use Redis-backed global rate limiting when running multiple ingress replicas

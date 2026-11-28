@@ -64,7 +64,7 @@ spec:
 
 ```
 t=0.0s: Client sends 30 requests instantly → all accepted (burst bucket)
-t=0.1s: Client sends 1 request → rejected (429) — bucket empty
+t=0.1s: Client sends 1 request → rejected (503 by default) — bucket empty
 t=0.1s: Bucket refills at 10/s → 1 token available after 100ms
 t=1.0s: Bucket has 10 tokens → can burst 10 more
 t=3.0s: Bucket full again at 30 tokens
@@ -95,7 +95,7 @@ annotations:
 annotations:
   nginx.ingress.kubernetes.io/limit-rpm: "300"
   nginx.ingress.kubernetes.io/limit-burst-multiplier: "3"
-  # Bucket: 15 requests (300/60 * 3), refill at 5/s
+  # Bucket: 900 requests (300 * 3), refill at 5/s
 ```
 
 ### Combine with Other Rate Limit Annotations
@@ -111,10 +111,18 @@ annotations:
   
   # Whitelist IPs (bypass rate limiting)
   nginx.ingress.kubernetes.io/limit-whitelist: "10.0.0.0/8,192.168.0.0/16"
-  
-  # Custom response code (default: 503, change to 429)
-  nginx.ingress.kubernetes.io/server-snippet: |
-    limit_req_status 429;
+```
+
+The response code for rejected requests is not an Ingress annotation. It defaults to 503; to return 429, set it in the controller ConfigMap (snippet annotations are disabled by default, so do not use `server-snippet` for this):
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-nginx-controller
+  namespace: ingress-nginx
+data:
+  limit-req-status-code: "429"
 ```
 
 ### What NGINX Generates
@@ -154,7 +162,7 @@ Check annotation spelling exactly: `nginx.ingress.kubernetes.io/limit-rps` (not 
 
 **Different behavior with limit-rpm vs limit-rps**
 
-`limit-rpm: "300"` = 5/s internally. The burst-multiplier applies to the per-second rate, so `burst = (300/60) × multiplier = 5 × 3 = 15`.
+`limit-rpm: "300"` = 5/s internally, but the burst-multiplier applies to the configured value, not the per-second rate: `burst = rpm × multiplier = 300 × 3 = 900`. Lower the multiplier if you use `limit-rpm`.
 
 ## Best Practices
 
@@ -162,7 +170,7 @@ Check annotation spelling exactly: `nginx.ingress.kubernetes.io/limit-rps` (not 
 - **APIs: multiplier 1-3** — tighter control, predictable rate
 - **Webhooks: multiplier 5-10 with low rps** — handle deployment burst, prevent abuse
 - **Always whitelist internal CIDRs** — don't rate limit health checks
-- **Return 429 not 503** — 429 is semantically correct for rate limiting
+- **Return 429 not 503** — 429 is semantically correct for rate limiting; set `limit-req-status-code: "429"` in the controller ConfigMap
 
 ## Key Takeaways
 

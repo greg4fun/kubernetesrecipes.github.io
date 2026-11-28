@@ -41,7 +41,7 @@ helm install external-secrets external-secrets/external-secrets \
 
 ```yaml
 # secret-store.yaml
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: SecretStore
 metadata:
   name: aws-secrets
@@ -61,7 +61,7 @@ spec:
 
 ```yaml
 # external-secret.yaml
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: openclaw-secrets
@@ -92,7 +92,7 @@ spec:
 ### HashiCorp Vault Alternative
 
 ```yaml
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: SecretStore
 metadata:
   name: vault

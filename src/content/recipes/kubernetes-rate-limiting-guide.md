@@ -52,8 +52,8 @@ metadata:
     nginx.ingress.kubernetes.io/limit-burst-multiplier: "5"
     # Rate limit by IP (default) or other key
     nginx.ingress.kubernetes.io/limit-whitelist: "10.0.0.0/8"
-    # Custom response when rate limited
-    nginx.ingress.kubernetes.io/custom-http-errors: "429"
+    # Rejected requests get 503 by default; set limit-req-status-code: "429"
+    # in the controller ConfigMap to return 429 instead
     
     # Connection limits
     nginx.ingress.kubernetes.io/limit-connections: "5"
@@ -88,7 +88,6 @@ spec:
     kind: HTTPRoute
     name: api-route
   rateLimit:
-    type: Local
     local:
       rules:
       - clientSelectors:
@@ -207,14 +206,15 @@ If you're already running Kong as your ingress controller, rate limiting is a pl
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata: {name: rate-limit-by-key}
-spec:
-  plugin: rate-limiting
-  config:
-    second: 10
-    policy: redis                 # shared state across replicas — see Common Issues below
-    redis_host: redis.default.svc.cluster.local
-    limit_by: header
-    header_name: X-API-Key         # per-API-key instead of per-IP
+plugin: rate-limiting             # KongPlugin has no spec: plugin and config are top-level
+config:
+  second: 10
+  policy: redis                   # shared state across replicas — see Common Issues below
+  redis:
+    host: redis.default.svc.cluster.local
+    port: 6379
+  limit_by: header
+  header_name: X-API-Key          # per-API-key instead of per-IP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

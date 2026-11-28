@@ -78,7 +78,7 @@ stringData:
 # helm install external-secrets external-secrets/external-secrets -n external-secrets --create-namespace
 
 # external-secret.yaml
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: openclaw-secrets
