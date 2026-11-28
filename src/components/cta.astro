@@ -1,15 +1,38 @@
 ---
 import Link from "./ui/link.astro";
+import BookCover from "./book-cover.astro";
+import { APRESS_BOOK as BOOK } from "../utils/apress-book.mjs";
 ---
 
-<div class="bg-black p-8 md:px-20 md:py-20 mt-20 mx-auto max-w-5xl rounded-lg flex flex-col items-center text-center">
-  <h2 class="text-white text-4xl md:text-6xl tracking-tight">
-    Ready to Master Kubernetes?
-  </h2>
-  <p class="text-slate-400 mt-4 text-lg md:text-xl">
-    Grab your copy of Kubernetes Recipes and elevate your container orchestration skills.
-  </p>
-  <div class="flex mt-5">
-    <Link href="https://amzn.to/3DzC8QA" style="inverted" rel="sponsored noopener">Buy Now on Amazon</Link>
+<div class="group relative mt-20 mx-auto max-w-5xl overflow-hidden rounded-2xl bg-black p-8 md:px-16 md:py-16">
+  <div aria-hidden="true" class="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-blue-600/25 blur-3xl"></div>
+  <div class="relative flex flex-col items-center gap-8 text-center md:flex-row md:gap-12 md:text-left">
+    <BookCover
+      src={BOOK.cover}
+      title={BOOK.title}
+      width={BOOK.coverWidth}
+      height={BOOK.coverHeight}
+      tint="rgba(59,130,246,0.55)"
+      class="w-32 shrink-0 md:w-44"
+    />
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-wider text-blue-300">{`Book by ${BOOK.authors}`}</p>
+      <h2 class="mt-2 text-white text-4xl md:text-5xl tracking-tight">
+        Ready to Master Kubernetes?
+      </h2>
+      <p class="text-slate-400 mt-4 text-lg md:text-xl">
+        Grab your copy of Kubernetes Recipes and elevate your container orchestration skills.
+      </p>
+      <div class="flex mt-6 justify-center md:justify-start">
+        <Link
+          href={BOOK.amazon}
+          style="inverted"
+          rel="sponsored noopener"
+          data-book={BOOK.slug}
+          data-book-placement="cta-banner"
+          class="inline-flex min-h-11 items-center"
+        >Buy Now on Amazon</Link>
+      </div>
+    </div>
   </div>
 </div>

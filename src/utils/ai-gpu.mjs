@@ -81,10 +81,19 @@ export const LEANPUB_BOOKS = {
     description:
       "A hands-on guide to running LLMs and GPU workloads on Kubernetes: inference, training, NVIDIA GPUs, storage, networking, security and operations.",
     url: `https://leanpub.com/kubernetes-ai/c/${LEANPUB_COUPON}`,
+    // Local 400 px WebP of the Leanpub cover (public/ebooks/), never hotlinked.
+    cover: "/ebooks/kubernetes-ai.webp",
+    coverWidth: 400,
+    coverHeight: 571,
   },
   "openshift-ai": {
     title: "OpenShift AI Platform Guide",
+    description:
+      "Build a GPU-enabled, air-gapped AI platform on OpenShift: mirroring, operators, InfiniBand/RDMA, observability, GitOps and LLM benchmarks.",
     url: `https://leanpub.com/openshift-ai/c/${LEANPUB_COUPON}`,
+    cover: "/ebooks/openshift-ai.webp",
+    coverWidth: 400,
+    coverHeight: 638,
   },
 };
 
@@ -111,3 +120,12 @@ export const leanpubUrl = (book, slug) => tagged(LEANPUB_BOOKS[book].url, `leanp
 
 /** The GPU review URL; utm_campaign gpu-review, utm_content the recipe slug. */
 export const gpuReviewUrl = (slug) => tagged(GPU_REVIEW.url, GPU_REVIEW.offer, slug);
+
+/**
+ * Leanpub team packs (3 to 25 copies) for a book: the book page's
+ * #team-discounts section, with utm_content "<placement>-team". No coupon:
+ * team discounts are set on the book page. Links carry data-book-team, so the
+ * book_click event gets team: true. No prices: Leanpub sets them.
+ */
+export const leanpubTeamUrl = (book, placement) =>
+  `${tagged(`https://leanpub.com/${book}`, `leanpub-${book}`, `${placement}-team`)}#team-discounts`;

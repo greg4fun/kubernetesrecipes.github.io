@@ -1,0 +1,55 @@
+---
+/**
+ * A book cover drawn like a physical book: corners tighter on the spine side,
+ * a layered shadow tinted with the card's colour, a darker spine edge with a
+ * thin highlight, and a gentle lift when the enclosing `group` is hovered
+ * (no motion with prefers-reduced-motion). width/height reserve the space, so
+ * the image never shifts the layout. Images are local files, never hotlinked.
+ */
+export interface Props {
+  src: string;
+  title: string;
+  width: number;
+  height: number;
+  /** Shadow tint, an rgba() colour. */
+  tint?: string;
+  loading?: "lazy" | "eager";
+  class?: string;
+}
+
+const {
+  src,
+  title,
+  width,
+  height,
+  tint = "rgba(30,64,175,0.45)",
+  loading = "lazy",
+  class: className,
+} = Astro.props;
+---
+
+<div
+  class:list={[
+    "relative transition-transform duration-300 ease-out group-hover:-translate-y-1 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0",
+    className,
+  ]}
+  style={`--cover-tint:${tint}`}
+>
+  <img
+    src={src}
+    alt={`Cover of ${title}`}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding="async"
+    class="block h-auto w-full rounded-[3px_7px_7px_3px] bg-slate-200 shadow-[0_1px_1px_rgba(15,23,42,0.08),0_4px_10px_-2px_rgba(15,23,42,0.2),0_18px_30px_-14px_var(--cover-tint)] transition-shadow duration-300 group-hover:shadow-[0_1px_1px_rgba(15,23,42,0.08),0_8px_16px_-4px_rgba(15,23,42,0.22),0_24px_40px_-14px_var(--cover-tint)]"
+  />
+  <span
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-y-0 left-0 w-[7%] rounded-l-[3px] bg-gradient-to-r from-black/30 via-white/25 to-transparent"
+  ></span>
+  <span
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 rounded-[3px_7px_7px_3px] ring-1 ring-inset ring-black/10"
+  ></span>
+</div>
