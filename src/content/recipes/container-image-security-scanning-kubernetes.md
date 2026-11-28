@@ -46,7 +46,7 @@ jobs:
         run: docker build -t registry.example.com/myorg/app:${{ github.sha }} .
 
       - name: Scan with Trivy
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: registry.example.com/myorg/app:${{ github.sha }}
           format: table

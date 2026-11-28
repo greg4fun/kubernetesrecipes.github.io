@@ -79,7 +79,7 @@ jobs:
           docker push registry.example.com/${{ inputs.app-name }}:${{ github.sha }}
 
       - name: Security scan
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: registry.example.com/${{ inputs.app-name }}:${{ github.sha }}
           exit-code: 1

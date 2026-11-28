@@ -202,7 +202,7 @@ spec:
 ```yaml
 # GitHub Actions
 - name: Trivy vulnerability scan
-  uses: aquasecurity/trivy-action@master
+  uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
   with:
     image-ref: 'myapp:${{ github.sha }}'
     format: 'sarif'
