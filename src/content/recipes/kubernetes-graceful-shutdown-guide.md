@@ -102,7 +102,7 @@ spec:
 
 ```yaml
 # Native sleep action — no shell needed (distroless images).
-# Beta and enabled by default since Kubernetes 1.30 (PodLifecycleSleepAction).
+# Beta (on by default) in Kubernetes 1.30–1.33, GA since 1.34 (PodLifecycleSleepAction).
 lifecycle:
   preStop:
     sleep:
@@ -175,7 +175,7 @@ def sigterm_handler(signum, frame):
 signal.signal(signal.SIGTERM, sigterm_handler)
 ```
 
-Tip: have the handler also flip your readiness endpoint to failing — it removes the pod from endpoints faster on ingress controllers that watch readiness.
+Note: you do not need to flip your readiness endpoint to failing on SIGTERM. Kubernetes already marks the endpoints of a terminating pod as `ready: false`; the preStop sleep below is what covers the time other components need to see that change.
 
 ### Why preStop sleep Is Essential
 
@@ -296,7 +296,7 @@ Shell scripts as entrypoint (`/bin/sh -c "my-app"`, or shell-form `CMD my-app`) 
 
 **502s during deployment despite preStop**
 
-`maxUnavailable: 1` (default) removes pods before new ones are ready. Set `maxUnavailable: 0` and `maxSurge: 1`.
+The default `maxUnavailable: 25%` (with `maxSurge: 25%`) removes pods before new ones are ready. Set `maxUnavailable: 0` and `maxSurge: 1`.
 
 **Pod killed before drain completes**
 

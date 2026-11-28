@@ -47,7 +47,7 @@ helm install external-secrets external-secrets/external-secrets \
 
 ```yaml
 # ClusterSecretStore pointing to Vault
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
   name: vault-backend
@@ -66,7 +66,7 @@ spec:
             namespace: external-secrets
 ---
 # ExternalSecret with automatic refresh
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: database-credentials
@@ -122,24 +122,44 @@ vault write database/roles/app-readwrite \
   max_ttl="48h"
 ```
 
+Dynamic credentials do not live in the KV v2 store above, so read them with a `VaultDynamicSecret` generator instead of `extract`:
+
 ```yaml
+# Generator that requests new credentials from the database engine
+apiVersion: generators.external-secrets.io/v1alpha1
+kind: VaultDynamicSecret
+metadata:
+  name: db-dynamic-creds
+  namespace: production
+spec:
+  path: "/database/creds/app-readwrite"
+  method: "GET"
+  provider:
+    server: "https://vault.example.com"
+    auth:
+      kubernetes:
+        mountPath: "kubernetes"
+        role: "external-secrets"
+        serviceAccountRef:
+          name: external-secrets
+---
 # ExternalSecret using Vault dynamic secrets
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: db-dynamic-creds
   namespace: production
 spec:
   refreshInterval: 12h  # Refresh before 24h TTL expires
-  secretStoreRef:
-    name: vault-backend
-    kind: ClusterSecretStore
   target:
     name: db-dynamic-creds
     creationPolicy: Owner
   dataFrom:
-    - extract:
-        key: database/creds/app-readwrite
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: VaultDynamicSecret
+          name: db-dynamic-creds
 ```
 
 ### Auto-Restart on Secret Change (Stakater Reloader)

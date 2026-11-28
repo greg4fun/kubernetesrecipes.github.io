@@ -395,7 +395,7 @@ helm install external-secrets external-secrets/external-secrets \
 ### AWS Secrets Manager with IRSA
 
 ```yaml
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: SecretStore
 metadata:
   name: aws-secrets
@@ -410,7 +410,7 @@ spec:
           serviceAccountRef:
             name: myapp-sa  # Uses IRSA
 ---
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: myapp-secrets

@@ -173,7 +173,7 @@ kubectl auth can-i delete deployments --as-group=oidc:developers -n production
 ## Key Takeaways
 
 - OIDC lets users authenticate with existing corporate credentials instead of per-user client certificates
-- The API server validates tokens via `--oidc-*` flags — it never talks to the IdP directly at request time, only at flag-configured issuer/CA validation
+- The API server validates tokens via `--oidc-*` flags (or the `--authentication-config` file, GA since 1.34, which cannot be combined with `--oidc-*`) — it fetches the issuer's discovery document and JWKS keys to verify token signatures, but does not call the IdP for every request
 - Kubernetes doesn't handle token refresh — `kubelogin`/`oidc-login` kubectl plugins manage that via kubeconfig `exec`
 - Bind RBAC to OIDC groups (with the configured prefix), not individual users, for maintainable access control
 - If claim names don't match between your IdP and your `--oidc-*` flags, see the dedicated [claims-mapping troubleshooting guide](/recipes/troubleshooting/openshift-oidc-claims-mapping-troubleshooting/)

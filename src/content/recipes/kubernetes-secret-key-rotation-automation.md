@@ -122,7 +122,7 @@ spec:
 
 ```yaml
 # 1. SecretStore connecting to HashiCorp Vault
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
   name: vault
@@ -141,7 +141,7 @@ spec:
             namespace: external-secrets
 ---
 # 2. ExternalSecret with automatic refresh
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: db-credentials
@@ -185,7 +185,7 @@ kubectl describe externalsecret db-credentials -n production | grep "Last Update
 
 ```yaml
 # Vault generates unique credentials per lease
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: db-dynamic-creds
