@@ -288,7 +288,7 @@ torchrun --nnodes=2 --nproc_per_node=1 --node_rank=${RANK} \
 
 ### NCCL timeout during allgather
 - **Cause**: Model shard transfer exceeds default timeout
-- **Fix**: Increase `NCCL_TIMEOUT` or ensure RDMA is active (check `NCCL_SOCKET_IFNAME`)
+- **Fix**: Increase the PyTorch `init_process_group(timeout=...)` (default 10 min; there is no `NCCL_TIMEOUT` variable) or ensure RDMA is active (check `NCCL_SOCKET_IFNAME`)
 
 ## Best Practices
 

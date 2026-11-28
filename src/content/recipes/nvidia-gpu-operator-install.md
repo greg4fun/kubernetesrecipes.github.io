@@ -124,7 +124,7 @@ spec:
   operator:
     defaultRuntime: crio
   driver:
-    enabled: false    # OpenShift provides pre-installed drivers
+    enabled: true     # RHCOS has no NVIDIA driver; the operator builds it with the Driver Toolkit
   toolkit:
     enabled: true
   devicePlugin:
@@ -154,7 +154,8 @@ kubectl describe node <gpu-node-name> | grep -A5 "Capacity\|Allocatable"
 # Check GPU details from within a pod
 kubectl run gpu-test --rm -it --restart=Never \
   --image=nvidia/cuda:12.4.0-base-ubuntu22.04 \
-  --limits=nvidia.com/gpu=1 \
+  --override-type=strategic \
+  --overrides='{"apiVersion":"v1","spec":{"containers":[{"name":"gpu-test","resources":{"limits":{"nvidia.com/gpu":"1"}}}]}}' \
   -- nvidia-smi
 ```
 
@@ -203,7 +204,8 @@ Apply it:
 kubectl apply -f time-slicing-config.yaml
 
 # Patch the ClusterPolicy to use time-slicing
-kubectl patch clusterpolicy/gpu-cluster-policy \
+# (Helm names it cluster-policy; on OpenShift the default name is gpu-cluster-policy)
+kubectl patch clusterpolicies.nvidia.com/cluster-policy \
   -n gpu-operator --type merge \
   -p '{"spec":{"devicePlugin":{"config":{"name":"time-slicing-config","default":"any"}}}}'
 ```

@@ -132,9 +132,10 @@ nvidia-smi --query-gpu=driver_version --format=csv,noheader
 # Check what CUDA version the container needs
 # CUDA 12.5 needs driver ≥ 555.42
 # CUDA 12.4 needs driver ≥ 550.54
-# CUDA 12.2 needs driver ≥ 535.86
+# CUDA 12.2 needs driver ≥ 535.54.03
 # CUDA 12.0 needs driver ≥ 525.60
 # CUDA 11.8 needs driver ≥ 520.61
+# (full feature set; with minor version compatibility any 12.x runs on ≥ 525 and 13.x on ≥ 580)
 
 # Fix: either upgrade node driver or use older CUDA base image
 ```
@@ -154,7 +155,7 @@ kubectl describe resourceclaim training-gpu -n ai-inference
 kubectl get resourceslices -o yaml
 
 # Check device attributes
-kubectl get resourceslices -o json | jq '.items[].devices[].basic.attributes'
+kubectl get resourceslices -o json | jq '.items[].spec.devices[].attributes'
 ```
 
 ### Common Error Messages and Fixes

@@ -20,7 +20,7 @@ relatedRecipes:
   - "kubernetes-replicaset-guide"
 ---
 
-> 💡 **Quick Answer:** `kubectl run nginx --image=nginx:1.27 --port=80` creates a pod named nginx. Add `--dry-run=client -o yaml` to generate YAML without creating. For CKA exams: `kubectl run busybox --image=busybox --restart=Never --command -- sleep 3600` creates a non-restarting pod. Use `--env`, `--labels`, `--requests`, `--limits` for inline configuration.
+> 💡 **Quick Answer:** `kubectl run nginx --image=nginx:1.27 --port=80` creates a pod named nginx. Add `--dry-run=client -o yaml` to generate YAML without creating. For CKA exams: `kubectl run busybox --image=busybox --restart=Never --command -- sleep 3600` creates a non-restarting pod. Use `--env` and `--labels` for inline configuration; `kubectl run` has no `--requests`/`--limits` flags, so set resources with `--overrides` or a manifest.
 
 ## The Problem
 
@@ -79,10 +79,10 @@ kubectl run nginx --image=nginx:1.27 --port=80 \
 ### Resource Limits and Requests
 
 ```bash
-# Set CPU and memory requests/limits
+# Set CPU and memory requests/limits (kubectl run has no --requests/--limits flags)
 kubectl run nginx --image=nginx:1.27 \
-  --requests='cpu=100m,memory=128Mi' \
-  --limits='cpu=500m,memory=256Mi'
+  --override-type=strategic \
+  --overrides='{"apiVersion":"v1","spec":{"containers":[{"name":"nginx","resources":{"requests":{"cpu":"100m","memory":"128Mi"},"limits":{"cpu":"500m","memory":"256Mi"}}}]}}'
 
 # With environment variables
 kubectl run nginx --image=nginx:1.27 \
@@ -126,7 +126,7 @@ kubectl run curlpod --image=curlimages/curl --restart=Never --rm -it \
 | Dry-run YAML | ✅ `--dry-run=client -o yaml` | ✅ same flags |
 | Interactive | ✅ `-it` | ❌ |
 | One-shot jobs | ✅ `--restart=Never` | `kubectl create job` |
-| Resource limits | ✅ `--requests/--limits` | Only via YAML |
+| Resource limits | Only via `--overrides` | Only via YAML |
 
 ### Overrides for Advanced Config
 

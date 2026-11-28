@@ -246,7 +246,7 @@ runai submit mistral-large-fsdp \
 
 ### NCCL timeout errors
 - **Cause**: Network issues between GPUs/nodes; one rank slower
-- **Fix**: Set `NCCL_TIMEOUT=1800`; check for stragglers; verify InfiniBand/RoCE
+- **Fix**: Raise the PyTorch timeout with `init_process_group(timeout=timedelta(minutes=30))` (NCCL has no `NCCL_TIMEOUT` variable); check for stragglers; verify InfiniBand/RoCE
 
 ### Job preempted mid-training
 - **Cause**: Higher-priority job needed GPUs

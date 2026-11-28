@@ -122,10 +122,10 @@ On OpenShift, do not manually install drivers. Force the GPU Operator to rebuild
 
 ```bash
 # Delete driver pods to trigger rebuild
-oc delete pod -n gpu-operator -l app=nvidia-driver-daemonset
+oc delete pod -n nvidia-gpu-operator -l app=nvidia-driver-daemonset
 
 # Verify module loads in driver pod
-oc logs -n gpu-operator ds/nvidia-driver-daemonset -c nvidia-peermem-ctr
+oc logs -n nvidia-gpu-operator ds/nvidia-driver-daemonset -c nvidia-peermem-ctr
 ```
 
 The GPU Operator rebuilds `nvidia-peermem.ko` against the host kernel and MOFED symbols.

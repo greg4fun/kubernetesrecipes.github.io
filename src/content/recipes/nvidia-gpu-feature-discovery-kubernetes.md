@@ -52,11 +52,14 @@ nvidia.com/gpu.compute.minor=0
 nvidia.com/gpu.replicas=1
 nvidia.com/mig.capable=true
 nvidia.com/mig.strategy=mixed
-nvidia.com/cuda.driver.major=570
-nvidia.com/cuda.driver.minor=133
-nvidia.com/cuda.driver.rev=20
-nvidia.com/cuda.runtime.major=12
-nvidia.com/cuda.runtime.minor=9
+nvidia.com/cuda.driver-version.major=570
+nvidia.com/cuda.driver-version.minor=133
+nvidia.com/cuda.driver-version.revision=20
+nvidia.com/cuda.driver-version.full=570.133.20
+nvidia.com/cuda.runtime-version.major=12
+nvidia.com/cuda.runtime-version.minor=9
+nvidia.com/cuda.runtime-version.full=12.9
+# cuda.driver.major/minor/rev and cuda.runtime.major/minor are deprecated
 ```
 
 ### Deploy GFD via GPU Operator (Recommended)
@@ -71,45 +74,17 @@ helm install gpu-operator nvidia/gpu-operator \
 
 ### Deploy GFD Standalone (Without GPU Operator)
 
-```yaml
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  name: nvidia-gpu-feature-discovery
-  namespace: kube-system
-  labels:
-    app: gpu-feature-discovery
-spec:
-  selector:
-    matchLabels:
-      app: gpu-feature-discovery
-  template:
-    metadata:
-      labels:
-        app: gpu-feature-discovery
-    spec:
-      nodeSelector:
-        feature.node.kubernetes.io/pci-10de.present: "true"
-      containers:
-        - name: gpu-feature-discovery
-          image: nvcr.io/nvidia/gpu-feature-discovery:v0.16.0
-          env:
-            - name: GFD_SLEEP_INTERVAL
-              value: "60"
-            - name: GFD_MIG_STRATEGY
-              value: "mixed"
-          volumeMounts:
-            - name: output-dir
-              mountPath: /etc/kubernetes/node-feature-discovery/features.d
-            - name: host-sys
-              mountPath: /sys
-      volumes:
-        - name: output-dir
-          hostPath:
-            path: /etc/kubernetes/node-feature-discovery/features.d
-        - name: host-sys
-          hostPath:
-            path: /sys
+Since v0.15.0, GFD ships in the `nvcr.io/nvidia/k8s-device-plugin` image and is deployed by the device plugin Helm chart (the old standalone `gpu-feature-discovery` image stopped at v0.8.2):
+
+```bash
+helm repo add nvdp https://nvidia.github.io/k8s-device-plugin
+helm repo update
+
+helm upgrade -i nvdp nvdp/nvidia-device-plugin \
+  --namespace gpu-feature-discovery \
+  --create-namespace \
+  --set devicePlugin.enabled=false \
+  --set migStrategy=mixed
 ```
 
 ### Use GFD Labels for Scheduling
@@ -156,7 +131,7 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
-              - key: nvidia.com/cuda.driver.major
+              - key: nvidia.com/cuda.driver-version.major
                 operator: In
                 values: ["570", "575", "580"]
   containers:
@@ -207,8 +182,8 @@ kubectl debug node/worker-gpu-gwc-0 -it --image=nvidia/cuda:12.9.0-base-ubuntu24
 - **Fix**: Verify driver is installed; on Talos check extensions are loaded; ensure `/dev/nvidia*` devices exist
 
 ### Labels not updating after GPU change
-- **Cause**: GFD only polls at `GFD_SLEEP_INTERVAL` (default 60s)
-- **Fix**: Wait 60s or restart the GFD pod on that node
+- **Cause**: GFD only polls at `GFD_SLEEP_INTERVAL` (default 10s)
+- **Fix**: Wait one interval or restart the GFD pod on that node
 
 ### MIG labels missing despite MIG-capable GPU
 - **Cause**: `GFD_MIG_STRATEGY` not set or GPU Operator `mig.strategy` not configured
@@ -218,7 +193,7 @@ kubectl debug node/worker-gpu-gwc-0 -it --image=nvidia/cuda:12.9.0-base-ubuntu24
 
 1. **Deploy via GPU Operator** — manages GFD, device plugin, and mig-manager together
 2. **Use `mixed` MIG strategy** — provides most flexibility for heterogeneous workloads
-3. **Build scheduling rules on GFD labels** — `gpu.product`, `mig.capable`, `cuda.driver.major`
+3. **Build scheduling rules on GFD labels** — `gpu.product`, `mig.capable`, `cuda.driver-version.major`
 4. **Don't hardcode node names** — use label selectors for GPU-aware scheduling
 5. **Monitor GFD health** — if GFD stops, new nodes won't get labeled
 

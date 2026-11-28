@@ -75,24 +75,9 @@ spec:
         timeoutSeconds: 300
 
   # === MOFED Driver ===
-  mofed:
-    enabled: true
-    image: mofed
-    repository: nvcr.io/nvstaging/mellanox
-    version: "24.07-0.6.1.0"
-    env:
-      - name: UNLOAD_STORAGE_MODULES
-        value: "true"
-      - name: RESTORE_DRIVER_ON_POD_TERMINATION
-        value: "true"
-    startupProbe:
-      initialDelaySeconds: 10
-      periodSeconds: 20
-    upgradePolicy:
-      autoUpgrade: true
-      maxParallelUpgrades: 1
-      drain:
-        enable: true
+  # ClusterPolicy has no mofed field. MOFED/DOCA-OFED is installed by the
+  # NVIDIA Network Operator (NicClusterPolicy spec.ofedDriver) or on the host
+  # (driver.rdma.useHostMofed: true).
 
   # === GPUDirect Storage ===
   gds:
@@ -183,7 +168,7 @@ spec:
 ```mermaid
 flowchart TD
     A[ClusterPolicy CRD] --> B[GPU Driver]
-    A --> C[MOFED Driver]
+    N[Network Operator NicClusterPolicy] --> C[MOFED Driver]
     A --> D[GDS nvidia-fs]
     A --> E[Container Toolkit]
     A --> F[Device Plugin]
@@ -205,7 +190,7 @@ flowchart TD
 | Component | Depends On | Purpose |
 |-----------|-----------|---------|
 | Driver | — | Installs NVIDIA GPU kernel driver |
-| MOFED | — | Installs Mellanox OFED for RDMA |
+| MOFED | — | Installs Mellanox OFED for RDMA (Network Operator `ofedDriver`, not ClusterPolicy) |
 | GDS | Driver, MOFED | GPUDirect Storage kernel module |
 | Toolkit | Driver | Configures container runtime for GPU access |
 | Device Plugin | Toolkit | Exposes GPUs to Kubernetes scheduler |
@@ -220,7 +205,6 @@ flowchart TD
 ```bash
 helm install gpu-operator nvidia/gpu-operator \
   --set driver.rdma.enabled=true \
-  --set mofed.enabled=true \
   --set gds.enabled=true \
   --set dcgmExporter.serviceMonitor.enabled=true
 ```
@@ -228,7 +212,6 @@ helm install gpu-operator nvidia/gpu-operator \
 **Inference Cluster (minimal):**
 ```bash
 helm install gpu-operator nvidia/gpu-operator \
-  --set mofed.enabled=false \
   --set gds.enabled=false \
   --set migManager.enabled=false
 ```

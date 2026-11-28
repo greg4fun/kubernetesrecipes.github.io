@@ -257,7 +257,7 @@ Disable GDS when:
 
 ### IOMMU groups too large (multiple devices in one group)
 - **Cause**: Platform doesn't support ACS (Access Control Services) on PCIe switches
-- **Fix**: Enable ACS in BIOS; or use `pcie_acs_override=downstream,multifunction` (less secure)
+- **Fix**: Enable ACS in BIOS; `pcie_acs_override` is not a mainline kernel parameter (out-of-tree patch only), so stock RHCOS/Ubuntu kernels ignore it
 
 ### GPUDirect RDMA stops working after enabling iommu=strict
 - **Cause**: Full IOMMU translation breaks nvidia-peermem DMA mappings on some drivers

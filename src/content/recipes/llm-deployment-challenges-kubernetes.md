@@ -368,7 +368,8 @@ kubectl -n ai-serving exec -it llama-405b-tp-0 -- nvidia-smi topo -m
 kubectl -n ai-serving logs llama-405b-tp-0 -c vllm | grep NCCL
 kubectl -n ai-serving run nccl-test --rm -it \
   --image=registry.example.com/gpu/nccl-tests:latest \
-  --limits=nvidia.com/gpu=8 \
+  --override-type=strategic \
+  --overrides='{"apiVersion":"v1","spec":{"containers":[{"name":"nccl-test","resources":{"limits":{"nvidia.com/gpu":"8"}}}]}}' \
   -- ./build/all_reduce_perf -b 8M -e 8G -f 2 -g 8
 ```
 

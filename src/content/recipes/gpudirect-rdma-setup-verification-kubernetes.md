@@ -114,7 +114,7 @@ spec:
 ```bash
 # Run with NCCL_DEBUG=INFO
 export NCCL_DEBUG=INFO
-export NCCL_NET_GDR_LEVEL=5    # Use GDRDMA at all topology distances
+export NCCL_NET_GDR_LEVEL=SYS  # Use GDRDMA at all topology distances
 
 # In output, look for:
 # ✅ GOOD — GDRDMA active:
@@ -128,17 +128,16 @@ export NCCL_NET_GDR_LEVEL=5    # Use GDRDMA at all topology distances
 ### NCCL_NET_GDR_LEVEL Explained
 
 ```text
-Level │ Meaning                                      │ GDRDMA Used When
-──────┼──────────────────────────────────────────────┼─────────────────────────
-  0   │ Disabled                                      │ Never
-  1   │ Only when GPU and NIC on same PCIe switch     │ PIX only
-  2   │ Same PCIe tree (through Host Bridge)          │ PIX + PHB
-  3   │ Same NUMA node                                │ PIX + PHB + NODE
-  4   │ Same machine (may cross sockets)              │ PIX + PHB + NODE + SYS
-  5   │ Always use GDRDMA regardless of distance      │ All (recommended)
-──────┴──────────────────────────────────────────────┴─────────────────────────
+Value     │ Meaning                                          │ Legacy integer
+──────────┼──────────────────────────────────────────────────┼───────────────
+  LOC     │ Never use GDRDMA (disabled)                      │ 0
+  PIX     │ GPU and NIC on the same PCI switch               │ 1
+  PXB     │ GPU and NIC through PCI switches (multiple hops) │ 2
+  PHB     │ GPU and NIC on the same NUMA node (via CPU)      │ 3
+  SYS     │ Even across NUMA nodes (QPI/UPI): always enabled │ 4 (values > 4 are read as SYS)
+──────────┴──────────────────────────────────────────────────┴───────────────
 
-Recommendation: NCCL_NET_GDR_LEVEL=5
+Recommendation: NCCL_NET_GDR_LEVEL=SYS (use the string; integer values are legacy)
   Even cross-socket GDRDMA is faster than CPU staging for large messages.
   NCCL automatically selects the nearest NIC anyway via topology detection.
 ```
@@ -191,7 +190,7 @@ spec:
       image: nvcr.io/nvidia/pytorch:24.04-py3
       env:
         - name: NCCL_NET_GDR_LEVEL
-          value: "5"
+          value: "SYS"
         - name: NCCL_IB_HCA
           value: "mlx5_0,mlx5_3,mlx5_5,mlx5_6"
         - name: NCCL_DEBUG
@@ -224,8 +223,8 @@ spec:
 - **Fix**: Use PIX-local NICs (`NCCL_IB_HCA`); verify PCIe link speed with `lspci -vvv`
 
 ### "DMA-BUF is NOT available" in NCCL logs
-- **Cause**: Kernel < 5.12; or nvidia driver built without DMA-BUF support
-- **Fix**: Upgrade kernel to ≥ 5.12; rebuild NVIDIA driver with DMA-BUF; or fall back to nvidia-peermem legacy mode
+- **Cause**: Kernel < 5.12; proprietary (closed) NVIDIA kernel module; or GPU older than Turing
+- **Fix**: Upgrade kernel to ≥ 5.12; switch to the NVIDIA open kernel module; or fall back to nvidia-peermem legacy mode
 
 ### GDRDMA works for some GPUs but not others
 - **Cause**: nvidia-peermem not registered for all GPUs; or some GPUs on unsupported PCIe topology
@@ -233,7 +232,7 @@ spec:
 
 ## Best Practices
 
-1. **Always set `NCCL_NET_GDR_LEVEL=5`** — let NCCL use GDRDMA regardless of topology distance
+1. **Always set `NCCL_NET_GDR_LEVEL=SYS`** — let NCCL use GDRDMA regardless of topology distance
 2. **Verify `/GDRDMA` suffix in channel logs** — confirms GPU-direct path is active
 3. **Load nvidia-peermem at boot** — don't rely on manual modprobe
 4. **Test with `ib_write_bw --use_cuda`** — validates GDRDMA independently of NCCL
@@ -244,9 +243,9 @@ spec:
 ## Key Takeaways
 
 - GPUDirect RDMA: NIC reads/writes GPU memory directly (no CPU copies)
-- Enable: `modprobe nvidia-peermem` + `NCCL_NET_GDR_LEVEL=5`
+- Enable: `modprobe nvidia-peermem` + `NCCL_NET_GDR_LEVEL=SYS`
 - Verify: NCCL channel logs must show `/GDRDMA` suffix on all NET/IB channels
-- DMA-BUF (kernel ≥ 5.12) is the modern interface; nvidia-peermem provides it
+- DMA-BUF is the modern interface and does not use nvidia-peermem: it needs the open kernel module, Linux 5.12+ and a Turing or newer GPU, and NCCL enables it automatically
 - Performance gain: 30-50% more bandwidth, 50% less latency vs CPU staging
 - GPU Operator: set `driver.rdma.enabled=true` for automatic nvidia-peermem
 - Container needs: `IPC_LOCK` capability + RDMA device access + large shared memory
