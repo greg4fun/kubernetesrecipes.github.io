@@ -60,8 +60,8 @@ trivy config ./mychart/
 # Scan filesystem for secrets
 trivy fs --scanners secret ./src/
 
-# Scan running K8s cluster
-trivy k8s --report summary cluster
+# Scan running K8s cluster (current kubeconfig context)
+trivy k8s --report summary
 ```
 
 ### Generate SBOM
@@ -124,29 +124,28 @@ metadata:
   labels:
     trivy-operator.resource.kind: Deployment
     trivy-operator.resource.name: myapp
-spec:
-  report:
-    artifact:
-      repository: myapp
-      tag: v2.0.0
-    registry:
-      server: registry.example.com
-    scanner:
-      name: Trivy
-      version: 0.50.0
-    summary:
-      criticalCount: 0
-      highCount: 2
-      mediumCount: 5
-      lowCount: 3
-    vulnerabilities:
-    - vulnerabilityID: CVE-2024-1234
-      severity: HIGH
-      resource: libssl3
-      installedVersion: 3.1.0
-      fixedVersion: 3.1.1
-      title: "OpenSSL buffer overflow"
-      primaryLink: https://nvd.nist.gov/vuln/detail/CVE-2024-1234
+report:
+  artifact:
+    repository: myapp
+    tag: v2.0.0
+  registry:
+    server: registry.example.com
+  scanner:
+    name: Trivy
+    version: 0.50.0
+  summary:
+    criticalCount: 0
+    highCount: 2
+    mediumCount: 5
+    lowCount: 3
+  vulnerabilities:
+  - vulnerabilityID: CVE-2024-1234
+    severity: HIGH
+    resource: libssl3
+    installedVersion: 3.1.0
+    fixedVersion: 3.1.1
+    title: "OpenSSL buffer overflow"
+    primaryLink: https://nvd.nist.gov/vuln/detail/CVE-2024-1234
 ```
 
 ### Prometheus Metrics
@@ -166,13 +165,16 @@ spec:
 ### Policy Enforcement
 
 ```yaml
-# Use with Kyverno to block deployments with critical CVEs
+# Use with Kyverno to block images whose signed Trivy scan attestation
+# (trivy image --format cosign-vuln + cosign attest --type vuln) lists critical CVEs.
+# A deny rule that only matches registry "*" would block every Pod without checking any CVE.
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: block-critical-vulnerabilities
 spec:
   validationFailureAction: Enforce
+  webhookTimeoutSeconds: 30
   rules:
   - name: check-vulnerabilities
     match:
@@ -180,21 +182,23 @@ spec:
       - resources:
           kinds:
           - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation}}"
-        operator: In
-        value: ["CREATE", "UPDATE"]
-    validate:
-      message: "Image has critical vulnerabilities. Fix before deploying."
-      deny:
+    verifyImages:
+    - imageReferences:
+      - "registry.example.com/*"
+      attestations:
+      - type: https://cosign.sigstore.dev/attestation/vuln/v1
+        attestors:
+        - entries:
+          - keys:
+              publicKeys: |-
+                -----BEGIN PUBLIC KEY-----
+                <your cosign.pub>
+                -----END PUBLIC KEY-----
         conditions:
-          any:
-          - key: "{{ images.containers.*.registry }}"
-            operator: AnyIn
-            value: ["*"]
-# Note: Full integration requires admission webhook or
-# checking VulnerabilityReports in CI pipeline
+        - all:
+          - key: "{{ scanner.result.Results[].Vulnerabilities[].Severity }}"
+            operator: AllNotIn
+            value: ["CRITICAL"]
 ```
 
 ### CI/CD Integration
@@ -224,11 +228,11 @@ Check operator logs and RBAC. Operator needs permissions to list/watch workloads
 
 **"db download failed"**
 
-Network policy blocking Trivy from downloading vulnerability database. Allow egress to `ghcr.io`.
+Network policy blocking Trivy from downloading vulnerability database. Trivy pulls the DB from `mirror.gcr.io/aquasec/trivy-db` first and falls back to `ghcr.io/aquasecurity/trivy-db`, so allow egress to both.
 
 **Too many reports cluttering the cluster**
 
-Set `trivy.reportTTL` in Helm values to auto-delete old reports. Default keeps all.
+Set `operator.scannerReportTTL` in Helm values to control how long reports are kept. The default is `"24h"`; `""` disables the TTL and keeps all reports.
 
 ## Best Practices
 

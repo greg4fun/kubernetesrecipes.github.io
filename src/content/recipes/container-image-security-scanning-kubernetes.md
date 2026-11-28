@@ -86,16 +86,18 @@ spec:
           attestations:
             - type: https://cosign.sigstore.dev/attestation/vuln/v1
               conditions:
+                # The cosign vuln predicate has scanner.uri and scanner.result (the Trivy JSON),
+                # not ready-made counts, so derive them from scanner.result.Results[].Vulnerabilities[]
                 - all:
-                    - key: "{{ scanner }}"
+                    - key: "{{ scanner.uri }}"
                       operator: Equals
-                      value: "trivy"
-                    - key: "{{ critical_count }}"
-                      operator: Equals
-                      value: "0"
-                    - key: "{{ high_count }}"
+                      value: "pkg:github/aquasecurity/trivy@*"
+                    - key: "{{ scanner.result.Results[].Vulnerabilities[].Severity }}"
+                      operator: AllNotIn
+                      value: ["CRITICAL"]
+                    - key: "{{ scanner.result.Results[].Vulnerabilities[] | [?Severity == 'HIGH'] | length(@) }}"
                       operator: LessThanOrEquals
-                      value: "5"
+                      value: 5
 ---
 # Block images from untrusted registries
 apiVersion: kyverno.io/v1
@@ -132,7 +134,7 @@ kind: VulnerabilityReport
 metadata:
   name: pod-myapp-container-app
   namespace: production
-spec:
+report:
   scanner:
     name: Trivy
     version: 0.51.0
@@ -166,19 +168,18 @@ spec:
 ```bash
 # Identify which layer introduced a vulnerability
 trivy image --format json registry.example.com/myorg/app:v2.1.0 | \
-  jq '.Results[] | select(.Vulnerabilities != null) |
-      {Target: .Target, Layer: .Layer,
-       Vulns: [.Vulnerabilities[] | select(.Severity == "CRITICAL") | .VulnerabilityID]}'
+  jq '.Results[] | select(.Vulnerabilities != null) | .Target as $t |
+      .Vulnerabilities[] | select(.Severity == "CRITICAL") |
+      {Target: $t, VulnerabilityID: .VulnerabilityID, Layer: .Layer}'
 
-# Output:
+# Output (Layer is a field of each vulnerability, not of the Result):
 # {
-#   "Target": "usr/lib/x86_64-linux-gnu/libssl.so.3",
+#   "Target": "registry.example.com/myorg/app:v2.1.0 (debian 12.11)",
+#   "VulnerabilityID": "CVE-2026-1234",
 #   "Layer": {
 #     "Digest": "sha256:a480a496ba95a...",
-#     "DiffID": "sha256:c6f988f4874bb0...",
-#     "CreatedBy": "RUN apt-get install -y openssl"
-#   },
-#   "Vulns": ["CVE-2026-1234"]
+#     "DiffID": "sha256:c6f988f4874bb0..."
+#   }
 # }
 
 # Now you know: Layer 0 (base image) has the vuln
@@ -193,15 +194,16 @@ trivy image --format cyclonedx \
   --output sbom-app-v2.1.0.json \
   registry.example.com/myorg/app:v2.1.0
 
-# Attach SBOM to image as OCI artifact (cosign)
-cosign attach sbom \
-  --sbom sbom-app-v2.1.0.json \
-  registry.example.com/myorg/app:v2.1.0
-
-# Verify SBOM exists before deploying
-cosign verify-attestation \
+# Attach SBOM to the image as a signed attestation (cosign; use the digest)
+cosign attest --key cosign.key \
   --type cyclonedx \
-  registry.example.com/myorg/app:v2.1.0
+  --predicate sbom-app-v2.1.0.json \
+  registry.example.com/myorg/app@sha256:<digest>
+
+# Verify the SBOM attestation before deploying
+cosign verify-attestation --key cosign.pub \
+  --type cyclonedx \
+  registry.example.com/myorg/app@sha256:<digest>
 ```
 
 ### Alerting on New CVEs
