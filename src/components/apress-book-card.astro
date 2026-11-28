@@ -1,0 +1,127 @@
+---
+/**
+ * Book card for Kubernetes Recipes (Apress), in the same visual language as
+ * the Leanpub ebook cards (cert-cta.astro): cover on the left, eyebrow, title,
+ * pills, blurb and a blue primary button.
+ *
+ * - variant "featured": the full card (size "md" in recipes, "lg" on /pricing).
+ * - variant "compact": one slim row (small cover, title, link), used at the end
+ *   of AI/GPU and OpenShift recipes, which already end with two offers.
+ *
+ * Destinations stay the site's own: the Amazon Associates short link
+ * (rel="sponsored noopener") and, where showSpringer is set, Springer Nature
+ * (rel="noopener"). Links carry data-book and data-book-placement, so a click
+ * fires book_click (book, placement); see Layout.astro. Facts only: no prices,
+ * ratings or reviews. Extra actions go in the "actions" slot.
+ */
+import BookCover from "./book-cover.astro";
+import { APRESS_BOOK as BOOK } from "../utils/apress-book.mjs";
+
+export interface Props {
+  placement: string;
+  variant?: "featured" | "compact";
+  size?: "md" | "lg";
+  blurb?: string;
+  /** Text of the Amazon button. */
+  cta?: string;
+  showSpringer?: boolean;
+  /** Heading level of the title. */
+  as?: "h2" | "h3" | "p";
+  loading?: "lazy" | "eager";
+  class?: string;
+}
+
+const {
+  placement,
+  variant = "featured",
+  size = "md",
+  blurb = `A ${BOOK.pages}-page practical guide with hundreds of production-ready patterns for running Kubernetes.`,
+  cta = "Get the book",
+  showSpringer = false,
+  as: Title = "h3",
+  loading = "lazy",
+  class: className,
+} = Astro.props;
+
+const lg = size === "lg";
+const tint = "rgba(29,78,216,0.45)";
+const pills = ["Paperback · eBook", BOOK.publisher, `${BOOK.pages} pages`];
+---
+
+{variant === "compact" ? (
+  <div class:list={["group relative flex items-center gap-4 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-white p-3 pr-4 shadow-sm transition hover:border-blue-300 hover:shadow-md", className]}>
+    <BookCover src={BOOK.cover} title={BOOK.title} width={BOOK.coverWidth} height={BOOK.coverHeight} tint={tint} class="w-12 shrink-0" loading={loading} />
+    <div class="min-w-0 flex-1">
+      <p class="text-[11px] font-semibold uppercase tracking-wider text-blue-700">{`Book by ${BOOK.authors} · ${BOOK.publisher}`}</p>
+      <a
+        href={BOOK.amazon}
+        target="_blank"
+        rel="sponsored noopener"
+        data-book={BOOK.slug}
+        data-book-placement={placement}
+        class="mt-0.5 flex items-center justify-between gap-3 font-bold leading-snug text-slate-900 after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-blue-700"
+      >
+        <span>{BOOK.title}</span>
+        <span class="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-blue-700 group-hover:text-blue-800">
+          <span class="hidden sm:inline">{cta}</span><span aria-hidden="true">→</span>
+        </span>
+      </a>
+    </div>
+  </div>
+) : (
+  <div class:list={["group relative overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 via-white to-purple-50 shadow-sm", lg ? "p-5 md:p-8" : "p-5 md:p-6", className]}>
+    <div aria-hidden="true" class="pointer-events-none absolute -left-20 -top-24 h-56 w-56 rounded-full bg-blue-200/50 blur-3xl"></div>
+    <div class:list={["relative grid items-start gap-x-4 gap-y-4 md:gap-x-7", lg ? "grid-cols-[96px_minmax(0,1fr)] md:grid-cols-[180px_minmax(0,1fr)]" : "grid-cols-[84px_minmax(0,1fr)] md:grid-cols-[120px_minmax(0,1fr)]"]}>
+      <a
+        href={BOOK.amazon}
+        target="_blank"
+        rel="sponsored noopener"
+        data-book={BOOK.slug}
+        data-book-placement={placement}
+        tabindex="-1"
+        aria-hidden="true"
+        class="block md:row-span-2"
+      >
+        <BookCover src={BOOK.cover} title={BOOK.title} width={BOOK.coverWidth} height={BOOK.coverHeight} tint={tint} loading={loading} />
+      </a>
+      <div class="min-w-0 self-center md:self-end">
+        <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">{`Book by ${BOOK.authors}`}</p>
+        <Title class:list={["mt-1 font-bold leading-tight text-slate-900", lg ? "text-2xl md:text-4xl" : "text-xl md:text-2xl"]}>{BOOK.title}</Title>
+        {lg && <p class="mt-1 text-sm text-slate-600 md:text-base">{BOOK.subtitle}</p>}
+        <ul class="mt-2.5 flex flex-wrap gap-1.5" aria-label="Book details">
+          {pills.map((pill) => (
+            <li class="inline-flex items-center rounded-full border border-blue-200 bg-white/80 px-2.5 py-0.5 text-xs font-medium text-blue-800">{pill}</li>
+          ))}
+        </ul>
+      </div>
+      <div class="col-span-2 min-w-0 md:col-span-1 md:col-start-2">
+        <p class:list={["leading-relaxed text-slate-700", lg ? "text-sm md:text-base" : "text-sm"]}>{blurb}</p>
+        <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          <a
+            href={BOOK.amazon}
+            target="_blank"
+            rel="sponsored noopener"
+            data-book={BOOK.slug}
+            data-book-placement={placement}
+            class="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-lg bg-blue-600 px-5 text-sm font-semibold text-white shadow-[0_6px_16px_-6px_rgba(37,99,235,0.7)] transition hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+          >
+            {cta} <span aria-hidden="true">→</span>
+          </a>
+          {showSpringer && (
+            <a
+              href={BOOK.springer}
+              target="_blank"
+              rel="noopener"
+              data-book={BOOK.slug}
+              data-book-placement={placement}
+              class="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-lg border border-blue-200 bg-white px-5 text-sm font-semibold text-blue-800 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+            >
+              Springer Nature (Apress)
+            </a>
+          )}
+          <slot name="actions" />
+        </div>
+      </div>
+    </div>
+  </div>
+)}

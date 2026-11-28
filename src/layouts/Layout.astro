@@ -414,7 +414,8 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
          (form data-sv-form, placement "popup") or the inline form at the end of every
          recipe (form data-kit-inline, newsletter-inline.astro, placement from data-placement);
          book_click: a click on any link to the book on Amazon, Springer or Apress, or on a
-         link marked data-book (a Leanpub ebook: book, placement);
+         link marked data-book (book, placement: a Leanpub ebook, or the Apress book in a book
+         card; plus team: true on a Leanpub team packs link, marked data-book-team);
          affiliate_click: a click on a link marked data-affiliate (company, offer_id);
          enterprise_cta_click: a click on a link to an Open Empower service, marked
          data-enterprise-cta (offer, placement), such as the OpenShift upgrade review
@@ -437,12 +438,15 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
           try { url = new URL(a.href, location.href); } catch (err) { return; }
           var book = a.getAttribute('data-book');
           if (book) {
-            track('book_click', {
+            var bookParams = {
               book: book,
               placement: a.getAttribute('data-book-placement') || '',
               link_url: url.href,
               link_text: (a.textContent || '').trim().slice(0, 100),
-            });
+            };
+            // Leanpub team packs link (data-book-team): same event, team: true.
+            if (a.hasAttribute('data-book-team')) bookParams.team = true;
+            track('book_click', bookParams);
             return;
           }
           var offer = a.getAttribute('data-enterprise-cta');

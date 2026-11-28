@@ -1,26 +1,37 @@
 ---
 import { Picture } from "astro:assets";
-import heroImage from "assets/hero-book.jpg";
+import heroImage from "assets/KubernetesReceipes.webp";
 import Link from "@components/ui/link.astro";
 import { Icon } from "astro-icon/components";
+import { APRESS_BOOK as BOOK } from "../utils/apress-book.mjs";
+
+const pills = ["Paperback · eBook", BOOK.publisher, `${BOOK.pages} pages`];
 ---
 
 <main class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
   <!-- Text Container -->
   <div class="order-1 md:order-2">
-    <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">
+    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">{`Book by ${BOOK.authors}`}</p>
+    <h1 class="mt-2 text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">
       Kubernetes Recipes
     </h1>
     <p class="text-lg mt-4 text-slate-600 max-w-xl">
       A Practical Guide for Container Orchestration and Deployment.
     </p>
+    <ul class="mt-4 flex flex-wrap gap-1.5" aria-label="Book details">
+      {pills.map((pill) => (
+        <li class="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800">{pill}</li>
+      ))}
+    </ul>
 
     <!-- Buy Links -->
     <div class="mt-6 flex flex-col sm:flex-row gap-3">
       <Link
-        href="https://amzn.to/3DzC8QA"
+        href={BOOK.amazon}
         target="_blank"
-        class="flex gap-1 items-center justify-center"
+        class="flex min-h-11 gap-1 items-center justify-center"
+        data-book={BOOK.slug}
+        data-book-placement="home-hero"
         rel="sponsored noopener">
         <Icon class="text-white w-5 h-5" name="bx:bxs-book" />
          Buy Now on Amazon
@@ -29,8 +40,10 @@ import { Icon } from "astro-icon/components";
         size="lg"
         style="outline"
         rel="noopener"
-        href="https://link.springer.com/book/9798868813245"
-        class="flex gap-1 items-center justify-center"
+        href={BOOK.springer}
+        class="flex min-h-11 gap-1 items-center justify-center"
+        data-book={BOOK.slug}
+        data-book-placement="home-hero"
         target="_blank">
         <Icon class="text-black w-4 h-4" name="bx:bx-book-reader" />
          Springer Nature
@@ -48,16 +61,23 @@ import { Icon } from "astro-icon/components";
     </div>
   </div>
 
-  <!-- Image Container -->
+  <!-- Image Container: the cover drawn as a book (spine edge, layered shadow, hover lift) -->
   <div class="py-6 order-2 md:order-1 block">
-    <Picture
-      src={heroImage}
-      alt="Kubernetes Recipes book cover"
-      widths={[200, 400, 600]}
-      sizes="(max-width: 800px) 100vw, 620px"
-      loading="eager"
-      format="avif"
-      class="rounded-sm"
-    />
+    <div class="group relative mx-auto w-[240px] sm:w-[300px] lg:w-[340px]">
+      <div aria-hidden="true" class="pointer-events-none absolute -inset-10 rounded-full bg-blue-200/50 blur-3xl"></div>
+      <div class="relative transition-transform duration-300 ease-out group-hover:-translate-y-1 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0">
+        <Picture
+          src={heroImage}
+          alt={`Cover of ${BOOK.title}`}
+          widths={[240, 340, 480, 680]}
+          sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 340px"
+          loading="eager"
+          format="avif"
+          class="block h-auto w-full rounded-[4px_10px_10px_4px] shadow-[0_2px_2px_rgba(15,23,42,0.08),0_10px_24px_-6px_rgba(15,23,42,0.28),0_36px_60px_-24px_rgba(29,78,216,0.55)]"
+        />
+        <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 w-[6%] rounded-l-[4px] bg-gradient-to-r from-black/35 via-white/25 to-transparent"></span>
+        <span aria-hidden="true" class="pointer-events-none absolute inset-0 rounded-[4px_10px_10px_4px] ring-1 ring-inset ring-black/10"></span>
+      </div>
+    </div>
   </div>
 </main>

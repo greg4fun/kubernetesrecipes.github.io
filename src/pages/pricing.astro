@@ -3,13 +3,11 @@
 // It replaced the Astroship pricing template (Personal / Startup / Enterprise
 // tiers), which was live at this URL. The site has no other book page (the
 // homepage is the recipe hub), so the URL stays and now holds the book.
-// Book facts are the ones in hero.astro; keep the two in step.
+// Book facts and links: src/utils/apress-book.mjs (the card: apress-book-card.astro).
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
-
-const AMAZON = "https://amzn.to/3DzC8QA";
-const SPRINGER = "https://link.springer.com/book/9798868813245";
+import ApressBookCard from "@components/apress-book-card.astro";
 ---
 
 <Layout
@@ -24,50 +22,36 @@ const SPRINGER = "https://link.springer.com/book/9798868813245";
       </Fragment>
     </Sectionhead>
 
-    <div class="mx-auto max-w-4xl mt-12 grid md:grid-cols-[200px_1fr] gap-10 items-start">
-      <a href={AMAZON} target="_blank" rel="sponsored noopener" class="mx-auto">
-        <img src="/book/cover-sm.jpg" alt="Kubernetes Recipes book cover" width="200" height="303" class="rounded-lg shadow-lg" loading="eager" />
-      </a>
+    <ApressBookCard
+      class="mx-auto mt-12 max-w-4xl"
+      placement="pricing"
+      size="lg"
+      as="h2"
+      cta="Buy on Amazon"
+      showSpringer
+      loading="eager"
+      blurb="Paperback and eBook, from Amazon or from Springer Nature, the publisher's store."
+    />
 
+    <div class="mx-auto mt-12 grid max-w-4xl gap-10 md:grid-cols-2">
       <div>
-        <h2 class="text-2xl font-semibold text-slate-900">Buy it</h2>
-        <p class="mt-2 text-slate-700">Paperback and eBook.</p>
-        <div class="mt-4 flex flex-col sm:flex-row gap-3">
-          <a
-            href={AMAZON}
-            target="_blank"
-            rel="sponsored noopener"
-            class="inline-flex items-center justify-center rounded-lg bg-black px-5 py-2.5 font-semibold text-white hover:bg-gray-800 transition-colors"
-          >
-            Buy on Amazon
-          </a>
-          <a
-            href={SPRINGER}
-            target="_blank"
-            rel="noopener"
-            class="inline-flex items-center justify-center rounded-lg border-2 border-black bg-white px-5 py-2.5 font-semibold text-black hover:bg-gray-100 transition-colors"
-          >
-            Springer Nature (Apress)
-          </a>
-        </div>
-
-        <h2 class="mt-10 text-2xl font-semibold text-slate-900">Read a chapter first</h2>
+        <h2 class="text-2xl font-semibold text-slate-900">Read a chapter first</h2>
         <p class="mt-2 text-slate-700 leading-relaxed">
           Chapter 7, on Kubernetes storage, is free. Download it from the
           <a href="/chapters/" class="text-blue-600 underline underline-offset-2">chapters page</a>, which also lists what every chapter covers.
         </p>
-
-        <h2 class="mt-10 text-2xl font-semibold text-slate-900">Book details</h2>
+        <p class="mt-6 text-slate-700">
+          The free recipes on this site are in the <a href="/recipes/" class="text-blue-600 underline underline-offset-2">recipe collection</a>.
+        </p>
+      </div>
+      <div>
+        <h2 class="text-2xl font-semibold text-slate-900">Book details</h2>
         <dl class="mt-3 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 text-sm text-slate-600">
           <dt class="font-semibold">ISBN-13</dt><dd>979-8-8688-1324-5</dd>
           <dt class="font-semibold">Publisher</dt><dd>Apress; First Edition (April 1, 2025)</dd>
           <dt class="font-semibold">Language</dt><dd>English</dd>
           <dt class="font-semibold">Paperback</dt><dd>750 pages</dd>
         </dl>
-
-        <p class="mt-10 text-slate-700">
-          The free recipes on this site are in the <a href="/recipes/" class="text-blue-600 underline underline-offset-2">recipe collection</a>.
-        </p>
       </div>
     </div>
   </Container>
