@@ -10,7 +10,8 @@
 //   3. any other recipe: the Linux Foundation certification for its category.
 //
 // Tracking (Layout.astro): a Leanpub link carries data-book and fires
-// `book_click` (book, placement); the review link carries data-enterprise-cta
+// `book_click` (book, placement; book is the slug, e.g. kubernetes-ai, never
+// the coupon path); the review link carries data-enterprise-cta
 // and fires `enterprise_cta_click` (offer, placement). No prices for the
 // ebooks: Leanpub prices vary. The review price is the one on its page.
 
@@ -69,17 +70,25 @@ export function isOpenShiftAiRecipe(recipe = {}) {
   return OPENSHIFT_AI_TITLE_RE.test(String(title));
 }
 
+// Leanpub coupon for this site (full price, no expiry): a link to
+// https://leanpub.com/<book>/c/<code> credits the sale to kubernetes.recipes
+// in the Leanpub dashboard. Every book below links through it.
+export const LEANPUB_COUPON = "kubernetesrecipes";
+
+/** The Leanpub coupon URL of a book, without query string. */
+export const leanpubBookUrl = (book) => `https://leanpub.com/${book}/c/${LEANPUB_COUPON}`;
+
 export const LEANPUB_BOOKS = {
   "kubernetes-ai": {
     title: "Kubernetes AI",
     // From the book's Leanpub description.
     description:
       "A hands-on guide to running LLMs and GPU workloads on Kubernetes: inference, training, NVIDIA GPUs, storage, networking, security and operations.",
-    url: "https://leanpub.com/kubernetes-ai",
+    url: leanpubBookUrl("kubernetes-ai"),
   },
   "openshift-ai": {
     title: "OpenShift AI Platform Guide",
-    url: "https://leanpub.com/openshift-ai",
+    url: leanpubBookUrl("openshift-ai"),
   },
 };
 
