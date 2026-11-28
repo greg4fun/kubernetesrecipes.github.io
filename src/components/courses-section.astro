@@ -3,12 +3,15 @@
  * Homepage courses section promoting CopyPasteLearn.com courses.
  * Only courses whose free lesson has video. The titles and descriptions of
  * the two catalog entries come from src/utils/copypastelearn.mjs.
+ * Links carry the group's campaign tags (copyPasteLearnUrl), utm_content
+ * "home-<course>", and a click fires course_click with placement "home".
  */
-import { COPYPASTELEARN_COURSES } from "../utils/copypastelearn.mjs";
+import { COPYPASTELEARN_COURSES, copyPasteLearnUrl } from "../utils/copypastelearn.mjs";
 
 const catalog = COPYPASTELEARN_COURSES as Record<string, { title: string; description: string; path: string }>;
 const catalogCourse = (key: string, emoji: string, tag: string) => ({
-  url: `https://www.copypastelearn.com${catalog[key].path}`,
+  key,
+  url: copyPasteLearnUrl(catalog[key].path, `home-${key}`),
   title: catalog[key].title,
   description: catalog[key].description,
   emoji,
@@ -17,7 +20,8 @@ const catalogCourse = (key: string, emoji: string, tag: string) => ({
 
 const courses = [
   {
-    url: "https://www.copypastelearn.com/courses/openclaw-agent",
+    key: "openclaw",
+    url: copyPasteLearnUrl("/courses/openclaw-agent", "home-openclaw"),
     title: "OpenClaw Agent",
     description: "Build and deploy AI agents that connect to WhatsApp, Telegram, Discord & more.",
     emoji: "🤖",
@@ -26,7 +30,8 @@ const courses = [
   catalogCourse("mlops-mac", "🧪", "MLOps"),
   catalogCourse("kubernetes-mac", "☸️", "Kubernetes"),
   {
-    url: "https://www.copypastelearn.com/courses/ansible-quickstart",
+    key: "ansible",
+    url: copyPasteLearnUrl("/courses/ansible-quickstart", "home-ansible"),
     title: "Ansible Quickstart",
     description: "Automate server configuration, K8s node setup, and deployment pipelines.",
     emoji: "⚡",
@@ -43,7 +48,7 @@ const courses = [
     </h2>
     <p class="text-slate-500 mt-3 max-w-2xl mx-auto">
       Go beyond recipes — master the full stack with step-by-step courses from 
-      <a href="https://www.copypastelearn.com/" target="_blank" rel="noopener" class="text-blue-600 underline underline-offset-2 font-medium">CopyPasteLearn.com</a>.
+      <a href={copyPasteLearnUrl("/", "home-section")} target="_blank" rel="noopener" data-cpl-course="home" data-cpl-placement="home" class="text-blue-600 underline underline-offset-2 font-medium">CopyPasteLearn.com</a>.
     </p>
   </div>
   
@@ -53,6 +58,8 @@ const courses = [
         href={course.url}
         target="_blank"
         rel="noopener"
+        data-cpl-course={course.key}
+        data-cpl-placement="home"
         class="group flex items-start gap-4 bg-white rounded-xl p-6 border border-slate-200 hover:border-blue-400 hover:shadow-lg transition-all"
       >
         <span class="text-3xl">{course.emoji}</span>

@@ -38,8 +38,9 @@ INTENTIONAL_NOINDEX = {
     "/404/",
 }
 
-# Path prefixes excluded from the sitemap by astro.config.mjs (demo/template).
-EXCLUDED_PREFIXES = ("/blog/", "/pricing/")
+# Path prefixes excluded from the sitemap by astro.config.mjs (the noindex blog).
+# /pricing/ is the "Get the book" page since Nov 28, 2026, and is listed.
+EXCLUDED_PREFIXES = ("/blog/",)
 
 REFRESH_RE = re.compile(r'http-equiv=["\']?refresh', re.IGNORECASE)
 LOC_RE = re.compile(r"<loc>\s*([^<\s]+)\s*</loc>")

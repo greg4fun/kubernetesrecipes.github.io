@@ -412,7 +412,10 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
     <!-- Conversion events for GA4 (marked as key events in GA4 admin):
          newsletter_signup: a valid submit of a Kit (ConvertKit) form, such as the newsletter popup;
          book_click: a click on any link to the book on Amazon, Springer or Apress;
-         affiliate_click: a click on a link marked data-affiliate (company, offer_id).
+         affiliate_click: a click on a link marked data-affiliate (company, offer_id);
+         enterprise_cta_click: a click on a link to an Open Empower service, marked
+         data-enterprise-cta (offer, placement), such as the OpenShift upgrade review
+         box on OpenShift recipes (cert-cta.astro).
          course_click (not a key event): a click on a link inside a CopyPasteLearn
          card, marked data-cpl-course (course, placement).
          All go through the gtag() set up above; hits before it loads are skipped. -->
@@ -429,6 +432,15 @@ const breadcrumbStructuredData = (pathSegments.length > 0 && !isRecipeDetailPage
           if (!a) return;
           var url;
           try { url = new URL(a.href, location.href); } catch (err) { return; }
+          var offer = a.getAttribute('data-enterprise-cta');
+          if (offer) {
+            track('enterprise_cta_click', {
+              offer: offer,
+              placement: a.getAttribute('data-cta-placement') || '',
+              link_url: url.href,
+            });
+            return;
+          }
           var company = a.getAttribute('data-affiliate');
           if (company) {
             track('affiliate_click', {

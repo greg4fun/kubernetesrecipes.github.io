@@ -333,8 +333,14 @@ const breadcrumbLd = {
         </div>
       )}
 
-      <!-- Linux Foundation certification matching the recipe category -->
-      <CertCta category={recipe.data.category} />
+      <!-- Linux Foundation certification matching the recipe category, or the
+           OpenShift upgrade review on OpenShift recipes -->
+      <CertCta
+        category={recipe.data.category}
+        slug={recipe.slug}
+        title={recipe.data.title}
+        tags={recipe.data.tags}
+      />
 
       <!-- Author Bio Card -->
       <AuthorCard author={recipe.data.author} />

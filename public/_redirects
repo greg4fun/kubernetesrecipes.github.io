@@ -385,3 +385,11 @@
 /recipes/configuration/open-kernel-modules-dma-buf/    /recipes/configuration/switch-proprietary-to-open-kernel-modules/    301
 /recipes/observability/grafana-kubernetes-dashboards/    /recipes/observability/kubernetes-pod-resource-monitoring-grafana/    301
 /recipes/troubleshooting/fix-kubernetes-dns-resolution/    /recipes/troubleshooting/dns-resolution-failure-pods/    301
+
+# =============================================================================
+# ASTROSHIP TEMPLATE LEFTOVERS (removed Nov 28, 2026; stubs in src/pages/blog/)
+# =============================================================================
+/blog/how-to-become-frontend-master/    /    301
+/blog/complete-guide-fullstack-development/    /    301
+/blog/essential-data-structures-algorithms/    /    301
+/blog/kitchensink/    /    301
