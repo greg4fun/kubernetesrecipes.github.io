@@ -117,7 +117,7 @@ curl -s https://dl.k8s.io/release/stable-1.32.txt
 # v1.30 → v1.33 (skip two — NOT supported)
 
 # Check your current version
-kubectl version --short
+kubectl version
 # Client: v1.33.2
 # Server: v1.32.5  ← need to plan upgrade to v1.33
 
@@ -139,7 +139,7 @@ kubectl version --short
 
 # Common deprecation gotchas:
 # - PodSecurityPolicy removed in v1.25
-# - FlowSchema v1beta3 → v1 in v1.29
+# - FlowSchema v1beta3 → v1 (v1 since v1.29, v1beta3 removed in v1.32)
 # - CronJob batch/v1beta1 → batch/v1 since v1.21
 ```
 

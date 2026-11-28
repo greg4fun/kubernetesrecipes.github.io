@@ -135,8 +135,10 @@ Common conditions:
 
 ```bash
 # Acknowledge an admin gate (required for some Y-stream upgrades)
-oc -n openshift-config patch cm admin-gates \
-  --type merge -p '{"data":{"ack-4.14-kube-1.28-api-removals-in-4.15":"true"}}'
+# Use the exact key from `oc adm upgrade` / Red Hat's "Preparing to update" docs
+# for your target, e.g. for 4.15 -> 4.16:
+oc -n openshift-config patch cm admin-acks \
+  --type merge -p '{"data":{"ack-4.15-kube-1.29-api-removals-in-4.16":"true"}}'
 
 # After acknowledging, the conditional update becomes recommended
 oc adm upgrade
@@ -295,7 +297,7 @@ echo "=== Available Updates ==="
 oc adm upgrade 2>&1 | head -20
 
 echo "=== Admin Acks Required ==="
-oc get cm admin-gates -n openshift-config -o json 2>/dev/null | jq '.data // "none"'
+oc get cm admin-acks -n openshift-config -o json 2>/dev/null | jq '.data // "none"'
 ```
 
 ### Start the Upgrade
@@ -328,7 +330,7 @@ Check degraded operators: `oc get co | grep -v "True.*False.*False"`. Common cul
 
 **AdminAckRequired blocks Y-stream upgrade**
 
-Kubernetes removes deprecated APIs between minor versions. You must acknowledge awareness by patching the `admin-gates` ConfigMap in `openshift-config`. Read the release notes for which APIs are removed.
+Kubernetes removes deprecated APIs between minor versions. You must acknowledge awareness by patching the `admin-acks` ConfigMap in `openshift-config` with the key Red Hat documents for that update. Read the release notes for which APIs are removed.
 
 **Air-gapped graph data is stale**
 

@@ -85,7 +85,7 @@ flowchart TB
 
 ```bash
 # Check Kubernetes version
-kubectl version --short
+kubectl version
 
 # Verify GPU Operator is installed
 kubectl get pods -n gpu-operator

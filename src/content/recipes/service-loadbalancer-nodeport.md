@@ -195,6 +195,8 @@ Now pods can access `external-db` which resolves to `database.example.com`.
 
 Expose on specific external IPs:
 
+> ⚠️ `.spec.externalIPs` is deprecated since Kubernetes 1.36 (CVE-2020-8554). It still works but emits warnings; kube-proxy support is disabled no earlier than v1.40. Prefer `type: LoadBalancer` (e.g. MetalLB) or Gateway API for new Services.
+
 ```yaml
 apiVersion: v1
 kind: Service

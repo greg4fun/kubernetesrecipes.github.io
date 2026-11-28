@@ -79,10 +79,13 @@ kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-
 ### Option 3: kubeadm Single-Node Setup
 
 ```bash
-# During cluster init — allow scheduling on control plane
+# During cluster init — register the control-plane node without taints.
+# In kubeadm-config.yaml (InitConfiguration):
+#   nodeRegistration:
+#     taints: []    # empty list = no taint; omitted = default control-plane taint
 kubeadm init --config kubeadm-config.yaml
 
-# Then untaint
+# Or, on an existing cluster, untaint (official kubeadm docs command)
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 
 # For k3s — no taint by default (single-node friendly)
@@ -123,9 +126,9 @@ kubectl taint nodes my-node node-role.kubernetes.io/master:NoSchedule- 2>/dev/nu
 kubectl taint nodes my-node node-role.kubernetes.io/control-plane:NoSchedule- 2>/dev/null
 ```
 
-**Taint comes back after reboot**
+**Taint comes back**
 
-kubeadm re-applies taints. Add `--control-plane-taint=""` to kubeadm config or use a post-boot script.
+Taints live on the Node object, and the kubeadm docs say `nodeRegistration.taints` is "solely used for Node registration" (`kubeadm init`/`join`), so kubeadm does not re-apply it on reboot. If the taint reappears, check whether the node was re-registered or whether a tool or operator manages node taints. For kubeadm, set `nodeRegistration.taints: []` in the InitConfiguration/JoinConfiguration (there is no `--control-plane-taint` flag).
 
 **Should I run workloads on control-plane nodes?**
 

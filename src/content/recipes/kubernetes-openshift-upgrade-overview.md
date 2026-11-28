@@ -101,7 +101,7 @@ oc adm upgrade channel stable-4.17
 # pre-flight-check.sh — run before ANY upgrade
 
 echo "=== 1. Current Version ==="
-kubectl version --short 2>/dev/null || oc version
+kubectl version 2>/dev/null || oc version
 
 echo -e "\n=== 2. Node Status ==="
 kubectl get nodes

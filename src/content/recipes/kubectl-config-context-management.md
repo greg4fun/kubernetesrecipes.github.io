@@ -139,7 +139,7 @@ done
 
 # Remove all unreachable contexts
 for ctx in $(kubectl config get-contexts -o name); do
-  if ! kubectl --context="$ctx" version --short 2>/dev/null; then
+  if ! kubectl --context="$ctx" version 2>/dev/null; then
     echo "Removing stale context: $ctx"
     kubectl config delete-context "$ctx"
   fi

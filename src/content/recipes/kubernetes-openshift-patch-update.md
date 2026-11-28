@@ -40,7 +40,7 @@ flowchart LR
 
 ```bash
 # Check current version
-kubectl version --short
+kubectl version
 # Client Version: v1.31.1
 # Server Version: v1.31.1
 

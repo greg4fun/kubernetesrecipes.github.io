@@ -169,7 +169,7 @@ oc patch installplan <plan-name> -n <ns> --type merge \
 
 ```bash
 # Check for removed APIs in target version
-# 4.16 (K8s 1.29): flowcontrol.apiserver.k8s.io/v1beta3 removed
+# 4.16 (K8s 1.29): flowcontrol.apiserver.k8s.io/v1beta2 removed (v1beta3 follows in K8s 1.32 / OCP 4.19)
 # 4.17 (K8s 1.30): No major removals
 # 4.18 (K8s 1.31): No major removals
 

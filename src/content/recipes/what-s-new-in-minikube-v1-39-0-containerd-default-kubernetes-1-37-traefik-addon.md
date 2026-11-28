@@ -91,7 +91,7 @@ minikube addons enable traefik
 minikube version
 # confirm: minikube version: v1.39.0
 
-kubectl version --short
+kubectl version
 # confirm server version matches the pinned/default v1.37.0
 
 minikube ssh -- "sudo crictl info | grep -i containerd"

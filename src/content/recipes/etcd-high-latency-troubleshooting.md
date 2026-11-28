@@ -34,9 +34,9 @@ real    0m8.234s
 ### Step 1: Check etcd Health
 
 ```bash
-# In OpenShift
-oc exec -n openshift-etcd etcd-master-0 -c etcd -- \
-  etcdctl endpoint health --cluster -w table
+# In OpenShift (pattern from the OpenShift etcd docs; pod names are etcd-<node-name>)
+oc -n openshift-etcd get pods -l k8s-app=etcd
+oc rsh -n openshift-etcd etcd-<node-name> etcdctl endpoint health --cluster -w table
 
 # Standard Kubernetes
 ETCDCTL_API=3 etcdctl \
@@ -76,7 +76,8 @@ etcdctl defrag --endpoints=https://etcd-2:2379
 ### Step 4: Check Database Size
 
 ```bash
-# etcd DB should be < 4GB (default limit is 8GB)
+# etcd DB should be < 4GB (default quota is 2 GiB via --quota-backend-bytes;
+# commonly raised to 8 GiB, the suggested maximum for normal environments)
 etcdctl endpoint status -w table
 # Check DB SIZE column
 
