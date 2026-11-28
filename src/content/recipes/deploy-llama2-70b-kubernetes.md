@@ -261,10 +261,10 @@ flowchart TD
 ### NCCL timeout during multi-GPU initialization
 
 ```yaml
-# Increase NCCL timeout and ensure shared memory
+# Increase the collective timeout and ensure shared memory.
+# NCCL has no NCCL_TIMEOUT variable: set it in PyTorch, e.g.
+# dist.init_process_group("nccl", timeout=timedelta(minutes=30))  (default: 10 min)
 env:
-  - name: NCCL_TIMEOUT
-    value: "1800"
   - name: NCCL_SOCKET_IFNAME
     value: "eth0"
 # Ensure /dev/shm is large enough (16Gi for 4 GPUs)

@@ -197,8 +197,8 @@ env:
     value: "0"  # Enable InfiniBand if available
   - name: NCCL_NET_GDR_LEVEL
     value: "5"  # GPUDirect RDMA
-  - name: NCCL_TIMEOUT
-    value: "1800"  # 30 min timeout for large models
+  # No NCCL_TIMEOUT in NCCL: raise the timeout in PyTorch instead,
+  # init_process_group(timeout=timedelta(minutes=30)) (default: 10 min)
 ```
 
 ## Best Practices

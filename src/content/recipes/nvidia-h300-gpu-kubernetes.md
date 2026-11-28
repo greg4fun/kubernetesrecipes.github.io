@@ -20,7 +20,7 @@ relatedRecipes:
   - "dgx-h100-nvidia-smi-topo-kubernetes"
 ---
 
-> 💡 **Quick Answer:** The NVIDIA H300 is a rumored/upcoming GPU in the Hopper family, positioned between H200 and Blackwell B200. Currently, H100 (80GB HBM3, 3.35 TB/s) and H200 (141GB HBM3e, 4.8 TB/s) are the production GPUs for Kubernetes AI workloads. Deploy them with GPU Operator + Node Feature Discovery, request via `nvidia.com/gpu: 1`, and use MIG or time-slicing for multi-tenant sharing.
+> 💡 **Quick Answer:** NVIDIA has not announced an H300: after the Hopper H200, its data center line moved to Blackwell (B200, GB200, GB300) and then Rubin. For Hopper, H100 (80GB HBM3, 3.35 TB/s) and H200 (141GB HBM3e, 4.8 TB/s) are the production GPUs for Kubernetes AI workloads. Deploy them with GPU Operator + Node Feature Discovery, request via `nvidia.com/gpu: 1`, and use MIG or time-slicing for multi-tenant sharing.
 
 ## The Problem
 
@@ -38,10 +38,10 @@ Choosing the right NVIDIA GPU for Kubernetes AI workloads requires understanding
 
 | GPU | Architecture | VRAM | Memory BW | FP16 TFLOPS | NVLink | Use Case |
 |-----|-------------|------|-----------|-------------|---------|----------|
-| **A100 40GB** | Ampere | 40GB HBM2e | 1.6 TB/s | 312 | 600 GB/s | Training/inference |
+| **A100 40GB** | Ampere | 40GB HBM2 | 1.6 TB/s | 312 | 600 GB/s | Training/inference |
 | **A100 80GB** | Ampere | 80GB HBM2e | 2.0 TB/s | 312 | 600 GB/s | Large model training |
 | **H100 SXM** | Hopper | 80GB HBM3 | 3.35 TB/s | 990 | 900 GB/s | Flagship training |
-| **H100 PCIe** | Hopper | 80GB HBM3 | 2.0 TB/s | 756 | 600 GB/s | Inference / edge |
+| **H100 PCIe** | Hopper | 80GB HBM2e | 2.0 TB/s | 756 | 600 GB/s | Inference / edge |
 | **H200 SXM** | Hopper | 141GB HBM3e | 4.8 TB/s | 990 | 900 GB/s | Large model inference |
 | **B100** | Blackwell | 192GB HBM3e | 8.0 TB/s | 1800 | 1800 GB/s | Next-gen training |
 | **B200** | Blackwell | 192GB HBM3e | 8.0 TB/s | 2250 | 1800 GB/s | Flagship next-gen |
@@ -50,13 +50,12 @@ Choosing the right NVIDIA GPU for Kubernetes AI workloads requires understanding
 ### Deploy GPUs on Kubernetes
 
 ```bash
-# 1. Install Node Feature Discovery
-helm install nfd nvidia/node-feature-discovery \
-  -n gpu-operator --create-namespace
+# 1. Node Feature Discovery: the GPU Operator chart deploys it (nfd.enabled=true by default).
+#    If NFD already runs in the cluster, add --set nfd.enabled=false below.
 
 # 2. Install GPU Operator
 helm install gpu-operator nvidia/gpu-operator \
-  -n gpu-operator \
+  -n gpu-operator --create-namespace \
   --set driver.enabled=true \
   --set toolkit.enabled=true \
   --set devicePlugin.enabled=true \
@@ -77,7 +76,7 @@ metadata:
   name: llm-inference
 spec:
   nodeSelector:
-    nvidia.com/gpu.product: NVIDIA-H100-SXM5-80GB
+    nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
   containers:
   - name: inference
     image: nvcr.io/nvidia/pytorch:24.07-py3
@@ -91,10 +90,9 @@ spec:
 
 ```bash
 # List available GPU types in cluster
-kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.labels.nvidia\.com/gpu\.product}{"\n"}{end}' | sort -u
-# NVIDIA-A100-SXM4-80GB
-# NVIDIA-H100-SXM5-80GB
-# NVIDIA-H200-SXM-141GB
+kubectl get nodes -L nvidia.com/gpu.product
+# GFD derives the value from the GPU product name, e.g. H100 SXM: NVIDIA-H100-80GB-HBM3
+# Copy the exact value from this output into your nodeSelector
 ```
 
 ### Model-to-GPU Sizing Guide
@@ -103,20 +101,20 @@ kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.labels.nvidia\.com/gp
 |-------|--------|-----------|---------|-------------|
 | Llama 3.1 8B | 8B | ~16GB | 1× A100 40GB | 1× H100 |
 | Llama 3.1 70B | 70B | ~140GB | 2× H100 80GB | 2× H200 141GB |
-| Llama 3.1 405B | 405B | ~810GB | 8× H200 (TP=8,PP=2) | 8× B200 |
+| Llama 3.1 405B | 405B | ~810GB | 8× H200 (TP=8) | 8× B200 |
 | Mixtral 8×22B | 141B | ~282GB | 4× H100 80GB | 4× H200 |
 | GPT-4 class | ~1.8T | ~3.6TB | 64× H100 | 32× B200 |
 
 ### Memory Bandwidth Impact on Inference
 
 ```
-Inference tokens/s ≈ Memory_BW / (2 × Params_in_bytes)
+Decode tokens/s (batch 1) ≈ Memory_BW / Weight_bytes   (every token reads all weights once)
 
-Llama 70B FP16 on different GPUs:
-- A100 80GB:  2000 GB/s / (2 × 140GB) = ~7 tok/s per GPU
-- H100 SXM:   3350 GB/s / (2 × 140GB) = ~12 tok/s per GPU  
-- H200 SXM:   4800 GB/s / (2 × 140GB) = ~17 tok/s per GPU
-- B200:       8000 GB/s / (2 × 140GB) = ~29 tok/s per GPU
+Llama 70B FP16 (~140GB of weights), upper bound if the weights fit:
+- A100 80GB:  2000 GB/s / 140GB = ~14 tok/s  (does not fit one 80GB GPU: needs TP=2)
+- H100 SXM:   3350 GB/s / 140GB = ~24 tok/s  (does not fit one 80GB GPU: needs TP=2)
+- H200 SXM:   4800 GB/s / 140GB = ~34 tok/s
+- B200:       8000 GB/s / 140GB = ~57 tok/s
 
 For batch inference, compute (TFLOPS) becomes the bottleneck instead.
 ```

@@ -167,7 +167,8 @@ SR-IOV:                    ENABLED
 Above 4G Decoding:         ENABLED
 ACS:                       DISABLED in BIOS (or kernel override)
 
-Kernel args: intel_iommu=on iommu=pt pcie_acs_override=downstream,multifunction
+Kernel args: intel_iommu=on iommu=pt pci=disable_acs_redir=<switch-port-bdf>
+             (pcie_acs_override is not a mainline kernel parameter)
 ```
 
 ### Common Misconception
@@ -248,5 +249,5 @@ lspci 2>/dev/null | grep -c "Virtual Function"
 - SR-IOV requires VT-d — you can't have VFs without IOMMU
 - Disabling VT-d removes IOMMU overhead AND eliminates ACS blocking
 - The simple path for GPU training: VT-d OFF, SR-IOV OFF, use host InfiniBand directly
-- If SR-IOV needed: VT-d ON + `iommu=pt` + `pcie_acs_override` (slight overhead)
+- If SR-IOV needed: VT-d ON + `iommu=pt` + ACS off via BIOS, `setpci` or `pci=disable_acs_redir=` (slight overhead)
 - Never confuse VT-x with VT-d — disabling VT-x can break your cluster

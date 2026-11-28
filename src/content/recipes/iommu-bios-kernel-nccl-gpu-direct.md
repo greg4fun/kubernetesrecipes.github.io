@@ -18,7 +18,7 @@ relatedRecipes:
   - "kubernetes-ai-infrastructure-scaling"
 ---
 
-> 💡 **Quick Answer:** NCCL GPU-Direct RDMA requires IOMMU enabled in BIOS (VT-d/AMD-Vi) and configured in the kernel with `iommu=pt` (passthrough mode) so GPUs and RDMA NICs can perform peer-to-peer DMA without CPU involvement, achieving maximum inter-node communication bandwidth.
+> 💡 **Quick Answer:** NCCL GPU-Direct RDMA does not need the IOMMU. On bare metal, NVIDIA says the IOMMU must be disabled for GPU PCIe peer-to-peer: CUDA does not support IOMMU-translated P2P and it can cause silent memory corruption. Enable VT-d/AMD-Vi only when you need SR-IOV, VFIO or VMs, and then use `iommu=pt` (passthrough mode) so GPU and RDMA NIC DMA is not translated.
 
 ## The Problem
 
@@ -39,7 +39,7 @@ Required BIOS Settings for NCCL GPU-Direct:
 ────────────────────────────────────────────────────────────────
 Setting                     Intel               AMD
 ────────────────────────────────────────────────────────────────
-IOMMU                       VT-d: Enabled       AMD-Vi: Enabled
+IOMMU                       VT-d: Enabled***    AMD-Vi: Enabled***
 SR-IOV                      Enabled             Enabled
 Above 4G Decoding           Enabled             Enabled
 ACS Override                Disabled*           Disabled*
@@ -53,6 +53,7 @@ NPS (NUMA Per Socket)       —                   NPS1 or NPS4**
 * ACS (Access Control Services) must be disabled or overridden
   for GPU-Direct P2P within PCIe switch groups
 ** NPS4 for best NUMA locality to GPUs; NPS1 for simplicity
+*** Only when SR-IOV/VFIO/VMs need it; bare-metal GPU-only nodes: Disabled
 ```
 
 ### Kernel Parameters
@@ -172,7 +173,7 @@ dmesg | grep -i "iommu.*passthrough\|DMA.*passthrough"
 cat /proc/cmdline | grep -o "iommu=[^ ]*"
 # Expected: iommu=pt
 
-# List IOMMU groups (GPUs and NICs should be in same group for P2P)
+# List IOMMU groups (matters for VFIO passthrough only; NCCL P2P has no IOMMU-group requirement)
 for d in /sys/kernel/iommu_groups/*/devices/*; do
   echo "IOMMU Group $(basename $(dirname $(dirname $d))): $(lspci -nns $(basename $d))"
 done | grep -E "NVIDIA|Mellanox"
@@ -195,7 +196,7 @@ dmesg | grep -i peermem
 # Set NCCL debug to see transport selection
 export NCCL_DEBUG=INFO
 export NCCL_IB_HCA=mlx5
-export NCCL_NET_GDR_LEVEL=5         # GPU-Direct RDMA level
+export NCCL_NET_GDR_LEVEL=SYS       # GPU-Direct RDMA level
 export NCCL_IB_GID_INDEX=3          # RoCE v2 GID index
 export NCCL_CROSS_NIC=1             # Allow cross-NIC communication
 export NCCL_IB_QPS_PER_CONNECTION=4  # QPs per connection
@@ -235,10 +236,8 @@ spec:
         - name: NCCL_IB_HCA
           value: "mlx5"
         - name: NCCL_NET_GDR_LEVEL
-          value: "5"
-        # GPU-Direct RDMA
-        - name: NCCL_IB_CUDA_SUPPORT
-          value: "1"
+          value: "SYS"
+        # GPU-Direct RDMA (NCCL_IB_CUDA_SUPPORT was removed in NCCL 2.4.0)
         - name: NCCL_IB_GID_INDEX
           value: "3"
         # Performance tuning
@@ -250,7 +249,7 @@ spec:
           value: "7"
         - name: NCCL_CROSS_NIC
           value: "1"
-        # Disable SHM for multi-node (use RDMA)
+        # 0 keeps SHM enabled for intra-node traffic (1 would disable it)
         - name: NCCL_SHM_DISABLE
           value: "0"
         - name: NCCL_P2P_LEVEL
@@ -281,13 +280,14 @@ for bridge in $(lspci -d ::0604 | awk '{print $1}'); do
   fi
 done
 
-# Disable ACS if blocking P2P (kernel parameter)
-# Add to kernel args: pcie_acs_override=downstream,multifunction
+# Disable ACS if blocking P2P (pcie_acs_override is not a mainline kernel parameter)
+# Per boot: setpci -s <bridge-bdf> ECAP_ACS+0x6.w=0000
+# Or kernel arg: pci=disable_acs_redir=<bridge-bdf>[;<bridge-bdf>...]
 
 # OpenShift MachineConfig:
 spec:
   kernelArguments:
-    - pcie_acs_override=downstream,multifunction
+    - pci=disable_acs_redir=0000:03:00.0   # replace with your PCIe switch ports
 ```
 
 ### NUMA Topology Verification
@@ -334,7 +334,7 @@ ib_write_bw --use_cuda=0 -d mlx5_0 <server-ip>
 # 2. Check nvidia_peermem is loaded (lsmod | grep peermem)
 # 3. Check ACS not blocking P2P
 # 4. Check NUMA locality (GPU and NIC same NUMA node)
-# 5. Check NCCL_NET_GDR_LEVEL=5
+# 5. Check NCCL_NET_GDR_LEVEL=SYS
 ```
 
 ## Common Issues
@@ -349,7 +349,7 @@ ib_write_bw --use_cuda=0 -d mlx5_0 <server-ip>
 
 ### Low bandwidth despite GPU-Direct RDMA active
 - **Cause**: GPU and NIC on different NUMA nodes; ACS blocking P2P path
-- **Fix**: Check `nvidia-smi topo -m`; add `pcie_acs_override` if needed
+- **Fix**: Check `nvidia-smi topo -m`; disable ACS on the switch ports (BIOS, `setpci`, `pci=disable_acs_redir=`) if needed
 
 ### nvidia_peermem fails to load
 - **Cause**: nvidia driver version mismatch or ib_core not loaded
@@ -357,14 +357,14 @@ ib_write_bw --use_cuda=0 -d mlx5_0 <server-ip>
 
 ### IOMMU groups too large (all devices in one group)
 - **Cause**: ACS not supported on PCIe bridge; kernel groups all downstream devices
-- **Fix**: `pcie_acs_override` splits groups; or accept shared group (less isolation)
+- **Fix**: Accept the shared group (less isolation); `pcie_acs_override` is an out-of-tree patch, not in mainline kernels
 
 ## Best Practices
 
 1. **Always `iommu=pt`** — passthrough mode is mandatory for GPU-Direct performance
 2. **Load nvidia_peermem** at boot — add to kernel module autoload
 3. **Verify NUMA locality** — schedule GPU workloads on nodes where GPU↔NIC share NUMA
-4. **Use `NCCL_NET_GDR_LEVEL=5`** — enables full GPU-Direct RDMA path
+4. **Use `NCCL_NET_GDR_LEVEL=SYS`** — enables full GPU-Direct RDMA path (integer 5 is read as SYS)
 5. **Cold reboot after IOMMU changes** — warm reboot doesn't re-enumerate PCIe
 6. **Test with `all_reduce_perf`** — validates full NCCL stack end-to-end
 7. **Monitor `NCCL_DEBUG=INFO`** — confirms transport selection (IB vs Socket)
@@ -379,4 +379,4 @@ ib_write_bw --use_cuda=0 -d mlx5_0 <server-ip>
 - ACS on PCIe bridges can block P2P — override with kernel parameter if needed
 - NUMA topology matters: GPU and NIC on same NUMA node = best latency
 - Verify with `NCCL_DEBUG=INFO` — look for "GPU Direct RDMA Enabled"
-- Full stack: BIOS (VT-d + Above 4G) → Kernel (iommu=pt + peermem) → SR-IOV (VFs) → NCCL (GDR_LEVEL=5)
+- Full stack: BIOS (VT-d + Above 4G) → Kernel (iommu=pt + peermem) → SR-IOV (VFs) → NCCL (GDR_LEVEL=SYS)

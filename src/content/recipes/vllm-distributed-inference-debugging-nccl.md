@@ -133,7 +133,7 @@ Cause: P2P disabled or ACS blocking NVLink
 Fix:
   • Verify NCCL_P2P_DISABLE=0
   • Check nvidia-smi topo -m for P2P connectivity
-  • Disable ACS (pcie_acs_override kernel param)
+  • Disable ACS on PCIe switches (BIOS, setpci, or pci=disable_acs_redir=)
 
 ──────────────────────────────────────────────────────────────────
 FAILURE: Model Download in Air-Gapped

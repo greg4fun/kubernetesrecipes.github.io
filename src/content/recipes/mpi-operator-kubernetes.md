@@ -250,10 +250,10 @@ kubectl exec -it <launcher-pod> -- ping <worker-pod-hostname>
 ### NCCL timeout errors
 
 ```yaml
-# Increase NCCL timeout and debug
+# Increase the collective timeout and debug.
+# NCCL has no NCCL_TIMEOUT variable: set it in PyTorch, e.g.
+# dist.init_process_group("nccl", timeout=timedelta(minutes=30))  (default: 10 min)
 env:
-  - name: NCCL_TIMEOUT
-    value: "1800"
   - name: NCCL_DEBUG
     value: "INFO"
   - name: NCCL_SOCKET_IFNAME

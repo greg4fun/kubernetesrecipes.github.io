@@ -109,9 +109,8 @@ spec:
             - name: NCCL_DEBUG
               value: "INFO"        # Enable debug logging
 
-            # Timeout (increase for large clusters)
-            - name: NCCL_TIMEOUT
-              value: "1800000"     # 30 minutes in ms
+            # Timeout: NCCL has no NCCL_TIMEOUT variable. Raise it in PyTorch:
+            # init_process_group("nccl", timeout=timedelta(minutes=30)) (default: 10 min)
           resources:
             limits:
               nvidia.com/gpu: 8
@@ -216,7 +215,6 @@ spec:
 | \`NCCL_IB_DISABLE\` | Disable InfiniBand | \`0\` (enabled) or \`1\` (disabled) |
 | \`NCCL_IB_HCA\` | InfiniBand HCA device | \`mlx5_0\` or \`mlx5\` |
 | \`NCCL_NET_GDR_LEVEL\` | GPUDirect RDMA level | \`5\` (max) |
-| \`NCCL_TIMEOUT\` | Operation timeout (ms) | \`1800000\` (30 min) |
 | \`NCCL_DEBUG\` | Debug logging level | \`INFO\`, \`WARN\`, \`TRACE\` |
 | \`NCCL_TOPO_DUMP_FILE\` | Dump topology to file | \`/tmp/nccl-topo.xml\` |
 | \`NCCL_P2P_LEVEL\` | P2P communication level | \`NVL\` (NVLink) |
@@ -253,7 +251,7 @@ env:
 | \`No usable listening socket\` | Interface doesn't exist in pod | Check \`ip addr\` inside pod; may need Multus for secondary NICs |
 | Works single-node, fails multi | Loopback used intra-node | Exclude \`lo\`: \`NCCL_SOCKET_IFNAME=^lo\` |
 | \`Call to ibv_modify_qp failed\` | IB interface wrong | Set \`NCCL_IB_HCA=mlx5_0\` explicitly |
-| Intermittent timeouts | Interface flapping | Use bonded interface; increase \`NCCL_TIMEOUT\` |
+| Intermittent timeouts | Interface flapping | Use bonded interface; increase the PyTorch \`init_process_group(timeout=...)\` |
 
 ## Best Practices
 
@@ -261,7 +259,7 @@ env:
 - **Use exclusion (\`^\`) for flexibility** — \`^lo,docker0,veth\` works across node types
 - **Enable \`NCCL_DEBUG=INFO\` during setup** — verify interface selection, disable in production
 - **Match interface across all nodes** — all workers must use the same interface name
-- **Increase \`NCCL_TIMEOUT\` for large clusters** — default may be too short for 32+ nodes
+- **Increase the PyTorch process-group timeout for large clusters** — \`init_process_group(timeout=...)\` defaults to 10 min for NCCL (there is no \`NCCL_TIMEOUT\` variable)
 - **Test with \`nccl-tests\` first** — validate networking before training
 
 ## Key Takeaways
