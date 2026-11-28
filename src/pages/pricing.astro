@@ -1,84 +1,74 @@
 ---
+// "Get the book": where to buy Kubernetes Recipes and the free sample chapter.
+// It replaced the Astroship pricing template (Personal / Startup / Enterprise
+// tiers), which was live at this URL. The site has no other book page (the
+// homepage is the recipe hub), so the URL stays and now holds the book.
+// Book facts are the ones in hero.astro; keep the two in step.
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
-import PricingCard from "@components/pricing.astro";
 
-const pricing = [
-  {
-    name: "Personal",
-    price: "Free",
-    popular: false,
-    features: [
-      "Lifetime free",
-      "Up to 3 users",
-      "Unlimited Pages",
-      "Astro Sub domain",
-      "Basic Integrations",
-      "Community Support",
-    ],
-    button: {
-      text: "Get Started",
-      link: "/",
-    },
-  },
-  {
-    name: "Startup",
-    price: {
-      monthly: "$19",
-      annual: "$16",
-      discount: "10%",
-      original: "$24",
-    },
-    popular: true,
-    features: [
-      "All Free Features",
-      "Up to 20 users",
-      "20 Custom domains",
-      "Unlimited Collaborators",
-      "Advanced Integrations",
-      "Priority Support",
-    ],
-    button: {
-      text: "Get Started",
-      link: "#",
-    },
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    popular: false,
-    features: [
-      "All Pro Features",
-      "Unlimited Custom domains",
-      "99.99% Uptime SLA",
-      "SAML & SSO Integration",
-      "Dedicated Account Manager",
-      "24/7 Phone Support",
-    ],
-    button: {
-      text: "Contact us",
-      link: "/contact",
-    },
-  },
-];
+const AMAZON = "https://amzn.to/3DzC8QA";
+const SPRINGER = "https://link.springer.com/book/9798868813245";
 ---
 
-<Layout 
-  title="Buy the Book" 
-  description="Get Kubernetes Recipes - the practical guide to container orchestration. Available in paperback and eBook formats from Amazon and Springer Nature."
-  noindex={true}
+<Layout
+  title="Get the Book"
+  description="Get Kubernetes Recipes (Apress), the practical guide to container orchestration: paperback and eBook from Amazon and Springer Nature, plus a free Chapter 7 sample."
 >
   <Container>
     <Sectionhead>
-      <Fragment slot="title">Buy the Book</Fragment>
+      <Fragment slot="title">Get the Book</Fragment>
       <Fragment slot="desc">
-        Get your copy of Kubernetes Recipes in paperback or digital format.
+        <em>Kubernetes Recipes: A Practical Guide for Container Orchestration and Deployment</em>, published by Apress.
       </Fragment>
     </Sectionhead>
 
-    <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-(--breakpoint-lg) mt-12">
-      {pricing.map((item) => <PricingCard plan={item} />)}
+    <div class="mx-auto max-w-4xl mt-12 grid md:grid-cols-[200px_1fr] gap-10 items-start">
+      <a href={AMAZON} target="_blank" rel="sponsored noopener" class="mx-auto">
+        <img src="/book/cover-sm.jpg" alt="Kubernetes Recipes book cover" width="200" height="303" class="rounded-lg shadow-lg" loading="eager" />
+      </a>
+
+      <div>
+        <h2 class="text-2xl font-semibold text-slate-900">Buy it</h2>
+        <p class="mt-2 text-slate-700">Paperback and eBook.</p>
+        <div class="mt-4 flex flex-col sm:flex-row gap-3">
+          <a
+            href={AMAZON}
+            target="_blank"
+            rel="sponsored noopener"
+            class="inline-flex items-center justify-center rounded-lg bg-black px-5 py-2.5 font-semibold text-white hover:bg-gray-800 transition-colors"
+          >
+            Buy on Amazon
+          </a>
+          <a
+            href={SPRINGER}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center justify-center rounded-lg border-2 border-black bg-white px-5 py-2.5 font-semibold text-black hover:bg-gray-100 transition-colors"
+          >
+            Springer Nature (Apress)
+          </a>
+        </div>
+
+        <h2 class="mt-10 text-2xl font-semibold text-slate-900">Read a chapter first</h2>
+        <p class="mt-2 text-slate-700 leading-relaxed">
+          Chapter 7, on Kubernetes storage, is free. Download it from the
+          <a href="/chapters/" class="text-blue-600 underline underline-offset-2">chapters page</a>, which also lists what every chapter covers.
+        </p>
+
+        <h2 class="mt-10 text-2xl font-semibold text-slate-900">Book details</h2>
+        <dl class="mt-3 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 text-sm text-slate-600">
+          <dt class="font-semibold">ISBN-13</dt><dd>979-8-8688-1324-5</dd>
+          <dt class="font-semibold">Publisher</dt><dd>Apress; First Edition (April 1, 2025)</dd>
+          <dt class="font-semibold">Language</dt><dd>English</dd>
+          <dt class="font-semibold">Paperback</dt><dd>750 pages</dd>
+        </dl>
+
+        <p class="mt-10 text-slate-700">
+          The free recipes on this site are in the <a href="/recipes/" class="text-blue-600 underline underline-offset-2">recipe collection</a>.
+        </p>
+      </div>
     </div>
   </Container>
 </Layout>

@@ -337,8 +337,9 @@ export default defineConfig({
         if (redirectStubPaths.has(url.pathname)) {
           return false;
         }
-        // Exclude demo/template pages (blog posts, pricing)
-        if (page.includes("/blog/") || page.includes("/pricing/")) {
+        // Exclude the blog (noindex; template redirect stubs). /pricing/ is the
+        // "Get the book" page since Nov 28, 2026, so it is listed.
+        if (page.includes("/blog/")) {
           return false;
         }
         // Exclude non-trailing-slash duplicates (customPages without slash already
