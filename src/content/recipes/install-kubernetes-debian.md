@@ -12,11 +12,11 @@ relatedRecipes:
   - "kubernetes-debugging-toolkit"
 ---
 
-> 💡 **Quick Answer:** Step-by-step guide to install Kubernetes on Debian with kubeadm. Covers containerd, kubeadm init, CNI setup, and worker node joining for Debian 11/12.
+> 💡 **Quick Answer:** Step-by-step guide to install Kubernetes on Debian with kubeadm. Covers containerd, kubeadm init, CNI setup, and worker node joining for Debian 12/13.
 
 ## The Problem
 
-You need to install a production-ready Kubernetes cluster on Debian (Debian 11/12). This guide covers the complete process from prerequisites to a running cluster.
+You need to install a production-ready Kubernetes cluster on Debian (Debian 12/13). This guide covers the complete process from prerequisites to a running cluster.
 
 ## The Solution
 
@@ -51,9 +51,23 @@ net.ipv4.ip_forward                 = 1
 EOF
 sudo sysctl --system
 
-# Install containerd
+# Install containerd 2.x (containerd.io from Docker's repository; Debian's own
+# containerd package is 1.x, and Kubernetes 1.35 was the last release to support 1.x)
 sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl gpg containerd
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/debian
+Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+sudo apt-get update
+sudo apt-get install -y containerd.io
 sudo mkdir -p /etc/containerd
 containerd config default | sudo tee /etc/containerd/config.toml
 sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
@@ -61,8 +75,9 @@ sudo systemctl restart containerd
 sudo systemctl enable containerd
 
 # Add Kubernetes apt repository
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo mkdir -p -m 755 /etc/apt/keyrings
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.37/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.37/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 # Install kubeadm, kubelet, kubectl
 sudo apt-get update
@@ -78,8 +93,8 @@ mkdir -p $HOME/.kube
 sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-# Install Calico CNI
-kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml
+# Install Calico CNI (manifest method; Calico recommends its Tigera operator for new clusters)
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.1/manifests/calico.yaml
 
 # Verify
 kubectl get nodes
@@ -106,9 +121,9 @@ sudo kubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-c
 ```bash
 kubectl get nodes -o wide
 # NAME          STATUS   ROLES           AGE   VERSION
-# control-01    Ready    control-plane   5m    v1.31.0
-# worker-01     Ready    <none>          2m    v1.31.0
-# worker-02     Ready    <none>          2m    v1.31.0
+# control-01    Ready    control-plane   5m    v1.37.3
+# worker-01     Ready    <none>          2m    v1.37.3
+# worker-02     Ready    <none>          2m    v1.37.3
 
 kubectl get pods -A
 ```
@@ -125,9 +140,9 @@ graph TD
 
 ## Common Issues
 
-- **Swap not disabled** — kubeadm refuses to init with swap on
+- **Swap not disabled** — kubeadm only warns, but the kubelet fails to start with swap on (`failSwapOn: true` by default), so `kubeadm init` times out waiting for it
 - **Containerd not using systemd cgroup** — causes kubelet crashes
-- **Firewall blocking ports** — control plane needs 6443, 2379-2380, 10250-10252
+- **Firewall blocking ports** — control plane needs 6443, 2379-2380, 10250, 10257, 10259
 - **Wrong CNI CIDR** — must match `--pod-network-cidr` in kubeadm init
 
 ## Best Practices

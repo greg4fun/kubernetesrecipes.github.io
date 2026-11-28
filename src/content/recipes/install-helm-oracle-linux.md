@@ -24,12 +24,12 @@ You need Helm installed on Oracle Linux (Oracle Linux 8/9) to manage Kubernetes 
 
 ```bash
 # Method 1: Official script (recommended)
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 
 # Method 2: dnf/yum (via EPEL or Copr)
 sudo dnf install -y helm
 # Or download binary directly:
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4
 chmod 700 get_helm.sh
 ./get_helm.sh
 
@@ -38,14 +38,13 @@ helm version
 
 # Add popular chart repos
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo add jetstack https://charts.jetstack.io
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
 # Install your first chart
-helm install my-nginx ingress-nginx/ingress-nginx \
-  --namespace ingress-nginx --create-namespace
+helm install cert-manager jetstack/cert-manager \
+  --namespace cert-manager --create-namespace --set crds.enabled=true
 
 # Shell completion
 echo 'source <(helm completion bash)' >> ~/.bashrc
@@ -56,7 +55,7 @@ source ~/.bashrc
 
 ```bash
 helm version
-# version.BuildInfo{Version:"v3.16.x", ...}
+# version.BuildInfo{Version:"v4.3.x", ...}
 
 # List installed releases
 helm list -A

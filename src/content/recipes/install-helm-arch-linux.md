@@ -24,7 +24,7 @@ You need Helm installed on Arch Linux (Arch Linux rolling) to manage Kubernetes 
 
 ```bash
 # Method 1: Official script
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 
 # Method 2: pacman
 sudo pacman -S helm
@@ -37,7 +37,6 @@ helm version
 
 # Add popular chart repos
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
 
@@ -49,7 +48,7 @@ echo 'source <(helm completion bash)' >> ~/.bashrc
 
 ```bash
 helm version
-# version.BuildInfo{Version:"v3.16.x", ...}
+# version.BuildInfo{Version:"v4.3.x", ...}
 
 # List installed releases
 helm list -A

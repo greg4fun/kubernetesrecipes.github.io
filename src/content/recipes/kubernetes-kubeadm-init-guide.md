@@ -69,10 +69,11 @@ systemctl restart containerd
 
 # Install kubeadm, kubelet, kubectl
 apt-get install -y apt-transport-https ca-certificates curl gpg
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
+mkdir -p -m 755 /etc/apt/keyrings
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.37/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.37/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
 apt-get update
-apt-get install -y kubelet=1.30.0-1.1 kubeadm=1.30.0-1.1 kubectl=1.30.0-1.1
+apt-get install -y kubelet=1.37.3-1.1 kubeadm=1.37.3-1.1 kubectl=1.37.3-1.1
 apt-mark hold kubelet kubeadm kubectl
 ```
 
@@ -84,9 +85,9 @@ kubeadm init --pod-network-cidr=10.244.0.0/16
 
 # With configuration file (recommended)
 cat <<EOF > kubeadm-config.yaml
-apiVersion: kubeadm.k8s.io/v1beta3
+apiVersion: kubeadm.k8s.io/v1beta4  # v1beta3 configs: convert with `kubeadm config migrate`
 kind: ClusterConfiguration
-kubernetesVersion: v1.30.0
+kubernetesVersion: v1.37.3
 controlPlaneEndpoint: "cp.example.com:6443"  # For HA
 networking:
   podSubnet: 10.244.0.0/16
@@ -109,7 +110,7 @@ chown $(id -u):$(id -g) $HOME/.kube/config
 
 ```bash
 # Calico
-kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.0/manifests/calico.yaml
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.1/manifests/calico.yaml
 
 # Or Flannel
 kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
@@ -125,7 +126,7 @@ kubectl get pods -n kube-system -w
 # Control plane should now be Ready
 kubectl get nodes
 # NAME           STATUS   ROLES           VERSION
-# control-plane  Ready    control-plane   v1.30.0
+# control-plane  Ready    control-plane   v1.37.3
 ```
 
 ### Join Worker Nodes
@@ -143,9 +144,9 @@ kubeadm token create --print-join-command
 # Verify nodes joined
 kubectl get nodes
 # NAME           STATUS   ROLES           VERSION
-# control-plane  Ready    control-plane   v1.30.0
-# worker-1       Ready    <none>          v1.30.0
-# worker-2       Ready    <none>          v1.30.0
+# control-plane  Ready    control-plane   v1.37.3
+# worker-1       Ready    <none>          v1.37.3
+# worker-2       Ready    <none>          v1.37.3
 
 # Label workers (optional)
 kubectl label node worker-1 node-role.kubernetes.io/worker=""
@@ -174,9 +175,9 @@ kubeadm join lb.example.com:6443 \
 
 # Verify HA
 kubectl get nodes
-# cp-1   Ready   control-plane   v1.30.0
-# cp-2   Ready   control-plane   v1.30.0
-# cp-3   Ready   control-plane   v1.30.0
+# cp-1   Ready   control-plane   v1.37.3
+# cp-2   Ready   control-plane   v1.37.3
+# cp-3   Ready   control-plane   v1.37.3
 ```
 
 ### Verify Cluster
