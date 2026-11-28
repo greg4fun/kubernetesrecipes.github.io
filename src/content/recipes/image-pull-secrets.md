@@ -89,11 +89,10 @@ echo -n '{"auths":{"registry.example.com":{"username":"myuser","password":"mypas
 AWS_ACCOUNT=123456789012
 AWS_REGION=us-east-1
 
-aws ecr get-login-password --region $AWS_REGION | \
 kubectl create secret docker-registry ecr-secret \
   --docker-server=$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com \
   --docker-username=AWS \
-  --docker-password-stdin
+  --docker-password="$(aws ecr get-login-password --region $AWS_REGION)"
 
 # Use in pod
 # image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/myapp:v1
@@ -121,11 +120,10 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  aws ecr get-login-password --region $AWS_REGION | \
                   kubectl create secret docker-registry ecr-secret \
                     --docker-server=$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com \
                     --docker-username=AWS \
-                    --docker-password-stdin \
+                    --docker-password="$(aws ecr get-login-password --region $AWS_REGION)" \
                     --dry-run=client -o yaml | kubectl apply -f -
               env:
                 - name: AWS_REGION

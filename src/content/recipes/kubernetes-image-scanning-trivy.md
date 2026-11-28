@@ -33,42 +33,34 @@ kubectl cluster-info
 kubectl get nodes
 ```
 
-### Configuration
-
-```yaml
-# Trivy Image Scanning Kubernetes — production example
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kubernetes-image-scanning-trivy-config
-  namespace: production
-  labels:
-    app.kubernetes.io/managed-by: kubectl
-data:
-  config.yaml: |
-    enabled: true
-    logLevel: info
-```
-
-### Deployment
+### Scan Images in CI (Before Deploy)
 
 ```bash
-# Apply the configuration
-kubectl apply -f config.yaml
+# Fail the pipeline on HIGH or CRITICAL findings
+trivy image --severity HIGH,CRITICAL --exit-code 1 registry.example.com/myapp:v1.2.3
 
-# Verify deployment
-kubectl get all -n production -l app.kubernetes.io/managed-by=kubectl
+# Scan the workloads running in one namespace
+trivy k8s --include-namespaces production --report summary
+```
 
-# Check logs for errors
-kubectl logs -n production -l component=controller --tail=50
+### Deployment (Trivy Operator for Continuous Scanning)
+
+```bash
+helm repo add aqua https://aquasecurity.github.io/helm-charts/
+helm repo update
+helm install trivy-operator aqua/trivy-operator \
+  --namespace trivy-system \
+  --create-namespace
 ```
 
 ### Verification
 
 ```bash
-# Confirm everything is running
-kubectl get pods -n production -o wide
-kubectl describe pod -n production <pod-name>
+# Operator is running
+kubectl get pods -n trivy-system
+
+# One VulnerabilityReport per scanned container
+kubectl get vulnerabilityreports -n production
 ```
 
 ```mermaid

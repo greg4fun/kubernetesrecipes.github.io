@@ -26,33 +26,49 @@ Teams need production-ready guidance for cosign image verification kubernetes on
 
 ## The Solution
 
-### Configuration
-
-```yaml
-# Example Cosign Image Verification Kubernetes configuration
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kubernetes-cosign-image-verification-config
-  namespace: production
-data:
-  config.yaml: |
-    # Production configuration for Cosign Image Verification Kubernetes
-    enabled: true
-    namespace: production
-```
-
-### Deployment
+### Sign and Verify with Cosign
 
 ```bash
-# Verify configuration
-kubectl apply --dry-run=server -f config.yaml
+# Generate a key pair (cosign.key / cosign.pub)
+cosign generate-key-pair
 
-# Apply to cluster
-kubectl apply -f config.yaml
+# Sign the image by digest after it is pushed to the registry
+cosign sign --key cosign.key registry.example.com/myapp@sha256:<digest>
 
-# Verify
-kubectl get all -n production
+# Verify the signature
+cosign verify --key cosign.pub registry.example.com/myapp@sha256:<digest>
+```
+
+### Deployment (Kyverno Policy)
+
+```yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: verify-image-signatures
+spec:
+  validationFailureAction: Enforce
+  webhookTimeoutSeconds: 30
+  rules:
+    - name: verify-cosign-signature
+      match:
+        any:
+          - resources:
+              kinds: ["Pod"]
+      verifyImages:
+        - imageReferences: ["registry.example.com/*"]
+          attestors:
+            - entries:
+                - keys:
+                    publicKeys: |-
+                      -----BEGIN PUBLIC KEY-----
+                      <contents of cosign.pub>
+                      -----END PUBLIC KEY-----
+```
+
+```bash
+kubectl apply -f verify-image-signatures.yaml
+kubectl get clusterpolicy verify-image-signatures
 ```
 
 ```mermaid

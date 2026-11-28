@@ -211,8 +211,10 @@ jobs:
 
       - name: Sign with cosign
         run: |
-          cosign sign --key env://COSIGN_KEY \
-            quay-int.registry.example.com/myapp:${{ github.sha }}
+          # cosign signs an image already in the registry: sign the digest, not the tag
+          IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' \
+            quay-int.registry.example.com/myapp:${{ github.sha }})
+          cosign sign --key env://COSIGN_KEY "$IMAGE_DIGEST"
 
       - name: Deploy to Kubernetes
         run: |
@@ -233,7 +235,7 @@ jobs:
 
 - **Enforce in production, audit in staging** — use `Enforce` in prod, `Audit` in staging/dev
 - **Exclude system namespaces** — always whitelist `kube-system`, `kyverno`, and operator namespaces
-- **Sign at CI time** — signing happens after build + scan, before push to registry
+- **Sign at CI time** — signing happens after build, push and scan, because cosign signs an image already in the registry (sign the digest, not the tag)
 - **Use keyless signing** — cosign with Fulcio/Rekor for OIDC-based identity (no key management)
 - **Block public registries entirely** — approved registries only, mirror needed public images internally
 - **Audit policy violations** — even in audit mode, track and report non-compliant deployments

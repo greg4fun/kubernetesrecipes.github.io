@@ -154,11 +154,9 @@ docker login registry.example.com \
 helm package mychart/
 helm push mychart-1.0.0.tgz oci://registry.example.com/myproject
 
-# Add as Helm repo
-helm repo add myproject https://registry.example.com/chartrepo/myproject \
-  --username admin --password StrongPassword123
-helm search repo myproject/
-helm install myrelease myproject/mychart
+# Install from the OCI registry (Harbor 2.8+ removed ChartMuseum and /chartrepo URLs)
+helm registry login registry.example.com --username admin --password StrongPassword123
+helm install myrelease oci://registry.example.com/myproject/mychart --version 1.0.0
 ```
 
 ### Garbage Collection
