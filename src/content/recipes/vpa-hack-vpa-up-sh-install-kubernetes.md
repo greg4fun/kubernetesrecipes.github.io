@@ -34,7 +34,7 @@ Kubernetes VPA isn't included in default cluster installations. The official ins
 
 ```bash
 # Kubernetes 1.25+ cluster running
-kubectl version --short
+kubectl version
 
 # metrics-server must be running (VPA needs pod metrics)
 kubectl get pods -n kube-system | grep metrics-server

@@ -17,7 +17,7 @@ relatedRecipes:
   - "kubernetes-ephemeral-containers-debugging"
 ---
 
-> 💡 **Quick Answer:** `oc cp` (same as `kubectl cp`) copies files between your local machine and a Pod using tar over the exec API. Unlike `oc rsync`, it works for single files and doesn't require rsync or tar in the container path — only `/bin/tar` must exist.
+> 💡 **Quick Answer:** `oc cp` (same as `kubectl cp`) copies files between your local machine and a Pod using tar over the exec API. Unlike `oc rsync`, it works for single files and doesn't need rsync, but it **does require a `tar` binary in the container** (the `kubectl cp` help says so). If the image has no tar, read files with `oc exec <pod> -- cat <file> > <local-file>`.
 
 ## The Problem
 
@@ -140,7 +140,10 @@ Progress indicator   ❌ no           ✅ --progress     ❌ no
 oc debug my-pod --image=busybox -- \
   tar cf - -C /proc/1/root/app/data . > ./backup.tar
 
-# Workaround 2: kubectl exec with base64 (small files only)
+# Workaround 2: exec + cat (single files; no tar needed)
+oc exec my-pod -- cat /app/config.yaml > ./config.yaml
+
+# Workaround 2b: exec with base64 (small binary files; needs base64 in the image)
 oc exec my-pod -- base64 /app/config.yaml | base64 -d > config.yaml
 
 # Workaround 3: Inject ephemeral container with tar
@@ -225,11 +228,11 @@ oc cp my-pod:/tmp/core.dump ./core.dump
 
 ## Key Takeaways
 
-- `oc cp` uses tar over exec API — requires `/bin/tar` in the container
+- `oc cp` uses tar over exec API — requires a `tar` binary in the container
 - Same syntax as `kubectl cp` (OpenShift wrapper)
 - Best for single files; `oc rsync` better for directories/incremental
 - No progress indicator — use rsync for large transfers
-- Fallbacks when no tar: ephemeral containers, base64 exec, PVC mount Pod
+- Fallbacks when no tar: `oc exec ... -- cat`, base64 exec, debug Pod, PVC mount Pod
 - Always use absolute paths inside the Pod
 - Trailing slash matters: `/data` vs `/data/` changes copy behavior
 - Binary-safe: works for heap dumps, core files, images, databases

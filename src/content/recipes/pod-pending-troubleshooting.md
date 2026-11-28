@@ -96,7 +96,7 @@ The scheduler itself may be down. Check: `kubectl get pods -n kube-system | grep
 Drained nodes have a `NoSchedule` taint. Uncordon: `kubectl uncordon worker-1`
 
 ### Pod fits on paper but still Pending
-Check `PodDisruptionBudget` — it can block scheduling during rolling updates.
+A `PodDisruptionBudget` does not block scheduling — it only limits voluntary evictions (drain, eviction API). Check instead pod affinity/anti-affinity, topology spread constraints, PV node affinity (volume in another zone), hostPort conflicts, and scheduling gates (`spec.schedulingGates`).
 
 ## Best Practices
 

@@ -20,7 +20,7 @@ relatedRecipes:
   - "kubernetes-pod-priority-preemption"
 ---
 
-> 💡 **Quick Answer:** Kubernetes v1.35 (Timbernetes) and v1.36 bring DRA partitionable devices, Job `managedBy` GA, stricter PodDisruptionBudget behavior, and several API removals. Before upgrading: audit deprecated APIs with `kubectl deprecations`, backup etcd, test in staging, and update Helm charts and operators.
+> 💡 **Quick Answer:** Kubernetes v1.35 (Timbernetes) and v1.36 remove no REST API versions (the last removals were in v1.32), but they do change the node requirements: v1.35 drops cgroup v1 support and is the last release to support containerd 1.x, and v1.36 permanently disables the `gitRepo` volume plugin and deprecates Service `externalIPs`. Before upgrading: audit APIs with Pluto, check node runtimes and cgroup version, back up etcd, test in staging, and update Helm charts and operators.
 
 ## The Problem
 
@@ -29,10 +29,10 @@ Every Kubernetes release deprecates or removes APIs, changes default behaviors, 
 ```mermaid
 flowchart LR
     V134["v1.34<br/>(current)"] -->|"Check removals"| V135["v1.35<br/>(Timbernetes)"]
-    V135 -->|"Check removals"| V136["v1.36<br/>(preview)"]
+    V135 -->|"Check removals"| V136["v1.36"]
     
-    V135 -.->|"DRA GA, Job managedBy GA,<br/>sidecar containers stable"| FEATURES["New Features"]
-    V136 -.->|"DRA partitionable,<br/>stricter PDB"| FEATURES2["New Features"]
+    V135 -.->|"Job managedBy GA, in-place Pod resize GA,<br/>cgroup v1 removed, last containerd 1.x"| FEATURES["Key Changes"]
+    V136 -.->|"User namespaces GA, gitRepo disabled,<br/>externalIPs deprecated, containerd 2.0+"| FEATURES2["Key Changes"]
 ```
 
 ## The Solution
@@ -41,7 +41,7 @@ flowchart LR
 
 ```bash
 # Step 1: Check current version
-kubectl version --short
+kubectl version
 
 # Step 2: Audit deprecated APIs
 # Option A: kubectl-deprecations plugin
@@ -64,8 +64,12 @@ ETCDCTL_API=3 etcdctl snapshot save /backup/etcd-pre-upgrade-$(date +%Y%m%d).db 
 kubectl get nodes -o wide
 kubectl top nodes
 
-# Step 5: Check PodDisruptionBudgets (stricter in 1.36)
+# Step 5: Check PodDisruptionBudgets (a PDB with 0 allowed disruptions blocks drains in any version)
 kubectl get pdb -A -o wide
+
+# Step 6: Check container runtime (containerd 2.0+ needed before 1.36) and cgroup version (v2 needed for 1.35+)
+kubectl get nodes -o wide          # CONTAINER-RUNTIME column
+stat -fc %T /sys/fs/cgroup/         # on each node: cgroup2fs = v2, tmpfs = v1
 ```
 
 ### Kubernetes v1.35 Changes (Timbernetes)
@@ -75,14 +79,18 @@ kubectl get pdb -A -o wide
 | Feature | What Changed |
 |---------|-------------|
 | **Job `managedBy` field** | External controllers (Kueue, Volcano) manage Jobs natively |
-| **Node memory swap** | Swap support stable — configure `memorySwap` in kubelet config |
-| **CRD validation ratcheting** | Invalid fields preserved on update if unchanged (migration-friendly) |
-| **Recursive read-only mounts** | `readOnlyRootFilesystem` applies recursively to all mounts |
+| **In-place Pod resource resize** | Change container CPU/memory requests and limits without recreating the Pod |
+| **Fine-grained SupplementalGroups control** | `supplementalGroupsPolicy` controls how supplemental groups are applied |
+| **Kubelet configuration drop-in directory** | Merge kubelet config fragments from a drop-in directory |
+
+This is a selection; see the official v1.35 release post for the full stable list.
 
 #### API Removals in v1.35
 
+None. The official Deprecated API Migration Guide lists no API versions removed in v1.33 through v1.36. Older removals still show up in stale manifests and charts, so keep scanning:
+
 ```yaml
-# REMOVED: flowcontrol.apiserver.k8s.io/v1beta3
+# Removed in v1.32: flowcontrol.apiserver.k8s.io/v1beta3
 # BEFORE:
 apiVersion: flowcontrol.apiserver.k8s.io/v1beta3
 kind: FlowSchema
@@ -90,22 +98,22 @@ kind: FlowSchema
 apiVersion: flowcontrol.apiserver.k8s.io/v1
 kind: FlowSchema
 ---
-# REMOVED: autoscaling/v2beta2 (if any lingering manifests)
+# Removed in v1.26: autoscaling/v2beta2 (if any lingering manifests)
 # Use: autoscaling/v2
 ```
 
 #### Behavior Changes in v1.35
 
 ```yaml
-# 1. Default ServiceAccount token no longer auto-mounted in v1.35
-# If your pods rely on implicit SA tokens, you'll get 403s
-# FIX: Explicitly mount the token
-automountServiceAccountToken: true
+# 1. cgroup v1 support removed
+# kubelet fails to start on nodes that only support cgroup v1.
+# FIX: move those nodes to a Linux distribution/config with cgroup v2 before upgrading.
 
-# 2. Pod scheduling readiness gates
-# Pods can now have scheduling gates — check if third-party
-# controllers add them
-kubectl get pods -A -o json | jq '.items[] | select(.spec.schedulingGates != null) | .metadata.name'
+# 2. Final release supporting containerd 1.x
+# Before upgrading to v1.36, every node must run containerd 2.0 or later.
+
+# 3. kube-proxy ipvs mode deprecated
+# kube-proxy logs a warning on startup; nftables is the recommended replacement on Linux.
 ```
 
 ### Kubernetes v1.36 Changes
@@ -114,16 +122,25 @@ kubectl get pods -A -o json | jq '.items[] | select(.spec.schedulingGates != nul
 
 | Feature | What Changed |
 |---------|-------------|
-| **DRA partitionable devices** | GPU/accelerator partitioning without pre-configured MIG |
-| **CEL admission control** | ValidatingAdmissionPolicy GA — native policy without webhooks |
-| **AppArmor GA** | Container-level AppArmor profiles via `securityContext` |
+| **User Namespaces in Pods** | `hostUsers: false` maps container root to an unprivileged host UID |
+| **Mutating Admission Policies** | CEL-based mutation without webhooks |
+| **SELinux mount-time labeling** | Faster volume relabeling via mount options; Pods sharing volumes with different labels may need `seLinuxChangePolicy: Recursive` |
+| **Image / OCI volume source** | Mount OCI artifacts or images as read-only volumes |
+
+This is a selection; see the official v1.36 release post for the full stable list. (DRA partitionable devices are beta in v1.36, not GA.)
 
 #### Behavior Changes in v1.36
 
 ```yaml
-# 1. Stricter PDB enforcement
-# PDBs now block voluntary disruption MORE strictly
-# If your PDB allows 0 disruptions, node drain WILL fail
+# 1. gitRepo volume plugin permanently disabled
+# Pods using a gitRepo volume no longer start.
+# FIX: clone in an init container or use a git-sync style sidecar.
+
+# 2. Service .spec.externalIPs deprecated (warnings only for now)
+# kube-proxy support is disabled no earlier than v1.40 (opt-back-in available).
+
+# Not a 1.36 change, but check before every drain:
+# a PDB that allows 0 disruptions makes node drain fail in any version.
 # FIX: Ensure PDBs allow at least 1 disruption
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -138,9 +155,8 @@ spec:
     matchLabels:
       app: my-app
 
-# 2. Default container runtime changes
-# containerd 2.0 is the expected runtime in v1.36+
-# Verify: crictl version
+# 3. containerd 2.0 or later required (v1.35 was the last release supporting containerd 1.x)
+# Verify: kubectl get nodes -o wide  (or: crictl version on the node)
 ```
 
 ### Upgrade Procedure
@@ -208,8 +224,9 @@ helm upgrade my-release my-chart --version <latest>
 |-------|-------|-----|
 | `kubectl apply` fails after upgrade | Deprecated API in YAML | Update `apiVersion` to GA version |
 | Pods stuck in Pending | New scheduling gates | Check `spec.schedulingGates` |
-| Node drain fails | PDB too restrictive (v1.36) | Set `maxUnavailable: 1` minimum |
-| SA token 403 errors | Auto-mount disabled by default | Set `automountServiceAccountToken: true` |
+| Node drain fails | PDB allows 0 disruptions (any version) | Set `maxUnavailable: 1` minimum |
+| kubelet fails to start after upgrade | cgroup v1 node (1.35+) or containerd 1.x (1.36) | Move node to cgroup v2 and containerd 2.0+ |
+| Pods with `gitRepo` volume fail (1.36) | gitRepo plugin disabled | Use an init container or git-sync sidecar |
 | Operator CrDs fail validation | CRD schema stricter | Update operator to latest version |
 
 ## Best Practices
@@ -223,8 +240,9 @@ helm upgrade my-release my-chart --version <latest>
 
 ## Key Takeaways
 
-- Kubernetes v1.35: Job `managedBy` GA, swap support, CRD validation ratcheting
-- Kubernetes v1.36: DRA partitionable devices, CEL admission GA, stricter PDB
+- Kubernetes v1.35: Job `managedBy` GA, in-place Pod resize GA, cgroup v1 removed, last release with containerd 1.x
+- Kubernetes v1.36: User Namespaces GA, Mutating Admission Policies GA, `gitRepo` disabled, `externalIPs` deprecated
+- No REST API versions were removed in v1.33–v1.36 (flowcontrol v1beta3 went in v1.32, autoscaling/v2beta2 in v1.26)
 - Always audit deprecated APIs before upgrading: `pluto detect-all-in-cluster`
 - Backup etcd before every upgrade — it's your rollback safety net
 - Upgrade one version at a time: 1.34 → 1.35 → 1.36

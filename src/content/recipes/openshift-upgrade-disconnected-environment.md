@@ -362,9 +362,11 @@ oc debug $MASTER -- chroot /host /usr/local/bin/cluster-backup.sh /home/core/bac
 oc adm upgrade --to=4.14.42
 
 # Y-stream upgrade (minor): 4.14.42 → 4.15.35
-# First acknowledge API removals if required
-oc -n openshift-config patch cm admin-gates \
-  --type merge -p '{"data":{"ack-4.14-kube-1.28-api-removals-in-4.15":"true"}}'
+# First acknowledge API removals if `oc adm upgrade` reports AdminAckRequired.
+# Use the exact key from Red Hat's "Preparing to update" docs for your target,
+# e.g. for 4.15 -> 4.16 the key is ack-4.15-kube-1.29-api-removals-in-4.16:
+oc -n openshift-config patch cm admin-acks \
+  --type merge -p '{"data":{"<ack-key-from-red-hat-docs>":"true"}}'
 
 oc adm upgrade channel stable-4.15
 oc adm upgrade --to=4.15.35
@@ -452,7 +454,7 @@ A PodDisruptionBudget is blocking node drain. Identify with `oc get pdb -A` and 
 
 **"Precondition checks failed" on Y-stream upgrade**
 
-Admin acknowledgment required. Check `oc adm upgrade --include-not-recommended` for the exact condition, then patch the `admin-gates` ConfigMap.
+Admin acknowledgment required. Check `oc adm upgrade --include-not-recommended` for the exact condition, then patch the `admin-acks` ConfigMap in `openshift-config` with the key Red Hat documents for that update.
 
 **Graph shows no updates after mirroring**
 

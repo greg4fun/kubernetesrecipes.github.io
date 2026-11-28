@@ -45,7 +45,7 @@ Assumes a `kubeadm`-managed cluster already running a 1.37.x release. Adjust pac
 1. Check current version:
 
 ```bash
-kubectl version --short
+kubectl version
 kubeadm version
 ```
 
@@ -103,7 +103,7 @@ helm repo update
 kubectl get nodes -o wide
 # Confirm every node reports v1.37.1 under KUBELET-VERSION
 
-kubectl version --short
+kubectl version
 # Confirm Server Version is v1.37.1
 
 kubectl get componentstatuses 2>/dev/null || kubectl get --raw='/healthz'

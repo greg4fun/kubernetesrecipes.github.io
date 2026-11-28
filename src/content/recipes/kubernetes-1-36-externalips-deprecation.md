@@ -155,7 +155,7 @@ grep -rn "externalIPs:" manifests/ charts/ k8s/
 
 ### Deprecation warning in logs
 - **Cause**: Services still using externalIPs field
-- **Fix**: Migrate to alternatives above; field will be removed in a future release
+- **Fix**: Migrate to alternatives above. The field still works in 1.36 (warnings only). Per the official timeline, kube-proxy support is disabled no earlier than v1.40 (with a way to opt back in), and disabled completely no earlier than v1.43. To block new usage now, enable the `DenyServiceExternalIPs` admission plugin
 
 ## Best Practices
 
@@ -167,7 +167,7 @@ grep -rn "externalIPs:" manifests/ charts/ k8s/
 
 ## Key Takeaways
 
-- `externalIPs` is **deprecated in Kubernetes 1.36** due to CVE-2020-8554
+- `externalIPs` is **deprecated in Kubernetes 1.36** due to CVE-2020-8554 — deprecated, not removed: kube-proxy support is disabled no earlier than v1.40 (opt-back-in available) and completely no earlier than v1.43
 - Any user with Service creation rights could hijack cluster traffic
 - Gateway API is the recommended migration path
 - MetalLB replaces externalIPs for bare-metal LoadBalancer services

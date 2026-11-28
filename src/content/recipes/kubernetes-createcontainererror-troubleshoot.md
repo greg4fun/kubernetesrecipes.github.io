@@ -20,7 +20,7 @@ relatedRecipes:
   - "kubernetes-secret-types-guide"
 ---
 
-> 💡 **Quick Answer:** `CreateContainerError` means the container can't start — usually a missing ConfigMap/Secret, bad volume mount, or invalid security context. Debug: `kubectl describe pod <name>` → check Events section. Common fixes: create the missing ConfigMap/Secret, fix volume mount paths, or adjust `securityContext` (runAsUser, fsGroup).
+> 💡 **Quick Answer:** `CreateContainerError` means the container runtime failed to create the container — usually a bad mount/`subPath` or an OCI runtime error. Its sibling `CreateContainerConfigError` means the kubelet couldn't build the container config — a missing ConfigMap/Secret (or key) referenced by `env`/`envFrom`, or `runAsNonRoot` with an image that runs as root. A missing ConfigMap/Secret **volume** instead leaves the pod in `ContainerCreating` with `FailedMount` events. Debug: `kubectl describe pod <name>` → check the Events section.
 
 ## The Problem
 
@@ -47,7 +47,9 @@ kubectl describe pod my-pod
 #   Warning  Failed  kubelet  Error: container has runAsNonRoot and image will run as root
 ```
 
-### Common Cause 1: Missing ConfigMap
+The three errors above show the pod status `CreateContainerConfigError`, not `CreateContainerError`. They are covered here because the two are often confused.
+
+### Common Cause 1: Missing ConfigMap (CreateContainerConfigError / FailedMount)
 
 ```bash
 # Error: configmap "app-config" not found
@@ -78,10 +80,10 @@ spec:
   - name: config
     configMap:
       name: app-config          # Must exist!
-      optional: true            # Add this to avoid CreateContainerError
+      optional: true            # Missing volume source → FailedMount; env/envFrom → CreateContainerConfigError
 ```
 
-### Common Cause 2: Missing Secret
+### Common Cause 2: Missing Secret (CreateContainerConfigError / FailedMount)
 
 ```bash
 # Error: secret "db-credentials" not found
@@ -108,7 +110,7 @@ spec:
           optional: true        # Pod starts even if Secret missing
 ```
 
-### Common Cause 3: Security Context Mismatch
+### Common Cause 3: Security Context Mismatch (CreateContainerConfigError)
 
 ```bash
 # Error: container has runAsNonRoot and image will run as root
@@ -136,8 +138,9 @@ spec:
 ```bash
 # Error: failed to create containerd container: mount destination not allowed
 
-# Subpath doesn't exist in ConfigMap/Secret
-# Or PVC not bound
+# Subpath doesn't exist in ConfigMap/Secret, or the mount path is invalid
+# (An unbound PVC is a different symptom: the pod stays Pending/unschedulable
+#  or ContainerCreating with FailedMount, not CreateContainerError)
 kubectl get pvc
 # NAME        STATUS    VOLUME   CAPACITY
 # data-pvc    Pending   <none>   <none>        ← Not bound!
@@ -160,7 +163,8 @@ volumes:
 # Error: failed to create containerd task: OCI runtime create failed
 
 # Possible: hugepages request without host support
-# Or invalid resource format
+# (An invalid resource format is rejected by the API server when you apply
+#  the manifest, so it never reaches CreateContainerError)
 ```
 
 ```yaml
@@ -180,13 +184,13 @@ resources:
 CreateContainerError
 ├── kubectl describe pod → check Events
 │
-├── "configmap not found"
+├── "configmap not found"   (status: CreateContainerConfigError)
 │   └── Create ConfigMap or add optional: true
 │
-├── "secret not found"
+├── "secret not found"      (status: CreateContainerConfigError)
 │   └── Create Secret or add optional: true
 │
-├── "runAsNonRoot and image will run as root"
+├── "runAsNonRoot and image will run as root"   (CreateContainerConfigError)
 │   └── Set runAsUser: 1000 or fix image
 │
 ├── "mount destination not allowed"
@@ -205,7 +209,7 @@ CreateContainerError
 
 **CreateContainerError vs CreateContainerConfigError**
 
-`CreateContainerConfigError` specifically means config resolution failed (missing ConfigMap/Secret). `CreateContainerError` is broader — includes runtime failures.
+`CreateContainerConfigError` means the kubelet could not build the container config: a missing ConfigMap/Secret or key referenced from `env`/`envFrom`, or `runAsNonRoot` with a root image. `CreateContainerError` means the runtime failed to create the container (mount/`subPath` errors, OCI runtime errors). A missing ConfigMap/Secret used as a **volume** shows as `ContainerCreating` with `FailedMount` events.
 
 **Error persists after creating ConfigMap**
 
@@ -225,7 +229,7 @@ Node-specific issue: SELinux, AppArmor, missing kernel module, or local volume p
 
 ## Key Takeaways
 
-- CreateContainerError = container can't be created (config or runtime issue)
+- CreateContainerError = runtime couldn't create the container; CreateContainerConfigError = missing ConfigMap/Secret/key or runAsNonRoot conflict; FailedMount = missing volume source
 - `kubectl describe pod` Events section gives the exact error
 - Top causes: missing ConfigMap/Secret, security context, volume mounts
 - Use `optional: true` to prevent missing config from blocking pod start
