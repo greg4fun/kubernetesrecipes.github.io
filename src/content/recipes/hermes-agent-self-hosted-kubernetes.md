@@ -92,47 +92,44 @@ spec:
     spec:
       containers:
         - name: hermes
-          image: ghcr.io/nous-research/hermes-agent:latest
+          # Official image is on Docker Hub; pin a version (or a digest)
+          image: nousresearch/hermes-agent:v0.23.5
+          args: ["gateway", "run"]
           ports:
-            - containerPort: 8080
+            - containerPort: 8642      # Optional API server (API_SERVER_ENABLED=true)
               name: api
           env:
-            # Model backend
-            - name: HERMES_MODEL_PROVIDER
-              value: "vllm"            # or: openrouter, openai-compatible
-            - name: HERMES_MODEL_ENDPOINT
-              value: "http://vllm-server.ai:8000/v1"
-            - name: HERMES_MODEL
-              value: "NousResearch/Hermes-3-Llama-3.1-70B"
+            # Model backend: set in config.yaml (model.provider/base_url/default),
+            # see the ConfigMap below — there are no HERMES_MODEL_* variables.
 
             # Messaging platforms
-            - name: HERMES_TELEGRAM_TOKEN
+            - name: TELEGRAM_BOT_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: hermes-secrets
                   key: telegram-token
-            - name: HERMES_DISCORD_TOKEN
+            - name: DISCORD_BOT_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: hermes-secrets
                   key: discord-token
-            - name: HERMES_SLACK_TOKEN
+            - name: SLACK_BOT_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: hermes-secrets
-                  key: slack-token
+                  key: slack-bot-token
+            - name: SLACK_APP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-secrets
+                  key: slack-app-token
 
-            # Security
-            - name: HERMES_TELEMETRY
-              value: "disabled"
-            - name: HERMES_EXECUTION_MODE
-              value: "docker"          # Sandboxed execution
+            # Hermes collects no telemetry, so there is no switch for it.
+            # Sandboxed execution is terminal.backend in config.yaml.
 
           volumeMounts:
             - name: hermes-data
-              mountPath: /home/hermes/.hermes
-            - name: skills
-              mountPath: /home/hermes/.hermes/skills
+              mountPath: /opt/data     # Single data root: config, .env, memories, skills, sessions
           resources:
             requests:
               cpu: "2"
@@ -140,21 +137,17 @@ spec:
             limits:
               cpu: "4"
               memory: "8Gi"
+          # The image's init starts as root to fix /opt/data ownership, then
+          # drops every Hermes process to the non-root `hermes` user (UID 10000).
+          # An arbitrary runAsUser is refused at startup; to match a volume
+          # owner, set HERMES_UID/HERMES_GID (or PUID/PGID) in env instead.
           securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
-            readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
-            capabilities:
-              drop: ["ALL"]
 
       volumes:
         - name: hermes-data
           persistentVolumeClaim:
             claimName: hermes-memory-pvc
-        - name: skills
-          persistentVolumeClaim:
-            claimName: hermes-skills-pvc
 ---
 # Persistent storage for agent memory
 apiVersion: v1
@@ -168,18 +161,6 @@ spec:
   resources:
     requests:
       storage: 10Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: hermes-skills-pvc
-  namespace: hermes
-spec:
-  accessModes: [ReadWriteOnce]
-  storageClassName: fast-ssd
-  resources:
-    requests:
-      storage: 5Gi
 ```
 
 ### Model Backend: Local vLLM
@@ -209,7 +190,7 @@ spec:
           args:
             - --model=NousResearch/Hermes-3-Llama-3.1-70B
             - --tensor-parallel-size=4
-            - --max-model-len=32768
+            - --max-model-len=65536        # Hermes needs at least 64K context for agentic work
             - --enable-auto-tool-choice
             - --tool-call-parser=hermes
           ports:
@@ -248,79 +229,35 @@ metadata:
   name: hermes-config
   namespace: hermes
 data:
+  # Place this file at /opt/data/config.yaml on the data volume
   config.yaml: |
-    # Persistent Memory
+    # Model backend: local vLLM through the custom OpenAI-compatible endpoint
+    model:
+      provider: custom
+      base_url: http://vllm-server:8000/v1
+      default: NousResearch/Hermes-3-Llama-3.1-70B
+
+    # Persistent Memory (~/.hermes/memories/USER.md and MEMORY.md)
     memory:
-      enabled: true
-      path: /home/hermes/.hermes/memory
-      # Agent remembers preferences, projects, environment
-      # Gets smarter the longer it runs
+      memory_enabled: true
+      user_profile_enabled: true
 
-    # Automated Skill Creation
-    skills:
-      auto_create: true
-      # When Hermes solves a hard problem, it writes a reusable
-      # SKILL.md so it never forgets how
-      format: "agentskills.io"        # Open standard
-      community_hub: "agentskills.io"  # Browse and install skills
-
-    # Multi-Platform Messaging
-    gateway:
-      platforms:
-        - telegram
-        - discord
-        - slack
-        - whatsapp
-        - signal
-        - cli
-      # Voice memo transcription supported
-      # Cross-platform conversation continuation
-
-    # Scheduled Automations
-    cron:
-      enabled: true
-      jobs:
-        - name: daily-report
-          schedule: "0 9 * * *"
-          task: "Generate daily project status report"
-          deliver_to: telegram
-
-        - name: weekly-audit
-          schedule: "0 10 * * 1"
-          task: "Audit infrastructure and report findings"
-          deliver_to: slack
-
-        - name: morning-briefing
-          schedule: "0 7 * * 1-5"
-          task: "Check email, calendar, news. Brief me."
-          deliver_to: telegram
+    # Execution backend: local | docker | ssh | modal | daytona | ...
+    # docker needs a Docker daemon reachable from the pod; local runs
+    # commands inside the Hermes container.
+    terminal:
+      backend: docker
 
     # Parallel Sub-Agents
-    subagents:
-      enabled: true
-      max_concurrent: 5
-      # Each gets own conversation and terminal
-      # Zero-context-cost turns via RPC
+    delegation:
+      max_concurrent_children: 5
+```
 
-    # Execution Backends
-    execution:
-      local_terminal: true
-      docker:
-        enabled: true
-        security:
-          read_only_root: true
-          drop_capabilities: all
-          pid_limit: 100
-      ssh:
-        enabled: false                # Enable for remote servers
-      modal:
-        enabled: false                # Enable for cloud/HPC
+Messaging platforms are enabled by their tokens (the env vars above) or with `hermes gateway setup`, not by a `gateway.platforms` list. Scheduled automations are created with the CLI, not in `config.yaml`:
 
-    # Browser Automation
-    browser:
-      enabled: true
-      # Web search, page extraction, screenshots
-      # Full navigation, click, type automation
+```bash
+kubectl -n hermes exec deploy/hermes-agent -- hermes cron create "0 9 * * *" \
+  "Generate daily project status report" --name daily-report --deliver telegram
 ```
 
 ### Security Hardening
@@ -372,8 +309,9 @@ kind: Namespace
 metadata:
   name: hermes
   labels:
-    pod-security.kubernetes.io/enforce: restricted
-    pod-security.kubernetes.io/audit: restricted
+    # baseline, not restricted: the image's init must start as root
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: baseline
 ```
 
 ### Comparison: Hermes vs Other Agent Runtimes
@@ -399,11 +337,11 @@ Zero Telemetry       ✅              ✅              Configurable
 
 ### Memory grows unbounded over months
 - **Cause**: Agent accumulates context without pruning
-- **Fix**: Configure memory retention policies; or periodically review `~/.hermes/memory/`
+- **Fix**: Configure memory retention policies; or periodically review `~/.hermes/memories/` (`/opt/data/memories/` in the container)
 
 ### Sub-agent spawning fails
 - **Cause**: Docker socket not available or PID limits hit
-- **Fix**: Mount Docker socket or use Kubernetes job-based sub-agents; increase `pid_limit`
+- **Fix**: Mount Docker socket or use Kubernetes job-based sub-agents
 
 ### Voice memo transcription not working
 - **Cause**: Whisper model not loaded or audio codec unsupported
@@ -411,7 +349,7 @@ Zero Telemetry       ✅              ✅              Configurable
 
 ### Agent loses context after pod restart
 - **Cause**: Memory not persisted (emptyDir instead of PVC)
-- **Fix**: Use PersistentVolumeClaim for `~/.hermes/` directory
+- **Fix**: Use a PersistentVolumeClaim for the data root (`/opt/data` in the container, `~/.hermes/` on a host install)
 
 ## Best Practices
 
@@ -420,7 +358,7 @@ Zero Telemetry       ✅              ✅              Configurable
 3. **Start with one platform** — add more as you trust the agent's behavior
 4. **Review auto-created skills** — agent writes skills it can reuse; audit them
 5. **Cron for recurring tasks** — don't re-ask; schedule reports and audits
-6. **Container hardening** — read-only root, drop all capabilities, non-root user
+6. **Container hardening** — no privilege escalation, egress NetworkPolicy; the image drops to its non-root `hermes` user (UID 10000) after init
 7. **Backup memory PVC** — this is the agent's brain; losing it resets learning
 
 ## Key Takeaways
