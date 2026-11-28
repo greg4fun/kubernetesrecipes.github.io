@@ -1,0 +1,108 @@
+---
+// Inline newsletter signup, the same Kit (ConvertKit) form as the popup
+// (newsletter-popup.astro, form 9965628). Readers spend about 21 s on a page,
+// so most leave before the popup's 30 s / 60% scroll trigger; this block sits
+// at the end of every recipe. The popup stays.
+//
+// The form is marked data-kit-inline, not data-sv-form, on purpose: when the
+// popup loads Kit's ck.5.js it enhances every [data-sv-form] form on the page,
+// and this form would then be submitted twice. This block posts to Kit itself
+// (fetch, the same request ck.5.js sends; app.convertkit.com allows any
+// origin). Kit answers with a status: "success"; "quarantined" when it wants a
+// bot check first, with the check's URL, shown here as a link the reader opens
+// (ck.5.js would frame it, which this site's CSP does not allow for app.kit.com);
+// anything else is an error. If the request itself fails, the form falls back
+// to the plain post. Without JavaScript the form posts normally.
+//
+// A valid submit fires newsletter_signup (Layout.astro) with this placement.
+// After a signup the popup's dismissal key is set, so the popup does not ask
+// again.
+interface Props {
+  placement?: string;
+}
+const { placement = "recipe-end" } = Astro.props;
+---
+
+<aside class="newsletter-inline mt-8 mb-4 not-prose" aria-label="Newsletter signup">
+  <div class="rounded-xl border border-blue-200 bg-blue-50/60 p-5 md:p-6">
+    <p class="text-lg font-bold text-slate-900">Get the next recipe by email</p>
+    <p class="text-sm text-slate-600 mt-1">Practical Kubernetes tutorials, troubleshooting tips, production patterns and AI/GPU workload guidance. No spam. Unsubscribe anytime.</p>
+    <form
+      action="https://app.convertkit.com/forms/9965628/subscriptions"
+      method="post"
+      data-kit-inline="9965628"
+      data-placement={placement}
+      class="mt-3 flex flex-col gap-2 sm:flex-row"
+    >
+      <label class="sr-only" for={`kit-inline-email-${placement}`}>Email address</label>
+      <input
+        id={`kit-inline-email-${placement}`}
+        type="email"
+        name="email_address"
+        placeholder="Your email address"
+        required
+        autocomplete="email"
+        class="w-full flex-1 rounded-lg border-2 border-slate-200 bg-white px-4 py-2.5 text-base outline-none focus:border-blue-600"
+      />
+      <input type="hidden" name="tags[]" value="" />
+      <button
+        type="submit"
+        class="rounded-lg bg-blue-600 px-5 py-2.5 font-semibold text-white hover:bg-blue-700 transition-colors"
+      >
+        Send Me the Next Recipe
+      </button>
+    </form>
+    <p class="kit-inline-status mt-2 text-sm font-medium text-slate-700" role="status" aria-live="polite"></p>
+  </div>
+</aside>
+
+<script is:inline>
+(function () {
+  var POPUP_KEY = 'k8s_newsletter_9965628_dismissed';
+  document.querySelectorAll('form[data-kit-inline]').forEach(function (form) {
+    if (form.dataset.kitBound) return;
+    form.dataset.kitBound = '1';
+    var status = form.parentNode.querySelector('.kit-inline-status');
+    var button = form.querySelector('button[type="submit"]');
+    function say(text) { if (status) status.textContent = text; }
+    function done() {
+      form.style.display = 'none';
+      say('Thanks for subscribing! Check your inbox.');
+      try { localStorage.setItem(POPUP_KEY, Date.now().toString()); } catch (err) {}
+    }
+    form.addEventListener('submit', function (e) {
+      if (!window.fetch || !window.FormData) return;
+      e.preventDefault();
+      if (button) button.disabled = true;
+      say('Sending…');
+      var body = new FormData(form);
+      body.append('referrer', location.href);
+      fetch(form.action, { method: 'POST', body: body, headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (button) button.disabled = false;
+          if (data && data.status === 'success') return done();
+          if (data && data.status === 'quarantined' && data.url) {
+            say('');
+            var a = document.createElement('a');
+            a.href = data.url;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.className = 'underline text-blue-700';
+            a.textContent = 'One more step: confirm you are not a robot';
+            status.appendChild(a);
+            status.appendChild(document.createTextNode(' (opens Kit in a new tab).'));
+            a.addEventListener('click', done);
+            return;
+          }
+          say('That did not work. Check the email address and try again.');
+        })
+        .catch(function () {
+          if (button) button.disabled = false;
+          say('');
+          form.submit();
+        });
+    });
+  });
+})();
+</script>

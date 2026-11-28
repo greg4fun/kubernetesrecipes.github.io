@@ -6,16 +6,31 @@
  * recipe category points to the exam that tests the same skills. Links go
  * through the Awin affiliate programme (Linux Foundation, merchant 85919):
  * the site earns a commission on purchases, so the box carries a disclosure
- * and rel="sponsored". AI recipes get no box: no LF exam matches them.
+ * and rel="sponsored". AI/GPU recipes get the box below instead: no LF exam
+ * matches them.
  *
  * Clicks fire the GA4 event affiliate_click (see Layout.astro).
  *
  * OpenShift recipes (src/utils/openshift.mjs: slug, title or tags) show the
  * Open Empower OpenShift upgrade review instead, whatever their category. That
  * link is our own offer, so it has no data-affiliate and no rel="sponsored";
- * its clicks fire enterprise_cta_click (offer, placement).
+ * its clicks fire enterprise_cta_click (offer, placement). OpenShift recipes
+ * about AI/GPU workloads add one line for the OpenShift AI ebook on Leanpub.
+ *
+ * Other AI/GPU recipes (src/utils/ai-gpu.mjs) show two of Luca's own offers:
+ * the Kubernetes AI ebook on Leanpub (book_click: book, placement) and the GPU
+ * cluster design review (enterprise_cta_click: offer, placement). Order of
+ * precedence and the matching rules: src/utils/ai-gpu.mjs.
  */
 import { OPENSHIFT_REVIEW, isOpenShiftRecipe, openShiftReviewUrl } from "../utils/openshift.mjs";
+import {
+  GPU_REVIEW,
+  LEANPUB_BOOKS,
+  gpuReviewUrl,
+  isAiGpuRecipe,
+  isOpenShiftAiRecipe,
+  leanpubUrl,
+} from "../utils/ai-gpu.mjs";
 
 export interface Props {
   category?: string;
@@ -26,7 +41,12 @@ export interface Props {
 
 const { category = "", slug = "", title = "", tags = [] } = Astro.props;
 
-const openshift = isOpenShiftRecipe({ slug, title, tags });
+const recipe = { category, slug, title, tags };
+const openshift = isOpenShiftRecipe(recipe);
+const openshiftAi = openshift && isOpenShiftAiRecipe(recipe);
+const aiGpu = !openshift && isAiGpuRecipe(recipe);
+const k8sAi = LEANPUB_BOOKS["kubernetes-ai"];
+const ocpAi = LEANPUB_BOOKS["openshift-ai"];
 const reviewUrl = openShiftReviewUrl(slug);
 // One string, so the HTML minifier cannot drop the spaces between the parts.
 const reviewText = `A fixed-price ${OPENSHIFT_REVIEW.price} engagement by Open Empower: a written review of your cluster and upgrade path, plus a 90-minute call to go through it with your team.`;
@@ -70,7 +90,7 @@ const PITCH: Record<string, Pitch> = {
   },
 };
 
-const pitch = openshift ? undefined : PITCH[category.toLowerCase()];
+const pitch = openshift || aiGpu ? undefined : PITCH[category.toLowerCase()];
 const trackAttrs = (cert: Cert) => ({
   "data-affiliate": "linux_foundation",
   "data-offer-id": `lf_${cert.id}`,
@@ -95,8 +115,62 @@ const trackAttrs = (cert: Cert) => ({
           See the OpenShift upgrade review →
         </a>
       </div>
+      {openshiftAi && (
+        <p class="text-sm text-slate-700 mt-3">
+          Read: <a
+            href={leanpubUrl("openshift-ai", slug)}
+            target="_blank"
+            rel="noopener"
+            data-book="openshift-ai"
+            data-book-placement="recipe-end"
+            class="font-semibold text-red-700 hover:text-red-800 underline"
+          >{ocpAi.title}</a> (ebook, Leanpub)
+        </p>
+      )}
       <p class="text-xs text-slate-600 mt-3">
         Open Empower is the consulting company of Luca Berton, co-author of Kubernetes Recipes.
+      </p>
+    </div>
+  </aside>
+)}
+
+{aiGpu && (
+  <aside class="mt-8 mb-4 not-prose" aria-label="Kubernetes AI ebook and GPU cluster design review" data-enterprise-offer={GPU_REVIEW.offer}>
+    <div class="rounded-xl border border-violet-200 bg-gradient-to-r from-violet-50 to-sky-50 p-6">
+      <p class="text-xs uppercase tracking-wider text-violet-700 font-semibold mb-3">Running AI and GPU workloads on Kubernetes?</p>
+      <div class="grid gap-5 md:grid-cols-2">
+        <div>
+          <p class="text-lg font-bold text-slate-900">{k8sAi.title} <span class="text-sm font-normal text-slate-600">(ebook)</span></p>
+          <p class="text-sm text-slate-700 mt-1 leading-relaxed">{k8sAi.description}</p>
+          <a
+            href={leanpubUrl("kubernetes-ai", slug)}
+            target="_blank"
+            rel="noopener"
+            data-book="kubernetes-ai"
+            data-book-placement="recipe-end"
+            class="mt-3 inline-flex items-center gap-1 rounded-lg bg-violet-700 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-800 transition-colors"
+          >
+            Get the ebook on Leanpub →
+          </a>
+        </div>
+        <div>
+          <p class="text-lg font-bold text-slate-900">GPU cluster design review</p>
+          <p class="text-sm text-slate-700 mt-1 leading-relaxed">Buying rack-scale GPUs? An independent review of the fabric, management plane and operations design, delivered in writing before the purchase order goes out.</p>
+          <p class="text-sm font-semibold text-slate-900 mt-1">{GPU_REVIEW.terms}</p>
+          <a
+            href={gpuReviewUrl(slug)}
+            target="_blank"
+            rel="noopener"
+            data-enterprise-cta={GPU_REVIEW.offer}
+            data-cta-placement="recipe-end"
+            class="mt-3 inline-flex items-center gap-1 rounded-lg border-2 border-violet-700 bg-white px-4 py-2 text-sm font-semibold text-violet-800 hover:bg-violet-50 transition-colors"
+          >
+            See the GPU cluster review →
+          </a>
+        </div>
+      </div>
+      <p class="text-xs text-slate-600 mt-4">
+        Both by Luca Berton, co-author of Kubernetes Recipes.
       </p>
     </div>
   </aside>
